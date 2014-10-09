@@ -1,0 +1,28 @@
+/*
+ * Build script for Surgical Risk Calculator Prototype.
+ */
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
+
+repositories {
+    // Use 'maven central' for resolving dependencies.
+    mavenCentral()
+}
+
+/* Versions of dependencies */
+def springVersion = '3.2.11.RELEASE'
+
+dependencies {
+    // The production code uses the SLF4J logging API at compile time
+    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'org.hibernate:hibernate-core:4.2.7.Final'
+	compile group: 'org.springframework', name: 'spring-core', version: springVersion
+	compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
+
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.mockito:mockito-core:1.9.5'
+
+    runtime 'ch.qos.logback:logback-classic:1.1.2'
+}
