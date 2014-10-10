@@ -2,6 +2,8 @@ package gov.va.med.srcalc.service;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import gov.va.med.srcalc.db.SpecialtyDao;
@@ -14,6 +16,7 @@ public class DefaultSpecialtyService implements SpecialtyService
 {
     private final SpecialtyDao fSpecialtyDao;
     
+    @Inject // Allow arguments to be autowired.
     public DefaultSpecialtyService(SpecialtyDao specialtyDao)
     {
         fSpecialtyDao = specialtyDao;

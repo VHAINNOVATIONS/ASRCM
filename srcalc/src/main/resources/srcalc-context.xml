@@ -25,15 +25,15 @@
 	
 	<!-- *** Domain Model and Services *** -->
 	
-	<!-- TODO: do we manually wire all of the collaborators in XML, use JavaConfig,
-	     or autowiring? -->
+	<!-- Note: we use autowiring (via @Inject) for the constructor arguments of
+	     DAOs and Services. This reduces the amount of configuration necessary
+	     in this file while still allowing the objects to be used as POJOs out-
+	     side of the Spring container. -->
+	
+	<!-- DAOs -->
+	<bean id="specialtyDao" class="gov.va.med.srcalc.db.SpecialtyDao" />
 
-	<bean id="specialtyDao" class="gov.va.med.srcalc.db.SpecialtyDao">
-		<constructor-arg ref="srcalcSessionFactory"></constructor-arg>
-	</bean>
-
-	<bean id="specialtyService" class="gov.va.med.srcalc.service.DefaultSpecialtyService">
-		<constructor-arg ref="specialtyDao"></constructor-arg>
-	</bean>
+    <!-- Services -->
+	<bean id="specialtyService" class="gov.va.med.srcalc.service.DefaultSpecialtyService" />
 
 </beans>

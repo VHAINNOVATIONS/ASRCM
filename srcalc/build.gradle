@@ -24,6 +24,7 @@ dependencies {
 	compile group: 'org.springframework', name: 'spring-core', version: springVersion
 	compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
 	compile group: 'org.springframework', name: 'spring-orm', version: springVersion
+	compile 'javax.inject:javax.inject:1'
 
     runtime 'ch.qos.logback:logback-classic:1.1.2'
 

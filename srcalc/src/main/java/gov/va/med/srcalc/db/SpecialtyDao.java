@@ -2,6 +2,8 @@ package gov.va.med.srcalc.db;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,7 @@ public class SpecialtyDao
 {
     private final SessionFactory fSessionFactory;
     
+    @Inject // Allow arguments to be autowired.
     public SpecialtyDao(SessionFactory sessionFactory)
     {
         fSessionFactory = sessionFactory;

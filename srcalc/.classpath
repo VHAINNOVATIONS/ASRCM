@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container" exported="true"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" path="src/test/resources"/>
+	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container" exported="true"/>
 	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/4.2.13.Final/fc34d8b45bc4b4ced8793ac027c00473a8e95f4d/hibernate-core-4.2.13.Final-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/4.2.13.Final/4d5d10708ee5258d875b4ad80dc11967f1a77f62/hibernate-core-4.2.13.Final.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
@@ -23,6 +23,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/3.2.11.RELEASE/bee03e8af04803d383cfc068a133e63247159297/spring-orm-3.2.11.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/3.2.11.RELEASE/c2bc96f6b379e0e663cf52459f3e583905e02720/spring-orm-3.2.11.RELEASE.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/a00123f261762a7c5e0ec916a2c7c8298d29c400/javax.inject-1-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
