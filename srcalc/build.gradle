@@ -6,6 +6,9 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'eclipse-wtp'
 
+// Basic build properties
+sourceCompatibility = '1.7'
+
 repositories {
     // Use 'maven central' for resolving dependencies.
     mavenCentral()
@@ -30,3 +33,14 @@ dependencies {
 	
 	testRuntime 'org.hsqldb:hsqldb:2.3.2'
 }
+
+// Hardcode Eclipse servlet spec version because eclipse-wtp just assumes 2.4.
+eclipse {
+    wtp {
+	facet {
+	    facet name: 'java', version: sourceCompatibility
+	    facet name: 'jst.web', version: '3.0'
+	}
+    }
+}
+
