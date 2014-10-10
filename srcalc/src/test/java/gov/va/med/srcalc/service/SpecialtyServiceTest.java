@@ -4,8 +4,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.Specialty;
@@ -17,9 +16,9 @@ public class SpecialtyServiceTest
     /**
      * Returns a basic set of Specialty objects.
      */
-    public Set<Specialty> sampleSpecialtyList()
+    public static List<Specialty> sampleSpecialtyList()
     {
-        return new HashSet<>(Arrays.asList(
+        return Arrays.asList(
 		    new Specialty(1, "General"),
 		    new Specialty(2, "Neurosurgery"),
 		    new Specialty(3, "Orthopedic"),
@@ -28,11 +27,11 @@ public class SpecialtyServiceTest
 		    new Specialty(6, "Vascular"),
 		    new Specialty(7, "Cardiac"),
 		    new Specialty(8, "Other Non-Cardiac Specialty")
-                ));
+                );
     }
 
     /**
-     * Simple test to ensure {@link SpecialtyService#getAllSpecialties()} does
+     * Simple test to ensure {@link DefaultSpecialtyService#getAllSpecialties()} does
      * its simple job.
      */
     @Test
@@ -43,7 +42,7 @@ public class SpecialtyServiceTest
         when(dao.getAllSpecialties()).thenReturn(sampleSpecialtyList());
         
         // The actual object we are testing.
-        final SpecialtyService service = new SpecialtyService(dao);
+        final DefaultSpecialtyService service = new DefaultSpecialtyService(dao);
         
         // Behavior verification.
         assertEquals(sampleSpecialtyList(), service.getAllSpecialties());

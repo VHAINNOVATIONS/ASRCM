@@ -1,21 +1,15 @@
 package gov.va.med.srcalc.service;
 
-import java.util.Set;
-
-import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.Specialty;
 
-public class SpecialtyService
+import java.util.List;
+
+/**
+ * Interface for SpecialtyService. All srcalc services implement interfaces to
+ * allow proxies (e.g., for transaction management). Clients should therefore
+ * depend on this interface, not on {@link DefaultSpecialtyService}.
+ */
+public interface SpecialtyService
 {
-    private final SpecialtyDao fSpecialtyDao;
-    
-    public SpecialtyService(SpecialtyDao specialtyDao)
-    {
-        fSpecialtyDao = specialtyDao;
-    }
-    
-    public Set<Specialty> getAllSpecialties()
-    {
-        return fSpecialtyDao.getAllSpecialties();
-    }
+    public List<Specialty> getAllSpecialties();
 }

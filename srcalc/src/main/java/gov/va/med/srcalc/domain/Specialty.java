@@ -2,7 +2,9 @@ package gov.va.med.srcalc.domain;
 
 import java.util.Objects;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Specialty
@@ -21,6 +23,7 @@ public class Specialty
         this.fName = name;
     }
 
+    @Id // We use method-based property detection throughout the app.
     public int getId()
     {
         return fId;
@@ -31,6 +34,7 @@ public class Specialty
         this.fId = id;
     }
 
+    @Basic
     public String getName()
     {
 	return fName;

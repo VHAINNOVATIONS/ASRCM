@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+       
+    <!-- *** Data Access Beans *** -->
+
+	<bean id="srcalcSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="srcalcDataSource" />
+		<property name="packagesToScan" value="gov.va.med.srcalc.domain" />
+	</bean>
+
+	<bean id="srcalcTransactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="srcalcSessionFactory"/>
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="srcalcTransactionManager"/>
+	
+	<!-- *** Domain Model and Services *** -->
+	
+	<!-- TODO: do we manually wire all of the collaborators in XML, use JavaConfig,
+	     or autowiring? -->
+
+	<bean id="specialtyDao" class="gov.va.med.srcalc.db.SpecialtyDao">
+		<constructor-arg ref="srcalcSessionFactory"></constructor-arg>
+	</bean>
+
+	<bean id="specialtyService" class="gov.va.med.srcalc.service.DefaultSpecialtyService">
+		<constructor-arg ref="specialtyDao"></constructor-arg>
+	</bean>
+
+</beans>
