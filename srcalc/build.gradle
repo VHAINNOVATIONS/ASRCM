@@ -26,6 +26,8 @@ dependencies {
 	compile group: 'org.springframework', name: 'spring-orm', version: springVersion
 	compile 'javax.inject:javax.inject:1'
 
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+
     runtime 'ch.qos.logback:logback-classic:1.1.2'
 
     testCompile 'junit:junit:4.11'
