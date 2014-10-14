@@ -12,17 +12,17 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/3.2.11.RELEASE/e06ce5e1157123c7e8eb4365f43fb2c1428683e6/spring-core-3.2.11.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/3.2.11.RELEASE/5f2645e4801907ce1ffea54eaebf79cdb58a1fa2/spring-core-3.2.11.RELEASE.jar" exported="true">
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.1.1.RELEASE/4bd6cb7e742a6342ab039de1ed26fe54e33be591/spring-core-4.1.1.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.1.1.RELEASE/4b0c607ba83c95ad9ea3defd40c35ae47c5df7d0/spring-core-4.1.1.RELEASE.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/3.2.11.RELEASE/5f5b3baa57b1123420e9e4437c12d8e090a69caa/spring-webmvc-3.2.11.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/3.2.11.RELEASE/2f462ade996c2d7fa37271feb1b9b5efffa59792/spring-webmvc-3.2.11.RELEASE.jar" exported="true">
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.1.1.RELEASE/697af0165d36f2c1c481f0a94af5c2be796394d0/spring-webmvc-4.1.1.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.1.1.RELEASE/27f97cf47ac7e66915e4d42306bced91905998d6/spring-webmvc-4.1.1.RELEASE.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/3.2.11.RELEASE/bee03e8af04803d383cfc068a133e63247159297/spring-orm-3.2.11.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/3.2.11.RELEASE/c2bc96f6b379e0e663cf52459f3e583905e02720/spring-orm-3.2.11.RELEASE.jar" exported="true">
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/4.1.1.RELEASE/df72c111e9d0edec2c528ead48a5efffc47a9827/spring-orm-4.1.1.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/4.1.1.RELEASE/527855bb911964588b6ca99a0ce8cd3ca0be3d9b/spring-orm-4.1.1.RELEASE.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
@@ -52,7 +52,7 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/3.2.11.RELEASE/f9ef58cfce8d5edaa23e13c0257a24f623920000/spring-test-3.2.11.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/3.2.11.RELEASE/bb0d7709b015cc811232d06dfcfb6996123c5ba2/spring-test-3.2.11.RELEASE.jar" exported="true">
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.1.1.RELEASE/2e88d8a990e5f1ffa93b3e2a83ba9535b562aabd/spring-test-4.1.1.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.1.1.RELEASE/406ce9c05253f7dd75ac3f31170c71cca7419d8a/spring-test-4.1.1.RELEASE.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
@@ -107,12 +107,12 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/3.2.11.RELEASE/c1321c1896d8b8413e712c8ce4ec57847eabd3bb/spring-beans-3.2.11.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/3.2.11.RELEASE/f760312c99e7c172fd6611aeb7c2d18e586d4568/spring-beans-3.2.11.RELEASE.jar" exported="true">
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.1.1.RELEASE/6945f40ede50763093412c7436376e777421ddb2/spring-beans-4.1.1.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.1.1.RELEASE/a44061faf47da974376bbfa6e84e316046d45c8c/spring-beans-4.1.1.RELEASE.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/3.2.11.RELEASE/e7bca4be84da6e6fc6be57e659d082a0b55915a0/spring-expression-3.2.11.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/3.2.11.RELEASE/2902e7f1b3d669e134f83d85d964c0e5bf5d7c7b/spring-expression-3.2.11.RELEASE.jar" exported="true">
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.1.1.RELEASE/1719ef93281026ae09e94b71f8179e1514ea2b9d/spring-expression-4.1.1.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.1.1.RELEASE/c86cad6880c3f5c13a81677411b6f41873c80e75/spring-expression-4.1.1.RELEASE.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
@@ -122,27 +122,27 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/3.2.11.RELEASE/1603fa68dd384fa09110112a38711923ddc07eae/spring-aop-3.2.11.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/3.2.11.RELEASE/470020b04f4491b27e07d1ae2e83d707fabd72ca/spring-aop-3.2.11.RELEASE.jar" exported="true">
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.1.1.RELEASE/34f77ba9c1df0604051c1e9511e0555286509ef9/spring-aop-4.1.1.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.1.1.RELEASE/5175950be849e409f328bd4ea0f16f3ea9466359/spring-aop-4.1.1.RELEASE.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/3.2.11.RELEASE/f253388646dc208d452f843dfa9a2af9eed8b0c6/spring-context-3.2.11.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/3.2.11.RELEASE/d223389e994ed74d03c35db8e8554aa461410468/spring-context-3.2.11.RELEASE.jar" exported="true">
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.1.1.RELEASE/1b69bb54483ab092b83fc4c765e6694f3af7348f/spring-context-4.1.1.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.1.1.RELEASE/3c79ab100df285ea0cc0b4543fe4042543405001/spring-context-4.1.1.RELEASE.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/3.2.11.RELEASE/4b64e018f3b3a1e2d7e0487f698fcf9ae52b9ef9/spring-web-3.2.11.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/3.2.11.RELEASE/77ada14cc181dacb62de4fdf5adabc9f1892c4d2/spring-web-3.2.11.RELEASE.jar" exported="true">
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.1.1.RELEASE/a841bc213ddb3344d9e5447c8aca3f36becddb54/spring-web-4.1.1.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.1.1.RELEASE/c496e2c84b7275309bbe29d2fa90a968acce9ce9/spring-web-4.1.1.RELEASE.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/3.2.11.RELEASE/5f1bece1ac54b5301634dab54ac583df3ec51e20/spring-tx-3.2.11.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/3.2.11.RELEASE/94ff192204af52604cc636dbb1d8c4929b93048b/spring-tx-3.2.11.RELEASE.jar" exported="true">
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.1.1.RELEASE/9ce6cc2a5557191548aad6e08ad323eea424ab0f/spring-tx-4.1.1.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.1.1.RELEASE/7025c6f9736feed7893a59730b56fa0a1569580c/spring-tx-4.1.1.RELEASE.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/3.2.11.RELEASE/4800424109f98e1b5bb090aa68cd16c15c2cb55a/spring-jdbc-3.2.11.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/3.2.11.RELEASE/ef77e3943d70ef69b2b214e798219dea4f823512/spring-jdbc-3.2.11.RELEASE.jar" exported="true">
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.1.1.RELEASE/214b4d91741b7ef0c3d3afcda4f3af909f35bf97/spring-jdbc-4.1.1.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.1.1.RELEASE/7961fd80b1a39358a527110dcc2751e2535ca31f/spring-jdbc-4.1.1.RELEASE.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>

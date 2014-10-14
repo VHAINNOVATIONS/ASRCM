@@ -15,7 +15,7 @@ repositories {
 }
 
 /* Versions of dependencies */
-def springVersion = '3.2.11.RELEASE'
+def springVersion = '4.1.1.RELEASE'
 
 dependencies {
     // The production code uses the SLF4J logging API at compile time
