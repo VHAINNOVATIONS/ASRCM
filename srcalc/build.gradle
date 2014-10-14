@@ -16,10 +16,17 @@ repositories {
 
 /* Versions of dependencies */
 def springVersion = '4.1.1.RELEASE'
+def slf4jVersion = '1.7.5'
+
+// Don't ever depend on commons-logging, we use jcl-over-sl4j instead.
+configurations {
+    all*.exclude module: 'commons-logging'
+}    
 
 dependencies {
     // The production code uses the SLF4J logging API at compile time
-    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
+    compile group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion
     compile 'org.hibernate:hibernate-core:4.2.13.Final'
 	compile group: 'org.springframework', name: 'spring-core', version: springVersion
 	compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
