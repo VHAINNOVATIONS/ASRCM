@@ -10,6 +10,7 @@ import gov.va.med.srcalc.service.SpecialtyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class SpecialtySelectionController
@@ -23,6 +24,7 @@ public class SpecialtySelectionController
     }
 
     @RequestMapping("/")
+    @ResponseBody
     public String presentSelection(final Model model)
     {
         final List<Specialty> specialties = fSpecialtyService.getAllSpecialties();

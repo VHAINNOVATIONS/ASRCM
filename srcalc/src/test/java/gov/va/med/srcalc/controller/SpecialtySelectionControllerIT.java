@@ -1,6 +1,8 @@
 package gov.va.med.srcalc.controller;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +39,7 @@ public class SpecialtySelectionControllerIT
     @Test
     public void getSpecialtyList() throws Exception
     {
-        fMockMvc.perform(get("/"));
+        fMockMvc.perform(get("/")).
+            andExpect(content().string(containsString("Vascular")));
     }
 }

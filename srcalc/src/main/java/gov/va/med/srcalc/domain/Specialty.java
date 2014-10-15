@@ -46,6 +46,12 @@ public class Specialty
     }
     
     @Override
+    public String toString()
+    {
+        return fName;
+    }
+    
+    @Override
     public boolean equals(Object o)
     {
         if (o instanceof Specialty)  // false if o == null
