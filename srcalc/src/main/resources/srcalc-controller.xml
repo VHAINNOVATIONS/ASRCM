@@ -28,6 +28,6 @@
     
     <!-- Support CSS and JS via Spring (because we make Spring the default serlvet. -->
     <!-- TODO: support versioning -->
-    <mvc:resources mapping="/styles/**" location="/styles/" />
+    <mvc:resources mapping="/css/**" location="/css/" />
 
 </beans>
