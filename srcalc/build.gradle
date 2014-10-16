@@ -29,20 +29,27 @@ configurations {
 }    
 
 dependencies {
-    // The production code uses the SLF4J logging API at compile time
+
+    /* Java EE 7 dependencies */
+
+    // Provided by the container (Tomcat).
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+    // These are not provided by the container (Tomcat).
+	compile 'javax.inject:javax.inject:1'
+	compile 'org.glassfish.web:javax.servlet.jsp.jstl:1.2.1'
+	
+	/* Other libraries */
+
     compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
     compile group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion
     compile 'org.hibernate:hibernate-core:4.2.13.Final'
 	compile group: 'org.springframework', name: 'spring-core', version: springVersion
 	compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
 	compile group: 'org.springframework', name: 'spring-orm', version: springVersion
-	compile 'javax.inject:javax.inject:1'
-	// Include JSTL (necessary for Tomcat)
-	compile 'org.glassfish.web:javax.servlet.jsp.jstl:1.2.1'
-
-    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
 
     runtime 'ch.qos.logback:logback-classic:1.1.2'
+    
+    /* Test dependencies */
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-core:1.9.5'
