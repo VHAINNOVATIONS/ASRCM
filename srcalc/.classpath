@@ -37,6 +37,11 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.glassfish.web/javax.servlet.jsp.jstl/1.2.1/b2d1e06100e8ac3324239a242ead5557d7b65390/javax.servlet.jsp.jstl-1.2.1-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.glassfish.web/javax.servlet.jsp.jstl/1.2.1/7f687140e9d264ee00eaa924714adf9a82cc18dc/javax.servlet.jsp.jstl-1.2.1.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/1952f91d84016a39e31346c9d18bd8c9c4a128a/javax.servlet-api-3.0.1-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/6bf0ebb7efd993e222fc1112377b5e92a13b38dd/javax.servlet-api-3.0.1.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
@@ -143,6 +148,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.1.1.RELEASE/214b4d91741b7ef0c3d3afcda4f3af909f35bf97/spring-jdbc-4.1.1.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.1.1.RELEASE/7961fd80b1a39358a527110dcc2751e2535ca31f/spring-jdbc-4.1.1.RELEASE.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/javax.servlet.jsp.jstl/jstl-api/1.2/b7b976db29290621db582b38c1db9c22ff439f89/jstl-api-1.2-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/javax.servlet.jsp.jstl/jstl-api/1.2/f9a034c1ca1f79c03bb461805a688f944544d138/jstl-api-1.2.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>

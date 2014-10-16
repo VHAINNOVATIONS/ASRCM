@@ -18,9 +18,14 @@ repositories {
 def springVersion = '4.1.1.RELEASE'
 def slf4jVersion = '1.7.5'
 
-// Don't ever depend on commons-logging, we use jcl-over-sl4j instead.
 configurations {
+    // Don't ever depend on commons-logging, we use jcl-over-sl4j instead.
     all*.exclude module: 'commons-logging'
+    
+    // org.glassfish.web:javax.servlet.jsp.jstl tries to include these, but we
+    // want them 'provided' scope.
+    runtime.exclude module: 'servlet-api'
+    runtime.exclude module: 'jsp-api'
 }    
 
 dependencies {
@@ -32,6 +37,8 @@ dependencies {
 	compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
 	compile group: 'org.springframework', name: 'spring-orm', version: springVersion
 	compile 'javax.inject:javax.inject:1'
+	// Include JSTL (necessary for Tomcat)
+	compile 'org.glassfish.web:javax.servlet.jsp.jstl:1.2.1'
 
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
 

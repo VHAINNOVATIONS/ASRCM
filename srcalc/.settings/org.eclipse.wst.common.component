@@ -31,6 +31,9 @@
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.glassfish.web/javax.servlet.jsp.jstl/1.2.1/7f687140e9d264ee00eaa924714adf9a82cc18dc/javax.servlet.jsp.jstl-1.2.1.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-classic/1.1.2/b316e9737eea25e9ddd6d88eaeee76878045c6b2/logback-classic-1.1.2.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
@@ -53,6 +56,9 @@
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.5/cd5970bd13fa85f7bed41ca606d6daf7cbf1365/jcl-over-slf4j-1.7.5.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/javax.servlet.jsp.jstl/jstl-api/1.2/f9a034c1ca1f79c03bb461805a688f944544d138/jstl-api-1.2.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.1.1.RELEASE/c86cad6880c3f5c13a81677411b6f41873c80e75/spring-expression-4.1.1.RELEASE.jar">
