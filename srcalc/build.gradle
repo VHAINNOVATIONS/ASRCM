@@ -15,7 +15,7 @@ repositories {
 }
 
 /* Versions of dependencies */
-def springVersion = '4.1.1.RELEASE'
+def springVersion = '4.0.7.RELEASE'
 def slf4jVersion = '1.7.5'
 
 configurations {
