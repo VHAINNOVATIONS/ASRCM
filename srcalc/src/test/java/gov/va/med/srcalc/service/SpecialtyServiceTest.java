@@ -19,15 +19,23 @@ public class SpecialtyServiceTest
     public static List<Specialty> sampleSpecialtyList()
     {
         return Arrays.asList(
-		    new Specialty(1, "General"),
-		    new Specialty(2, "Neurosurgery"),
-		    new Specialty(3, "Orthopedic"),
-		    new Specialty(4, "Thoracic"),
-		    new Specialty(5, "Urology"),
-		    new Specialty(6, "Vascular"),
-		    new Specialty(7, "Cardiac"),
-		    new Specialty(8, "Other Non-Cardiac Specialty")
+		    new Specialty(1, 50, "General"),
+		    new Specialty(2, 52, "Neurosurgery"),
+		    new Specialty(3, 54, "Orthopedic"),
+		    sampleThoracicSpecialty(),
+		    new Specialty(5, 59, "Urology"),
+		    new Specialty(6, 62, "Vascular"),
+		    new Specialty(7, 48, "Cardiac"),
+		    new Specialty(8, 50, "Other Non-Cardiac Specialty")
                 );
+    }
+    
+    /**
+     * Returns a sample Thoracic specialty, for when a single specialty is needed.
+     */
+    public static Specialty sampleThoracicSpecialty()
+    {
+        return new Specialty(4, 58, "Thoracic");
     }
 
     /**
