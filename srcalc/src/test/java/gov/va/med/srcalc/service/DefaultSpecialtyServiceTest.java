@@ -11,7 +11,7 @@ import gov.va.med.srcalc.domain.Specialty;
 
 import org.junit.Test;
 
-public class SpecialtyServiceTest
+public class DefaultSpecialtyServiceTest
 {
     /**
      * Returns a basic set of Specialty objects.

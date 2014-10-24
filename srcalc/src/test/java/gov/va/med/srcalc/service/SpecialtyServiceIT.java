@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * <p>Integration Test for {@link SpecialtyService}. Unlike
- * {@link SpecialtyServiceTest}, this class tests real database interaction.</p>
+ * {@link DefaultSpecialtyServiceTest}, this class tests real database interaction.</p>
  * 
  * <p>Note that we are testing the interface ({@link SpecialtyService}), not the
  * implementation ({@link DefaultSpecialtyService}). You can think of this IT
@@ -28,7 +28,7 @@ public class SpecialtyServiceIT
     public void testReturnsAllSpecialties()
     {
         assertEquals(
-                SpecialtyServiceTest.sampleSpecialtyList().size(),
+                DefaultSpecialtyServiceTest.sampleSpecialtyList().size(),
                 fSpecialtyService.getAllSpecialties().size());
     }
 }
