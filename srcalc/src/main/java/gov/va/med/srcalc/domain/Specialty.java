@@ -91,7 +91,7 @@ public class Specialty
             // Compare the VistA ID and name as this pair should always be
             // unique.
             return (this.getVistaId() == other.getVistaId()) &&
-                   (this.getName() == other.getName());
+                   (this.getName().equals(other.getName()));
         }
         else
         {
