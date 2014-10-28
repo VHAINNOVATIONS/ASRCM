@@ -38,6 +38,6 @@
 	<bean id="specialtyDao" class="gov.va.med.srcalc.db.SpecialtyDao" />
 
     <!-- Services -->
-	<bean id="specialtyService" class="gov.va.med.srcalc.service.DefaultSpecialtyService" />
+	<bean id="calculationService" class="gov.va.med.srcalc.service.DefaultCalculationService" />
 
 </beans>

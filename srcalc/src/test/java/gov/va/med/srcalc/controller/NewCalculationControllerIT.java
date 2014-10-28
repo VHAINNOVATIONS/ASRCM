@@ -1,8 +1,6 @@
 package gov.va.med.srcalc.controller;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 import org.junit.Before;
@@ -17,14 +15,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
- * Integration Test for {@link SpecialtySelectionController}. Note that we only
+ * Integration Test for {@link NewCalculationController}. Note that we only
  * define Integration Tests for controllers because unit tests are of little
  * value.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.
 @ContextConfiguration({"/srcalc-context.xml", "/srcalc-controller.xml", "/test-context.xml"})
-public class SpecialtySelectionControllerIT
+public class NewCalculationControllerIT
 {
     @Autowired
     WebApplicationContext fWac;
@@ -40,7 +38,7 @@ public class SpecialtySelectionControllerIT
     @Test
     public void getSpecialtyList() throws Exception
     {
-        fMockMvc.perform(get("/")).
-            andExpect(model().attributeExists("specialties"));
+        fMockMvc.perform(get("/newCalc")).
+            andExpect(model().attributeExists("specialties", "calculation"));
     }
 }
