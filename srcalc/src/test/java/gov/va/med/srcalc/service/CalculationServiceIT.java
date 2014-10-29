@@ -2,7 +2,9 @@ package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.Calculation;
+import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
+import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
 import gov.va.med.srcalc.test.util.SampleSpecialties;
 
 import javax.inject.Inject;
@@ -12,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>Integration Test for {@link CalculationService}. Unlike
@@ -48,5 +51,24 @@ public class CalculationServiceIT
                 calc.getStartDateTime().compareTo(testStartDateTime) >= 0);
         assertEquals(SampleSpecialties.sampleSpecialtyList(), newCalc.getPossibleSpecialties());
         // TODO: other aspects of the calculation as we determine them
+    }
+    
+    @Test
+    @Transactional  // do this all in one transaction so we can roll back
+    public void testSetValidSpecialty() throws InvalidIdentifierException
+    {
+        final int PATIENT_DFN = 1;
+        
+        // Create the class under test.
+        final NewCalculation newCalc = fCalculationService.startNewCalculation(PATIENT_DFN);
+        final Calculation calc = newCalc.getCalculation();
+        
+        // Behavior verification.
+        final Specialty specialty = newCalc.getPossibleSpecialties().get(3);
+        final SelectedCalculation selCalc =
+                fCalculationService.setSpecialty(calc, specialty.getName());
+        assertEquals(specialty, selCalc.getCalculation().getSpecialty());
+        // TODO: other aspects of the calculation as we determine them
+
     }
 }

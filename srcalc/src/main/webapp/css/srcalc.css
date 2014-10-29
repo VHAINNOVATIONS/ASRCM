@@ -70,7 +70,15 @@ body {
     padding-left: 0;
 }
 
+/* We use <ol>'s for the list of fields. */
+#riskVarForm fieldset > ol {
+	list-style-type: none;
+	padding-left: 0;
+}
 
+#riskVarForm fieldset > legend {
+	font-weight: bold;
+}
 
 
 

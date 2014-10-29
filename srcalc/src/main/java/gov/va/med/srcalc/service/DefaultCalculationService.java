@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
+import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
 
 public class DefaultCalculationService implements CalculationService
 {
@@ -34,6 +36,24 @@ public class DefaultCalculationService implements CalculationService
         return new NewCalculation(
                 Calculation.forPatient(patient),
                 fSpecialtyDao.getAllSpecialties());
+    }
+    
+    @Override
+    @Transactional
+    public SelectedCalculation setSpecialty(Calculation calculation, String specialtyName)
+        throws InvalidIdentifierException
+    {
+        fLogger.info("Setting specialty to {}.", specialtyName);
+        
+        final Specialty specialty = fSpecialtyDao.getByName(specialtyName);
+        if (specialty == null)
+        {
+            throw new InvalidIdentifierException(
+                    specialtyName + " is not a valid specialty name.");
+        }
+        calculation.setSpecialty(specialty);
+
+        return new SelectedCalculation(calculation);
     }
     
 }
