@@ -2,7 +2,6 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<!-- Note: modernizr removes the no-js class. -->
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -12,9 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="stylesheet" type="text/css" href="css/normalize.min.css">
     <link rel="stylesheet" type="text/css" href="css/srcalc.css">
-    <!-- modernizr needs to be in the <head> -->
-    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-    <title>Select Specialty</title>
+    <title>Enter Variables</title>
 </head>
 <body>
     <header>
@@ -24,17 +21,16 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <p>Risk Calculation for ${calculation.patient}.</p>
-        <h2>Select Surgical Specialty</h2>
-        <form action="selectSpecialty" method="post">
-        <ul id="specialtyRadios">
-        <c:forEach var="specialty" items="${specialties}">
-        <li>
-            <label><input type="radio" name="specialty" value="${specialty.name}"> ${specialty.name}</label>
-        </li>
-        </c:forEach>
-        </ul>
-        <button type="submit">Continue</button>
+        <h2>Enter Risk Variables</h2>
+        <form id="riskVarForm">
+        <p>Patient: ${calculation.patient}</p>
+        <fieldset>
+            <legend>Specialty</legend>
+            <!-- Use an ordered list for the list of fields. -->
+            <ol>
+            <li><label>Specialty:</label> ${calculation.specialty}</li>
+            </ol>
+        </fieldset>
         </form>
     </section>
 </body>

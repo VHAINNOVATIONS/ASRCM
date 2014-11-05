@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
@@ -24,6 +25,19 @@ public class SpecialtyDao
     protected Session getCurrentSession()
     {
         return fSessionFactory.getCurrentSession();
+    }
+    
+    /**
+     * Returns the Specialty from the Database with the given name.
+     * @return the Specialty object or null if there was no specialty with the
+     * given name
+     */
+    public Specialty getByName(final String name)
+    {
+        final Query q = getCurrentSession().createQuery(
+                "from Specialty s where s.name = :name");
+        q.setString("name", name);
+        return (Specialty)q.uniqueResult();
     }
 
     @SuppressWarnings("unchecked") // trust Hibernate
