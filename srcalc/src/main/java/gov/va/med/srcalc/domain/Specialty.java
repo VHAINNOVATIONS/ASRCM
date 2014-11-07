@@ -6,15 +6,21 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+/**
+ * <p>Represents a surgical specialty, with the associated calcuation variables.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
+ */
 @Entity
-public class Specialty
+public final class Specialty
 {
     private int fId;
     
     private int fVistaId;
     
     private String fName;
-
+    
     public Specialty()
     {
     }
@@ -91,7 +97,7 @@ public class Specialty
             // Compare the VistA ID and name as this pair should always be
             // unique.
             return (this.getVistaId() == other.getVistaId()) &&
-                   (this.getName().equals(other.getName()));
+                   Objects.equals(this.getName(), (other.getName()));
         }
         else
         {
