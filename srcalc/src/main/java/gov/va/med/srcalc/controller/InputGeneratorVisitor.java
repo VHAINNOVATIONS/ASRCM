@@ -29,8 +29,8 @@ class InputGeneratorVisitor implements VariableVisitor
                     "<input type=\"radio\" name=\"%s\" value=\"%s\"> " +
                     "%s</label>",
                 variable.getDisplayName(),
-                option.getDisplayName(),
-                option.getDisplayName()));
+                option.getValue(),
+                option.getValue()));
         }
     }
     

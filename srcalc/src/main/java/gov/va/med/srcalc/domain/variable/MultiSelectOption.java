@@ -1,28 +1,41 @@
 package gov.va.med.srcalc.domain.variable;
 
 /**
- * Default implementation of a MultiSelectOption storing a simple display name.
+ * An option for a {@link MultiSelectVariable}.
  */
 public class MultiSelectOption
 {
-    private String fDisplayName;
+    private String fValue;
     
     public MultiSelectOption()
     {
     }
     
-    public MultiSelectOption(String displayName)
+    public MultiSelectOption(String value)
     {
-        fDisplayName = displayName;
+        fValue = value;
     }
     
-    public String getDisplayName()
+    /**
+     * The option value. E.g., "Male" for gender.
+     */
+    public String getValue()
     {
-        return fDisplayName;
+        return fValue;
     }
     
-    public void setDisplayName(String displayName)
+    /**
+     * For reflection-based construction only. To the outside world, the value is
+     * immutable.
+     */
+    void setValue(String value)
     {
-        fDisplayName = displayName;
+        fValue = value;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return getValue();
     }
 }
