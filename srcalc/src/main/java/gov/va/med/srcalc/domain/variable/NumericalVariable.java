@@ -1,6 +1,5 @@
 package gov.va.med.srcalc.domain.variable;
 
-
 public class NumericalVariable extends Variable
 {
     private int fMinValue = 0;
@@ -10,9 +9,9 @@ public class NumericalVariable extends Variable
     {
     }
     
-    public NumericalVariable(String displayName, boolean required)
+    public NumericalVariable(String displayName)
     {
-        super(displayName, required);
+        super(displayName);
     }
 
     /**

@@ -6,7 +6,6 @@ package gov.va.med.srcalc.domain.variable;
 public abstract class Variable
 {
     private String fDisplayName;
-    private boolean fRequired;
     private String fHelpText;
 
     protected Variable()
@@ -17,12 +16,10 @@ public abstract class Variable
      * Creates an instance with some of the basic properties filled.
      * @param displayName
      * @param type
-     * @param required
      */
-    protected Variable(String displayName, boolean required)
+    protected Variable(String displayName)
     {
         this.fDisplayName = displayName;
-        this.fRequired = required;
     }
     
     public String getDisplayName()
@@ -33,16 +30,6 @@ public abstract class Variable
     public void setDisplayName(String displayName)
     {
         this.fDisplayName = displayName;
-    }
-
-    public boolean isRequired()
-    {
-        return fRequired;
-    }
-
-    public void setRequired(boolean required)
-    {
-        this.fRequired = required;
     }
 
     public String getHelpText()

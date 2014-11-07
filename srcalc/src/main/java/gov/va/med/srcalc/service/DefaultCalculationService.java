@@ -70,11 +70,11 @@ public class DefaultCalculationService implements CalculationService
                     new MultiSelectOption("Male"),
                     new MultiSelectOption("Female")
                     );
-            variables.add(new MultiSelectVariable("Gender", DisplayType.Radio, true, options));
+            variables.add(new MultiSelectVariable("Gender", DisplayType.Radio, options));
         }
         else //non-cardiac
         {
-            variables.add(new NumericalVariable("Age", true));
+            variables.add(new NumericalVariable("Age"));
         }
 
         return new SelectedCalculation(calculation, variables);

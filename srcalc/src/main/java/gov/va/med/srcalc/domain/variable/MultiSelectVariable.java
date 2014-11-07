@@ -19,9 +19,9 @@ public class MultiSelectVariable extends Variable
     }
     
     public MultiSelectVariable(
-            String displayName, DisplayType displayType, boolean required, List<MultiSelectOption> options)
+            String displayName, DisplayType displayType, List<MultiSelectOption> options)
     {
-        super(displayName, required);
+        super(displayName);
         fDisplayType = displayType;
         fOptions = options;
     }

@@ -34,7 +34,7 @@ public class InputGeneratorVisitorTest
         List<MultiSelectOption> options = Arrays.asList(
                 new MultiSelectOption("ddvalue1"),
                 new MultiSelectOption("ddvalue2"));
-        MultiSelectVariable var = new MultiSelectVariable("ddTest", DisplayType.Dropdown, true, options);
+        MultiSelectVariable var = new MultiSelectVariable("ddTest", DisplayType.Dropdown, options);
         
         // Verify behavior
         var.accept(fVisitor);
@@ -48,7 +48,7 @@ public class InputGeneratorVisitorTest
         List<MultiSelectOption> options = Arrays.asList(
                 new MultiSelectOption("value1"),
                 new MultiSelectOption("value2"));
-        MultiSelectVariable var = new MultiSelectVariable("radioTest", DisplayType.Radio, true, options);
+        MultiSelectVariable var = new MultiSelectVariable("radioTest", DisplayType.Radio, options);
         
         // Verify behavior
         var.accept(fVisitor);
@@ -63,7 +63,7 @@ public class InputGeneratorVisitorTest
         throws Exception
     {
         // Setup variable
-        NumericalVariable var = new NumericalVariable("numTest", true);
+        NumericalVariable var = new NumericalVariable("numTest");
         var.setMinValue(2);
         var.setMaxValue(100);
         
