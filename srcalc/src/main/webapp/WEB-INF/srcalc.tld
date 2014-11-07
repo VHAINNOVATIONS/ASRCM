@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee web-jsptaglibrary_2_1.xsd"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	version="2.1">
+	
+	<display-name>Custom Tags for Surgical Risk Calculator</display-name>
+	<short-name>srcalc</short-name>
+	<tlib-version>1.0</tlib-version>
+
+	<tag>
+	   <name>variableInput</name>
+	   <description>
+           Creates an HTML input field for a gov.va.med.srcalc.domain.variable.Variable.
+       </description>
+	   <tag-class>gov.va.med.srcalc.controller.VariableInputTag</tag-class>
+	   <body-content>empty</body-content>
+	   <attribute>
+	       <name>variable</name>
+	       <required>true</required>
+	       <rtexprvalue>true</rtexprvalue> <!-- Allow EL expressions -->
+	       <type>gov.va.med.srcalc.domain.variable.Variable</type>
+	   </attribute>
+	</tag>
+</taglib>

@@ -25,7 +25,6 @@ configurations {
     // org.glassfish.web:javax.servlet.jsp.jstl tries to include these, but we
     // want them 'provided' scope.
     runtime.exclude module: 'servlet-api'
-    runtime.exclude module: 'jsp-api'
 }    
 
 dependencies {
@@ -34,6 +33,7 @@ dependencies {
 
     // Provided by the container (Tomcat).
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+    providedCompile 'javax.servlet.jsp:jsp-api:2.1'
     // These are not provided by the container (Tomcat).
 	compile 'javax.inject:javax.inject:1'
 	compile 'org.glassfish.web:javax.servlet.jsp.jstl:1.2.1'

@@ -3,8 +3,9 @@ package gov.va.med.srcalc.controller;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import gov.va.med.srcalc.domain.Calculation;
+import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
+import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
 import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 
@@ -29,6 +30,22 @@ public class CalculationController
     {
         fCalculationService = calculationService;
     }
+    
+    /**
+     * Returns the current CalculationWorkflow object form the HttpSession.
+     * @return never null
+     * @throws IllegalStateException if there is no current calculation
+     */
+    protected CalculationWorkflow getWorkflowFromSession(HttpSession session)
+    {
+        CalculationWorkflow workflow =
+                (CalculationWorkflow)session.getAttribute(SESSION_CALCULATION);
+        if (workflow == null)
+        {
+            throw new IllegalStateException("No current calculation.");
+        }
+        return workflow;
+    }
 
     @RequestMapping(value = "/newCalc", method = RequestMethod.GET)
     public String presentSelection(HttpSession session, final Model model)
@@ -43,7 +60,7 @@ public class CalculationController
         final NewCalculation newCalc = fCalculationService.startNewCalculation(FAKE_PATIENT_DFN);
 
         // Store the calculation in the HTTP Session.
-        session.setAttribute(SESSION_CALCULATION, newCalc.getCalculation());
+        session.setAttribute(SESSION_CALCULATION, newCalc);
         
         // Present the view.
         model.addAttribute("calculation", newCalc.getCalculation());
@@ -57,9 +74,10 @@ public class CalculationController
             @RequestParam("specialty") final String specialtyName)
                     throws InvalidIdentifierException
     {
-        final Calculation calc =
-                (Calculation)session.getAttribute(SESSION_CALCULATION);
-        fCalculationService.setSpecialty(calc, specialtyName);
+        final CalculationWorkflow workflow = getWorkflowFromSession(session);
+        final SelectedCalculation selCalc =
+                fCalculationService.setSpecialty(workflow.getCalculation(), specialtyName);
+        session.setAttribute(SESSION_CALCULATION, selCalc);
 
         // Using the POST-redirect-GET pattern.
         return "redirect:/enterVars";
@@ -70,11 +88,13 @@ public class CalculationController
             HttpSession session,
             final Model model)
     {
-        final Calculation calc =
-                (Calculation)session.getAttribute(SESSION_CALCULATION);
+        // Get the SelectedCalculation from the session.
+        final SelectedCalculation selCalc =
+                (SelectedCalculation)getWorkflowFromSession(session);
 
         // Present the view.
-        model.addAttribute("calculation", calc);
+        model.addAttribute("calculation", selCalc.getCalculation());
+        model.addAttribute("variables", selCalc.getVariables());
         return "/enterVariables";
     }
 }

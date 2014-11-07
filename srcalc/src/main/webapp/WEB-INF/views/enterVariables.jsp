@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="/WEB-INF/srcalc.tld" prefix="srcalc" %>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -23,12 +24,21 @@
         <![endif]-->
         <h2>Enter Risk Variables</h2>
         <form id="riskVarForm">
-        <p>Patient: ${calculation.patient}</p>
         <fieldset>
-            <legend>Specialty</legend>
+            <ol>
+            <li><label class="variableName">Specialty:</label> ${calculation.specialty}</li>
+            <li><label class="variableName">Patient:</label> ${calculation.patient}</li>
+            </ol>
+        </fieldset>
+        <fieldset>
+            <legend>Variables</legend>
             <!-- Use an ordered list for the list of fields. -->
             <ol>
-            <li><label>Specialty:</label> ${calculation.specialty}</li>
+            <c:forEach var="variable" items="${variables}">
+            <li><label class="variableName">${variable.displayName}:</label>
+            <srcalc:variableInput variable="${variable}"/>
+            </li>
+            </c:forEach>
             </ol>
         </fieldset>
         </form>
