@@ -2,10 +2,10 @@ package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.Calculation;
+import gov.va.med.srcalc.domain.SampleSpecialties;
 import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
-import gov.va.med.srcalc.test.util.SampleSpecialties;
 
 import javax.inject.Inject;
 
@@ -58,17 +58,17 @@ public class CalculationServiceIT
     public void testSetValidSpecialty() throws InvalidIdentifierException
     {
         final int PATIENT_DFN = 1;
+        final Specialty specialty = SampleSpecialties.sampleThoracicSpecialty();
         
         // Create the class under test.
         final NewCalculation newCalc = fCalculationService.startNewCalculation(PATIENT_DFN);
         final Calculation calc = newCalc.getCalculation();
         
         // Behavior verification.
-        final Specialty specialty = newCalc.getPossibleSpecialties().get(3);
         final SelectedCalculation selCalc =
                 fCalculationService.setSpecialty(calc, specialty.getName());
         assertEquals(specialty, selCalc.getCalculation().getSpecialty());
-        // TODO: other aspects of the calculation as we determine them
-
+        assertEquals(1, selCalc.getVariables().size());
+        assertEquals("Age", selCalc.getVariables().get(0).getDisplayName());
     }
 }

@@ -1,10 +1,19 @@
 package gov.va.med.srcalc.domain.variable;
 
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
 /**
  * A model variable. Just the variable, does not store an inputted value.
  */
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Variable
 {
+    private int fId;
     private String fDisplayName;
     private String fHelpText;
 
@@ -22,6 +31,25 @@ public abstract class Variable
         this.fDisplayName = displayName;
     }
     
+    /**
+     * The object's surrogate primary key. Don't show this to the user.
+     */
+    @Id
+    public int getId()
+    {
+        return fId;
+    }
+
+    /**
+     * For reflection-based construction only. Business code should never modify
+     * the surrogate key as it is generated from the database.
+     */
+    void setId(int id)
+    {
+        this.fId = id;
+    }
+    
+    @Basic
     public String getDisplayName()
     {
         return fDisplayName;
@@ -32,6 +60,7 @@ public abstract class Variable
         this.fDisplayName = displayName;
     }
 
+    @Basic
     public String getHelpText()
     {
         return fHelpText;

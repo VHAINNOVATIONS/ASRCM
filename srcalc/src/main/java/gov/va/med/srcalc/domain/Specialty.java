@@ -1,10 +1,18 @@
 package gov.va.med.srcalc.domain;
 
+import gov.va.med.srcalc.domain.variable.Variable;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 /**
  * <p>Represents a surgical specialty, with the associated calcuation variables.</p>
@@ -21,6 +29,8 @@ public final class Specialty
     
     private String fName;
     
+    private List<Variable> fVariables = new ArrayList<>();
+
     public Specialty()
     {
     }
@@ -79,6 +89,32 @@ public final class Specialty
     public void setName(final String name)
     {
 	fName = name;
+    }
+    
+    /**
+     * Returns all {@link Variable}s associated with this Specialty. Caution:
+     * lazy-loaded.
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    // Override strange defaults. See
+    // <https://forum.hibernate.org/viewtopic.php?f=1&t=1037190>.
+    @JoinTable(
+            name = "specialty_variable",
+            joinColumns = @JoinColumn(name = "specialty_id"),
+            inverseJoinColumns = @JoinColumn(name = "variable_id")
+        )
+    public List<Variable> getVariables()
+    {
+        return fVariables;
+    }
+    
+    /**
+     * For reflection-based construction only. The collection should be modified
+     * via {@link #getVariables()}.
+     */
+    void setVariables(List<Variable> variables)
+    {
+        fVariables = variables;
     }
     
     @Override

@@ -2,6 +2,17 @@ package gov.va.med.srcalc.domain.variable;
 
 import java.util.List;
 
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
+
+@Entity
 public class MultiSelectVariable extends Variable
 {
     public enum DisplayType
@@ -26,6 +37,8 @@ public class MultiSelectVariable extends Variable
         fOptions = options;
     }
     
+    @Basic
+    @Enumerated(EnumType.STRING)  // store as strings in the DB for user-friendliness
     public DisplayType getDisplayType()
     {
         return fDisplayType;
@@ -36,6 +49,13 @@ public class MultiSelectVariable extends Variable
         fDisplayType = displayType;
     }
 
+    @OneToMany(fetch = FetchType.EAGER)  // eager load due to close association
+    @OrderColumn(name = "option_index")
+    @JoinTable(
+            name = "multi_select_variable_option",
+            joinColumns = @JoinColumn(name = "variable_id"),
+            inverseJoinColumns = @JoinColumn(name = "option_id")
+        )
     public List<MultiSelectOption> getOptions()
     {
         return fOptions;

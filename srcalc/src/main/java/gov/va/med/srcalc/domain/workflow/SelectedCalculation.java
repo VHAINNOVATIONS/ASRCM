@@ -10,18 +10,18 @@ import gov.va.med.srcalc.domain.variable.Variable;
  */
 public class SelectedCalculation extends CalculationWorkflow
 {
-    private final List<Variable> fVariables;
-    
-    public SelectedCalculation(
-            Calculation calculation, List<Variable> variables)
+    public SelectedCalculation(Calculation calculation)
     {
         super(calculation);
-        
-        fVariables = variables;
     }
     
+    /**
+     * Returns the variables for the Calculation. Note that this is only
+     * appropriate for a SelectedCalculation because a {@link NewCalculation}
+     * does not yet have a Specialty assigned.
+     */
     public List<Variable> getVariables()
     {
-        return fVariables;
+        return getCalculation().getSpecialty().getVariables();
     }
 }

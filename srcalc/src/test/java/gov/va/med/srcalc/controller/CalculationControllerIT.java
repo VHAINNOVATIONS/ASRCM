@@ -4,7 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import gov.va.med.srcalc.test.util.SampleSpecialties;
+import gov.va.med.srcalc.domain.SampleSpecialties;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -61,5 +61,8 @@ public class CalculationControllerIT
         fMockMvc.perform(post("/selectSpecialty").session(session)
                 .param("specialty", SPECIALTY_NAME)).
             andExpect(redirectedUrl("/enterVars"));
+        
+        fMockMvc.perform(get("/enterVars").session(session))
+            .andExpect(model().attributeExists("calculation", "variables"));
     }
 }

@@ -28,14 +28,15 @@ public class SpecialtyDao
     }
     
     /**
-     * Returns the Specialty from the Database with the given name.
+     * Returns the Specialty from the Database with the given name. The Specialty
+     * will have all of the associated Variables loaded from the DB.
      * @return the Specialty object or null if there was no specialty with the
      * given name
      */
     public Specialty getByName(final String name)
     {
         final Query q = getCurrentSession().createQuery(
-                "from Specialty s where s.name = :name");
+                "from Specialty s left join fetch s.variables where s.name = :name");
         q.setString("name", name);
         return (Specialty)q.uniqueResult();
     }

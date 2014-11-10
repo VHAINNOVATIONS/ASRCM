@@ -1,5 +1,9 @@
 package gov.va.med.srcalc.domain.variable;
 
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+
+@Entity
 public class NumericalVariable extends Variable
 {
     private int fMinValue = 0;
@@ -17,6 +21,7 @@ public class NumericalVariable extends Variable
     /**
      * The minimum allowed value for this variable. Default 0.
      */
+    @Basic
     public int getMinValue()
     {
         return fMinValue;
@@ -31,6 +36,7 @@ public class NumericalVariable extends Variable
      * The maximum allowed value for this variable. Default {@link Integer#MAX_VALUE}
      * @return
      */
+    @Basic
     public int getMaxValue()
     {
         return fMaxValue;
