@@ -7,10 +7,15 @@ import org.junit.Test;
 
 public class CalculationTest
 {
+    protected Patient dummyPatient()
+    {
+        return new Patient(1, "Zach Smith");
+    }
+
     @Test
     public final void testForPatient()
     {
-        final Patient patient = new Patient(1, "Zach Smith");
+        final Patient patient = dummyPatient();
         final DateTime testStartDateTime = new DateTime();
         final Calculation c = Calculation.forPatient(patient);
         
@@ -21,6 +26,12 @@ public class CalculationTest
         assertTrue("start date not after test start",
                 c.getStartDateTime().compareTo(testStartDateTime) >= 0);
         assertEquals(patient, c.getPatient());
+    }
+    
+    @Test(expected = IllegalStateException.class)
+    public final void testGetVariablesIllegal()
+    {
+        Calculation.forPatient(dummyPatient()).getVariables();
     }
     
 }

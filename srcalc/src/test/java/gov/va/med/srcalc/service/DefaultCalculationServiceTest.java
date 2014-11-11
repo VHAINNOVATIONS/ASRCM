@@ -63,9 +63,10 @@ public class DefaultCalculationServiceTest
         // Behavior verification.
         final SelectedCalculation selCalc =
                 s.setSpecialty(calc, thoracicSpecialty.getName());
+        assertSame("Calculation object not the same", calc,  selCalc.getCalculation());
         assertEquals(thoracicSpecialty, calc.getSpecialty());
-        assertEquals(1, selCalc.getVariables().size());
-        assertEquals("Age", selCalc.getVariables().get(0).getDisplayName());
+        assertEquals(1, calc.getVariables().size());
+        assertEquals("Age", calc.getVariables().get(0).getDisplayName());
     }
     
     @Test(expected = InvalidIdentifierException.class)

@@ -1,5 +1,9 @@
 package gov.va.med.srcalc.domain;
 
+import gov.va.med.srcalc.domain.variable.Variable;
+
+import java.util.List;
+
 import org.joda.time.DateTime;
 
 /**
@@ -10,7 +14,6 @@ public class Calculation
     private DateTime fStartDateTime;
     private Patient fPatient;
     private Specialty fSpecialty;
-    private Procedure fProcedure;
     
     /**
      * This class presents a pure JavaBean interface, with a default constructor
@@ -62,14 +65,20 @@ public class Calculation
     {
         this.fSpecialty = specialty;
     }
-
-    public Procedure getProcedure()
+    
+    /**
+     * Returns the List of {@link Variable}s for the selected specialty.
+     * @throws IllegalStateException if no specialty has been set.
+     */
+    public List<Variable> getVariables()
     {
-        return fProcedure;
-    }
-
-    public void setProcedure(Procedure procedure)
-    {
-        this.fProcedure = procedure;
+        // Ensure we are in the proper state.
+        if (fSpecialty == null)
+        {
+            throw new IllegalStateException(
+                    "Cannot return list of variables because no specialty has been set.");
+        }
+        
+        return fSpecialty.getVariables();
     }
 }

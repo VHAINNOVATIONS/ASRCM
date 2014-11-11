@@ -63,6 +63,6 @@ public class CalculationControllerIT
             andExpect(redirectedUrl("/enterVars"));
         
         fMockMvc.perform(get("/enterVars").session(session))
-            .andExpect(model().attributeExists("calculation", "variables"));
+            .andExpect(model().attributeExists("calculation"));
     }
 }

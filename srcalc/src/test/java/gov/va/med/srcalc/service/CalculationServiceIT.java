@@ -67,8 +67,9 @@ public class CalculationServiceIT
         // Behavior verification.
         final SelectedCalculation selCalc =
                 fCalculationService.setSpecialty(calc, specialty.getName());
+        assertSame("Calculation object not the same", calc,  selCalc.getCalculation());
         assertEquals(specialty, selCalc.getCalculation().getSpecialty());
-        assertEquals(1, selCalc.getVariables().size());
-        assertEquals("Age", selCalc.getVariables().get(0).getDisplayName());
+        assertEquals(1, calc.getVariables().size());
+        assertEquals("Age", calc.getVariables().get(0).getDisplayName());
     }
 }

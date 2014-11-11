@@ -88,13 +88,11 @@ public class CalculationController
             HttpSession session,
             final Model model)
     {
-        // Get the SelectedCalculation from the session.
-        final SelectedCalculation selCalc =
-                (SelectedCalculation)getWorkflowFromSession(session);
+        // Get the CalculationWorkflow from the session.
+        final CalculationWorkflow workflow = getWorkflowFromSession(session);
 
         // Present the view.
-        model.addAttribute("calculation", selCalc.getCalculation());
-        model.addAttribute("variables", selCalc.getVariables());
+        model.addAttribute("calculation", workflow.getCalculation());
         return "/enterVariables";
     }
 }
