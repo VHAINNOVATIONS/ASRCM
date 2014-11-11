@@ -47,6 +47,11 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-jsp/2.2.2/a73ca004e1ba8365af87454d73256bb6232d5e71/tiles-jsp-2.2.2-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-jsp/2.2.2/c6e68f203084ae4a2435e7ed33bb8d6c67bcfb0d/tiles-jsp-2.2.2.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/1952f91d84016a39e31346c9d18bd8c9c4a128a/javax.servlet-api-3.0.1-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/6bf0ebb7efd993e222fc1112377b5e92a13b38dd/javax.servlet-api-3.0.1.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
@@ -168,6 +173,36 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.0.7.RELEASE/86169bd474d5b05a47f43f50f938013788c2328b/spring-jdbc-4.0.7.RELEASE-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.0.7.RELEASE/2fe5d0596549795c343226e2f387a292280dd1ff/spring-jdbc-4.0.7.RELEASE.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-api/2.2.2/b48a639ccbca1774549ca51b78ea9bf549c6ab10/tiles-api-2.2.2-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-api/2.2.2/7c4a643772ad37664ae053915f073bc5a9a06b45/tiles-api-2.2.2.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/commons-beanutils/commons-beanutils/1.8.0/2818502bbb50bbcbd3f57e92a2bfe4d496f37688/commons-beanutils-1.8.0-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/commons-beanutils/commons-beanutils/1.8.0/c651d5103c649c12b20d53731643e5fffceb536/commons-beanutils-1.8.0.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/commons-digester/commons-digester/2.0/abc81a9857b4d396ec8093f023f42e06b01e975a/commons-digester-2.0-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/commons-digester/commons-digester/2.0/3dbd8a76683cd563583a2c78c356ad8b8acf38bf/commons-digester-2.0.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-core/2.2.2/cb10bd18406f5bd49843c5e67ba7ba7c3ff31a05/tiles-core-2.2.2-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-core/2.2.2/1db730fbe26c148e3d085edadafb179e9674ece/tiles-core-2.2.2.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-servlet/2.2.2/a9875695bf66e45123c1155975c3099801cfe069/tiles-servlet-2.2.2-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-servlet/2.2.2/20ada8102ca6b78fc2d2c3dc42bb91c21e8f1ec2/tiles-servlet-2.2.2.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-template/2.2.2/6da89b5c327d183a73ffc06e6b6a2cbdcc2e8a5f/tiles-template-2.2.2-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-template/2.2.2/52cb821841e4053beeee53bec8c4374cf42d2e68/tiles-template-2.2.2.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>

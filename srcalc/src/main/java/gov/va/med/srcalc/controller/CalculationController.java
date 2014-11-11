@@ -65,7 +65,7 @@ public class CalculationController
         // Present the view.
         model.addAttribute("calculation", newCalc.getCalculation());
 	model.addAttribute("specialties", newCalc.getPossibleSpecialties());
-	return "/selectSpecialty";
+	return "srcalc.selectSpecialty";
     }
     
     @RequestMapping(value = "/selectSpecialty", method = RequestMethod.POST)
@@ -93,6 +93,6 @@ public class CalculationController
 
         // Present the view.
         model.addAttribute("calculation", workflow.getCalculation());
-        return "/enterVariables";
+        return "srcalc.enterVariables";
     }
 }

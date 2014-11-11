@@ -16,7 +16,13 @@
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.18.1-GA/d9a09f7732226af26bf99f19e2cffe0ae219db5b/javassist-3.18.1-GA.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-jsp/2.2.2/c6e68f203084ae4a2435e7ed33bb8d6c67bcfb0d/tiles-jsp-2.2.2.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.1.0.GA/c71f2856e7b60efe485db39b37a31811e6c84365/jboss-logging-3.1.0.GA.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-api/2.2.2/7c4a643772ad37664ae053915f073bc5a9a06b45/tiles-api-2.2.2.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar">
@@ -25,10 +31,16 @@
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.glassfish.web/javax.servlet.jsp.jstl/1.2.1/7f687140e9d264ee00eaa924714adf9a82cc18dc/javax.servlet.jsp.jstl-1.2.1.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/commons-digester/commons-digester/2.0/3dbd8a76683cd563583a2c78c356ad8b8acf38bf/commons-digester-2.0.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.0.7.RELEASE/9c8505b6785bfe6b45bbdc8c8cbcda628feb21b1/spring-web-4.0.7.RELEASE.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.0.7.RELEASE/caadec5dc4ea4899d89004ff46053f8e391e0343/spring-aop-4.0.7.RELEASE.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-servlet/2.2.2/20ada8102ca6b78fc2d2c3dc42bb91c21e8f1ec2/tiles-servlet-2.2.2.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.0.7.RELEASE/8a4aa735f3691a1985381b3c6c69d32b835f51b4/spring-context-4.0.7.RELEASE.jar">
@@ -64,10 +76,16 @@
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.3/56498efd17752898cfcc3868c1b6211a07b12b8f/joda-time-2.3.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-core/2.2.2/1db730fbe26c148e3d085edadafb179e9674ece/tiles-core-2.2.2.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.0.7.RELEASE/46a4cfe181b1f15940b5ea7530fcad1f8b98c561/spring-expression-4.0.7.RELEASE.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.1.2/2d23694879c2c12f125dac5076bdfd5d771cc4cb/logback-core-1.1.2.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/commons-beanutils/commons-beanutils/1.8.0/c651d5103c649c12b20d53731643e5fffceb536/commons-beanutils-1.8.0.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.hibernate.common/hibernate-commons-annotations/4.0.2.Final/94edcc5572efb02e123cc9ef7ad7d0fa5f76cf/hibernate-commons-annotations-4.0.2.Final.jar">
@@ -86,6 +104,9 @@
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/4.2.13.Final/4d5d10708ee5258d875b4ad80dc11967f1a77f62/hibernate-core-4.2.13.Final.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-template/2.2.2/52cb821841e4053beeee53bec8c4374cf42d2e68/tiles-template-2.2.2.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 	</wb-module>
