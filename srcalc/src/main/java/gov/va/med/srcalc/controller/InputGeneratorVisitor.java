@@ -59,8 +59,11 @@ class InputGeneratorVisitor implements VariableVisitor
     @Override
     public void visitNumerical(NumericalVariable variable) throws Exception
     {
+        // The maximum number of digits we expect.
+        final int maxExpectedDigits = 8;
+        
         fWriter.write(String.format(
-                "<input type=\"text\" name=\"%s\">",
-                variable.getDisplayName()));
+                "<input type=\"text\" name=\"%s\" size=\"%d\">",
+                variable.getDisplayName(), maxExpectedDigits));
     }
 }
