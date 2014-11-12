@@ -65,7 +65,7 @@ public class InputParserVisitor implements VariableVisitor
                     variable.getDisplayName(),
                     "tooLow",
                     new Object[]{ variable.getMinValue() },
-                    "must be greater than %d");
+                    "must be greater than {0}");
         }
         else if (value > variable.getMaxValue())
         {
@@ -73,7 +73,7 @@ public class InputParserVisitor implements VariableVisitor
                     variable.getDisplayName(),
                     "tooHigh",
                     new Object[]{ variable.getMaxValue() },
-                    "must be less than %d");
+                    "must be less than {0}");
         }
         else
         {

@@ -117,6 +117,10 @@ body > section {
 	padding-right: 1em;
 }
 
+#riskVarForm .error {
+	color: red;
+}
+
 #inputValueTable th {
 	text-align: left;
 	/* Don't allow the columns to get too small. */
