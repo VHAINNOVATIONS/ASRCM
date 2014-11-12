@@ -65,6 +65,22 @@ body {
 	margin: 1em;
 }
 
+/* Make the main content fixed-width. */
+body > section {
+	width: 768px;
+}
+
+/* The Specialty & Patient */
+.calculationSummary {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.calculationSummary label.variableName {
+	display: inline-block;
+	width: 20%;
+}
+
 #specialtyRadios {
     list-style-type: none;
     padding-left: 0;
@@ -72,7 +88,6 @@ body {
 
 #riskVarForm fieldset {
 	margin: 1em 0;
-	width: 768px;
 }
 
 /* We use <ol>'s for the list of fields. */
@@ -102,7 +117,11 @@ body {
 	padding-right: 1em;
 }
 
-
+#inputValueTable th {
+	text-align: left;
+	/* Don't allow the columns to get too small. */
+	min-width: 8em;
+}
 
 
 

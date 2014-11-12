@@ -71,5 +71,15 @@ public abstract class Variable
         this.fHelpText = helpText;
     }
     
+    @Override
+    public String toString()
+    {
+        return getDisplayName();
+    }
+    
+    /**
+     * Accepts the given {@link VariableVisitor}.
+     * @throws Exception if the {@link VariableVisitor} throws an Exception
+     */
     public abstract void accept(VariableVisitor visitor) throws Exception;
 }

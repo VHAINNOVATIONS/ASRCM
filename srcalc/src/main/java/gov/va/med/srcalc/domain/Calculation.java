@@ -1,8 +1,9 @@
 package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.variable.Value;
 
-import java.util.List;
+import java.util.*;
 
 import org.joda.time.DateTime;
 
@@ -14,6 +15,7 @@ public class Calculation
     private DateTime fStartDateTime;
     private Patient fPatient;
     private Specialty fSpecialty;
+    private List<Value> fValues;
     
     /**
      * This class presents a pure JavaBean interface, with a default constructor
@@ -23,6 +25,7 @@ public class Calculation
     public Calculation()
     {
         fStartDateTime = new DateTime();
+        fValues = new ArrayList<>();
     }
     
     public static Calculation forPatient(final Patient patient)
@@ -80,5 +83,30 @@ public class Calculation
         }
         
         return fSpecialty.getVariables();
+    }
+
+    public List<Value> getValues()
+    {
+        return fValues;
+    }
+    
+    /**
+     * For bean construction only. Replaces the internal List of Values with the
+     * given one.
+     */
+    void setValues(List<Value> values)
+    {
+        fValues = values;
+    }
+    
+    /**
+     * Runs the calculation for each outcome with the given Values.
+     */
+    public void calculate(List<Value> values)
+    {
+        fValues.clear();
+        fValues.addAll(values);
+
+        // Outcome(s) will be calculated here when we get to that.
     }
 }

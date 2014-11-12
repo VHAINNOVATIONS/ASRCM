@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -10,8 +12,8 @@ import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.Specialty;
-import gov.va.med.srcalc.domain.workflow.NewCalculation;
-import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
+import gov.va.med.srcalc.domain.variable.Value;
+import gov.va.med.srcalc.domain.workflow.*;
 
 public class DefaultCalculationService implements CalculationService
 {
@@ -31,7 +33,7 @@ public class DefaultCalculationService implements CalculationService
     {
         final Patient patient = new Patient(patientId, "Dummy Patient"); //FIXME: fake
 
-        fLogger.info("Starting calculation for patient {}.", patient);
+        fLogger.debug("Starting calculation for patient {}.", patient);
 
         return new NewCalculation(
                 Calculation.forPatient(patient),
@@ -43,7 +45,7 @@ public class DefaultCalculationService implements CalculationService
     public SelectedCalculation setSpecialty(Calculation calculation, String specialtyName)
         throws InvalidIdentifierException
     {
-        fLogger.info("Setting specialty to {}.", specialtyName);
+        fLogger.debug("Setting specialty to {}.", specialtyName);
         
         final Specialty specialty = fSpecialtyDao.getByName(specialtyName);
         if (specialty == null)
@@ -54,6 +56,17 @@ public class DefaultCalculationService implements CalculationService
         calculation.setSpecialty(specialty);
 
         return new SelectedCalculation(calculation);
+    }
+    
+    @Override
+    @Transactional
+    public CalculationWorkflow runCalculation(Calculation calculation, List<Value> variableValues)
+    {
+        fLogger.debug("Running calculation with values: {}", variableValues);
+        
+        calculation.calculate(variableValues);
+        
+        return new CalculatedCalculation(calculation);
     }
     
 }

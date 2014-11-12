@@ -1,13 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/srcalc.tld" prefix="srcalc" %>
         <h2>Enter Risk Variables</h2>
-        <form id="riskVarForm">
-        <fieldset>
-            <ol>
-            <li><label class="variableName">Specialty:</label> ${calculation.specialty}</li>
-            <li><label class="variableName">Patient:</label> ${calculation.patient}</li>
-            </ol>
-        </fieldset>
+        <ol class="calculationSummary">
+        <li><label class="variableName">Specialty:</label> ${calculation.specialty}</li>
+        <li><label class="variableName">Patient:</label> ${calculation.patient}</li>
+        </ol>
+        <form id="riskVarForm" method="post" action="enterVars">
         <fieldset>
             <legend>Variables</legend>
             <!-- Use an ordered list for the list of fields. -->
@@ -19,4 +17,5 @@
             </c:forEach>
             </ol>
         </fieldset>
+        <button type="submit">Run Calculation</button>
         </form>

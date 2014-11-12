@@ -3,6 +3,7 @@ package gov.va.med.srcalc.controller;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
@@ -11,9 +12,8 @@ import gov.va.med.srcalc.service.InvalidIdentifierException;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller for creating a new Calculation.
@@ -94,5 +94,58 @@ public class CalculationController
         // Present the view.
         model.addAttribute("calculation", workflow.getCalculation());
         return "srcalc.enterVariables";
+    }
+    
+    @RequestMapping(value = "/enterVars", method = RequestMethod.POST)
+    public String enterVariables(
+            HttpSession session,
+            Model model,
+            @ModelAttribute("submittedValues") SubmittedValues values,
+            BindingResult valuesBindingResult)
+    {
+        // Get the CalculationWorkflow from the session.
+        final CalculationWorkflow workflow = getWorkflowFromSession(session);
+        
+        // Extract the values from the HTTP POST.
+        // TODO dynamically
+        final InputParserVisitor parserVisitor = new InputParserVisitor(values, valuesBindingResult);
+        for (Variable variable : workflow.getCalculation().getVariables())
+        {
+            try
+            {
+                variable.accept(parserVisitor);
+            }
+            catch (Exception e)
+            {
+                // We know InputParserVisitor does not throw any Exceptions,
+                // so just call it a RuntimeException.
+                throw new RuntimeException("InputParserVisitor threw an Exception!", e);
+            }
+        }
+        
+        // If we have any binding errors, return to the Enter Variables screen.
+        if (valuesBindingResult.hasErrors())
+        {
+            return presentVariableEntry(session, model);
+        }
+
+        // Set the values on the Calculation.
+        fCalculationService.runCalculation(
+                workflow.getCalculation(), parserVisitor.getValues());
+
+        // Using the POST-redirect-GET pattern.
+        return "redirect:/displayResults";
+    }
+    
+    @RequestMapping(value = "/displayResults", method = RequestMethod.GET)
+    public String displayResults(
+            HttpSession session,
+            final Model model)
+    {
+        // Get the CalculationWorkflow from the session.
+        final CalculationWorkflow workflow = getWorkflowFromSession(session);
+        
+        model.addAttribute("calculation", workflow.getCalculation());
+        return "srcalc.displayResults";
     }
 }
