@@ -9,6 +9,7 @@ import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
 import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
+import gov.va.med.srcalc.web.view.Tile;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,7 +66,7 @@ public class CalculationController
         // Present the view.
         model.addAttribute("calculation", newCalc.getCalculation());
 	model.addAttribute("specialties", newCalc.getPossibleSpecialties());
-	return "srcalc.selectSpecialty";
+	return Tile.SELECT_SPECIALTY;
     }
     
     @RequestMapping(value = "/selectSpecialty", method = RequestMethod.POST)
@@ -93,7 +94,7 @@ public class CalculationController
 
         // Present the view.
         model.addAttribute("calculation", workflow.getCalculation());
-        return "srcalc.enterVariables";
+        return Tile.ENTER_VARIABLES;
     }
     
     @RequestMapping(value = "/enterVars", method = RequestMethod.POST)
@@ -146,6 +147,6 @@ public class CalculationController
         final CalculationWorkflow workflow = getWorkflowFromSession(session);
         
         model.addAttribute("calculation", workflow.getCalculation());
-        return "srcalc.displayResults";
+        return Tile.DISPLAY_RESULTS;
     }
 }
