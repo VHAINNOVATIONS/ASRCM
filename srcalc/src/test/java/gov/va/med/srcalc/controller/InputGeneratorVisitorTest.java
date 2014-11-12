@@ -69,7 +69,7 @@ public class InputGeneratorVisitorTest
         
         // Verify behavior
         var.accept(fVisitor);
-        assertEquals("<input type=\"text\" name=\"numTest\">", fWriter.toString());
+        assertEquals("<input type=\"text\" name=\"numTest\" size=\"8\">", fWriter.toString());
     }
     
 }
