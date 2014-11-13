@@ -1,5 +1,10 @@
 package gov.va.med.srcalc.domain;
 
+import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.variable.Value;
+
+import java.util.*;
+
 import org.joda.time.DateTime;
 
 /**
@@ -10,7 +15,7 @@ public class Calculation
     private DateTime fStartDateTime;
     private Patient fPatient;
     private Specialty fSpecialty;
-    private Procedure fProcedure;
+    private List<Value> fValues;
     
     /**
      * This class presents a pure JavaBean interface, with a default constructor
@@ -20,6 +25,7 @@ public class Calculation
     public Calculation()
     {
         fStartDateTime = new DateTime();
+        fValues = new ArrayList<>();
     }
     
     public static Calculation forPatient(final Patient patient)
@@ -38,7 +44,7 @@ public class Calculation
         return fStartDateTime;
     }
 
-    public void setStartDateTime(DateTime startDateTime)
+    public void setStartDateTime(final DateTime startDateTime)
     {
         this.fStartDateTime = startDateTime;
     }
@@ -48,7 +54,7 @@ public class Calculation
         return fPatient;
     }
 
-    public void setPatient(Patient patient)
+    public void setPatient(final Patient patient)
     {
         this.fPatient = patient;
     }
@@ -58,18 +64,49 @@ public class Calculation
         return fSpecialty;
     }
 
-    public void setSpecialty(Specialty specialty)
+    public void setSpecialty(final Specialty specialty)
     {
         this.fSpecialty = specialty;
     }
-
-    public Procedure getProcedure()
+    
+    /**
+     * Returns the List of {@link Variable}s for the selected specialty.
+     * @throws IllegalStateException if no specialty has been set.
+     */
+    public List<Variable> getVariables()
     {
-        return fProcedure;
+        // Ensure we are in the proper state.
+        if (fSpecialty == null)
+        {
+            throw new IllegalStateException(
+                    "Cannot return list of variables because no specialty has been set.");
+        }
+        
+        return fSpecialty.getVariables();
     }
 
-    public void setProcedure(Procedure procedure)
+    public List<Value> getValues()
     {
-        this.fProcedure = procedure;
+        return fValues;
+    }
+    
+    /**
+     * For bean construction only. Replaces the internal List of Values with the
+     * given one.
+     */
+    void setValues(final List<Value> values)
+    {
+        fValues = values;
+    }
+    
+    /**
+     * Runs the calculation for each outcome with the given Values.
+     */
+    public void calculate(final List<Value> values)
+    {
+        fValues.clear();
+        fValues.addAll(values);
+
+        // Outcome(s) will be calculated here when we get to that.
     }
 }

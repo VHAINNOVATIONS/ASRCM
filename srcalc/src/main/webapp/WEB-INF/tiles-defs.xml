@@ -11,4 +11,8 @@
     <put-attribute name="title" value="Enter Variables" />
     <put-attribute name="body" value="/WEB-INF/views/tiles/enterVariables.jsp" />
   </definition>
+  <definition name="srcalc.displayResults" template="/WEB-INF/views/layouts/main.jsp">
+    <put-attribute name="title" value="Calculation Results" />
+    <put-attribute name="body" value="/WEB-INF/views/tiles/displayResults.jsp" />
+  </definition>
 </tiles-definitions>

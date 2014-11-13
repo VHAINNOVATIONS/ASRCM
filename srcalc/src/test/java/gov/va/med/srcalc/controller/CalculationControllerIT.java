@@ -4,7 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import gov.va.med.srcalc.test.util.SampleSpecialties;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import gov.va.med.srcalc.domain.SampleSpecialties;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import static org.hamcrest.Matchers.*;
 
 /**
  * Integration Test for {@link CalculationController}. Note that we only
@@ -34,32 +36,89 @@ public class CalculationControllerIT
     
     private MockMvc fMockMvc;
     
+    /**
+     * The shared HTTP session between requests.
+     */
+    private MockHttpSession fSession;
+
     @Before
     public void setup()
     {
         fMockMvc = MockMvcBuilders.webAppContextSetup(fWac).build();
+        fSession = new MockHttpSession();
     }
     
     @Test
     public void getSpecialtyList() throws Exception
     {
-        fMockMvc.perform(get("/newCalc")).
+        fMockMvc.perform(get("/newCalc").session(fSession)).
             andExpect(model().attributeExists("specialties", "calculation"));
+    }
+    
+    /**
+     * Test fragment to call {@link #getSpecialtyList()} and then select the
+     * given specialty.
+     */
+    protected void selectSpecialty(final String specialtyName) throws Exception
+    {
+        getSpecialtyList();
+
+        fMockMvc.perform(post("/selectSpecialty").session(fSession)
+                .param("specialty", specialtyName)).
+            andExpect(redirectedUrl("/enterVars"));
+        
+        fMockMvc.perform(get("/enterVars").session(fSession))
+            .andExpect(model().attributeExists("calculation"));
     }
     
     @Test
     @Transactional // single transaction for single rollback
-    public void selectValidSpecialty() throws Exception
+    public void selectThoracicSpecialty() throws Exception
     {
-        final String SPECIALTY_NAME = SampleSpecialties.sampleThoracicSpecialty().getName();
-
-        // Share the session between requests.
-        final MockHttpSession session = new MockHttpSession();
+        selectSpecialty(SampleSpecialties.sampleThoracicSpecialty().getName());
+    }
+    
+    @Test
+    @Transactional
+    public void enterValidThoracicVariables() throws Exception
+    {
+        selectThoracicSpecialty();
         
-        fMockMvc.perform(get("/newCalc").session(session));
-
-        fMockMvc.perform(post("/selectSpecialty").session(session)
-                .param("specialty", SPECIALTY_NAME)).
-            andExpect(redirectedUrl("/enterVars"));
+        fMockMvc.perform(post("/enterVars").session(fSession)
+                // TODO: need a scalable way to specify variables, but just
+                // hardcode the age parameter for now.
+                .param("Age", "55"))
+            .andExpect(redirectedUrl("/displayResults"));
+        
+        fMockMvc.perform(get("/displayResults").session(fSession))
+            .andExpect(status().is(200))
+            .andExpect(model().attribute("calculation", hasProperty("values", hasSize(1))));
+        // TODO: validate more model stuff
+    }
+    
+    @Test
+    @Transactional
+    public void enterInvalidThoracicVariables() throws Exception
+    {
+        selectThoracicSpecialty();
+        
+        fMockMvc.perform(post("/enterVars").session(fSession)
+                .param("Age", "-2"))
+            .andExpect(model().attributeHasErrors("submittedValues"))
+            .andExpect(status().is(200));
+        // TODO: this may not be how I actually implement invalid values
+    }
+    
+    @Test
+    @Transactional
+    public void enterInvalidCardiacVariables() throws Exception
+    {
+        selectSpecialty("Cardiac");
+        
+        fMockMvc.perform(post("/enterVars").session(fSession)
+                .param("Gender", "Unknown"))
+            .andExpect(model().attributeHasErrors("submittedValues"))
+            .andExpect(status().is(200));
+        // TODO: this may not be how I actually implement invalid values
     }
 }

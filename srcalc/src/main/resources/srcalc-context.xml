@@ -40,4 +40,10 @@
     <!-- Services -->
 	<bean id="calculationService" class="gov.va.med.srcalc.service.DefaultCalculationService" />
 
+    <!-- Message Lookup -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list><value>messages</value></list>
+        </property>
+    </bean>
 </beans>

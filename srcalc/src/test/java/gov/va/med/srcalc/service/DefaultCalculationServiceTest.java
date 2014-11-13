@@ -4,15 +4,18 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.Calculation;
+import gov.va.med.srcalc.domain.SampleSpecialties;
 import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
-import gov.va.med.srcalc.test.util.SampleSpecialties;
+import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
 
 public class DefaultCalculationServiceTest
 {
+    protected static final int SAMPLE_PATIENT_DFN = 1;
+
     public SpecialtyDao mockSpecialtyDao()
     {
         final SpecialtyDao dao = mock(SpecialtyDao.class);
@@ -30,16 +33,15 @@ public class DefaultCalculationServiceTest
     @Test
     public final void testStartNewCalculation()
     {
-        final int PATIENT_DFN = 1;
         final DateTime testStartDateTime = new DateTime();
 
         // Create the class under test.
         final DefaultCalculationService s = defaultCalculationService();
         
         // Behavior verification.
-        final NewCalculation newCalc = s.startNewCalculation(PATIENT_DFN);
+        final NewCalculation newCalc = s.startNewCalculation(SAMPLE_PATIENT_DFN);
         final Calculation calc = newCalc.getCalculation();
-        assertEquals(PATIENT_DFN, calc.getPatient().getDfn());
+        assertEquals(SAMPLE_PATIENT_DFN, calc.getPatient().getDfn());
         assertTrue("start date not in the past",
                 // DateTime has millisecond precision, so the current time may
                 // still be the same. Use "less than or equal to".
@@ -52,17 +54,19 @@ public class DefaultCalculationServiceTest
     @Test
     public final void testSetValidSpecialty() throws InvalidIdentifierException
     {
-        final int PATIENT_DFN = 1;
         final Specialty thoracicSpecialty = SampleSpecialties.sampleThoracicSpecialty();
         
         // Create the class under test.
         final DefaultCalculationService s = defaultCalculationService();
-        final Calculation calc = s.startNewCalculation(PATIENT_DFN).getCalculation();
+        final Calculation calc = s.startNewCalculation(SAMPLE_PATIENT_DFN).getCalculation();
         
         // Behavior verification.
-        s.setSpecialty(calc, thoracicSpecialty.getName());
+        final SelectedCalculation selCalc =
+                s.setSpecialty(calc, thoracicSpecialty.getName());
+        assertSame("Calculation object not the same", calc,  selCalc.getCalculation());
         assertEquals(thoracicSpecialty, calc.getSpecialty());
-        // TODO: other aspects of the calculation as we determine them
+        assertEquals(1, calc.getVariables().size());
+        assertEquals("Age", calc.getVariables().get(0).getDisplayName());
     }
     
     @Test(expected = InvalidIdentifierException.class)

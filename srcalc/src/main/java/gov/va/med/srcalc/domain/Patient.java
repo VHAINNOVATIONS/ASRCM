@@ -15,7 +15,7 @@ public class Patient
     {
     }
     
-    public Patient(int dfn, String name)
+    public Patient(final int dfn, final String name)
     {
         this.fDfn = dfn;
         this.fName = name;
@@ -29,7 +29,7 @@ public class Patient
         return fDfn;
     }
 
-    public void setDfn(int dfn)
+    public void setDfn(final int dfn)
     {
         this.fDfn = dfn;
     }
@@ -51,7 +51,7 @@ public class Patient
     }
     
     @Override
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
         if (o instanceof Patient)  // false if o == null
         {

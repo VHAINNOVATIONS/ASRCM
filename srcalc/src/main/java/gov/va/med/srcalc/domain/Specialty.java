@@ -1,10 +1,18 @@
 package gov.va.med.srcalc.domain;
 
+import gov.va.med.srcalc.domain.variable.Variable;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 /**
  * <p>Represents a surgical specialty, with the associated calcuation variables.</p>
@@ -21,11 +29,13 @@ public final class Specialty
     
     private String fName;
     
+    private List<Variable> fVariables = new ArrayList<>();
+
     public Specialty()
     {
     }
     
-    public Specialty(int id, int vistaId, String name)
+    public Specialty(final int id, final int vistaId, final String name)
     {
         this.fId = id;
         this.fVistaId = vistaId;
@@ -45,7 +55,7 @@ public final class Specialty
      * For reflection-based construction only. Business code should never modify
      * the surrogate key as it is generated from the database.
      */
-    void setId(int id)
+    void setId(final int id)
     {
         this.fId = id;
     }
@@ -65,7 +75,7 @@ public final class Specialty
      * For reflection-based construction only. The application assumes that the
      * VistA ID does not change and therefore uses this field for value equality.
      */
-    void setVistaId(int vistaId)
+    void setVistaId(final int vistaId)
     {
         this.fVistaId = vistaId;
     }
@@ -81,6 +91,32 @@ public final class Specialty
 	fName = name;
     }
     
+    /**
+     * Returns all {@link Variable}s associated with this Specialty. Caution:
+     * lazy-loaded.
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    // Override strange defaults. See
+    // <https://forum.hibernate.org/viewtopic.php?f=1&t=1037190>.
+    @JoinTable(
+            name = "specialty_variable",
+            joinColumns = @JoinColumn(name = "specialty_id"),
+            inverseJoinColumns = @JoinColumn(name = "variable_id")
+        )
+    public List<Variable> getVariables()
+    {
+        return fVariables;
+    }
+    
+    /**
+     * For reflection-based construction only. The collection should be modified
+     * via {@link #getVariables()}.
+     */
+    void setVariables(final List<Variable> variables)
+    {
+        fVariables = variables;
+    }
+    
     @Override
     public String toString()
     {
@@ -88,7 +124,7 @@ public final class Specialty
     }
     
     @Override
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
         if (o instanceof Specialty)  // false if o == null
         {

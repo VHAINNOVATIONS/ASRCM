@@ -11,6 +11,9 @@
   
   <!-- Change to debug if desired. -->
   <logger name="gov.va.med.srcalc" level="info"/>
+  
+  <!-- Show Hibernate-generated SQL. -->
+  <logger name="org.hibernate.SQL" level="debug" />
 
   <root level="info">
     <appender-ref ref="console" />
