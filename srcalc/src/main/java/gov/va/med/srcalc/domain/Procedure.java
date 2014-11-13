@@ -2,9 +2,7 @@ package gov.va.med.srcalc.domain;
 
 import java.util.Objects;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Represents a medical procedure, particuarly a CPT code.
@@ -12,6 +10,7 @@ import javax.persistence.Id;
  *
  */
 @Entity
+@Table(name="CPT")   // call it CPT because "PROCEDURE" is a SQL reserved word
 public class Procedure
 {
     private int fId;

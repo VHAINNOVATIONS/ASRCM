@@ -17,8 +17,8 @@ INSERT INTO SPECIALTY (id, vista_id, name) VALUES (8, 50, 'Other Non-Cardiac Spe
 INSERT INTO VARIABLE (id, display_name) VALUES (1, 'Gender');
 INSERT INTO MULTI_SELECT_VARIABLE (id, display_type) VALUES (1, 'Radio');
 -- Intentionally reverse Female and Male to verify display order.
-INSERT INTO MULTI_SELECT_OPTION (id, value) VALUES (1, 'Female');
-INSERT INTO MULTI_SELECT_OPTION (id, value) VALUES (2, 'Male');
+INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (1, 'Female');
+INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (2, 'Male');
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (1, 2, 0);
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (1, 1, 1);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id) VALUES (7, 1);

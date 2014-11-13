@@ -1,8 +1,6 @@
 package gov.va.med.srcalc.domain.variable;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * An option for a {@link MultiSelectVariable}.
@@ -44,6 +42,7 @@ public class MultiSelectOption
      * The option value. E.g., "Male" for gender.
      */
     @Basic
+    @Column(name = "OPTION_VALUE")  // "VALUE" is a SQL reserved word
     public String getValue()
     {
         return fValue;

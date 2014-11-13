@@ -111,6 +111,17 @@ public class CalculationControllerIT
     
     @Test
     @Transactional
+    public void enterValidCardiacVariables() throws Exception
+    {
+        selectSpecialty("Cardiac");
+        
+        fMockMvc.perform(post("/enterVars").session(fSession)
+                .param("Gender", "Male"))
+            .andExpect(redirectedUrl("/displayResults"));
+    }
+    
+    @Test
+    @Transactional
     public void enterInvalidCardiacVariables() throws Exception
     {
         selectSpecialty("Cardiac");
