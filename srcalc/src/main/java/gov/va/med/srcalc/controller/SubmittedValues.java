@@ -6,8 +6,8 @@ package gov.va.med.srcalc.controller;
  */
 public class SubmittedValues
 {
-    public int age;
-    public String gender;
+    private int age;
+    private String gender;
 
     public int getAge()
     {

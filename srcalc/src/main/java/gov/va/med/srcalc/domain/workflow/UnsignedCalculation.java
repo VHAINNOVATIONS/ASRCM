@@ -4,11 +4,11 @@ import gov.va.med.srcalc.domain.Calculation;
 
 /**
  * A Calculation for which the variables have been entered and the outcome(s)
- * calculated.
+ * calculated, but has not been signed yet.
  */
-public class CalculatedCalculation extends CalculationWorkflow
+public class UnsignedCalculation extends CalculationWorkflow
 {
-    public CalculatedCalculation(final Calculation calculation)
+    public UnsignedCalculation(final Calculation calculation)
     {
         super(calculation);
     }

@@ -46,7 +46,7 @@ public class InputParserVisitor implements VariableVisitor
         // FIXME: assumed to be gender
         // Find the selected option.
         final Map<String, MultiSelectOption> optionMap = buildOptionMap(variable.getOptions());
-        final MultiSelectOption selectedOption = optionMap.get(fRequest.gender);
+        final MultiSelectOption selectedOption = optionMap.get(fRequest.getGender());
         if (selectedOption == null)
         {
             fErrors.rejectValue(variable.getDisplayName(), "invalid", "not a valid selection");
@@ -58,7 +58,7 @@ public class InputParserVisitor implements VariableVisitor
     public void visitNumerical(final NumericalVariable variable)
     {
         // FIXME: assumed to be age
-        final int value = fRequest.age;
+        final int value = fRequest.getAge();
         if (value < variable.getMinValue())
         {
             fErrors.rejectValue(
@@ -77,7 +77,7 @@ public class InputParserVisitor implements VariableVisitor
         }
         else
         {
-            fValues.add(new NumericalValue(variable, fRequest.age));
+            fValues.add(new NumericalValue(variable, value));
         }
     }
     

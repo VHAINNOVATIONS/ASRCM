@@ -66,7 +66,7 @@ public class DefaultCalculationService implements CalculationService
         
         calculation.calculate(variableValues);
         
-        return new CalculatedCalculation(calculation);
+        return new UnsignedCalculation(calculation);
     }
     
 }
