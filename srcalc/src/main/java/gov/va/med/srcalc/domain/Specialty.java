@@ -2,6 +2,7 @@ package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.variable.Variable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,8 +22,13 @@ import javax.persistence.ManyToMany;
  * designed for inheritance.</p>
  */
 @Entity
-public final class Specialty
+public final class Specialty implements Serializable
 {
+    /**
+     * Change this when changing the class!
+     */
+    private static final long serialVersionUID = 1L;
+
     private int fId;
     
     private int fVistaId;

@@ -8,6 +8,11 @@ import gov.va.med.srcalc.domain.Calculation;
  */
 public class UnsignedCalculation extends CalculationWorkflow
 {
+    /**
+     * Change this when changing the class!
+     */
+    private static final long serialVersionUID = 1L;
+
     public UnsignedCalculation(final Calculation calculation)
     {
         super(calculation);
