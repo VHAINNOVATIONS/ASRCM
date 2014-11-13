@@ -17,7 +17,7 @@ public class SpecialtyDao
     private final SessionFactory fSessionFactory;
     
     @Inject // Allow arguments to be autowired.
-    public SpecialtyDao(SessionFactory sessionFactory)
+    public SpecialtyDao(final SessionFactory sessionFactory)
     {
         fSessionFactory = sessionFactory;
     }

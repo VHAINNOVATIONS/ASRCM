@@ -44,7 +44,7 @@ public class Calculation
         return fStartDateTime;
     }
 
-    public void setStartDateTime(DateTime startDateTime)
+    public void setStartDateTime(final DateTime startDateTime)
     {
         this.fStartDateTime = startDateTime;
     }
@@ -54,7 +54,7 @@ public class Calculation
         return fPatient;
     }
 
-    public void setPatient(Patient patient)
+    public void setPatient(final Patient patient)
     {
         this.fPatient = patient;
     }
@@ -64,7 +64,7 @@ public class Calculation
         return fSpecialty;
     }
 
-    public void setSpecialty(Specialty specialty)
+    public void setSpecialty(final Specialty specialty)
     {
         this.fSpecialty = specialty;
     }
@@ -94,7 +94,7 @@ public class Calculation
      * For bean construction only. Replaces the internal List of Values with the
      * given one.
      */
-    void setValues(List<Value> values)
+    void setValues(final List<Value> values)
     {
         fValues = values;
     }
@@ -102,7 +102,7 @@ public class Calculation
     /**
      * Runs the calculation for each outcome with the given Values.
      */
-    public void calculate(List<Value> values)
+    public void calculate(final List<Value> values)
     {
         fValues.clear();
         fValues.addAll(values);

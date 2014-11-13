@@ -7,7 +7,7 @@ import gov.va.med.srcalc.domain.Calculation;
  */
 public class SelectedCalculation extends CalculationWorkflow
 {
-    public SelectedCalculation(Calculation calculation)
+    public SelectedCalculation(final Calculation calculation)
     {
         super(calculation);
     }

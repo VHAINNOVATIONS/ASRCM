@@ -26,7 +26,7 @@ public abstract class Variable
      * @param displayName
      * @param type
      */
-    protected Variable(String displayName)
+    protected Variable(final String displayName)
     {
         this.fDisplayName = displayName;
     }
@@ -44,7 +44,7 @@ public abstract class Variable
      * For reflection-based construction only. Business code should never modify
      * the surrogate key as it is generated from the database.
      */
-    void setId(int id)
+    void setId(final int id)
     {
         this.fId = id;
     }
@@ -55,7 +55,7 @@ public abstract class Variable
         return fDisplayName;
     }
 
-    public void setDisplayName(String displayName)
+    public void setDisplayName(final String displayName)
     {
         this.fDisplayName = displayName;
     }
@@ -66,7 +66,7 @@ public abstract class Variable
         return fHelpText;
     }
 
-    public void setHelpText(String helpText)
+    public void setHelpText(final String helpText)
     {
         this.fHelpText = helpText;
     }

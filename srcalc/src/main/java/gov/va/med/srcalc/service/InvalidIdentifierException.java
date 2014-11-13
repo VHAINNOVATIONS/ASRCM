@@ -11,12 +11,12 @@ public class InvalidIdentifierException extends Exception
      */
     private static final long serialVersionUID = 1L;
 
-    public InvalidIdentifierException(String message)
+    public InvalidIdentifierException(final String message)
     {
         super(message);
     }
     
-    public InvalidIdentifierException(String message, Throwable cause)
+    public InvalidIdentifierException(final String message, final Throwable cause)
     {
         super(message, cause);
     }

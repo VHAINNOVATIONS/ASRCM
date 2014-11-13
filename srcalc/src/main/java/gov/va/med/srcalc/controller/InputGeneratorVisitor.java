@@ -15,12 +15,12 @@ class InputGeneratorVisitor implements VariableVisitor
 {
     private final Writer fWriter;
     
-    public InputGeneratorVisitor(Writer writer)
+    public InputGeneratorVisitor(final Writer writer)
     {
         fWriter = writer;
     }
     
-    protected void writeRadio(MultiSelectVariable variable) throws IOException
+    protected void writeRadio(final MultiSelectVariable variable) throws IOException
     {
         for (final MultiSelectOption option : variable.getOptions())
         {
@@ -34,13 +34,13 @@ class InputGeneratorVisitor implements VariableVisitor
         }
     }
     
-    protected void writeDropdown(MultiSelectVariable variable)
+    protected void writeDropdown(final MultiSelectVariable variable)
     {
         throw new UnsupportedOperationException("not implemented yet");
     }
 
     @Override
-    public void visitMultiSelect(MultiSelectVariable variable) throws IOException
+    public void visitMultiSelect(final MultiSelectVariable variable) throws IOException
     {
         // Display differently based on configured displayType.
         switch (variable.getDisplayType())
@@ -57,7 +57,7 @@ class InputGeneratorVisitor implements VariableVisitor
     }
     
     @Override
-    public void visitNumerical(NumericalVariable variable) throws Exception
+    public void visitNumerical(final NumericalVariable variable) throws Exception
     {
         // The maximum number of digits we expect.
         final int maxExpectedDigits = 8;

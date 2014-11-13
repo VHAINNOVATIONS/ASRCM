@@ -17,7 +17,7 @@ public class MultiSelectOption
     {
     }
     
-    public MultiSelectOption(String value)
+    public MultiSelectOption(final String value)
     {
         fValue = value;
     }
@@ -35,7 +35,7 @@ public class MultiSelectOption
      * For reflection-based construction only. Business code should never modify
      * the surrogate key as it is generated from the database.
      */
-    void setId(int id)
+    void setId(final int id)
     {
         this.fId = id;
     }
@@ -53,7 +53,7 @@ public class MultiSelectOption
      * For reflection-based construction only. To the outside world, the value is
      * immutable.
      */
-    void setValue(String value)
+    void setValue(final String value)
     {
         fValue = value;
     }

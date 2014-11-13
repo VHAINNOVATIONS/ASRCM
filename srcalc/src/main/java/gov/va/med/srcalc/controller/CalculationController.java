@@ -37,9 +37,9 @@ public class CalculationController
      * @return never null
      * @throws IllegalStateException if there is no current calculation
      */
-    protected CalculationWorkflow getWorkflowFromSession(HttpSession session)
+    protected CalculationWorkflow getWorkflowFromSession(final HttpSession session)
     {
-        CalculationWorkflow workflow =
+        final CalculationWorkflow workflow =
                 (CalculationWorkflow)session.getAttribute(SESSION_CALCULATION);
         if (workflow == null)
         {
@@ -49,7 +49,7 @@ public class CalculationController
     }
 
     @RequestMapping(value = "/newCalc", method = RequestMethod.GET)
-    public String presentSelection(HttpSession session, final Model model)
+    public String presentSelection(final HttpSession session, final Model model)
     {
         // A Calculation object must be created here to store the start time for
         // the "Time To Completion" report.
@@ -71,7 +71,7 @@ public class CalculationController
     
     @RequestMapping(value = "/selectSpecialty", method = RequestMethod.POST)
     public String setSpecialty(
-            HttpSession session,
+            final HttpSession session,
             @RequestParam("specialty") final String specialtyName)
                     throws InvalidIdentifierException
     {
@@ -86,7 +86,7 @@ public class CalculationController
     
     @RequestMapping(value = "/enterVars", method = RequestMethod.GET)
     public String presentVariableEntry(
-            HttpSession session,
+            final HttpSession session,
             final Model model)
     {
         // Get the CalculationWorkflow from the session.
@@ -99,10 +99,10 @@ public class CalculationController
     
     @RequestMapping(value = "/enterVars", method = RequestMethod.POST)
     public String enterVariables(
-            HttpSession session,
-            Model model,
-            @ModelAttribute("submittedValues") SubmittedValues values,
-            BindingResult valuesBindingResult)
+            final HttpSession session,
+            final Model model,
+            @ModelAttribute("submittedValues") final SubmittedValues values,
+            final BindingResult valuesBindingResult)
     {
         // Get the CalculationWorkflow from the session.
         final CalculationWorkflow workflow = getWorkflowFromSession(session);
@@ -110,13 +110,13 @@ public class CalculationController
         // Extract the values from the HTTP POST.
         // TODO dynamically
         final InputParserVisitor parserVisitor = new InputParserVisitor(values, valuesBindingResult);
-        for (Variable variable : workflow.getCalculation().getVariables())
+        for (final Variable variable : workflow.getCalculation().getVariables())
         {
             try
             {
                 variable.accept(parserVisitor);
             }
-            catch (Exception e)
+            catch (final Exception e)
             {
                 // We know InputParserVisitor does not throw any Exceptions,
                 // so just call it a RuntimeException.
@@ -140,7 +140,7 @@ public class CalculationController
     
     @RequestMapping(value = "/displayResults", method = RequestMethod.GET)
     public String displayResults(
-            HttpSession session,
+            final HttpSession session,
             final Model model)
     {
         // Get the CalculationWorkflow from the session.

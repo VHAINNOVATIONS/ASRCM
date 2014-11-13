@@ -5,7 +5,7 @@ public class NumericalValue implements Value
     private final NumericalVariable fVariable;
     private final int fValue;
     
-    public NumericalValue(NumericalVariable variable, int value)
+    public NumericalValue(final NumericalVariable variable, final int value)
     {
         fVariable = variable;
         fValue = value;

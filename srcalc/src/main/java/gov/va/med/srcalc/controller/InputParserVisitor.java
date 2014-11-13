@@ -20,7 +20,7 @@ public class InputParserVisitor implements VariableVisitor
     private final Errors fErrors;
     private final ArrayList<Value> fValues;
     
-    public InputParserVisitor(SubmittedValues request, Errors errors)
+    public InputParserVisitor(final SubmittedValues request, final Errors errors)
     {
         fRequest = request;
         fValues = new ArrayList<>();
@@ -30,10 +30,10 @@ public class InputParserVisitor implements VariableVisitor
     /**
      * Returns a Map of value to {@link MultiSelectOption} for all of the options.
      */
-    public Map<String, MultiSelectOption> buildOptionMap(Iterable<MultiSelectOption> options)
+    public Map<String, MultiSelectOption> buildOptionMap(final Iterable<MultiSelectOption> options)
     {
         final HashMap<String, MultiSelectOption> map = new HashMap<>();
-        for (MultiSelectOption option : options)
+        for (final MultiSelectOption option : options)
         {
             map.put(option.getValue(), option);
         }
@@ -41,12 +41,12 @@ public class InputParserVisitor implements VariableVisitor
     }
     
     @Override
-    public void visitMultiSelect(MultiSelectVariable variable)
+    public void visitMultiSelect(final MultiSelectVariable variable)
     {
         // FIXME: assumed to be gender
         // Find the selected option.
         final Map<String, MultiSelectOption> optionMap = buildOptionMap(variable.getOptions());
-        MultiSelectOption selectedOption = optionMap.get(fRequest.gender);
+        final MultiSelectOption selectedOption = optionMap.get(fRequest.gender);
         if (selectedOption == null)
         {
             fErrors.rejectValue(variable.getDisplayName(), "invalid", "not a valid selection");
@@ -55,10 +55,10 @@ public class InputParserVisitor implements VariableVisitor
     }
     
     @Override
-    public void visitNumerical(NumericalVariable variable)
+    public void visitNumerical(final NumericalVariable variable)
     {
         // FIXME: assumed to be age
-        int value = fRequest.age;
+        final int value = fRequest.age;
         if (value < variable.getMinValue())
         {
             fErrors.rejectValue(

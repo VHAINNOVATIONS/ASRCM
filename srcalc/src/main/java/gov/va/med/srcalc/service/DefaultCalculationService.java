@@ -22,14 +22,14 @@ public class DefaultCalculationService implements CalculationService
     private final SpecialtyDao fSpecialtyDao;
     
     @Inject
-    public DefaultCalculationService(SpecialtyDao specialtyDao)
+    public DefaultCalculationService(final SpecialtyDao specialtyDao)
     {
         fSpecialtyDao = specialtyDao;
     }
 
     @Override
     @Transactional
-    public NewCalculation startNewCalculation(int patientId)
+    public NewCalculation startNewCalculation(final int patientId)
     {
         final Patient patient = new Patient(patientId, "Dummy Patient"); //FIXME: fake
 
@@ -42,7 +42,7 @@ public class DefaultCalculationService implements CalculationService
     
     @Override
     @Transactional
-    public SelectedCalculation setSpecialty(Calculation calculation, String specialtyName)
+    public SelectedCalculation setSpecialty(final Calculation calculation, final String specialtyName)
         throws InvalidIdentifierException
     {
         fLogger.debug("Setting specialty to {}.", specialtyName);
@@ -60,7 +60,7 @@ public class DefaultCalculationService implements CalculationService
     
     @Override
     @Transactional
-    public CalculationWorkflow runCalculation(Calculation calculation, List<Value> variableValues)
+    public CalculationWorkflow runCalculation(final Calculation calculation, final List<Value> variableValues)
     {
         fLogger.debug("Running calculation with values: {}", variableValues);
         

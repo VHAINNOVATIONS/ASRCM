@@ -24,17 +24,17 @@ public class VariableInputTag extends SimpleTagSupport
         {
             fVariable.accept(visitor);
         }
-        catch (IOException e)
+        catch (final IOException e)
         {
             throw e;
         }
-        catch (Exception e)
+        catch (final Exception e)
         {
             throw new JspException("Unable to generate variableInput tag.", e);
         }
     }
     
-    public void setVariable(Variable variable)
+    public void setVariable(final Variable variable)
     {
         fVariable = variable;
     }

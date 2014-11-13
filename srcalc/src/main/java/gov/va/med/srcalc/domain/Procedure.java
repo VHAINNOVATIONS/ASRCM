@@ -31,7 +31,7 @@ public class Procedure
     {
     }
     
-    public Procedure(int id, String cptCode, int rvu, String description)
+    public Procedure(final int id, final String cptCode, final int rvu, final String description)
     {
         this.fId = id;
         this.fCptCode = cptCode;
@@ -48,7 +48,7 @@ public class Procedure
     /**
      * For reflection-based construction only.
      */
-    void setId(int id)
+    void setId(final int id)
     {
         this.fId = id;
     }
@@ -65,7 +65,7 @@ public class Procedure
      * CPT code, the existing Procedure should be deactivated and a new one
      * created.
      */
-    void setCptCode(String cptCode)
+    void setCptCode(final String cptCode)
     {
         this.fCptCode = cptCode;
     }
@@ -82,7 +82,7 @@ public class Procedure
     /**
      * For reflection-based construction only.
      */
-    public void setRvu(int rvu)
+    public void setRvu(final int rvu)
     {
         this.fRvu = rvu;
     }
@@ -109,7 +109,7 @@ public class Procedure
     }
     
     @Override
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
         if (o instanceof Procedure)  // false if o == null
         {

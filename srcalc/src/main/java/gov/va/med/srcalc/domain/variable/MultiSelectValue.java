@@ -5,7 +5,7 @@ public class MultiSelectValue implements Value
     private final MultiSelectVariable fVariable;
     private final MultiSelectOption fSelectedOption;
     
-    public MultiSelectValue(MultiSelectVariable variable, MultiSelectOption selectedOption)
+    public MultiSelectValue(final MultiSelectVariable variable, final MultiSelectOption selectedOption)
     {
         fVariable = variable;
         fSelectedOption = selectedOption;

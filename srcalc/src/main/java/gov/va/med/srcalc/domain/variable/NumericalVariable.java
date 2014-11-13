@@ -13,7 +13,7 @@ public class NumericalVariable extends Variable
     {
     }
     
-    public NumericalVariable(String displayName)
+    public NumericalVariable(final String displayName)
     {
         super(displayName);
     }
@@ -27,7 +27,7 @@ public class NumericalVariable extends Variable
         return fMinValue;
     }
 
-    public void setMinValue(int minValue)
+    public void setMinValue(final int minValue)
     {
         this.fMinValue = minValue;
     }
@@ -42,13 +42,13 @@ public class NumericalVariable extends Variable
         return fMaxValue;
     }
 
-    public void setMaxValue(int maxValue)
+    public void setMaxValue(final int maxValue)
     {
         this.fMaxValue = maxValue;
     }
     
     @Override
-    public void accept(VariableVisitor visitor) throws Exception
+    public void accept(final VariableVisitor visitor) throws Exception
     {
         visitor.visitNumerical(this);
     }

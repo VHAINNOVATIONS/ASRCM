@@ -35,7 +35,7 @@ public final class Specialty
     {
     }
     
-    public Specialty(int id, int vistaId, String name)
+    public Specialty(final int id, final int vistaId, final String name)
     {
         this.fId = id;
         this.fVistaId = vistaId;
@@ -55,7 +55,7 @@ public final class Specialty
      * For reflection-based construction only. Business code should never modify
      * the surrogate key as it is generated from the database.
      */
-    void setId(int id)
+    void setId(final int id)
     {
         this.fId = id;
     }
@@ -75,7 +75,7 @@ public final class Specialty
      * For reflection-based construction only. The application assumes that the
      * VistA ID does not change and therefore uses this field for value equality.
      */
-    void setVistaId(int vistaId)
+    void setVistaId(final int vistaId)
     {
         this.fVistaId = vistaId;
     }
@@ -112,7 +112,7 @@ public final class Specialty
      * For reflection-based construction only. The collection should be modified
      * via {@link #getVariables()}.
      */
-    void setVariables(List<Variable> variables)
+    void setVariables(final List<Variable> variables)
     {
         fVariables = variables;
     }
@@ -124,7 +124,7 @@ public final class Specialty
     }
     
     @Override
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
         if (o instanceof Specialty)  // false if o == null
         {

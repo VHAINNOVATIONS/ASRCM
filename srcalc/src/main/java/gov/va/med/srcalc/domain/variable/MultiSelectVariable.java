@@ -30,7 +30,7 @@ public class MultiSelectVariable extends Variable
     }
     
     public MultiSelectVariable(
-            String displayName, DisplayType displayType, List<MultiSelectOption> options)
+            final String displayName, final DisplayType displayType, final List<MultiSelectOption> options)
     {
         super(displayName);
         fDisplayType = displayType;
@@ -44,7 +44,7 @@ public class MultiSelectVariable extends Variable
         return fDisplayType;
     }
     
-    public void setDisplayType(DisplayType displayType)
+    public void setDisplayType(final DisplayType displayType)
     {
         fDisplayType = displayType;
     }
@@ -61,13 +61,13 @@ public class MultiSelectVariable extends Variable
         return fOptions;
     }
 
-    public void setOptions(List<MultiSelectOption> options)
+    public void setOptions(final List<MultiSelectOption> options)
     {
         fOptions = options;
     }
     
     @Override
-    public void accept(VariableVisitor visitor) throws Exception
+    public void accept(final VariableVisitor visitor) throws Exception
     {
         visitor.visitMultiSelect(this);
     }

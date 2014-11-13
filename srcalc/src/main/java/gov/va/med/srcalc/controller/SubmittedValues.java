@@ -13,7 +13,7 @@ public class SubmittedValues
     {
         return age;
     }
-    public void setAge(int age)
+    public void setAge(final int age)
     {
         this.age = age;
     }
@@ -21,7 +21,7 @@ public class SubmittedValues
     {
         return gender;
     }
-    public void setGender(String gender)
+    public void setGender(final String gender)
     {
         this.gender = gender;
     }
