@@ -33,12 +33,8 @@ dependencies {
 
     /* Java EE 7 dependencies */
 
-    // Provided by the container (Tomcat).
-    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
-    providedCompile 'javax.servlet.jsp:jsp-api:2.1'
-    // These are not provided by the container (Tomcat).
-	compile 'javax.inject:javax.inject:1'
-	compile 'org.glassfish.web:javax.servlet.jsp.jstl:1.2.1'
+    // Provided by the container (Glassfish).
+    providedCompile 'javax:javaee-web-api:7.0'
 	
 	/* Other libraries */
 
@@ -63,6 +59,8 @@ dependencies {
 	testCompile 'org.hamcrest:hamcrest-library:1.3'
 	
 	testRuntime 'org.hsqldb:hsqldb:2.3.2'
+    // This is necessary to complete some of the missing pieces in javaee-web-api.
+    testRuntime 'javax.servlet:javax.servlet-api:3.1.0'
 }
 
 // Hardcode Eclipse servlet spec version because eclipse-wtp just assumes 2.4.
