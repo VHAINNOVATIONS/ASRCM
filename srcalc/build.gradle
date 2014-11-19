@@ -18,6 +18,7 @@ repositories {
 
 /* Versions of dependencies */
 def springVersion = '4.0.7.RELEASE'
+def springSecurityVersion = '3.2.5.RELEASE'
 def slf4jVersion = '1.7.5'
 
 configurations {
@@ -35,6 +36,9 @@ dependencies {
 
     // Provided by the container (Glassfish).
     providedCompile 'javax:javaee-web-api:7.0'
+    // This is in the Web Profile; I don't know why it isn't included in the
+    // above library.
+    providedCompile 'javax.resource:javax.resource-api:1.7'
 	
 	/* Other libraries */
 
@@ -45,10 +49,17 @@ dependencies {
 	compile group: 'org.springframework', name: 'spring-context', version: springVersion
 	compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
 	compile group: 'org.springframework', name: 'spring-orm', version: springVersion
+	compile group: 'org.springframework.security', name: 'spring-security-web', version: springSecurityVersion
+	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: springSecurityVersion
 	compile 'joda-time:joda-time:2.3'
 	compile 'org.apache.tiles:tiles-jsp:2.2.2'
+    compile files('../lib/vljFoundationsLib-1.6.0.028.jar', '../lib/vljConnector-1.6.0.028.jar')
 
     runtime 'ch.qos.logback:logback-classic:1.1.2'
+    // VistALink has a hard dependency on log4j.
+    runtime group: 'org.slf4j', name: 'log4j-over-slf4j', version: slf4jVersion
+    // Spring-Security XML namespace
+	runtime group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
     
     /* Test dependencies */
 

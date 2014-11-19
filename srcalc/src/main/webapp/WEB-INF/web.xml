@@ -27,12 +27,30 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
+
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>	
+
 	<!-- Declare that we depend on the jdbc/srcalcDB resource supplied by the
 	     container. -->
 	<resource-env-ref>
 	   <resource-env-ref-name>jdbc/srcalcDB</resource-env-ref-name>
 	   <resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+	</resource-env-ref>
+
+	<!-- Glassfish seems to require that we specify all JNDI resources here.
+	     This doesn't support dynamic querying of the VistaLinkConnectionFactory
+	     JNDI name, so we'll have to solve this later. -->
+	<resource-env-ref>
+	   <resource-env-ref-name>vlj/Asrc500</resource-env-ref-name>
+	   <resource-env-ref-type>javax.resource.cci.ConnectionFactory</resource-env-ref-type>
 	</resource-env-ref>
 
 </web-app>

@@ -86,35 +86,37 @@ body > section {
     padding-left: 0;
 }
 
-#riskVarForm fieldset {
-	margin: 1em 0;
-}
+/* srcalcForm is the standard form appearance in srcalc */
 
 /* We use <ol>'s for the list of fields. */
-#riskVarForm fieldset > ol {
+form.srcalcForm fieldset > ol {
 	list-style-type: none;
 	margin: 0;
 	padding-left: 0;
 }
 
 /* Put some vertical spacing between the variables. */
-#riskVarForm fieldset > ol > li {
+form.srcalcForm fieldset > ol > li {
 	margin: 5px 0;
 }
 
-#riskVarForm label.variableName {
+form.srcalcForm label.variableName {
 	display: inline-block;
 	width: 20%;
+}
+
+form.srcalcForm label.radioLabel {
+	padding-right: 1em;
+}
+
+#riskVarForm fieldset {
+	margin: 1em 0;
 }
 
 #riskVarForm fieldset > legend {
 	/* The legends are like headings for the groups */
 	font-weight: bold;
 	margin-bottom: 8px;
-}
-
-#riskVarForm label.radioLabel {
-	padding-right: 1em;
 }
 
 #riskVarForm .error {
