@@ -7,13 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 /**
  * <p>Represents a surgical specialty, with the associated calcuation variables.</p>
@@ -102,6 +96,9 @@ public final class Specialty implements Serializable
      * lazy-loaded.
      */
     @ManyToMany(fetch = FetchType.LAZY)
+    // Order by the surrogate key. This works for now until we implement admin
+    // functionality. Then we'll probably need a discrete order column.
+    @OrderColumn(name = "display_order")
     // Override strange defaults. See
     // <https://forum.hibernate.org/viewtopic.php?f=1&t=1037190>.
     @JoinTable(

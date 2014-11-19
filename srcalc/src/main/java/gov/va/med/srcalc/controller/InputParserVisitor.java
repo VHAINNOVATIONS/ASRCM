@@ -6,6 +6,7 @@ import javax.servlet.ServletRequest;
 
 import org.springframework.validation.Errors;
 
+import gov.va.med.srcalc.domain.Procedure;
 import gov.va.med.srcalc.domain.variable.*;
 
 /**
@@ -79,6 +80,18 @@ public class InputParserVisitor implements VariableVisitor
         {
             fValues.add(new NumericalValue(variable, value));
         }
+    }
+    
+    @Override
+    public void visitProcedure(ProcedureVariable variable) throws Exception
+    {
+        final Procedure selectedProcedure =
+                variable.getProcedureMap().get(fRequest.getProcedure());
+        if (selectedProcedure == null)
+        {
+            fErrors.rejectValue(variable.getDisplayName(), "invalid", "not a valid procedure");
+        }
+        fValues.add(new ProcedureValue(variable, selectedProcedure));
     }
     
     public List<Value> getValues()

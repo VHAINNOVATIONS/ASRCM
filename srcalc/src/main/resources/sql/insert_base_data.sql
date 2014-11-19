@@ -21,17 +21,28 @@ INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (1, 'Female');
 INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (2, 'Male');
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (1, 2, 0);
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (1, 1, 1);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id) VALUES (7, 1);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (7, 1, 0);
+
+-- Non-Cardiac Procedure
+INSERT INTO VARIABLE (id, display_name) VALUES (3, 'Procedure');
+INSERT INTO PROCEDURE_VARIABLE (id) VALUES (3);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 3, 0);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 3, 0);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (3, 3, 0);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 3, 0);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (5, 3, 0);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 3, 0);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 3, 0);
 
 -- Non-Cardiac Age
 INSERT INTO VARIABLE (id, display_name) VALUES (2, 'Age');
 -- There is not really an upper limit on age, but specify an unrealistically high
 -- one to have some idea of significant digits.
 INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value) VALUES (2, 0, 999);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id) VALUES (1, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id) VALUES (2, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id) VALUES (3, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id) VALUES (4, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id) VALUES (5, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id) VALUES (6, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id) VALUES (8, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 2, 1);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 2, 1);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (3, 2, 1);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 2, 1);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (5, 2, 1);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 2, 1);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 2, 1);

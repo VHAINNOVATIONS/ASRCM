@@ -11,6 +11,8 @@ import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.web.view.Tile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 public class CalculationController
 {
     private static String SESSION_CALCULATION = "srcalc_calculation";
+    
+    private static final Logger fLogger = LoggerFactory.getLogger(CalculationController.class);
     
     private final CalculationService fCalculationService;
     
@@ -127,6 +131,9 @@ public class CalculationController
         // If we have any binding errors, return to the Enter Variables screen.
         if (valuesBindingResult.hasErrors())
         {
+            fLogger.debug(
+                    "Invalid variables entered by user. Reshowing variable entry screen. Errors: {}",
+                    valuesBindingResult.getAllErrors());
             return presentVariableEntry(session, model);
         }
 

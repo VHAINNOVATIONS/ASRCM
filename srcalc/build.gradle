@@ -74,6 +74,9 @@ dependencies {
 	testCompile 'org.hsqldb:hsqldb:2.3.2'
     // This is necessary to complete some of the missing pieces in javaee-web-api.
     testRuntime 'javax.servlet:javax.servlet-api:3.1.0'
+    
+    // Uncomment this to enable testing against MySQL.
+    //testRuntime 'mysql:mysql-connector-java:5.1.34'
 }
 
 // Hardcode Eclipse servlet spec version because eclipse-wtp just assumes 2.4.

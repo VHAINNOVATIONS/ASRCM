@@ -87,12 +87,12 @@ public class CalculationControllerIT
         fMockMvc.perform(post("/enterVars").session(fSession)
                 // TODO: need a scalable way to specify variables, but just
                 // hardcode the age parameter for now.
-                .param("Age", "55"))
+                .param("Age", "55").param("Procedure", "26546"))
             .andExpect(redirectedUrl("/displayResults"));
         
         fMockMvc.perform(get("/displayResults").session(fSession))
             .andExpect(status().is(200))
-            .andExpect(model().attribute("calculation", hasProperty("values", hasSize(1))));
+            .andExpect(model().attribute("calculation", hasProperty("values", hasSize(2))));
         // TODO: validate more model stuff
     }
     

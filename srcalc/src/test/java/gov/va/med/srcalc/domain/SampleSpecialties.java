@@ -2,6 +2,7 @@ package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.variable.NumericalVariable;
+import gov.va.med.srcalc.domain.variable.ProcedureVariable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +16,7 @@ public class SampleSpecialties
     public static Specialty sampleThoracicSpecialty()
     {
         final Specialty s = new Specialty(4, 58, "Thoracic");
+        s.getVariables().add(new ProcedureVariable("Procedure"));
         s.getVariables().add(new NumericalVariable("Age"));
         return s;
     }

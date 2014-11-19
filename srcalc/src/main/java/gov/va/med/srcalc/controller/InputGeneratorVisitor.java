@@ -1,9 +1,7 @@
 package gov.va.med.srcalc.controller;
 
-import gov.va.med.srcalc.domain.variable.MultiSelectOption;
-import gov.va.med.srcalc.domain.variable.MultiSelectVariable;
-import gov.va.med.srcalc.domain.variable.NumericalVariable;
-import gov.va.med.srcalc.domain.variable.VariableVisitor;
+import gov.va.med.srcalc.domain.Procedure;
+import gov.va.med.srcalc.domain.variable.*;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -65,5 +63,21 @@ class InputGeneratorVisitor implements VariableVisitor
         fWriter.write(String.format(
                 "<input type=\"text\" name=\"%s\" size=\"%d\">",
                 variable.getDisplayName(), maxExpectedDigits));
+    }
+    
+    @Override
+    public void visitProcedure(final ProcedureVariable variable) throws Exception
+    {
+        // TODO: this does not perform well with 9000 procedures. Need to find
+        // a better solution for ASRC-7.
+        fWriter.write(String.format("<select name=\"%s\">", variable.getDisplayName()));
+        for (Procedure p : variable.getProcedures())
+        {
+            fWriter.write(String.format(
+                    "<option value=\"%s\">%s</option>",
+                    p.getCptCode(), p.toString()));
+
+        }
+        fWriter.write("</select>");
     }
 }

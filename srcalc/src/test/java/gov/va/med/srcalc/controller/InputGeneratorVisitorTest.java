@@ -1,9 +1,7 @@
 package gov.va.med.srcalc.controller;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.variable.MultiSelectOption;
-import gov.va.med.srcalc.domain.variable.MultiSelectVariable;
-import gov.va.med.srcalc.domain.variable.NumericalVariable;
+import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
 
 import java.io.StringWriter;
@@ -70,6 +68,23 @@ public class InputGeneratorVisitorTest
         // Verify behavior
         var.accept(fVisitor);
         assertEquals("<input type=\"text\" name=\"numTest\" size=\"8\">", fWriter.toString());
+    }
+    
+    @Test
+    public final void testVisitProcedure()
+        throws Exception
+    {
+        // Setup variable
+        ProcedureVariable var = new ProcedureVariable("procedure");
+        
+        // Verify behavior
+        var.accept(fVisitor);
+        final String EXPECTED =
+                "<select name=\"procedure\">" +
+                "<option value=\"26545\">26545 - Repair right hand (5.05)</option>" +
+                "<option value=\"26546\">26546 - Repair left hand (10.06)</option>" +
+                "</select>";
+        assertEquals(EXPECTED, fWriter.toString());
     }
     
 }
