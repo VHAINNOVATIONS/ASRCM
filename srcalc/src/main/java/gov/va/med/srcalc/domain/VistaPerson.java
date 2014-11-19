@@ -16,6 +16,9 @@ public class VistaPerson
         fUserClass = userClass;
     }
 
+    /**
+     * The user's Internal Entry Number (IEN) in the NEW PERSON file.
+     */
     public String getDuz()
     {
         return fDuz;
