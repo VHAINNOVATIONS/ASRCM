@@ -23,16 +23,13 @@
     <!-- Configure Spring Security. -->
     <security:http>
         <!-- All pages require one to be an authenticated user. -->
-        <!--
-        <security:intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-        <security:intercept-url pattern="/j_spring_security_check" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-        -->
         <security:intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/**" access="ROLE_USER" />
         <security:form-login />
         <security:logout logout-url="/logout" />
     </security:http>
     
+    <bean id="vistaDaoFactory" class="gov.va.med.srcalc.vista.VistaLinkVistaDaoFactory" />
     <bean id="vistaUserDetailsService" class="gov.va.med.srcalc.security.VistaUserDetailsService" />
 
     <!-- Add some testing users. FIXME: TESTING ONLY -->
