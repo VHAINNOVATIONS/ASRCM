@@ -8,8 +8,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 public class InputGeneratorVisitorTest
 {
@@ -75,15 +74,27 @@ public class InputGeneratorVisitorTest
         throws Exception
     {
         // Setup variable
-        ProcedureVariable var = new ProcedureVariable("procedure");
+        ProcedureVariable var = new ProcedureVariable("proc");
         
         // Verify behavior
         var.accept(fVisitor);
         final String EXPECTED =
-                "<select name=\"procedure\">" +
-                "<option value=\"26545\">26545 - Repair right hand (5.05)</option>" +
-                "<option value=\"26546\">26546 - Repair left hand (10.06)</option>" +
-                "</select>";
+                "<div class=\"procedureSelectGroup\" data-var-name=\"proc\" title=\"Select proc\">" +
+                "<table>" +
+                "<thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></thead>" +
+                "<tr>" +
+                "<td class=\"selectRadio\">" +
+                "<input type=\"radio\" name=\"proc\" value=\"26545\" data-display-string=\"26545 - Repair right hand (5.05)\"></td>" +
+                "<td>26545</td><td>Repair right hand - you know, the thing with fingers</td><td>5.05</td></tr>" +
+                "<tr>" +
+                "<td class=\"selectRadio\">" +
+                "<input type=\"radio\" name=\"proc\" value=\"26546\" data-display-string=\"26546 - Repair left hand (10.06)\"></td>" +
+                "<td>26546</td><td>Repair left hand - you know, the thing with fingers</td><td>10.06</td></tr>" +
+                "</table>" +
+                "</div>" +
+                "<input type=\"hidden\" name=\"proc\">" +
+                "<span id=\"selectedProcedureDisplay\"></span> " +
+                "<a id=\"selectProcedure_proc\" class=\"selectProcedureLink\" href=\"#\">Select</a>";
         assertEquals(EXPECTED, fWriter.toString());
     }
     

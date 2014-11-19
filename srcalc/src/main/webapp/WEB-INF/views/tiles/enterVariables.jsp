@@ -24,4 +24,30 @@
             </ol>
         </fieldset>
         <button type="submit">Run Calculation</button>
+        <script>
+        $(document).ready(function(){
+        	var procedureSelectGroup = $(".procedureSelectGroup");
+        	
+        	function selectProcedure() {
+        		var selectedRadio = procedureSelectGroup.find('input[type=radio]:checked');
+        		$('input[name=' + procedureSelectGroup.data("var-name") + ']').val(selectedRadio.val());
+        		$('#selectedProcedureDisplay').html(selectedRadio.data('display-string'));
+        		procedureSelectDialog.dialog("close");
+        	}
+        	
+        	var procedureSelectDialog = procedureSelectGroup.dialog({
+        		autoOpen: false,
+        		width: 700,   // body with is 768px
+        		modal: true,
+        		buttons: {
+        			"Select": selectProcedure
+                    // Maybe I can add a cancel button when refining the dialog.
+        		}
+        	});
+        	
+        	$('a.selectProcedureLink').on('click', function() {
+        		procedureSelectDialog.dialog("open");
+        	})
+        })
+        </script>
         </form:form>

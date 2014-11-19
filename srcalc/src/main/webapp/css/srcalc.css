@@ -129,7 +129,21 @@ form.srcalcForm label.radioLabel {
 	min-width: 8em;
 }
 
+/* Styles for procedure selection */
 
+.procedureSelectGroup th, .procedureSelectGroup td {
+	/* Don't let the cells mash up against each other. */
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+.procedureSelectGroup td.selectRadio {
+	text-align: center;
+}
+
+a.selectProcedureLink {
+	font-size: 0.9em;
+}
 
 
 /* ==========================================================================
