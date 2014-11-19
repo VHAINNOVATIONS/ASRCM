@@ -15,6 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public class VistaUserDetails implements UserDetails
 {
+    /**
+     * Change this when changing the class!
+     */
     private static final long serialVersionUID = 1L;
     
     private final VistaPerson fVistaPerson;
