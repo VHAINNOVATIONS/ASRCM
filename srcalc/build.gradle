@@ -39,6 +39,9 @@ dependencies {
     // This is in the Web Profile; I don't know why it isn't included in the
     // above library.
     providedCompile 'javax.resource:javax.resource-api:1.7'
+    // Give Eclipse the JSTL TLDs. They aren't included in the javaee-web-api
+    // JAR.
+    providedCompile 'org.glassfish.web:javax.servlet.jsp.jstl:1.2.1'
 	
 	/* Other libraries */
 
