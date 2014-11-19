@@ -16,7 +16,7 @@ import gov.va.med.vistalink.rpc.*;
 import gov.va.med.vistalink.security.m.SecurityIdentityDeterminationFaultException;
 
 /**
- * Reads and writes remote VistA data.
+ * Implementation of {@link VistaDao} using VistALink.
  */
 public class VistaLinkVistaDao implements VistaDao
 {

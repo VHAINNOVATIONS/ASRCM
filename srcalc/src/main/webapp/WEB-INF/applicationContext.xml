@@ -29,12 +29,10 @@
         <security:logout logout-url="/logout" />
     </security:http>
     
+    <!-- User VistaUserDetailsService to load users. -->
     <bean id="vistaDaoFactory" class="gov.va.med.srcalc.vista.VistaLinkVistaDaoFactory" />
     <bean id="vistaUserDetailsService" class="gov.va.med.srcalc.security.VistaUserDetailsService" />
-
-    <!-- Add some testing users. FIXME: TESTING ONLY -->
     <security:authentication-manager>
-        <security:authentication-provider user-service-ref="vistaUserDetailsService">
-        </security:authentication-provider>
+        <security:authentication-provider user-service-ref="vistaUserDetailsService" />
     </security:authentication-manager>
 </beans>
