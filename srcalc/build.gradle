@@ -18,6 +18,7 @@ repositories {
 
 /* Versions of dependencies */
 def springVersion = '4.0.7.RELEASE'
+def springSecurityVersion = '3.2.5.RELEASE'
 def slf4jVersion = '1.7.5'
 
 configurations {
@@ -33,12 +34,14 @@ dependencies {
 
     /* Java EE 7 dependencies */
 
-    // Provided by the container (Tomcat).
-    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
-    providedCompile 'javax.servlet.jsp:jsp-api:2.1'
-    // These are not provided by the container (Tomcat).
-	compile 'javax.inject:javax.inject:1'
-	compile 'org.glassfish.web:javax.servlet.jsp.jstl:1.2.1'
+    // Provided by the container (Glassfish).
+    providedCompile 'javax:javaee-web-api:7.0'
+    // This is in the Web Profile; I don't know why it isn't included in the
+    // above library.
+    providedCompile 'javax.resource:javax.resource-api:1.7'
+    // Give Eclipse the JSTL TLDs. They aren't included in the javaee-web-api
+    // JAR.
+    providedCompile 'org.glassfish.web:javax.servlet.jsp.jstl:1.2.1'
 	
 	/* Other libraries */
 
@@ -49,10 +52,17 @@ dependencies {
 	compile group: 'org.springframework', name: 'spring-context', version: springVersion
 	compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
 	compile group: 'org.springframework', name: 'spring-orm', version: springVersion
+	compile group: 'org.springframework.security', name: 'spring-security-web', version: springSecurityVersion
+	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: springSecurityVersion
 	compile 'joda-time:joda-time:2.3'
 	compile 'org.apache.tiles:tiles-jsp:2.2.2'
+    compile files('../lib/vljFoundationsLib-1.6.0.028.jar', '../lib/vljConnector-1.6.0.028.jar')
 
     runtime 'ch.qos.logback:logback-classic:1.1.2'
+    // VistALink has a hard dependency on log4j.
+    runtime group: 'org.slf4j', name: 'log4j-over-slf4j', version: slf4jVersion
+    // Spring-Security XML namespace
+	runtime group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
     
     /* Test dependencies */
 
@@ -61,8 +71,9 @@ dependencies {
 	testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
 	testCompile 'nl.jqno.equalsverifier:equalsverifier:1.5'
 	testCompile 'org.hamcrest:hamcrest-library:1.3'
-	
-	testRuntime 'org.hsqldb:hsqldb:2.3.2'
+	testCompile 'org.hsqldb:hsqldb:2.3.2'
+    // This is necessary to complete some of the missing pieces in javaee-web-api.
+    testRuntime 'javax.servlet:javax.servlet-api:3.1.0'
 }
 
 // Hardcode Eclipse servlet spec version because eclipse-wtp just assumes 2.4.

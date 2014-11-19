@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.domain.variable.Value;
 
+import java.io.Serializable;
 import java.util.*;
 
 import org.joda.time.DateTime;
@@ -10,8 +11,13 @@ import org.joda.time.DateTime;
 /**
  * Represents a risk calculation: either in-progress, calculated, or signed.
  */
-public class Calculation
+public class Calculation implements Serializable
 {
+    /**
+     * Change this when changing the class!
+     */
+    private static final long serialVersionUID = 1L;
+
     private DateTime fStartDateTime;
     private Patient fPatient;
     private Specialty fSpecialty;

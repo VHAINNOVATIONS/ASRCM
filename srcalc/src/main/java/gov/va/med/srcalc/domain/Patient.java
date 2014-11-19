@@ -1,12 +1,18 @@
 package gov.va.med.srcalc.domain;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Represents a patient (for which we perform a calculation).
  */
-public class Patient
+public class Patient implements Serializable
 {
+    /**
+     * Change this when changing the class!
+     */
+    private static final long serialVersionUID = 1L;
+
     private int fDfn;
     
     private String fName;

@@ -10,6 +10,11 @@ import gov.va.med.srcalc.domain.Specialty;
  */
 public class NewCalculation extends CalculationWorkflow
 {
+    /**
+     * Change this when changing the class!
+     */
+    private static final long serialVersionUID = 1L;
+
     private final List<Specialty> fPossibleSpecialties;
     
     public NewCalculation(
