@@ -13,7 +13,7 @@ public class ProcedureTest
                 "26546",
                 10.06f,
                 "Repair left hand",
-                "26546 - Repair left hand - you know, the thing with fingers");  
+                "Repair left hand - you know, the thing with fingers");  
     }
 
     @Test

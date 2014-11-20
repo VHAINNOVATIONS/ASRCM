@@ -33,6 +33,7 @@ public final class Procedure
      */
     Procedure()
     {
+        fCptCode = "NOT SET";
     }
     
     public Procedure(
@@ -135,7 +136,8 @@ public final class Procedure
     public String toString()
     {
         return String.format("%s - %s (%s)",
-                // Use Float.toString() to get the right number of zeros.
+                // Use Float.toString() to get only as many fractional part
+                // digits as we need (e.g., 10.0 or 5.56).
                 getCptCode(), getShortDescription(), Float.toString(getRvu()));
     }
     
@@ -147,8 +149,8 @@ public final class Procedure
     @Transient
     public String getLongString()
     {
-        return String.format("%s (%s)",
-                getLongDescription(), Float.toString(getRvu()));
+        return String.format("%s - %s (%s)",
+                getCptCode(), getLongDescription(), Float.toString(getRvu()));
     }
     
     /**
