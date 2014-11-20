@@ -1,7 +1,7 @@
 -- This script inserts the base static data for srcalc.
 
 -- SPECIALTY table
-INSERT INTO SPECIALTY (id, vista_id, name) VALUES (1, 50, 'General');
+INSERT INTO SPECIALTY (id, vista_id, name) VALUES (1, 50, 'General Surgery');
 INSERT INTO SPECIALTY (id, vista_id, name) VALUES (2, 52, 'Neurosurgery');
 INSERT INTO SPECIALTY (id, vista_id, name) VALUES (3, 54, 'Orthopedic');
 INSERT INTO SPECIALTY (id, vista_id, name) VALUES (4, 58, 'Thoracic');
