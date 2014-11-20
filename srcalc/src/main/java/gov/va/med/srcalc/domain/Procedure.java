@@ -5,37 +5,48 @@ import java.util.Objects;
 import javax.persistence.*;
 
 /**
- * Represents a medical procedure, particuarly a CPT code.
- * @author david
- *
+ * <p>Represents a medical procedure, particuarly a CPT code.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
  */
 @Entity
 @Table(name="CPT")   // call it CPT because "PROCEDURE" is a SQL reserved word
-public class Procedure
+public final class Procedure
 {
     private int fId;
     
     private String fCptCode;
     
-    private int fRvu;
+    private boolean fActive = true;
     
-    private String fDescription;
+    private float fRvu;
+    
+    private String fShortDescription;
+    
+    private String fLongDescription;
 
     /**
-     * Package-private default constructor mainly for Hibernate use. Be very
-     * careful about using this constructor as this class presents an immutable
-     * public interface.
+     * Package-private default constructor mainly for Hibernate use. Be careful
+     * about using this constructor as the CPT Code must be set for the object
+     * to be in a valid state.
      */
     Procedure()
     {
+        fCptCode = "NOT SET";
     }
     
-    public Procedure(final int id, final String cptCode, final int rvu, final String description)
+    public Procedure(
+            final String cptCode,
+            final float rvu,
+            final String shortDescription,
+            final String longDescription)
     {
-        this.fId = id;
+        this.fActive = true;
         this.fCptCode = cptCode;
         this.fRvu = rvu;
-        this.fDescription = description;
+        this.fShortDescription = shortDescription;
+        this.fLongDescription = longDescription;
     }
 
     @Id // We use method-based property detection throughout the app.
@@ -68,45 +79,83 @@ public class Procedure
     {
         this.fCptCode = cptCode;
     }
+    
+    /**
+     * Returns whether this Procedure is still used for new calculations. Inactive
+     * Procedures may once have been used for calculations, but are no longer
+     * used.
+     */
+    @Basic
+    public boolean getActive()
+    {
+        return fActive;
+    }
+    
+    void setActive(final boolean active)
+    {
+        fActive = active;
+    }
 
     /**
      * Relative Value Unit.
      */
     @Basic
-    public int getRvu()
+    public float getRvu()
     {
         return fRvu;
     }
 
-    /**
-     * For reflection-based construction only.
-     */
-    public void setRvu(final int rvu)
+    public void setRvu(final float rvu)
     {
         this.fRvu = rvu;
     }
 
     @Basic
-    public String getDescription()
+    public String getShortDescription()
     {
-	return fDescription;
+	return fShortDescription;
     }
 
-    /**
-     * For reflection-based construction only.
-     */
-    public void setDescription(final String description)
+    public void setShortDescription(final String description)
     {
-	fDescription = description;
+	fShortDescription = description;
     }
     
+    @Basic
+    public String getLongDescription()
+    {
+        return fLongDescription;
+    }
+
+    public void setLongDescription(final String longDescription)
+    {
+        fLongDescription = longDescription;
+    }
+
     @Override
     public String toString()
     {
-        return String.format("%s - %s (%d)",
-                getCptCode(), getDescription(), getRvu());
+        return String.format("%s - %s (%s)",
+                // Use Float.toString() to get only as many fractional part
+                // digits as we need (e.g., 10.0 or 5.56).
+                getCptCode(), getShortDescription(), Float.toString(getRvu()));
     }
     
+    /**
+     * Like {@link #toString()} but uses the long instead of short description.
+     * Sometimes the long description is too long to be appropriate for toString().
+     * @return
+     */
+    @Transient
+    public String getLongString()
+    {
+        return String.format("%s - %s (%s)",
+                getCptCode(), getLongDescription(), Float.toString(getRvu()));
+    }
+    
+    /**
+     * Compares procedures based on CPT code and RVU.
+     */
     @Override
     public boolean equals(final Object o)
     {
@@ -116,7 +165,10 @@ public class Procedure
             
             // Compare "business equality", not using the primary key, per
             // Hibernate recommendation.
-            return this.getCptCode().equals(other.getCptCode());
+            //
+            // Use Float.compare to handle NaN properly.
+            return (Float.compare(getRvu(), other.getRvu()) == 0) &&
+                    Objects.equals(getCptCode(), other.getCptCode());
         }
         else
         {
@@ -127,7 +179,7 @@ public class Procedure
     @Override
     public int hashCode()
     {
-        return Objects.hash(getCptCode());
+        return Objects.hash(getRvu(), getCptCode());
     }
 }
 

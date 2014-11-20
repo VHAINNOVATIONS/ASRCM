@@ -69,7 +69,8 @@ public class CalculationServiceIT
                 fCalculationService.setSpecialty(calc, specialty.getName());
         assertSame("Calculation object not the same", calc,  selCalc.getCalculation());
         assertEquals(specialty, selCalc.getCalculation().getSpecialty());
-        assertEquals(1, calc.getVariables().size());
-        assertEquals("Age", calc.getVariables().get(0).getDisplayName());
+        assertEquals(2, calc.getVariables().size());
+        assertEquals("Procedure", calc.getVariables().get(0).getDisplayName());
+        assertEquals("Age", calc.getVariables().get(1).getDisplayName());
     }
 }

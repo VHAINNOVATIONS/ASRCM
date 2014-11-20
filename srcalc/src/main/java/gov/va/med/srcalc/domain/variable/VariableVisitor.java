@@ -7,4 +7,5 @@ public interface VariableVisitor
 {
     public void visitNumerical(NumericalVariable variable) throws Exception;
     public void visitMultiSelect(MultiSelectVariable variable) throws Exception;
+    public void visitProcedure(ProcedureVariable variable) throws Exception;
 }

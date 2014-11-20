@@ -8,6 +8,7 @@ public class SubmittedValues
 {
     private int age;
     private String gender;
+    private String procedure;
 
     public int getAge()
     {
@@ -24,5 +25,13 @@ public class SubmittedValues
     public void setGender(final String gender)
     {
         this.gender = gender;
+    }
+    public String getProcedure()
+    {
+        return procedure;
+    }
+    public void setProcedure(String procedure)
+    {
+        this.procedure = procedure;
     }
 }
