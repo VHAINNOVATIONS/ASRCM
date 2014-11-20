@@ -11,7 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class VistaUserDetailsServiceTest
 {
-    final String RADIOLOGIST_DUZ = "11716";
+    private final String RADIOLOGIST_DUZ = "11716";
     
     protected VistaPerson sampleRadiologist()
     {
@@ -48,7 +48,7 @@ public class VistaUserDetailsServiceTest
         assertEquals(samplePerson.getDuz(), user.getDuz());
         assertEquals(samplePerson.getDuz(), user.getUsername());
         assertEquals(samplePerson.getDisplayName(), user.getDisplayName());
-        assertTrue("user does not have USER_ROLE",
+        assertTrue("user does not have ROLE_USER",
                 user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER")));
     }
     

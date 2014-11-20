@@ -4,8 +4,7 @@ SETLOCAL ENABLEEXTENSIONS
 
 SET SRCALC_PASSWORD=zSIMJibMiXrN
 SET MYSQL="C:\Program Files\MySQL\MySQL Server 5.6\bin\mysql"
-REM TODO: fix this path!
-SET ASADMIN="C:\Users\david\Documents\opt\glassfish3\glassfish\bin\asadmin.bat"
+SET ASADMIN="C:\asrc\glassfish3\glassfish\bin\asadmin.bat"
 
 REM Note: the 'root' user should have auto-login ability
 

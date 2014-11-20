@@ -96,8 +96,6 @@ public final class Specialty implements Serializable
      * lazy-loaded.
      */
     @ManyToMany(fetch = FetchType.LAZY)
-    // Order by the surrogate key. This works for now until we implement admin
-    // functionality. Then we'll probably need a discrete order column.
     @OrderColumn(name = "display_order")
     // Override strange defaults. See
     // <https://forum.hibernate.org/viewtopic.php?f=1&t=1037190>.
