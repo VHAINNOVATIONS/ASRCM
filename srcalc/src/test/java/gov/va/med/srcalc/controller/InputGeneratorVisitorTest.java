@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.controller;
 
 import static org.junit.Assert.*;
+import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
 
@@ -75,6 +76,7 @@ public class InputGeneratorVisitorTest
     {
         // Setup variable
         ProcedureVariable var = new ProcedureVariable("proc");
+        var.setProcedures(SampleObjects.sampleProcedureList());
         
         // Verify behavior
         var.accept(fVisitor);

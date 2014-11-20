@@ -46,7 +46,10 @@
         	});
         	
         	$('a.selectProcedureLink').on('click', function() {
-        		procedureSelectDialog.dialog("open");
+                var windowHeight = $(window).height();
+                // Make the height 90% of the current window height.
+                procedureSelectDialog.dialog("option", "height", windowHeight * 0.9);
+                procedureSelectDialog.dialog("open");
         	})
         })
         </script>

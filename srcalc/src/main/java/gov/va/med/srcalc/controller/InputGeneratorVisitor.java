@@ -5,6 +5,7 @@ import gov.va.med.srcalc.domain.variable.*;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 /**
  * Writes an HTML input control for visited {@link Variable}s.
@@ -82,12 +83,17 @@ class InputGeneratorVisitor implements VariableVisitor
          * Of course the below code is coupled with enterVariables.jsp.
          */
         
+        // Cap the table at 100 rows for now.
+        final int numToDisplay = Math.min(variable.getProcedures().size(), 100);
+        final List<Procedure> truncatedProcedures =
+                variable.getProcedures().subList(0, numToDisplay);
+        
         fWriter.write(String.format(
                 "<div class=\"procedureSelectGroup\" data-var-name=\"%s\" title=\"Select %s\">",
                 variable.getDisplayName(), variable.getDisplayName()));
         fWriter.write("<table>");
         fWriter.write("<thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></thead>");
-        for (Procedure p : variable.getProcedures())
+        for (Procedure p : truncatedProcedures)
         {
             fWriter.write("<tr>");
             fWriter.write(String.format(

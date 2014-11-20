@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.List;
 
+import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
 
@@ -18,7 +19,9 @@ public class InputParserVisitorTest
 {
     protected ProcedureVariable sampleProcedureVariable()
     {
-        return new ProcedureVariable("Procedure");
+        final ProcedureVariable var = new ProcedureVariable("Procedure");
+        var.setProcedures(SampleObjects.sampleProcedureList());
+        return var;
     }
 
     protected MultiSelectVariable sampleGenderVariable()

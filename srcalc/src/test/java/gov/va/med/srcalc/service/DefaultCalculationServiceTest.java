@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.Calculation;
-import gov.va.med.srcalc.domain.SampleSpecialties;
+import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
@@ -19,8 +19,8 @@ public class DefaultCalculationServiceTest
     public SpecialtyDao mockSpecialtyDao()
     {
         final SpecialtyDao dao = mock(SpecialtyDao.class);
-        when(dao.getAllSpecialties()).thenReturn(SampleSpecialties.sampleSpecialtyList());
-        final Specialty specialty = SampleSpecialties.sampleThoracicSpecialty();
+        when(dao.getAllSpecialties()).thenReturn(SampleObjects.sampleSpecialtyList());
+        final Specialty specialty = SampleObjects.sampleThoracicSpecialty();
         when(dao.getByName(specialty.getName())).thenReturn(specialty);
         return dao;
     }
@@ -48,13 +48,13 @@ public class DefaultCalculationServiceTest
                 calc.getStartDateTime().compareTo(new DateTime()) <= 0);
         assertTrue("start date not after test start",
                 calc.getStartDateTime().compareTo(testStartDateTime) >= 0);
-        assertEquals(SampleSpecialties.sampleSpecialtyList(), newCalc.getPossibleSpecialties());
+        assertEquals(SampleObjects.sampleSpecialtyList(), newCalc.getPossibleSpecialties());
     }
     
     @Test
     public final void testSetValidSpecialty() throws InvalidIdentifierException
     {
-        final Specialty thoracicSpecialty = SampleSpecialties.sampleThoracicSpecialty();
+        final Specialty thoracicSpecialty = SampleObjects.sampleThoracicSpecialty();
         
         // Create the class under test.
         final DefaultCalculationService s = defaultCalculationService();

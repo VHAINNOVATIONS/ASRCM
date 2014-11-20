@@ -1,21 +1,13 @@
 package gov.va.med.srcalc.domain;
 
 import static org.junit.Assert.*;
+import static gov.va.med.srcalc.domain.SampleObjects.sampleRepairLeftProcedure;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
 public class ProcedureTest
 {
-    protected Procedure sampleRepairLeftProcedure()
-    {
-      return new Procedure(
-                "26546",
-                10.06f,
-                "Repair left hand",
-                "26546 - Repair left hand - you know, the thing with fingers");  
-    }
-
     @Test
     public final void testToString()
     {

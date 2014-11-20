@@ -15,24 +15,12 @@ public class ProcedureVariable extends Variable
     
     public ProcedureVariable()
     {
-        setDummyProcedureList();
     }
     
     public ProcedureVariable(
             String displayName)
     {
         super(displayName);
-        
-        setDummyProcedureList();
-    }
-    
-    private void setDummyProcedureList()
-    {
-        setProcedures(Arrays.asList(
-                // TODO: actually pull the whole procedure list. Will be done as
-                // part of ASRC-7.
-                new Procedure("26545", 5.05f, "Repair right hand", "Repair right hand - you know, the thing with fingers"),
-                new Procedure("26546", 10.06f, "Repair left hand", "Repair left hand - you know, the thing with fingers")));
     }
     
     @Transient // transient for now until we figure out how to do this association

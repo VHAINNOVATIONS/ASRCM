@@ -147,8 +147,8 @@ public final class Procedure
     @Transient
     public String getLongString()
     {
-        return String.format("%s (%s)",
-                getLongDescription(), Float.toString(getRvu()));
+        return String.format("%s - %s (%s)",
+                getCptCode(), getLongDescription(), Float.toString(getRvu()));
     }
     
     /**
