@@ -51,7 +51,7 @@ public class SampleObjects
     {
         return Arrays.asList(
         	    new Specialty(7, 48, "Cardiac"),
-        	    new Specialty(1, 50, "General"),
+        	    new Specialty(1, 50, "General Surgery"),
         	    new Specialty(2, 52, "Neurosurgery"),
         	    new Specialty(3, 54, "Orthopedic"),
         	    new Specialty(8, 50, "Other Non-Cardiac Specialty"),

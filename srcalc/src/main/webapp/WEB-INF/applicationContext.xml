@@ -25,7 +25,10 @@
         <!-- All pages require one to be an authenticated user. -->
         <security:intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/**" access="ROLE_USER" />
-        <security:form-login />
+        <!-- Use the generated form login. Always redirect to the home page to
+             avoid "No current calculation" errors. -->
+        <security:form-login
+            default-target-url="/" always-use-default-target='true' />
         <security:logout logout-url="/logout" />
     </security:http>
     
