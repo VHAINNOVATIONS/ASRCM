@@ -26,4 +26,7 @@ bin\asadmin create-service
 REM Start the Windows service.
 sc start domain1
 
+call create_database.bat
+call setup_vistalink.bat
+
 :End

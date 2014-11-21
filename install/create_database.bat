@@ -1,10 +1,11 @@
 @echo off
 
+REM Creates the srcalc database and Glassfish connectors to the database.
+
 SETLOCAL ENABLEEXTENSIONS
 
-SET SRCALC_PASSWORD=zSIMJibMiXrN
-SET MYSQL="C:\Program Files\MySQL\MySQL Server 5.6\bin\mysql"
-SET ASADMIN="C:\asrc\glassfish3\glassfish\bin\asadmin.bat"
+REM Load configuration settings.
+call config.bat
 
 REM Note: the 'root' user should have auto-login ability
 
@@ -13,7 +14,10 @@ echo CREATE USER 'srcalc'@'localhost' IDENTIFIED BY '%SRCALC_PASSWORD%'; | %MYSQ
 IF ERRORLEVEL 1 goto Abort
 
 echo Creating 'srcalc' database...
+REM go into resources directory for reference to procedures_2013.csv
+pushd resources
 %MYSQL% -u root < create_database.sql
+popd
 IF ERRORLEVEL 1 goto Abort
 
 echo Populating database with base data set...
