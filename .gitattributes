@@ -1,0 +1,3 @@
+# The 'gradlew' script should always have LF endings.
+gradlew text eol=lf
+

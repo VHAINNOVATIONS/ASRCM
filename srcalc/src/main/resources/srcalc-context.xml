@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+       
+    <!-- *** Data Access Beans *** -->
+
+	<bean id="srcalcSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="srcalcDataSource" />
+		<property name="packagesToScan" value="gov.va.med.srcalc.domain" />
+		<!-- Improve default column naming. -->
+		<property name="namingStrategy">
+		  <bean class="org.hibernate.cfg.ImprovedNamingStrategy" />
+		</property>
+	</bean>
+
+	<bean id="srcalcTransactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="srcalcSessionFactory"/>
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="srcalcTransactionManager"/>
+	
+	<!-- *** Domain Model and Services *** -->
+	
+	<!-- Note: we use autowiring (via @Inject) for the constructor arguments of
+	     DAOs and Services. This reduces the amount of configuration necessary
+	     in this file while still allowing the objects to be used as POJOs out-
+	     side of the Spring container. -->
+	
+	<!-- DAOs -->
+	<bean id="specialtyDao" class="gov.va.med.srcalc.db.SpecialtyDao" />
+
+    <!-- Services -->
+	<bean id="calculationService" class="gov.va.med.srcalc.service.DefaultCalculationService" />
+
+    <!-- Message Lookup -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list><value>messages</value></list>
+        </property>
+    </bean>
+</beans>

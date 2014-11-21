@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	<display-name>srcalc</display-name>
+
+	<!-- Spring DispatcherServlet. Will load srcalc-servlet.xml. -->
+	<servlet>
+		<servlet-name>srcalc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- We only use a single WebApplicationContext for the whole application.
+		     Don't try to load a servlet-specific context here. -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value></param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>srcalc</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<!-- Creates the root WebApplicationContext from applicationContext.xml. -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>	
+
+	<!-- Declare that we depend on the jdbc/srcalcDB resource supplied by the
+	     container. -->
+	<resource-env-ref>
+	   <resource-env-ref-name>jdbc/srcalcDB</resource-env-ref-name>
+	   <resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+	</resource-env-ref>
+
+	<!-- Glassfish seems to require that we specify all JNDI resources here.
+	     This doesn't support dynamic querying of the VistaLinkConnectionFactory
+	     JNDI name, so we'll have to solve this later. -->
+	<resource-env-ref>
+	   <resource-env-ref-name>vlj/Asrc500</resource-env-ref-name>
+	   <resource-env-ref-type>javax.resource.cci.ConnectionFactory</resource-env-ref-type>
+	</resource-env-ref>
+
+</web-app>

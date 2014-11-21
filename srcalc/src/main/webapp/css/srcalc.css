@@ -1,0 +1,301 @@
+/*! HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
+
+html,
+button,
+input,
+select,
+textarea {
+    color: #222;
+}
+
+html {
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+::-moz-selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+::selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+audio,
+canvas,
+img,
+video {
+    vertical-align: middle;
+}
+
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.browsehappy {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+body {
+	margin: 1em;
+}
+
+/* Make the main content fixed-width. */
+body > section {
+	width: 768px;
+}
+
+/* If Javascript is enabled, pre-hide all dialogs to avoid them flashing on the
+   screen before jQuery UI initializes. */
+.js .dialog {
+	display: none;
+}
+
+/* The Specialty & Patient */
+.calculationSummary {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.calculationSummary label.variableName {
+	display: inline-block;
+	width: 20%;
+}
+
+#specialtyRadios {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+/* srcalcForm is the standard form appearance in srcalc */
+
+/* We use <ol>'s for the list of fields. */
+form.srcalcForm fieldset > ol {
+	list-style-type: none;
+	margin: 0;
+	padding-left: 0;
+}
+
+/* Put some vertical spacing between the variables. */
+form.srcalcForm fieldset > ol > li {
+	margin: 5px 0;
+}
+
+form.srcalcForm label.variableName {
+	display: inline-block;
+	width: 20%;
+}
+
+form.srcalcForm label.radioLabel {
+	padding-right: 1em;
+}
+
+#riskVarForm fieldset {
+	margin: 1em 0;
+}
+
+#riskVarForm fieldset > legend {
+	/* The legends are like headings for the groups */
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+#riskVarForm .error {
+	color: red;
+}
+
+#inputValueTable th {
+	text-align: left;
+	/* Don't allow the columns to get too small. */
+	min-width: 8em;
+}
+
+/* Styles for procedure selection */
+
+.procedureSelectGroup th, .procedureSelectGroup td {
+	/* Don't let the cells mash up against each other. */
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+.procedureSelectGroup td.selectRadio {
+	text-align: center;
+}
+
+.procedureSelectGroup tr {
+    border-bottom: 1px solid #ccc;
+}
+
+a.selectProcedureLink {
+	font-size: 0.9em;
+}
+
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+
+}
+
+@media print,
+       (-o-min-device-pixel-ratio: 5/4),
+       (-webkit-min-device-pixel-ratio: 1.25),
+       (min-resolution: 120dpi) {
+
+}
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+
+.ir {
+    background-color: transparent;
+    border: 0;
+    overflow: hidden;
+    *text-indent: -9999px;
+}
+
+.ir:before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 150%;
+}
+
+.hidden {
+    display: none !important;
+    visibility: hidden;
+}
+
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
+/* ==========================================================================
+   Print styles
+   ========================================================================== */
+
+@media print {
+    * {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    .ir a:after,
+    a[href^="javascript:"]:after,
+    a[href^="#"]:after {
+        content: "";
+    }
+
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    @page {
+        margin: 0.5cm;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}

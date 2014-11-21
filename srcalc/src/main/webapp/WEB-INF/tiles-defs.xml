@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+  <definition name="srcalc.selectSpecialty" template="/WEB-INF/views/layouts/main.jsp">
+    <put-attribute name="title" value="Select Specialty" />
+    <put-attribute name="body" value="/WEB-INF/views/tiles/selectSpecialty.jsp" />
+  </definition>
+  <definition name="srcalc.enterVariables" template="/WEB-INF/views/layouts/main.jsp">
+    <put-attribute name="title" value="Enter Variables" />
+    <put-attribute name="body" value="/WEB-INF/views/tiles/enterVariables.jsp" />
+  </definition>
+  <definition name="srcalc.displayResults" template="/WEB-INF/views/layouts/main.jsp">
+    <put-attribute name="title" value="Calculation Results" />
+    <put-attribute name="body" value="/WEB-INF/views/tiles/displayResults.jsp" />
+  </definition>
+</tiles-definitions>

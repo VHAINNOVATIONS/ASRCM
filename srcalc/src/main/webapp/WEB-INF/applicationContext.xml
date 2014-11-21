@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/jee
+       http://www.springframework.org/schema/jee/spring-jee.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+       
+    <!-- Define our DataSource (from JNDI). -->
+    <jee:jndi-lookup id="srcalcDataSource" jndi-name="java:comp/env/jdbc/srcalcDB"/>
+       
+    <!-- Import the root (non-web-specific) srcalc beans. -->
+    <import resource="classpath:/srcalc-context.xml"/>
+       
+    <!-- Import the controller beans. -->
+    <import resource="classpath:/srcalc-controller.xml"/>
+
+    <!-- Configure Spring Security. -->
+    <security:http>
+        <!-- All pages require one to be an authenticated user. -->
+        <security:intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:intercept-url pattern="/**" access="ROLE_USER" />
+        <!-- Use the generated form login. Always redirect to the home page to
+             avoid "No current calculation" errors. -->
+        <security:form-login
+            default-target-url="/" always-use-default-target='true' />
+        <security:logout logout-url="/logout" />
+    </security:http>
+    
+    <!-- User VistaUserDetailsService to load users. -->
+    <bean id="vistaDaoFactory" class="gov.va.med.srcalc.vista.VistaLinkVistaDaoFactory" />
+    <bean id="vistaUserDetailsService" class="gov.va.med.srcalc.security.VistaUserDetailsService" />
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="vistaUserDetailsService" />
+    </security:authentication-manager>
+</beans>
