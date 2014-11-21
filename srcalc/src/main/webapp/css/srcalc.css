@@ -70,6 +70,12 @@ body > section {
 	width: 768px;
 }
 
+/* If Javascript is enabled, pre-hide all dialogs to avoid them flashing on the
+   screen before jQuery UI initializes. */
+.js .dialog {
+	display: none;
+}
+
 /* The Specialty & Patient */
 .calculationSummary {
     list-style-type: none;

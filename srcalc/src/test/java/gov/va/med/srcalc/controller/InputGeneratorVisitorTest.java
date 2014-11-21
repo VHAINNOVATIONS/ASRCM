@@ -81,22 +81,19 @@ public class InputGeneratorVisitorTest
         // Verify behavior
         var.accept(fVisitor);
         final String EXPECTED =
-                "<div class=\"procedureSelectGroup\" data-var-name=\"proc\" title=\"Select proc\">" +
+                "<div class=\"procedureSelectGroup dialog\" data-var-name=\"proc\" title=\"Select proc\">" +
                 "<table>" +
-                "<thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></thead>" +
+                "<thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></tr></thead>\n" +
                 "<tr>" +
                 "<td class=\"selectRadio\">" +
                 "<input type=\"radio\" name=\"proc\" value=\"26545\" data-display-string=\"26545 - Repair right hand (5.05)\"></td>" +
-                "<td>26545</td><td>Repair right hand - you know, the thing with fingers</td><td>5.05</td></tr>" +
+                "<td>26545</td><td>Repair right hand - you know, the thing with fingers</td><td>5.05</td></tr>\n" +
                 "<tr>" +
                 "<td class=\"selectRadio\">" +
                 "<input type=\"radio\" name=\"proc\" value=\"26546\" data-display-string=\"26546 - Repair left hand (10.06)\"></td>" +
-                "<td>26546</td><td>Repair left hand - you know, the thing with fingers</td><td>10.06</td></tr>" +
+                "<td>26546</td><td>Repair left hand - you know, the thing with fingers</td><td>10.06</td></tr>\n" +
                 "</table>" +
-                "</div>" +
-                "<input type=\"hidden\" name=\"proc\">" +
-                "<span id=\"selectedProcedureDisplay\"></span> " +
-                "<a id=\"selectProcedure_proc\" class=\"selectProcedureLink\" href=\"#\">Select</a>";
+                "</div>";
         assertEquals(EXPECTED, fWriter.toString());
     }
     

@@ -46,7 +46,7 @@ public class ProcedureLoaderVisitor implements VariableVisitor
         final List<Procedure> procedures = query.list();
         variable.setProcedures(procedures);
         
-        fLogger.info("Loaded all procedures.");
+        fLogger.info("Loaded all {} procedures.", procedures.size());
     }
     
 }

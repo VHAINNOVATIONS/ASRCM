@@ -70,17 +70,11 @@ class InputGeneratorVisitor implements VariableVisitor
     public void visitProcedure(final ProcedureVariable variable) throws Exception
     {
         /*-
-         * Here's the general idea:
+         * Write an HTML table with a row for each procedure containing the
+         * CPT code, long description, RVU, and a radio button for selection.
          * 
-         * - We have a jQuery UI Dialog containing a table of all the procedures
-         *   with a radio button for each procedure to select it and a Select
-         *   button to close the dialog.
-         *   
-         * - When the user clicks Select, the CPT code is saved to a hidden
-         *   input and Procedure.toString() is displayed on the variable entry
-         *   form.
-         *   
-         * Of course the below code is coupled with enterVariables.jsp.
+         * Javascript code in enterVariables.jsp transforms this table into
+         * a jQuery UI dialog for a much better user experience.
          */
         
         // Cap the table at 100 rows for now.
@@ -88,15 +82,19 @@ class InputGeneratorVisitor implements VariableVisitor
         final List<Procedure> truncatedProcedures =
                 variable.getProcedures().subList(0, numToDisplay);
         
+        // Put the variable name in a "data" attribute to make it accessible to
+        // Javascript.
         fWriter.write(String.format(
-                "<div class=\"procedureSelectGroup\" data-var-name=\"%s\" title=\"Select %s\">",
+                "<div class=\"procedureSelectGroup dialog\" data-var-name=\"%s\" title=\"Select %s\">",
                 variable.getDisplayName(), variable.getDisplayName()));
         fWriter.write("<table>");
-        fWriter.write("<thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></thead>");
+        fWriter.write("<thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></tr></thead>\n");
         for (Procedure p : truncatedProcedures)
         {
             fWriter.write("<tr>");
             fWriter.write(String.format(
+                    // Write Procedure.toString() as a "data" attribute to make
+                    // it accessible to Javascript.
                     "<td class=\"selectRadio\"><input type=\"radio\" name=\"%s\" value=\"%s\" data-display-string=\"%s\"></td>",
                     variable.getDisplayName(),
                     p.getCptCode(),
@@ -106,16 +104,9 @@ class InputGeneratorVisitor implements VariableVisitor
                     p.getCptCode(),
                     p.getLongDescription(),
                     Float.toString(p.getRvu())));
-            fWriter.write("</tr>");
+            fWriter.write("</tr>\n");
         }
         fWriter.write("</table>");
         fWriter.write("</div>");
-        // TODO: write this using Javascript instead
-        fWriter.write(String.format(
-                "<input type=\"hidden\" name=\"%s\">",
-                variable.getDisplayName()));
-        fWriter.write(String.format(
-                "<span id=\"selectedProcedureDisplay\"></span> <a id=\"selectProcedure_%s\" class=\"selectProcedureLink\" href=\"#\">Select</a>",
-                variable.getDisplayName(), variable.getDisplayName()));
     }
 }
