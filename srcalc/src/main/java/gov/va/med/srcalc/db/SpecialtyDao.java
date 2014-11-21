@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import gov.va.med.srcalc.domain.Specialty;
+import gov.va.med.srcalc.domain.variable.Variable;
 
 @Repository
 public class SpecialtyDao
@@ -38,7 +39,24 @@ public class SpecialtyDao
         final Query q = getCurrentSession().createQuery(
                 "from Specialty s left join fetch s.variables where s.name = :name");
         q.setString("name", name);
-        return (Specialty)q.uniqueResult();
+        final Specialty s = (Specialty)q.uniqueResult();
+        // Kludge until I figure out how to get Hibernate to automatically load
+        // the procedures for a ProcedureVariable.
+        ProcedureLoaderVisitor visitor = new ProcedureLoaderVisitor(getCurrentSession());
+        for (Variable var : s.getVariables())
+        {
+            try
+            {
+                var.accept(visitor);
+            }
+            catch (Exception e)
+            {
+                // ProcedureLoaderVisitor should never throw a checked exception.
+                throw new RuntimeException(
+                        "ProcedureLoaderVisitor threw an Exception!", e);
+            }
+        }
+        return s;
     }
 
     @SuppressWarnings("unchecked") // trust Hibernate

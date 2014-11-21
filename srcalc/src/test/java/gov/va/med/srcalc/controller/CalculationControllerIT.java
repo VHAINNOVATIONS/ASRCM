@@ -5,7 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import gov.va.med.srcalc.domain.SampleSpecialties;
+import gov.va.med.srcalc.domain.SampleObjects;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -75,7 +75,7 @@ public class CalculationControllerIT
     @Transactional // single transaction for single rollback
     public void selectThoracicSpecialty() throws Exception
     {
-        selectSpecialty(SampleSpecialties.sampleThoracicSpecialty().getName());
+        selectSpecialty(SampleObjects.sampleThoracicSpecialty().getName());
     }
     
     @Test

@@ -21,4 +21,6 @@ alter table procedure_variable add index FK_liut45a9x2av2o51y248r1s7d (id), add 
 alter table specialty_variable add index FK_fnk6mxok15rfupep6nmrvcirn (variable_id), add constraint FK_fnk6mxok15rfupep6nmrvcirn foreign key (variable_id) references variable (id);
 alter table specialty_variable add index FK_1hnl3lgui0b9rp6gwtrdn3n9n (specialty_id), add constraint FK_1hnl3lgui0b9rp6gwtrdn3n9n foreign key (specialty_id) references specialty (id);
 
+load data local infile 'procedures_2013.csv' into table cpt fields terminated by ',' enclosed by '"' lines terminated by '\r\n' (id, cpt_code, rvu, active, long_description, short_description);
+
 GRANT ALL PRIVILEGES ON srcalc.* TO 'srcalc'@'localhost';

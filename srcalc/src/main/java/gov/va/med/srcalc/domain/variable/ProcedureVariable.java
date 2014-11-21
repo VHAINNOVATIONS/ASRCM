@@ -15,30 +15,36 @@ public class ProcedureVariable extends Variable
     
     public ProcedureVariable()
     {
-        setDummyProcedureList();
+        // Sentinel values to detect if procedures have not been loaded. See
+        // getProcedures().
+        fProcedures = null;
+        fProcedureMap = null;
     }
     
     public ProcedureVariable(
             String displayName)
     {
         super(displayName);
-        
-        setDummyProcedureList();
     }
     
-    private void setDummyProcedureList()
-    {
-        setProcedures(Arrays.asList(
-                // TODO: actually pull the whole procedure list. Will be done as
-                // part of ASRC-7.
-                new Procedure("26545", 5.05f, "Repair right hand", "Repair right hand - you know, the thing with fingers"),
-                new Procedure("26546", 10.06f, "Repair left hand", "Repair left hand - you know, the thing with fingers")));
-    }
-    
-    @Transient // transient for now until we figure out how to do this association
+    /**
+     * <p>Returns the List of all active Procedures. Note that this is not a member
+     * collection of the ProcedureVariable, it is just for navigability.</p>
+     * 
+     * <p><strong>Warning:</strong> this collection is not automatically loaded
+     * when the ProcedureVariable is loaded from the Database. It must be set
+     * via {@link #setProcedures(List)} after loading.</p>
+     * @return an unmodifiable list
+     * @throws IllegalStateException if the procedure list has not been set
+     */
+    @Transient // see method Javadocs
     public List<Procedure> getProcedures()
     {
-        return fProcedures;
+        if (fProcedures == null)
+        {
+            throw new IllegalStateException("Procedure list not set!");
+        }
+        return Collections.unmodifiableList(fProcedures);
     }
     
     public void setProcedures(List<Procedure> procedures)
@@ -55,10 +61,15 @@ public class ProcedureVariable extends Variable
     
     /**
      * Returns a Map of CPT Code to Procedure for convenience. Unmodifiable.
+     * @throws IllegalStateException if the procedure list has not been set
      */
     @Transient // this is generated, not persistent
     public Map<String, Procedure> getProcedureMap()
     {
+        if (fProcedureMap == null)
+        {
+            throw new IllegalStateException("Procedure list not set!");
+        }
         return Collections.unmodifiableMap(fProcedureMap);
     }
     

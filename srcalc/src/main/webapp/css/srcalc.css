@@ -70,6 +70,12 @@ body > section {
 	width: 768px;
 }
 
+/* If Javascript is enabled, pre-hide all dialogs to avoid them flashing on the
+   screen before jQuery UI initializes. */
+.js .dialog {
+	display: none;
+}
+
 /* The Specialty & Patient */
 .calculationSummary {
     list-style-type: none;
@@ -129,7 +135,25 @@ form.srcalcForm label.radioLabel {
 	min-width: 8em;
 }
 
+/* Styles for procedure selection */
 
+.procedureSelectGroup th, .procedureSelectGroup td {
+	/* Don't let the cells mash up against each other. */
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+.procedureSelectGroup td.selectRadio {
+	text-align: center;
+}
+
+.procedureSelectGroup tr {
+    border-bottom: 1px solid #ccc;
+}
+
+a.selectProcedureLink {
+	font-size: 0.9em;
+}
 
 
 /* ==========================================================================

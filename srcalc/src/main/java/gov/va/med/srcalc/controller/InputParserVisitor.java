@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.servlet.ServletRequest;
 
+// Using StringUtils instead of commons-lang to ease the dependencies.
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 
 import gov.va.med.srcalc.domain.Procedure;
@@ -45,14 +47,23 @@ public class InputParserVisitor implements VariableVisitor
     public void visitMultiSelect(final MultiSelectVariable variable)
     {
         // FIXME: assumed to be gender
+        final String value = fRequest.getGender();
+        if (value == null)
+        {
+            fErrors.rejectValue(variable.getDisplayName(), "noSelection", "no selection");
+            return;
+        }
         // Find the selected option.
         final Map<String, MultiSelectOption> optionMap = buildOptionMap(variable.getOptions());
-        final MultiSelectOption selectedOption = optionMap.get(fRequest.getGender());
+        final MultiSelectOption selectedOption = optionMap.get(value);
         if (selectedOption == null)
         {
             fErrors.rejectValue(variable.getDisplayName(), "invalid", "not a valid selection");
         }
-        fValues.add(new MultiSelectValue(variable, selectedOption));
+        else
+        {
+            fValues.add(new MultiSelectValue(variable, selectedOption));
+        }
     }
     
     @Override
@@ -85,13 +96,22 @@ public class InputParserVisitor implements VariableVisitor
     @Override
     public void visitProcedure(ProcedureVariable variable) throws Exception
     {
+        final String selectedCpt = fRequest.getProcedure();
+        if (StringUtils.isEmpty(selectedCpt))
+        {
+            fErrors.rejectValue(variable.getDisplayName(), "noSelection", "no selection");
+            return;
+        }
         final Procedure selectedProcedure =
-                variable.getProcedureMap().get(fRequest.getProcedure());
+                variable.getProcedureMap().get(selectedCpt);
         if (selectedProcedure == null)
         {
             fErrors.rejectValue(variable.getDisplayName(), "invalid", "not a valid procedure");
         }
-        fValues.add(new ProcedureValue(variable, selectedProcedure));
+        else
+        {
+            fValues.add(new ProcedureValue(variable, selectedProcedure));
+        }
     }
     
     public List<Value> getValues()

@@ -24,4 +24,45 @@
             </ol>
         </fieldset>
         <button type="submit">Run Calculation</button>
+        <script>
+        $(document).ready(function(){
+        	
+        	// Note that this code assumes there is only one procedureSelectGroup
+        	// on the page.
+
+        	var procedureSelectGroup = $(".procedureSelectGroup");
+        	var procedureVarName = procedureSelectGroup.data("var-name");
+        	
+        	// We're about to replace the procedureSelectGroup with a jQuery UI
+        	// dialog. Insert a hidden input and a textual display as the target
+        	// of the user selection from the dialog.
+        	var hiddenInput = $('<input type="hidden" name=' + procedureVarName + '>');
+        	var userDisplay = $('<span>(none)</span>');
+        	var selectLink = $('<a class="selectProcedureLink" href="#">Select</a>');
+        	procedureSelectGroup.after(hiddenInput, userDisplay, ' ', selectLink);
+        	
+        	function selectProcedure() {
+        		var selectedRadio = procedureSelectGroup.find('input[type=radio]:checked');
+        		hiddenInput.val(selectedRadio.val());
+        		userDisplay.html(selectedRadio.data('display-string'));
+        		procedureSelectDialog.dialog("close");
+        	}
+        	
+        	var procedureSelectDialog = procedureSelectGroup.dialog({
+        		autoOpen: false,
+        		width: 700,   // body with is 768px
+        		modal: true,
+        		buttons: {
+        			"Select": selectProcedure
+        		}
+        	});
+        	
+        	selectLink.on('click', function() {
+                var windowHeight = $(window).height();
+                // Make the height 90% of the current window height.
+                procedureSelectDialog.dialog("option", "height", windowHeight * 0.9);
+                procedureSelectDialog.dialog("open");
+        	})
+        })
+        </script>
         </form:form>
