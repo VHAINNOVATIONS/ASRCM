@@ -1,3 +1,5 @@
 # The 'gradlew' script should always have LF endings.
 gradlew text eol=lf
 
+# The batch files should always have CRLF (Windows-style) endings.
+*.bat text eol=crlf
