@@ -28,5 +28,6 @@ sc start domain1
 
 call create_database.bat
 call setup_vistalink.bat
+call deploy.bat
 
 :End
