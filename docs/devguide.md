@@ -32,3 +32,11 @@ Web Application Developer Guide
 VistA Patch Developer Guide
 ---------------------------
 
+### Developer Workstation Setup
+
+### Obtaining the Source Code and Dependencies
+
+### Testing the VistA Patch
+
+### Enhancing the VistA Patch
+
