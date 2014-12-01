@@ -9,8 +9,8 @@
     <target>System.err</target>
   </appender>
   
-  <!-- Change to debug if desired. -->
-  <logger name="gov.va.med.srcalc" level="info"/>
+  <!-- Log at debug level for tests to help diagnose failures. -->
+  <logger name="gov.va.med.srcalc" level="debug"/>
   
   <!-- Show Hibernate-generated SQL. -->
   <logger name="org.hibernate.SQL" level="debug" />
