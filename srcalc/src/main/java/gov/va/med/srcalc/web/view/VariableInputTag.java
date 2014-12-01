@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.controller;
+package gov.va.med.srcalc.web.view;
 
 import java.io.IOException;
 

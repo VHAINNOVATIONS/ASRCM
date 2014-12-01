@@ -16,7 +16,7 @@
     <!--  *** Controllers *** -->
     
     <!-- Use component scanning for now. -->
-    <context:component-scan base-package="gov.va.med.srcalc.controller" />
+    <context:component-scan base-package="gov.va.med.srcalc.web.controller" />
     
     <!-- *** Views *** -->
     <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">

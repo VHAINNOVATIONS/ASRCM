@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.controller;
+package gov.va.med.srcalc.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

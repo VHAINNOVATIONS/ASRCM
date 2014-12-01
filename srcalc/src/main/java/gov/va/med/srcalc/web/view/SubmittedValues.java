@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.controller;
+package gov.va.med.srcalc.web.view;
 
 /**
  * Temporary kludge until I figure out how to dynamically populate and validate

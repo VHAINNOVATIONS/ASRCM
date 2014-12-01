@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.controller;
+package gov.va.med.srcalc.web.view;
 
 import static org.junit.Assert.*;
 
@@ -8,6 +8,8 @@ import java.util.List;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
+import gov.va.med.srcalc.web.view.InputParserVisitor;
+import gov.va.med.srcalc.web.view.SubmittedValues;
 
 import org.junit.Test;
 import org.springframework.validation.BeanPropertyBindingResult;

@@ -14,7 +14,7 @@
 	   <description>
            Creates an HTML input field for a gov.va.med.srcalc.domain.variable.Variable.
        </description>
-	   <tag-class>gov.va.med.srcalc.controller.VariableInputTag</tag-class>
+	   <tag-class>gov.va.med.srcalc.web.view.VariableInputTag</tag-class>
 	   <body-content>empty</body-content>
 	   <attribute>
 	       <name>variable</name>

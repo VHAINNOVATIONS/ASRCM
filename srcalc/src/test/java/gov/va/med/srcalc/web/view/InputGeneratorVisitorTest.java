@@ -1,9 +1,10 @@
-package gov.va.med.srcalc.controller;
+package gov.va.med.srcalc.web.view;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
+import gov.va.med.srcalc.web.view.InputGeneratorVisitor;
 
 import java.io.StringWriter;
 import java.util.Arrays;
