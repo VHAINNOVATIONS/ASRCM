@@ -7,6 +7,9 @@ import javax.servlet.ServletRequest;
 
 
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 // Using StringUtils instead of commons-lang to ease the dependencies.
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
@@ -22,6 +25,8 @@ import gov.va.med.srcalc.domain.variable.*;
  */
 public class InputParserVisitor implements VariableVisitor
 {
+    private static final Logger fLogger = LoggerFactory.getLogger(InputParserVisitor.class);
+
     private final SubmittedValues fRequest;
     private final Errors fErrors;
     private final ArrayList<Value> fValues;
@@ -49,6 +54,8 @@ public class InputParserVisitor implements VariableVisitor
     @Override
     public void visitMultiSelect(final MultiSelectVariable variable)
     {
+        fLogger.debug("Parsing MultiSelectVariable {}", variable);
+
         // FIXME: assumed to be gender
         final String value = fRequest.getGender();
         if (value == null)
@@ -72,6 +79,8 @@ public class InputParserVisitor implements VariableVisitor
     @Override
     public void visitNumerical(final NumericalVariable variable)
     {
+        fLogger.debug("Parsing NumericalVariable {}", variable);
+
         // FIXME: assumed to be age
         final int value = fRequest.getAge();
         if (value < variable.getMinValue())
@@ -99,6 +108,8 @@ public class InputParserVisitor implements VariableVisitor
     @Override
     public void visitProcedure(ProcedureVariable variable) throws Exception
     {
+        fLogger.debug("Parsing ProcedureVariable {}", variable);
+
         final String selectedCpt = fRequest.getProcedure();
         if (StringUtils.isEmpty(selectedCpt))
         {
