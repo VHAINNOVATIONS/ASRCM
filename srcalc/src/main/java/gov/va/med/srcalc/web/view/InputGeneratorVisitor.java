@@ -27,7 +27,7 @@ class InputGeneratorVisitor implements VariableVisitor
                 "<label class=\"radioLabel\">" +
                     "<input type=\"radio\" name=\"%s\" value=\"%s\"> " +
                     "%s</label>",
-                variable.getDisplayName(),
+                VariableEntry.makeDynamicValuePath(variable.getDisplayName()),
                 option.getValue(),
                 option.getValue()));
         }
@@ -63,7 +63,8 @@ class InputGeneratorVisitor implements VariableVisitor
         
         fWriter.write(String.format(
                 "<input type=\"text\" name=\"%s\" size=\"%d\">",
-                variable.getDisplayName(), maxExpectedDigits));
+                VariableEntry.makeDynamicValuePath(variable.getDisplayName()),
+                maxExpectedDigits));
     }
     
     @Override
@@ -85,8 +86,8 @@ class InputGeneratorVisitor implements VariableVisitor
         // Put the variable name in a "data" attribute to make it accessible to
         // Javascript.
         fWriter.write(String.format(
-                "<div class=\"procedureSelectGroup dialog\" data-var-name=\"%s\" title=\"Select %s\">",
-                variable.getDisplayName(), variable.getDisplayName()));
+                "<div class=\"procedureSelectGroup dialog\" title=\"Select %s\">",
+                variable.getDisplayName()));
         fWriter.write("<table>");
         fWriter.write("<thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></tr></thead>\n");
         for (Procedure p : truncatedProcedures)
@@ -96,7 +97,7 @@ class InputGeneratorVisitor implements VariableVisitor
                     // Write Procedure.toString() as a "data" attribute to make
                     // it accessible to Javascript.
                     "<td class=\"selectRadio\"><input type=\"radio\" name=\"%s\" value=\"%s\" data-display-string=\"%s\"></td>",
-                    variable.getDisplayName(),
+                    VariableEntry.makeDynamicValuePath(variable.getDisplayName()),
                     p.getCptCode(),
                     p.toString()));
             fWriter.write(String.format(

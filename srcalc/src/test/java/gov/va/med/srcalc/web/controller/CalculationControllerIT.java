@@ -5,8 +5,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.web.controller.CalculationController;
+import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -88,8 +90,9 @@ public class CalculationControllerIT
         
         fMockMvc.perform(post("/enterVars").session(fSession)
                 // TODO: need a scalable way to specify variables, but just
-                // hardcode the age parameter for now.
-                .param("Age", "55").param("Procedure", "26546"))
+                // hardcode the parameters for now.
+                .param(makeDynamicValuePath("Age"), "55")
+                .param(makeDynamicValuePath("Procedure"), "26546"))
             .andExpect(redirectedUrl("/displayResults"));
         
         fMockMvc.perform(get("/displayResults").session(fSession))
@@ -105,10 +108,9 @@ public class CalculationControllerIT
         selectThoracicSpecialty();
         
         fMockMvc.perform(post("/enterVars").session(fSession)
-                .param("Age", "-2"))
-            .andExpect(model().attributeHasErrors("submittedValues"))
+                .param(makeDynamicValuePath("Age"), "-2"))
+            .andExpect(model().attributeHasErrors("variableEntry"))
             .andExpect(status().is(200));
-        // TODO: this may not be how I actually implement invalid values
     }
     
     @Test
@@ -118,20 +120,19 @@ public class CalculationControllerIT
         selectSpecialty("Cardiac");
         
         fMockMvc.perform(post("/enterVars").session(fSession)
-                .param("Gender", "Male"))
+                .param(makeDynamicValuePath("Gender"), "Male"))
             .andExpect(redirectedUrl("/displayResults"));
     }
     
     @Test
     @Transactional
-    public void enterInvalidCardiacVariables() throws Exception
+    public void enterIncompleteCardiacVariables() throws Exception
     {
         selectSpecialty("Cardiac");
         
-        fMockMvc.perform(post("/enterVars").session(fSession)
-                .param("Gender", "Unknown"))
-            .andExpect(model().attributeHasErrors("submittedValues"))
+        fMockMvc.perform(post("/enterVars").session(fSession))
+            // Note no variable parameters specified.
+            .andExpect(model().attributeHasErrors("variableEntry"))
             .andExpect(status().is(200));
-        // TODO: this may not be how I actually implement invalid values
     }
 }
