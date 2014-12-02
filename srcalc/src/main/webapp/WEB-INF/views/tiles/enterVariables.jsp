@@ -9,11 +9,12 @@
         <li><label class="variableName">Patient:</label> ${calculation.patient}</li>
         </ol>
         <form:form id="riskVarForm" cssClass="srcalcForm" method="post" action="enterVars" commandName="submittedValues">
+        <c:forEach var="variableGroup" items="${calculation.variableGroups}">
         <fieldset>
-            <legend>Variables</legend>
+            <legend>${variableGroup.name}</legend>
             <!-- Use an ordered list for the list of fields. -->
             <ol>
-            <c:forEach var="variable" items="${calculation.variables}">
+            <c:forEach var="variable" items="${variableGroup.variables}">
             <li><label class="variableName">${variable.displayName}:</label>
             <!-- TODO: can I preserve the inputted value even if invalid? -->
             <srcalc:variableInput variable="${variable}"/>
@@ -23,6 +24,7 @@
             </c:forEach>
             </ol>
         </fieldset>
+        </c:forEach>
         <button type="submit">Run Calculation</button>
         <script>
         $(document).ready(function(){

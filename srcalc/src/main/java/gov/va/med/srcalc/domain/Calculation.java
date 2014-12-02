@@ -1,7 +1,6 @@
 package gov.va.med.srcalc.domain;
 
-import gov.va.med.srcalc.domain.variable.Variable;
-import gov.va.med.srcalc.domain.variable.Value;
+import gov.va.med.srcalc.domain.variable.*;
 
 import java.io.Serializable;
 import java.util.*;
@@ -89,6 +88,23 @@ public class Calculation implements Serializable
         }
         
         return fSpecialty.getVariables();
+    }
+    
+    /**
+     * Returns the selected specialty's variables bucketed into groups. See
+     * {@link Specialty#getVariableGroups()} for details.
+     * @throws IllegalStateException if no specialty has been set.
+     */
+    public List<PopulatedVariableGroup> getVariableGroups()
+    {
+        // Ensure we are in the proper state.
+        if (fSpecialty == null)
+        {
+            throw new IllegalStateException(
+                    "Cannot return list of variables because no specialty has been set.");
+        }
+        
+        return fSpecialty.getVariableGroups();
     }
 
     public List<Value> getValues()

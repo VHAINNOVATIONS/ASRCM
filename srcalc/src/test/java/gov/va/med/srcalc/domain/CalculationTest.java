@@ -34,4 +34,10 @@ public class CalculationTest
         Calculation.forPatient(dummyPatient()).getVariables();
     }
     
+    @Test(expected = IllegalStateException.class)
+    public final void testGetVariableGroupsIllegal()
+    {
+        Calculation.forPatient(dummyPatient()).getVariableGroups();
+    }
+    
 }

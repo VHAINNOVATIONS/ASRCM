@@ -9,13 +9,17 @@ public class NumericalVariable extends Variable
     private int fMinValue = 0;
     private int fMaxValue = Integer.MAX_VALUE;
     
-    public NumericalVariable()
+    /**
+     * For reflection-based construction only. Business code should use
+     * {@link #NumericalVariable(String, VariableGroup)}.
+     */
+    NumericalVariable()
     {
     }
     
-    public NumericalVariable(final String displayName)
+    public NumericalVariable(final String displayName, final VariableGroup group)
     {
-        super(displayName);
+        super(displayName, group);
     }
 
     /**

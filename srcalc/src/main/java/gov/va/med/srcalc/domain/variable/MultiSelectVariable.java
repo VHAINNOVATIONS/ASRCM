@@ -25,14 +25,21 @@ public class MultiSelectVariable extends Variable
     
     private List<MultiSelectOption> fOptions;
     
-    public MultiSelectVariable()
+    /**
+     * For reflections-based construction only. Business code should use
+     * {@link #MultiSelectVariable(String, VariableGroup, DisplayType, List)}.
+     */
+    MultiSelectVariable()
     {
     }
     
     public MultiSelectVariable(
-            final String displayName, final DisplayType displayType, final List<MultiSelectOption> options)
+            final String displayName,
+            final VariableGroup group,
+            final DisplayType displayType,
+            final List<MultiSelectOption> options)
     {
-        super(displayName);
+        super(displayName, group);
         fDisplayType = displayType;
         fOptions = options;
     }

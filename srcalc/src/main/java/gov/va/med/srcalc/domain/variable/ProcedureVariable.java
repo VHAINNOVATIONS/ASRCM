@@ -13,7 +13,11 @@ public class ProcedureVariable extends Variable
     private List<Procedure> fProcedures;
     private HashMap<String, Procedure> fProcedureMap;
     
-    public ProcedureVariable()
+    /**
+     * For reflections-based construction only. Business code should use
+     * {@link #ProcedureVariable(String, VariableGroup)}.
+     */
+    ProcedureVariable()
     {
         // Sentinel values to detect if procedures have not been loaded. See
         // getProcedures().
@@ -22,9 +26,9 @@ public class ProcedureVariable extends Variable
     }
     
     public ProcedureVariable(
-            String displayName)
+            final String displayName, final VariableGroup group)
     {
-        super(displayName);
+        super(displayName, group);
     }
     
     /**
