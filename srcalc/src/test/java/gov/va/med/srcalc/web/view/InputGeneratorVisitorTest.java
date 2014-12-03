@@ -33,7 +33,11 @@ public class InputGeneratorVisitorTest
         List<MultiSelectOption> options = Arrays.asList(
                 new MultiSelectOption("ddvalue1"),
                 new MultiSelectOption("ddvalue2"));
-        MultiSelectVariable var = new MultiSelectVariable("ddTest", DisplayType.Dropdown, options);
+        MultiSelectVariable var = new MultiSelectVariable(
+                "ddTest",
+                SampleObjects.demographicsVariableGroup(),
+                DisplayType.Dropdown,
+                options);
         
         // Verify behavior
         var.accept(fVisitor);
@@ -47,7 +51,11 @@ public class InputGeneratorVisitorTest
         List<MultiSelectOption> options = Arrays.asList(
                 new MultiSelectOption("value1"),
                 new MultiSelectOption("value2"));
-        MultiSelectVariable var = new MultiSelectVariable("radioTest", DisplayType.Radio, options);
+        MultiSelectVariable var = new MultiSelectVariable(
+                "radioTest",
+                SampleObjects.demographicsVariableGroup(),
+                DisplayType.Radio,
+                options);
         
         // Verify behavior
         var.accept(fVisitor);
@@ -62,7 +70,8 @@ public class InputGeneratorVisitorTest
         throws Exception
     {
         // Setup variable
-        NumericalVariable var = new NumericalVariable("numTest");
+        NumericalVariable var = new NumericalVariable(
+                "numTest", SampleObjects.demographicsVariableGroup());
         var.setMinValue(2);
         var.setMaxValue(100);
         
@@ -76,7 +85,8 @@ public class InputGeneratorVisitorTest
         throws Exception
     {
         // Setup variable
-        ProcedureVariable var = new ProcedureVariable("proc");
+        ProcedureVariable var = new ProcedureVariable(
+                "proc", SampleObjects.procedureVariableGroup());
         var.setProcedures(SampleObjects.sampleProcedureList());
         
         // Verify behavior

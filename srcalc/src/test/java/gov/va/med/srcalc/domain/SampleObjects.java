@@ -1,8 +1,8 @@
 package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.Specialty;
-import gov.va.med.srcalc.domain.variable.NumericalVariable;
-import gov.va.med.srcalc.domain.variable.ProcedureVariable;
+import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,9 +38,9 @@ public class SampleObjects
      */
     public static Specialty sampleThoracicSpecialty()
     {
-        final Specialty s = new Specialty(4, 58, "Thoracic");
-        s.getVariables().add(new ProcedureVariable("Procedure"));
-        s.getVariables().add(new NumericalVariable("Age"));
+        final Specialty s = new Specialty(58, "Thoracic");
+        s.getVariables().add(sampleProcedureVariable());
+        s.getVariables().add(sampleAgeVariable());
         return s;
     }
 
@@ -50,14 +50,53 @@ public class SampleObjects
     public static List<Specialty> sampleSpecialtyList()
     {
         return Arrays.asList(
-        	    new Specialty(7, 48, "Cardiac"),
-        	    new Specialty(1, 50, "General Surgery"),
-        	    new Specialty(2, 52, "Neurosurgery"),
-        	    new Specialty(3, 54, "Orthopedic"),
-        	    new Specialty(8, 50, "Other Non-Cardiac Specialty"),
+        	    new Specialty(48, "Cardiac"),
+        	    new Specialty(50, "General Surgery"),
+        	    new Specialty(52, "Neurosurgery"),
+        	    new Specialty(54, "Orthopedic"),
+        	    new Specialty(50, "Other Non-Cardiac Specialty"),
         	    SampleObjects.sampleThoracicSpecialty(),
-        	    new Specialty(5, 59, "Urology"),
-        	    new Specialty(6, 62, "Vascular")
+        	    new Specialty(59, "Urology"),
+        	    new Specialty(62, "Vascular")
                 );
+    }
+
+    public static VariableGroup procedureVariableGroup()
+    {
+        return new VariableGroup("Planned Procedure", 0);
+    }
+    
+    public static VariableGroup demographicsVariableGroup()
+    {
+        return new VariableGroup("Demographics", 1);
+    }
+
+    public static MultiSelectVariable sampleGenderVariable()
+    {
+        final List<MultiSelectOption> options = Arrays.asList(
+                new MultiSelectOption("Male"),
+                new MultiSelectOption("Female"));
+        return new MultiSelectVariable(
+                "Gender",
+                demographicsVariableGroup(),
+                DisplayType.Radio,
+                options);
+    }
+    
+    public static NumericalVariable sampleAgeVariable()
+    {
+        final NumericalVariable var = new NumericalVariable(
+                "Age", demographicsVariableGroup());
+        var.setMinValue(0);
+        var.setMaxValue(999);
+        return var;
+    }
+
+    public static ProcedureVariable sampleProcedureVariable()
+    {
+        final ProcedureVariable var = new ProcedureVariable(
+                "Procedure", procedureVariableGroup());
+        var.setProcedures(sampleProcedureList());
+        return var;
     }
 }

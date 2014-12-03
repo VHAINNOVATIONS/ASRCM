@@ -1,11 +1,9 @@
 package gov.va.med.srcalc.domain;
 
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.variable.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -35,9 +33,8 @@ public final class Specialty implements Serializable
     {
     }
     
-    public Specialty(final int id, final int vistaId, final String name)
+    public Specialty(final int vistaId, final String name)
     {
-        this.fId = id;
         this.fVistaId = vistaId;
         this.fName = name;
     }
@@ -107,6 +104,52 @@ public final class Specialty implements Serializable
     public List<Variable> getVariables()
     {
         return fVariables;
+    }
+    
+    /**
+     * Builds a brand-new, sorted list of {@link PopulatedVariableGroup}s from
+     * the {@link Specialty}'s variables.
+     */
+    protected final List<PopulatedVariableGroup> buildVariableGroupList()
+    {
+        // Bucket the Variables according to VariableGroup.
+        final HashMap<VariableGroup, List<Variable>> map = new HashMap<>();
+        for (final Variable var : getVariables())
+        {
+            final VariableGroup group = var.getGroup();
+            if (!map.containsKey(group))
+            {
+                final ArrayList<Variable> varList = new ArrayList<>();
+                map.put(group, varList);
+            }
+            map.get(group).add(var);
+        }
+        
+        // Transform the map into PopulatedVariableGroups.
+        final ArrayList<PopulatedVariableGroup> groupList =
+                new ArrayList<>(map.values().size());
+        for (final List<Variable> varList : map.values())
+        {
+            groupList.add(new PopulatedVariableGroup(varList));
+        }
+        
+        // Finally, sort the List.
+        Collections.sort(groupList);
+        
+        return groupList;
+    }
+    
+    /**
+     * Returns all {@link Variable}s associated with this Specialty, bucketed
+     * into their groups.
+     * @return an immutable List, sorted in group order
+     */
+    @Transient
+    public List<PopulatedVariableGroup> getVariableGroups()
+    {
+        // Construct a new instance every time for now. May cache the list if
+        // this becomes a performance issue.
+        return Collections.unmodifiableList(buildVariableGroupList());
     }
     
     /**

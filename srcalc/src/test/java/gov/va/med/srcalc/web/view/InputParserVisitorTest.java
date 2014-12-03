@@ -1,13 +1,8 @@
 package gov.va.med.srcalc.web.view;
 
 import static org.junit.Assert.*;
-
-import java.util.Arrays;
-import java.util.List;
-
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.*;
-import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
 import gov.va.med.srcalc.web.view.InputParserVisitor;
 import gov.va.med.srcalc.web.view.SubmittedValues;
 
@@ -19,26 +14,11 @@ import org.springframework.validation.BeanPropertyBindingResult;
  */
 public class InputParserVisitorTest
 {
-    protected ProcedureVariable sampleProcedureVariable()
-    {
-        final ProcedureVariable var = new ProcedureVariable("Procedure");
-        var.setProcedures(SampleObjects.sampleProcedureList());
-        return var;
-    }
-
-    protected MultiSelectVariable sampleGenderVariable()
-    {
-        final List<MultiSelectOption> options = Arrays.asList(
-                new MultiSelectOption("Male"),
-                new MultiSelectOption("Female"));
-        return new MultiSelectVariable("Gender", DisplayType.Radio, options);
-    }
-
     @Test
     public final void testUnspecifiedMultiselect() throws Exception
     {
         // Setup variable
-        final MultiSelectVariable var = sampleGenderVariable();
+        final MultiSelectVariable var = SampleObjects.sampleGenderVariable();
 
         final SubmittedValues values = new SubmittedValues();
         values.setGender(null);
@@ -56,7 +36,7 @@ public class InputParserVisitorTest
     public final void testUnspecifiedProcedure() throws Exception
     {
         // Setup variable
-        final ProcedureVariable procedureVariable = sampleProcedureVariable();
+        final ProcedureVariable procedureVariable = SampleObjects.sampleProcedureVariable();
 
         final SubmittedValues values = new SubmittedValues();
         values.setProcedure("");
@@ -74,7 +54,7 @@ public class InputParserVisitorTest
     public final void testInvalidProcedure() throws Exception
     {
         // Setup variable
-        final ProcedureVariable procedureVariable = sampleProcedureVariable();
+        final ProcedureVariable procedureVariable = SampleObjects.sampleProcedureVariable();
 
         final SubmittedValues values = new SubmittedValues();
         values.setProcedure("ASDFASDFASDF");
