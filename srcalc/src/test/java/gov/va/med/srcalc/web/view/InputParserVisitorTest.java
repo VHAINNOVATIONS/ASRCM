@@ -1,13 +1,8 @@
 package gov.va.med.srcalc.web.view;
 
 import static org.junit.Assert.*;
-
-import java.util.Arrays;
-import java.util.List;
-
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.*;
-import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
 import gov.va.med.srcalc.web.view.InputParserVisitor;
 import gov.va.med.srcalc.web.view.VariableEntry;
 import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
@@ -20,34 +15,11 @@ import org.springframework.validation.BeanPropertyBindingResult;
  */
 public class InputParserVisitorTest
 {
-    protected ProcedureVariable sampleProcedureVariable()
-    {
-        final ProcedureVariable var = new ProcedureVariable("Procedure");
-        var.setProcedures(SampleObjects.sampleProcedureList());
-        return var;
-    }
-
-    protected MultiSelectVariable sampleGenderVariable()
-    {
-        final List<MultiSelectOption> options = Arrays.asList(
-                new MultiSelectOption("Male"),
-                new MultiSelectOption("Female"));
-        return new MultiSelectVariable("Gender", DisplayType.Radio, options);
-    }
-    
-    protected NumericalVariable sampleAgeVariable()
-    {
-        final NumericalVariable var = new NumericalVariable("Age");
-        var.setMinValue(0);
-        var.setMaxValue(999);
-        return var;
-    }
-
     @Test
     public final void testUnspecifiedMultiselect() throws Exception
     {
         // Setup variable
-        final MultiSelectVariable var = sampleGenderVariable();
+        final MultiSelectVariable var = SampleObjects.sampleGenderVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
         // Note: Gender never set in dynamicValues.
@@ -65,7 +37,7 @@ public class InputParserVisitorTest
     public final void testInvalidMultiselect() throws Exception
     {
         // Setup variable
-        final MultiSelectVariable var = sampleGenderVariable();
+        final MultiSelectVariable var = SampleObjects.sampleGenderVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
         variableEntry.getDynamicValues().put("Gender", "Unknown");
@@ -83,7 +55,7 @@ public class InputParserVisitorTest
     public final void testUnspecifiedProcedure() throws Exception
     {
         // Setup variable
-        final ProcedureVariable procedureVariable = sampleProcedureVariable();
+        final ProcedureVariable procedureVariable = SampleObjects.sampleProcedureVariable();
         final String varName = procedureVariable.getDisplayName();
 
         final VariableEntry variableEntry = new VariableEntry();
@@ -105,7 +77,7 @@ public class InputParserVisitorTest
     public final void testInvalidProcedure() throws Exception
     {
         // Setup variable
-        final ProcedureVariable procedureVariable = sampleProcedureVariable();
+        final ProcedureVariable procedureVariable = SampleObjects.sampleProcedureVariable();
         final String varName = procedureVariable.getDisplayName();
 
         final VariableEntry variableEntry = new VariableEntry();
@@ -126,7 +98,7 @@ public class InputParserVisitorTest
     public final void testUnspecifiedNumerical() throws Exception
     {
         // Setup variable
-        final NumericalVariable ageVariable = sampleAgeVariable();
+        final NumericalVariable ageVariable = SampleObjects.sampleAgeVariable();
         final String varName = ageVariable.getDisplayName();
 
         final VariableEntry variableEntry = new VariableEntry();
@@ -147,7 +119,7 @@ public class InputParserVisitorTest
     public final void testInvalidNumerical() throws Exception
     {
         // Setup variable
-        final NumericalVariable ageVariable = sampleAgeVariable();
+        final NumericalVariable ageVariable = SampleObjects.sampleAgeVariable();
         final String varName = ageVariable.getDisplayName();
 
         final VariableEntry variableEntry = new VariableEntry();
@@ -168,7 +140,7 @@ public class InputParserVisitorTest
     public final void testTooLowNumerical() throws Exception
     {
         // Setup variable
-        final NumericalVariable ageVariable = sampleAgeVariable();
+        final NumericalVariable ageVariable = SampleObjects.sampleAgeVariable();
         final String varName = ageVariable.getDisplayName();
 
         final VariableEntry variableEntry = new VariableEntry();
@@ -189,7 +161,7 @@ public class InputParserVisitorTest
     public final void testTooHighNumerical() throws Exception
     {
         // Setup variable
-        final NumericalVariable ageVariable = sampleAgeVariable();
+        final NumericalVariable ageVariable = SampleObjects.sampleAgeVariable();
         final String varName = ageVariable.getDisplayName();
 
         final VariableEntry variableEntry = new VariableEntry();

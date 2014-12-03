@@ -1,10 +1,8 @@
 package gov.va.med.srcalc.domain.variable;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import java.util.Objects;
+
+import javax.persistence.*;
 
 /**
  * A model variable. Just the variable, does not store an inputted value.
@@ -15,20 +13,26 @@ public abstract class Variable
 {
     private int fId;
     private String fDisplayName;
+    private VariableGroup fGroup;
     private String fHelpText;
 
+    /**
+     * Constructs an instance with dummy values for the basic properties
+     * displayName and group.
+     */
     protected Variable()
     {
+        fDisplayName = "unset";
+        fGroup = new VariableGroup("unset group", 0);
     }
     
     /**
      * Creates an instance with some of the basic properties filled.
-     * @param displayName
-     * @param type
      */
-    protected Variable(final String displayName)
+    protected Variable(final String displayName, final VariableGroup group)
     {
         this.fDisplayName = displayName;
+        this.fGroup = Objects.requireNonNull(group, "group must not be null");
     }
     
     /**
@@ -58,6 +62,26 @@ public abstract class Variable
     public void setDisplayName(final String displayName)
     {
         this.fDisplayName = displayName;
+    }
+
+    /**
+     * Returns the {@link VariableGroup} for this Variable. Never null.
+     */
+    @ManyToOne
+    @JoinColumn(name = "VARIABLE_GROUP", nullable = false)  // "group" is a SQL reserved word
+    public VariableGroup getGroup()
+    {
+        return fGroup;
+    }
+
+    /**
+     * Sets the {@link VariableGroup} for this Variable.
+     * @param group must not be null
+     * @throws NullPointerException if the given group is null
+     */
+    public void setGroup(final VariableGroup group)
+    {
+        fGroup = Objects.requireNonNull(group, "group must not be null");
     }
 
     @Basic
