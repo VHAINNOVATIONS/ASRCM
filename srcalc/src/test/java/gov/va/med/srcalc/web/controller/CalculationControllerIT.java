@@ -5,14 +5,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import gov.va.med.srcalc.domain.SampleObjects;
+import gov.va.med.srcalc.test.util.TestNameLogger;
 import gov.va.med.srcalc.web.controller.CalculationController;
 import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
@@ -35,8 +37,13 @@ import static org.hamcrest.Matchers.*;
 @ContextConfiguration({"/srcalc-context.xml", "/srcalc-controller.xml", "/test-context.xml"})
 public class CalculationControllerIT
 {
+    private static final Logger fLogger = LoggerFactory.getLogger(CalculationControllerIT.class);
+    
     @Autowired
     WebApplicationContext fWac;
+    
+    @Rule
+    public final TestRule fTestLogger = new TestNameLogger(fLogger);
     
     private MockMvc fMockMvc;
     
