@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.TestNameLogger;
+import gov.va.med.srcalc.service.CalculationServiceIT;
 import gov.va.med.srcalc.web.controller.CalculationController;
 import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
 
@@ -89,6 +90,11 @@ public class CalculationControllerIT
         selectSpecialty(SampleObjects.sampleThoracicSpecialty().getName());
     }
     
+    /**
+     * Tests the HTTP interface to enter variables and display the calculation
+     * results. Does not test the calculation itself; for that, see
+     * {@link CalculationServiceIT#testRunThoracicCalculation()}.
+     */
     @Test
     @Transactional
     public void enterValidThoracicVariables() throws Exception
@@ -99,13 +105,14 @@ public class CalculationControllerIT
                 // TODO: need a scalable way to specify variables, but just
                 // hardcode the parameters for now.
                 .param(makeDynamicValuePath("Age"), "55")
-                .param(makeDynamicValuePath("Procedure"), "26546"))
+                .param(makeDynamicValuePath("Procedure"), "26546")
+                .param(makeDynamicValuePath("Functional Status"), "Independent"))
             .andExpect(redirectedUrl("/displayResults"));
         
         fMockMvc.perform(get("/displayResults").session(fSession))
             .andExpect(status().is(200))
-            .andExpect(model().attribute("calculation", hasProperty("values", hasSize(2))));
-        // TODO: validate more model stuff
+            // Just check the size of the returned values. See method Javadoc.
+            .andExpect(model().attribute("calculation", hasProperty("values", hasSize(3))));
     }
     
     @Test

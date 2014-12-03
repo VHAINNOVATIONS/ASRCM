@@ -41,6 +41,7 @@ public class SampleObjects
         final Specialty s = new Specialty(58, "Thoracic");
         s.getVariables().add(sampleProcedureVariable());
         s.getVariables().add(sampleAgeVariable());
+        s.getVariables().add(functionalStatusVariable());
         return s;
     }
 
@@ -70,6 +71,11 @@ public class SampleObjects
     {
         return new VariableGroup("Demographics", 1);
     }
+    
+    public static VariableGroup recentClinicalVariableGroup()
+    {
+        return new VariableGroup("Clinical Conditions or Diseases - Recent", 5);
+    }
 
     public static MultiSelectVariable sampleGenderVariable()
     {
@@ -98,5 +104,18 @@ public class SampleObjects
                 "Procedure", procedureVariableGroup());
         var.setProcedures(sampleProcedureList());
         return var;
+    }
+    
+    public static MultiSelectVariable functionalStatusVariable()
+    {
+        final List<MultiSelectOption> fsOptions = Arrays.asList(
+                new MultiSelectOption("Independent"),
+                new MultiSelectOption("Partially dependent"),
+                new MultiSelectOption("Totally dependent"));
+        return new MultiSelectVariable(
+                "Functional Status",
+                recentClinicalVariableGroup(),
+                MultiSelectVariable.DisplayType.Radio,
+                fsOptions);
     }
 }

@@ -55,3 +55,20 @@ INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (5, 2, 1);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 2, 1);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 2, 1);
+
+-- Non-Cardiac Functional Status
+INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (4, 'Functional Status', 6);
+INSERT INTO MULTI_SELECT_VARIABLE (id, display_type) VALUES (4, 'Radio');
+INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (3, 'Independent');
+INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (4, 'Partially dependent');
+INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (5, 'Totally dependent');
+INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (4, 3, 0);
+INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (4, 4, 1);
+INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (4, 5, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 4, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 4, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (3, 4, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 4, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (5, 4, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 4, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 4, 2);
