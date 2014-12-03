@@ -8,7 +8,7 @@
         <li><label class="variableName">Specialty:</label> ${calculation.specialty}</li>
         <li><label class="variableName">Patient:</label> ${calculation.patient}</li>
         </ol>
-        <form:form id="riskVarForm" cssClass="srcalcForm" method="post" action="enterVars" commandName="submittedValues">
+        <form:form id="riskVarForm" cssClass="srcalcForm" method="post" action="enterVars" commandName="variableEntry">
         <c:forEach var="variableGroup" items="${calculation.variableGroups}">
         <fieldset>
             <legend>${variableGroup.name}</legend>
@@ -18,8 +18,10 @@
             <li><label class="variableName">${variable.displayName}:</label>
             <!-- TODO: can I preserve the inputted value even if invalid? -->
             <srcalc:variableInput variable="${variable}"/>
-            <!-- FIXME: hardcoded path to displayName, this may not always be true -->
-            <form:errors path="${variable.displayName}" cssClass="error" />
+            <%-- This errors tag would be better suited in the above variableInput
+                 tag but I haven't figured out how to nest other custom tags in
+                 my custom tags yet. --%>
+            <form:errors path="dynamicValues[${variable.displayName}]" cssClass="error" />
             </li>
             </c:forEach>
             </ol>
@@ -33,12 +35,14 @@
         	// on the page.
 
         	var procedureSelectGroup = $(".procedureSelectGroup");
-        	var procedureVarName = procedureSelectGroup.data("var-name");
+        	// Determine the variable name from the first radio button.
+        	var procedureVarName =
+        		procedureSelectGroup.find('input[type=radio]').first().attr('name');
         	
         	// We're about to replace the procedureSelectGroup with a jQuery UI
         	// dialog. Insert a hidden input and a textual display as the target
         	// of the user selection from the dialog.
-        	var hiddenInput = $('<input type="hidden" name=' + procedureVarName + '>');
+        	var hiddenInput = $('<input type="hidden" name="' + procedureVarName + '">');
         	var userDisplay = $('<span>(none)</span>');
         	var selectLink = $('<a class="selectProcedureLink" href="#">Select</a>');
         	procedureSelectGroup.after(hiddenInput, userDisplay, ' ', selectLink);

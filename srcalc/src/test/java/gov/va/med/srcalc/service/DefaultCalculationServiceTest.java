@@ -65,7 +65,7 @@ public class DefaultCalculationServiceTest
                 s.setSpecialty(calc, thoracicSpecialty.getName());
         assertSame("Calculation object not the same", calc,  selCalc.getCalculation());
         assertEquals(thoracicSpecialty, calc.getSpecialty());
-        assertEquals(2, calc.getVariables().size());
+        assertEquals(thoracicSpecialty.getVariables().size(), calc.getVariables().size());
         assertEquals("Procedure", calc.getVariables().get(0).getDisplayName());
         assertEquals("Age", calc.getVariables().get(1).getDisplayName());
     }

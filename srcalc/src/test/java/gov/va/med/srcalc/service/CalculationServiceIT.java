@@ -1,9 +1,13 @@
 package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
+
+import java.util.*;
+
 import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.Specialty;
+import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
 
@@ -69,8 +73,43 @@ public class CalculationServiceIT
                 fCalculationService.setSpecialty(calc, specialty.getName());
         assertSame("Calculation object not the same", calc,  selCalc.getCalculation());
         assertEquals(specialty, selCalc.getCalculation().getSpecialty());
-        assertEquals(2, calc.getVariables().size());
-        assertEquals("Procedure", calc.getVariables().get(0).getDisplayName());
-        assertEquals("Age", calc.getVariables().get(1).getDisplayName());
+        // Specialty.equals() does not compare the variable lists, so do some
+        // checks there.
+        final List<Variable> specialtyVars = specialty.getVariables();
+        assertEquals(specialtyVars.size(), calc.getVariables().size());
+        // Since Variables do not implement value equality, just compare the names
+        for (int i = 0; i < specialtyVars.size(); ++i)
+        {
+            assertEquals(
+                    specialtyVars.get(i).getDisplayName(),
+                    calc.getVariables().get(i).getDisplayName());
+        }
+    }
+    
+    @Test
+    @Transactional  // do this all in one transaction so we can roll back
+    public void testRunThoracicCalculation() throws InvalidIdentifierException
+    {
+        final int PATIENT_DFN = 1;
+        final Specialty specialty = SampleObjects.sampleThoracicSpecialty();
+        
+        // Create the class under test.
+        final NewCalculation newCalc = fCalculationService.startNewCalculation(PATIENT_DFN);
+        final Calculation calc = newCalc.getCalculation();
+        final SelectedCalculation selCalc =
+                fCalculationService.setSpecialty(calc, specialty.getName());
+
+        // Build a List of Values in the known order for Thoracic.
+        final List<Variable> thoracicVars = calc.getVariables();
+        final ProcedureVariable procedureVar = (ProcedureVariable)thoracicVars.get(0);
+        final MultiSelectVariable fsVar = (MultiSelectVariable)thoracicVars.get(2);
+        final List<Value> values = Arrays.asList(
+                new ProcedureValue(procedureVar, procedureVar.getProcedures().get(1)),
+                new NumericalValue((NumericalVariable)thoracicVars.get(1), 66),
+                new MultiSelectValue(fsVar, fsVar.getOptions().get(1)));
+        
+        // Behavior verification
+        fCalculationService.runCalculation(selCalc.getCalculation(), values);
+        assertEquals(values, calc.getValues());
     }
 }

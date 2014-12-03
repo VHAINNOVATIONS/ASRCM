@@ -105,7 +105,7 @@ public class CalculationController
     public String enterVariables(
             final HttpSession session,
             final Model model,
-            @ModelAttribute("submittedValues") final SubmittedValues values,
+            @ModelAttribute("variableEntry") final VariableEntry values,
             final BindingResult valuesBindingResult)
     {
         // Get the CalculationWorkflow from the session.
