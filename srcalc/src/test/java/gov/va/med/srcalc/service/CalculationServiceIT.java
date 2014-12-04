@@ -62,7 +62,7 @@ public class CalculationServiceIT
     public void testSetValidSpecialty() throws InvalidIdentifierException
     {
         final int PATIENT_DFN = 1;
-        final Specialty specialty = SampleObjects.sampleThoracicSpecialty();
+        final Specialty sampleSpecialty = SampleObjects.sampleThoracicSpecialty();
         
         // Create the class under test.
         final NewCalculation newCalc = fCalculationService.startNewCalculation(PATIENT_DFN);
@@ -70,12 +70,13 @@ public class CalculationServiceIT
         
         // Behavior verification.
         final SelectedCalculation selCalc =
-                fCalculationService.setSpecialty(calc, specialty.getName());
+                fCalculationService.setSpecialty(calc, sampleSpecialty.getName());
         assertSame("Calculation object not the same", calc,  selCalc.getCalculation());
-        assertEquals(specialty, selCalc.getCalculation().getSpecialty());
+        final Specialty actualSpecialty = selCalc.getCalculation().getSpecialty();
+        assertEquals(sampleSpecialty, actualSpecialty);
         // Specialty.equals() does not compare the variable lists, so do some
         // checks there.
-        final List<Variable> specialtyVars = specialty.getVariables();
+        final List<Variable> specialtyVars = actualSpecialty.getVariables();
         assertEquals(specialtyVars.size(), calc.getVariables().size());
         // Since Variables do not implement value equality, just compare the names
         for (int i = 0; i < specialtyVars.size(); ++i)
@@ -88,7 +89,7 @@ public class CalculationServiceIT
     
     @Test
     @Transactional  // do this all in one transaction so we can roll back
-    public void testRunThoracicCalculation() throws InvalidIdentifierException
+    public void testRunThoracicCalculation() throws Exception
     {
         final int PATIENT_DFN = 1;
         final Specialty specialty = SampleObjects.sampleThoracicSpecialty();
@@ -102,10 +103,11 @@ public class CalculationServiceIT
         // Build a List of Values in the known order for Thoracic.
         final List<Variable> thoracicVars = calc.getVariables();
         final ProcedureVariable procedureVar = (ProcedureVariable)thoracicVars.get(0);
-        final MultiSelectVariable fsVar = (MultiSelectVariable)thoracicVars.get(2);
+        final MultiSelectVariable fsVar = (MultiSelectVariable)thoracicVars.get(3);
         final List<Value> values = Arrays.asList(
                 new ProcedureValue(procedureVar, procedureVar.getProcedures().get(1)),
                 new NumericalValue((NumericalVariable)thoracicVars.get(1), 66),
+                new NumericalValue((NumericalVariable)thoracicVars.get(2), 17.3f),
                 new MultiSelectValue(fsVar, fsVar.getOptions().get(1)));
         
         // Behavior verification

@@ -111,7 +111,7 @@ public class InputParserVisitorTest
         v.visitNumerical(ageVariable);
         
         assertEquals(
-                "noInput.int",
+                "noInput.float",
                 errors.getFieldError(makeDynamicValuePath(varName)).getCode());
     }
     
@@ -132,7 +132,7 @@ public class InputParserVisitorTest
         v.visitNumerical(ageVariable);
         
         assertEquals(
-                "typeMismatch.int",
+                "typeMismatch.float",
                 errors.getFieldError(makeDynamicValuePath(varName)).getCode());
     }
     

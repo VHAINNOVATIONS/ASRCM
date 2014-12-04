@@ -104,15 +104,16 @@ public class CalculationControllerIT
         fMockMvc.perform(post("/enterVars").session(fSession)
                 // TODO: need a scalable way to specify variables, but just
                 // hardcode the parameters for now.
-                .param(makeDynamicValuePath("Age"), "55")
                 .param(makeDynamicValuePath("Procedure"), "26546")
+                .param(makeDynamicValuePath("Age"), "55")
+                .param(makeDynamicValuePath("BMI"), "18.7")
                 .param(makeDynamicValuePath("Functional Status"), "Independent"))
             .andExpect(redirectedUrl("/displayResults"));
         
         fMockMvc.perform(get("/displayResults").session(fSession))
             .andExpect(status().is(200))
             // Just check the size of the returned values. See method Javadoc.
-            .andExpect(model().attribute("calculation", hasProperty("values", hasSize(3))));
+            .andExpect(model().attribute("calculation", hasProperty("values", hasSize(4))));
     }
     
     @Test
@@ -134,7 +135,10 @@ public class CalculationControllerIT
         selectSpecialty("Cardiac");
         
         fMockMvc.perform(post("/enterVars").session(fSession)
-                .param(makeDynamicValuePath("Gender"), "Male"))
+                .param(makeDynamicValuePath("Gender"), "Male")
+                .param(makeDynamicValuePath("Age"), "55")
+                .param(makeDynamicValuePath("BMI"), "18.7")
+                .param(makeDynamicValuePath("Functional Status"), "Independent"))
             .andExpect(redirectedUrl("/displayResults"));
     }
     

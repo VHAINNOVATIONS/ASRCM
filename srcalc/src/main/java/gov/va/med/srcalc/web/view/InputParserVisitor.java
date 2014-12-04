@@ -127,36 +127,34 @@ public class InputParserVisitor implements VariableVisitor
         final String stringValue = getVariableValue(variable);
         if (StringUtils.isEmpty(stringValue))
         {
-            rejectDynamicValue(variable.getDisplayName(), "noInput.int", "no input");
+            rejectDynamicValue(variable.getDisplayName(), "noInput.float", "no input");
             return;
         }
         try
         {
-            final int intValue = Integer.parseInt(stringValue);
-            if (intValue < variable.getMinValue())
-            {
-                rejectDynamicValue(
-                        variable.getDisplayName(),
-                        "tooLow",
-                        new Object[]{ variable.getMinValue() },
-                        "must be greater than or equal to {0}");
-            }
-            else if (intValue > variable.getMaxValue())
-            {
-                rejectDynamicValue(
-                        variable.getDisplayName(),
-                        "tooHigh",
-                        new Object[]{ variable.getMaxValue() },
-                        "must be less than or equal to {0}");
-            }
-            else
-            {
-                fValues.add(new NumericalValue(variable, intValue));
-            }
+            final float floatValue = Float.parseFloat(stringValue);
+            fValues.add(new NumericalValue(variable, floatValue));
         }
-        catch (NumberFormatException ex)
+        // Translate any Exceptions into validation errors.
+        catch (final NumberFormatException ex)
         {
-            rejectDynamicValue(variable.getDisplayName(), "typeMismatch.int", ex.getMessage());
+            rejectDynamicValue(variable.getDisplayName(), "typeMismatch.float", ex.getMessage());
+        }
+        catch (final ValueTooLowException ex)
+        {
+            rejectDynamicValue(
+                    variable.getDisplayName(),
+                    ex.getErrorCode(),
+                    new Object[]{ variable.getMinValue() },
+                    ex.getMessage());
+        }
+        catch (final ValueTooHighException ex)
+        {
+            rejectDynamicValue(
+                    variable.getDisplayName(),
+                    ex.getErrorCode(),
+                    new Object[]{ variable.getMaxValue() },
+                    ex.getMessage());
         }
     }
     
