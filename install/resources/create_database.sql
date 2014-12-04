@@ -7,7 +7,7 @@ create table cpt (id integer not null, active boolean not null, cpt_code varchar
 create table multi_select_option (id integer not null, option_value varchar(255), primary key (id));
 create table multi_select_variable (display_type varchar(255), id integer not null, primary key (id));
 create table multi_select_variable_option (variable_id integer not null, option_id integer not null, option_index integer not null, primary key (variable_id, option_index));
-create table numerical_variable (max_value integer not null, min_value integer not null, id integer not null, primary key (id));
+create table numerical_variable (max_value float not null, min_value float not null, id integer not null, primary key (id));
 create table procedure_variable (id integer not null, primary key (id));
 create table specialty (id integer not null, name varchar(255), vista_id integer not null, primary key (id));
 create table specialty_variable (specialty_id integer not null, variable_id integer not null, display_order integer not null, primary key (specialty_id, display_order));

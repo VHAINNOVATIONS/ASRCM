@@ -3,7 +3,7 @@ package gov.va.med.srcalc.domain.variable;
 public class NumericalValue implements Value
 {
     private final NumericalVariable fVariable;
-    private final int fValue;
+    private final float fValue;
     
     /**
      * Constructs an instance for the given {@link NumericalVariable} with the
@@ -11,7 +11,7 @@ public class NumericalValue implements Value
      * @throws ValueTooLowException if the value is below the variable's minimum
      * @throws ValueTooHighException if the value is above the variable's minimum
      */
-    public NumericalValue(final NumericalVariable variable, final int value)
+    public NumericalValue(final NumericalVariable variable, final float value)
             throws ValueTooLowException, ValueTooHighException
     {
         fVariable = variable;
@@ -25,7 +25,7 @@ public class NumericalValue implements Value
      * @throws ValueTooLowException if the value is below the minimum
      * @throws ValueTooHighException if the value is above the minimum
      */
-    private int checkValue(final int value)
+    private float checkValue(final float value)
             throws ValueTooLowException, ValueTooHighException
     {
         if (value < fVariable.getMinValue())
@@ -48,7 +48,7 @@ public class NumericalValue implements Value
     }
     
     @Override
-    public Integer getValue()
+    public Float getValue()
     {
         return fValue;
     }

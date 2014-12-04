@@ -127,18 +127,18 @@ public class InputParserVisitor implements VariableVisitor
         final String stringValue = getVariableValue(variable);
         if (StringUtils.isEmpty(stringValue))
         {
-            rejectDynamicValue(variable.getDisplayName(), "noInput.int", "no input");
+            rejectDynamicValue(variable.getDisplayName(), "noInput.float", "no input");
             return;
         }
         try
         {
-            final int intValue = Integer.parseInt(stringValue);
-            fValues.add(new NumericalValue(variable, intValue));
+            final float floatValue = Float.parseFloat(stringValue);
+            fValues.add(new NumericalValue(variable, floatValue));
         }
         // Translate any Exceptions into validation errors.
         catch (final NumberFormatException ex)
         {
-            rejectDynamicValue(variable.getDisplayName(), "typeMismatch.int", ex.getMessage());
+            rejectDynamicValue(variable.getDisplayName(), "typeMismatch.float", ex.getMessage());
         }
         catch (final ValueTooLowException ex)
         {
