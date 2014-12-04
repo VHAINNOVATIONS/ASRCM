@@ -88,7 +88,7 @@ public class CalculationServiceIT
     
     @Test
     @Transactional  // do this all in one transaction so we can roll back
-    public void testRunThoracicCalculation() throws InvalidIdentifierException
+    public void testRunThoracicCalculation() throws Exception
     {
         final int PATIENT_DFN = 1;
         final Specialty specialty = SampleObjects.sampleThoracicSpecialty();
