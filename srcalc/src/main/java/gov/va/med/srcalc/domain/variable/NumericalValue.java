@@ -56,6 +56,6 @@ public class NumericalValue implements Value
     @Override
     public String toString()
     {
-        return String.format("%s = %d", getVariable(), getValue());
+        return String.format("%s = %s", getVariable(), getValue());
     }
 }

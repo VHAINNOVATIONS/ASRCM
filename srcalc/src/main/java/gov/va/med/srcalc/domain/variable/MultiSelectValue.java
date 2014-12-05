@@ -31,6 +31,6 @@ public class MultiSelectValue implements Value
     @Override
     public String toString()
     {
-        return String.format("%s = %s", getVariable(), getSelectedOption());
+        return String.format("%s = %s", getVariable(), getValue());
     }
 }
