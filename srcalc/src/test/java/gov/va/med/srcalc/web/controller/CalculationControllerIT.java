@@ -104,11 +104,11 @@ public class CalculationControllerIT
         selectThoracicSpecialty();
         
         final DynamicVarParams varParams = new DynamicVarParams();
-	varParams.add("Procedure", "26546");
-	varParams.add("Age", "55");
-	varParams.add("DNR", "false");
-	varParams.add("BMI", "18.7");
-	varParams.add("Functional Status", "Independent");
+        varParams.add("Procedure", "26546");
+        varParams.add("Age", "55");
+        varParams.add("DNR", "false");
+        varParams.add("BMI", "18.7");
+        varParams.add("Functional Status", "Independent");
         final int numVars = varParams.getNumVariables();
         
         final MockHttpServletRequestBuilder request =
@@ -143,10 +143,10 @@ public class CalculationControllerIT
         selectSpecialty("Cardiac");
         
         final DynamicVarParams varParams = new DynamicVarParams();
-	varParams.add("Gender", "Male");
-	varParams.add("Age", "55");
-	varParams.add("BMI", "18.7");
-	varParams.add("Functional Status", "Independent");
+        varParams.add("Gender", "Male");
+        varParams.add("Age", "55");
+        varParams.add("BMI", "18.7");
+        varParams.add("Functional Status", "Independent");
         
         fMockMvc.perform(
                 varParams.addTo(post("/enterVars").session(fSession)))
