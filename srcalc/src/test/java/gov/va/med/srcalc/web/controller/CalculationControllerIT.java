@@ -109,6 +109,7 @@ public class CalculationControllerIT
         varParams.add("DNR", "false");
         varParams.add("BMI", "18.7");
         varParams.add("Functional Status", "Independent");
+        varParams.add("Preop Pneumonia", "true");
         final int numVars = varParams.getNumVariables();
         
         final MockHttpServletRequestBuilder request =
