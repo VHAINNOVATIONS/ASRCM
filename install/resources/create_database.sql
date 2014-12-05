@@ -3,6 +3,7 @@
 CREATE DATABASE srcalc;
 USE srcalc;
 
+create table boolean_variable (id integer not null, primary key (id));
 create table cpt (id integer not null, active boolean not null, cpt_code varchar(255), long_description varchar(255), rvu float not null, short_description varchar(255), primary key (id));
 create table multi_select_option (id integer not null, option_value varchar(255), primary key (id));
 create table multi_select_variable (display_type varchar(255), id integer not null, primary key (id));
@@ -14,6 +15,7 @@ create table specialty_variable (specialty_id integer not null, variable_id inte
 create table variable (id integer not null, display_name varchar(255), help_text varchar(255), variable_group integer not null, primary key (id));
 create table variable_group (id integer not null, display_order integer not null, name varchar(255), primary key (id));
 alter table multi_select_variable_option add constraint UK_ru3a3572ftqkwimf3nkrnuc5a unique (option_id);
+alter table boolean_variable add index FK_8s7i3kftdcnt17a8us2sh6qou (id), add constraint FK_8s7i3kftdcnt17a8us2sh6qou foreign key (id) references variable (id);
 alter table multi_select_variable add index FK_18hqfsy87bg9ucro7r0h6hl5t (id), add constraint FK_18hqfsy87bg9ucro7r0h6hl5t foreign key (id) references variable (id);
 alter table multi_select_variable_option add index FK_ru3a3572ftqkwimf3nkrnuc5a (option_id), add constraint FK_ru3a3572ftqkwimf3nkrnuc5a foreign key (option_id) references multi_select_option (id);
 alter table multi_select_variable_option add index FK_aho8l3stxs2pix74vg19xmman (variable_id), add constraint FK_aho8l3stxs2pix74vg19xmman foreign key (variable_id) references multi_select_variable (id);

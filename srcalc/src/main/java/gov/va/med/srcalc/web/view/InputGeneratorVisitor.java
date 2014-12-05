@@ -56,6 +56,17 @@ class InputGeneratorVisitor implements VariableVisitor
     }
     
     @Override
+    public void visitBoolean(final BooleanVariable variable) throws Exception
+    {
+        fWriter.write(String.format(
+                "<label class=\"checkboxLabel\">" +
+                    "<input type=\"checkbox\" name=\"%s\" value=\"true\"> " +
+                    "%s</label>",
+                VariableEntry.makeDynamicValuePath(variable.getDisplayName()),
+                variable.getDisplayName()));
+    }
+    
+    @Override
     public void visitNumerical(final NumericalVariable variable) throws Exception
     {
         // The maximum number of digits we expect.

@@ -41,6 +41,7 @@ public class SampleObjects
         final Specialty s = new Specialty(58, "Thoracic");
         s.getVariables().add(sampleProcedureVariable());
         s.getVariables().add(sampleAgeVariable());
+        s.getVariables().add(dnrVariable());
         s.getVariables().add(functionalStatusVariable());
         return s;
     }
@@ -104,6 +105,11 @@ public class SampleObjects
                 "Procedure", procedureVariableGroup());
         var.setProcedures(sampleProcedureList());
         return var;
+    }
+    
+    public static BooleanVariable dnrVariable()
+    {
+        return new BooleanVariable("DNR", demographicsVariableGroup());
     }
     
     public static MultiSelectVariable functionalStatusVariable()

@@ -11,4 +11,10 @@ public interface Value
      * Returns an Object representing the actual value.
      */
     public Object getValue();
+    
+    /**
+     * Returns a String representing the value but suitable for displaying to a
+     * user.
+     */
+    public String getDisplayString();
 }

@@ -16,6 +16,8 @@ public class MultiSelectValueTest
         assertSame(var, val.getVariable());
         // toString()
         assertEquals("Functional Status = Partially dependent", val.toString());
+        // getDisplayString()
+        assertEquals("Partially dependent", val.getDisplayString());
     }
     
 }

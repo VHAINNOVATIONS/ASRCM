@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.variable;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.SampleObjects;
 
 import org.junit.Test;
@@ -15,6 +16,8 @@ public class NumericalValueTest
         // getVariable()
         assertSame(var, val.getVariable());
         // toString()
-        assertEquals("Age = 1.2", val.toString());
+        assertThat(val.toString(), startsWith("Age = 1.20")); // may have more 0's
+        // getDisplayString()
+        assertEquals("1.2", val.getDisplayString());
     }
 }

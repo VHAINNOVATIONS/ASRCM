@@ -21,7 +21,7 @@ public class ProcedureValueTest
                 "Procedure = " + sel.toString(), val.toString());
         // getValue() - no need to test the actual String, that's covered by
         // ProcedureTest.
-        assertEquals(sel.getLongString(), val.getValue());
+        assertEquals(sel.getLongString(), val.getDisplayString());
     }
     
 }
