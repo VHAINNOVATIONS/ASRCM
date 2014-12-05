@@ -178,4 +178,65 @@ public class InputParserVisitorTest
                 errors.getFieldError(makeDynamicValuePath(varName)).getCode());
     }
     
+    @Test
+    public final void testUnspecifiedBoolean() throws Exception
+    {
+        // Setup variable
+        final BooleanVariable dnrVariable = SampleObjects.dnrVariable();
+
+        final VariableEntry variableEntry = new VariableEntry();
+        // Note: DNR never set in dynamicValues.
+        
+        final BeanPropertyBindingResult errors =
+                new BeanPropertyBindingResult(variableEntry, "variableEntry");
+        
+        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
+        v.visitBoolean(dnrVariable);
+        
+        assertEquals(
+                "unspecified boolean should be false",
+                Boolean.FALSE, v.getValues().get(0).getValue());
+    }
+    
+    @Test
+    public final void testTrueBoolean() throws Exception
+    {
+        // Setup variable
+        final BooleanVariable dnrVariable = SampleObjects.dnrVariable();
+        final String varName = dnrVariable.getDisplayName();
+
+        final VariableEntry variableEntry = new VariableEntry();
+        variableEntry.getDynamicValues().put(varName, "true");
+        
+        final BeanPropertyBindingResult errors =
+                new BeanPropertyBindingResult(variableEntry, "variableEntry");
+        
+        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
+        v.visitBoolean(dnrVariable);
+        
+        assertEquals(
+                "true boolean should be true",
+                Boolean.TRUE, v.getValues().get(0).getValue());
+    }
+    
+    @Test
+    public final void testFalseBoolean() throws Exception
+    {
+        // Setup variable
+        final BooleanVariable dnrVariable = SampleObjects.dnrVariable();
+        final String varName = dnrVariable.getDisplayName();
+
+        final VariableEntry variableEntry = new VariableEntry();
+        variableEntry.getDynamicValues().put(varName, "blah");
+        
+        final BeanPropertyBindingResult errors =
+                new BeanPropertyBindingResult(variableEntry, "variableEntry");
+        
+        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
+        v.visitBoolean(dnrVariable);
+        
+        assertEquals(
+                "non-true boolean should be false",
+                Boolean.FALSE, v.getValues().get(0).getValue());
+    }
 }

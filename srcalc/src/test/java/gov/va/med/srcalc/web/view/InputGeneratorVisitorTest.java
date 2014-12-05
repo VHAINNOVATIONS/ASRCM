@@ -66,6 +66,20 @@ public class InputGeneratorVisitorTest
     }
     
     @Test
+    public final void testVisitBooelan()
+        throws Exception
+    {
+        // Setup variable
+        final BooleanVariable var = new BooleanVariable("boo", SampleObjects.demographicsVariableGroup());
+        
+        // Verify behavior
+        var.accept(fVisitor);
+        final String EXPECTED = 
+                "<label class=\"checkboxLabel\"><input type=\"checkbox\" name=\"dynamicValues[boo]\" value=\"true\"> boo</label>";
+        assertEquals(EXPECTED, fWriter.toString());
+    }
+    
+    @Test
     public final void testVisitNumerical()
         throws Exception
     {

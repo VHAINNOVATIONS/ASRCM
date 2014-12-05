@@ -53,9 +53,19 @@ public class NumericalValue implements Value
         return fValue;
     }
     
+    /**
+     * Returns the floating point value in the format used by {@link Float#toString(float)}
+     * to display the minimal required floating part digits.
+     */
+    @Override
+    public String getDisplayString()
+    {
+        return getValue().toString();
+    }
+    
     @Override
     public String toString()
     {
-        return String.format("%s = %d", getVariable(), getValue());
+        return String.format("%s = %f", getVariable(), getValue());
     }
 }

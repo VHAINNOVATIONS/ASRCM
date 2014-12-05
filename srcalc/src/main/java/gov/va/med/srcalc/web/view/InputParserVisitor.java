@@ -120,6 +120,16 @@ public class InputParserVisitor implements VariableVisitor
     }
     
     @Override
+    public void visitBoolean(final BooleanVariable variable) throws Exception
+    {
+        fLogger.debug("Parsing BooleanVariable {}", variable);
+        
+        final String stringValue = getVariableValue(variable);
+        final boolean booleanValue = Objects.equals(stringValue, "true");
+        fValues.add(new BooleanValue(variable, booleanValue));
+    }
+    
+    @Override
     public void visitNumerical(final NumericalVariable variable)
     {
         fLogger.debug("Parsing NumericalVariable {}", variable);

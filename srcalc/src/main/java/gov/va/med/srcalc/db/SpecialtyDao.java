@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
+import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.variable.Variable;
 
@@ -45,6 +46,16 @@ public class SpecialtyDao
         ProcedureLoaderVisitor visitor = new ProcedureLoaderVisitor(getCurrentSession());
         for (Variable var : s.getVariables())
         {
+            // Due to the way Hibernate @OrderColumns work, we may get null
+            // values in the variable list if the database is misconfigured.
+            // Detect this early to avoid mystery NPEs later.
+            if (var == null)
+            {
+                throw new ConfigurationException(String.format(
+                        "Missing Variable for specialty %s. Check the order column.",
+                        name));
+            }
+
             try
             {
                 var.accept(visitor);

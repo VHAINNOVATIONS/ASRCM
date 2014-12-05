@@ -11,6 +11,6 @@
         <table id="inputValueTable">
         <tr><th>Variable</th><th>Value</th></tr>
         <c:forEach var="value" items="${calculation.values}">
-        <tr><td>${value.variable}</td><td>${value.value}</td>
+        <tr><td>${value.variable}</td><td>${value.displayString}</td>
         </c:forEach>
         </table>

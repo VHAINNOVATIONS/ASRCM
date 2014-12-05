@@ -19,21 +19,25 @@ public class ProcedureValue implements Value
         return fVariable;
     }
     
-    public Procedure getSelectedProcedure()
+    /**
+     * Returns the selected Procedure.
+     */
+    @Override
+    public Procedure getValue()
     {
         return fSelectedOption;
     }
     
     @Override
-    public String getValue()
+    public String getDisplayString()
     {
         // Return the long string for results display.
-        return getSelectedProcedure().getLongString();
+        return getValue().getLongString();
     }
     
     @Override
     public String toString()
     {
-        return String.format("%s = %s", getVariable(), getSelectedProcedure());
+        return String.format("%s = %s", getVariable(), getValue());
     }
 }

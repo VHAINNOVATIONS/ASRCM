@@ -30,7 +30,7 @@ INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (1, 'Female');
 INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (2, 'Male');
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (1, 2, 0);
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (1, 1, 1);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (7, 1, 0);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (7, 1, 1);
 
 -- Non-Cardiac Procedure
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (3, 'Procedure', 1);
@@ -54,8 +54,20 @@ INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 2, 1);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (5, 2, 1);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 2, 1);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (7, 2, 1);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (7, 2, 0);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 2, 1);
+
+-- Shared DNR
+INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (6, 'DNR', 2);
+INSERT INTO BOOLEAN_VARIABLE (id) VALUES (6);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 6, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 6, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (3, 6, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 6, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (5, 6, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 6, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (7, 6, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 6, 2);
 
 -- Shared Functional Status
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (4, 'Functional Status', 6);
@@ -66,25 +78,25 @@ INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (5, 'Totally dependent
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (4, 3, 0);
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (4, 4, 1);
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (4, 5, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 4, 3);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 4, 3);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (3, 4, 3);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 4, 3);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (5, 4, 3);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 4, 3);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (7, 4, 3);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 4, 3);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 4, 4);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 4, 4);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (3, 4, 4);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 4, 4);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (5, 4, 4);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 4, 4);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (7, 4, 4);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 4, 4);
 
 -- Shared BMI
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (5, 'BMI', 3);
 -- There is not really an upper limit on BMI, but specify an unrealistically high
 -- one to have some idea of significant digits.
 INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value) VALUES (5, 0, 499);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 5, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 5, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (3, 5, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 5, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (5, 5, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 5, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (7, 5, 2);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 5, 2);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 5, 3);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 5, 3);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (3, 5, 3);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 5, 3);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (5, 5, 3);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 5, 3);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (7, 5, 3);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 5, 3);

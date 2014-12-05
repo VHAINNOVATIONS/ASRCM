@@ -32,6 +32,12 @@ public class ProcedureLoaderVisitor implements VariableVisitor
     }
     
     @Override
+    public void visitBoolean(BooleanVariable variable) throws Exception
+    {
+        // No action needed.
+    }
+    
+    @Override
     public void visitMultiSelect(MultiSelectVariable variable) throws Exception
     {
         // No action needed.

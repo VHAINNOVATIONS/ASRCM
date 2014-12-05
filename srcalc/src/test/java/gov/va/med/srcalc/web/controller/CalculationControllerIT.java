@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.TestNameLogger;
 import gov.va.med.srcalc.service.CalculationServiceIT;
@@ -22,6 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
@@ -101,19 +103,25 @@ public class CalculationControllerIT
     {
         selectThoracicSpecialty();
         
-        fMockMvc.perform(post("/enterVars").session(fSession)
-                // TODO: need a scalable way to specify variables, but just
-                // hardcode the parameters for now.
-                .param(makeDynamicValuePath("Procedure"), "26546")
-                .param(makeDynamicValuePath("Age"), "55")
-                .param(makeDynamicValuePath("BMI"), "18.7")
-                .param(makeDynamicValuePath("Functional Status"), "Independent"))
+        final DynamicVarParams varParams = new DynamicVarParams();
+        varParams.add("Procedure", "26546");
+        varParams.add("Age", "55");
+        varParams.add("DNR", "false");
+        varParams.add("BMI", "18.7");
+        varParams.add("Functional Status", "Independent");
+        final int numVars = varParams.getNumVariables();
+        
+        final MockHttpServletRequestBuilder request =
+                post("/enterVars").session(fSession);
+        varParams.addTo(request);
+        fMockMvc.perform(request)
             .andExpect(redirectedUrl("/displayResults"));
         
         fMockMvc.perform(get("/displayResults").session(fSession))
             .andExpect(status().is(200))
             // Just check the size of the returned values. See method Javadoc.
-            .andExpect(model().attribute("calculation", hasProperty("values", hasSize(4))));
+            .andExpect(model().attribute(
+                    "calculation", hasProperty("values", hasSize(numVars))));
     }
     
     @Test
@@ -134,11 +142,14 @@ public class CalculationControllerIT
     {
         selectSpecialty("Cardiac");
         
-        fMockMvc.perform(post("/enterVars").session(fSession)
-                .param(makeDynamicValuePath("Gender"), "Male")
-                .param(makeDynamicValuePath("Age"), "55")
-                .param(makeDynamicValuePath("BMI"), "18.7")
-                .param(makeDynamicValuePath("Functional Status"), "Independent"))
+        final DynamicVarParams varParams = new DynamicVarParams();
+        varParams.add("Gender", "Male");
+        varParams.add("Age", "55");
+        varParams.add("BMI", "18.7");
+        varParams.add("Functional Status", "Independent");
+        
+        fMockMvc.perform(
+                varParams.addTo(post("/enterVars").session(fSession)))
             .andExpect(redirectedUrl("/displayResults"));
     }
     
