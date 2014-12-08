@@ -68,6 +68,9 @@ body {
 /* Make the main content fixed-width. */
 body > section {
 	width: 768px;
+	/* Put a small margin on the bottom to avoid jamming up against the footer
+	   (or anything else). */
+	margin-bottom: 1em;
 }
 
 /* If Javascript is enabled, pre-hide all dialogs to avoid them flashing on the
