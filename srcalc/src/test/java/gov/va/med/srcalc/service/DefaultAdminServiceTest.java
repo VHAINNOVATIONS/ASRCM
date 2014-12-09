@@ -81,6 +81,7 @@ public class DefaultAdminServiceTest
         
         // Behavior verification.
         final EditVariable ev = EditVariable.fromVariable(var);
+        assertTrue(ev.isIntegratedVariable());
         ev.setDisplayName(newName);
         s.updateVariable(origName, ev);
         // Can't test getVariable() due to limitations of the mock.
