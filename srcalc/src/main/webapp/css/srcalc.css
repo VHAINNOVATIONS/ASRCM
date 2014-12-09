@@ -103,6 +103,30 @@ form.srcalcForm .error {
 	color: red;
 }
 
+/* .srcalcTable is the standard basic table display in srcalc */
+
+table.srcalcTable th {
+	text-align: left;
+	/* Don't allow the columns to get too small. */
+	min-width: 8em;
+	border-bottom: 2px solid #ccc;
+}
+
+table.srcalcTable td {
+	border-bottom: 1px solid #ccc;
+}
+
+/* Prevent columns from mashing up against each other. */
+table.srcalcTable th, table.srcalcTable td {
+	padding-left: 0.3em;
+	padding-right: 0.3em;
+}
+
+/* But don't put left padding on the first columns */
+table.srcalcTable th:first-child, table.srcalcTable td:first-child {
+	padding-left: 0;
+}
+
 /* The Specialty & Patient */
 
 .calculationSummary {
@@ -153,14 +177,6 @@ form.srcalcForm .error {
 
 a.selectProcedureLink {
 	font-size: 0.9em;
-}
-
-/* The results display page */
-
-#inputValueTable th {
-	text-align: left;
-	/* Don't allow the columns to get too small. */
-	min-width: 8em;
 }
 
 
