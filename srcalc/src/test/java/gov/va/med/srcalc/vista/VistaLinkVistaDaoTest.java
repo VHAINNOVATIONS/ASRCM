@@ -19,6 +19,8 @@ public class VistaLinkVistaDaoTest
     private final static String RADIOLOGIST_NAME = "RADIOLOGIST,ONE";
     private final static String VLCF_JNDI_NAME = "java:comp/env/vlj/Asrc500";
     
+    private VistaLinkVistaDaoFactory daoFactory = new VistaLinkVistaDaoFactory();
+    
     @Before
     public void setup() throws NamingException, ResourceException
     {
@@ -37,7 +39,7 @@ public class VistaLinkVistaDaoTest
     {
         final String division = "500";
         
-        final VistaDao dao = new VistaLinkVistaDao(division);
+        final VistaDao dao = daoFactory.getVistaDao(division);
         final VistaPerson person = dao.loadVistaPerson(RADIOLOGIST_DUZ);
         assertEquals(RADIOLOGIST_DUZ, person.getDuz());
         assertEquals(RADIOLOGIST_NAME, person.getDisplayName());
@@ -48,7 +50,7 @@ public class VistaLinkVistaDaoTest
     {
         final String division = "600";
         
-        final VistaLinkVistaDao dao = new VistaLinkVistaDao(division);
+        final VistaDao dao = daoFactory.getVistaDao(division);
         dao.loadVistaPerson(RADIOLOGIST_DUZ);
     }
     
