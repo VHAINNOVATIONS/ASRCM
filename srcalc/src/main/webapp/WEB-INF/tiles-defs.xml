@@ -29,9 +29,9 @@
     <put-attribute name="bodyContent" value="No body content" />
     <put-attribute name="footerContent" value="/WEB-INF/views/layouts/adminFooter.jsp" />
   </definition>
-  <definition name="srcalc.adminHome" extends="srcalc.admin">
-    <put-attribute name="title" value="Administration Home" />
-    <put-attribute name="bodyContent" value="/WEB-INF/views/tiles/adminHome.jsp" />
+  <definition name="srcalc.modelAdminHome" extends="srcalc.admin">
+    <put-attribute name="title" value="Model Administration" />
+    <put-attribute name="bodyContent" value="/WEB-INF/views/tiles/modelAdminHome.jsp" />
   </definition>
 
 </tiles-definitions>

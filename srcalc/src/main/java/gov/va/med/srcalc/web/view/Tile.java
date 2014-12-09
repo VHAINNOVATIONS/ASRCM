@@ -18,5 +18,5 @@ public class Tile
     public static final String SELECT_SPECIALTY = "srcalc.selectSpecialty";
     public static final String ENTER_VARIABLES = "srcalc.enterVariables";
     public static final String DISPLAY_RESULTS = "srcalc.displayResults";
-    public static final String ADMIN_HOME = "srcalc.adminHome";
+    public static final String MODEL_ADMIN_HOME = "srcalc.modelAdminHome";
 }

@@ -45,6 +45,16 @@ public class SampleObjects
         s.getVariables().add(functionalStatusVariable());
         return s;
     }
+    
+    public static List<Variable> sampleVariableList()
+    {
+        return Arrays.asList(
+                sampleProcedureVariable(),
+                sampleAgeVariable(),
+                sampleGenderVariable(),
+                dnrVariable(),
+                functionalStatusVariable());
+    }
 
     /**
      * Returns a basic set of Specialty objects.
