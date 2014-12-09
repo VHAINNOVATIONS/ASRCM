@@ -58,8 +58,10 @@ textarea {
 
 
 /* ==========================================================================
-   Author's custom styles
+   srcalc custom styles
    ========================================================================== */
+   
+/* General srcalc styles */
 
 body {
 	margin: 1em;
@@ -79,7 +81,30 @@ body > section {
 	display: none;
 }
 
+/* srcalcForm is the standard form appearance in srcalc */
+
+/* We use <ol>'s for the list of fields. */
+form.srcalcForm fieldset > ol {
+	list-style-type: none;
+	margin: 0;
+	padding-left: 0;
+}
+
+/* Put some vertical spacing between the variables. */
+form.srcalcForm fieldset > ol > li {
+	margin: 5px 0;
+}
+
+form.srcalcForm label.radioLabel {
+	padding-right: 1em;
+}
+
+form.srcalcForm .error {
+	color: red;
+}
+
 /* The Specialty & Patient */
+
 .calculationSummary {
     list-style-type: none;
     padding-left: 0;
@@ -95,28 +120,7 @@ body > section {
     padding-left: 0;
 }
 
-/* srcalcForm is the standard form appearance in srcalc */
-
-/* We use <ol>'s for the list of fields. */
-form.srcalcForm fieldset > ol {
-	list-style-type: none;
-	margin: 0;
-	padding-left: 0;
-}
-
-/* Put some vertical spacing between the variables. */
-form.srcalcForm fieldset > ol > li {
-	margin: 5px 0;
-}
-
-form.srcalcForm label.variableName {
-	display: inline-block;
-	width: 20%;
-}
-
-form.srcalcForm label.radioLabel {
-	padding-right: 1em;
-}
+/* The variable input form #riskVarForm */
 
 #riskVarForm fieldset {
 	margin: 1em 0;
@@ -128,17 +132,10 @@ form.srcalcForm label.radioLabel {
 	margin-bottom: 8px;
 }
 
-#riskVarForm .error {
-	color: red;
+#riskVarForm label.variableName {
+	display: inline-block;
+	width: 20%;
 }
-
-#inputValueTable th {
-	text-align: left;
-	/* Don't allow the columns to get too small. */
-	min-width: 8em;
-}
-
-/* Styles for procedure selection */
 
 .procedureSelectGroup th, .procedureSelectGroup td {
 	/* Don't let the cells mash up against each other. */
@@ -156,6 +153,14 @@ form.srcalcForm label.radioLabel {
 
 a.selectProcedureLink {
 	font-size: 0.9em;
+}
+
+/* The results display page */
+
+#inputValueTable th {
+	text-align: left;
+	/* Don't allow the columns to get too small. */
+	min-width: 8em;
 }
 
 
