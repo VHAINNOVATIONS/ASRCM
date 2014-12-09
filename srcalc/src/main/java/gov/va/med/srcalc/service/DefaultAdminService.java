@@ -32,4 +32,29 @@ public class DefaultAdminService implements AdminService
         return fVariableDao.getAllVariables();
     }
     
+    @Override
+    @Transactional
+    public Variable getVariable(final String displayName)
+        throws InvalidIdentifierException
+    {
+        fLogger.debug("Loading Variable {}", displayName);
+        
+        final Variable var = fVariableDao.getByName(displayName);
+        if (var == null)
+        {
+            throw new InvalidIdentifierException(
+                    "There is no Variable called " + displayName);
+        }
+        return var;
+    }
+    
+    @Override
+    @Transactional
+    public void updateVariable(String displayName, EditVariable properties)
+        throws InvalidIdentifierException
+    {
+        // Why provide a Service Layer method just to do this? For transaction
+        // control.
+        properties.setOntoVariable(getVariable(displayName));
+    }
 }

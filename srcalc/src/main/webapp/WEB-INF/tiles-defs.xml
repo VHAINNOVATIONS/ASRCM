@@ -33,5 +33,9 @@
     <put-attribute name="title" value="Model Administration" />
     <put-attribute name="bodyContent" value="/WEB-INF/views/tiles/modelAdminHome.jsp" />
   </definition>
+  <definition name="srcalc.editVariable" extends="srcalc.admin">
+    <put-attribute name="title" value="Edit Variable" />
+    <put-attribute name="bodyContent" value="/WEB-INF/views/tiles/editVariable.jsp" />
+  </definition>
 
 </tiles-definitions>

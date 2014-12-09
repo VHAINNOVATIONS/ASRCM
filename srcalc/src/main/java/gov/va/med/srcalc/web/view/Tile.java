@@ -19,4 +19,5 @@ public class Tile
     public static final String ENTER_VARIABLES = "srcalc.enterVariables";
     public static final String DISPLAY_RESULTS = "srcalc.displayResults";
     public static final String MODEL_ADMIN_HOME = "srcalc.modelAdminHome";
+    public static final String EDIT_VARIABLE = "srcalc.editVariable";
 }

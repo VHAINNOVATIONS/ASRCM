@@ -12,9 +12,10 @@ create table numerical_variable (max_value float not null, min_value float not n
 create table procedure_variable (id integer not null, primary key (id));
 create table specialty (id integer not null, name varchar(255), vista_id integer not null, primary key (id));
 create table specialty_variable (specialty_id integer not null, variable_id integer not null, display_order integer not null, primary key (specialty_id, display_order));
-create table variable (id integer not null, display_name varchar(255), help_text varchar(255), variable_group integer not null, primary key (id));
+create table variable (id integer not null, display_name varchar(255) not null, help_text varchar(255), variable_group integer not null, primary key (id));
 create table variable_group (id integer not null, display_order integer not null, name varchar(255), primary key (id));
 alter table multi_select_variable_option add constraint UK_ru3a3572ftqkwimf3nkrnuc5a unique (option_id);
+alter table variable add constraint UK_mvj8snetl0hhey2ej8vwvvhyu unique (display_name);
 alter table boolean_variable add index FK_8s7i3kftdcnt17a8us2sh6qou (id), add constraint FK_8s7i3kftdcnt17a8us2sh6qou foreign key (id) references variable (id);
 alter table multi_select_variable add index FK_18hqfsy87bg9ucro7r0h6hl5t (id), add constraint FK_18hqfsy87bg9ucro7r0h6hl5t foreign key (id) references variable (id);
 alter table multi_select_variable_option add index FK_ru3a3572ftqkwimf3nkrnuc5a (option_id), add constraint FK_ru3a3572ftqkwimf3nkrnuc5a foreign key (option_id) references multi_select_option (id);

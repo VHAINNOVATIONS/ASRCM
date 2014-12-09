@@ -1,8 +1,10 @@
 package gov.va.med.srcalc.web.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import gov.va.med.srcalc.test.util.TestNameLogger;
+import static org.hamcrest.Matchers.*;
 
 import org.junit.*;
 import org.junit.rules.TestRule;
@@ -15,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,10 +42,25 @@ public class ModelAdminControllerIT
     }
     
     @Test
+    @Transactional
     public final void testDefaultPage() throws Exception
     {
         fMockMvc.perform(get("/admin/models")).
             andExpect(model().attributeExists("variables"));
+    }
+    
+    @Test
+    @Transactional
+    public final void testEditVariable() throws Exception
+    {
+        fMockMvc.perform(get("/admin/models/editVariable/Preop Pneumonia")).
+            andExpect(status().isOk()).
+            andExpect(model().attribute("variable", hasProperty("displayName")));
+        
+        fMockMvc.perform(
+                post("/admin/models/editVariable/Preop Pneumonia").
+                param("displayName", "Preop Something")).
+            andExpect(redirectedUrl("/admin/models"));
     }
     
 }

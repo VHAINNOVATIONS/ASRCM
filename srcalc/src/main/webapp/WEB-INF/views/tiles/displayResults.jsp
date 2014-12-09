@@ -9,7 +9,7 @@
         </ol>
         <h3>Calculation Inputs</h3>
         <table class="srcalcTable" id="inputValueTable">
-        <tr><th>Variable</th><th>Value</th></tr>
+        <tr><th class="main">Variable</th><th class="main">Value</th></tr>
         <c:forEach var="value" items="${calculation.values}">
         <tr><td>${value.variable}</td><td>${value.displayString}</td>
         </c:forEach>

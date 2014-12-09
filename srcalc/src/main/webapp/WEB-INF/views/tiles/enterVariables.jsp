@@ -8,14 +8,15 @@
         <li><label class="variableName">Specialty:</label> ${calculation.specialty}</li>
         <li><label class="variableName">Patient:</label> ${calculation.patient}</li>
         </ol>
-        <form:form id="riskVarForm" cssClass="srcalcForm" method="post" action="enterVars" commandName="variableEntry">
+        <form:form id="riskVarForm" cssClass="srcalcForm attributeEditForm"
+            method="post" action="enterVars" commandName="variableEntry">
         <c:forEach var="variableGroup" items="${calculation.variableGroups}">
         <fieldset>
             <legend>${variableGroup.name}</legend>
             <!-- Use an ordered list for the list of fields. -->
             <ol>
             <c:forEach var="variable" items="${variableGroup.variables}">
-            <li><label class="variableName">${variable.displayName}:</label>
+            <li><label class="attributeName">${variable.displayName}:</label>
             <!-- TODO: can I preserve the inputted value even if invalid? -->
             <srcalc:variableInput variable="${variable}"/>
             <%-- This errors tag would be better suited in the above variableInput

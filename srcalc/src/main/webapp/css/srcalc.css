@@ -75,6 +75,11 @@ body > section {
 	margin-bottom: 1em;
 }
 
+footer {
+	padding-top: 0.5em;
+	border-top: 1px solid #ccc;
+}
+
 /* If Javascript is enabled, pre-hide all dialogs to avoid them flashing on the
    screen before jQuery UI initializes. */
 .js .dialog {
@@ -107,9 +112,14 @@ form.srcalcForm .error {
 
 table.srcalcTable th {
 	text-align: left;
+	border-bottom: 2px solid #ccc;
+}
+
+/* Indicates a main column of the table, as opposed to minor columns such as
+   an "edit item" link. */
+table.srcalcTable th.main {
 	/* Don't allow the columns to get too small. */
 	min-width: 8em;
-	border-bottom: 2px solid #ccc;
 }
 
 table.srcalcTable td {
@@ -125,6 +135,25 @@ table.srcalcTable th, table.srcalcTable td {
 /* But don't put left padding on the first columns */
 table.srcalcTable th:first-child, table.srcalcTable td:first-child {
 	padding-left: 0;
+}
+
+/* A .attributeEditForm is a form for editing attributes of some object. We
+   display it in a 2-column format with the attribute name in the left column
+   and the value controls in the right column. */
+
+form.attributeEditForm label.attributeName {
+	display: inline-block;
+	width: 20%;
+}
+
+/* .attributeEditForm supports fieldsets to group related attributes */
+form.attributeEditForm fieldset {
+	margin: 1em 0;
+}
+
+form.attributeEditForm fieldset > legend {
+	font-weight: bold;
+	margin-bottom: 8px;
 }
 
 /* The Specialty & Patient */
@@ -145,21 +174,6 @@ table.srcalcTable th:first-child, table.srcalcTable td:first-child {
 }
 
 /* The variable input form #riskVarForm */
-
-#riskVarForm fieldset {
-	margin: 1em 0;
-}
-
-#riskVarForm fieldset > legend {
-	/* The legends are like headings for the groups */
-	font-weight: bold;
-	margin-bottom: 8px;
-}
-
-#riskVarForm label.variableName {
-	display: inline-block;
-	width: 20%;
-}
 
 .procedureSelectGroup th, .procedureSelectGroup td {
 	/* Don't let the cells mash up against each other. */

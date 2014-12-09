@@ -2,8 +2,13 @@
     <h2>Model Administration</h2>
     <h3>Variable Definitions</h3>
     <table class="srcalcTable" id="variableSummaryTable">
-    <tr><th>Name</th><th>Type</th></tr>
+    <tr><th class="main">Name</th><th class="main">Type</th><th>Edit</th></tr>
     <c:forEach var="variable" items="${variables}">
-    <tr><td>${variable.displayName}</td><td>${variable.typeName}</td></tr>
+    <c:url var="editVariable" value="/admin/models/editVariable/${variable.displayName}" />
+    <tr>
+        <td>${variable.displayName}</td>
+        <td>${variable.typeName}</td>
+        <td><a href="${editVariable}" class="editObjectLink">Edit</a></td>
+    </tr>
     </c:forEach>
     </table>

@@ -54,6 +54,9 @@ public abstract class Variable
     }
     
     @Basic
+    @Column(
+            nullable = false,
+            unique = true)   // for now, we use display name as a key, so don't allow dupes
     public String getDisplayName()
     {
         return fDisplayName;
