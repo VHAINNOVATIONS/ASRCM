@@ -86,6 +86,15 @@ footer {
 	display: none;
 }
 
+/* General button styles */
+
+/* a.btn-link indicates an <a> that performs an action like a button. Think of
+   it as a de-emphasized button. */
+a.btn-link:link, a.btn-link:visited {
+	color: #1C528A;
+	text-decoration: none;
+}
+
 /* srcalcForm is the standard form appearance in srcalc */
 
 /* We use <ol>'s for the list of fields. */
@@ -106,6 +115,18 @@ form.srcalcForm label.radioLabel {
 
 form.srcalcForm .error {
 	color: red;
+}
+
+/* .actionButtons indicates a gropup of buttons to perform actions on a page */
+
+.actionButtons > ol {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.actionButtons > ol > li {
+	display: inline;
+	padding-right: 0.5em;
 }
 
 /* .srcalcTable is the standard basic table display in srcalc */

@@ -14,3 +14,11 @@
         <tr><td>${value.variable}</td><td>${value.displayString}</td>
         </c:forEach>
         </table>
+        <div class="actionButtons">
+        <h3>Results</h3>
+        <ol>
+        <li><button type="submit" disabled>Sign Calculation</button></li>
+        <li><c:url var="newCalcUrl" value="/newCalc" />
+        <a class="btn-link" href="${newCalcUrl}">Start New Calculation</a></li>
+        </ol>
+        </div>

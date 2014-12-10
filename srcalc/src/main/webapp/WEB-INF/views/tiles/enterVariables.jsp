@@ -28,7 +28,13 @@
             </ol>
         </fieldset>
         </c:forEach>
-        <button type="submit">Run Calculation</button>
+        <div class="actionButtons">
+        <ol>
+        <li><button type="submit">Run Calculation</button></li>
+        <li><c:url var="newCalcUrl" value="/newCalc" />
+        <a class="btn-link" href="${newCalcUrl}">Start New Calculation</a></li>
+        </ol>
+        </div>
         <script>
         $(document).ready(function(){
         	
