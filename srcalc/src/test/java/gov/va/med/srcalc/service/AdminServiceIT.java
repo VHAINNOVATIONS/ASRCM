@@ -39,7 +39,7 @@ public class AdminServiceIT
     public final void testGetAllVariables()
     {
         final List<Variable> actualVars = fAdminService.getAllVariables();
-        assertEquals(7, actualVars.size());
+        assertEquals(8, actualVars.size());
         assertEquals("Age", actualVars.get(0).getDisplayName());
     }
     

@@ -105,6 +105,7 @@ public class CalculationControllerIT
         
         final DynamicVarParams varParams = new DynamicVarParams();
         varParams.add("Procedure", "26546");
+        varParams.add("ASA Classification", "Class 3");
         varParams.add("Age", "55");
         varParams.add("DNR", "false");
         varParams.add("BMI", "18.7");
