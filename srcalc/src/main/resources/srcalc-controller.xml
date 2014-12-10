@@ -26,10 +26,8 @@
             </list>
         </property>
     </bean>
-    <bean id="viewResolver"
-        class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
-    </bean>
+    <bean id="tilesViewResolver"
+            class="org.springframework.web.servlet.view.tiles2.TilesViewResolver" />
     
     <!-- Support CSS and JS via Spring (because we make Spring the default serlvet. -->
     <!-- TODO: support versioning -->

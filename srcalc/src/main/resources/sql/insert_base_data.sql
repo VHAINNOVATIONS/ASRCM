@@ -100,3 +100,12 @@ INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 5, 3);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (7, 5, 3);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 5, 3);
+
+-- Preop Pneumonia
+INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (7, 'Preop Pneumonia', 6);
+INSERT INTO BOOLEAN_VARIABLE (id) VALUES (7);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 7, 5);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 7, 5);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 7, 5);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 7, 5);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 7, 5);

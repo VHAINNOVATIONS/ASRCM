@@ -2,11 +2,9 @@ package gov.va.med.srcalc.security;
 
 import gov.va.med.srcalc.domain.VistaPerson;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -22,16 +20,26 @@ public class VistaUserDetails implements UserDetails
     
     private final VistaPerson fVistaPerson;
     
-    public VistaUserDetails(final VistaPerson vistaPerson)
+    private final List<GrantedAuthority> fAuthorities;
+    
+    /**
+     * Constructs an instance.
+     * @param vistaPerson the wrapped VistaPerson
+     * @param authorities the list of authorities for the user
+     */
+    public VistaUserDetails(
+            final VistaPerson vistaPerson, final List<GrantedAuthority> authorities)
     {
         fVistaPerson = vistaPerson;
+        fAuthorities = authorities;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities()
     {
-        // For now, all users are just users.
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        // Return an unmodifiable list to prohibit external code from changing
+        // the user's authorities.
+        return Collections.unmodifiableList(fAuthorities);
     }
     
     public String getDuz()

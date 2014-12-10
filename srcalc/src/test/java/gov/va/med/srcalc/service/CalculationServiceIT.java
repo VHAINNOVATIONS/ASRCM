@@ -109,7 +109,8 @@ public class CalculationServiceIT
                 new NumericalValue((NumericalVariable)thoracicVars.get(1), 66),
                 new BooleanValue((BooleanVariable)thoracicVars.get(2), true),
                 new NumericalValue((NumericalVariable)thoracicVars.get(3), 17.3f),
-                new MultiSelectValue(fsVar, fsVar.getOptions().get(1)));
+                new MultiSelectValue(fsVar, fsVar.getOptions().get(1)),
+                new BooleanValue((BooleanVariable)thoracicVars.get(5), false));
         
         // Behavior verification
         fCalculationService.runCalculation(selCalc.getCalculation(), values);

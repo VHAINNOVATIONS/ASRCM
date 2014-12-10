@@ -12,7 +12,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
- * Tests the WebApplicationContext.
+ * <p>Tests the WebApplicationContext.</p>
+ * 
+ * <p>Note that I'd love to test view rendering here but it requires JSP
+ * rendering which is only available in the real Servlet container.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration

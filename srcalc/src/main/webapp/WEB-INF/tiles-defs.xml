@@ -3,16 +3,39 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
-  <definition name="srcalc.selectSpecialty" template="/WEB-INF/views/layouts/main.jsp">
+
+  <!-- Main Pages -->
+  <definition name="srcalc.main" template="/WEB-INF/views/layouts/master.jsp">
+    <put-attribute name="headerText" value="NSO Surgical Risk Calculator" />
+    <put-attribute name="bodyContent" value="No body content" />
+    <put-attribute name="footerContent" value="/WEB-INF/views/layouts/mainFooter.jsp" />
+  </definition>
+  <definition name="srcalc.selectSpecialty" extends="srcalc.main">
     <put-attribute name="title" value="Select Specialty" />
-    <put-attribute name="body" value="/WEB-INF/views/tiles/selectSpecialty.jsp" />
+    <put-attribute name="bodyContent" value="/WEB-INF/views/tiles/selectSpecialty.jsp" />
   </definition>
-  <definition name="srcalc.enterVariables" template="/WEB-INF/views/layouts/main.jsp">
+  <definition name="srcalc.enterVariables" extends="srcalc.main">
     <put-attribute name="title" value="Enter Variables" />
-    <put-attribute name="body" value="/WEB-INF/views/tiles/enterVariables.jsp" />
+    <put-attribute name="bodyContent" value="/WEB-INF/views/tiles/enterVariables.jsp" />
   </definition>
-  <definition name="srcalc.displayResults" template="/WEB-INF/views/layouts/main.jsp">
+  <definition name="srcalc.displayResults" extends="srcalc.main">
     <put-attribute name="title" value="Calculation Results" />
-    <put-attribute name="body" value="/WEB-INF/views/tiles/displayResults.jsp" />
+    <put-attribute name="bodyContent" value="/WEB-INF/views/tiles/displayResults.jsp" />
   </definition>
+
+  <!-- Admin Pages -->
+  <definition name="srcalc.admin" template="/WEB-INF/views/layouts/master.jsp">
+    <put-attribute name="headerText" value="NSO Surgical Risk Calculator - Administration" />
+    <put-attribute name="bodyContent" value="No body content" />
+    <put-attribute name="footerContent" value="/WEB-INF/views/layouts/adminFooter.jsp" />
+  </definition>
+  <definition name="srcalc.modelAdminHome" extends="srcalc.admin">
+    <put-attribute name="title" value="Model Administration" />
+    <put-attribute name="bodyContent" value="/WEB-INF/views/tiles/modelAdminHome.jsp" />
+  </definition>
+  <definition name="srcalc.editVariable" extends="srcalc.admin">
+    <put-attribute name="title" value="Edit Variable" />
+    <put-attribute name="bodyContent" value="/WEB-INF/views/tiles/editVariable.jsp" />
+  </definition>
+
 </tiles-definitions>

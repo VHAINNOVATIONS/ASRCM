@@ -112,20 +112,10 @@ public class CalculationController
         final CalculationWorkflow workflow = getWorkflowFromSession(session);
         
         // Extract the values from the HTTP POST.
-        // TODO dynamically
         final InputParserVisitor parserVisitor = new InputParserVisitor(values, valuesBindingResult);
         for (final Variable variable : workflow.getCalculation().getVariables())
         {
-            try
-            {
-                variable.accept(parserVisitor);
-            }
-            catch (final Exception e)
-            {
-                // We know InputParserVisitor does not throw any Exceptions,
-                // so just call it a RuntimeException.
-                throw new RuntimeException("InputParserVisitor threw an Exception!", e);
-            }
+            parserVisitor.visit(variable);
         }
         
         // If we have any binding errors, return to the Enter Variables screen.

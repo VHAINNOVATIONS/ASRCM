@@ -56,7 +56,7 @@ class InputGeneratorVisitor implements VariableVisitor
     }
     
     @Override
-    public void visitBoolean(final BooleanVariable variable) throws Exception
+    public void visitBoolean(final BooleanVariable variable) throws IOException
     {
         fWriter.write(String.format(
                 "<label class=\"checkboxLabel\">" +
@@ -67,7 +67,7 @@ class InputGeneratorVisitor implements VariableVisitor
     }
     
     @Override
-    public void visitNumerical(final NumericalVariable variable) throws Exception
+    public void visitNumerical(final NumericalVariable variable) throws IOException
     {
         // The maximum number of digits we expect.
         final int maxExpectedDigits = 8;
@@ -79,7 +79,7 @@ class InputGeneratorVisitor implements VariableVisitor
     }
     
     @Override
-    public void visitProcedure(final ProcedureVariable variable) throws Exception
+    public void visitProcedure(final ProcedureVariable variable) throws IOException
     {
         /*-
          * Write an HTML table with a row for each procedure containing the

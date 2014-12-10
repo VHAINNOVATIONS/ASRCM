@@ -36,9 +36,11 @@
 	
 	<!-- DAOs -->
 	<bean id="specialtyDao" class="gov.va.med.srcalc.db.SpecialtyDao" />
+	<bean id="variableDao" class="gov.va.med.srcalc.db.VariableDao" />
 
     <!-- Services -->
 	<bean id="calculationService" class="gov.va.med.srcalc.service.DefaultCalculationService" />
+	<bean id="adminService" class="gov.va.med.srcalc.service.DefaultAdminService" />
 
     <!-- Message Lookup -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

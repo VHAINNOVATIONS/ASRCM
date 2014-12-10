@@ -58,8 +58,10 @@ textarea {
 
 
 /* ==========================================================================
-   Author's custom styles
+   srcalc custom styles
    ========================================================================== */
+   
+/* General srcalc styles */
 
 body {
 	margin: 1em;
@@ -68,28 +70,20 @@ body {
 /* Make the main content fixed-width. */
 body > section {
 	width: 768px;
+	/* Put a small margin on the bottom to avoid jamming up against the footer
+	   (or anything else). */
+	margin-bottom: 1em;
+}
+
+footer {
+	padding-top: 0.5em;
+	border-top: 1px solid #ccc;
 }
 
 /* If Javascript is enabled, pre-hide all dialogs to avoid them flashing on the
    screen before jQuery UI initializes. */
 .js .dialog {
 	display: none;
-}
-
-/* The Specialty & Patient */
-.calculationSummary {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.calculationSummary label.variableName {
-	display: inline-block;
-	width: 20%;
-}
-
-#specialtyRadios {
-    list-style-type: none;
-    padding-left: 0;
 }
 
 /* srcalcForm is the standard form appearance in srcalc */
@@ -106,36 +100,80 @@ form.srcalcForm fieldset > ol > li {
 	margin: 5px 0;
 }
 
-form.srcalcForm label.variableName {
-	display: inline-block;
-	width: 20%;
-}
-
 form.srcalcForm label.radioLabel {
 	padding-right: 1em;
 }
 
-#riskVarForm fieldset {
-	margin: 1em 0;
-}
-
-#riskVarForm fieldset > legend {
-	/* The legends are like headings for the groups */
-	font-weight: bold;
-	margin-bottom: 8px;
-}
-
-#riskVarForm .error {
+form.srcalcForm .error {
 	color: red;
 }
 
-#inputValueTable th {
+/* .srcalcTable is the standard basic table display in srcalc */
+
+table.srcalcTable th {
 	text-align: left;
+	border-bottom: 2px solid #ccc;
+}
+
+/* Indicates a main column of the table, as opposed to minor columns such as
+   an "edit item" link. */
+table.srcalcTable th.main {
 	/* Don't allow the columns to get too small. */
 	min-width: 8em;
 }
 
-/* Styles for procedure selection */
+table.srcalcTable td {
+	border-bottom: 1px solid #ccc;
+}
+
+/* Prevent columns from mashing up against each other. */
+table.srcalcTable th, table.srcalcTable td {
+	padding-left: 0.3em;
+	padding-right: 0.3em;
+}
+
+/* But don't put left padding on the first columns */
+table.srcalcTable th:first-child, table.srcalcTable td:first-child {
+	padding-left: 0;
+}
+
+/* A .attributeEditForm is a form for editing attributes of some object. We
+   display it in a 2-column format with the attribute name in the left column
+   and the value controls in the right column. */
+
+form.attributeEditForm label.attributeName {
+	display: inline-block;
+	width: 20%;
+}
+
+/* .attributeEditForm supports fieldsets to group related attributes */
+form.attributeEditForm fieldset {
+	margin: 1em 0;
+}
+
+form.attributeEditForm fieldset > legend {
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+/* The Specialty & Patient */
+
+.calculationSummary {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.calculationSummary label.variableName {
+	display: inline-block;
+	width: 20%;
+}
+
+#specialtyRadios {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+/* The variable input form #riskVarForm */
 
 .procedureSelectGroup th, .procedureSelectGroup td {
 	/* Don't let the cells mash up against each other. */

@@ -17,7 +17,7 @@ import gov.va.med.srcalc.domain.variable.*;
  * 
  * <p>Tightly coupled with {@link InputGeneratorVisitor}.</p>
  */
-public class InputParserVisitor implements VariableVisitor
+public class InputParserVisitor extends ExceptionlessVariableVisitor
 {
     private static final Logger fLogger = LoggerFactory.getLogger(InputParserVisitor.class);
 
@@ -120,7 +120,7 @@ public class InputParserVisitor implements VariableVisitor
     }
     
     @Override
-    public void visitBoolean(final BooleanVariable variable) throws Exception
+    public void visitBoolean(final BooleanVariable variable)
     {
         fLogger.debug("Parsing BooleanVariable {}", variable);
         
@@ -169,7 +169,7 @@ public class InputParserVisitor implements VariableVisitor
     }
     
     @Override
-    public void visitProcedure(ProcedureVariable variable) throws Exception
+    public void visitProcedure(ProcedureVariable variable)
     {
         fLogger.debug("Parsing ProcedureVariable {}", variable);
 

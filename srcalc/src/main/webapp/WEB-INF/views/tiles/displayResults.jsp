@@ -8,8 +8,8 @@
         <li><label class="variableName">Patient:</label> ${calculation.patient}</li>
         </ol>
         <h3>Calculation Inputs</h3>
-        <table id="inputValueTable">
-        <tr><th>Variable</th><th>Value</th></tr>
+        <table class="srcalcTable" id="inputValueTable">
+        <tr><th class="main">Variable</th><th class="main">Value</th></tr>
         <c:forEach var="value" items="${calculation.values}">
         <tr><td>${value.variable}</td><td>${value.displayString}</td>
         </c:forEach>
