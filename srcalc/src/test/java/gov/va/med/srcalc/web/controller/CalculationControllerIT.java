@@ -82,7 +82,7 @@ public class CalculationControllerIT
             andExpect(redirectedUrl("/enterVars"));
         
         fMockMvc.perform(get("/enterVars").session(fSession))
-            .andExpect(model().attributeExists("calculation"));
+            .andExpect(model().attributeExists("calculation", "variableEntry"));
     }
     
     @Test
@@ -105,6 +105,7 @@ public class CalculationControllerIT
         
         final DynamicVarParams varParams = new DynamicVarParams();
         varParams.add("Procedure", "26546");
+        varParams.add("ASA Classification", "Class 3");
         varParams.add("Age", "55");
         varParams.add("DNR", "false");
         varParams.add("BMI", "18.7");

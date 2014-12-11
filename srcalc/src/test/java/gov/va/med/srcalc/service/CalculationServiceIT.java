@@ -103,14 +103,16 @@ public class CalculationServiceIT
         // Build a List of Values in the known order for Thoracic.
         final List<Variable> thoracicVars = calc.getVariables();
         final ProcedureVariable procedureVar = (ProcedureVariable)thoracicVars.get(0);
-        final MultiSelectVariable fsVar = (MultiSelectVariable)thoracicVars.get(4);
+        final MultiSelectVariable asaVar = (MultiSelectVariable)thoracicVars.get(4);
+        final MultiSelectVariable fsVar = (MultiSelectVariable)thoracicVars.get(5);
         final List<Value> values = Arrays.asList(
                 new ProcedureValue(procedureVar, procedureVar.getProcedures().get(1)),
                 new NumericalValue((NumericalVariable)thoracicVars.get(1), 66),
                 new BooleanValue((BooleanVariable)thoracicVars.get(2), true),
                 new NumericalValue((NumericalVariable)thoracicVars.get(3), 17.3f),
+                new MultiSelectValue(asaVar, fsVar.getOptions().get(0)),
                 new MultiSelectValue(fsVar, fsVar.getOptions().get(1)),
-                new BooleanValue((BooleanVariable)thoracicVars.get(5), false));
+                new BooleanValue((BooleanVariable)thoracicVars.get(6), false));
         
         // Behavior verification
         fCalculationService.runCalculation(selCalc.getCalculation(), values);

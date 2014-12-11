@@ -8,19 +8,51 @@
 	<display-name>Custom Tags for Surgical Risk Calculator</display-name>
 	<short-name>srcalc</short-name>
 	<tlib-version>1.0</tlib-version>
+	
+	<function>
+        <name>truncateList</name>
+        <function-class>gov.va.med.srcalc.util.CollectionUtils</function-class>
+        <function-signature>java.util.List truncateList(java.util.List, int)</function-signature>
+	</function>
 
 	<tag>
-	   <name>variableInput</name>
+	   <name>variableSpecific</name>
 	   <description>
-           Creates an HTML input field for a gov.va.med.srcalc.domain.variable.Variable.
+           Writes one of a set of fragments dependending on the type of Variable.
+           
+           A fragment for every variable type is required for safety checking.
        </description>
-	   <tag-class>gov.va.med.srcalc.web.view.VariableInputTag</tag-class>
+	   <tag-class>gov.va.med.srcalc.web.view.VariableSpecificTag</tag-class>
 	   <body-content>empty</body-content>
 	   <attribute>
 	       <name>variable</name>
 	       <required>true</required>
 	       <rtexprvalue>true</rtexprvalue> <!-- Allow EL expressions -->
 	       <type>gov.va.med.srcalc.domain.variable.Variable</type>
+	   </attribute>
+	   <attribute>
+	       <name>numericalFragment</name>
+	       <description>Fragment to write for NumericalVariables.</description>
+	       <required>true</required>
+	       <fragment>true</fragment>
+	   </attribute>
+	   <attribute>
+	       <name>multiSelectFragment</name>
+	       <description>Fragment to write for MultiSelectVariables.</description>
+	       <required>true</required>
+	       <fragment>true</fragment>
+	   </attribute>
+	   <attribute>
+	       <name>booleanFragment</name>
+	       <description>Fragment to write for BooleanVariables.</description>
+	       <required>true</required>
+	       <fragment>true</fragment>
+	   </attribute>
+	   <attribute>
+	       <name>procedureFragment</name>
+	       <description>Fragment to write for ProcedureVariables.</description>
+	       <required>true</required>
+	       <fragment>true</fragment>
 	   </attribute>
 	</tag>
 </taglib>
