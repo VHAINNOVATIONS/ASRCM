@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="/WEB-INF/srcalc.tld" prefix="srcalc" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -16,13 +17,54 @@
             <!-- Use an ordered list for the list of fields. -->
             <ol>
             <c:forEach var="variable" items="${variableGroup.variables}">
+            <c:set var="varPath" value="dynamicValues[${variable.displayName}]" />
             <li><label class="attributeName">${variable.displayName}:</label>
-            <!-- TODO: can I preserve the inputted value even if invalid? -->
-            <srcalc:variableInput variable="${variable}"/>
-            <%-- This errors tag would be better suited in the above variableInput
-                 tag but I haven't figured out how to nest other custom tags in
-                 my custom tags yet. --%>
-            <form:errors path="dynamicValues[${variable.displayName}]" cssClass="error" />
+            <%--
+            Use our variableSpecific custom tag to write the corresponding form
+            control for each variable type.
+            --%>
+            <%-- TODO: can I preserve the inputted value even if invalid? --%>
+            <srcalc:variableSpecific variable="${variable}">
+            <jsp:attribute name="numericalFragment">
+                <input type="text" name="${varPath}" size="8">
+            </jsp:attribute>
+            <jsp:attribute name="multiSelectFragment">
+                <c:choose>
+                <c:when test="${variable.displayType == 'Radio'}">
+                <%-- Generate a radio button for each option --%>
+                <c:forEach var="option" items="${variable.options}">
+                <label class="radioLabel"><input type="radio" name="${varPath}" value="${option.value}"> ${option.value}</label>
+                </c:forEach>
+                </c:when>
+                <c:when test="${variable.displayType == 'Dropdown'}">
+                Drop-down variables not supported yet.
+                </c:when>
+                <c:otherwise>Error: unexpected display type "${variable.displayType}".</c:otherwise>
+                </c:choose>
+            </jsp:attribute>
+            <jsp:attribute name="booleanFragment">
+                <label class="checkboxLabel"><input type="checkbox" name="${varPath}" value="true"> ${variable.displayName}</label>
+            </jsp:attribute>
+            <jsp:attribute name="procedureFragment">
+                <%--
+                Javascript code below will transform this table into a jQueryUI
+                dialog for a much better user experience.
+                --%>
+                <div class="procedureSelectGroup dialog" title="Select ${variable.displayName}">
+                <table>
+                <thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></tr></thead>
+                <c:forEach var="procedure" items="${srcalc:truncateList(variable.procedures, 100)}">
+                <tr>
+                <td class="selectRadio">
+                <input type="radio" name="${varPath}" value="${procedure.cptCode}" data-display-string="${procedure}"></td>
+                <td>${procedure.cptCode}</td><td>${procedure.longDescription}</td><td>${procedure.rvu}</td></tr>
+                </c:forEach>
+                </table>
+                </div>
+            </jsp:attribute>
+            </srcalc:variableSpecific>
+            <%-- Display any errors immediately following the input control. --%>
+            <form:errors path="${varPath}" cssClass="error" />
             </li>
             </c:forEach>
             </ol>
