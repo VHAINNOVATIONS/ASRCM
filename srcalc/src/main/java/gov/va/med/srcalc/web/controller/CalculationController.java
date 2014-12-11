@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Controller for creating a new Calculation.
@@ -88,23 +89,31 @@ public class CalculationController
         return "redirect:/enterVars";
     }
     
+    /**
+     * Presents that variable entry form.
+     * @param session the current HTTP session (required)
+     * @param initialValues the initial values to set
+     * @return a ModelAndView for view rendering
+     */
     @RequestMapping(value = "/enterVars", method = RequestMethod.GET)
-    public String presentVariableEntry(
+    public ModelAndView presentVariableEntry(
             final HttpSession session,
-            final Model model)
+            @ModelAttribute("variableEntry") final VariableEntry initialValues)
     {
         // Get the CalculationWorkflow from the session.
         final CalculationWorkflow workflow = getWorkflowFromSession(session);
 
         // Present the view.
-        model.addAttribute("calculation", workflow.getCalculation());
-        return Tile.ENTER_VARIABLES;
+        final ModelAndView mav = new ModelAndView(Tile.ENTER_VARIABLES);
+        mav.addObject("calculation", workflow.getCalculation());
+        // Note: "variableEntry" object is automatically added through annotated
+        // method parameter.
+        return new ModelAndView(Tile.ENTER_VARIABLES, "calculation", workflow.getCalculation());
     }
     
     @RequestMapping(value = "/enterVars", method = RequestMethod.POST)
-    public String enterVariables(
+    public ModelAndView enterVariables(
             final HttpSession session,
-            final Model model,
             @ModelAttribute("variableEntry") final VariableEntry values,
             final BindingResult valuesBindingResult)
     {
@@ -124,7 +133,7 @@ public class CalculationController
             fLogger.debug(
                     "Invalid variables entered by user. Reshowing variable entry screen. Errors: {}",
                     valuesBindingResult.getAllErrors());
-            return presentVariableEntry(session, model);
+            return presentVariableEntry(session, values);
         }
 
         // Set the values on the Calculation.
@@ -132,7 +141,7 @@ public class CalculationController
                 workflow.getCalculation(), parserVisitor.getValues());
 
         // Using the POST-redirect-GET pattern.
-        return "redirect:/displayResults";
+        return new ModelAndView("redirect:/displayResults");
     }
     
     @RequestMapping(value = "/displayResults", method = RequestMethod.GET)
