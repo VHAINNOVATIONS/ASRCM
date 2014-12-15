@@ -42,6 +42,9 @@ dependencies {
     // Give Eclipse the JSTL TLDs. They aren't included in the javaee-web-api
     // JAR.
     providedCompile 'org.glassfish.web:javax.servlet.jsp.jstl:1.2.1'
+    // These VistALink JARs represent the dependency on the VistALink Connector,
+    // which must be deployed before this application.
+    providedCompile files('../lib/vljFoundationsLib-1.6.0.028.jar', '../lib/vljConnector-1.6.0.028.jar')
 	
 	/* Other libraries */
 
@@ -56,7 +59,6 @@ dependencies {
 	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: springSecurityVersion
 	compile 'joda-time:joda-time:2.3'
 	compile 'org.apache.tiles:tiles-jsp:2.2.2'
-    compile files('../lib/vljFoundationsLib-1.6.0.028.jar', '../lib/vljConnector-1.6.0.028.jar')
 
     runtime 'ch.qos.logback:logback-classic:1.1.2'
     // VistALink has a hard dependency on log4j.
