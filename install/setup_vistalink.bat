@@ -9,8 +9,8 @@ call config.bat
 
 echo Building the VistALink connector...
 pushd ..\vljRar
-REM Must use "call" because gradle is a batch file.
-call gradle rar
+REM Must use "call" because gradlew is a batch file.
+call gradlew rar
 copy build\distributions\vistalink-1.6.rar ..\install\resources\
 popd
 
