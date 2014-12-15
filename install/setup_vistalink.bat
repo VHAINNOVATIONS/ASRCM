@@ -7,7 +7,12 @@ SETLOCAL ENABLEEXTENSIONS
 REM Load configuration settings.
 call config.bat
 
-REM Note: the 'root' user should have auto-login ability
+echo Building the VistALink connector...
+pushd ..\vljRar
+REM Must use "call" because gradle is a batch file.
+call gradle rar
+copy build\distributions\vistalink-1.6.rar ..\install\resources\
+popd
 
 echo Copying the VistALink configuration file...
 copy resources\gov.va.med.vistalink.connectorConfig.xml "%GF_DOMAIN_DIR%\lib\classes\"
@@ -15,11 +20,11 @@ IF ERRORLEVEL 1 goto Abort
 
 echo Deploying VistALink connector...
 REM Must use "call" because asadmin is a batch file.
-call %ASADMIN% deploy resources\vlj16.rar
+call %ASADMIN% deploy resources\vistalink-1.6.rar
 IF ERRORLEVEL 1 goto Abort
 
 echo Creating VistALink Connection Pool in Glassfish...
-call %ASADMIN% create-connector-connection-pool --raname vlj16 --connectiondefinition javax.resource.cci.ConnectionFactory --property connectorJndiName=vlj/Asrc500 --description "VistALink connector to Asrc500 VistA" vljAsrc500Pool
+call %ASADMIN% create-connector-connection-pool --raname vistalink-1.6 --connectiondefinition javax.resource.cci.ConnectionFactory --property connectorJndiName=vlj/Asrc500 --description "VistALink connector to Asrc500 VistA" vljAsrc500Pool
 IF ERRORLEVEL 1 goto Abort
 call %ASADMIN% ping-connection-pool vljAsrc500Pool
 IF ERRORLEVEL 1 goto Abort

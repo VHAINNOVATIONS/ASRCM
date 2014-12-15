@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connector xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/connector_1_5.xsd" version="1.5">
+    <!-- Note: the contents of this file were originally copied out of the
+	 VistALink 1.6 System Management Guide. -->
+    <description>J2M VistALink adapter that allows RPC execution from Java/J2EE to M/VistA</description>
+    <display-name>VistaLinkAdapter</display-name>
+    <vendor-name>Foundations</vendor-name>
+    <eis-type>VistA</eis-type>
+    <resourceadapter-version>1.6</resourceadapter-version>
+
+    <!-- NOTE: In VistALink v1.6, deployed in WebLogic, in most cases this
+    VistALink-distributed ra.xml file does NOT require any edits/changes.
+    Instead, all edits/changes should be made in weblogic-ra.xml. -->
+
+    <resourceadapter>
+	<resourceadapter-class>gov.va.med.vistalink.adapter.spi.VistaLinkResourceAdapter</resourceadapter-class>
+	<outbound-resourceadapter>
+	    <connection-definition>
+		<managedconnectionfactory-class>gov.va.med.vistalink.adapter.spi.VistaLinkManagedConnectionFactory</managedconnectionfactory-class>
+		<config-property>
+		    <description>placeholder property for connectorJndiName whose presence allows overriding in weblogic-ra.xml</description>
+		    <!-- NOTE: On WebLogic, with VistALink v1.6, DON'T edit the ra.xml
+		    connectorJndiName value. INSTEAD, edit the weblogic-ra.xml connection instance
+		    connectorJndiName property. It overrides this one! -->
+		    <config-property-name>connectorJndiName</config-property-name>
+		    <config-property-type>java.lang.String</config-property-type>
+		    <config-property-value>vljPlaceholder</config-property-value>
+		</config-property>
+		<connectionfactory-interface>javax.resource.cci.ConnectionFactory</connectionfactory-interface>
+		<connectionfactory-impl-class>gov.va.med.vistalink.adapter.cci.VistaLinkConnectionFactory</connectionfactory-impl-class>
+		<connection-interface>javax.resource.cci.Connection</connection-interface>
+		<connection-impl-class>gov.va.med.vistalink.adapter.cci.VistaLinkConnection</connection-impl-class>
+	    </connection-definition>
+	    <transaction-support>NoTransaction</transaction-support>
+	    <reauthentication-support>false</reauthentication-support>
+	</outbound-resourceadapter>
+    </resourceadapter>
+</connector>

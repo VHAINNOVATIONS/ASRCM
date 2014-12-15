@@ -1,0 +1,35 @@
+/* Builds the VistALink connector archive (RAR) */
+
+/* We don't have any Java sources, but use that Java plugin to organize
+ * dependencies. */
+apply plugin: 'java'
+
+// VistALink version
+version = "1.6"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // VistALink has a hard dependency on log4j.
+    compile 'log4j:log4j:1.2.13'
+    // VistALink requires xmlbeans, which is provided by default on WebLogic but
+    // not Glassfish.
+    compile 'org.apache.xmlbeans:xmlbeans:2.3.0'
+    compile files('../lib/vljFoundationsLib-1.6.0.028.jar', '../lib/vljConnector-1.6.0.028.jar')
+}
+
+task rar(type: Zip) {
+    // Copy files from 'src' directory right into the zip.
+    from 'src'
+    // Copy Java libraries into the 'lib' directory.
+    into('lib') {
+	from configurations.runtime
+    }
+    // The project is called "vljRar", but use "vistalink" in the RAR filename
+    // to be more self-documenting.
+    baseName = 'vistalink'
+    extension = 'rar'
+}
+
