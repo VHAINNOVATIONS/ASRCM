@@ -23,7 +23,6 @@
             Use our variableSpecific custom tag to write the corresponding form
             control for each variable type.
             --%>
-            <%-- TODO: can I preserve the inputted value even if invalid? --%>
             <srcalc:variableSpecific variable="${variable}">
             <jsp:attribute name="numericalFragment">
                 <form:input path="${varPath}" size="8"/>
