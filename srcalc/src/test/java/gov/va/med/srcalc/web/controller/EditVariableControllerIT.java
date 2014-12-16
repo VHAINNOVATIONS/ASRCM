@@ -73,5 +73,21 @@ public class EditVariableControllerIT
             andExpect(model().attributeHasErrors("variable")).
             andExpect(view().name(Tile.EDIT_VARIABLE));
     }
+
+    @Test
+    @Transactional
+    public void testEditVariableInvalidChars() throws Exception
+    {
+        fMockMvc.perform(get("/admin/models/editVariable/Preop Pneumonia")).
+            andExpect(status().isOk()).
+            andExpect(model().attribute("variable", hasProperty("displayName")));
+        
+        fMockMvc.perform(
+                post("/admin/models/editVariable/Preop Pneumonia").
+                param("displayName",
+                        "Preop_Pneumonia")).
+            andExpect(model().attributeHasErrors("variable")).
+            andExpect(view().name(Tile.EDIT_VARIABLE));
+    }
     
 }
