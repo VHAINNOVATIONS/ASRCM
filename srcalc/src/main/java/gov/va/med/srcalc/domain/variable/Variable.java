@@ -11,6 +11,8 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Variable
 {
+    public static final int DISPLAY_NAME_MAX = 80;
+    
     private int fId;
     private String fDisplayName;
     private VariableGroup fGroup;
@@ -53,8 +55,14 @@ public abstract class Variable
         this.fId = id;
     }
     
+    /**
+     * Returns the name of the variable for display to the user. Capped at 80
+     * characters.
+     * @see #DISPLAY_NAME_MAX
+     */
     @Basic
     @Column(
+            length = DISPLAY_NAME_MAX,
             nullable = false,
             unique = true)   // for now, we use display name as a key, so don't allow dupes
     public String getDisplayName()
@@ -62,8 +70,17 @@ public abstract class Variable
         return fDisplayName;
     }
 
+    /**
+     * Sets the name of the variable for display to the user.
+     * @throws IllegalArgumentException if the given name is over 80 characters
+     */
     public void setDisplayName(final String displayName)
     {
+        if (displayName.length() > DISPLAY_NAME_MAX)
+        {
+            throw new IllegalArgumentException(
+                    "The display name must be 80 characters or less.");
+        }
         this.fDisplayName = displayName;
     }
 
