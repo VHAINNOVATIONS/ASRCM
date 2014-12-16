@@ -97,6 +97,16 @@ a.btn-link:link, a.btn-link:visited {
 
 /* srcalcForm is the standard form appearance in srcalc */
 
+/* Support fieldsets to group related attributes. */
+form.srcalcForm fieldset {
+	margin: 1em 0;
+}
+
+form.srcalcForm fieldset > legend {
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
 /* We use <ol>'s for the list of fields. */
 form.srcalcForm fieldset > ol {
 	list-style-type: none;
@@ -160,21 +170,31 @@ table.srcalcTable th:first-child, table.srcalcTable td:first-child {
 
 /* A .attributeEditForm is a form for editing attributes of some object. We
    display it in a 2-column format with the attribute name in the left column
-   and the value controls in the right column. */
-
-form.attributeEditForm label.attributeName {
-	display: inline-block;
-	width: 20%;
+   and the value controls in the right column.
+   
+   Note that we are using HTML tables for two reasons:
+   1) We need to support IE7, which does _not_ support the tabular CSS display
+      attributes.
+   2) Even if we didn't have to support IE7, there is no support in CSS for
+      column spanning for the group legends.
+ */
+ 
+form.attributeEditForm table {
+	width: 100%;
 }
 
-/* .attributeEditForm supports fieldsets to group related attributes */
-form.attributeEditForm fieldset {
-	margin: 1em 0;
-}
-
-form.attributeEditForm fieldset > legend {
+form.attributeEditForm th.groupName {
+	text-align: left;
 	font-weight: bold;
-	margin-bottom: 8px;
+	/* Put some space above and below the group name. I'd rather use margins
+	   for this, but table cells don't support margins. */
+	padding-top: 1em;
+	padding-bottom: 0.2em;
+}
+
+form.attributeEditForm td.attributeName {
+	/* Set a minimum width and a hint that the left column should be smaller. */
+	width: 20%;
 }
 
 /* The Specialty & Patient */

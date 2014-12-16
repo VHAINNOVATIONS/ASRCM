@@ -11,18 +11,20 @@
         </ol>
         <form:form id="riskVarForm" cssClass="srcalcForm attributeEditForm"
             method="post" action="enterVars" commandName="variableEntry">
+        <%-- See srcalc.css for why HTML tables. --%>
+        <table>
         <c:forEach var="variableGroup" items="${calculation.variableGroups}">
-        <fieldset>
-            <legend>${variableGroup.name}</legend>
-            <!-- Use an ordered list for the list of fields. -->
-            <ol>
-            <c:forEach var="variable" items="${variableGroup.variables}">
+        <tbody>
+        <tr><th colspan="2" class="groupName">${variableGroup.name}</th></tr>
+        <c:forEach var="variable" items="${variableGroup.variables}">
+        <tr>
             <c:set var="varPath" value="dynamicValues[${variable.displayName}]" />
-            <li><label class="attributeName">${variable.displayName}:</label>
+            <td class="attributeName">${variable.displayName}:</td>
             <%--
             Use our variableSpecific custom tag to write the corresponding form
             control for each variable type.
             --%>
+            <td>
             <srcalc:variableSpecific variable="${variable}">
             <jsp:attribute name="numericalFragment">
                 <form:input path="${varPath}" size="8"/>
@@ -64,11 +66,12 @@
             </srcalc:variableSpecific>
             <%-- Display any errors immediately following the input control. --%>
             <form:errors path="${varPath}" cssClass="error" />
-            </li>
-            </c:forEach>
-            </ol>
-        </fieldset>
+            </td>
+        </tr>
         </c:forEach>
+        </tbody>
+        </c:forEach>
+        </table>
         <div class="actionButtons">
         <ol>
         <li><button type="submit">Run Calculation</button></li>
