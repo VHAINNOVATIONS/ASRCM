@@ -43,26 +43,4 @@ public class ModelAdminController
         return Tile.MODEL_ADMIN_HOME;
     }
 
-    @RequestMapping(value = "/editVariable/{variableName}", method = RequestMethod.GET)
-    public String editVariable(
-            @PathVariable final String variableName,
-            final Model model)
-                    throws InvalidIdentifierException
-    {
-        final Variable var = fAdminService.getVariable(variableName);
-        model.addAttribute("variable", EditVariable.fromVariable(var));
-        return Tile.EDIT_VARIABLE;
-    }
-
-    @RequestMapping(value = "/editVariable/{variableName}", method = RequestMethod.POST)
-    public String saveVariable(
-            @PathVariable final String variableName,
-            @ModelAttribute("variable") final EditVariable editVariable)
-                    throws InvalidIdentifierException
-    {
-        fAdminService.updateVariable(variableName, editVariable);
-        // Using the POST-redirect-GET pattern.
-        return "redirect:/admin/models";
-    }
-
 }

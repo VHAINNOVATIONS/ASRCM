@@ -1,10 +1,8 @@
 package gov.va.med.srcalc.web.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import gov.va.med.srcalc.test.util.TestNameLogger;
-import static org.hamcrest.Matchers.*;
 
 import org.junit.*;
 import org.junit.rules.TestRule;
@@ -47,20 +45,6 @@ public class ModelAdminControllerIT
     {
         fMockMvc.perform(get("/admin/models")).
             andExpect(model().attributeExists("variables"));
-    }
-    
-    @Test
-    @Transactional
-    public final void testEditVariable() throws Exception
-    {
-        fMockMvc.perform(get("/admin/models/editVariable/Preop Pneumonia")).
-            andExpect(status().isOk()).
-            andExpect(model().attribute("variable", hasProperty("displayName")));
-        
-        fMockMvc.perform(
-                post("/admin/models/editVariable/Preop Pneumonia").
-                param("displayName", "Preop Something")).
-            andExpect(redirectedUrl("/admin/models"));
     }
     
 }

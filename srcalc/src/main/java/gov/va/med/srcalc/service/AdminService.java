@@ -24,11 +24,9 @@ public interface AdminService
     
     /**
      * Updates a Variable with the given properties.
-     * @param displayName the current display name of the Variable to edit
      * @param properties contains properties to set
      * @throws InvalidIdentifierException if no such Variable exists
      */
-    public void updateVariable(
-            final String displayName, final EditVariable properties)
+    public void updateVariable(final EditVariable properties)
         throws InvalidIdentifierException;
 }

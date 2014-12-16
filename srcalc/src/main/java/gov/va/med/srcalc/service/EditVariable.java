@@ -18,12 +18,19 @@ public final class EditVariable
      */
     private static final List<String> INTEGRATED_VARIABLE_NAMES = Arrays.asList(
             "Age", "BMI", "DNR", "Gender");
+    
+    private String fKey;
 
     private String fDisplayName;
     
+    private EditVariable(final String key)
+    {
+        fKey = key;
+    }
+    
     public static EditVariable fromVariable(final Variable variable)
     {
-        final EditVariable ev = new EditVariable();
+        final EditVariable ev = new EditVariable(variable.getDisplayName());
         ev.setDisplayName(variable.getDisplayName());
         return ev;
     }
@@ -35,6 +42,15 @@ public final class EditVariable
     public boolean isIntegratedVariable()
     {
         return INTEGRATED_VARIABLE_NAMES.contains(fDisplayName);
+    }
+
+    /**
+     * The key that uniquely identifies the variable, suitable for displaying
+     * to an administrative user.
+     */
+    public String getKey()
+    {
+        return fKey;
     }
 
     public String getDisplayName()

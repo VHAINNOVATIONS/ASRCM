@@ -50,11 +50,11 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
-    public void updateVariable(String displayName, EditVariable properties)
+    public void updateVariable(EditVariable properties)
         throws InvalidIdentifierException
     {
         // Why provide a Service Layer method just to do this? For transaction
         // control.
-        properties.setOntoVariable(getVariable(displayName));
+        properties.setOntoVariable(getVariable(properties.getKey()));
     }
 }

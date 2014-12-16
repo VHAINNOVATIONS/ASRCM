@@ -66,7 +66,7 @@ public class AdminServiceIT
         // Behavior verification.
         final EditVariable ev = EditVariable.fromVariable(var);
         ev.setDisplayName(newName);
-        fAdminService.updateVariable(origName, ev);
+        fAdminService.updateVariable(ev);
         assertEquals(newName, fAdminService.getVariable(newName).getDisplayName());
     }
     
