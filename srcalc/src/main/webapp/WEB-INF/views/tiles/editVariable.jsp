@@ -9,10 +9,12 @@
             value="/admin/models/editVariable/${variable.displayName}"/>
         <form:form id="variableEditForm" cssClass="srcalcForm attributeEditForm"
             method="post" action="${editVariableUrl}" commandName="variable">
-        <fieldset>
-            <!-- Use an ordered list for the list of attributes. -->
-            <ol>
-            <li><label class="attributeName">Display Name:</label>
+        <%-- See srcalc.css for why HTML tables. --%>
+        <table>
+        <tbody>
+            <tr>
+            <td class="attributeName">Display Name:</td>
+            <td>
             <%-- In the final solution, we may allow editing display names of
                  integrated variables, but disallow it until we know for sure. --%>
             <c:choose>
@@ -24,9 +26,10 @@
             <form:errors path="displayName" cssClass="error" />
             </c:otherwise>
             </c:choose>
-            </li>
-            </ol>
-        </fieldset>
+            </td>
+            </tr>
+        </tbody>
+        </table>
         <div class="actionButtons">
         <c:url var="cancelUrl" value="/admin/models" />
         <button type="submit">Save Changes</button> <a href="${cancelUrl}">Cancel</a>
