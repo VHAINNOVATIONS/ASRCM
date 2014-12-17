@@ -6,8 +6,8 @@
     <c:forEach var="variable" items="${variables}">
     <c:url var="editVariable" value="/admin/models/editVariable/${variable.displayName}" />
     <tr>
-        <td>${variable.displayName}</td>
-        <td>${variable.typeName}</td>
+        <td><c:out value="${variable.displayName}"/></td>
+        <td><c:out value="${variable.typeName}"/></td>
         <td><a href="${editVariable}" class="editObjectLink">Edit</a></td>
     </tr>
     </c:forEach>

@@ -83,7 +83,7 @@ public class DefaultAdminServiceTest
         final EditVariable ev = EditVariable.fromVariable(var);
         assertTrue(ev.isIntegratedVariable());
         ev.setDisplayName(newName);
-        s.updateVariable(origName, ev);
+        s.updateVariable(ev);
         // Can't test getVariable() due to limitations of the mock.
         assertEquals(newName, var.getDisplayName());
     }

@@ -1,12 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/srcalc.tld" prefix="srcalc" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-        <h2>Edit ${variable.displayName} Variable</h2>
+        <h2>Edit <c:out value="${variable.key}"/> Variable</h2>
         <c:if test="${variable.integratedVariable}">
         <p>This is a VistA-integrated variable. Some fields may not be edited.</p>
         </c:if>
         <c:url var="editVariableUrl"
-            value="/admin/models/editVariable/${variable.displayName}"/>
+            value="/admin/models/editVariable/${variable.key}"/>
         <form:form id="variableEditForm" cssClass="srcalcForm attributeEditForm"
             method="post" action="${editVariableUrl}" commandName="variable">
         <%-- See srcalc.css for why HTML tables. --%>
@@ -32,6 +32,7 @@
         </table>
         <div class="actionButtons">
         <c:url var="cancelUrl" value="/admin/models" />
-        <button type="submit">Save Changes</button> <a href="${cancelUrl}">Cancel</a>
+        <button type="submit">Save Changes</button>
+        <a class="btn-link" href="${cancelUrl}">Cancel</a>
         </div>
         </form:form>
