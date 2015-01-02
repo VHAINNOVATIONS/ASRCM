@@ -54,6 +54,30 @@ public class NumericalVariable extends Variable
         this.fMaxValue = maxValue;
     }
     
+    /**
+     * Checks the given value against the configured minimum and maximum bounds.
+     * If the value is valid, returns the value. Otherwise, throws an {@link
+     * InvalidValueException}.
+     * @return the valid value for convenience
+     * @throws ValueTooLowException if the value is below the minimum
+     * @throws ValueTooHighException if the value is above the minimum
+     */
+    public float checkValue(final float value)
+            throws ValueTooLowException, ValueTooHighException
+    {
+        if (value < getMinValue())
+        {
+            throw new ValueTooLowException(
+                    "value must be greater than or equal to " + getMinValue());
+        }
+        else if (value > getMaxValue())
+        {
+            throw new ValueTooHighException(
+                    "value must be less than or equal to " + getMaxValue());
+        }
+        return value;
+    }
+    
     @Override
     public void accept(final VariableVisitor visitor) throws Exception
     {

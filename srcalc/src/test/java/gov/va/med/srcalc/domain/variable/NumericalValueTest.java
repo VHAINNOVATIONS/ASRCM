@@ -20,4 +20,18 @@ public class NumericalValueTest
         // getDisplayString()
         assertEquals("1.2", val.getDisplayString());
     }
+    
+    @Test(expected = ValueTooHighException.class)
+    public final void testValueTooHigh() throws Exception
+    {
+        final NumericalVariable var = SampleObjects.sampleAgeVariable();
+        new NumericalValue(var, 1000);
+    }
+    
+    @Test(expected = ValueTooLowException.class)
+    public final void testValueTooLow() throws Exception
+    {
+        final NumericalVariable var = SampleObjects.sampleAgeVariable();
+        new NumericalValue(var, -1);
+    }
 }
