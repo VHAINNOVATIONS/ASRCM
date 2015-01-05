@@ -27,7 +27,7 @@
             <td>
             <srcalc:variableSpecific variable="${variable}">
             <jsp:attribute name="numericalFragment">
-                <form:input path="${varPath}" size="8"/>
+                <form:input path="${varPath}" size="6"/> ${variable.units}
             </jsp:attribute>
             <jsp:attribute name="multiSelectFragment">
                 <c:choose>

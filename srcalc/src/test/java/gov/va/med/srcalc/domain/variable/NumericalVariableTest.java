@@ -14,5 +14,15 @@ public class NumericalVariableTest
                 // 81 characters
                 "01234567890123456789012345678901234567890123456789012345678901234567890123456789X");
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public final void testSetg()
+    {
+        final NumericalVariable var = SampleObjects.sampleAgeVariable();
+        var.setUnits(
+                // 41 characters
+                "0123456789012345678901234567890123456789X");
+    }
+    
     
 }

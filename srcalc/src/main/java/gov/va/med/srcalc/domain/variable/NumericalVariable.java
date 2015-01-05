@@ -1,7 +1,8 @@
 package gov.va.med.srcalc.domain.variable;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
+import java.util.Objects;
+
+import javax.persistence.*;
 
 /**
  * A Variable with numerical (floating-point) value.
@@ -9,8 +10,14 @@ import javax.persistence.Entity;
 @Entity
 public class NumericalVariable extends Variable
 {
+    /**
+     * The maximum length of the units string.
+     */
+    public static final int UNITS_MAX = 40;
+    
     private float fMinValue = 0.0f;
     private float fMaxValue = Float.POSITIVE_INFINITY;
+    private String fUnits = "";
     
     /**
      * For reflection-based construction only. Business code should use
@@ -52,6 +59,34 @@ public class NumericalVariable extends Variable
     public void setMaxValue(final float maxValue)
     {
         this.fMaxValue = maxValue;
+    }
+    
+    /**
+     * The units (if any) for the number. May be an empty string if units are
+     * not applicable, but will never be null.
+     * @return
+     */
+    @Basic
+    @Column(nullable = false, length = UNITS_MAX)
+    public String getUnits()
+    {
+        return fUnits;
+    }
+
+    /**
+     * Sets the units.
+     * @param units must not be null
+     * @throws NullPointerException if the given value is null
+     * @throws IllegalArgumentException if the given value is over 40 characters
+     */
+    public void setUnits(final String units)
+    {
+        // Note: will throw an NPE if the argument is null
+        if (units.length() > UNITS_MAX)
+        {
+            throw new IllegalArgumentException("The units must be 40 characters or less.");
+        }
+        fUnits = units;
     }
     
     /**
