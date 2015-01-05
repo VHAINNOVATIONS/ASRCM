@@ -25,6 +25,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class CalculationController
 {
+    /**
+     * Attribute name for the VariableEntry object.
+     */
+    public static final String ATTR_VARIABLE_ENTRY = "variableEntry";
+
     private static String SESSION_CALCULATION = "srcalc_calculation";
     
     private static final Logger fLogger = LoggerFactory.getLogger(CalculationController.class);
@@ -98,7 +103,7 @@ public class CalculationController
     @RequestMapping(value = "/enterVars", method = RequestMethod.GET)
     public ModelAndView presentVariableEntry(
             final HttpSession session,
-            @ModelAttribute("variableEntry") final VariableEntry initialValues)
+            @ModelAttribute(ATTR_VARIABLE_ENTRY) final VariableEntry initialValues)
     {
         // Get the CalculationWorkflow from the session.
         final CalculationWorkflow workflow = getWorkflowFromSession(session);
@@ -114,7 +119,7 @@ public class CalculationController
     @RequestMapping(value = "/enterVars", method = RequestMethod.POST)
     public ModelAndView enterVariables(
             final HttpSession session,
-            @ModelAttribute("variableEntry") final VariableEntry values,
+            @ModelAttribute(ATTR_VARIABLE_ENTRY) final VariableEntry values,
             final BindingResult valuesBindingResult)
     {
         // Get the CalculationWorkflow from the session.

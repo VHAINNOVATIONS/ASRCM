@@ -18,7 +18,7 @@
         <tr><th colspan="2" class="groupName">${variableGroup.name}</th></tr>
         <c:forEach var="variable" items="${variableGroup.variables}">
         <tr>
-            <c:set var="varPath" value="dynamicValues[${variable.displayName}]" />
+            <c:set var="varPath" value="${srcalc:dynamicValuePath(variable.displayName)}" />
             <td class="attributeName">${variable.displayName}:</td>
             <%--
             Use our variableSpecific custom tag to write the corresponding form
@@ -27,7 +27,7 @@
             <td>
             <srcalc:variableSpecific variable="${variable}">
             <jsp:attribute name="numericalFragment">
-                <form:input path="${varPath}" size="8"/>
+                <form:input path="${varPath}" size="6"/> ${variable.units}
             </jsp:attribute>
             <jsp:attribute name="multiSelectFragment">
                 <c:choose>

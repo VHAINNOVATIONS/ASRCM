@@ -106,6 +106,7 @@ public class SampleObjects
                 "Age", demographicsVariableGroup());
         var.setMinValue(0);
         var.setMaxValue(999);
+        var.setUnits("years");
         return var;
     }
 

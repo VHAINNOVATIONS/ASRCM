@@ -47,7 +47,7 @@ INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (2, 'Age', 2);
 -- There is not really an upper limit on age, but specify an unrealistically high
 -- one to have some idea of significant digits.
-INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value) VALUES (2, 0, 999);
+INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value, units) VALUES (2, 0, 999, 'years');
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 2, 1);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 2, 1);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (3, 2, 1);
@@ -91,7 +91,7 @@ INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (5, 'BMI', 3);
 -- There is not really an upper limit on BMI, but specify an unrealistically high
 -- one to have some idea of significant digits.
-INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value) VALUES (5, 0, 499);
+INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value, units) VALUES (5, 0, 499, '');
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 5, 3);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 5, 3);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (3, 5, 3);
