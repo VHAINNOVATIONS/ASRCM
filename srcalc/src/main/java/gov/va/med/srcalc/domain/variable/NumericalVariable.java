@@ -1,7 +1,5 @@
 package gov.va.med.srcalc.domain.variable;
 
-import java.util.Objects;
-
 import javax.persistence.*;
 
 /**

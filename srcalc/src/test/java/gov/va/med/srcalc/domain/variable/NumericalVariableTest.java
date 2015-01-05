@@ -16,7 +16,7 @@ public class NumericalVariableTest
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public final void testSetg()
+    public final void testSetUnitsTooLong()
     {
         final NumericalVariable var = SampleObjects.sampleAgeVariable();
         var.setUnits(
