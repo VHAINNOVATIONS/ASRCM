@@ -89,5 +89,14 @@ eclipse {
 	    facet name: 'jst.web', version: '3.0'
 	}
     }
+
+    // Fix "Web App Libraries" order. See <http://gsfn.us/t/3jk71>.
+    classpath.file {
+        withXml { xml ->
+            def node = xml.asNode()
+            node.remove( node.find { it.@path == 'org.eclipse.jst.j2ee.internal.web.container' } )
+            node.appendNode( 'classpathentry', [ kind: 'con', path: 'org.eclipse.jst.j2ee.internal.web.container', exported: 'true'])
+        }
+    }
 }
 
