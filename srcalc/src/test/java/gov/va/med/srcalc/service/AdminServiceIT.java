@@ -30,7 +30,7 @@ public class AdminServiceIT extends IntegrationTest
     public final void testGetAllVariables()
     {
         final List<Variable> actualVars = fAdminService.getAllVariables();
-        assertEquals(8, actualVars.size());
+        assertEquals(9, actualVars.size());
         assertEquals("Age", actualVars.get(0).getDisplayName());
     }
     

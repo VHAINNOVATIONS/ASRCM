@@ -4,8 +4,7 @@ import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class SampleObjects
 {
@@ -83,6 +82,11 @@ public class SampleObjects
         return new VariableGroup("Demographics", 1);
     }
     
+    public static VariableGroup labVariableGroup()
+    {
+        return new VariableGroup("Laboratory Values", 4);
+    }
+    
     public static VariableGroup recentClinicalVariableGroup()
     {
         return new VariableGroup("Clinical Conditions or Diseases - Recent", 5);
@@ -134,5 +138,15 @@ public class SampleObjects
                 recentClinicalVariableGroup(),
                 MultiSelectVariable.DisplayType.Radio,
                 fsOptions);
+    }
+    
+    public static LabVariable wbcVariable()
+    {
+        final List<NumericalRange> wbcRanges = Arrays.asList(
+                new NumericalRange(11.0f, false, Float.POSITIVE_INFINITY, false));
+        final LabVariable var = new LabVariable(
+                "White Blood Count", labVariableGroup(), new HashSet<>(wbcRanges));
+        var.setUnits("x1000/mm^3");
+        return var;
     }
 }

@@ -15,6 +15,7 @@ public class VariableSpecificTagTest
     private JspFragment booleanFragment;
     private JspFragment multiSelectFragment;
     private JspFragment procedureFragment;
+    private JspFragment labFragment;
     private VariableSpecificTag tag;
     
     @Before
@@ -28,6 +29,8 @@ public class VariableSpecificTagTest
         tag.setBooleanFragment(booleanFragment);
         multiSelectFragment = mock(JspFragment.class);
         tag.setMultiSelectFragment(multiSelectFragment);
+        labFragment = mock(JspFragment.class);
+        tag.setLabFragment(labFragment);
         procedureFragment = mock(JspFragment.class);
         tag.setProcedureFragment(procedureFragment);
     }
@@ -41,6 +44,7 @@ public class VariableSpecificTagTest
         verify(numericalFragment).invoke(null);
         verify(booleanFragment, never()).invoke(null);
         verify(multiSelectFragment, never()).invoke(null);
+        verify(labFragment, never()).invoke(null);
         verify(procedureFragment, never()).invoke(null);
     }
 
@@ -53,6 +57,7 @@ public class VariableSpecificTagTest
         verify(numericalFragment, never()).invoke(null);
         verify(booleanFragment).invoke(null);
         verify(multiSelectFragment, never()).invoke(null);
+        verify(labFragment, never()).invoke(null);
         verify(procedureFragment, never()).invoke(null);
     }
 
@@ -65,6 +70,7 @@ public class VariableSpecificTagTest
         verify(numericalFragment, never()).invoke(null);
         verify(booleanFragment, never()).invoke(null);
         verify(multiSelectFragment).invoke(null);
+        verify(labFragment, never()).invoke(null);
         verify(procedureFragment, never()).invoke(null);
     }
 
@@ -77,7 +83,21 @@ public class VariableSpecificTagTest
         verify(numericalFragment, never()).invoke(null);
         verify(booleanFragment, never()).invoke(null);
         verify(multiSelectFragment, never()).invoke(null);
+        verify(labFragment, never()).invoke(null);
         verify(procedureFragment).invoke(null);
+    }
+
+    @Test
+    public final void testDoTagLab() throws Exception
+    {
+        // Behavior verification.
+        tag.setVariable(SampleObjects.wbcVariable());
+        tag.doTag();
+        verify(numericalFragment, never()).invoke(null);
+        verify(booleanFragment, never()).invoke(null);
+        verify(multiSelectFragment, never()).invoke(null);
+        verify(labFragment).invoke(null);
+        verify(procedureFragment, never()).invoke(null);
     }
     
 }

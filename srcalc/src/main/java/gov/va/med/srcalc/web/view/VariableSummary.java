@@ -74,6 +74,12 @@ public class VariableSummary
             fTypeName = (variable.getDisplayType() == DisplayType.Radio) ?
                     "Radio Button" : "Drop-Down";
         }
+        
+        @Override
+        public void visitLab(final LabVariable variable)
+        {
+            fTypeName = "Lab Result";
+        }
 
         @Override
         public void visitProcedure(final ProcedureVariable variable)

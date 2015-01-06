@@ -18,6 +18,7 @@ public class VariableSpecificTag extends SimpleTagSupport
     private JspFragment fNumericalFragment;
     private JspFragment fBooleanFragment;
     private JspFragment fMultiSelectFragment;
+    private JspFragment fLabFragment;
     private JspFragment fProcedureFragment;
     
     @Override
@@ -60,6 +61,11 @@ public class VariableSpecificTag extends SimpleTagSupport
         fMultiSelectFragment = multiSelectFragment;
     }
 
+    public void setLabFragment(JspFragment labFragment)
+    {
+        fLabFragment = labFragment;
+    }
+
     public void setProcedureFragment(JspFragment procedureFragment)
     {
         fProcedureFragment = procedureFragment;
@@ -86,6 +92,12 @@ public class VariableSpecificTag extends SimpleTagSupport
                 throws JspException, IOException
         {
             fMultiSelectFragment.invoke(null);
+        }
+        
+        @Override
+        public void visitLab(LabVariable variable) throws Exception
+        {
+            fLabFragment.invoke(null);
         }
 
         @Override

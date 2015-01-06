@@ -46,6 +46,16 @@
             <jsp:attribute name="booleanFragment">
                 <label class="checkboxLabel"><form:checkbox path="${varPath}" value="true"/> ${variable.displayName}</label>
             </jsp:attribute>
+            <jsp:attribute name="labFragment">
+                <!-- Wrap both the radio button and numerical entry in a span.radioLabel
+                     for proper spacing. -->
+                <span class="radioLabel"><label><form:radiobutton path="${varPath}" value="numerical"/> Numerical:</label>
+                <form:input cssClass="labNumerical" path="${srcalc:dynamicValuePath(variable.displayName)}_numerical" size="6"/> ${variable.units}</span><br>
+                <label class="radioLabel"><form:radiobutton path="${varPath}" value="wnl"/> Presumed WNL</label>
+                <c:forEach var="range" items="${variable.ranges}">
+                <label class="radioLabel"><form:radiobutton path="${varPath}"/> ${range.displayName} ${variable.units}</label>
+                </c:forEach>
+            </jsp:attribute>
             <jsp:attribute name="procedureFragment">
                 <%--
                 Javascript code below will transform this table into a jQueryUI

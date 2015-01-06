@@ -101,7 +101,6 @@ public class CalculationControllerIT extends IntegrationTest
         varParams.add("BMI", "18.7");
         varParams.add("Functional Status", "Independent");
         varParams.add("Preop Pneumonia", "true");
-        final int numVars = varParams.getNumVariables();
         
         final MockHttpServletRequestBuilder request =
                 post("/enterVars").session(fSession);
@@ -111,9 +110,10 @@ public class CalculationControllerIT extends IntegrationTest
         
         fMockMvc.perform(get("/displayResults").session(fSession))
             .andExpect(status().is(200))
-            // Just check the size of the returned values. See method Javadoc.
+            // We do not test the calculation itself (see method Javadoc), so
+            // just ensure the values list is populated.
             .andExpect(model().attribute(
-                    "calculation", hasProperty("values", hasSize(numVars))));
+                    "calculation", hasProperty("values", not(empty()))));
     }
     
     @Test

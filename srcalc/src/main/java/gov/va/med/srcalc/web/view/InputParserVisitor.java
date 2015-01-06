@@ -169,7 +169,13 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
     }
     
     @Override
-    public void visitProcedure(ProcedureVariable variable)
+    public void visitLab(final LabVariable variable)
+    {
+        // TODO
+    }
+    
+    @Override
+    public void visitProcedure(final ProcedureVariable variable)
     {
         fLogger.debug("Parsing ProcedureVariable {}", variable);
 
