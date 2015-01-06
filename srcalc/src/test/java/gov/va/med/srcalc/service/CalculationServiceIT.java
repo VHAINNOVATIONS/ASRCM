@@ -10,6 +10,7 @@ import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
+import gov.va.med.srcalc.test.util.IntegrationTest;
 
 import javax.inject.Inject;
 
@@ -30,7 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"/srcalc-context.xml", "/test-context.xml"})
-public class CalculationServiceIT
+@Transactional // run each test in its own (rolled-back) transaction
+public class CalculationServiceIT extends IntegrationTest
 {
     @Inject // field-based autowiring only in tests
     CalculationService fCalculationService;
@@ -58,7 +60,6 @@ public class CalculationServiceIT
     }
     
     @Test
-    @Transactional  // do this all in one transaction so we can roll back
     public void testSetValidSpecialty() throws InvalidIdentifierException
     {
         final int PATIENT_DFN = 1;
@@ -88,7 +89,6 @@ public class CalculationServiceIT
     }
     
     @Test
-    @Transactional  // do this all in one transaction so we can roll back
     public void testRunThoracicCalculation() throws Exception
     {
         final int PATIENT_DFN = 1;
