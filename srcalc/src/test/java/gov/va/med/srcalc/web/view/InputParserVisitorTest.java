@@ -6,6 +6,7 @@ import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.web.view.InputParserVisitor;
 import gov.va.med.srcalc.web.view.VariableEntry;
 import static gov.va.med.srcalc.web.view.VariableEntry.makeVariableValuePath;
+import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
 
 import org.junit.Test;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -265,7 +266,7 @@ public class InputParserVisitorTest
         final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
-        variableEntry.getDynamicValues().put("White Blood Count", "Unknown");
+        variableEntry.getDynamicValues().put(var.getDisplayName(), "Unknown");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -276,5 +277,74 @@ public class InputParserVisitorTest
         assertEquals(
                 "invalid",
                 errors.getFieldError(makeVariableValuePath(var)).getCode());
+    }
+
+    @Test
+    public final void testInvalidNumberDiscreteNumerical() throws Exception
+    {
+        // Setup variable
+        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final String numericalName = VariableEntry.getNumericalInputName(var);
+
+        final VariableEntry variableEntry = new VariableEntry();
+        variableEntry.getDynamicValues().put(
+                var.getDisplayName(), InputParserVisitor.SPECIAL_LAB_NUMERICAL);
+        variableEntry.getDynamicValues().put(numericalName, "foo");
+        
+        final BeanPropertyBindingResult errors =
+                new BeanPropertyBindingResult(variableEntry, "variableEntry");
+        
+        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
+        v.visitDiscreteNumerical(var);
+        
+        assertEquals(
+                "typeMismatch.float",
+                errors.getFieldError(makeDynamicValuePath(numericalName)).getCode());
+    }
+
+    @Test
+    public final void testTooLowDiscreteNumerical() throws Exception
+    {
+        // Setup variable
+        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final String numericalName = VariableEntry.getNumericalInputName(var);
+
+        final VariableEntry variableEntry = new VariableEntry();
+        variableEntry.getDynamicValues().put(
+                var.getDisplayName(), InputParserVisitor.SPECIAL_LAB_NUMERICAL);
+        variableEntry.getDynamicValues().put(numericalName, "0.1");
+        
+        final BeanPropertyBindingResult errors =
+                new BeanPropertyBindingResult(variableEntry, "variableEntry");
+        
+        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
+        v.visitDiscreteNumerical(var);
+        
+        assertEquals(
+                "tooLow",
+                errors.getFieldError(makeDynamicValuePath(numericalName)).getCode());
+    }
+
+    @Test
+    public final void testTooHighDiscreteNumerical() throws Exception
+    {
+        // Setup variable
+        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final String numericalName = VariableEntry.getNumericalInputName(var);
+
+        final VariableEntry variableEntry = new VariableEntry();
+        variableEntry.getDynamicValues().put(
+                var.getDisplayName(), InputParserVisitor.SPECIAL_LAB_NUMERICAL);
+        variableEntry.getDynamicValues().put(numericalName, "51.0");
+        
+        final BeanPropertyBindingResult errors =
+                new BeanPropertyBindingResult(variableEntry, "variableEntry");
+        
+        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
+        v.visitDiscreteNumerical(var);
+        
+        assertEquals(
+                "tooHigh",
+                errors.getFieldError(makeDynamicValuePath(numericalName)).getCode());
     }
 }

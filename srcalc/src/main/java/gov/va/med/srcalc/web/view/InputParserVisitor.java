@@ -202,8 +202,42 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         // Special case: numerical
         if (categoryName.equals(SPECIAL_LAB_NUMERICAL))
         {
-            fLogger.info("User entered a numerical value...");
-            // TODO
+            final String numericalName = VariableEntry.getNumericalInputName(variable);
+            final String stringValue = fVariableEntry.getDynamicValues().get(
+                    numericalName);
+            fLogger.debug("User specified a numerical value: {}", stringValue);
+            if (StringUtils.isEmpty(stringValue))
+            {
+                rejectDynamicValue(numericalName, "noInput.float", "no input");
+                return;
+            }
+            try
+            {
+                final float floatValue = Float.parseFloat(stringValue);
+                fValues.add(DiscreteNumericalValue.fromNumerical(variable, floatValue));
+            }
+            // Translate any Exceptions into validation errors.
+            catch (final NumberFormatException ex)
+            {
+                rejectDynamicValue(
+                        numericalName, "typeMismatch.float", ex.getMessage());
+            }
+            catch (final ValueTooLowException ex)
+            {
+                rejectDynamicValue(
+                        numericalName,
+                        ex.getErrorCode(),
+                        new Object[]{ variable.getMinValue() },
+                        ex.getMessage());
+            }
+            catch (final ValueTooHighException ex)
+            {
+                rejectDynamicValue(
+                        numericalName,
+                        ex.getErrorCode(),
+                        new Object[]{ variable.getMaxValue() },
+                        ex.getMessage());
+            }
         }
         else
         {
@@ -216,8 +250,8 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
             }
             else
             {
-                fLogger.info("User selected Category {}", selectedCategory);
-                fValues.add(new DiscreteNumericalValue(variable, selectedCategory));
+                fLogger.debug("User selected Category {}", selectedCategory);
+                fValues.add(DiscreteNumericalValue.fromCategory(variable, selectedCategory));
             }
         }
     }

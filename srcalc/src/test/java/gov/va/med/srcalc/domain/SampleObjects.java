@@ -152,6 +152,29 @@ public class SampleObjects
         final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
                 "White Blood Count", labVariableGroup(), new HashSet<>(categories));
+        var.setMinValue(2.0f);
+        var.setMaxValue(50.0f);
+        var.setUnits("x1000/mm^3");
+        return var;
+    }
+    
+    /**
+     * Like {@link #wbcVariable()} but has a gap in the categories. Users may
+     * do this, you know.
+     */
+    public static DiscreteNumericalVariable misconfiguredWbcVariable()
+    {
+        final Category wbcWnl = new Category(
+                new NumericalRange(Float.NEGATIVE_INFINITY, false, 10.0f, true),
+                new MultiSelectOption("WNL"));
+        final Category wbcHigh = new Category(
+                new NumericalRange(11.0f, false, Float.POSITIVE_INFINITY, false),
+                new MultiSelectOption(">11.0"));
+        final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
+        final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
+                "White Blood Count", labVariableGroup(), new HashSet<>(categories));
+        var.setMinValue(2.0f);
+        var.setMaxValue(50.0f);
         var.setUnits("x1000/mm^3");
         return var;
     }

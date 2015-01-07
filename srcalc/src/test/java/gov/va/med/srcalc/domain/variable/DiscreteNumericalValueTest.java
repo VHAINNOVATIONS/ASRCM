@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.variable;
 
 import static org.junit.Assert.*;
+import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.SampleObjects;
 
 import org.junit.Test;
@@ -26,13 +27,48 @@ public class DiscreteNumericalValueTest
         final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
         // Find the WNL Category.
         final DiscreteNumericalVariable.Category wnl = findCategory(var, "WNL");
-        final DiscreteNumericalValue val = new DiscreteNumericalValue(var, wnl);
+        final DiscreteNumericalValue val = DiscreteNumericalValue.fromCategory(var, wnl);
         // getVariable()
         assertSame(var, val.getVariable());
         // toString()
         assertEquals("White Blood Count = WNL[range=(-1.0E12, 11.0]]", val.toString());
         // getDisplayString()
         assertEquals("Presumed WNL", val.getDisplayString());
+    }
+    
+    @Test
+    public final void testNumericalValid() throws Exception
+    {
+        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final DiscreteNumericalValue val =
+                DiscreteNumericalValue.fromNumerical(var, 2.0f);
+        // getVariable()
+        assertSame(var, val.getVariable());
+        // toString()
+        assertEquals("White Blood Count = WNL[range=(-1.0E12, 11.0]]", val.toString());
+        // getDisplayString()
+        assertEquals("WNL (Actual Value: 2.0)", val.getDisplayString());
+    }
+    
+    @Test(expected = ValueTooHighException.class)
+    public final void testNumericalTooHigh() throws Exception
+    {
+        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        DiscreteNumericalValue.fromNumerical(var, 50.1f);
+    }
+    
+    @Test(expected = ValueTooLowException.class)
+    public final void testNumericalTooLow() throws Exception
+    {
+        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        DiscreteNumericalValue.fromNumerical(var, 1.0f);
+    }
+    
+    @Test(expected = ConfigurationException.class)
+    public final void testNumericalMisconfigured() throws Exception
+    {
+        final DiscreteNumericalVariable var = SampleObjects.misconfiguredWbcVariable();
+        DiscreteNumericalValue.fromNumerical(var, 10.5f);
     }
     
 }

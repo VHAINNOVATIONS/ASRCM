@@ -52,6 +52,24 @@ public class DiscreteNumericalVariable extends NumericalVariable
     {
         visitor.visitDiscreteNumerical(this);
     }
+    
+    /**
+     * Returns the Category containing the given value, or null if none contains
+     * it.
+     * @return the containing Category or null
+     */
+    public Category getContainingCategory(final float value)
+    {
+        for (final Category c : getCategories())
+        {
+            if (c.getRange().isValueInRange(value))
+            {
+                return c;
+            }
+        }
+        
+        return null;
+    }
 
     /**
      * A Category for a {@link DiscreteNumericalVariable}. Presents an immutable

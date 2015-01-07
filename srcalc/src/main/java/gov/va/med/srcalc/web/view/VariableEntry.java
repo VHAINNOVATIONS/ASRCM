@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.web.view;
 
+import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable;
 import gov.va.med.srcalc.domain.variable.Variable;
 
 import java.util.HashMap;
@@ -44,6 +45,17 @@ public class VariableEntry
     public static String makeDynamicValuePath(final String variableName)
     {
         return "dynamicValues[" + variableName + "]";
+    }
+
+    /**
+     * Returns the name of the numerical input for the given
+     * {@link DiscreteNumericalVariable}.
+     * @param variable
+     * @return
+     */
+    public static String getNumericalInputName(final DiscreteNumericalVariable variable)
+    {
+        return variable.getDisplayName() + "_numerical";
     }
     
     /**

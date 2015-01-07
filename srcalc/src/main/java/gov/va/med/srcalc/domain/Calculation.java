@@ -126,6 +126,12 @@ public class Calculation implements Serializable
      */
     public void calculate(final List<Value> values)
     {
+        // Placeholder validity check - may change as we implement outcomes.
+        if (values.size() != getVariables().size())
+        {
+            throw new IllegalArgumentException("One value for each variable must be given");
+        }
+
         fValues.clear();
         fValues.addAll(values);
 

@@ -51,7 +51,9 @@
                      for proper spacing. -->
                 <span class="radioLabel"><label><form:radiobutton path="${varPath}" value="numerical"/> Numerical:</label>
                 <c:set var="numericalVarName" value="${variable.displayName}_numerical" />
-                <form:input cssClass="numerical" path="${srcalc:dynamicValuePath(numericalVarName)}" size="6"/> ${variable.units}</span><br>
+                <c:set var="numericalVarPath" value="${srcalc:dynamicValuePath(numericalVarName)}" />
+                <form:input cssClass="numerical" path="${numericalVarPath}" size="6"/> ${variable.units}</span>
+                <form:errors path="${numericalVarPath}" cssClass="error" /><br>
                 <c:forEach var="cat" items="${variable.categories}">
                 <label class="radioLabel"><form:radiobutton path="${varPath}" value="${cat.option.value}"/> Presumed ${cat.option.value}</label>
                 </c:forEach>

@@ -128,7 +128,7 @@ INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES
 
 -- Alkaline Phosphatase Lab
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (9, 'Alkaline Phosphatase', 5);
-INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value, units) VALUES (9, 2, 50, 'mU/ml');
+INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value, units) VALUES (9, 10, 750, 'mU/ml');
 INSERT INTO DISCRETE_NUMERICAL_VAR (id) VALUES (9);
 INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (10, 'WNL');
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (9, 10, -1e12, TRUE, 125.0, TRUE);
