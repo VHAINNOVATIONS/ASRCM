@@ -280,6 +280,52 @@ public class InputParserVisitorTest
     }
 
     @Test
+    public final void testValidNumberDiscreteNumerical() throws Exception
+    {
+        // Setup variable
+        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final String numericalName = VariableEntry.getNumericalInputName(var);
+
+        final VariableEntry variableEntry = new VariableEntry();
+        variableEntry.getDynamicValues().put(
+                var.getDisplayName(), InputParserVisitor.SPECIAL_LAB_NUMERICAL);
+        variableEntry.getDynamicValues().put(numericalName, "10.0");
+        
+        final BeanPropertyBindingResult errors =
+                new BeanPropertyBindingResult(variableEntry, "variableEntry");
+        
+        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
+        v.visitDiscreteNumerical(var);
+        
+        assertNotNull("should have a value", v.getValues().get(0).getValue());
+    }
+
+    @Test
+    public final void testUnspecifiedNumberDiscreteNumerical() throws Exception
+    {
+        // Setup variable
+        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final String numericalName = VariableEntry.getNumericalInputName(var);
+
+        final VariableEntry variableEntry = new VariableEntry();
+        variableEntry.getDynamicValues().put(
+                var.getDisplayName(), InputParserVisitor.SPECIAL_LAB_NUMERICAL);
+        // Note: no numerical value actually specified
+        
+        final BeanPropertyBindingResult errors =
+                new BeanPropertyBindingResult(variableEntry, "variableEntry");
+        
+        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
+        v.visitDiscreteNumerical(var);
+        
+        
+        assertEquals(
+                "noInput.float",
+                errors.getFieldError(makeDynamicValuePath(numericalName)).getCode());
+    }
+
+
+    @Test
     public final void testInvalidNumberDiscreteNumerical() throws Exception
     {
         // Setup variable

@@ -46,6 +46,8 @@ public class CalculationTest
         assertEquals(thoracicSpecialty.getVariables().size(), calc.getVariables().size());
         assertEquals("Procedure", calc.getVariables().get(0).getDisplayName());
         assertEquals("Age", calc.getVariables().get(1).getDisplayName());
+        // And same for getVariableGroups().
+        assertEquals(3, calc.getVariableGroups().size());
     }
     
     @Test(expected = IllegalStateException.class)
