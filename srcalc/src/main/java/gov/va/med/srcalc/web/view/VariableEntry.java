@@ -36,14 +36,29 @@ public class VariableEntry
      * <a href="http://docs.spring.io/spring/docs/4.0.x/spring-framework-reference/html/validation.html#beans-beans-conventions">in
      * the Spring docs</a> but not well-documented.</p>
      * 
-     * <p>Note also that variable display names should be alphanumeric to avoid
-     * interfering with Spring databinding syntax.</p>
+     * <p>Note also that name should be alphanumeric to avoid interfering with
+     * Spring databinding syntax.</p>
      * 
      * @return the nested property name, e.g. <code>"dynamicValues[Gender]"</code>
      */
     public static String makeDynamicValuePath(final String variableName)
     {
         return "dynamicValues[" + variableName + "]";
+    }
+    
+    /**
+     * <p>Returns the Spring Data Binding nested property name for the given
+     * variable. See {@link #makeDynamicValuePath(String)}.</p>
+     * 
+     * <p>Currently uses the variable's display name. The display names should
+     * therefore be alphanumeric to avoid interfering with Spring databinding
+     * syntax.</p>
+     * 
+     * @return the nested property name, e.g. <code>"dynamicValues[Gender]"</code>
+     */
+    public static String makeVariableValuePath(final Variable var)
+    {
+        return makeDynamicValuePath(var.getDisplayName());
     }
     
     @Override

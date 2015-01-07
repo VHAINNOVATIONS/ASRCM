@@ -5,7 +5,7 @@ import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.web.view.InputParserVisitor;
 import gov.va.med.srcalc.web.view.VariableEntry;
-import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
+import static gov.va.med.srcalc.web.view.VariableEntry.makeVariableValuePath;
 
 import org.junit.Test;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -30,7 +30,9 @@ public class InputParserVisitorTest
         final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
         v.visitMultiSelect(var);
         
-        assertEquals("noSelection", errors.getFieldError("dynamicValues[Gender]").getCode());
+        assertEquals(
+                "noSelection",
+                errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
 
     @Test
@@ -48,58 +50,57 @@ public class InputParserVisitorTest
         final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
         v.visitMultiSelect(var);
         
-        assertEquals("invalid", errors.getFieldError("dynamicValues[Gender]").getCode());
+        assertEquals(
+                "invalid",
+                errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
 
     @Test
     public final void testUnspecifiedProcedure() throws Exception
     {
         // Setup variable
-        final ProcedureVariable procedureVariable = SampleObjects.sampleProcedureVariable();
-        final String varName = procedureVariable.getDisplayName();
+        final ProcedureVariable var = SampleObjects.sampleProcedureVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
         // Sometimes no value may be represented as an empty string.
-        variableEntry.getDynamicValues().put(varName, "");
+        variableEntry.getDynamicValues().put(var.getDisplayName(), "");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
         
         final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
-        v.visitProcedure(procedureVariable);
+        v.visitProcedure(var);
         
         assertEquals(
                 "noSelection",
-                errors.getFieldError(makeDynamicValuePath(varName)).getCode());
+                errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
 
     @Test
     public final void testInvalidProcedure() throws Exception
     {
         // Setup variable
-        final ProcedureVariable procedureVariable = SampleObjects.sampleProcedureVariable();
-        final String varName = procedureVariable.getDisplayName();
+        final ProcedureVariable var = SampleObjects.sampleProcedureVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
-        variableEntry.getDynamicValues().put(varName, "ASDFASDFASDF");
+        variableEntry.getDynamicValues().put(var.getDisplayName(), "ASDFASDFASDF");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
         
         final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
-        v.visitProcedure(procedureVariable);
+        v.visitProcedure(var);
         
         assertEquals(
                 "invalid",
-                errors.getFieldError(makeDynamicValuePath(varName)).getCode());
+                errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
     
     @Test
     public final void testUnspecifiedNumerical() throws Exception
     {
         // Setup variable
-        final NumericalVariable ageVariable = SampleObjects.sampleAgeVariable();
-        final String varName = ageVariable.getDisplayName();
+        final NumericalVariable var = SampleObjects.sampleAgeVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
         // Note: Age never set in dynamicValues.
@@ -108,74 +109,71 @@ public class InputParserVisitorTest
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
         
         final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
-        v.visitNumerical(ageVariable);
+        v.visitNumerical(var);
         
         assertEquals(
                 "noInput.float",
-                errors.getFieldError(makeDynamicValuePath(varName)).getCode());
+                errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
     
     @Test
     public final void testInvalidNumerical() throws Exception
     {
         // Setup variable
-        final NumericalVariable ageVariable = SampleObjects.sampleAgeVariable();
-        final String varName = ageVariable.getDisplayName();
+        final NumericalVariable var = SampleObjects.sampleAgeVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
-        variableEntry.getDynamicValues().put(varName, "asdfasdf");
+        variableEntry.getDynamicValues().put(var.getDisplayName(), "asdfasdf");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
         
         final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
-        v.visitNumerical(ageVariable);
+        v.visitNumerical(var);
         
         assertEquals(
                 "typeMismatch.float",
-                errors.getFieldError(makeDynamicValuePath(varName)).getCode());
+                errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
     
     @Test
     public final void testTooLowNumerical() throws Exception
     {
         // Setup variable
-        final NumericalVariable ageVariable = SampleObjects.sampleAgeVariable();
-        final String varName = ageVariable.getDisplayName();
+        final NumericalVariable var = SampleObjects.sampleAgeVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
-        variableEntry.getDynamicValues().put(varName, "-1");
+        variableEntry.getDynamicValues().put(var.getDisplayName(), "-1");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
         
         final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
-        v.visitNumerical(ageVariable);
+        v.visitNumerical(var);
         
         assertEquals(
                 "tooLow",
-                errors.getFieldError(makeDynamicValuePath(varName)).getCode());
+                errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
     
     @Test
     public final void testTooHighNumerical() throws Exception
     {
         // Setup variable
-        final NumericalVariable ageVariable = SampleObjects.sampleAgeVariable();
-        final String varName = ageVariable.getDisplayName();
+        final NumericalVariable var = SampleObjects.sampleAgeVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
-        variableEntry.getDynamicValues().put(varName, "1000");
+        variableEntry.getDynamicValues().put(var.getDisplayName(), "1000");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
         
         final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
-        v.visitNumerical(ageVariable);
+        v.visitNumerical(var);
         
         assertEquals(
                 "tooHigh",
-                errors.getFieldError(makeDynamicValuePath(varName)).getCode());
+                errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
     
     @Test
@@ -255,7 +253,9 @@ public class InputParserVisitorTest
         final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
         v.visitDiscreteNumerical(var);
         
-        assertEquals("noSelection", errors.getFieldError("dynamicValues[White Blood Count]").getCode());
+        assertEquals(
+                "noSelection",
+                errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
 
     @Test
@@ -273,6 +273,8 @@ public class InputParserVisitorTest
         final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
         v.visitDiscreteNumerical(var);
         
-        assertEquals("invalid", errors.getFieldError("dynamicValues[White Blood Count]").getCode());
+        assertEquals(
+                "invalid",
+                errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
 }
