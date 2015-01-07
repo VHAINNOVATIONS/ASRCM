@@ -56,7 +56,7 @@ public class ProcedureLoaderVisitor implements VariableVisitor
     }
     
     @Override
-    public void visitLab(LabVariable variable) throws Exception
+    public void visitDiscreteNumerical(DiscreteNumericalVariable variable) throws Exception
     {
         // No action needed.
     }

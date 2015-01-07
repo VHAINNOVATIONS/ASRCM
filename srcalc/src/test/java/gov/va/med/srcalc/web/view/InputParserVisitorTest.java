@@ -239,4 +239,40 @@ public class InputParserVisitorTest
                 "non-true boolean should be false",
                 Boolean.FALSE, v.getValues().get(0).getValue());
     }
+
+    @Test
+    public final void testUnspecifiedDiscreteNumerical() throws Exception
+    {
+        // Setup variable
+        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+
+        final VariableEntry variableEntry = new VariableEntry();
+        // Note: White Blood Count never set in dynamicValues.
+        
+        final BeanPropertyBindingResult errors =
+                new BeanPropertyBindingResult(variableEntry, "variableEntry");
+        
+        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
+        v.visitDiscreteNumerical(var);
+        
+        assertEquals("noSelection", errors.getFieldError("dynamicValues[White Blood Count]").getCode());
+    }
+
+    @Test
+    public final void testInvalidDiscreteNumerical() throws Exception
+    {
+        // Setup variable
+        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+
+        final VariableEntry variableEntry = new VariableEntry();
+        variableEntry.getDynamicValues().put("White Blood Count", "Unknown");
+        
+        final BeanPropertyBindingResult errors =
+                new BeanPropertyBindingResult(variableEntry, "variableEntry");
+        
+        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
+        v.visitDiscreteNumerical(var);
+        
+        assertEquals("invalid", errors.getFieldError("dynamicValues[White Blood Count]").getCode());
+    }
 }

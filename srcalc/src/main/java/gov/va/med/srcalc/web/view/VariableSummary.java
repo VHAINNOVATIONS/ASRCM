@@ -76,7 +76,7 @@ public class VariableSummary
         }
         
         @Override
-        public void visitLab(final LabVariable variable)
+        public void visitDiscreteNumerical(final DiscreteNumericalVariable variable)
         {
             fTypeName = "Lab Result";
         }

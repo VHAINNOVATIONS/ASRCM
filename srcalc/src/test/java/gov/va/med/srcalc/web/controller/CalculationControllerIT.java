@@ -101,11 +101,13 @@ public class CalculationControllerIT extends IntegrationTest
         varParams.add("BMI", "18.7");
         varParams.add("Functional Status", "Independent");
         varParams.add("Preop Pneumonia", "true");
+        varParams.add("Alkaline Phosphatase", ">125mU/ml");
         
         final MockHttpServletRequestBuilder request =
                 post("/enterVars").session(fSession);
         varParams.addTo(request);
         fMockMvc.perform(request)
+            .andExpect(model().attributeHasNoErrors("variableEntry"))
             .andExpect(redirectedUrl("/displayResults"));
         
         fMockMvc.perform(get("/displayResults").session(fSession))

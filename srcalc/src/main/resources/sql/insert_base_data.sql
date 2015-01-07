@@ -126,10 +126,13 @@ INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 7, 5);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 7, 5);
 
--- WBC Lab
-INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (9, 'White Blood Count', 5);
-INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value, units) VALUES (9, 2, 50, 'x1000/mm^3');
-INSERT INTO LAB_VARIABLE (id) VALUES (9);
-INSERT INTO LAB_VARIABLE_RANGES (lab_variable, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (9, 11.0, FALSE, 1e12, TRUE);
+-- Alkaline Phosphatase Lab
+INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (9, 'Alkaline Phosphatase', 5);
+INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value, units) VALUES (9, 2, 50, 'mU/ml');
+INSERT INTO DISCRETE_NUMERICAL_VAR (id) VALUES (9);
+INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (10, 'WNL');
+INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (9, 10, -1e12, TRUE, 125.0, TRUE);
+INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (11, '>125mU/ml');
+INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (9, 11, 125.0, FALSE, 1e12, TRUE);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 9, 4);
 

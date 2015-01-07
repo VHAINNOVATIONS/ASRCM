@@ -50,10 +50,10 @@
                 <!-- Wrap both the radio button and numerical entry in a span.radioLabel
                      for proper spacing. -->
                 <span class="radioLabel"><label><form:radiobutton path="${varPath}" value="numerical"/> Numerical:</label>
-                <form:input cssClass="labNumerical" path="${srcalc:dynamicValuePath(variable.displayName)}_numerical" size="6"/> ${variable.units}</span><br>
-                <label class="radioLabel"><form:radiobutton path="${varPath}" value="wnl"/> Presumed WNL</label>
-                <c:forEach var="range" items="${variable.ranges}">
-                <label class="radioLabel"><form:radiobutton path="${varPath}"/> ${range.displayName} ${variable.units}</label>
+                <c:set var="numericalVarName" value="${variable.displayName}_numerical" />
+                <form:input cssClass="numerical" path="${srcalc:dynamicValuePath(numericalVarName)}" size="6"/> ${variable.units}</span><br>
+                <c:forEach var="cat" items="${variable.categories}">
+                <label class="radioLabel"><form:radiobutton path="${varPath}" value="${cat.option.value}"/> Presumed ${cat.option.value}</label>
                 </c:forEach>
             </jsp:attribute>
             <jsp:attribute name="procedureFragment">

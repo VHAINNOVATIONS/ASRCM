@@ -2,6 +2,7 @@ package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable.Category;
 import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
 
 import java.util.*;
@@ -140,12 +141,17 @@ public class SampleObjects
                 fsOptions);
     }
     
-    public static LabVariable wbcVariable()
+    public static DiscreteNumericalVariable wbcVariable()
     {
-        final List<NumericalRange> wbcRanges = Arrays.asList(
-                new NumericalRange(11.0f, false, Float.POSITIVE_INFINITY, false));
-        final LabVariable var = new LabVariable(
-                "White Blood Count", labVariableGroup(), new HashSet<>(wbcRanges));
+        final Category wbcWnl = new Category(
+                new NumericalRange(Float.NEGATIVE_INFINITY, false, 11.0f, true),
+                new MultiSelectOption("WNL"));
+        final Category wbcHigh = new Category(
+                new NumericalRange(11.0f, false, Float.POSITIVE_INFINITY, false),
+                new MultiSelectOption(">11.0"));
+        final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
+        final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
+                "White Blood Count", labVariableGroup(), new HashSet<>(categories));
         var.setUnits("x1000/mm^3");
         return var;
     }

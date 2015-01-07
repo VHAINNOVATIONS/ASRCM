@@ -92,31 +92,6 @@ public class NumericalRangeTest
     }
     
     @Test
-    public final void testDisplayNameNormal()
-    {
-        final NumericalRange r = new NumericalRange(1.0f, true, 5.0f, true);
-        assertEquals("1.0-5.0", r.getDisplayName());
-    }
-    
-    @Test
-    public final void testDisplayNameLowerInf()
-    {
-        final NumericalRange r1 = new NumericalRange(NumericalRange.MIN, false, 20.1f, true);
-        assertEquals("<=20.1", r1.getDisplayName());
-        final NumericalRange r2 = new NumericalRange(NumericalRange.MIN, false, 20.1f, false);
-        assertEquals("<20.1", r2.getDisplayName());
-    }
-    
-    @Test
-    public final void testDisplayNameUpperInf()
-    {
-        final NumericalRange r1 = new NumericalRange(1.5f, true, NumericalRange.MAX, false);
-        assertEquals(">=1.5", r1.getDisplayName());
-        final NumericalRange r2 = new NumericalRange(2.1f, false, NumericalRange.MAX, false);
-        assertEquals(">2.1", r2.getDisplayName());
-    }
-    
-    @Test
     public final void testEquals()
     {
         EqualsVerifier.forClass(NumericalRange.class)

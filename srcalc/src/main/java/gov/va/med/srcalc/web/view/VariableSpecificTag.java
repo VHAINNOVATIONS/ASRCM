@@ -95,7 +95,7 @@ public class VariableSpecificTag extends SimpleTagSupport
         }
         
         @Override
-        public void visitLab(LabVariable variable) throws Exception
+        public void visitDiscreteNumerical(DiscreteNumericalVariable variable) throws Exception
         {
             fLabFragment.invoke(null);
         }

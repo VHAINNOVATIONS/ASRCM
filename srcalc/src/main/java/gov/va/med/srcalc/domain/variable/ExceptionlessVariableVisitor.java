@@ -21,7 +21,7 @@ public abstract class ExceptionlessVariableVisitor implements VariableVisitor
     public abstract void visitProcedure(ProcedureVariable variable);
 
     @Override
-    public abstract void visitLab(LabVariable variable);
+    public abstract void visitDiscreteNumerical(DiscreteNumericalVariable variable);
     
     /**
      * Convenience method to call {@link Variable#accept(VariableVisitor)}

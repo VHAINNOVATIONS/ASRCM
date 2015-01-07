@@ -189,32 +189,6 @@ public final class NumericalRange
     }
     
     /**
-     * Returns a human-readable name such as "3.0-5.0" or ">3.0".
-     */
-    @Transient
-    public String getDisplayName()
-    {
-        if (fUpperBound == MAX)
-        {
-            return String.format(
-                    "%s%s",
-                    fLowerInclusive ? ">=" : ">",
-                    fLowerBound);
-        }
-        else if (fLowerBound == MIN)
-        {
-            return String.format(
-                    "%s%s",
-                    fUpperInclusive ? "<=" : "<",
-                    fUpperBound);
-        }
-        else
-        {
-            return String.format("%s-%s", getLowerBound(), getUpperBound());
-        }
-    }
-    
-    /**
      * Returns the range in mathematical notation. (See class Javadocs.)
      */
     @Override
