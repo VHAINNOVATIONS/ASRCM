@@ -24,7 +24,7 @@
             Use our variableSpecific custom tag to write the corresponding form
             control for each variable type.
             --%>
-            <td>
+            <td class="attributeValue">
             <srcalc:variableSpecific variable="${variable}">
             <jsp:attribute name="numericalFragment">
                 <form:input path="${varPath}" size="6"/> ${variable.units}
@@ -49,7 +49,7 @@
             <jsp:attribute name="discreteNumericalFragment">
                 <!-- Wrap both the radio button and numerical entry in a span.radioLabel
                      for proper spacing. -->
-                <span class="radioLabel"><label><form:radiobutton path="${varPath}" value="numerical"/> Numerical:</label>
+                <span class="radioLabel"><label><form:radiobutton path="${varPath}" cssClass="numericalRadio" value="numerical"/> Numerical:</label>
                 <c:set var="numericalVarName" value="${variable.displayName}_numerical" />
                 <c:set var="numericalVarPath" value="${srcalc:dynamicValuePath(numericalVarName)}" />
                 <form:input cssClass="numerical" path="${numericalVarPath}" size="6"/> ${variable.units}</span>
@@ -94,6 +94,6 @@
         <c:url var="enterVariablesJsUrl" value="/js/enterVariables.js"/>
         <script type="text/javascript" src="${enterVariablesJsUrl}"></script>
         <script>
-        $(document).ready(initProcedureSelect);
+        $(document).ready(initEnterVariablesPage);
         </script>
         </form:form>
