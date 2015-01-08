@@ -5,6 +5,8 @@ USE srcalc;
 
 create table boolean_variable (id integer not null, primary key (id));
 create table cpt (id integer not null, active boolean not null, cpt_code varchar(255), long_description varchar(255), rvu float not null, short_description varchar(255), primary key (id));
+create table discrete_numerical_var (id integer not null, primary key (id));
+create table discrete_numerical_var_category (variable_id integer not null, option_id integer not null, lower_bound float not null, lower_inclusive boolean not null, upper_bound float not null, upper_inclusive boolean not null, primary key (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive));
 create table multi_select_option (id integer not null, option_value varchar(255), primary key (id));
 create table multi_select_variable (display_type varchar(255), id integer not null, primary key (id));
 create table multi_select_variable_option (variable_id integer not null, option_id integer not null, option_index integer not null, primary key (variable_id, option_index));
@@ -17,6 +19,9 @@ create table variable_group (id integer not null, display_order integer not null
 alter table multi_select_variable_option add constraint UK_ru3a3572ftqkwimf3nkrnuc5a unique (option_id);
 alter table variable add constraint UK_mvj8snetl0hhey2ej8vwvvhyu unique (display_name);
 alter table boolean_variable add index FK_8s7i3kftdcnt17a8us2sh6qou (id), add constraint FK_8s7i3kftdcnt17a8us2sh6qou foreign key (id) references variable (id);
+alter table discrete_numerical_var add index FK_1hmr3q0o9tn8xd48slnkwk0ld (id), add constraint FK_1hmr3q0o9tn8xd48slnkwk0ld foreign key (id) references numerical_variable (id);
+alter table discrete_numerical_var_category add index FK_1ogqmadis5fyu3xsd5j9oargm (option_id), add constraint FK_1ogqmadis5fyu3xsd5j9oargm foreign key (option_id) references multi_select_option (id);
+alter table discrete_numerical_var_category add index FK_ai58j7ktbfoadjqgqm0llm11e (variable_id), add constraint FK_ai58j7ktbfoadjqgqm0llm11e foreign key (variable_id) references discrete_numerical_var (id);
 alter table multi_select_variable add index FK_18hqfsy87bg9ucro7r0h6hl5t (id), add constraint FK_18hqfsy87bg9ucro7r0h6hl5t foreign key (id) references variable (id);
 alter table multi_select_variable_option add index FK_ru3a3572ftqkwimf3nkrnuc5a (option_id), add constraint FK_ru3a3572ftqkwimf3nkrnuc5a foreign key (option_id) references multi_select_option (id);
 alter table multi_select_variable_option add index FK_aho8l3stxs2pix74vg19xmman (variable_id), add constraint FK_aho8l3stxs2pix74vg19xmman foreign key (variable_id) references multi_select_variable (id);

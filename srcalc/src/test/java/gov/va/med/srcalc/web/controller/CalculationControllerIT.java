@@ -5,18 +5,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.test.util.TestNameLogger;
+import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
 import gov.va.med.srcalc.web.controller.CalculationController;
 import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
 
 import org.junit.*;
-import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,15 +34,11 @@ import static org.hamcrest.Matchers.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.
 @ContextConfiguration({"/srcalc-context.xml", "/srcalc-controller.xml", "/test-context.xml"})
-public class CalculationControllerIT
+@Transactional // run each test in its own (rolled-back) transaction
+public class CalculationControllerIT extends IntegrationTest
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(CalculationControllerIT.class);
-    
     @Autowired
     WebApplicationContext fWac;
-    
-    @Rule
-    public final TestRule fTestLogger = new TestNameLogger(fLogger);
     
     private MockMvc fMockMvc;
     
@@ -86,7 +78,6 @@ public class CalculationControllerIT
     }
     
     @Test
-    @Transactional // single transaction for single rollback
     public void selectThoracicSpecialty() throws Exception
     {
         selectSpecialty(SampleObjects.sampleThoracicSpecialty().getName());
@@ -98,7 +89,6 @@ public class CalculationControllerIT
      * {@link CalculationServiceIT#testRunThoracicCalculation()}.
      */
     @Test
-    @Transactional
     public void enterValidThoracicVariables() throws Exception
     {
         selectThoracicSpecialty();
@@ -111,23 +101,24 @@ public class CalculationControllerIT
         varParams.add("BMI", "18.7");
         varParams.add("Functional Status", "Independent");
         varParams.add("Preop Pneumonia", "true");
-        final int numVars = varParams.getNumVariables();
+        varParams.add("Alkaline Phosphatase", ">125mU/ml");
         
         final MockHttpServletRequestBuilder request =
                 post("/enterVars").session(fSession);
         varParams.addTo(request);
         fMockMvc.perform(request)
+            .andExpect(model().attributeHasNoErrors("variableEntry"))
             .andExpect(redirectedUrl("/displayResults"));
         
         fMockMvc.perform(get("/displayResults").session(fSession))
             .andExpect(status().is(200))
-            // Just check the size of the returned values. See method Javadoc.
+            // We do not test the calculation itself (see method Javadoc), so
+            // just ensure the values list is populated.
             .andExpect(model().attribute(
-                    "calculation", hasProperty("values", hasSize(numVars))));
+                    "calculation", hasProperty("values", not(empty()))));
     }
     
     @Test
-    @Transactional
     public void enterInvalidThoracicVariables() throws Exception
     {
         selectThoracicSpecialty();
@@ -139,7 +130,6 @@ public class CalculationControllerIT
     }
     
     @Test
-    @Transactional
     public void enterValidCardiacVariables() throws Exception
     {
         selectSpecialty("Cardiac");
@@ -156,7 +146,6 @@ public class CalculationControllerIT
     }
     
     @Test
-    @Transactional
     public void enterIncompleteCardiacVariables() throws Exception
     {
         selectSpecialty("Cardiac");

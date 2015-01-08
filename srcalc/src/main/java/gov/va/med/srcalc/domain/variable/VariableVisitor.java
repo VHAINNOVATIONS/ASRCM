@@ -9,4 +9,5 @@ public interface VariableVisitor
     public void visitBoolean(BooleanVariable variable) throws Exception;
     public void visitMultiSelect(MultiSelectVariable variable) throws Exception;
     public void visitProcedure(ProcedureVariable variable) throws Exception;
+    public void visitDiscreteNumerical(DiscreteNumericalVariable variable) throws Exception;
 }

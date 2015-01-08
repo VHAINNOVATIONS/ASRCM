@@ -55,6 +55,12 @@
 	       <fragment>true</fragment>
 	   </attribute>
 	   <attribute>
+	       <name>discreteNumericalFragment</name>
+	       <description>Fragment to write for DiscreteNumericalVariables.</description>
+	       <required>true</required>
+	       <fragment>true</fragment>
+	   </attribute>
+	   <attribute>
 	       <name>procedureFragment</name>
 	       <description>Fragment to write for ProcedureVariables.</description>
 	       <required>true</required>

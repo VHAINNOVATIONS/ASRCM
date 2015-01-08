@@ -2,10 +2,10 @@ package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable.Category;
 import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class SampleObjects
 {
@@ -83,6 +83,11 @@ public class SampleObjects
         return new VariableGroup("Demographics", 1);
     }
     
+    public static VariableGroup labVariableGroup()
+    {
+        return new VariableGroup("Laboratory Values", 4);
+    }
+    
     public static VariableGroup recentClinicalVariableGroup()
     {
         return new VariableGroup("Clinical Conditions or Diseases - Recent", 5);
@@ -134,5 +139,43 @@ public class SampleObjects
                 recentClinicalVariableGroup(),
                 MultiSelectVariable.DisplayType.Radio,
                 fsOptions);
+    }
+    
+    public static DiscreteNumericalVariable wbcVariable()
+    {
+        final Category wbcWnl = new Category(
+                new NumericalRange(Float.NEGATIVE_INFINITY, false, 11.0f, true),
+                new MultiSelectOption("WNL"));
+        final Category wbcHigh = new Category(
+                new NumericalRange(11.0f, false, Float.POSITIVE_INFINITY, false),
+                new MultiSelectOption(">11.0"));
+        final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
+        final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
+                "White Blood Count", labVariableGroup(), new HashSet<>(categories));
+        var.setMinValue(2.0f);
+        var.setMaxValue(50.0f);
+        var.setUnits("x1000/mm^3");
+        return var;
+    }
+    
+    /**
+     * Like {@link #wbcVariable()} but has a gap in the categories. Users may
+     * do this, you know.
+     */
+    public static DiscreteNumericalVariable misconfiguredWbcVariable()
+    {
+        final Category wbcWnl = new Category(
+                new NumericalRange(Float.NEGATIVE_INFINITY, false, 10.0f, true),
+                new MultiSelectOption("WNL"));
+        final Category wbcHigh = new Category(
+                new NumericalRange(11.0f, false, Float.POSITIVE_INFINITY, false),
+                new MultiSelectOption(">11.0"));
+        final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
+        final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
+                "White Blood Count", labVariableGroup(), new HashSet<>(categories));
+        var.setMinValue(2.0f);
+        var.setMaxValue(50.0f);
+        var.setUnits("x1000/mm^3");
+        return var;
     }
 }

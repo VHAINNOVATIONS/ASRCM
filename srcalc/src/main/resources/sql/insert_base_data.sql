@@ -81,7 +81,7 @@ INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) 
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 4, 5);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 4, 4);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (3, 4, 4);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 4, 5);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 4, 6);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (5, 4, 4);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 4, 4);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (7, 4, 4);
@@ -114,7 +114,7 @@ INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) 
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (8, 9, 3);
 -- This particular vairable is only used for General and Thoracic.
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 8, 4);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 8, 4);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 8, 5);
 
 
 -- Preop Pneumonia
@@ -122,6 +122,17 @@ INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (7, 'Preop Pneumo
 INSERT INTO BOOLEAN_VARIABLE (id) VALUES (7);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (1, 7, 6);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (2, 7, 5);
-INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 7, 6);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 7, 7);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (6, 7, 5);
 INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (8, 7, 5);
+
+-- Alkaline Phosphatase Lab
+INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (9, 'Alkaline Phosphatase', 5);
+INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value, units) VALUES (9, 10, 750, 'mU/ml');
+INSERT INTO DISCRETE_NUMERICAL_VAR (id) VALUES (9);
+INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (10, 'WNL');
+INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (9, 10, -1e12, TRUE, 125.0, TRUE);
+INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (11, '>125mU/ml');
+INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (9, 11, 125.0, FALSE, 1e12, TRUE);
+INSERT INTO SPECIALTY_VARIABLE (specialty_id, variable_id, display_order) VALUES (4, 9, 4);
+

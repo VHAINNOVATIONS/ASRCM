@@ -74,6 +74,12 @@ public class VariableSummary
             fTypeName = (variable.getDisplayType() == DisplayType.Radio) ?
                     "Radio Button" : "Drop-Down";
         }
+        
+        @Override
+        public void visitDiscreteNumerical(final DiscreteNumericalVariable variable)
+        {
+            fTypeName = "Discrete Numerical";
+        }
 
         @Override
         public void visitProcedure(final ProcedureVariable variable)

@@ -1,13 +1,10 @@
 package gov.va.med.srcalc.web.controller;
 
-import gov.va.med.srcalc.test.util.TestNameLogger;
+import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.web.view.Tile;
 
 import org.junit.*;
-import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -25,17 +22,13 @@ import static org.hamcrest.Matchers.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.
 @ContextConfiguration({"/srcalc-context.xml", "/srcalc-controller.xml", "/test-context.xml"})
-public class EditVariableControllerIT
+@Transactional // run each test in its own (rolled-back) transaction
+public class EditVariableControllerIT extends IntegrationTest
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(EditVariableControllerIT.class);
-    
     @Autowired
     WebApplicationContext fWac;
 
     private MockMvc fMockMvc;
-    
-    @Rule
-    public final TestRule fTestLogger = new TestNameLogger(fLogger);
 
     @Before
     public void setup()
@@ -44,7 +37,6 @@ public class EditVariableControllerIT
     }
     
     @Test
-    @Transactional
     public void testEditVariable() throws Exception
     {
         fMockMvc.perform(get("/admin/models/editVariable/Preop Pneumonia")).
@@ -58,7 +50,6 @@ public class EditVariableControllerIT
     }
     
     @Test
-    @Transactional
     public void testEditVariableTooLong() throws Exception
     {
         fMockMvc.perform(get("/admin/models/editVariable/Preop Pneumonia")).
@@ -75,7 +66,6 @@ public class EditVariableControllerIT
     }
 
     @Test
-    @Transactional
     public void testEditVariableInvalidChars() throws Exception
     {
         fMockMvc.perform(get("/admin/models/editVariable/Preop Pneumonia")).
