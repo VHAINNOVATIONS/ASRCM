@@ -8,8 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <p>A numerical range to categorize a lab result. Presents an immutable public
- * API, but also supports package-private reflection-based construction.</p>
+ * <p>A mathematical interval, that is, a set of real numbers between two real
+ * numbers. Presents an immutable public API, but also supports package-private
+ * reflection-based construction.</p>
  * 
  * <p>Composed of both a lower- and an upper-bound to support all possible
  * ranges, such as:</p>
@@ -189,7 +190,7 @@ public final class NumericalRange implements Comparable<NumericalRange>
     }
     
     /**
-     * Returns the range in mathematical notation. (See class Javadocs.)
+     * Returns the interval in mathematical notation. (See class Javadocs.)
      */
     @Override
     public String toString()

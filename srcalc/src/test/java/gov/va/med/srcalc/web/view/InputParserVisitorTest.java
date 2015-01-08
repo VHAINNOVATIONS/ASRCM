@@ -288,7 +288,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry();
         variableEntry.getDynamicValues().put(
-                var.getDisplayName(), InputParserVisitor.SPECIAL_LAB_NUMERICAL);
+                var.getDisplayName(), InputParserVisitor.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "10.0");
         
         final BeanPropertyBindingResult errors =
@@ -309,7 +309,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry();
         variableEntry.getDynamicValues().put(
-                var.getDisplayName(), InputParserVisitor.SPECIAL_LAB_NUMERICAL);
+                var.getDisplayName(), InputParserVisitor.SPECIAL_NUMERICAL);
         // Note: no numerical value actually specified
         
         final BeanPropertyBindingResult errors =
@@ -334,7 +334,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry();
         variableEntry.getDynamicValues().put(
-                var.getDisplayName(), InputParserVisitor.SPECIAL_LAB_NUMERICAL);
+                var.getDisplayName(), InputParserVisitor.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "foo");
         
         final BeanPropertyBindingResult errors =
@@ -357,7 +357,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry();
         variableEntry.getDynamicValues().put(
-                var.getDisplayName(), InputParserVisitor.SPECIAL_LAB_NUMERICAL);
+                var.getDisplayName(), InputParserVisitor.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "0.1");
         
         final BeanPropertyBindingResult errors =
@@ -380,7 +380,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry();
         variableEntry.getDynamicValues().put(
-                var.getDisplayName(), InputParserVisitor.SPECIAL_LAB_NUMERICAL);
+                var.getDisplayName(), InputParserVisitor.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "51.0");
         
         final BeanPropertyBindingResult errors =

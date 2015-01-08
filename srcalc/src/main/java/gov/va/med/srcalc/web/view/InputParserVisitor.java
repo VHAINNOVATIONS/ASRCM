@@ -23,10 +23,10 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
     private static final Logger fLogger = LoggerFactory.getLogger(InputParserVisitor.class);
     
     /**
-     * A special lab range value indicating that the user has specified a
-     * numerical input.
+     * A special discrete category value indicating that the user has specified
+     * a numerical input.
      */
-    public static final String SPECIAL_LAB_NUMERICAL = "numerical";
+    public static final String SPECIAL_NUMERICAL = "numerical";
 
     private final VariableEntry fVariableEntry;
     private final Errors fErrors;
@@ -200,7 +200,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
             return;
         }
         // Special case: numerical
-        if (categoryName.equals(SPECIAL_LAB_NUMERICAL))
+        if (categoryName.equals(SPECIAL_NUMERICAL))
         {
             final String numericalName = VariableEntry.getNumericalInputName(variable);
             final String stringValue = fVariableEntry.getDynamicValues().get(

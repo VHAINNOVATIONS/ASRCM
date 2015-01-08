@@ -18,7 +18,7 @@ public class VariableSpecificTag extends SimpleTagSupport
     private JspFragment fNumericalFragment;
     private JspFragment fBooleanFragment;
     private JspFragment fMultiSelectFragment;
-    private JspFragment fLabFragment;
+    private JspFragment fDiscreteNumericalFragment;
     private JspFragment fProcedureFragment;
     
     @Override
@@ -46,62 +46,63 @@ public class VariableSpecificTag extends SimpleTagSupport
         fVariable = variable;
     }
     
-    public void setNumericalFragment(JspFragment numericalFragment)
+    public void setNumericalFragment(final JspFragment fragment)
     {
-        fNumericalFragment = numericalFragment;
+        fNumericalFragment = fragment;
     }
 
-    public void setBooleanFragment(JspFragment booleanFragment)
+    public void setBooleanFragment(final JspFragment fragment)
     {
-        fBooleanFragment = booleanFragment;
+        fBooleanFragment = fragment;
     }
 
-    public void setMultiSelectFragment(JspFragment multiSelectFragment)
+    public void setMultiSelectFragment(final JspFragment fragment)
     {
-        fMultiSelectFragment = multiSelectFragment;
+        fMultiSelectFragment = fragment;
     }
 
-    public void setLabFragment(JspFragment labFragment)
+    public void setDiscreteNumericalFragment(final JspFragment fragment)
     {
-        fLabFragment = labFragment;
+        fDiscreteNumericalFragment = fragment;
     }
 
-    public void setProcedureFragment(JspFragment procedureFragment)
+    public void setProcedureFragment(final JspFragment fragment)
     {
-        fProcedureFragment = procedureFragment;
+        fProcedureFragment = fragment;
     }
 
     private class WriterVisitor implements VariableVisitor
     {
         @Override
-        public void visitNumerical(NumericalVariable variable)
+        public void visitNumerical(final NumericalVariable variable)
                 throws JspException, IOException
         {
             fNumericalFragment.invoke(null);
         }
 
         @Override
-        public void visitBoolean(BooleanVariable variable)
+        public void visitBoolean(final BooleanVariable variable)
                 throws JspException, IOException
         {
             fBooleanFragment.invoke(null);
         }
 
         @Override
-        public void visitMultiSelect(MultiSelectVariable variable)
+        public void visitMultiSelect(final MultiSelectVariable variable)
                 throws JspException, IOException
         {
             fMultiSelectFragment.invoke(null);
         }
         
         @Override
-        public void visitDiscreteNumerical(DiscreteNumericalVariable variable) throws Exception
+        public void visitDiscreteNumerical(final DiscreteNumericalVariable variable)
+                throws JspException, IOException
         {
-            fLabFragment.invoke(null);
+            fDiscreteNumericalFragment.invoke(null);
         }
 
         @Override
-        public void visitProcedure(ProcedureVariable variable)
+        public void visitProcedure(final ProcedureVariable variable)
                 throws JspException, IOException
         {
             fProcedureFragment.invoke(null);

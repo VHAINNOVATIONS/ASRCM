@@ -55,8 +55,8 @@
 	       <fragment>true</fragment>
 	   </attribute>
 	   <attribute>
-	       <name>labFragment</name>
-	       <description>Fragment to write for LabVariables.</description>
+	       <name>discreteNumericalFragment</name>
+	       <description>Fragment to write for DiscreteNumericalVariables.</description>
 	       <required>true</required>
 	       <fragment>true</fragment>
 	   </attribute>

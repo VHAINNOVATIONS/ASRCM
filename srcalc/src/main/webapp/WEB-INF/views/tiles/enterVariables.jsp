@@ -46,7 +46,7 @@
             <jsp:attribute name="booleanFragment">
                 <label class="checkboxLabel"><form:checkbox path="${varPath}" value="true"/> ${variable.displayName}</label>
             </jsp:attribute>
-            <jsp:attribute name="labFragment">
+            <jsp:attribute name="discreteNumericalFragment">
                 <!-- Wrap both the radio button and numerical entry in a span.radioLabel
                      for proper spacing. -->
                 <span class="radioLabel"><label><form:radiobutton path="${varPath}" value="numerical"/> Numerical:</label>
