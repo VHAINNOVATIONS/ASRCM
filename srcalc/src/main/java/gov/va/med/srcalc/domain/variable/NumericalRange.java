@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  */
 @Embeddable  // An Embeddable instead of a full Entity because ranges do not
              // have their own lifecycle.
-public final class NumericalRange
+public final class NumericalRange implements Comparable<NumericalRange>
 {
     /**
      * The highest allowed range value.
@@ -229,5 +229,24 @@ public final class NumericalRange
     {
         return Objects.hash(
                 fLowerBound, fLowerInclusive, fUpperBound, fUpperInclusive);
+    }
+    
+    /**
+     * Orders {@link NumericalRange}s by their lower bounds, then upper bounds.
+     */
+    @Override
+    public int compareTo(NumericalRange other)
+    {
+        // Note: casting NaN to int returns 0.
+        final int lowerSignum =
+                (int)Math.signum(this.fLowerBound - other.fLowerBound);
+        if (lowerSignum != 0)
+        {
+            return lowerSignum;
+        }
+        else
+        {
+            return (int)Math.signum(this.fUpperBound - other.fUpperBound);
+        }
     }
 }

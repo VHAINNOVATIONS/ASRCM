@@ -98,4 +98,20 @@ public class NumericalRangeTest
             .suppress(Warning.NONFINAL_FIELDS)  // NumericalRange is actually immutable
             .verify();
     }
+    
+    @Test
+    public final void testCompareTo()
+    {
+        final NumericalRange r1 = new NumericalRange(-1.0f, true, 2.0f, true);
+        final NumericalRange r2 = new NumericalRange(2.0f, false, 5.0f, true);
+        final NumericalRange r3 = new NumericalRange(-1.0f, true, 3.0f, true);
+        
+        assertEquals("r1 should equal itself", 0, r1.compareTo(r1));
+        assertTrue("r1 should be less than r2", r1.compareTo(r2) < 0);
+        assertTrue("r1 should be less than r3", r1.compareTo(r3) < 0);
+        assertTrue("r2 should be greater than r1", r2.compareTo(r1) > 0);
+        assertTrue("r2 should be greater than r3", r2.compareTo(r3) > 0);
+        assertTrue("r3 should be greater than r1", r3.compareTo(r1) > 0);
+        assertTrue("r3 should be less than r2", r3.compareTo(r2) < 0);
+    }
 }

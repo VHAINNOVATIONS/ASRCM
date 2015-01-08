@@ -4,6 +4,9 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortType;
+
 /**
  * A NumericalVariable that ultimately represents one of a finite, discrete
  * set of values. This is mainly useful for a lab results (e.g., White Blood
@@ -14,7 +17,7 @@ import javax.persistence.*;
 @Table(name = "discrete_numerical_var")  // slightly abbreviate long table name
 public class DiscreteNumericalVariable extends NumericalVariable
 {
-    private Set<Category> fCategories = new HashSet<>();
+    private SortedSet<Category> fCategories = new TreeSet<>();
     
     /**
      * For reflection-based construction only. Business code should use
@@ -30,21 +33,22 @@ public class DiscreteNumericalVariable extends NumericalVariable
             final Set<Category> categories)
     {
         super(displayName, group);
-        fCategories = categories;
+        fCategories = new TreeSet<>(categories);
     }
 
     @ElementCollection(fetch = FetchType.EAGER)  // eager-load due to close association
+    @Sort(type = SortType.NATURAL)
     @CollectionTable(
             name = "discrete_numerical_var_category",
             joinColumns = @JoinColumn(name = "variable_id"))
-    public Set<Category> getCategories()
+    public SortedSet<Category> getCategories()
     {
         return fCategories;
     }
 
-    protected void setCategories(final Set<Category> ranges)
+    protected void setCategories(final SortedSet<Category> categories)
     {
-        fCategories = ranges;
+        fCategories = categories;
     }
 
     @Override
@@ -76,7 +80,7 @@ public class DiscreteNumericalVariable extends NumericalVariable
      * public interface.
      */
     @Embeddable
-    public static final class Category
+    public static final class Category implements Comparable<Category>
     {
         private NumericalRange fRange;
         
@@ -157,6 +161,15 @@ public class DiscreteNumericalVariable extends NumericalVariable
         public int hashCode()
         {
             return Objects.hash(getRange(), getOption());
+        }
+        
+        /**
+         * Orders categories by their {@link NumericalRange}s.
+         */
+        @Override
+        public int compareTo(Category other)
+        {
+            return this.getRange().compareTo(other.getRange());
         }
     }
 }
