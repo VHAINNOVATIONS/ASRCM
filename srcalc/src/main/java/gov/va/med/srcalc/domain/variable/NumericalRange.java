@@ -30,7 +30,10 @@ import org.slf4j.LoggerFactory;
 public final class NumericalRange implements Comparable<NumericalRange>
 {
     /**
-     * The highest allowed range value.
+     * <p>The highest allowed range value.</p>
+     * 
+     * <p>We use 1 trillion because it far exceeds real-world use cases and is
+     * easy to represent in SQL (unlike {@link Float#MAX_VALUE}).</p>
      */
     public static final float MAX = 1000000000000f;  // 1 trillion
     

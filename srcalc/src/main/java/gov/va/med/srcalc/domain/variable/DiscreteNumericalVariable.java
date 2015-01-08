@@ -64,6 +64,8 @@ public class DiscreteNumericalVariable extends NumericalVariable
      */
     public Category getContainingCategory(final float value)
     {
+        // There should be less than 10 categories in the real world, so just
+        // search via iteration.
         for (final Category c : getCategories())
         {
             if (c.getRange().isValueInRange(value))
@@ -147,6 +149,7 @@ public class DiscreteNumericalVariable extends NumericalVariable
             if (obj instanceof Category)
             {
                 final Category other = (Category)obj;
+                // See above: range and option are always non-null.
                 return 
                         this.getRange().equals(other.getRange()) &&
                         this.getOption().equals(other.getOption());
@@ -169,6 +172,7 @@ public class DiscreteNumericalVariable extends NumericalVariable
         @Override
         public int compareTo(Category other)
         {
+            // See above: the range is always non-null.
             return this.getRange().compareTo(other.getRange());
         }
     }
