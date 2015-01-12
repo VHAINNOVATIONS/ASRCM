@@ -52,9 +52,9 @@
                 dialog for a much better user experience.
                 --%>
                 <div class="procedureSelectGroup dialog" title="Select ${variable.displayName}">
-                <table id="procedureTable">
+                <table>
                 <thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></tr></thead>
-                <c:forEach var="procedure" items="${variable.procedures}">
+                <c:forEach var="procedure" items="${srcalc:truncateList(variable.procedures, 100)}">
                 <tr>
                 <td class="selectRadio">
                 <form:radiobutton path="${varPath}" value="${procedure.cptCode}" data-display-string="${procedure}"/></td>

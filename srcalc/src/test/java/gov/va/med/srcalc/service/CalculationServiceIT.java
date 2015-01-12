@@ -10,6 +10,7 @@ import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
+import gov.va.med.srcalc.test.util.IntegrationTest;
 
 import javax.inject.Inject;
 
@@ -30,7 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"/srcalc-context.xml", "/test-context.xml"})
-public class CalculationServiceIT
+@Transactional // run each test in its own (rolled-back) transaction
+public class CalculationServiceIT extends IntegrationTest
 {
     @Inject // field-based autowiring only in tests
     CalculationService fCalculationService;
@@ -58,7 +60,6 @@ public class CalculationServiceIT
     }
     
     @Test
-    @Transactional  // do this all in one transaction so we can roll back
     public void testSetValidSpecialty() throws InvalidIdentifierException
     {
         final int PATIENT_DFN = 1;
@@ -85,10 +86,24 @@ public class CalculationServiceIT
                     specialtyVars.get(i).getDisplayName(),
                     calc.getVariables().get(i).getDisplayName());
         }
+        
+        assertCleanSession();
+    }
+    
+    /**
+     * Builds a Map from variable name to variable.
+     */
+    private HashMap<String, Variable> buildVariableMap(Iterable<Variable> variables)
+    {
+        final HashMap<String, Variable> map = new HashMap<>();
+        for (final Variable v : variables)
+        {
+            map.put(v.getDisplayName(), v);
+        }
+        return map;
     }
     
     @Test
-    @Transactional  // do this all in one transaction so we can roll back
     public void testRunThoracicCalculation() throws Exception
     {
         final int PATIENT_DFN = 1;
@@ -101,18 +116,24 @@ public class CalculationServiceIT
                 fCalculationService.setSpecialty(calc, specialty.getName());
 
         // Build a List of Values in the known order for Thoracic.
-        final List<Variable> thoracicVars = calc.getVariables();
-        final ProcedureVariable procedureVar = (ProcedureVariable)thoracicVars.get(0);
-        final MultiSelectVariable asaVar = (MultiSelectVariable)thoracicVars.get(4);
-        final MultiSelectVariable fsVar = (MultiSelectVariable)thoracicVars.get(5);
+        final Map<String, Variable> thoracicVars = buildVariableMap(calc.getVariables());
+        final ProcedureVariable procedureVar =
+                (ProcedureVariable)thoracicVars.get("Procedure");
+        final MultiSelectVariable asaVar =
+                (MultiSelectVariable)thoracicVars.get("ASA Classification");
+        final MultiSelectVariable fsVar =
+                (MultiSelectVariable)thoracicVars.get("Functional Status");
+        final DiscreteNumericalVariable apVar =
+                (DiscreteNumericalVariable)thoracicVars.get("Alkaline Phosphatase");
         final List<Value> values = Arrays.asList(
                 new ProcedureValue(procedureVar, procedureVar.getProcedures().get(1)),
-                new NumericalValue((NumericalVariable)thoracicVars.get(1), 66),
-                new BooleanValue((BooleanVariable)thoracicVars.get(2), true),
-                new NumericalValue((NumericalVariable)thoracicVars.get(3), 17.3f),
+                new NumericalValue((NumericalVariable)thoracicVars.get("Age"), 66),
+                new BooleanValue((BooleanVariable)thoracicVars.get("DNR"), true),
+                new NumericalValue((NumericalVariable)thoracicVars.get("BMI"), 17.3f),
                 new MultiSelectValue(asaVar, fsVar.getOptions().get(0)),
                 new MultiSelectValue(fsVar, fsVar.getOptions().get(1)),
-                new BooleanValue((BooleanVariable)thoracicVars.get(6), false));
+                new BooleanValue((BooleanVariable)thoracicVars.get("Preop Pneumonia"), false),
+                DiscreteNumericalValue.fromCategory(apVar, apVar.getContainingCategory(5.0f)));
         
         // Behavior verification
         fCalculationService.runCalculation(selCalc.getCalculation(), values);

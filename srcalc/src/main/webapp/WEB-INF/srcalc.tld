@@ -14,6 +14,12 @@
         <function-class>gov.va.med.srcalc.util.CollectionUtils</function-class>
         <function-signature>java.util.List truncateList(java.util.List, int)</function-signature>
 	</function>
+	
+	<function>
+	   <name>dynamicValuePath</name>
+	   <function-class>gov.va.med.srcalc.web.view.VariableEntry</function-class>
+	   <function-signature>java.lang.String makeDynamicValuePath(java.lang.String)</function-signature>
+	</function>
 
 	<tag>
 	   <name>variableSpecific</name>
@@ -45,6 +51,12 @@
 	   <attribute>
 	       <name>booleanFragment</name>
 	       <description>Fragment to write for BooleanVariables.</description>
+	       <required>true</required>
+	       <fragment>true</fragment>
+	   </attribute>
+	   <attribute>
+	       <name>discreteNumericalFragment</name>
+	       <description>Fragment to write for DiscreteNumericalVariables.</description>
 	       <required>true</required>
 	       <fragment>true</fragment>
 	   </attribute>

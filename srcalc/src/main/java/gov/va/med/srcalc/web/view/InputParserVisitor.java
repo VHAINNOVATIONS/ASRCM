@@ -10,16 +10,23 @@ import org.springframework.validation.Errors;
 
 import gov.va.med.srcalc.domain.Procedure;
 import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable.Category;
 
 /**
  * <p>A {@link VariableVisitor} that produces a {@link Value} for each Variable
  * based on a {@link VariableEntry}.</p>
  * 
- * <p>Tightly coupled with {@link InputGeneratorVisitor}.</p>
+ * <p>Tightly coupled with enterVariables.jsp.</p>
  */
 public class InputParserVisitor extends ExceptionlessVariableVisitor
 {
     private static final Logger fLogger = LoggerFactory.getLogger(InputParserVisitor.class);
+    
+    /**
+     * A special discrete category value indicating that the user has specified
+     * a numerical input.
+     */
+    public static final String SPECIAL_NUMERICAL = "numerical";
 
     private final VariableEntry fVariableEntry;
     private final Errors fErrors;
@@ -168,8 +175,89 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         }
     }
     
+    /**
+     * Builds a Map to each Category from the option's value.
+     */
+    private Map<String, Category> buildCategoryMap(final Iterable<Category> categories)
+    {
+        final HashMap<String, Category> map = new HashMap<>();
+        for (final Category category : categories)
+        {
+            map.put(category.getOption().getValue(), category);
+        }
+        return map;
+    }
+    
     @Override
-    public void visitProcedure(ProcedureVariable variable)
+    public void visitDiscreteNumerical(final DiscreteNumericalVariable variable)
+    {
+        fLogger.debug("Parsing DiscreteNumericalVariable {}", variable);
+
+        final String categoryName = getVariableValue(variable);
+        if (StringUtils.isEmpty(categoryName))
+        {
+            rejectDynamicValue(variable.getDisplayName(), "noSelection", "no selection");
+            return;
+        }
+        // Special case: numerical
+        if (categoryName.equals(SPECIAL_NUMERICAL))
+        {
+            final String numericalName = VariableEntry.getNumericalInputName(variable);
+            final String stringValue = fVariableEntry.getDynamicValues().get(
+                    numericalName);
+            fLogger.debug("User specified a numerical value: {}", stringValue);
+            if (StringUtils.isEmpty(stringValue))
+            {
+                rejectDynamicValue(numericalName, "noInput.float", "no input");
+                return;
+            }
+            try
+            {
+                final float floatValue = Float.parseFloat(stringValue);
+                fValues.add(DiscreteNumericalValue.fromNumerical(variable, floatValue));
+            }
+            // Translate any Exceptions into validation errors.
+            catch (final NumberFormatException ex)
+            {
+                rejectDynamicValue(
+                        numericalName, "typeMismatch.float", ex.getMessage());
+            }
+            catch (final ValueTooLowException ex)
+            {
+                rejectDynamicValue(
+                        numericalName,
+                        ex.getErrorCode(),
+                        new Object[]{ variable.getMinValue() },
+                        ex.getMessage());
+            }
+            catch (final ValueTooHighException ex)
+            {
+                rejectDynamicValue(
+                        numericalName,
+                        ex.getErrorCode(),
+                        new Object[]{ variable.getMaxValue() },
+                        ex.getMessage());
+            }
+        }
+        else
+        {
+            final Map<String, Category> categoryMap =
+                    buildCategoryMap(variable.getCategories());
+            final Category selectedCategory = categoryMap.get(categoryName);
+            if (selectedCategory == null)
+            {
+                rejectDynamicValue(variable.getDisplayName(), "invalid", "not a valid selection");
+            }
+            else
+            {
+                fLogger.debug("User selected Category {}", selectedCategory);
+                fValues.add(DiscreteNumericalValue.fromCategory(variable, selectedCategory));
+            }
+        }
+    }
+    
+    @Override
+    public void visitProcedure(final ProcedureVariable variable)
     {
         fLogger.debug("Parsing ProcedureVariable {}", variable);
 

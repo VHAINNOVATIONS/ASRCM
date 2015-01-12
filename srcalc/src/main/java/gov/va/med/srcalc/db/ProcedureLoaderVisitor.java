@@ -55,4 +55,10 @@ public class ProcedureLoaderVisitor implements VariableVisitor
         fLogger.info("Loaded all {} procedures.", procedures.size());
     }
     
+    @Override
+    public void visitDiscreteNumerical(DiscreteNumericalVariable variable) throws Exception
+    {
+        // No action needed.
+    }
+    
 }
