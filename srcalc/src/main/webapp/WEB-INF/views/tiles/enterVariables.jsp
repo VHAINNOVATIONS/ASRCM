@@ -52,9 +52,9 @@
                 dialog for a much better user experience.
                 --%>
                 <div class="procedureSelectGroup dialog" title="Select ${variable.displayName}">
-                <table>
+                <table id="procedureTable">
                 <thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></tr></thead>
-                <c:forEach var="procedure" items="${srcalc:truncateList(variable.procedures, 100)}">
+                <c:forEach var="procedure" items="${variable.procedures}">
                 <tr>
                 <td class="selectRadio">
                 <form:radiobutton path="${varPath}" value="${procedure.cptCode}" data-display-string="${procedure}"/></td>
@@ -81,7 +81,30 @@
         </div>
         <c:url var="enterVariablesJsUrl" value="/js/enterVariables.js"/>
         <script type="text/javascript" src="${enterVariablesJsUrl}"></script>
-        <script>
-        $(document).ready(initProcedureSelect);
+        <c:url var="dataTablesUrl" value="/js/vendor/jquery.dataTables.min.js"/>
+        <script type="text/javascript" src="${dataTablesUrl}"></script>
+        <script type="text/javascript">
+        $(document).ready(function(){
+        	initProcedureSelect();
+        	// Set up the properties for the procedures DataTable
+	    	var table = $("#procedureTable").dataTable( {
+	    		// Make the radio button column smaller so that IE
+	    		// will adjust column widths properly.
+	    		"aoColumnDefs":[
+	    		{
+	    			"width": "10%",
+	    			"targets": [0]
+	    		},
+	    		// Make the select column,  and RVU unsearchable
+	    		{
+	    			"bSearchable": false, 
+	    			"aTargets": [0,2,3]
+	    		}, {
+	    			// Make the select button unsortable
+	    			"bSortable": false,
+	    			"aTargets": [0]
+	    		}]
+	    	});
+        });
         </script>
         </form:form>
