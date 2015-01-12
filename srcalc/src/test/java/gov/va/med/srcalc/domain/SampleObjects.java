@@ -46,7 +46,7 @@ public class SampleObjects
         return s;
     }
     
-    public static List<Variable> sampleVariableList()
+    public static List<AbstractVariable> sampleVariableList()
     {
         return Arrays.asList(
                 sampleProcedureVariable(),

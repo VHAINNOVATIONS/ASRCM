@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.service;
 
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.variable.AbstractVariable;
 
 import java.util.List;
 
@@ -13,13 +13,13 @@ public interface AdminService
     /**
      * Returns all Variables for editing purposes.
      */
-    public List<Variable> getAllVariables();
+    public List<AbstractVariable> getAllVariables();
     
     /**
      * Returns the Variable with the given display name.
      * @throws InvalidIdentifierException if no such Variable exists
      */
-    public Variable getVariable(final String displayName)
+    public AbstractVariable getVariable(final String displayName)
         throws InvalidIdentifierException;
     
     /**

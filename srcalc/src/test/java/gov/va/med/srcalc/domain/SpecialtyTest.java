@@ -29,11 +29,11 @@ public class SpecialtyTest
     public final void testGetVariableGroups()
     {
         // First, build a sample Specialty with known variable references.
-        final Variable procedureVar = sampleProcedureVariable();
-        final List<Variable> procedureVars = Arrays.asList(procedureVar);
-        final Variable ageVar = sampleAgeVariable();
-        final Variable genderVar = sampleGenderVariable();
-        final List<Variable> demographicsVars = Arrays.asList(ageVar, genderVar);
+        final AbstractVariable procedureVar = sampleProcedureVariable();
+        final List<AbstractVariable> procedureVars = Arrays.asList(procedureVar);
+        final AbstractVariable ageVar = sampleAgeVariable();
+        final AbstractVariable genderVar = sampleGenderVariable();
+        final List<AbstractVariable> demographicsVars = Arrays.asList(ageVar, genderVar);
         final Specialty specialty = new Specialty(48, "Cardiac");
         specialty.getVariables().addAll(demographicsVars);
         specialty.getVariables().addAll(procedureVars);

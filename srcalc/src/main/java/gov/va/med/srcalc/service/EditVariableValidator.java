@@ -3,7 +3,7 @@ package gov.va.med.srcalc.service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.variable.AbstractVariable;
 
 import org.springframework.validation.*;
 
@@ -28,12 +28,12 @@ public class EditVariableValidator implements Validator
 
         final EditVariable editVariable = (EditVariable)obj;
         ValidationUtils.rejectIfEmpty(e, "displayName", "displayName.empty");
-        if (editVariable.getDisplayName().length() > Variable.DISPLAY_NAME_MAX)
+        if (editVariable.getDisplayName().length() > AbstractVariable.DISPLAY_NAME_MAX)
         {
             e.rejectValue(
                     "displayName",
                     "tooLong",
-                    new Object[] {Variable.DISPLAY_NAME_MAX},
+                    new Object[] {AbstractVariable.DISPLAY_NAME_MAX},
                     "The display name is too long.");
         }
         

@@ -6,7 +6,7 @@ import javax.persistence.Entity;
  * A Variable with Boolean (yes/no) value.
  */
 @Entity
-public class BooleanVariable extends Variable
+public class BooleanVariable extends AbstractVariable
 {
     /**
      * For reflection-based construction only. Business code should use

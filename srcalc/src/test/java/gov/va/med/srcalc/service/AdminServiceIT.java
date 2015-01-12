@@ -2,7 +2,7 @@ package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.variable.BooleanVariable;
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.variable.AbstractVariable;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class AdminServiceIT extends IntegrationTest
     @Test
     public final void testGetAllVariables()
     {
-        final List<Variable> actualVars = fAdminService.getAllVariables();
+        final List<AbstractVariable> actualVars = fAdminService.getAllVariables();
         assertEquals(9, actualVars.size());
         assertEquals("Age", actualVars.get(0).getDisplayName());
     }
@@ -49,7 +49,7 @@ public class AdminServiceIT extends IntegrationTest
         final String newName = "Preoperative Issues";
         
         // Setup
-        final Variable var = fAdminService.getVariable(origName);
+        final AbstractVariable var = fAdminService.getVariable(origName);
         assertEquals(origName, var.getDisplayName());  // sanity check
         
         // Behavior verification.

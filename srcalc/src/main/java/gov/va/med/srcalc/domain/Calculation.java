@@ -77,6 +77,7 @@ public class Calculation implements Serializable
     /**
      * Returns the List of {@link Variable}s for the selected specialty.
      * @throws IllegalStateException if no specialty has been set.
+     * @return an unmodifiable list of Variables.
      */
     public List<Variable> getVariables()
     {
@@ -87,7 +88,9 @@ public class Calculation implements Serializable
                     "Cannot return list of variables because no specialty has been set.");
         }
         
-        return fSpecialty.getVariables();
+        // We want to return aa List<Variable> instead of a
+        // List<AbstractVariable> so explicitly specificy the type argument.
+        return Collections.<Variable>unmodifiableList(fSpecialty.getVariables());
     }
     
     /**

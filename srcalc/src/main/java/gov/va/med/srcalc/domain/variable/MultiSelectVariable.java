@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 
 @Entity
-public class MultiSelectVariable extends Variable
+public class MultiSelectVariable extends AbstractVariable implements DiscreteVariable
 {
     public enum DisplayType
     {

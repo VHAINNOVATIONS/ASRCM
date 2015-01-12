@@ -8,14 +8,14 @@ import java.util.List;
 import gov.va.med.srcalc.db.VariableDao;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.BooleanVariable;
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.variable.AbstractVariable;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class DefaultAdminServiceTest
 {
-    private List<Variable> fSampleVariables;
+    private List<AbstractVariable> fSampleVariables;
     
     @Before
     public final void setup()
@@ -28,7 +28,7 @@ public class DefaultAdminServiceTest
         final VariableDao dao = mock(VariableDao.class);
         when(dao.getAllVariables()).thenReturn(fSampleVariables);
         // Use a reference to the existing DNR variable so we can do updates.
-        final Variable variable = fSampleVariables.get(3);
+        final AbstractVariable variable = fSampleVariables.get(3);
         when(dao.getByName(variable.getDisplayName())).thenReturn(variable);
         return dao;
     }
@@ -76,7 +76,7 @@ public class DefaultAdminServiceTest
         final DefaultAdminService s = new DefaultAdminService(mockVariableDao());
         
         // Setup
-        final Variable var = s.getVariable(origName);
+        final AbstractVariable var = s.getVariable(origName);
         assertEquals(origName, var.getDisplayName());  // sanity check
         
         // Behavior verification.

@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 @Entity
-public class ProcedureVariable extends Variable
+public class ProcedureVariable extends AbstractVariable
 {
     private List<Procedure> fProcedures;
     private HashMap<String, Procedure> fProcedureMap;

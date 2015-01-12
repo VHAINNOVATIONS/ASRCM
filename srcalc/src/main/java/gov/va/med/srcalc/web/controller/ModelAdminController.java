@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.variable.AbstractVariable;
 import gov.va.med.srcalc.service.*;
 import gov.va.med.srcalc.web.view.*;
 
@@ -32,9 +32,9 @@ public class ModelAdminController
     public String defaultPage(final Model model)
     {
         // Transform the List of all Variables into a List of VariableSummaries.
-        final List<Variable> variables = fAdminService.getAllVariables();
+        final List<AbstractVariable> variables = fAdminService.getAllVariables();
         final ArrayList<VariableSummary> summaries = new ArrayList<>(variables.size());
-        for (final Variable var : variables)
+        for (final AbstractVariable var : variables)
         {
             summaries.add(VariableSummary.fromVariable(var));
         }

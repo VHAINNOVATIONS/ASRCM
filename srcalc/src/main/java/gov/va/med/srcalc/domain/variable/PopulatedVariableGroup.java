@@ -20,7 +20,7 @@ public final class PopulatedVariableGroup implements Comparable<PopulatedVariabl
      * @throws IllegalArgumentException if the given list is empty or if it
      * contains Variables with different groups
      */
-    public PopulatedVariableGroup(final List<Variable> variables)
+    public PopulatedVariableGroup(final List<? extends Variable> variables)
     {
         // Check precondition: variable list is not empty
         if (variables.isEmpty())

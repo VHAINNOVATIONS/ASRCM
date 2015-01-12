@@ -30,7 +30,7 @@ public class DiscreteNumericalVariableTest
         final Category cat2 = new Category(
                 new NumericalRange(4.0f, true, 5.0f, false), new MultiSelectOption("two"));
         final Category cat3 = new Category(
-                new NumericalRange(5.0f, true, 6.0f, false), new MultiSelectOption("one"));
+                new NumericalRange(5.0f, true, 6.0f, false), new MultiSelectOption("three"));
         // Intentionally put the Categories out of order in this list.
         final List<Category> cats = Arrays.asList(cat3, cat2, cat1);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
@@ -40,5 +40,23 @@ public class DiscreteNumericalVariableTest
         // right order.
         final List<Category> orderedCats = new ArrayList<>(var.getCategories());
         assertEquals(Arrays.asList(cat1, cat2, cat3), orderedCats);
+    }
+    
+    public final void testGetOptions()
+    {
+        final Category cat1 = new Category(
+                new NumericalRange(1.0f, true, 4.0f, false), new MultiSelectOption("one"));
+        final Category cat2 = new Category(
+                new NumericalRange(4.0f, true, 5.0f, false), new MultiSelectOption("two"));
+        final Category cat3 = new Category(
+                new NumericalRange(5.0f, true, 6.0f, false), new MultiSelectOption("three"));
+        // Intentionally put the Categories out of order in this list.
+        final List<Category> cats = Arrays.asList(cat3, cat2, cat1);
+        final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
+                "Creatinine", SampleObjects.labVariableGroup(), new TreeSet<>(cats));
+        
+        assertEquals(
+                Arrays.asList(cat1.getOption(), cat2.getOption(), cat3.getOption()),
+                var.getOptions());
     }
 }

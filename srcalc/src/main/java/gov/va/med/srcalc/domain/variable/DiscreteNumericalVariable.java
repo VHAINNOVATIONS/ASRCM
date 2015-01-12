@@ -6,6 +6,8 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A NumericalVariable that ultimately represents one of a finite, discrete
@@ -15,8 +17,10 @@ import org.hibernate.annotations.SortType;
  */
 @Entity
 @Table(name = "discrete_numerical_var")  // slightly abbreviate long table name
-public class DiscreteNumericalVariable extends NumericalVariable
+public class DiscreteNumericalVariable extends NumericalVariable implements DiscreteVariable
 {
+    private static final Logger fLogger = LoggerFactory.getLogger(DiscreteNumericalVariable.class);
+    
     private SortedSet<Category> fCategories = new TreeSet<>();
     
     /**
@@ -49,6 +53,25 @@ public class DiscreteNumericalVariable extends NumericalVariable
     protected void setCategories(final SortedSet<Category> categories)
     {
         fCategories = categories;
+    }
+    
+    /**
+     * Returns the list of discrete options.
+     * @return an unmodifiable list
+     */
+    @Override
+    @Transient
+    public List<MultiSelectOption> getOptions()
+    {
+        // Construct a new list every time for now. If we see this method being
+        // called often, it may be worth caching the list.
+        fLogger.debug("Constructing MultiSelectOption list from categories");
+        final ArrayList<MultiSelectOption> options = new ArrayList<>(fCategories.size());
+        for (final Category c : fCategories)
+        {
+            options.add(c.getOption());
+        }
+        return Collections.unmodifiableList(options);
     }
 
     @Override

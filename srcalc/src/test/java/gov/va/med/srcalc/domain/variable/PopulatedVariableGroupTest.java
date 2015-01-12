@@ -23,7 +23,7 @@ public class PopulatedVariableGroupTest
     @Test
     public final void testToString()
     {
-        final List<Variable> variables = Arrays.asList(
+        final List<AbstractVariable> variables = Arrays.asList(
                 SampleObjects.sampleAgeVariable(),
                 SampleObjects.sampleGenderVariable());
         final PopulatedVariableGroup group = new PopulatedVariableGroup(variables);
@@ -36,7 +36,7 @@ public class PopulatedVariableGroupTest
     @Test
     public final void testGetName()
     {
-        final List<Variable> variables = Arrays.asList(
+        final List<AbstractVariable> variables = Arrays.asList(
                 SampleObjects.sampleAgeVariable(),
                 SampleObjects.sampleGenderVariable());
         final PopulatedVariableGroup group = new PopulatedVariableGroup(variables);
@@ -53,7 +53,7 @@ public class PopulatedVariableGroupTest
     @Test(expected = IllegalArgumentException.class)
     public final void testMixedVariables()
     {
-        final List<Variable> variables = Arrays.asList(
+        final List<AbstractVariable> variables = Arrays.asList(
                 SampleObjects.sampleAgeVariable(),
                 SampleObjects.sampleProcedureVariable());
         new PopulatedVariableGroup(variables);

@@ -7,10 +7,10 @@ import javax.inject.Inject;
 import org.hibernate.*;
 import org.springframework.stereotype.Repository;
 
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.variable.AbstractVariable;
 
 /**
- * DAO for {@link Variable}s.
+ * DAO for {@link AbstractVariable}s.
  */
 @Repository
 public class VariableDao
@@ -33,19 +33,19 @@ public class VariableDao
      * name (case insensitive).</p>
      */
     @SuppressWarnings("unchecked") // trust Hibernate
-    public List<Variable> getAllVariables()
+    public List<AbstractVariable> getAllVariables()
     {
         // As far as I can tell, HQL "order by" simply translates to a SQL
         // "ORDER BY", thus making the case-insensitivity up the database's
         // responsibility. So we do the sorting as a post-processing step in
         // Java to ensure portability.
         final Query q = getCurrentSession().createQuery(
-                "from Variable v order by v.displayName");
-        final List<Variable> vars = q.list();
-        Collections.sort(vars, new Comparator<Variable>()
+                "from AbstractVariable v order by v.displayName");
+        final List<AbstractVariable> vars = q.list();
+        Collections.sort(vars, new Comparator<AbstractVariable>()
         {
             @Override
-            public int compare(final Variable v1, final Variable v2)
+            public int compare(final AbstractVariable v1, final AbstractVariable v2)
             {
                 return v1.getDisplayName().compareToIgnoreCase(v2.getDisplayName());
             }
@@ -57,11 +57,11 @@ public class VariableDao
      * Returns the persistent Variable with the given display name, or null
      * if no such Variable exists.
      */
-    public Variable getByName(final String displayName)
+    public AbstractVariable getByName(final String displayName)
     {
         final Query q =  getCurrentSession().createQuery(
-                "from Variable v where v.displayName = :displayName");
+                "from AbstractVariable v where v.displayName = :displayName");
         q.setString("displayName", displayName);
-        return (Variable)q.uniqueResult();
+        return (AbstractVariable)q.uniqueResult();
     }
 }

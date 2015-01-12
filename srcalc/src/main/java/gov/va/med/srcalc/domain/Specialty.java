@@ -27,7 +27,7 @@ public final class Specialty implements Serializable
     
     private String fName;
     
-    private List<Variable> fVariables = new ArrayList<>();
+    private List<AbstractVariable> fVariables = new ArrayList<>();
 
     public Specialty()
     {
@@ -89,7 +89,7 @@ public final class Specialty implements Serializable
     }
     
     /**
-     * Returns all {@link Variable}s associated with this Specialty. Caution:
+     * Returns all {@link AbstractVariable}s associated with this Specialty. Caution:
      * lazy-loaded.
      */
     @ManyToMany(fetch = FetchType.LAZY)
@@ -101,7 +101,7 @@ public final class Specialty implements Serializable
             joinColumns = @JoinColumn(name = "specialty_id"),
             inverseJoinColumns = @JoinColumn(name = "variable_id")
         )
-    public List<Variable> getVariables()
+    public List<AbstractVariable> getVariables()
     {
         return fVariables;
     }
@@ -114,7 +114,7 @@ public final class Specialty implements Serializable
     {
         // Bucket the Variables according to VariableGroup.
         final HashMap<VariableGroup, List<Variable>> map = new HashMap<>();
-        for (final Variable var : getVariables())
+        for (final AbstractVariable var : getVariables())
         {
             final VariableGroup group = var.getGroup();
             if (!map.containsKey(group))
@@ -140,7 +140,7 @@ public final class Specialty implements Serializable
     }
     
     /**
-     * Returns all {@link Variable}s associated with this Specialty, bucketed
+     * Returns all {@link AbstractVariable}s associated with this Specialty, bucketed
      * into their groups.
      * @return an immutable List, sorted in group order
      */
@@ -156,7 +156,7 @@ public final class Specialty implements Serializable
      * For reflection-based construction only. The collection should be modified
      * via {@link #getVariables()}.
      */
-    void setVariables(final List<Variable> variables)
+    void setVariables(final List<AbstractVariable> variables)
     {
         fVariables = variables;
     }
