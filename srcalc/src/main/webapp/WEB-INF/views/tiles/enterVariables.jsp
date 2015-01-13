@@ -93,7 +93,30 @@
         </div>
         <c:url var="enterVariablesJsUrl" value="/js/enterVariables.js"/>
         <script type="text/javascript" src="${enterVariablesJsUrl}"></script>
-        <script>
-        $(document).ready(initEnterVariablesPage);
+        <c:url var="dataTablesUrl" value="/js/vendor/jquery.dataTables.min.js"/>
+        <script type="text/javascript" src="${dataTablesUrl}"></script>
+        <script type="text/javascript">
+        $(document).ready(function(){
+        	initEnterVariablesPage();
+        	// Set up the properties for the procedures DataTable
+	    	var table = $("#procedureTable").dataTable( {
+	    		// Make the radio button column smaller so that IE
+	    		// will adjust column widths properly.
+	    		"aoColumnDefs":[
+	    		{
+	    			"width": "10%",
+	    			"targets": [0]
+	    		},
+	    		// Make the select column,  and RVU unsearchable
+	    		{
+	    			"bSearchable": false, 
+	    			"aTargets": [0,2,3]
+	    		}, {
+	    			// Make the select button unsortable
+	    			"bSortable": false,
+	    			"aTargets": [0]
+	    		}]
+	    	});
+        });
         </script>
         </form:form>

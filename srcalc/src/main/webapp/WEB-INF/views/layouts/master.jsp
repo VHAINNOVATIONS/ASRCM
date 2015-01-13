@@ -21,6 +21,8 @@
     <link rel="stylesheet" type="text/css" href="${jqueryUiCss}">
     <c:url var="srcalcCss" value="/css/srcalc.css"/>
     <link rel="stylesheet" type="text/css" href="${srcalcCss}">
+    <c:url var="dataTables" value="/css/jquery.dataTables.css"/>
+    <link rel="stylesheet" type="text/css" href="${dataTables}">
     <c:url var="modernizrJs" value="/js/vendor/modernizr-2.6.2.min.js"/>
     <script type="text/javascript" src="${modernizrJs}"></script>
     <title><tiles:insertAttribute name="title"/></title>
