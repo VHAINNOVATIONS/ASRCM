@@ -18,16 +18,16 @@
         <tr><th colspan="2" class="groupName">${variableGroup.name}</th></tr>
         <c:forEach var="variable" items="${variableGroup.variables}">
         <tr>
-            <c:set var="varPath" value="dynamicValues[${variable.displayName}]" />
+        	<c:set var="varPath" value="${srcalc:dynamicValuePath(variable.displayName)}" />
             <td class="attributeName">${variable.displayName}:</td>
             <%--
             Use our variableSpecific custom tag to write the corresponding form
             control for each variable type.
             --%>
-            <td>
+            <td class="attributeValue">
             <srcalc:variableSpecific variable="${variable}">
             <jsp:attribute name="numericalFragment">
-                <form:input path="${varPath}" size="8"/>
+                <form:input path="${varPath}" size="6"/> ${variable.units}
             </jsp:attribute>
             <jsp:attribute name="multiSelectFragment">
                 <c:choose>
@@ -46,6 +46,18 @@
             <jsp:attribute name="booleanFragment">
                 <label class="checkboxLabel"><form:checkbox path="${varPath}" value="true"/> ${variable.displayName}</label>
             </jsp:attribute>
+            <jsp:attribute name="discreteNumericalFragment">
+				<!-- Wrap both the radio button and numerical entry in a span.radioLabel
+					 for proper spacing. -->
+				<span class="radioLabel"><label><form:radiobutton path="${varPath}" cssClass="numericalRadio" value="numerical"/> Numerical:</label>
+				<c:set var="numericalVarName" value="${variable.displayName}_numerical" />
+				<c:set var="numericalVarPath" value="${srcalc:dynamicValuePath(numericalVarName)}" />
+				<form:input cssClass="numerical" path="${numericalVarPath}" size="6"/> ${variable.units}</span>
+				<form:errors path="${numericalVarPath}" cssClass="error" /><br>
+				<c:forEach var="cat" items="${variable.categories}">
+				<label class="radioLabel"><form:radiobutton path="${varPath}" value="${cat.option.value}"/> Presumed ${cat.option.value}</label>
+				</c:forEach>
+			</jsp:attribute>
             <jsp:attribute name="procedureFragment">
                 <%--
                 Javascript code below will transform this table into a jQueryUI
@@ -85,7 +97,7 @@
         <script type="text/javascript" src="${dataTablesUrl}"></script>
         <script type="text/javascript">
         $(document).ready(function(){
-        	initProcedureSelect();
+        	initEnterVariablesPage();
         	// Set up the properties for the procedures DataTable
 	    	var table = $("#procedureTable").dataTable( {
 	    		// Make the radio button column smaller so that IE
