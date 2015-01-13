@@ -118,6 +118,8 @@ public class CalculationServiceIT extends IntegrationTest
                 (MultiSelectVariable)thoracicVars.get("Functional Status");
         final DiscreteNumericalVariable apVar =
                 (DiscreteNumericalVariable)thoracicVars.get("Alkaline Phosphatase");
+        final DiscreteNumericalVariable bunVar =
+                (DiscreteNumericalVariable)thoracicVars.get("BUN");
         final List<Value> values = Arrays.asList(
                 new ProcedureValue(procedureVar, procedureVar.getProcedures().get(1)),
                 new NumericalValue((NumericalVariable)thoracicVars.get("Age"), 66),
@@ -126,7 +128,8 @@ public class CalculationServiceIT extends IntegrationTest
                 new MultiSelectValue(asaVar, fsVar.getOptions().get(0)),
                 new MultiSelectValue(fsVar, fsVar.getOptions().get(1)),
                 new BooleanValue((BooleanVariable)thoracicVars.get("Preop Pneumonia"), false),
-                DiscreteNumericalValue.fromCategory(apVar, apVar.getContainingCategory(5.0f)));
+                DiscreteNumericalValue.fromCategory(apVar, apVar.getContainingCategory(5.0f)),
+                DiscreteNumericalValue.fromCategory(bunVar, bunVar.getContainingCategory(10.0f)));
         
         // Behavior verification
         fCalculationService.runCalculation(selCalc.getCalculation(), values);

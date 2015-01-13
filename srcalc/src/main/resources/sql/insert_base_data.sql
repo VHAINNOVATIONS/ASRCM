@@ -214,3 +214,24 @@ INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (51, 
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (6, 51);
 INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (52, 9, 1, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (8, 52);
+
+-- BUN Lab
+INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (10, 'BUN', 5);
+INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value, units) VALUES (10, 2, 90, 'mg/dl');
+INSERT INTO DISCRETE_NUMERICAL_VAR (id) VALUES (10);
+INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (12, 'WNL');
+INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (10, 12, -1e12, TRUE, 25, TRUE);
+INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (13, '>25mg/dl');
+INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (10, 13, 25, FALSE, 1e12, TRUE);
+INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (53, 10, 1, 48.0);
+INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (1, 53);
+INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (54, 10, 1, 48.0);
+INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (2, 54);
+INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (55, 10, 1, 48.0);
+INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (4, 55);
+INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (56, 10, 1, 48.0);
+INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (5, 56);
+INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (57, 10, 1, 48.0);
+INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (6, 57);
+INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (58, 10, 1, 48.0);
+INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (6, 58);
