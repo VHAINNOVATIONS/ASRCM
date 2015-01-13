@@ -2,8 +2,10 @@ package gov.va.med.srcalc.domain;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.variable.*;
+import static gov.va.med.srcalc.domain.SampleObjects.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -43,9 +45,7 @@ public class CalculationTest
         calc.setSpecialty(thoracicSpecialty);
         assertEquals(thoracicSpecialty, calc.getSpecialty());
         // Ensure getVariables() returns what we would expect now.
-        assertEquals(thoracicSpecialty.getVariables().size(), calc.getVariables().size());
-        assertEquals("Procedure", calc.getVariables().get(0).getDisplayName());
-        assertEquals("Age", calc.getVariables().get(1).getDisplayName());
+        assertEquals(thoracicSpecialty.getModelVariables(), calc.getVariables());
         // And same for getVariableGroups().
         assertEquals(3, calc.getVariableGroups().size());
     }
@@ -54,6 +54,41 @@ public class CalculationTest
     public final void testGetVariablesIllegal()
     {
         Calculation.forPatient(dummyPatient()).getVariables();
+    }
+    
+    @Test
+    public final void testGetVariableGroups()
+    {
+        // First, build a sample Specialty with known variable references.
+        final AbstractVariable procedureVar = sampleProcedureVariable();
+        final List<AbstractVariable> procedureVars = Arrays.asList(procedureVar);
+        final AbstractVariable ageVar = sampleAgeVariable();
+        final AbstractVariable genderVar = sampleGenderVariable();
+        final List<AbstractVariable> demographicsVars = Arrays.asList(ageVar, genderVar);
+        final Specialty specialty = new Specialty(48, "Cardiac");
+        specialty.getModelVariables().addAll(demographicsVars);
+        specialty.getModelVariables().addAll(procedureVars);
+
+        final Calculation c = Calculation.forPatient(dummyPatient());
+        c.setSpecialty(specialty);
+        
+        // Now, build the expected List of PopulatedVariableGroups.
+        final List<PopulatedVariableGroup> list = Arrays.asList(
+                new PopulatedVariableGroup(procedureVars),
+                new PopulatedVariableGroup(demographicsVars));
+        
+        // And finally, verify expected behavior. Note that Variables do not
+        // override equals() so this only works because the returned list should
+        // use the same variable references.
+        assertEquals(list, c.getVariableGroups());
+    }
+    
+    @Test(expected = UnsupportedOperationException.class)
+    public final void testGetVariableGroupsImmutable()
+    {
+        final Calculation c = Calculation.forPatient(dummyPatient());
+        c.setSpecialty(sampleThoracicSpecialty());
+        c.getVariableGroups().remove(0);
     }
     
     @Test(expected = IllegalStateException.class)

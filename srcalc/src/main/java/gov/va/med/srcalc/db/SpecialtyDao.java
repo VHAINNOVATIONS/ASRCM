@@ -38,13 +38,13 @@ public class SpecialtyDao
     public Specialty getByName(final String name)
     {
         final Query q = getCurrentSession().createQuery(
-                "from Specialty s left join fetch s.variables where s.name = :name");
+                "from Specialty s left join fetch s.modelVariables where s.name = :name");
         q.setString("name", name);
         final Specialty s = (Specialty)q.uniqueResult();
         // Kludge until I figure out how to get Hibernate to automatically load
         // the procedures for a ProcedureVariable.
         ProcedureLoaderVisitor visitor = new ProcedureLoaderVisitor(getCurrentSession());
-        for (Variable var : s.getVariables())
+        for (Variable var : s.getModelVariables())
         {
             // Due to the way Hibernate @OrderColumns work, we may get null
             // values in the variable list if the database is misconfigured.

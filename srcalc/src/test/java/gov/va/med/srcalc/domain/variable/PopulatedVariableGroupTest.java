@@ -29,7 +29,7 @@ public class PopulatedVariableGroupTest
         final PopulatedVariableGroup group = new PopulatedVariableGroup(variables);
         
         assertEquals(
-                "Variable Group 'Demographics' with 2 variables",
+                "Variable Group 'Demographics' with variables [Age, Gender]",
                 group.toString());
     }
     

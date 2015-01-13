@@ -77,15 +77,8 @@ public class CalculationServiceIT extends IntegrationTest
         assertEquals(sampleSpecialty, actualSpecialty);
         // Specialty.equals() does not compare the variable lists, so do some
         // checks there.
-        final List<AbstractVariable> specialtyVars = actualSpecialty.getVariables();
-        assertEquals(specialtyVars.size(), calc.getVariables().size());
-        // Since Variables do not implement value equality, just compare the names
-        for (int i = 0; i < specialtyVars.size(); ++i)
-        {
-            assertEquals(
-                    specialtyVars.get(i).getDisplayName(),
-                    calc.getVariables().get(i).getDisplayName());
-        }
+        final List<AbstractVariable> specialtyVars = actualSpecialty.getModelVariables();
+        assertEquals(specialtyVars, calc.getVariables());
         
         assertCleanSession();
     }

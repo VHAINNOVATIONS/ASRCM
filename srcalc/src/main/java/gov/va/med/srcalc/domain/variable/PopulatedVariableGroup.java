@@ -107,8 +107,8 @@ public final class PopulatedVariableGroup implements Comparable<PopulatedVariabl
     public String toString()
     {
         return String.format(
-                "Variable Group '%s' with %d variables",
+                "Variable Group '%s' with variables %s",
                 getGroup(),
-                getVariables().size());
+                getVariables());
     }
 }

@@ -39,10 +39,10 @@ public class SampleObjects
     public static Specialty sampleThoracicSpecialty()
     {
         final Specialty s = new Specialty(58, "Thoracic");
-        s.getVariables().add(sampleProcedureVariable());
-        s.getVariables().add(sampleAgeVariable());
-        s.getVariables().add(dnrVariable());
-        s.getVariables().add(functionalStatusVariable());
+        s.getModelVariables().add(sampleProcedureVariable());
+        s.getModelVariables().add(sampleAgeVariable());
+        s.getModelVariables().add(dnrVariable());
+        s.getModelVariables().add(functionalStatusVariable());
         return s;
     }
     

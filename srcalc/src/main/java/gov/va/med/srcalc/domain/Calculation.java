@@ -75,7 +75,7 @@ public class Calculation implements Serializable
     }
     
     /**
-     * Returns the List of {@link Variable}s for the selected specialty.
+     * Returns the List of {@link Variable}s that the calculation requires.
      * @throws IllegalStateException if no specialty has been set.
      * @return an unmodifiable list of Variables.
      */
@@ -88,15 +88,50 @@ public class Calculation implements Serializable
                     "Cannot return list of variables because no specialty has been set.");
         }
         
-        // We want to return aa List<Variable> instead of a
-        // List<AbstractVariable> so explicitly specificy the type argument.
-        return Collections.<Variable>unmodifiableList(fSpecialty.getVariables());
+        // We want to return a List<Variable> instead of a
+        // List<AbstractVariable> so explicitly specify the type argument.
+        return Collections.<Variable>unmodifiableList(fSpecialty.getModelVariables());
     }
     
     /**
-     * Returns the selected specialty's variables bucketed into groups. See
-     * {@link Specialty#getVariableGroups()} for details.
+     * Builds a brand-new, sorted list of {@link PopulatedVariableGroup}s from
+     * the given variables.
+     */
+    protected List<PopulatedVariableGroup> buildVariableGroupList(
+            Collection<? extends Variable> variables)
+    {
+        // Bucket the Variables according to VariableGroup.
+        final HashMap<VariableGroup, List<Variable>> map = new HashMap<>();
+        for (final Variable var : variables)
+        {
+            final VariableGroup group = var.getGroup();
+            if (!map.containsKey(group))
+            {
+                final ArrayList<Variable> varList = new ArrayList<>();
+                map.put(group, varList);
+            }
+            map.get(group).add(var);
+        }
+        
+        // Transform the map into PopulatedVariableGroups.
+        final ArrayList<PopulatedVariableGroup> groupList =
+                new ArrayList<>(map.values().size());
+        for (final List<Variable> varList : map.values())
+        {
+            groupList.add(new PopulatedVariableGroup(varList));
+        }
+        
+        // Finally, sort the List.
+        Collections.sort(groupList);
+        
+        return groupList;
+    }
+    
+    /**
+     * Returns all {@link Variable}s associated with this Specialty, bucketed
+     * into their groups.
      * @throws IllegalStateException if no specialty has been set.
+     * @return an immutable List, sorted in group order
      */
     public List<PopulatedVariableGroup> getVariableGroups()
     {
@@ -107,7 +142,8 @@ public class Calculation implements Serializable
                     "Cannot return list of variables because no specialty has been set.");
         }
         
-        return fSpecialty.getVariableGroups();
+        return Collections.unmodifiableList(
+                buildVariableGroupList(getVariables()));
     }
 
     public List<Value> getValues()
