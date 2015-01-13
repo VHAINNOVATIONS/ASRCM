@@ -20,7 +20,7 @@ public class Calculation implements Serializable
     private DateTime fStartDateTime;
     private Patient fPatient;
     private Specialty fSpecialty;
-    private List<Value> fValues;
+    private SortedSet<Value> fValues;
     
     /**
      * This class presents a pure JavaBean interface, with a default constructor
@@ -30,7 +30,7 @@ public class Calculation implements Serializable
     public Calculation()
     {
         fStartDateTime = new DateTime();
-        fValues = new ArrayList<>();
+        fValues = new TreeSet<>(new ValueVariableComparator(new DisplayNameComparator()));
     }
     
     public static Calculation forPatient(final Patient patient)
@@ -147,16 +147,16 @@ public class Calculation implements Serializable
                 buildVariableGroupList(getVariables()));
     }
 
-    public List<Value> getValues()
+    public SortedSet<Value> getValues()
     {
         return fValues;
     }
     
     /**
-     * For bean construction only. Replaces the internal List of Values with the
+     * For bean construction only. Replaces the internal Set of Values with the
      * given one.
      */
-    void setValues(final List<Value> values)
+    void setValues(final SortedSet<Value> values)
     {
         fValues = values;
     }
@@ -164,7 +164,7 @@ public class Calculation implements Serializable
     /**
      * Runs the calculation for each outcome with the given Values.
      */
-    public void calculate(final List<Value> values)
+    public void calculate(final Collection<Value> values)
     {
         // Placeholder validity check - may change as we implement outcomes.
         if (values.size() != getVariables().size())

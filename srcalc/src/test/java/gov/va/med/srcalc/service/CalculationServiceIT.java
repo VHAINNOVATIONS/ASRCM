@@ -120,19 +120,24 @@ public class CalculationServiceIT extends IntegrationTest
                 (DiscreteNumericalVariable)thoracicVars.get("Alkaline Phosphatase");
         final DiscreteNumericalVariable bunVar =
                 (DiscreteNumericalVariable)thoracicVars.get("BUN");
-        final List<Value> values = Arrays.asList(
-                new ProcedureValue(procedureVar, procedureVar.getProcedures().get(1)),
+        // Construct this list in order by variable display name.
+        final List<Value> orderedValues = Arrays.asList(
                 new NumericalValue((NumericalVariable)thoracicVars.get("Age"), 66),
-                new BooleanValue((BooleanVariable)thoracicVars.get("DNR"), true),
-                new NumericalValue((NumericalVariable)thoracicVars.get("BMI"), 17.3f),
+                DiscreteNumericalValue.fromCategory(apVar, apVar.getContainingCategory(5.0f)),
                 new MultiSelectValue(asaVar, fsVar.getOptions().get(0)),
+                new NumericalValue((NumericalVariable)thoracicVars.get("BMI"), 17.3f),
+                DiscreteNumericalValue.fromCategory(bunVar, bunVar.getContainingCategory(10.0f)),
+                new BooleanValue((BooleanVariable)thoracicVars.get("DNR"), true),
                 new MultiSelectValue(fsVar, fsVar.getOptions().get(1)),
                 new BooleanValue((BooleanVariable)thoracicVars.get("Preop Pneumonia"), false),
-                DiscreteNumericalValue.fromCategory(apVar, apVar.getContainingCategory(5.0f)),
-                DiscreteNumericalValue.fromCategory(bunVar, bunVar.getContainingCategory(10.0f)));
+                new ProcedureValue(procedureVar, procedureVar.getProcedures().get(1)));
+        
+        // Create a new shuffled list to test Calculation's sorting.
+        final List<Value> shuffledValues = new ArrayList<>(orderedValues);
+        Collections.shuffle(shuffledValues);
         
         // Behavior verification
-        fCalculationService.runCalculation(selCalc.getCalculation(), values);
-        assertEquals(values, calc.getValues());
+        fCalculationService.runCalculation(selCalc.getCalculation(), orderedValues);
+        assertEquals(orderedValues, new ArrayList<>(calc.getValues()));
     }
 }
