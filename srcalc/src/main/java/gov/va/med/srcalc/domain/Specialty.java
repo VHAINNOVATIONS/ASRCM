@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain;
 
+import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.*;
 
 import java.io.Serializable;
@@ -27,7 +28,7 @@ public final class Specialty implements Serializable
     
     private String fName;
     
-    private List<AbstractVariable> fModelVariables = new ArrayList<>();
+    private Set<RiskModel> fRiskModels = new HashSet<>();
 
     public Specialty()
     {
@@ -89,32 +90,48 @@ public final class Specialty implements Serializable
     }
     
     /**
-     * Returns all {@link AbstractVariable}s associated with this Specialty. Caution:
-     * lazy-loaded.
+     * Returns all {@link Variable}s required by all associated {@link
+     * RiskModel}s. Caution: lazy-loaded.
+     * @return an unmodifiable set
      */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @OrderColumn(name = "display_order")
-    // Override strange defaults. See
-    // <https://forum.hibernate.org/viewtopic.php?f=1&t=1037190>.
-    @JoinTable(
-            name = "specialty_variable",
-            joinColumns = @JoinColumn(name = "specialty_id"),
-            inverseJoinColumns = @JoinColumn(name = "variable_id")
-        )
-    public List<AbstractVariable> getModelVariables()
+    @Transient
+    public Set<Variable> getModelVariables()
     {
-        return fModelVariables;
+        final HashSet<Variable> allVariables = new HashSet<>();
+        for (final RiskModel model : getRiskModels())
+        {
+            allVariables.addAll(model.getRequiredVariables());
+        }
+        return Collections.unmodifiableSet(allVariables);
     }
     
     /**
-     * For reflection-based construction only. The collection should be modified
-     * via {@link #getModelVariables()}.
+     * Returns all {@link RiskModel}s associated with the Specialty. Caution:
+     * lazy-loaded.
+     * @return
      */
-    void setModelVariables(final List<AbstractVariable> variables)
+    @OneToMany(fetch = FetchType.LAZY)
+    // Override strange defaults. See
+    // <https://forum.hibernate.org/viewtopic.php?f=1&t=1037190>.
+    @JoinTable(
+            name = "specialty_risk_model",
+            joinColumns = @JoinColumn(name = "specialty_id"),
+            inverseJoinColumns = @JoinColumn(name = "risk_model_id")
+        )
+    public Set<RiskModel> getRiskModels()
     {
-        fModelVariables = variables;
+        return fRiskModels;
     }
-    
+
+    /**
+     * For reflection-based construction only. The collection should be modified
+     * via {@link #getRiskModels()}.
+     */
+    public void setRiskModels(Set<RiskModel> riskModels)
+    {
+        fRiskModels = riskModels;
+    }
+
     @Override
     public String toString()
     {

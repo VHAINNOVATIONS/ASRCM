@@ -75,9 +75,9 @@ public class CalculationServiceIT extends IntegrationTest
         assertSame("Calculation object not the same", calc,  selCalc.getCalculation());
         final Specialty actualSpecialty = selCalc.getCalculation().getSpecialty();
         assertEquals(sampleSpecialty, actualSpecialty);
-        // Specialty.equals() does not compare the variable lists, so do some
-        // checks there.
-        final List<AbstractVariable> specialtyVars = actualSpecialty.getModelVariables();
+        // Specialty.equals() does not compare the variables, so do some checks
+        // there.
+        final Set<Variable> specialtyVars = actualSpecialty.getModelVariables();
         assertEquals(specialtyVars, calc.getVariables());
         
         assertCleanSession();

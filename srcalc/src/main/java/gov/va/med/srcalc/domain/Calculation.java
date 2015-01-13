@@ -75,11 +75,11 @@ public class Calculation implements Serializable
     }
     
     /**
-     * Returns the List of {@link Variable}s that the calculation requires.
+     * Returns the Set of {@link Variable}s that the calculation requires.
      * @throws IllegalStateException if no specialty has been set.
      * @return an unmodifiable list of Variables.
      */
-    public List<Variable> getVariables()
+    public Set<Variable> getVariables()
     {
         // Ensure we are in the proper state.
         if (fSpecialty == null)
@@ -88,14 +88,13 @@ public class Calculation implements Serializable
                     "Cannot return list of variables because no specialty has been set.");
         }
         
-        // We want to return a List<Variable> instead of a
-        // List<AbstractVariable> so explicitly specify the type argument.
-        return Collections.<Variable>unmodifiableList(fSpecialty.getModelVariables());
+        return Collections.unmodifiableSet(fSpecialty.getModelVariables());
     }
     
     /**
      * Builds a brand-new, sorted list of {@link PopulatedVariableGroup}s from
-     * the given variables.
+     * the given variables. The groups are sorted by their natural ordering and
+     * each variable list is sorted by display name.
      */
     protected List<PopulatedVariableGroup> buildVariableGroupList(
             Collection<? extends Variable> variables)
@@ -116,8 +115,10 @@ public class Calculation implements Serializable
         // Transform the map into PopulatedVariableGroups.
         final ArrayList<PopulatedVariableGroup> groupList =
                 new ArrayList<>(map.values().size());
+        final DisplayNameComparator comparator = new DisplayNameComparator();
         for (final List<Variable> varList : map.values())
         {
+            Collections.sort(varList, comparator);
             groupList.add(new PopulatedVariableGroup(varList));
         }
         

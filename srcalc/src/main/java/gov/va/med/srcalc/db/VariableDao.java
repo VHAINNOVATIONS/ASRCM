@@ -8,6 +8,7 @@ import org.hibernate.*;
 import org.springframework.stereotype.Repository;
 
 import gov.va.med.srcalc.domain.variable.AbstractVariable;
+import gov.va.med.srcalc.domain.variable.DisplayNameComparator;
 
 /**
  * DAO for {@link AbstractVariable}s.
@@ -42,14 +43,7 @@ public class VariableDao
         final Query q = getCurrentSession().createQuery(
                 "from AbstractVariable v order by v.displayName");
         final List<AbstractVariable> vars = q.list();
-        Collections.sort(vars, new Comparator<AbstractVariable>()
-        {
-            @Override
-            public int compare(final AbstractVariable v1, final AbstractVariable v2)
-            {
-                return v1.getDisplayName().compareToIgnoreCase(v2.getDisplayName());
-            }
-        });
+        Collections.sort(vars, new DisplayNameComparator());
         return vars;
     }
     

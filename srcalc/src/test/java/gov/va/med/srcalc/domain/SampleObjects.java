@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.Specialty;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable.Category;
 import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
@@ -31,6 +32,68 @@ public class SampleObjects
     {
         return Arrays.asList(sampleRepairRightProcedure(), sampleRepairLeftProcedure());
     }
+    
+    /**
+     * Convenience function to construct a RiskModel from the given list of
+     * Variables. The terms will have arbitrary coefficients.
+     * @param name the intended name of the model
+     * @param variables
+     * @return a RiskModel with a term for each given variable
+     */
+    public static RiskModel makeSampleRiskModel(final String name, final Variable... variables)
+    {
+        final RiskModel m = new RiskModel(name);
+        
+        final ExceptionlessVariableVisitor visitor = new ExceptionlessVariableVisitor()
+        {
+            @Override
+            public void visitProcedure(ProcedureVariable variable)
+            {
+                m.getTerms().add(new ProcedureTerm(variable, 1.0f));
+            }
+            
+            @Override
+            public void visitNumerical(NumericalVariable variable)
+            {
+                m.getTerms().add(new NumericalTerm(variable, 2.0f));
+            }
+            
+            @Override
+            public void visitMultiSelect(MultiSelectVariable variable)
+            {
+                m.getTerms().add(new DiscreteTerm(variable, 1, 3.0f));
+            }
+            
+            @Override
+            public void visitDiscreteNumerical(DiscreteNumericalVariable variable)
+            {
+                m.getTerms().add(new DiscreteTerm(variable, 0, 4.0f));
+            }
+            
+            @Override
+            public void visitBoolean(BooleanVariable variable)
+            {
+                m.getTerms().add(new BooleanTerm(variable, 5.0f));
+            }
+        };
+        
+        for (final Variable var : variables)
+        {
+            visitor.visit(var);
+        }
+
+        return m;
+    }
+    
+    public static RiskModel sampleThoracicRiskModel()
+    {
+        final RiskModel m = new RiskModel("Thoracic 30-day mortality estimate");
+        m.getTerms().add(new ProcedureTerm(sampleProcedureVariable(), 1.0f));
+        m.getTerms().add(new NumericalTerm(sampleAgeVariable(), 2.0f));
+        m.getTerms().add(new BooleanTerm(dnrVariable(), 0.5f));
+        m.getTerms().add(new DiscreteTerm(functionalStatusVariable(), 1, 5.0f));
+        return m;
+    }
 
     /**
      * Returns a sample Thoracic specialty, for when a single specialty is needed.
@@ -39,10 +102,7 @@ public class SampleObjects
     public static Specialty sampleThoracicSpecialty()
     {
         final Specialty s = new Specialty(58, "Thoracic");
-        s.getModelVariables().add(sampleProcedureVariable());
-        s.getModelVariables().add(sampleAgeVariable());
-        s.getModelVariables().add(dnrVariable());
-        s.getModelVariables().add(functionalStatusVariable());
+        s.getRiskModels().add(sampleThoracicRiskModel());
         return s;
     }
     

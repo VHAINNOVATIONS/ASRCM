@@ -34,14 +34,16 @@ public class PopulatedVariableGroupTest
     }
     
     @Test
-    public final void testGetName()
+    public final void testBasic()
     {
+        final AbstractVariable genderVar = SampleObjects.sampleGenderVariable();
+        final AbstractVariable ageVar = SampleObjects.sampleAgeVariable();
         final List<AbstractVariable> variables = Arrays.asList(
-                SampleObjects.sampleAgeVariable(),
-                SampleObjects.sampleGenderVariable());
+                ageVar, genderVar);
         final PopulatedVariableGroup group = new PopulatedVariableGroup(variables);
         
         assertEquals("Demographics", group.getName());
+        assertEquals(variables, group.getVariables());
     }
 
     @Test(expected = IllegalArgumentException.class)

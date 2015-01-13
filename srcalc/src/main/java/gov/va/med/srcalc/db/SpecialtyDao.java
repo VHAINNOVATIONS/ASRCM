@@ -9,8 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
-import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.Specialty;
+import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.Variable;
 
 @Repository
@@ -31,14 +31,14 @@ public class SpecialtyDao
     
     /**
      * Returns the Specialty from the Database with the given name. The Specialty
-     * will have all of the associated Variables loaded from the DB.
+     * will have all of the associated {@link RiskModel}s loaded from the DB.
      * @return the Specialty object or null if there was no specialty with the
      * given name
      */
     public Specialty getByName(final String name)
     {
         final Query q = getCurrentSession().createQuery(
-                "from Specialty s left join fetch s.modelVariables where s.name = :name");
+                "from Specialty s left join fetch s.riskModels where s.name = :name");
         q.setString("name", name);
         final Specialty s = (Specialty)q.uniqueResult();
         // Kludge until I figure out how to get Hibernate to automatically load
@@ -46,16 +46,6 @@ public class SpecialtyDao
         ProcedureLoaderVisitor visitor = new ProcedureLoaderVisitor(getCurrentSession());
         for (Variable var : s.getModelVariables())
         {
-            // Due to the way Hibernate @OrderColumns work, we may get null
-            // values in the variable list if the database is misconfigured.
-            // Detect this early to avoid mystery NPEs later.
-            if (var == null)
-            {
-                throw new ConfigurationException(String.format(
-                        "Missing Variable for specialty %s. Check the order column.",
-                        name));
-            }
-
             try
             {
                 var.accept(visitor);

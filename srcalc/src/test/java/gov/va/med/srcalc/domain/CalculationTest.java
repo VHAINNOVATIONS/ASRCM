@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain;
 
 import static org.junit.Assert.*;
+import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.*;
 import static gov.va.med.srcalc.domain.SampleObjects.*;
 
@@ -61,21 +62,20 @@ public class CalculationTest
     {
         // First, build a sample Specialty with known variable references.
         final AbstractVariable procedureVar = sampleProcedureVariable();
-        final List<AbstractVariable> procedureVars = Arrays.asList(procedureVar);
         final AbstractVariable ageVar = sampleAgeVariable();
         final AbstractVariable genderVar = sampleGenderVariable();
-        final List<AbstractVariable> demographicsVars = Arrays.asList(ageVar, genderVar);
+        final RiskModel model = SampleObjects.makeSampleRiskModel(
+                "model", procedureVar, ageVar, genderVar);
         final Specialty specialty = new Specialty(48, "Cardiac");
-        specialty.getModelVariables().addAll(demographicsVars);
-        specialty.getModelVariables().addAll(procedureVars);
+        specialty.getRiskModels().add(model);
 
         final Calculation c = Calculation.forPatient(dummyPatient());
         c.setSpecialty(specialty);
         
         // Now, build the expected List of PopulatedVariableGroups.
         final List<PopulatedVariableGroup> list = Arrays.asList(
-                new PopulatedVariableGroup(procedureVars),
-                new PopulatedVariableGroup(demographicsVars));
+                new PopulatedVariableGroup(Arrays.asList(procedureVar)),
+                new PopulatedVariableGroup(Arrays.asList(ageVar, genderVar)));
         
         // And finally, verify expected behavior. Note that Variables do not
         // override equals() so this only works because the returned list should
