@@ -9,6 +9,7 @@ import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
 import gov.va.med.srcalc.web.controller.CalculationController;
+import gov.va.med.srcalc.web.view.InputParserVisitor;
 import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
 
 import org.junit.*;
@@ -102,6 +103,8 @@ public class CalculationControllerIT extends IntegrationTest
         varParams.add("Functional Status", "Independent");
         varParams.add("Preop Pneumonia", "true");
         varParams.add("Alkaline Phosphatase", ">125mU/ml");
+        varParams.add("BUN", InputParserVisitor.SPECIAL_NUMERICAL);
+        varParams.add("BUN_numerical", "15.0");
         
         final MockHttpServletRequestBuilder request =
                 post("/enterVars").session(fSession);

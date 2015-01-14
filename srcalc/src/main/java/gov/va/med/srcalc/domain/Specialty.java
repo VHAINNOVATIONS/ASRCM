@@ -1,6 +1,8 @@
 package gov.va.med.srcalc.domain;
 
+import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.util.NoNullSet;
 
 import java.io.Serializable;
 import java.util.*;
@@ -27,7 +29,7 @@ public final class Specialty implements Serializable
     
     private String fName;
     
-    private List<Variable> fVariables = new ArrayList<>();
+    private Set<RiskModel> fRiskModels = new HashSet<>();
 
     public Specialty()
     {
@@ -89,78 +91,48 @@ public final class Specialty implements Serializable
     }
     
     /**
-     * Returns all {@link Variable}s associated with this Specialty. Caution:
-     * lazy-loaded.
+     * Returns all {@link Variable}s required by all associated {@link
+     * RiskModel}s. Caution: lazy-loaded.
+     * @return an unmodifiable set that does not contain null
      */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @OrderColumn(name = "display_order")
+    @Transient
+    public NoNullSet<Variable> getModelVariables()
+    {
+        final HashSet<Variable> allVariables = new HashSet<>();
+        for (final RiskModel model : getRiskModels())
+        {
+            allVariables.addAll(model.getRequiredVariables());
+        }
+        return NoNullSet.fromSet(Collections.unmodifiableSet(allVariables));
+    }
+    
+    /**
+     * Returns all {@link RiskModel}s associated with the Specialty. Caution:
+     * lazy-loaded.
+     * @return
+     */
+    @OneToMany(fetch = FetchType.LAZY)
     // Override strange defaults. See
     // <https://forum.hibernate.org/viewtopic.php?f=1&t=1037190>.
     @JoinTable(
-            name = "specialty_variable",
+            name = "specialty_risk_model",
             joinColumns = @JoinColumn(name = "specialty_id"),
-            inverseJoinColumns = @JoinColumn(name = "variable_id")
+            inverseJoinColumns = @JoinColumn(name = "risk_model_id")
         )
-    public List<Variable> getVariables()
+    public Set<RiskModel> getRiskModels()
     {
-        return fVariables;
+        return fRiskModels;
     }
-    
-    /**
-     * Builds a brand-new, sorted list of {@link PopulatedVariableGroup}s from
-     * the {@link Specialty}'s variables.
-     */
-    protected final List<PopulatedVariableGroup> buildVariableGroupList()
-    {
-        // Bucket the Variables according to VariableGroup.
-        final HashMap<VariableGroup, List<Variable>> map = new HashMap<>();
-        for (final Variable var : getVariables())
-        {
-            final VariableGroup group = var.getGroup();
-            if (!map.containsKey(group))
-            {
-                final ArrayList<Variable> varList = new ArrayList<>();
-                map.put(group, varList);
-            }
-            map.get(group).add(var);
-        }
-        
-        // Transform the map into PopulatedVariableGroups.
-        final ArrayList<PopulatedVariableGroup> groupList =
-                new ArrayList<>(map.values().size());
-        for (final List<Variable> varList : map.values())
-        {
-            groupList.add(new PopulatedVariableGroup(varList));
-        }
-        
-        // Finally, sort the List.
-        Collections.sort(groupList);
-        
-        return groupList;
-    }
-    
-    /**
-     * Returns all {@link Variable}s associated with this Specialty, bucketed
-     * into their groups.
-     * @return an immutable List, sorted in group order
-     */
-    @Transient
-    public List<PopulatedVariableGroup> getVariableGroups()
-    {
-        // Construct a new instance every time for now. May cache the list if
-        // this becomes a performance issue.
-        return Collections.unmodifiableList(buildVariableGroupList());
-    }
-    
+
     /**
      * For reflection-based construction only. The collection should be modified
-     * via {@link #getVariables()}.
+     * via {@link #getRiskModels()}.
      */
-    void setVariables(final List<Variable> variables)
+    public void setRiskModels(Set<RiskModel> riskModels)
     {
-        fVariables = variables;
+        fRiskModels = riskModels;
     }
-    
+
     @Override
     public String toString()
     {

@@ -3,11 +3,11 @@ package gov.va.med.srcalc.service;
 import java.util.Arrays;
 import java.util.List;
 
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.variable.AbstractVariable;
 
 /**
- * A command object that updates a {@link Variable}'s properties. See
- * {@link AdminService#updateVariable(Variable)} for a primary usage.
+ * A command object that updates a {@link AbstractVariable}'s properties. See
+ * {@link AdminService#updateVariable(AbstractVariable)} for a primary usage.
  */
 public final class EditVariable
 {
@@ -28,7 +28,7 @@ public final class EditVariable
         fKey = key;
     }
     
-    public static EditVariable fromVariable(final Variable variable)
+    public static EditVariable fromVariable(final AbstractVariable variable)
     {
         final EditVariable ev = new EditVariable(variable.getDisplayName());
         ev.setDisplayName(variable.getDisplayName());
@@ -68,7 +68,7 @@ public final class EditVariable
      * @param variable the variable to modify
      * @return the same Variable reference for convenience
      */
-    public Variable setOntoVariable(final Variable variable)
+    public AbstractVariable setOntoVariable(final AbstractVariable variable)
     {
         variable.setDisplayName(fDisplayName);
         return variable;

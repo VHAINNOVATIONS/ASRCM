@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.service;
 
 import gov.va.med.srcalc.db.VariableDao;
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.variable.AbstractVariable;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
-    public List<Variable> getAllVariables()
+    public List<AbstractVariable> getAllVariables()
     {
         fLogger.debug("Returning all Variables.");
 
@@ -34,12 +34,12 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
-    public Variable getVariable(final String displayName)
+    public AbstractVariable getVariable(final String displayName)
         throws InvalidIdentifierException
     {
         fLogger.debug("Loading Variable {}", displayName);
         
-        final Variable var = fVariableDao.getByName(displayName);
+        final AbstractVariable var = fVariableDao.getByName(displayName);
         if (var == null)
         {
             throw new InvalidIdentifierException(

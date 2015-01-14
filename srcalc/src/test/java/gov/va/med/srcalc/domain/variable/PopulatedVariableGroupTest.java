@@ -23,25 +23,27 @@ public class PopulatedVariableGroupTest
     @Test
     public final void testToString()
     {
-        final List<Variable> variables = Arrays.asList(
+        final List<AbstractVariable> variables = Arrays.asList(
                 SampleObjects.sampleAgeVariable(),
                 SampleObjects.sampleGenderVariable());
         final PopulatedVariableGroup group = new PopulatedVariableGroup(variables);
         
         assertEquals(
-                "Variable Group 'Demographics' with 2 variables",
+                "Variable Group 'Demographics' with variables [Age, Gender]",
                 group.toString());
     }
     
     @Test
-    public final void testGetName()
+    public final void testBasic()
     {
-        final List<Variable> variables = Arrays.asList(
-                SampleObjects.sampleAgeVariable(),
-                SampleObjects.sampleGenderVariable());
+        final AbstractVariable genderVar = SampleObjects.sampleGenderVariable();
+        final AbstractVariable ageVar = SampleObjects.sampleAgeVariable();
+        final List<AbstractVariable> variables = Arrays.asList(
+                ageVar, genderVar);
         final PopulatedVariableGroup group = new PopulatedVariableGroup(variables);
         
         assertEquals("Demographics", group.getName());
+        assertEquals(variables, group.getVariables());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -53,7 +55,7 @@ public class PopulatedVariableGroupTest
     @Test(expected = IllegalArgumentException.class)
     public final void testMixedVariables()
     {
-        final List<Variable> variables = Arrays.asList(
+        final List<AbstractVariable> variables = Arrays.asList(
                 SampleObjects.sampleAgeVariable(),
                 SampleObjects.sampleProcedureVariable());
         new PopulatedVariableGroup(variables);

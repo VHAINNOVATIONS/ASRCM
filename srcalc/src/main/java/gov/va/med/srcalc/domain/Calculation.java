@@ -20,7 +20,7 @@ public class Calculation implements Serializable
     private DateTime fStartDateTime;
     private Patient fPatient;
     private Specialty fSpecialty;
-    private List<Value> fValues;
+    private SortedSet<Value> fValues;
     
     /**
      * This class presents a pure JavaBean interface, with a default constructor
@@ -30,7 +30,7 @@ public class Calculation implements Serializable
     public Calculation()
     {
         fStartDateTime = new DateTime();
-        fValues = new ArrayList<>();
+        fValues = new TreeSet<>(new ValueVariableComparator(new DisplayNameComparator()));
     }
     
     public static Calculation forPatient(final Patient patient)
@@ -75,10 +75,11 @@ public class Calculation implements Serializable
     }
     
     /**
-     * Returns the List of {@link Variable}s for the selected specialty.
+     * Returns the Set of {@link Variable}s that the calculation requires.
      * @throws IllegalStateException if no specialty has been set.
+     * @return an unmodifiable list of Variables.
      */
-    public List<Variable> getVariables()
+    public Set<Variable> getVariables()
     {
         // Ensure we are in the proper state.
         if (fSpecialty == null)
@@ -87,13 +88,51 @@ public class Calculation implements Serializable
                     "Cannot return list of variables because no specialty has been set.");
         }
         
-        return fSpecialty.getVariables();
+        return Collections.unmodifiableSet(fSpecialty.getModelVariables());
     }
     
     /**
-     * Returns the selected specialty's variables bucketed into groups. See
-     * {@link Specialty#getVariableGroups()} for details.
+     * Builds a brand-new, sorted list of {@link PopulatedVariableGroup}s from
+     * the given variables. The groups are sorted by their natural ordering and
+     * each variable list is sorted by display name.
+     */
+    protected List<PopulatedVariableGroup> buildVariableGroupList(
+            Collection<? extends Variable> variables)
+    {
+        // Bucket the Variables according to VariableGroup.
+        final HashMap<VariableGroup, List<Variable>> map = new HashMap<>();
+        for (final Variable var : variables)
+        {
+            final VariableGroup group = var.getGroup();
+            if (!map.containsKey(group))
+            {
+                final ArrayList<Variable> varList = new ArrayList<>();
+                map.put(group, varList);
+            }
+            map.get(group).add(var);
+        }
+        
+        // Transform the map into PopulatedVariableGroups.
+        final ArrayList<PopulatedVariableGroup> groupList =
+                new ArrayList<>(map.values().size());
+        final DisplayNameComparator comparator = new DisplayNameComparator();
+        for (final List<Variable> varList : map.values())
+        {
+            Collections.sort(varList, comparator);
+            groupList.add(new PopulatedVariableGroup(varList));
+        }
+        
+        // Finally, sort the List.
+        Collections.sort(groupList);
+        
+        return groupList;
+    }
+    
+    /**
+     * Returns all {@link Variable}s associated with this Specialty, bucketed
+     * into their groups.
      * @throws IllegalStateException if no specialty has been set.
+     * @return an immutable List, sorted in group order
      */
     public List<PopulatedVariableGroup> getVariableGroups()
     {
@@ -104,19 +143,20 @@ public class Calculation implements Serializable
                     "Cannot return list of variables because no specialty has been set.");
         }
         
-        return fSpecialty.getVariableGroups();
+        return Collections.unmodifiableList(
+                buildVariableGroupList(getVariables()));
     }
 
-    public List<Value> getValues()
+    public SortedSet<Value> getValues()
     {
         return fValues;
     }
     
     /**
-     * For bean construction only. Replaces the internal List of Values with the
+     * For bean construction only. Replaces the internal Set of Values with the
      * given one.
      */
-    void setValues(final List<Value> values)
+    void setValues(final SortedSet<Value> values)
     {
         fValues = values;
     }
@@ -124,7 +164,7 @@ public class Calculation implements Serializable
     /**
      * Runs the calculation for each outcome with the given Values.
      */
-    public void calculate(final List<Value> values)
+    public void calculate(final Collection<Value> values)
     {
         // Placeholder validity check - may change as we implement outcomes.
         if (values.size() != getVariables().size())

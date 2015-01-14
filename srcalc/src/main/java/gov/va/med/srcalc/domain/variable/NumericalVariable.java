@@ -6,7 +6,7 @@ import javax.persistence.*;
  * A Variable with numerical (floating-point) value.
  */
 @Entity
-public class NumericalVariable extends Variable
+public class NumericalVariable extends AbstractVariable
 {
     /**
      * The maximum length of the units string.
