@@ -66,7 +66,9 @@
                 <div class="procedureSelectGroup dialog" title="Select ${variable.displayName}">
                 <table id="procedureTable">
                 <thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></tr></thead>
-                <c:forEach var="procedure" items="${variable.procedures}">
+                <!-- We're using datatables to provide paging now, but still
+                truncate the list until we improve browser performance. -->
+                <c:forEach var="procedure" items="${srcalc:truncateList(variable.procedures, 500)}">
                 <tr>
                 <td class="selectRadio">
                 <form:radiobutton path="${varPath}" value="${procedure.cptCode}" data-display-string="${procedure}"/></td>
