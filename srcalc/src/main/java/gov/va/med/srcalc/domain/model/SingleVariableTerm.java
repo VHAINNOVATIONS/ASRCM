@@ -40,6 +40,7 @@ public abstract class SingleVariableTerm extends ModelTerm
     /**
      * Base equals() functionality that verifies equality of the coefficient
      * and associated variable.
+     * @param other must not be null
      * @return true if the coefficient and variables are equal, false otherwise
      */
     protected boolean baseEquals(final SingleVariableTerm other)

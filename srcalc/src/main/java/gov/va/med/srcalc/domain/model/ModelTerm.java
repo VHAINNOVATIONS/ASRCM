@@ -71,6 +71,7 @@ public abstract class ModelTerm
     
     /**
      * Base equals() functionality that simply verifies equality of the coefficient.
+     * @param other must not be null
      * @return true if the coefficients are equal, false otherwise
      */
     protected boolean baseEquals(final ModelTerm other)
