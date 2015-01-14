@@ -45,6 +45,4 @@ alter table specialty_risk_model add index FK_g44r1aagpmd130bpvefwj08ve (risk_mo
 alter table specialty_risk_model add index FK_rrt5htbg4mmbygm2qieptls2q (specialty_id), add constraint FK_rrt5htbg4mmbygm2qieptls2q foreign key (specialty_id) references specialty (id);
 alter table variable add index FK_thvnglkbf1ynftxe54elpdfd7 (variable_group), add constraint FK_thvnglkbf1ynftxe54elpdfd7 foreign key (variable_group) references variable_group (id);
 
-load data local infile 'procedures_2013.csv' into table cpt fields terminated by ',' enclosed by '"' lines terminated by '\r\n' (id, cpt_code, rvu, active, long_description, short_description);
-
 GRANT ALL PRIVILEGES ON srcalc.* TO 'srcalc'@'localhost';

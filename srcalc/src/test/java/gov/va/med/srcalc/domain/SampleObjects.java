@@ -126,7 +126,6 @@ public class SampleObjects
         	    new Specialty(50, "General Surgery"),
         	    new Specialty(52, "Neurosurgery"),
         	    new Specialty(54, "Orthopedic"),
-        	    new Specialty(50, "Other Non-Cardiac Specialty"),
         	    SampleObjects.sampleThoracicSpecialty(),
         	    new Specialty(59, "Urology"),
         	    new Specialty(62, "Vascular")

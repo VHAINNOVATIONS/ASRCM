@@ -8,8 +8,6 @@ INSERT INTO SPECIALTY (id, vista_id, name) VALUES (4, 58, 'Thoracic');
 INSERT INTO SPECIALTY (id, vista_id, name) VALUES (5, 59, 'Urology');
 INSERT INTO SPECIALTY (id, vista_id, name) VALUES (6, 62, 'Vascular');
 INSERT INTO SPECIALTY (id, vista_id, name) VALUES (7, 48, 'Cardiac');
--- TODO: validate assumption that other -> General Surgery
-INSERT INTO SPECIALTY (id, vista_id, name) VALUES (8, 50, 'Other Non-Cardiac Specialty');
 
 -- RISK_MODEL table
 INSERT INTO RISK_MODEL (id, display_name) VALUES (1, 'General Surgery 30-Day Mortality Risk (FY2013)');
@@ -19,7 +17,6 @@ INSERT INTO RISK_MODEL (id, display_name) VALUES (4, 'Thoracic 30-Day Mortality 
 INSERT INTO RISK_MODEL (id, display_name) VALUES (5, 'Urology 30-Day Mortality Risk (FY2013)');
 INSERT INTO RISK_MODEL (id, display_name) VALUES (6, 'Vascular 30-Day Mortality Risk (FY2013)');
 INSERT INTO RISK_MODEL (id, display_name) VALUES (7, 'Cardiac 30-Day Mortality Risk (FY2013)');
-INSERT INTO RISK_MODEL (id, display_name) VALUES (8, 'Other Non-Cardiac Specialty 30-Day Mortality Risk (FY2013)');
 
 -- SPECIALTY_RISK_MODEL table
 INSERT INTO SPECIALTY_RISK_MODEL (specialty_id, risk_model_id) VALUES (1, 1);
@@ -29,7 +26,6 @@ INSERT INTO SPECIALTY_RISK_MODEL (specialty_id, risk_model_id) VALUES (4, 4);
 INSERT INTO SPECIALTY_RISK_MODEL (specialty_id, risk_model_id) VALUES (5, 5);
 INSERT INTO SPECIALTY_RISK_MODEL (specialty_id, risk_model_id) VALUES (6, 6);
 INSERT INTO SPECIALTY_RISK_MODEL (specialty_id, risk_model_id) VALUES (7, 7);
-INSERT INTO SPECIALTY_RISK_MODEL (specialty_id, risk_model_id) VALUES (8, 8);
 
 -- VARIABLE_GROUP table
 INSERT INTO VARIABLE_GROUP (id, name, display_order) VALUES (1, 'Planned Procedure', 0);
@@ -42,9 +38,6 @@ INSERT INTO VARIABLE_GROUP (id, name, display_order) VALUES (7, 'Clinical Condit
 
 -- *** Variables ***
 
--- Note: all the '48.0' coefficient values are placeholders until we determine
--- whether we can publish the FY2013 models to GitHub.
-
 -- Cardiac Gender
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (1, 'Gender', 2);
 INSERT INTO MULTI_SELECT_VARIABLE (id, display_type) VALUES (1, 'Radio');
@@ -56,7 +49,7 @@ INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) 
 INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (1, 1, 1, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (7, 1);
 
--- Non-Cardiac Procedure
+-- Procedure
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (3, 'Procedure', 1);
 INSERT INTO PROCEDURE_VARIABLE (id) VALUES (3);
 INSERT INTO PROCEDURE_TERM (id, variable, coefficient) VALUES (2, 3, 48.0);
@@ -71,10 +64,8 @@ INSERT INTO PROCEDURE_TERM (id, variable, coefficient) VALUES (6, 3, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (5, 6);
 INSERT INTO PROCEDURE_TERM (id, variable, coefficient) VALUES (7, 3, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (6, 7);
-INSERT INTO PROCEDURE_TERM (id, variable, coefficient) VALUES (8, 3, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (8, 8);
 
--- Shared Age
+-- Age
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (2, 'Age', 2);
 -- There is not really an upper limit on age, but specify an unrealistically high
 -- one to have some idea of significant digits.
@@ -93,10 +84,8 @@ INSERT INTO NUMERICAL_TERM (id, variable, coefficient) VALUES (14, 2, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (6, 14);
 INSERT INTO NUMERICAL_TERM (id, variable, coefficient) VALUES (15, 2, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (7, 15);
-INSERT INTO NUMERICAL_TERM (id, variable, coefficient) VALUES (16, 2, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (8, 16);
 
--- Shared DNR
+-- DNR
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (6, 'DNR', 2);
 INSERT INTO BOOLEAN_VARIABLE (id) VALUES (6);
 INSERT INTO BOOLEAN_TERM (id, variable, coefficient) VALUES (17, 6, 48.0);
@@ -113,36 +102,8 @@ INSERT INTO BOOLEAN_TERM (id, variable, coefficient) VALUES (22, 6, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (6, 22);
 INSERT INTO BOOLEAN_TERM (id, variable, coefficient) VALUES (23, 6, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (7, 23);
-INSERT INTO BOOLEAN_TERM (id, variable, coefficient) VALUES (24, 6, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (8, 24);
 
--- Shared Functional Status
-INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (4, 'Functional Status', 6);
-INSERT INTO MULTI_SELECT_VARIABLE (id, display_type) VALUES (4, 'Radio');
-INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (3, 'Independent');
-INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (4, 'Partially dependent');
-INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (5, 'Totally dependent');
-INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (4, 3, 0);
-INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (4, 4, 1);
-INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (4, 5, 2);
-INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (25, 4, 1, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (1, 25);
-INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (26, 4, 1, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (2, 26);
-INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (27, 4, 1, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (3, 27);
-INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (28, 4, 1, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (4, 28);
-INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (29, 4, 1, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (5, 29);
-INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (30, 4, 1, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (6, 30);
-INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (31, 4, 1, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (7, 31);
-INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (32, 4, 1, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (8, 32);
-
--- Shared BMI
+-- BMI
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (5, 'BMI', 3);
 -- There is not really an upper limit on BMI, but specify an unrealistically high
 -- one to have some idea of significant digits.
@@ -161,8 +122,6 @@ INSERT INTO NUMERICAL_TERM (id, variable, coefficient) VALUES (38, 5, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (6, 38);
 INSERT INTO NUMERICAL_TERM (id, variable, coefficient) VALUES (39, 5, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (7, 39);
-INSERT INTO NUMERICAL_TERM (id, variable, coefficient) VALUES (40, 5, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (8, 40);
 
 -- ASA Classification 1/2, 3, 4/5
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (8, 'ASA Classification', 6);
@@ -175,7 +134,6 @@ INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) 
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (8, 7, 1);
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (8, 8, 2);
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) VALUES (8, 9, 3);
--- This particular vairable is only used for General and Thoracic.
 INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (41, 8, 1, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (1, 41);
 INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (42, 8, 1, 48.0);
@@ -193,8 +151,6 @@ INSERT INTO BOOLEAN_TERM (id, variable, coefficient) VALUES (45, 7, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (4, 45);
 INSERT INTO BOOLEAN_TERM (id, variable, coefficient) VALUES (46, 7, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (6, 46);
-INSERT INTO BOOLEAN_TERM (id, variable, coefficient) VALUES (47, 7, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (8, 47);
 
 -- Alkaline Phosphatase Lab
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (9, 'Alkaline Phosphatase', 5);
@@ -212,8 +168,6 @@ INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (50, 
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (5, 50);
 INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (51, 9, 1, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (6, 51);
-INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (52, 9, 1, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (8, 52);
 
 -- BUN Lab
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (10, 'BUN', 5);
@@ -233,5 +187,4 @@ INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (56, 
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (5, 56);
 INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (57, 10, 1, 48.0);
 INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (6, 57);
-INSERT INTO DISCRETE_TERM (id, variable, option_index, coefficient) VALUES (58, 10, 1, 48.0);
-INSERT INTO RISK_MODEL_TERM (risk_model_id, model_term_id) VALUES (6, 58);
+

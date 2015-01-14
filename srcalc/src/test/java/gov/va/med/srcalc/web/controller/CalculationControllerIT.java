@@ -100,7 +100,6 @@ public class CalculationControllerIT extends IntegrationTest
         varParams.add("Age", "55");
         varParams.add("DNR", "false");
         varParams.add("BMI", "18.7");
-        varParams.add("Functional Status", "Independent");
         varParams.add("Preop Pneumonia", "true");
         varParams.add("Alkaline Phosphatase", ">125mU/ml");
         varParams.add("BUN", InputParserVisitor.SPECIAL_NUMERICAL);
@@ -141,7 +140,6 @@ public class CalculationControllerIT extends IntegrationTest
         varParams.add("Gender", "Male");
         varParams.add("Age", "55");
         varParams.add("BMI", "18.7");
-        varParams.add("Functional Status", "Independent");
         
         fMockMvc.perform(
                 varParams.addTo(post("/enterVars").session(fSession)))
