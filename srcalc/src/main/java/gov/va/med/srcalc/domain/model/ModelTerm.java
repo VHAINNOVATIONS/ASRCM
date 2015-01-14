@@ -1,8 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.variable.Variable;
-
-import java.util.Set;
+import gov.va.med.srcalc.util.NoNullSet;
 
 import javax.persistence.*;
 
@@ -64,10 +63,11 @@ public abstract class ModelTerm
     }
     
     /**
-     * Returns the required Variable(s) for the term. Unmodifiable.
+     * Returns the required Variable(s) for the term. Unmodifiable and will not
+     * contain nulls.
      */
     @Transient
-    public abstract Set<Variable> getRequiredVariables();
+    public abstract NoNullSet<Variable> getRequiredVariables();
     
     /**
      * Base equals() functionality that simply verifies equality of the coefficient.

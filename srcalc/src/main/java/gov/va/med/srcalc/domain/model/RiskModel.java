@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;
 
@@ -102,17 +103,17 @@ public class RiskModel
      * <p>Note that Variables define equality as identity, so two different
      * Variable instances with exactly the same attributes may be put into the
      * Set.</p>
-     * @return an unmodifiable set
+     * @return an unmodifiable set that does not contain null
      */
     @Transient
-    public Set<Variable> getRequiredVariables()
+    public NoNullSet<Variable> getRequiredVariables()
     {
         final HashSet<Variable> allVariables = new HashSet<>();
         for (final ModelTerm term : getTerms())
         {
             allVariables.addAll(term.getRequiredVariables());
         }
-        return Collections.unmodifiableSet(allVariables);
+        return NoNullSet.fromSet(Collections.unmodifiableSet(allVariables));
     }
     
     // TODO: implement equals() and hashCode()

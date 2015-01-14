@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;
 
@@ -32,9 +33,11 @@ public final class ConstantTerm extends ModelTerm
 
     @Override
     @Transient
-    public Set<Variable> getRequiredVariables()
+    public NoNullSet<Variable> getRequiredVariables()
     {
-        return Collections.emptySet();
+        // Two-line construction to get type arguments right.
+        final Set<Variable> emptySet = Collections.emptySet();
+        return NoNullSet.fromSet(emptySet);
     }
     
     @Override

@@ -16,7 +16,7 @@ import javax.persistence.*;
  * designed for inheritance.</p>
  */
 @Entity
-public final class ProcedureTerm extends ModelTerm
+public final class ProcedureTerm extends SingleVariableTerm
 {
     private ProcedureVariable fVariable;
     
@@ -47,13 +47,6 @@ public final class ProcedureTerm extends ModelTerm
     }
     
     @Override
-    @Transient
-    public Set<Variable> getRequiredVariables()
-    {
-        return CollectionUtils.<Variable>unmodifiableSet(fVariable);
-    }
-    
-    @Override
     public boolean equals(Object o)
     {
         // Performance optimization.
@@ -64,11 +57,7 @@ public final class ProcedureTerm extends ModelTerm
         
         if (o instanceof ProcedureTerm)
         {
-            final ProcedureTerm other = (ProcedureTerm)o;
-            return
-                    baseEquals(other) &&
-                    // Variable is non-null.
-                    this.getVariable().equals(other.getVariable());
+            return baseEquals((ProcedureTerm)o);
         }
         else
         {

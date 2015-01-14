@@ -1,10 +1,8 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.variable.*;
-import gov.va.med.srcalc.util.CollectionUtils;
 
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.*;
 
@@ -15,7 +13,7 @@ import javax.persistence.*;
  * designed for inheritance.</p>
  */
 @Entity
-public final class DiscreteTerm extends ModelTerm
+public final class DiscreteTerm extends SingleVariableTerm
 {
     private static final int UNSET_INDEX = -1;
 
@@ -105,13 +103,6 @@ public final class DiscreteTerm extends ModelTerm
     {
         return fOption;
     }
-
-    @Override
-    @Transient
-    public Set<Variable> getRequiredVariables()
-    {
-        return CollectionUtils.<Variable>unmodifiableSet(fVariable);
-    }
     
     @Override
     public boolean equals(final Object o)
@@ -127,8 +118,6 @@ public final class DiscreteTerm extends ModelTerm
             final DiscreteTerm other = (DiscreteTerm)o;
             return
                     baseEquals(other) &&
-                    // Variable is non-null.
-                    this.getVariable().equals(other.getVariable()) &&
                     this.getOptionIndex() == other.getOptionIndex();
         }
         else

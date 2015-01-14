@@ -1,11 +1,8 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.variable.BooleanVariable;
-import gov.va.med.srcalc.domain.variable.Variable;
-import gov.va.med.srcalc.util.CollectionUtils;
 
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.*;
 
@@ -16,7 +13,7 @@ import javax.persistence.*;
  * designed for inheritance.</p>
  */
 @Entity
-public final class BooleanTerm extends ModelTerm
+public final class BooleanTerm extends SingleVariableTerm
 {
     private BooleanVariable fVariable;
     
@@ -47,13 +44,6 @@ public final class BooleanTerm extends ModelTerm
     }
     
     @Override
-    @Transient
-    public Set<Variable> getRequiredVariables()
-    {
-        return CollectionUtils.<Variable>unmodifiableSet(fVariable);
-    }
-    
-    @Override
     public boolean equals(final Object o)
     {
         // Performance optimization.
@@ -64,11 +54,7 @@ public final class BooleanTerm extends ModelTerm
         
         if (o instanceof BooleanTerm)
         {
-            final BooleanTerm other = (BooleanTerm)o;
-            return
-                    baseEquals(other) &&
-                    // Variable is non-null.
-                    this.getVariable().equals(other.getVariable());
+            return baseEquals((BooleanTerm)o);
         }
         else
         {

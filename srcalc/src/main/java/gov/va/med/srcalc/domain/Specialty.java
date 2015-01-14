@@ -2,6 +2,7 @@ package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.util.NoNullSet;
 
 import java.io.Serializable;
 import java.util.*;
@@ -92,17 +93,17 @@ public final class Specialty implements Serializable
     /**
      * Returns all {@link Variable}s required by all associated {@link
      * RiskModel}s. Caution: lazy-loaded.
-     * @return an unmodifiable set
+     * @return an unmodifiable set that does not contain null
      */
     @Transient
-    public Set<Variable> getModelVariables()
+    public NoNullSet<Variable> getModelVariables()
     {
         final HashSet<Variable> allVariables = new HashSet<>();
         for (final RiskModel model : getRiskModels())
         {
             allVariables.addAll(model.getRequiredVariables());
         }
-        return Collections.unmodifiableSet(allVariables);
+        return NoNullSet.fromSet(Collections.unmodifiableSet(allVariables));
     }
     
     /**

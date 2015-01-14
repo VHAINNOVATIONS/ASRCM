@@ -16,7 +16,7 @@ import javax.persistence.*;
  * designed for inheritance.</p>
  */
 @Entity
-public final class NumericalTerm extends ModelTerm
+public final class NumericalTerm extends SingleVariableTerm
 {
     private NumericalVariable fVariable;
     
@@ -47,13 +47,6 @@ public final class NumericalTerm extends ModelTerm
     }
     
     @Override
-    @Transient
-    public Set<Variable> getRequiredVariables()
-    {
-        return CollectionUtils.<Variable>unmodifiableSet(fVariable);
-    }
-    
-    @Override
     public boolean equals(Object o)
     {
         // Performance optimization.
@@ -64,9 +57,7 @@ public final class NumericalTerm extends ModelTerm
         
         if (o instanceof NumericalTerm)
         {
-            final NumericalTerm other = (NumericalTerm)o;
-            return baseEquals(other) &&
-                    this.getVariable().equals(other.getVariable());
+            return baseEquals((NumericalTerm)o);
         }
         else
         {
