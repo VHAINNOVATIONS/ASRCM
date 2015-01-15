@@ -122,7 +122,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         }
         else
         {
-            fValues.add(new MultiSelectValue(variable, selectedOption));
+            fValues.add(variable.makeValue(selectedOption));
         }
     }
     
@@ -133,7 +133,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         
         final String stringValue = getVariableValue(variable);
         final boolean booleanValue = Objects.equals(stringValue, "true");
-        fValues.add(new BooleanValue(variable, booleanValue));
+        fValues.add(variable.makeValue(booleanValue));
     }
     
     @Override
@@ -150,7 +150,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         try
         {
             final float floatValue = Float.parseFloat(stringValue);
-            fValues.add(new NumericalValue(variable, floatValue));
+            fValues.add(variable.makeValue(floatValue));
         }
         // Translate any Exceptions into validation errors.
         catch (final NumberFormatException ex)
@@ -214,7 +214,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
             try
             {
                 final float floatValue = Float.parseFloat(stringValue);
-                fValues.add(DiscreteNumericalValue.fromNumerical(variable, floatValue));
+                fValues.add(variable.makeValue(floatValue));
             }
             // Translate any Exceptions into validation errors.
             catch (final NumberFormatException ex)
@@ -251,7 +251,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
             else
             {
                 fLogger.debug("User selected Category {}", selectedCategory);
-                fValues.add(DiscreteNumericalValue.fromCategory(variable, selectedCategory));
+                fValues.add(variable.makeValue(selectedCategory));
             }
         }
     }
@@ -275,7 +275,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         }
         else
         {
-            fValues.add(new ProcedureValue(variable, selectedProcedure));
+            fValues.add(variable.makeValue(selectedProcedure));
         }
     }
     
