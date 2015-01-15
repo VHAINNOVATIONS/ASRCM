@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import gov.va.med.srcalc.domain.variable.Variable;
@@ -9,12 +10,14 @@ import gov.va.med.srcalc.util.NoNullSet;
 /**
  * A ModelTerm that uses a single Variable.
  */
+@MappedSuperclass  // why isn't this the default?
 public abstract class SingleVariableTerm extends ModelTerm
 {
     /**
      * Returns the associated {@link Variable}.
      * @return not null
      */
+    @Transient // don't try to map this: subclasses will map it
     public abstract Variable getVariable();
     
     /**

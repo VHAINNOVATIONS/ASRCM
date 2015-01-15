@@ -5,8 +5,7 @@ import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * <p>A constant term. Simply adds a constant to a risk model. (Each risk model
@@ -15,7 +14,7 @@ import javax.persistence.Transient;
  * <p>Per Effective Java Item 17, this class is marked final because it was not
  * designed for inheritance.</p>
  */
-@Entity
+@Embeddable
 public final class ConstantTerm extends ModelTerm
 {
     /**

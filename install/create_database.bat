@@ -10,14 +10,14 @@ call config.bat
 REM Note: the 'root' user should have auto-login ability
 
 echo Creating 'srcalc' database...
-REM go into resources directory for reference to procedures_2013.csv
-pushd resources
-%MYSQL% -u root < create_database.sql
-popd
+%MYSQL% -u root < resources\create_database.sql
 IF ERRORLEVEL 1 goto Abort
 
 echo Populating database with base data set...
-%MYSQL% -u root srcalc < ..\srcalc\src\main\resources\sql\insert_base_data.sql
+REM go into resources directory for reference to procedures_2013.csv
+pushd resources
+%MYSQL% -u root srcalc < insert_fy2013_models.sql
+popd
 IF ERRORLEVEL 1 goto Abort
 
 goto End

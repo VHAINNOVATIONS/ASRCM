@@ -12,7 +12,7 @@ import javax.persistence.*;
  * <p>Per Effective Java Item 17, this class is marked final because it was not
  * designed for inheritance.</p>
  */
-@Entity
+@Embeddable
 public final class BooleanTerm extends SingleVariableTerm
 {
     private BooleanVariable fVariable;
