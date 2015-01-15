@@ -1,11 +1,8 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.variable.NumericalVariable;
-import gov.va.med.srcalc.domain.variable.Variable;
-import gov.va.med.srcalc.util.CollectionUtils;
 
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.*;
 
@@ -15,7 +12,7 @@ import javax.persistence.*;
  * <p>Per Effective Java Item 17, this class is marked final because it was not
  * designed for inheritance.</p>
  */
-@Entity
+@Embeddable
 public final class NumericalTerm extends SingleVariableTerm
 {
     private NumericalVariable fVariable;

@@ -42,6 +42,7 @@ public class DiscreteNumericalVariable extends NumericalVariable implements Disc
 
     @ElementCollection(fetch = FetchType.EAGER)  // eager-load due to close association
     @Sort(type = SortType.NATURAL)
+    // Override strange defaults.
     @CollectionTable(
             name = "discrete_numerical_var_category",
             joinColumns = @JoinColumn(name = "variable_id"))

@@ -49,31 +49,31 @@ public class SampleObjects
             @Override
             public void visitProcedure(ProcedureVariable variable)
             {
-                m.getTerms().add(new ProcedureTerm(variable, 1.0f));
+                m.getProcedureTerms().add(new ProcedureTerm(variable, 1.0f));
             }
             
             @Override
             public void visitNumerical(NumericalVariable variable)
             {
-                m.getTerms().add(new NumericalTerm(variable, 2.0f));
+                m.getNumericalTerms().add(new NumericalTerm(variable, 2.0f));
             }
             
             @Override
             public void visitMultiSelect(MultiSelectVariable variable)
             {
-                m.getTerms().add(new DiscreteTerm(variable, 1, 3.0f));
+                m.getDiscreteTerms().add(new DiscreteTerm(variable, 1, 3.0f));
             }
             
             @Override
             public void visitDiscreteNumerical(DiscreteNumericalVariable variable)
             {
-                m.getTerms().add(new DiscreteTerm(variable, 0, 4.0f));
+                m.getDiscreteTerms().add(new DiscreteTerm(variable, 0, 4.0f));
             }
             
             @Override
             public void visitBoolean(BooleanVariable variable)
             {
-                m.getTerms().add(new BooleanTerm(variable, 5.0f));
+                m.getBooleanTerms().add(new BooleanTerm(variable, 5.0f));
             }
         };
         
@@ -88,10 +88,10 @@ public class SampleObjects
     public static RiskModel sampleThoracicRiskModel()
     {
         final RiskModel m = new RiskModel("Thoracic 30-day mortality estimate");
-        m.getTerms().add(new ProcedureTerm(sampleProcedureVariable(), 1.0f));
-        m.getTerms().add(new NumericalTerm(sampleAgeVariable(), 2.0f));
-        m.getTerms().add(new BooleanTerm(dnrVariable(), 0.5f));
-        m.getTerms().add(new DiscreteTerm(functionalStatusVariable(), 1, 5.0f));
+        m.getProcedureTerms().add(new ProcedureTerm(sampleProcedureVariable(), 1.0f));
+        m.getNumericalTerms().add(new NumericalTerm(sampleAgeVariable(), 2.0f));
+        m.getBooleanTerms().add(new BooleanTerm(dnrVariable(), 0.5f));
+        m.getDiscreteTerms().add(new DiscreteTerm(functionalStatusVariable(), 1, 5.0f));
         return m;
     }
 

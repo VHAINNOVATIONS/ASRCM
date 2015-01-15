@@ -17,7 +17,11 @@ public class RiskModel
     
     private int fId;
     private String fDisplayName;
-    private Set<ModelTerm> fTerms = new HashSet<>();
+    private ConstantTerm fConstantTerm = new ConstantTerm(0.0f);
+    private Set<BooleanTerm> fBooleanTerms = new HashSet<>();
+    private Set<DiscreteTerm> fDiscreteTerms = new HashSet<>();
+    private Set<NumericalTerm> fNumericalTerms = new HashSet<>();
+    private Set<ProcedureTerm> fProcedureTerms = new HashSet<>();
     
     /**
      * Mainly intended for reflection-based construction. Business code should
@@ -72,31 +76,141 @@ public class RiskModel
         }
         fDisplayName = displayName;
     }
+    
+    /**
+     * The {@link ConstantTerm} for the model. Only one is supported because
+     * multiple constants doesn't make sense.
+     */
+    @Embedded
+    @AttributeOverrides({
+        // Call the coefficient column the "constant" for clarity in the schema.
+        @AttributeOverride(name="coefficient", column = @Column(name="constant"))
+    })
+    public ConstantTerm getConstantTerm()
+    {
+        return fConstantTerm;
+    }
+
+    void setConstantTerm(final ConstantTerm constantTerm)
+    {
+        fConstantTerm = Objects.requireNonNull(constantTerm);
+    }
 
     /**
-     * The various terms in the model's sum.
+     * <p>The boolean terms in the model's sum. Mutable.</p>
      */
-    @OneToMany(fetch = FetchType.EAGER) // eager-load due to close association
-    // Override strange defaults. See
-    // <https://forum.hibernate.org/viewtopic.php?f=1&t=1037190>.
-    @JoinTable(
-            name = "risk_model_term",
-            joinColumns = @JoinColumn(name = "risk_model_id"),
-            inverseJoinColumns = @JoinColumn(name = "model_term_id"))
-    public Set<ModelTerm> getTerms()
+    @ElementCollection(fetch = FetchType.EAGER) // eager-load due to close association
+    // Override strange defaults.
+    @CollectionTable(
+            name = "risk_model_boolean_term",
+            joinColumns = @JoinColumn(name = "risk_model_id"))
+    public Set<BooleanTerm> getBooleanTerms()
     {
-        return fTerms;
+        return fBooleanTerms;
     }
 
     /**
      * For reflection-based construction only. Business code should modify the
-     * Set returned by {@link #getTerms()}.
+     * Set returned by {@link #getBooleanTerms()}.
      */
-    void setTerms(final Set<ModelTerm> terms)
+    void setBooleanTerms(final Set<BooleanTerm> terms)
     {
-        fTerms = terms;
+        fBooleanTerms = terms;
+    }
+
+    /**
+     * <p>The {@link DiscreteTerm}s in the model's sum. Mutable.</p>
+     * 
+     * <p>See {@link #getTerms()} for a read-only view of all of the terms.</p>
+     */
+    @ElementCollection(fetch = FetchType.EAGER) // eager-load due to close association
+    // Override strange defaults.
+    @CollectionTable(
+            name = "risk_model_discrete_term",
+            joinColumns = @JoinColumn(name = "risk_model_id"))
+    public Set<DiscreteTerm> getDiscreteTerms()
+    {
+        return fDiscreteTerms;
+    }
+
+    /**
+     * For reflection-based construction only. Business code should modify the
+     * Set returned by {@link #getDiscreteTerms()}.
+     */
+    void setDiscreteTerms(Set<DiscreteTerm> disceteTerms)
+    {
+        fDiscreteTerms = disceteTerms;
+    }
+
+    /**
+     * <p>The {@link NumericalTerm}s in the model's sum. Mutable.</p>
+     * 
+     * <p>See {@link #getTerms()} for a read-only view of all of the terms.</p>
+     */
+    @ElementCollection(fetch = FetchType.EAGER) // eager-load due to close association
+    // Override strange defaults.
+    @CollectionTable(
+            name = "risk_model_numerical_term",
+            joinColumns = @JoinColumn(name = "risk_model_id"))
+    public Set<NumericalTerm> getNumericalTerms()
+    {
+        return fNumericalTerms;
+    }
+
+    /**
+     * For reflection-based construction only. Business code should modify the
+     * Set returned by {@link #getNumericalTerms()}.
+     */
+    void setNumericalTerms(Set<NumericalTerm> numericalTerms)
+    {
+        fNumericalTerms = numericalTerms;
+    }
+
+    /**
+     * <p>The {@link DerivedTerm}s in the model's sum. Mutable.</p>
+     * 
+     * <p>See {@link #getTerms()} for a read-only view of all of the terms.</p>
+     */
+    @ElementCollection(fetch = FetchType.EAGER) // eager-load due to close association
+    // Override strange defaults.
+    @CollectionTable(
+            name = "risk_model_procedure_term",
+            joinColumns = @JoinColumn(name = "risk_model_id"))
+    public Set<ProcedureTerm> getProcedureTerms()
+    {
+        return fProcedureTerms;
+    }
+
+    /**
+     * For reflection-based construction only. Business code should modify the
+     * Set returned by {@link #getProcedureTerms()}.
+     */
+    void setProcedureTerms(Set<ProcedureTerm> derivedTerms)
+    {
+        fProcedureTerms = derivedTerms;
     }
     
+    /**
+     * <p>Returns an unmodifiable set of all of the {@link ModelTerm}s.</p>
+     * 
+     * <p>If you want to modify the set of terms, you must use one of the above
+     * type-specific accessors like {@link #getBooleanTerms()}. The different
+     * types of ModelTerms are provided via different accessors due to
+     * Hibernate's lack of support for polymorphic ElementCollections
+     * (HHH-1910).</p>
+     */
+    @Transient
+    public Set<ModelTerm> getTerms()
+    {
+        final NoNullSet<ModelTerm> terms = NoNullSet.fromSet(new HashSet<ModelTerm>());
+        terms.add(getConstantTerm());
+        terms.addAll(getBooleanTerms());
+        terms.addAll(getDiscreteTerms());
+        terms.addAll(getNumericalTerms());
+        terms.addAll(getProcedureTerms());
+        return Collections.unmodifiableSet(terms);
+    }
+
     /**
      * <p>Returns the set of all Variables required for the model.</p>
      * 
