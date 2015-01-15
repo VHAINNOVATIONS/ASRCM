@@ -120,8 +120,7 @@ INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUE
 
 -- Alkaline Phosphatase Lab
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (9, 'Alkaline Phosphatase', 5);
-INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value, units) VALUES (9, 10, 750, 'mU/ml');
-INSERT INTO DISCRETE_NUMERICAL_VAR (id) VALUES (9);
+INSERT INTO DISCRETE_NUMERICAL_VAR (id, min_value, max_value, units) VALUES (9, 10, 750, 'mU/ml');
 INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (10, 'WNL');
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (9, 10, -1e12, TRUE, 125.0, TRUE);
 INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (11, '>125mU/ml');
@@ -133,8 +132,7 @@ INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coe
 
 -- BUN Lab
 INSERT INTO VARIABLE (id, display_name, variable_group) VALUES (10, 'BUN', 5);
-INSERT INTO NUMERICAL_VARIABLE (id, min_value, max_value, units) VALUES (10, 2, 90, 'mg/dl');
-INSERT INTO DISCRETE_NUMERICAL_VAR (id) VALUES (10);
+INSERT INTO DISCRETE_NUMERICAL_VAR (id, min_value, max_value, units) VALUES (10, 2, 90, 'mg/dl');
 INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (12, 'WNL');
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (10, 12, -1e12, TRUE, 25, TRUE);
 INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (13, '>25mg/dl');
