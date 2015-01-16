@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -16,6 +17,7 @@ public class ConstantTermTest
         
         assertEquals(coeff, term.getCoefficient(), 0.0f);
         assertEquals(0, term.getRequiredVariables().size());
+        assertThat(term.toString(), containsString(Float.toString(coeff)));
     }
     
     @Test

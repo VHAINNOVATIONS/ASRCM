@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.NoNullSet;
 
@@ -63,5 +64,11 @@ public final class ConstantTerm extends ModelTerm
     public int hashCode()
     {
         return Objects.hash(getCoefficient());
+    }
+    
+    @Override
+    public String toString()
+    {
+        return String.format("c=%s", getCoefficient());
     }
 }

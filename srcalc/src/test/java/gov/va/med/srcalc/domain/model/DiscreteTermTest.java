@@ -1,8 +1,10 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.DiscreteVariable;
+import gov.va.med.srcalc.domain.variable.MultiSelectOption;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -13,12 +15,18 @@ public class DiscreteTermTest
     @Test
     public final void testBasic()
     {
+        final float coeff = 2.25f;
         final DiscreteVariable var = SampleObjects.wbcVariable();
-        final DiscreteTerm term = new DiscreteTerm(var, 1, 2.25f);
+        final MultiSelectOption option = var.getOptions().get(1);
+        final DiscreteTerm term = new DiscreteTerm(var, 1, coeff);
         
-        assertEquals(2.25f, term.getCoefficient(), 0.0f);
+        assertEquals(coeff, term.getCoefficient(), 0.0f);
         assertSame(var, term.getVariable());
-        assertEquals(var.getOptions().get(1), term.getOption());
+        assertEquals(option, term.getOption());
+        assertThat(term.toString(), allOf(
+                containsString(Float.toString(coeff)),
+                containsString(option.getValue()),
+                containsString(var.getDisplayName())));
     }
     
     @Test

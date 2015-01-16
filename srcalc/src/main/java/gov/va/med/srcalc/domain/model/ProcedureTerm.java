@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
-import gov.va.med.srcalc.domain.variable.ProcedureVariable;
+import gov.va.med.srcalc.domain.variable.*;
 
 import java.util.Objects;
 
@@ -66,5 +66,11 @@ public final class ProcedureTerm extends SingleVariableTerm
     public int hashCode()
     {
         return Objects.hash(getCoefficient(), getVariable());
+    }
+    
+    @Override
+    public String toString()
+    {
+        return String.format("%s.rvu*%s", getVariable(), getCoefficient());
     }
 }

@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.ProcedureVariable;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -13,12 +14,16 @@ public class ProcedureTermTest
     @Test
     public final void testBasic()
     {
+        final float coeff = 0.1f;
         final ProcedureVariable var = SampleObjects.sampleProcedureVariable();
-        final ProcedureTerm term = new ProcedureTerm(var, 0.1f);
+        final ProcedureTerm term = new ProcedureTerm(var, coeff);
         
-        assertEquals(0.1f, term.getCoefficient(), 0.0f);
+        assertEquals(coeff, term.getCoefficient(), 0.0f);
         assertSame(var, term.getVariable());
         assertTrue(term.getRequiredVariables().contains(var));
+        assertThat(term.toString(), allOf(
+                containsString(Float.toString(coeff)),
+                containsString(var.toString())));
     }
     
     @Test

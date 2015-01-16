@@ -111,4 +111,11 @@ public final class DiscreteTerm extends SingleVariableTerm
     {
         return Objects.hash(getCoefficient(), getVariable(), getOptionIndex());
     }
+    
+    @Override
+    public String toString()
+    {
+        return String.format(
+                "%s=%s?->%s", getVariable(), getOption(), getCoefficient());
+    }
 }
