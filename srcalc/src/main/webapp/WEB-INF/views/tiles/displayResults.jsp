@@ -12,7 +12,7 @@
         <table class="srcalcTable" id="inputValueTable">
         <tr><th class="main">Variable</th><th class="main">Value</th></tr>
         <c:forEach var="value" items="${calculation.values}">
-        <tr><td>${value.variable}</td><td>${value.displayString}</td>
+        <tr><td>${value.variable.displayName}</td><td>${value.displayString}</td>
         </c:forEach>
         </table>
         <div class="actionButtons">

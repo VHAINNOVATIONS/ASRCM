@@ -24,7 +24,7 @@ public class NumericalTermTest
         assertEquals(CollectionUtils.hashSet(var), term.getRequiredVariables());
         assertThat(term.toString(), allOf(
                 containsString(Float.toString(coeff)),
-                containsString(var.getDisplayName())));
+                containsString(var.toString())));
     }
     
     @Test

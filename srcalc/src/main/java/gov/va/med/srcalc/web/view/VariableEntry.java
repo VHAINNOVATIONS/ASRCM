@@ -55,7 +55,7 @@ public class VariableEntry
      */
     public static String getNumericalInputName(final DiscreteNumericalVariable variable)
     {
-        return variable.getDisplayName() + "_numerical";
+        return variable.getKey() + "_numerical";
     }
     
     /**
@@ -70,7 +70,7 @@ public class VariableEntry
      */
     public static String makeVariableValuePath(final Variable var)
     {
-        return makeDynamicValuePath(var.getDisplayName());
+        return makeDynamicValuePath(var.getKey());
     }
     
     @Override

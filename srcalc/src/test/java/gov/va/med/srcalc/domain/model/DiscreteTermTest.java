@@ -26,7 +26,7 @@ public class DiscreteTermTest
         assertThat(term.toString(), allOf(
                 containsString(Float.toString(coeff)),
                 containsString(option.getValue()),
-                containsString(var.getDisplayName())));
+                containsString(var.toString())));
     }
     
     @Test

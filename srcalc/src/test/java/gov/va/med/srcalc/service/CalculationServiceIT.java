@@ -82,14 +82,14 @@ public class CalculationServiceIT extends IntegrationTest
     }
     
     /**
-     * Builds a Map from variable name to variable.
+     * Builds a Map from variable key to variable.
      */
     private HashMap<String, Variable> buildVariableMap(Iterable<Variable> variables)
     {
         final HashMap<String, Variable> map = new HashMap<>();
         for (final Variable v : variables)
         {
-            map.put(v.getDisplayName(), v);
+            map.put(v.getKey(), v);
         }
         return map;
     }
