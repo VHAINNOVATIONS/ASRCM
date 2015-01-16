@@ -41,6 +41,12 @@ public final class ConstantTerm extends ModelTerm
     }
     
     @Override
+    public double getSummand(final Map<Variable, Value> inputValues)
+    {
+        return getCoefficient();
+    }
+    
+    @Override
     public boolean equals(Object o)
     {
         // Performance optimization.

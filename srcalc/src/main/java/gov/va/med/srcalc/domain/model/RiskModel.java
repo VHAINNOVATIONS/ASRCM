@@ -1,11 +1,15 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;
 
 import javax.persistence.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A risk model definition.
@@ -14,6 +18,8 @@ import javax.persistence.*;
 public class RiskModel
 {
     public static final int DISPLAY_NAME_MAX = 80;
+    
+    private static final Logger fLogger = LoggerFactory.getLogger(RiskModel.class);
     
     private int fId;
     private String fDisplayName;
@@ -228,6 +234,55 @@ public class RiskModel
             allVariables.addAll(term.getRequiredVariables());
         }
         return NoNullSet.fromSet(Collections.unmodifiableSet(allVariables));
+    }
+    
+    @Override
+    public String toString()
+    {
+        return String.format(
+                "RiskModel \"%s\" with %d terms",
+                getDisplayName(),
+                // -1 to subtract out the constant term
+                getTerms().size() - 1);
+    }
+    
+    /**
+     * Calculates the result of this model.
+     * @param inputValues the input values. There must be exactly one input value
+     * per required variable.
+     * @return
+     * @throws IllegalArgumentException if there is not exactly one input value
+     * per required variable.
+     */
+    public double calculate(final Collection<Value> inputValues)
+    {
+        fLogger.debug("Calculating {}", this);
+        
+        // Build a Map(Variable -> Value)
+        final HashMap<Variable, Value> valueMap = new HashMap<>(inputValues.size());
+        for (final Value v : inputValues)
+        {
+            final Value previousEntry = valueMap.put(v.getVariable(), v);
+            // Check precondition: only one value per variable. (The at least
+            // one value part is checked with each term below.)
+            if (previousEntry != null)
+            {
+                throw new IllegalArgumentException(
+                        "Multiple values provided for Variable " + v.getVariable());
+            }
+        }
+        
+        double sum = 0.0;
+        for (final ModelTerm term : getTerms())
+        {
+            final double termSummand = term.getSummand(valueMap);
+            fLogger.debug("Adding {} for {}", termSummand, term);
+            sum += termSummand;
+        }
+
+        double expSum = Math.exp(sum);
+        
+        return expSum / (1 + expSum);
     }
     
     // TODO: implement equals() and hashCode()

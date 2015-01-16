@@ -34,8 +34,15 @@ public class SampleObjects
     }
     
     /**
-     * Convenience function to construct a RiskModel from the given list of
-     * Variables. The terms will have arbitrary coefficients.
+     * <p>Convenience function to construct a RiskModel from the given list of
+     * Variables. The terms will have coefficients according to the type:</p>
+     * <ul>
+     * <li>ProcedureVariable: 1.0</li>
+     * <li>NumericalVariable: 2.0</li>
+     * <li>MultiSelectVariable: 3.0</li>
+     * <li>DiscreteNumericalVariable: 4.0</li>
+     * <li>BooleanVariable: 5.0</li>
+     * </ul>
      * @param name the intended name of the model
      * @param variables
      * @return a RiskModel with a term for each given variable

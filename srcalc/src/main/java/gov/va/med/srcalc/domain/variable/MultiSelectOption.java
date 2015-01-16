@@ -1,12 +1,16 @@
 package gov.va.med.srcalc.domain.variable;
 
+import java.util.Objects;
 import javax.persistence.*;
 
 /**
- * An option for a {@link MultiSelectVariable}.
+ * <p>An option for a {@link MultiSelectVariable}.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
  */
 @Entity
-public class MultiSelectOption
+public final class MultiSelectOption
 {
     private int fId;
     private String fValue;
@@ -61,5 +65,28 @@ public class MultiSelectOption
     public String toString()
     {
         return getValue();
+    }
+    
+    /**
+     * Checks value equality based on {@link #getValue()}.
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof MultiSelectOption)
+        {
+            final MultiSelectOption other = (MultiSelectOption)o;
+            return Objects.equals(this.getValue(), other.getValue());
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode(getValue());
     }
 }

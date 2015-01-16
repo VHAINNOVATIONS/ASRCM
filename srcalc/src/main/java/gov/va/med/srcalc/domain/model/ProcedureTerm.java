@@ -44,6 +44,25 @@ public final class ProcedureTerm extends SingleVariableTerm
     }
     
     @Override
+    public double getSummand(final Value inputValue)
+    {
+        // Note: I may handle this via rules later.
+
+        try
+        {
+            final ProcedureValue value = (ProcedureValue)inputValue;
+            
+            // TODO: add the surgical complexity
+            return value.getValue().getRvu() * getCoefficient();
+        }
+        catch (ClassCastException ex)
+        {
+            throw new IllegalArgumentException("Value was not a ProcedureValue", ex);
+        }
+
+    }
+    
+    @Override
     public boolean equals(Object o)
     {
         // Performance optimization.

@@ -1,8 +1,11 @@
 package gov.va.med.srcalc.domain.variable;
 
 import gov.va.med.srcalc.domain.variable.MultiSelectOption;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class MultiSelectOptionTest
@@ -11,6 +14,15 @@ public class MultiSelectOptionTest
     public final void testToString()
     {
         assertEquals("option name", new MultiSelectOption("option name").toString());
+    }
+    
+    @Test
+    public final void testEquals()
+    {
+        EqualsVerifier.forClass(MultiSelectOption.class)
+            // The class presents an immutable interface.
+            .suppress(Warning.NONFINAL_FIELDS)
+            .verify();
     }
     
 }

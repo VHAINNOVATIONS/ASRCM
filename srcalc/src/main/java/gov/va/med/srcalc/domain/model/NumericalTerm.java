@@ -44,6 +44,21 @@ public final class NumericalTerm extends SingleVariableTerm
     }
     
     @Override
+    public double getSummand(final Value inputValue)
+    {
+        try
+        {
+            final NumericalValue value = (NumericalValue)inputValue;
+            
+            return value.getValue().floatValue() * getCoefficient();
+        }
+        catch (ClassCastException ex)
+        {
+            throw new IllegalArgumentException("Value was not a NumericalValue", ex);
+        }
+    }
+    
+    @Override
     public boolean equals(Object o)
     {
         // Performance optimization.
