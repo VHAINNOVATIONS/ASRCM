@@ -68,12 +68,18 @@
                 <thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></tr></thead>
                 <!-- We're using datatables to provide paging now, but still
                 truncate the list until we improve browser performance. -->
-                <c:forEach var="procedure" items="${srcalc:truncateList(variable.procedures, 500)}">
-                <tr>
-                <td class="selectRadio">
-                <form:radiobutton path="${varPath}" value="${procedure.cptCode}" data-display-string="${procedure}"/></td>
-                <td>${procedure.cptCode}</td><td>${procedure.longDescription}</td><td>${procedure.rvu}</td></tr>
-                </c:forEach>
+                
+                <script>
+					procedureArray = new Array();
+					<c:forEach var="procedure" items="${variable.procedures}">
+						var entry = new Array();
+						entry.push("<input type=\"radio\" name=\"${varPath}\" value=\"${procedure.cptCode}\" alt=\"${procedure}\"/>");
+						entry.push("${procedure.cptCode}");
+						entry.push("${fn:escapeXml(procedure.longDescription)}");
+						entry.push("${procedure.rvu}");
+						procedureArray.push(entry);
+					</c:forEach>
+                </script>
                 </table>
                 </div>
             </jsp:attribute>
@@ -99,17 +105,17 @@
         <script type="text/javascript" src="${dataTablesUrl}"></script>
         <script type="text/javascript">
         $(document).ready(function(){
-        	initEnterVariablesPage();
         	// Set up the properties for the procedures DataTable
-	    	var table = $("#procedureTable").dataTable( {
-	    		// Make the radio button column smaller so that IE
-	    		// will adjust column widths properly.
+	    	$("#procedureTable").dataTable({
+	    		"data": procedureArray,
 	    		"aoColumnDefs":[
+				//Make the radio button column smaller so that IE
+				// will adjust column widths properly.
 	    		{
 	    			"width": "10%",
 	    			"targets": [0]
 	    		},
-	    		// Make the select column,  and RVU unsearchable
+	    		// Make the select column, description,  and RVU unsearchable
 	    		{
 	    			"bSearchable": false, 
 	    			"aTargets": [0,2,3]
@@ -119,6 +125,10 @@
 	    			"aTargets": [0]
 	    		}]
 	    	});
+        	// Use the CPT code for the proper radio button and set it to checked
+        	$("input:radio[value='${selectedProcedure}']").attr("checked",true);
+        	// The datatable needs to be initialized first right now in order 
+	    	initEnterVariablesPage();
         });
         </script>
         </form:form>
