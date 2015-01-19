@@ -1,6 +1,9 @@
 package gov.va.med.srcalc.web.view;
 
 import static org.junit.Assert.*;
+
+import java.util.Arrays;
+
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.web.view.InputParserVisitor;
@@ -22,7 +25,7 @@ public class InputParserVisitorTest
         // Setup variable
         final MultiSelectVariable var = SampleObjects.sampleGenderVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         // Note: Gender never set in dynamicValues.
         
         final BeanPropertyBindingResult errors =
@@ -42,7 +45,7 @@ public class InputParserVisitorTest
         // Setup variable
         final MultiSelectVariable var = SampleObjects.sampleGenderVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put("Gender", "Unknown");
         
         final BeanPropertyBindingResult errors =
@@ -62,7 +65,7 @@ public class InputParserVisitorTest
         // Setup variable
         final ProcedureVariable var = SampleObjects.sampleProcedureVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         // Sometimes no value may be represented as an empty string.
         variableEntry.getDynamicValues().put(var.getKey(), "");
         
@@ -83,7 +86,7 @@ public class InputParserVisitorTest
         // Setup variable
         final ProcedureVariable var = SampleObjects.sampleProcedureVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(var.getKey(), "ASDFASDFASDF");
         
         final BeanPropertyBindingResult errors =
@@ -103,7 +106,7 @@ public class InputParserVisitorTest
         // Setup variable
         final NumericalVariable var = SampleObjects.sampleAgeVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         // Note: Age never set in dynamicValues.
         
         final BeanPropertyBindingResult errors =
@@ -123,7 +126,7 @@ public class InputParserVisitorTest
         // Setup variable
         final NumericalVariable var = SampleObjects.sampleAgeVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(var.getKey(), "asdfasdf");
         
         final BeanPropertyBindingResult errors =
@@ -143,7 +146,7 @@ public class InputParserVisitorTest
         // Setup variable
         final NumericalVariable var = SampleObjects.sampleAgeVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(var.getKey(), "-1");
         
         final BeanPropertyBindingResult errors =
@@ -163,7 +166,7 @@ public class InputParserVisitorTest
         // Setup variable
         final NumericalVariable var = SampleObjects.sampleAgeVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(var.getKey(), "1000");
         
         final BeanPropertyBindingResult errors =
@@ -183,7 +186,8 @@ public class InputParserVisitorTest
         // Setup variable
         final BooleanVariable dnrVariable = SampleObjects.dnrVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(
+                Arrays.asList(dnrVariable));
         // Note: DNR never set in dynamicValues.
         
         final BeanPropertyBindingResult errors =
@@ -203,7 +207,8 @@ public class InputParserVisitorTest
         // Setup variable
         final BooleanVariable dnrVariable = SampleObjects.dnrVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(
+                Arrays.asList(dnrVariable));
         variableEntry.getDynamicValues().put(dnrVariable.getKey(), "true");
         
         final BeanPropertyBindingResult errors =
@@ -223,7 +228,8 @@ public class InputParserVisitorTest
         // Setup variable
         final BooleanVariable dnrVariable = SampleObjects.dnrVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(
+                Arrays.asList(dnrVariable));
         variableEntry.getDynamicValues().put(dnrVariable.getKey(), "blah");
         
         final BeanPropertyBindingResult errors =
@@ -243,8 +249,8 @@ public class InputParserVisitorTest
         // Setup variable
         final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
-        // Note: White Blood Count never set in dynamicValues.
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
+        variableEntry.getDynamicValues().put(var.getKey(), "");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -263,7 +269,7 @@ public class InputParserVisitorTest
         // Setup variable
         final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(var.getKey(), "Unknown");
         
         final BeanPropertyBindingResult errors =
@@ -284,9 +290,9 @@ public class InputParserVisitorTest
         final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
         final String numericalName = VariableEntry.getNumericalInputName(var);
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
-                var.getKey(), InputParserVisitor.SPECIAL_NUMERICAL);
+                var.getKey(), VariableEntry.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "10.0");
         
         final BeanPropertyBindingResult errors =
@@ -305,9 +311,9 @@ public class InputParserVisitorTest
         final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
         final String numericalName = VariableEntry.getNumericalInputName(var);
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
-                var.getKey(), InputParserVisitor.SPECIAL_NUMERICAL);
+                var.getKey(), VariableEntry.SPECIAL_NUMERICAL);
         // Note: no numerical value actually specified
         
         final BeanPropertyBindingResult errors =
@@ -330,9 +336,9 @@ public class InputParserVisitorTest
         final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
         final String numericalName = VariableEntry.getNumericalInputName(var);
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
-                var.getKey(), InputParserVisitor.SPECIAL_NUMERICAL);
+                var.getKey(), VariableEntry.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "foo");
         
         final BeanPropertyBindingResult errors =
@@ -353,9 +359,9 @@ public class InputParserVisitorTest
         final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
         final String numericalName = VariableEntry.getNumericalInputName(var);
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
-                var.getKey(), InputParserVisitor.SPECIAL_NUMERICAL);
+                var.getKey(), VariableEntry.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "0.1");
         
         final BeanPropertyBindingResult errors =
@@ -376,9 +382,9 @@ public class InputParserVisitorTest
         final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
         final String numericalName = VariableEntry.getNumericalInputName(var);
 
-        final VariableEntry variableEntry = new VariableEntry();
+        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
-                var.getKey(), InputParserVisitor.SPECIAL_NUMERICAL);
+                var.getKey(), VariableEntry.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "51.0");
         
         final BeanPropertyBindingResult errors =
