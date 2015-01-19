@@ -15,7 +15,7 @@ import org.junit.Test;
 public class DerivedTermTest
 {
     @Test
-    public final void testGetSummand() throws Exception
+    public final void testAgeMultiplier() throws Exception
     {
         // Setup
         final HashMap<Variable, Value> values = new HashMap<>();
@@ -23,7 +23,7 @@ public class DerivedTermTest
         values.put(ageVar, ageVar.makeValue(25));
         final MultiSelectVariable fsVar = SampleObjects.functionalStatusVariable();
         final ValueMatcher totallyDependentMatcher = new ValueMatcher(
-                fsVar, "selectedOption.value == 'Totally dependent'");
+                fsVar, "value == 'Totally dependent'");
         final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
         final DerivedTerm term = new DerivedTerm(
                 2.0f,

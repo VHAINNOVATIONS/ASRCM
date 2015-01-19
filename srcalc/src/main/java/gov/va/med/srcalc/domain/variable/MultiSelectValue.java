@@ -22,10 +22,14 @@ public class MultiSelectValue implements DiscreteValue
         return fSelectedOption;
     }
     
+    /**
+     * Since a {@link MultiSelectOption} simply wraps a String, return just the
+     * String for convenience.
+     */
     @Override
-    public MultiSelectOption getValue()
+    public String getValue()
     {
-        return getSelectedOption();
+        return getSelectedOption().getValue();
     }
     
     @Override
@@ -37,6 +41,6 @@ public class MultiSelectValue implements DiscreteValue
     @Override
     public String toString()
     {
-        return String.format("%s = %s", getVariable(), getValue());
+        return String.format("%s = %s", getVariable(), getSelectedOption());
     }
 }
