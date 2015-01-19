@@ -26,4 +26,17 @@ public class NumericalVariable extends AbstractNumericalVariable
     {
         visitor.visitNumerical(this);
     }
+    
+    /**
+     * Returns a {@link Value} object representing the given numerical value.
+     * @param floatValue
+     * @return
+     * @throws ValueTooLowException if the value is below the minimum
+     * @throws ValueTooHighException if the value is above the minimum
+     */
+    public NumericalValue makeValue(final float floatValue)
+            throws ValueTooLowException, ValueTooHighException
+    {
+        return new NumericalValue(this, floatValue);
+    }
 }

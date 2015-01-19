@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.domain.variable;
 
+import gov.va.med.srcalc.util.Preconditions;
+
 import java.util.Objects;
 
 import javax.persistence.*;
@@ -56,11 +58,13 @@ public abstract class AbstractVariable implements Variable
         this.fId = id;
     }
     
-    /**
-     * Returns the name of the variable for display to the user. Capped at 80
-     * characters.
-     * @see #DISPLAY_NAME_MAX
-     */
+    @Override
+    @Transient
+    public String getKey()
+    {
+        return getDisplayName();
+    }
+    
     @Basic
     @Column(
             length = DISPLAY_NAME_MAX,
@@ -77,12 +81,7 @@ public abstract class AbstractVariable implements Variable
      */
     public void setDisplayName(final String displayName)
     {
-        if (displayName.length() > DISPLAY_NAME_MAX)
-        {
-            throw new IllegalArgumentException(
-                    "The display name must be 80 characters or less.");
-        }
-        this.fDisplayName = displayName;
+        this.fDisplayName = Preconditions.requireWithin(displayName, DISPLAY_NAME_MAX);
     }
 
     /**

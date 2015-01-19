@@ -1,7 +1,10 @@
 package gov.va.med.srcalc.domain.model;
 
+import java.util.Map;
+
 import javax.persistence.*;
 
+import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.NoNullSet;
 
@@ -56,6 +59,16 @@ public abstract class ModelTerm
     {
         return new Float(this.getCoefficient()).equals(other.getCoefficient());
     }
+    
+    /**
+     * Returns the value to add to the risk model sum, given a complete set of
+     * Values for the calculation.
+     * @param inputValues a map from variable to value for each value. Must
+     * contain a value for each required variable
+     * @throws IllegalArgumentException if the given collection of values does
+     * not provide a value for each required variable
+     */
+    public abstract double getSummand(Map<Variable, Value> inputValues);
     
     // A reminder to subclasses to implement equals().
     @Override

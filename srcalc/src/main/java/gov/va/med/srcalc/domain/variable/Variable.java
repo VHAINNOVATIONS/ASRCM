@@ -7,6 +7,16 @@ public interface Variable
 {
     public static final int DISPLAY_NAME_MAX = 80;
     
+    /**
+     * Returns a key which should be unique among all Variables. Ideally should
+     * be alphanumeric, though this isn't enforced.
+     */
+    public String getKey();
+    
+    /**
+     * Returns a String suitable for display to humans. Will be no longer than
+     * {@link #DISPLAY_NAME_MAX}.
+     */
     public String getDisplayName();
 
     /**

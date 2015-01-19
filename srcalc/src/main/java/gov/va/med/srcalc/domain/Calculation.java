@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain;
 
+import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.*;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class Calculation implements Serializable
     private Patient fPatient;
     private Specialty fSpecialty;
     private SortedSet<Value> fValues;
+    private SortedMap<String, Double> fOutcomes;
     
     /**
      * This class presents a pure JavaBean interface, with a default constructor
@@ -162,19 +164,35 @@ public class Calculation implements Serializable
     }
     
     /**
-     * Runs the calculation for each outcome with the given Values.
+     * Returns an unmodifiable view of the last-calculated outcomes.
      */
-    public void calculate(final Collection<Value> values)
+    public SortedMap<String, Double> getOutcomes()
     {
-        // Placeholder validity check - may change as we implement outcomes.
-        if (values.size() != getVariables().size())
+        // At time of writing, fOutcomes is already unmodifiable, but re-wrap it
+        // just in case we change our minds.
+        return Collections.unmodifiableSortedMap(fOutcomes);
+    }
+
+    /**
+     * Runs the calculation for each outcome with the given Values.
+     * @throws IllegalArgumentException if incomplete values are provided
+     * @return the outcomes for convenience
+     */
+    public SortedMap<String, Double> calculate(final Collection<Value> values)
+    {
+        // Run the calculation first to make sure we don't get any exceptions.
+        final TreeMap<String, Double> outcomes = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        for (final RiskModel model : getSpecialty().getRiskModels())
         {
-            throw new IllegalArgumentException("One value for each variable must be given");
+            outcomes.put(model.getDisplayName(), model.calculate(values));
         }
 
+        // Store the given values for reference.
         fValues.clear();
         fValues.addAll(values);
 
-        // Outcome(s) will be calculated here when we get to that.
+        fOutcomes = Collections.unmodifiableSortedMap(outcomes);
+
+        return fOutcomes;
     }
 }

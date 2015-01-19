@@ -85,6 +85,24 @@ public final class DiscreteTerm extends SingleVariableTerm
     }
     
     @Override
+    public double getSummand(final Value inputValue)
+    {
+        try
+        {
+            final DiscreteValue discreteValue = (DiscreteValue)inputValue;
+
+            final boolean isSelected =
+                    getOption().equals(discreteValue.getSelectedOption());
+            
+            return isSelected ? getCoefficient() : 0.0;
+        }
+        catch (ClassCastException ex)
+        {
+            throw new IllegalArgumentException("Value was not a DiscreteValue", ex);
+        }
+    }
+    
+    @Override
     public boolean equals(final Object o)
     {
         // Performance optimization.
@@ -110,5 +128,12 @@ public final class DiscreteTerm extends SingleVariableTerm
     public int hashCode()
     {
         return Objects.hash(getCoefficient(), getVariable(), getOptionIndex());
+    }
+    
+    @Override
+    public String toString()
+    {
+        return String.format(
+                "%s=%s?->%s", getVariable(), getOption(), getCoefficient());
     }
 }

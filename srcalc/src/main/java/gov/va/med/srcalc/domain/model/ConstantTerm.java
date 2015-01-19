@@ -1,11 +1,13 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 /**
  * <p>A constant term. Simply adds a constant to a risk model. (Each risk model
@@ -40,6 +42,12 @@ public final class ConstantTerm extends ModelTerm
     }
     
     @Override
+    public double getSummand(final Map<Variable, Value> inputValues)
+    {
+        return getCoefficient();
+    }
+    
+    @Override
     public boolean equals(Object o)
     {
         // Performance optimization.
@@ -63,5 +71,11 @@ public final class ConstantTerm extends ModelTerm
     public int hashCode()
     {
         return Objects.hash(getCoefficient());
+    }
+    
+    @Override
+    public String toString()
+    {
+        return String.format("c=%s", getCoefficient());
     }
 }

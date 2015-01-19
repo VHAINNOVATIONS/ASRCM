@@ -30,4 +30,13 @@ public class BooleanVariable extends AbstractVariable
         visitor.visitBoolean(this);
     }
     
+    /**
+     * Returns a {@link Value} object representing the given boolean value.
+     * @param boolValue
+     * @return
+     */
+    public BooleanValue makeValue(final boolean boolValue)
+    {
+        return new BooleanValue(this, boolValue);
+    }
 }

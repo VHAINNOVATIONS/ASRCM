@@ -100,6 +100,30 @@ public class DiscreteNumericalVariable extends AbstractNumericalVariable impleme
         
         return null;
     }
+    
+    /**
+     * Returns a {@link Value} object representing the given Category selection.
+     * @param category
+     * @return
+     */
+    public DiscreteNumericalValue makeValue(final Category category)
+    {
+        return DiscreteNumericalValue.fromCategory(this, category);
+    }
+    
+    /**
+     * Returns a {@link Value} object representing the given numerical value.
+     * @param floatValue
+     * @throws ValueTooHighException 
+     * @throws ValueTooLowException 
+     * @throws ConfigurationException if the value is not in any of the
+     * categories but is within the valid range
+     */
+    public DiscreteNumericalValue makeValue(final float floatValue)
+            throws ValueTooLowException, ValueTooHighException
+    {
+        return DiscreteNumericalValue.fromNumerical(this, floatValue);
+    }
 
     /**
      * A Category for a {@link DiscreteNumericalVariable}. Presents an immutable

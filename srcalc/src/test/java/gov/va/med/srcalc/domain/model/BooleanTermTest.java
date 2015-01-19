@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.BooleanVariable;
 import gov.va.med.srcalc.util.CollectionUtils;
@@ -21,6 +22,8 @@ public class BooleanTermTest
         assertEquals(coeff, term.getCoefficient(), 0.0f);
         assertSame(var, term.getVariable());
         assertEquals(CollectionUtils.hashSet(var), term.getRequiredVariables());
+        assertThat(term.toString(), allOf(
+                containsString(Float.toString(coeff)), containsString("DNR")));
     }
     
     @Test

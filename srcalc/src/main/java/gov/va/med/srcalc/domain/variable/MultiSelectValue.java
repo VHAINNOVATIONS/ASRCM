@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.domain.variable;
 
-public class MultiSelectValue implements Value
+public class MultiSelectValue implements DiscreteValue
 {
     private final MultiSelectVariable fVariable;
     private final MultiSelectOption fSelectedOption;

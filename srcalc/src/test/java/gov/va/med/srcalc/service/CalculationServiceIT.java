@@ -4,9 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
-import gov.va.med.srcalc.domain.Calculation;
-import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.Specialty;
+import gov.va.med.srcalc.domain.*;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
@@ -84,14 +82,14 @@ public class CalculationServiceIT extends IntegrationTest
     }
     
     /**
-     * Builds a Map from variable name to variable.
+     * Builds a Map from variable key to variable.
      */
     private HashMap<String, Variable> buildVariableMap(Iterable<Variable> variables)
     {
         final HashMap<String, Variable> map = new HashMap<>();
         for (final Variable v : variables)
         {
-            map.put(v.getDisplayName(), v);
+            map.put(v.getKey(), v);
         }
         return map;
     }
@@ -112,29 +110,49 @@ public class CalculationServiceIT extends IntegrationTest
         final Map<String, Variable> thoracicVars = buildVariableMap(calc.getVariables());
         final ProcedureVariable procedureVar =
                 (ProcedureVariable)thoracicVars.get("Procedure");
+        final Procedure selectedProcedure = procedureVar.getProcedures().get(1);
         final MultiSelectVariable asaVar =
                 (MultiSelectVariable)thoracicVars.get("ASA Classification");
         final DiscreteNumericalVariable apVar =
                 (DiscreteNumericalVariable)thoracicVars.get("Alkaline Phosphatase");
         final DiscreteNumericalVariable bunVar =
                 (DiscreteNumericalVariable)thoracicVars.get("BUN");
+        final float age = 66;
+        final float bmi = 17.3f;
         // Construct this list in order by variable display name.
         final List<Value> orderedValues = Arrays.asList(
-                new NumericalValue((NumericalVariable)thoracicVars.get("Age"), 66),
-                DiscreteNumericalValue.fromCategory(apVar, apVar.getContainingCategory(5.0f)),
-                new MultiSelectValue(asaVar, asaVar.getOptions().get(0)),
-                new NumericalValue((NumericalVariable)thoracicVars.get("BMI"), 17.3f),
-                DiscreteNumericalValue.fromCategory(bunVar, bunVar.getContainingCategory(10.0f)),
-                new BooleanValue((BooleanVariable)thoracicVars.get("DNR"), true),
-                new BooleanValue((BooleanVariable)thoracicVars.get("Preop Pneumonia"), false),
-                new ProcedureValue(procedureVar, procedureVar.getProcedures().get(1)));
+                ((NumericalVariable)thoracicVars.get("Age")).makeValue(age),
+                apVar.makeValue(11.0f),
+                asaVar.makeValue(asaVar.getOptions().get(3)),
+                ((NumericalVariable)thoracicVars.get("BMI")).makeValue(bmi),
+                bunVar.makeValue(50.0f),
+                ((BooleanVariable)thoracicVars.get("DNR")).makeValue(true),
+                ((BooleanVariable)thoracicVars.get("Preop Pneumonia")).makeValue(false),
+                procedureVar.makeValue(selectedProcedure));
         
         // Create a new shuffled list to test Calculation's sorting.
         final List<Value> shuffledValues = new ArrayList<>(orderedValues);
         Collections.shuffle(shuffledValues);
         
+        // Calculate expected sum
+        final double expectedSum =
+                -4.0 + 
+                2.4 * age +
+                // 0 for Alkaline Phosphatase
+                8.4 + // ASA Classification = 5
+                5.4 * bmi +
+                10.4 + // BUN > 25
+                6.4 +  // DNR
+                // 0 for Preop Pneumonia
+                3.4 * selectedProcedure.getRvu();
+        final double expectedExp = Math.exp(expectedSum);
+        final double expectedResult = expectedExp / (1 + expectedExp);
+        final TreeMap<String, Double> expectedOutcomes = new TreeMap<>();
+        expectedOutcomes.put("Thoracic 30-Day Mortality Risk", expectedResult);
+        
         // Behavior verification
         fCalculationService.runCalculation(selCalc.getCalculation(), orderedValues);
         assertEquals(orderedValues, new ArrayList<>(calc.getValues()));
+        assertEquals(expectedOutcomes, selCalc.getCalculation().getOutcomes());
     }
 }

@@ -77,6 +77,17 @@ public class ProcedureVariable extends AbstractVariable
         return Collections.unmodifiableMap(fProcedureMap);
     }
     
+    /**
+     * Returns a {@link Value} object representing the given procedure
+     * selection.
+     * @param selectedProcedure
+     * @return
+     */
+    public ProcedureValue makeValue(final Procedure selectedProcedure)
+    {
+        return new ProcedureValue(this, selectedProcedure);
+    }
+    
     @Override
     public void accept(VariableVisitor visitor) throws Exception
     {
