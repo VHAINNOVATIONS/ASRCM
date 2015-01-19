@@ -12,14 +12,13 @@ import javax.persistence.*;
  * <p>Per Effective Java Item 17, this class is marked final because it was not
  * designed for inheritance.</p>
  */
-@Entity
+@Embeddable
 public final class DiscreteTerm extends SingleVariableTerm
 {
     private static final int UNSET_INDEX = -1;
 
     private DiscreteVariable fVariable = null;
     private int fOptionIndex = UNSET_INDEX;
-    private MultiSelectOption fOption = null;
     
     DiscreteTerm()
     {
@@ -39,18 +38,9 @@ public final class DiscreteTerm extends SingleVariableTerm
         super(coefficient);
         fVariable = Objects.requireNonNull(variable);
         fOptionIndex = optionIndex;
-        setOption();
     }
     
-    /**
-     * @throws IndexOutOfBoundsException if the index does not exist in the
-     * variable's options
-     */
-    private void setOption()
-    {
-        fOption = fVariable.getOptions().get(fOptionIndex);
-    }
-    
+    @Override
     @ManyToOne(optional = false, targetEntity = AbstractVariable.class)
     public DiscreteVariable getVariable()
     {
@@ -64,13 +54,6 @@ public final class DiscreteTerm extends SingleVariableTerm
     void setVariable(final DiscreteVariable variable)
     {
         fVariable = Objects.requireNonNull(variable);
-        
-        // The option index may not have been set yet. Initialize the option if
-        // it has been.
-        if (fOptionIndex != UNSET_INDEX)
-        {
-            setOption();
-        }
     }
 
     @Basic
@@ -86,22 +69,19 @@ public final class DiscreteTerm extends SingleVariableTerm
     void setOptionIndex(final int optionIndex)
     {
         fOptionIndex = optionIndex;
-        
-        // The variable may not have been set yet. Initialize the option if it
-        // has been.
-        if (fVariable != null)
-        {
-            setOption();
-        }
     }
     
     /**
      * Returns the associated {@link MultiSelectOption}.
+     * @throws IndexOutOfBoundsException if the configured index is out of bounds
      */
     @Transient
     public MultiSelectOption getOption()
     {
-        return fOption;
+        // TODO: it would be much better to cache this term it's hard due to
+        // Hibernate's reflection-based construction. We need something like
+        // @PostLoad.
+        return fVariable.getOptions().get(getOptionIndex());
     }
     
     @Override

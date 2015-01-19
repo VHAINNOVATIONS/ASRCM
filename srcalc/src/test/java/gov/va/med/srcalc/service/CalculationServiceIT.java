@@ -114,8 +114,6 @@ public class CalculationServiceIT extends IntegrationTest
                 (ProcedureVariable)thoracicVars.get("Procedure");
         final MultiSelectVariable asaVar =
                 (MultiSelectVariable)thoracicVars.get("ASA Classification");
-        final MultiSelectVariable fsVar =
-                (MultiSelectVariable)thoracicVars.get("Functional Status");
         final DiscreteNumericalVariable apVar =
                 (DiscreteNumericalVariable)thoracicVars.get("Alkaline Phosphatase");
         final DiscreteNumericalVariable bunVar =
@@ -124,11 +122,10 @@ public class CalculationServiceIT extends IntegrationTest
         final List<Value> orderedValues = Arrays.asList(
                 new NumericalValue((NumericalVariable)thoracicVars.get("Age"), 66),
                 DiscreteNumericalValue.fromCategory(apVar, apVar.getContainingCategory(5.0f)),
-                new MultiSelectValue(asaVar, fsVar.getOptions().get(0)),
+                new MultiSelectValue(asaVar, asaVar.getOptions().get(0)),
                 new NumericalValue((NumericalVariable)thoracicVars.get("BMI"), 17.3f),
                 DiscreteNumericalValue.fromCategory(bunVar, bunVar.getContainingCategory(10.0f)),
                 new BooleanValue((BooleanVariable)thoracicVars.get("DNR"), true),
-                new MultiSelectValue(fsVar, fsVar.getOptions().get(1)),
                 new BooleanValue((BooleanVariable)thoracicVars.get("Preop Pneumonia"), false),
                 new ProcedureValue(procedureVar, procedureVar.getProcedures().get(1)));
         

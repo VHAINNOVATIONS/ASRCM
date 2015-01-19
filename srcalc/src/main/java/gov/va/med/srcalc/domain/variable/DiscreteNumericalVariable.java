@@ -10,14 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A NumericalVariable that ultimately represents one of a finite, discrete
+ * A {@link Variable} that ultimately represents one of a finite, discrete
  * set of values. This is mainly useful for a lab results (e.g., White Blood
  * Count &lt;= 11.0x1000/mm^3 or &gt; 11.0x100/mm^3), but may be used for other
  * numerical values such as Body Mass Index.
  */
 @Entity
 @Table(name = "discrete_numerical_var")  // slightly abbreviate long table name
-public class DiscreteNumericalVariable extends NumericalVariable implements DiscreteVariable
+public class DiscreteNumericalVariable extends AbstractNumericalVariable implements DiscreteVariable
 {
     private static final Logger fLogger = LoggerFactory.getLogger(DiscreteNumericalVariable.class);
     
@@ -42,6 +42,7 @@ public class DiscreteNumericalVariable extends NumericalVariable implements Disc
 
     @ElementCollection(fetch = FetchType.EAGER)  // eager-load due to close association
     @Sort(type = SortType.NATURAL)
+    // Override strange defaults.
     @CollectionTable(
             name = "discrete_numerical_var_category",
             joinColumns = @JoinColumn(name = "variable_id"))

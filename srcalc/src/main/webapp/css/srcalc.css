@@ -69,7 +69,7 @@ body {
 
 /* Make the main content fixed-width. */
 body > section {
-	width: 768px;
+	width: 1020px;
 	/* Put a small margin on the bottom to avoid jamming up against the footer
 	   (or anything else). */
 	margin-bottom: 1em;
