@@ -6,7 +6,8 @@ import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 /**
  * <p>A constant term. Simply adds a constant to a risk model. (Each risk model

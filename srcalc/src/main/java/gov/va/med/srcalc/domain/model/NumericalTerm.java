@@ -4,7 +4,8 @@ import gov.va.med.srcalc.domain.variable.*;
 
 import java.util.Objects;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
 
 /**
  * <p>A {@link ModelTerm} for a {@link NumericalVariable}.</p>
