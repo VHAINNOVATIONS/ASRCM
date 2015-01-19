@@ -191,6 +191,6 @@ public class Calculation implements Serializable
 
         fOutcomes = Collections.unmodifiableSortedMap(outcomes);
 
-        return outcomes;
+        return fOutcomes;
     }
 }
