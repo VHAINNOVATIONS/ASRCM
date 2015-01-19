@@ -39,6 +39,26 @@ public class DerivedTermTest
     }
     
     @Test
+    public final void testWeightLoss() throws Exception
+    {
+        // Setup
+        final VariableGroup group = SampleObjects.demographicsVariableGroup();
+        final NumericalVariable currWeight = new NumericalVariable("Weight", group);
+        final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group);
+        final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "true");
+        final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "value < #Weight6MoAgo.value * 0.9");
+        final DerivedTerm term = new DerivedTerm(3.0f, Arrays.asList(weight6MoAgoMatcher, weightLossMatcher), "#coefficient");
+        
+        // Behavior verification
+        final HashMap<Variable, Value> values = new HashMap<>();
+        values.put(weight6MoAgo, weight6MoAgo.makeValue(150));
+        values.put(currWeight, currWeight.makeValue(100));
+        assertEquals(3.0f, term.getSummand(values), 0.0f);
+        values.put(currWeight, currWeight.makeValue(140));
+        assertEquals(0.0f, term.getSummand(values), 0.0f);
+    }
+    
+    @Test
     public final void testEquals()
     {
         EqualsVerifier.forClass(DerivedTerm.class)

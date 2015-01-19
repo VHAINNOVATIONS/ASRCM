@@ -19,13 +19,13 @@ import gov.va.med.srcalc.util.NoNullSet;
  */
 public final class DerivedTerm extends ModelTerm
 {
-    private Collection<ValueMatcher> fMatchers;
+    private List<ValueMatcher> fMatchers;
     private String fSummandExpression;
     private Expression fParsedExpression;
     
     public DerivedTerm(
             final float coefficient,
-            final Collection<ValueMatcher> matchers,
+            final List<ValueMatcher> matchers,
             final String summandExpression)
     {
         super(coefficient);
@@ -35,11 +35,20 @@ public final class DerivedTerm extends ModelTerm
         fParsedExpression = parser.parseExpression(summandExpression);
     }
     
-    public Collection<ValueMatcher> getMatchers()
+    /**
+     * The {@link ValueMatcher}s that form the conditional part of the derived
+     * term. Order is important: each matcher may use SpEL variable references
+     * to previously-matched values.
+     */
+    public List<ValueMatcher> getMatchers()
     {
         return fMatchers;
     }
 
+    /**
+     * The SpEL expression that calculates the summand. May use variable
+     * references to the values matched in ValueMatchers.
+     */
     public String getSummandExpression()
     {
         return fSummandExpression;
@@ -63,6 +72,7 @@ public final class DerivedTerm extends ModelTerm
         
         // Match all the values
         final HashMap<String, Object> matchedValues = new HashMap<>();
+        StandardEvaluationContext context = new StandardEvaluationContext();
         for (final ValueMatcher condition : fMatchers)
         {
             final Value matchedValue = inputValues.get(condition.getVariable());
@@ -74,7 +84,8 @@ public final class DerivedTerm extends ModelTerm
 
             final Expression conditionExpression =
                     parser.parseExpression(condition.getBooleanExpression());
-            if (conditionExpression.getValue(matchedValue, Boolean.class))
+            context.setVariables(matchedValues);
+            if (conditionExpression.getValue(context, matchedValue, Boolean.class))
             {
                 matchedValues.put(matchedValue.getVariable().getKey(), matchedValue);
             }
@@ -86,7 +97,6 @@ public final class DerivedTerm extends ModelTerm
         }
         
         // We matched them all: now just calculate the summand.
-        StandardEvaluationContext context = new StandardEvaluationContext();
         context.setVariables(matchedValues);
         context.setVariable("coefficient", getCoefficient());
         
