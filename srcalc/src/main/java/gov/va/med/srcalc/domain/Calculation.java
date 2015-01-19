@@ -168,7 +168,9 @@ public class Calculation implements Serializable
      */
     public SortedMap<String, Double> getOutcomes()
     {
-        return fOutcomes;
+        // At time of writing, fOutcomes is already unmodifiable, but re-wrap it
+        // just in case we change our minds.
+        return Collections.unmodifiableSortedMap(fOutcomes);
     }
 
     /**
