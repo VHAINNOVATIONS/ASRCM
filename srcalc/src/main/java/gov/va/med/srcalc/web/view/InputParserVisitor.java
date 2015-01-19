@@ -49,7 +49,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
      */
     protected String getVariableValue(final Variable variable)
     {
-        return fVariableEntry.getDynamicValues().get(variable.getDisplayName());
+        return fVariableEntry.getDynamicValues().get(variable.getKey());
     }
     
     /**
@@ -110,7 +110,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         final String value = getVariableValue(variable);
         if (StringUtils.isEmpty(value))
         {
-            rejectDynamicValue(variable.getDisplayName(), "noSelection", "no selection");
+            rejectDynamicValue(variable.getKey(), "noSelection", "no selection");
             return;
         }
         // Find the selected option.
@@ -118,11 +118,11 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         final MultiSelectOption selectedOption = optionMap.get(value);
         if (selectedOption == null)
         {
-            rejectDynamicValue(variable.getDisplayName(), "invalid", "not a valid selection");
+            rejectDynamicValue(variable.getKey(), "invalid", "not a valid selection");
         }
         else
         {
-            fValues.add(new MultiSelectValue(variable, selectedOption));
+            fValues.add(variable.makeValue(selectedOption));
         }
     }
     
@@ -133,7 +133,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         
         final String stringValue = getVariableValue(variable);
         final boolean booleanValue = Objects.equals(stringValue, "true");
-        fValues.add(new BooleanValue(variable, booleanValue));
+        fValues.add(variable.makeValue(booleanValue));
     }
     
     @Override
@@ -144,23 +144,23 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         final String stringValue = getVariableValue(variable);
         if (StringUtils.isEmpty(stringValue))
         {
-            rejectDynamicValue(variable.getDisplayName(), "noInput.float", "no input");
+            rejectDynamicValue(variable.getKey(), "noInput.float", "no input");
             return;
         }
         try
         {
             final float floatValue = Float.parseFloat(stringValue);
-            fValues.add(new NumericalValue(variable, floatValue));
+            fValues.add(variable.makeValue(floatValue));
         }
         // Translate any Exceptions into validation errors.
         catch (final NumberFormatException ex)
         {
-            rejectDynamicValue(variable.getDisplayName(), "typeMismatch.float", ex.getMessage());
+            rejectDynamicValue(variable.getKey(), "typeMismatch.float", ex.getMessage());
         }
         catch (final ValueTooLowException ex)
         {
             rejectDynamicValue(
-                    variable.getDisplayName(),
+                    variable.getKey(),
                     ex.getErrorCode(),
                     new Object[]{ variable.getMinValue() },
                     ex.getMessage());
@@ -168,7 +168,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         catch (final ValueTooHighException ex)
         {
             rejectDynamicValue(
-                    variable.getDisplayName(),
+                    variable.getKey(),
                     ex.getErrorCode(),
                     new Object[]{ variable.getMaxValue() },
                     ex.getMessage());
@@ -196,7 +196,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         final String categoryName = getVariableValue(variable);
         if (StringUtils.isEmpty(categoryName))
         {
-            rejectDynamicValue(variable.getDisplayName(), "noSelection", "no selection");
+            rejectDynamicValue(variable.getKey(), "noSelection", "no selection");
             return;
         }
         // Special case: numerical
@@ -214,7 +214,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
             try
             {
                 final float floatValue = Float.parseFloat(stringValue);
-                fValues.add(DiscreteNumericalValue.fromNumerical(variable, floatValue));
+                fValues.add(variable.makeValue(floatValue));
             }
             // Translate any Exceptions into validation errors.
             catch (final NumberFormatException ex)
@@ -246,12 +246,12 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
             final Category selectedCategory = categoryMap.get(categoryName);
             if (selectedCategory == null)
             {
-                rejectDynamicValue(variable.getDisplayName(), "invalid", "not a valid selection");
+                rejectDynamicValue(variable.getKey(), "invalid", "not a valid selection");
             }
             else
             {
                 fLogger.debug("User selected Category {}", selectedCategory);
-                fValues.add(DiscreteNumericalValue.fromCategory(variable, selectedCategory));
+                fValues.add(variable.makeValue(selectedCategory));
             }
         }
     }
@@ -264,18 +264,18 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         final String selectedCpt = getVariableValue(variable);
         if (StringUtils.isEmpty(selectedCpt))
         {
-            rejectDynamicValue(variable.getDisplayName(), "noSelection", "no selection");
+            rejectDynamicValue(variable.getKey(), "noSelection", "no selection");
             return;
         }
         final Procedure selectedProcedure =
                 variable.getProcedureMap().get(selectedCpt);
         if (selectedProcedure == null)
         {
-            rejectDynamicValue(variable.getDisplayName(), "invalid", "not a valid procedure");
+            rejectDynamicValue(variable.getKey(), "invalid", "not a valid procedure");
         }
         else
         {
-            fValues.add(new ProcedureValue(variable, selectedProcedure));
+            fValues.add(variable.makeValue(selectedProcedure));
         }
     }
     

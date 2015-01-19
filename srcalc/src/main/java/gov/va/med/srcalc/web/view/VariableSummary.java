@@ -32,6 +32,11 @@ public class VariableSummary
     {
         return fVariable;
     }
+    
+    public String getKey()
+    {
+        return fVariable.getKey();
+    }
 
     public String getDisplayName()
     {

@@ -64,7 +64,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry();
         // Sometimes no value may be represented as an empty string.
-        variableEntry.getDynamicValues().put(var.getDisplayName(), "");
+        variableEntry.getDynamicValues().put(var.getKey(), "");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -84,7 +84,7 @@ public class InputParserVisitorTest
         final ProcedureVariable var = SampleObjects.sampleProcedureVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
-        variableEntry.getDynamicValues().put(var.getDisplayName(), "ASDFASDFASDF");
+        variableEntry.getDynamicValues().put(var.getKey(), "ASDFASDFASDF");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -124,7 +124,7 @@ public class InputParserVisitorTest
         final NumericalVariable var = SampleObjects.sampleAgeVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
-        variableEntry.getDynamicValues().put(var.getDisplayName(), "asdfasdf");
+        variableEntry.getDynamicValues().put(var.getKey(), "asdfasdf");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -144,7 +144,7 @@ public class InputParserVisitorTest
         final NumericalVariable var = SampleObjects.sampleAgeVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
-        variableEntry.getDynamicValues().put(var.getDisplayName(), "-1");
+        variableEntry.getDynamicValues().put(var.getKey(), "-1");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -164,7 +164,7 @@ public class InputParserVisitorTest
         final NumericalVariable var = SampleObjects.sampleAgeVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
-        variableEntry.getDynamicValues().put(var.getDisplayName(), "1000");
+        variableEntry.getDynamicValues().put(var.getKey(), "1000");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -202,10 +202,9 @@ public class InputParserVisitorTest
     {
         // Setup variable
         final BooleanVariable dnrVariable = SampleObjects.dnrVariable();
-        final String varName = dnrVariable.getDisplayName();
 
         final VariableEntry variableEntry = new VariableEntry();
-        variableEntry.getDynamicValues().put(varName, "true");
+        variableEntry.getDynamicValues().put(dnrVariable.getKey(), "true");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -223,10 +222,9 @@ public class InputParserVisitorTest
     {
         // Setup variable
         final BooleanVariable dnrVariable = SampleObjects.dnrVariable();
-        final String varName = dnrVariable.getDisplayName();
 
         final VariableEntry variableEntry = new VariableEntry();
-        variableEntry.getDynamicValues().put(varName, "blah");
+        variableEntry.getDynamicValues().put(dnrVariable.getKey(), "blah");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -266,7 +264,7 @@ public class InputParserVisitorTest
         final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
 
         final VariableEntry variableEntry = new VariableEntry();
-        variableEntry.getDynamicValues().put(var.getDisplayName(), "Unknown");
+        variableEntry.getDynamicValues().put(var.getKey(), "Unknown");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -288,7 +286,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry();
         variableEntry.getDynamicValues().put(
-                var.getDisplayName(), InputParserVisitor.SPECIAL_NUMERICAL);
+                var.getKey(), InputParserVisitor.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "10.0");
         
         final BeanPropertyBindingResult errors =
@@ -309,7 +307,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry();
         variableEntry.getDynamicValues().put(
-                var.getDisplayName(), InputParserVisitor.SPECIAL_NUMERICAL);
+                var.getKey(), InputParserVisitor.SPECIAL_NUMERICAL);
         // Note: no numerical value actually specified
         
         final BeanPropertyBindingResult errors =
@@ -334,7 +332,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry();
         variableEntry.getDynamicValues().put(
-                var.getDisplayName(), InputParserVisitor.SPECIAL_NUMERICAL);
+                var.getKey(), InputParserVisitor.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "foo");
         
         final BeanPropertyBindingResult errors =
@@ -357,7 +355,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry();
         variableEntry.getDynamicValues().put(
-                var.getDisplayName(), InputParserVisitor.SPECIAL_NUMERICAL);
+                var.getKey(), InputParserVisitor.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "0.1");
         
         final BeanPropertyBindingResult errors =
@@ -380,7 +378,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry();
         variableEntry.getDynamicValues().put(
-                var.getDisplayName(), InputParserVisitor.SPECIAL_NUMERICAL);
+                var.getKey(), InputParserVisitor.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "51.0");
         
         final BeanPropertyBindingResult errors =

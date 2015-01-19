@@ -29,7 +29,7 @@ public class DefaultAdminServiceTest
         when(dao.getAllVariables()).thenReturn(fSampleVariables);
         // Use a reference to the existing DNR variable so we can do updates.
         final AbstractVariable variable = fSampleVariables.get(3);
-        when(dao.getByName(variable.getDisplayName())).thenReturn(variable);
+        when(dao.getByName(variable.getKey())).thenReturn(variable);
         return dao;
     }
     
@@ -48,12 +48,14 @@ public class DefaultAdminServiceTest
     @Test
     public final void testGetVariable() throws Exception
     {
+        final String key = "DNR";
+        
         // Create the class under test.
         final DefaultAdminService s = new DefaultAdminService(mockVariableDao());
         
         // Behavior verification.
-        final BooleanVariable actualVar = (BooleanVariable)s.getVariable("DNR");
-        assertEquals("DNR", actualVar.getDisplayName());
+        final BooleanVariable actualVar = (BooleanVariable)s.getVariable(key);
+        assertEquals(key, actualVar.getKey());
     }
     
     @Test(expected = InvalidIdentifierException.class)
@@ -77,7 +79,7 @@ public class DefaultAdminServiceTest
         
         // Setup
         final AbstractVariable var = s.getVariable(origName);
-        assertEquals(origName, var.getDisplayName());  // sanity check
+        assertEquals(origName, var.getKey());  // sanity check
         
         // Behavior verification.
         final EditVariable ev = EditVariable.fromVariable(var);

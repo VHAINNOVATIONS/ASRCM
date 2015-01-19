@@ -1,8 +1,9 @@
 package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.variable.BooleanVariable;
+import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.variable.AbstractVariable;
+import gov.va.med.srcalc.domain.variable.BooleanVariable;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 
 import java.util.List;
@@ -37,9 +38,10 @@ public class AdminServiceIT extends IntegrationTest
     @Test
     public final void testGetVariable() throws Exception
     {
-        final BooleanVariable actualVar =
-                (BooleanVariable)fAdminService.getVariable("Preop Pneumonia");
-        assertEquals("Preop Pneumonia", actualVar.getDisplayName());
+        final String key = "Preop Pneumonia";
+        final AbstractVariable actualVar = fAdminService.getVariable(key);
+        assertThat(actualVar, instanceOf(BooleanVariable.class));
+        assertEquals(key, actualVar.getKey());
     }
     
     @Test
@@ -50,7 +52,7 @@ public class AdminServiceIT extends IntegrationTest
         
         // Setup
         final AbstractVariable var = fAdminService.getVariable(origName);
-        assertEquals(origName, var.getDisplayName());  // sanity check
+        assertEquals(origName, var.getKey());  // sanity check
         
         // Behavior verification.
         final EditVariable ev = EditVariable.fromVariable(var);

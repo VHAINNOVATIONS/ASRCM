@@ -1,8 +1,11 @@
 package gov.va.med.srcalc.domain.model;
 
+import java.util.Map;
+
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.CollectionUtils;
 import gov.va.med.srcalc.util.NoNullSet;
@@ -39,6 +42,26 @@ public abstract class SingleVariableTerm extends ModelTerm
     {
         return NoNullSet.fromSet(CollectionUtils.unmodifiableSet(getVariable()));
     }
+    
+    @Override
+    public double getSummand(final Map<Variable, Value> inputValues)
+    {
+        final Value value = inputValues.get(getVariable());
+        if (value == null)
+        {
+            throw new IllegalArgumentException("Incomplete input values");
+        }
+        
+        return getSummand(value);
+    }
+    
+    /**
+     * Returns the value to add to the risk model sum, given the value of the
+     * single required variable.
+     * @param inputValue must not be null
+     * @throws IllegalArgumentException if the value is not of the required type
+     */
+    protected abstract double getSummand(final Value inputValue);
     
     /**
      * Base equals() functionality that verifies equality of the coefficient

@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
-import gov.va.med.srcalc.domain.variable.NumericalVariable;
+import gov.va.med.srcalc.domain.variable.*;
 
 import java.util.Objects;
 
@@ -44,6 +44,21 @@ public final class NumericalTerm extends SingleVariableTerm
     }
     
     @Override
+    public double getSummand(final Value inputValue)
+    {
+        try
+        {
+            final NumericalValue value = (NumericalValue)inputValue;
+            
+            return value.getValue().floatValue() * getCoefficient();
+        }
+        catch (ClassCastException ex)
+        {
+            throw new IllegalArgumentException("Value was not a NumericalValue", ex);
+        }
+    }
+    
+    @Override
     public boolean equals(Object o)
     {
         // Performance optimization.
@@ -66,5 +81,11 @@ public final class NumericalTerm extends SingleVariableTerm
     public int hashCode()
     {
         return Objects.hash(getCoefficient(), getVariable());
+    }
+    
+    @Override
+    public String toString()
+    {
+        return String.format("%s*%s", getVariable(), getCoefficient());
     }
 }

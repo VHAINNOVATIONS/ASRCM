@@ -3,7 +3,7 @@ package gov.va.med.srcalc.domain.variable;
 import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable.Category;
 
-public class DiscreteNumericalValue implements Value
+public class DiscreteNumericalValue implements DiscreteValue
 {
     private final DiscreteNumericalVariable fVariable;
     private final Category fSelectedCategory;
@@ -53,6 +53,12 @@ public class DiscreteNumericalValue implements Value
     public DiscreteNumericalVariable getVariable()
     {
         return fVariable;
+    }
+    
+    @Override
+    public MultiSelectOption getSelectedOption()
+    {
+        return fSelectedCategory.getOption();
     }
 
     @Override

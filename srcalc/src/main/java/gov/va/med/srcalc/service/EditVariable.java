@@ -30,7 +30,7 @@ public final class EditVariable
     
     public static EditVariable fromVariable(final AbstractVariable variable)
     {
-        final EditVariable ev = new EditVariable(variable.getDisplayName());
+        final EditVariable ev = new EditVariable(variable.getKey());
         ev.setDisplayName(variable.getDisplayName());
         return ev;
     }

@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
-import gov.va.med.srcalc.domain.variable.BooleanVariable;
+import gov.va.med.srcalc.domain.variable.*;
 
 import java.util.Objects;
 
@@ -44,6 +44,14 @@ public final class BooleanTerm extends SingleVariableTerm
     }
     
     @Override
+    public double getSummand(final Value inputValue)
+    {
+        final boolean isTrue = Boolean.TRUE.equals(inputValue.getValue());
+        
+        return isTrue ? getCoefficient() : 0.0;
+    }
+    
+    @Override
     public boolean equals(final Object o)
     {
         // Performance optimization.
@@ -66,5 +74,11 @@ public final class BooleanTerm extends SingleVariableTerm
     public int hashCode()
     {
         return Objects.hash(getCoefficient(), getVariable());
+    }
+    
+    @Override
+    public String toString()
+    {
+        return String.format("%s?=>%s", getVariable(), getCoefficient());
     }
 }

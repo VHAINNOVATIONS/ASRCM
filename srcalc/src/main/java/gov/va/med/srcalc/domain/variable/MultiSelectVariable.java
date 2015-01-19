@@ -78,4 +78,9 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
     {
         visitor.visitMultiSelect(this);
     }
+    
+    public MultiSelectValue makeValue(final MultiSelectOption selectedOption)
+    {
+        return new MultiSelectValue(this, selectedOption);
+    }
 }

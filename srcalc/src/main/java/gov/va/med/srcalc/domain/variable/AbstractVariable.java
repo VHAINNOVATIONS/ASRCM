@@ -56,11 +56,13 @@ public abstract class AbstractVariable implements Variable
         this.fId = id;
     }
     
-    /**
-     * Returns the name of the variable for display to the user. Capped at 80
-     * characters.
-     * @see #DISPLAY_NAME_MAX
-     */
+    @Override
+    @Transient
+    public String getKey()
+    {
+        return getDisplayName();
+    }
+    
     @Basic
     @Column(
             length = DISPLAY_NAME_MAX,

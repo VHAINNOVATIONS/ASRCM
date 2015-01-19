@@ -1,12 +1,13 @@
 package gov.va.med.srcalc.domain;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.*;
 import static gov.va.med.srcalc.domain.SampleObjects.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -97,6 +98,37 @@ public class CalculationTest
         Calculation.forPatient(dummyPatient()).getVariableGroups();
     }
     
+    /**
+     * Tests running two dummy risk models.
+     */
+    @Test
+    public final void testCalculate()
+    {
+        // Setup
+        // we don't actually need any values in here:
+        final List<Value> values = Collections.emptyList(); 
+        // Create a dummy specialty with two risk models.
+        final Specialty s = sampleThoracicSpecialty();
+        s.getRiskModels().clear();
+        final RiskModel dummyModel1 = mock(RiskModel.class);
+        when(dummyModel1.getDisplayName()).thenReturn("model1");
+        when(dummyModel1.calculate(values)).thenReturn(55.3);
+        s.getRiskModels().add(dummyModel1);
+        final RiskModel dummyModel2 = mock(RiskModel.class);
+        when(dummyModel2.getDisplayName()).thenReturn("model2");
+        when(dummyModel2.calculate(values)).thenReturn(22.3);
+        s.getRiskModels().add(dummyModel2);
+        final Calculation c = Calculation.forPatient(dummyPatient());
+        c.setSpecialty(s);
+        
+        // Behavior verification
+        final TreeMap<String, Double> expectedOutcomes = new TreeMap<>();
+        expectedOutcomes.put("model1", 55.3);
+        expectedOutcomes.put("model2", 22.3);
+        assertEquals(expectedOutcomes, c.calculate(values));
+        assertEquals(expectedOutcomes, c.getOutcomes());
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public final void testCalculateIncompleteValues() throws Exception
     {
