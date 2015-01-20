@@ -71,12 +71,13 @@
                 <script>
 					procedureArray = new Array();
 					<c:forEach var="procedure" items="${variable.procedures}">
-						var entry = ["<input type=\"radio\" name=\"${varPath}\" value=\"${procedure.cptCode}\" data-display-string=\"${procedure}\" " +
-						             "<c:if test="${procedure.cptCode == selectedCpt}" >checked=\"checked\"</c:if>/>",
-						             "${procedure.cptCode}",
-						             "${fn:escapeXml(procedure.longDescription)}",
-						             "${procedure.rvu}"];
-						procedureArray.push(entry);
+					var entry = {
+					        'cptCode': "${procedure.cptCode}",
+					        'displayString': "${procedure}",
+					        'longDescription': "${fn:escapeXml(procedure.longDescription)}",
+					        'rvu': "${procedure.rvu}"
+					};
+                    procedureArray.push(entry);
                     <c:if test="${procedure.cptCode == selectedCpt}" >
                     <c:set var="initialText" value="${procedure}" />
                     </c:if>
