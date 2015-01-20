@@ -113,7 +113,7 @@ public class CalculationController
         mav.addObject("calculation", workflow.getCalculation());
         // Note: "variableEntry" object is automatically added through annotated
         // method parameter.
-        return new ModelAndView(Tile.ENTER_VARIABLES, "calculation", workflow.getCalculation());
+        return mav;
     }
     
     @RequestMapping(value = "/enterVars", method = RequestMethod.POST)
