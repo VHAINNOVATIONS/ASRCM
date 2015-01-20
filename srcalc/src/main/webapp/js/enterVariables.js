@@ -21,19 +21,11 @@ function initProcedureSelect() {
     // We're about to replace the procedureSelectGroup with a jQuery UI
     // dialog. Insert a hidden input and a textual display as the target
     // of the user selection from the dialog.
-    var initialCpt = "";
-    var initialDisplayString = "(none)";
-    // If we have a procedure radio selected already, populate the
-    // hidden input and display field with that info.
-    var initialSelection = getSelectedRadio();
-    if (initialSelection.length) {
-            initialCpt = initialSelection.val();
-            initialDisplayString = initialSelection.data('display-string');
-    }
-    var hiddenInput = $('<input type="hidden" name="' + procedureVarName + '" value="' + initialCpt + '">');
-    var userDisplay = $('<span>' + initialDisplayString + '</span>');
+    // Get the procedure hidden input, if it exists.
+    var hiddenInput = $('.procedureHiddenInput');
+    var userDisplay = $('.procedureDisplay');
     var selectLink = $('<a class="selectProcedureLink" href="#">Select</a>');
-    procedureSelectGroup.after(hiddenInput, userDisplay, ' ', selectLink);
+    procedureSelectGroup.after(' ', selectLink);
     
     function onSelectProcedure() {
             var selectedRadio = getSelectedRadio();

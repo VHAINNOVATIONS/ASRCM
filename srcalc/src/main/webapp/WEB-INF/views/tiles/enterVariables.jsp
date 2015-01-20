@@ -59,27 +59,30 @@
                 </c:forEach>
             </jsp:attribute>
             <jsp:attribute name="procedureFragment">
-                <%--
-                Javascript code below will transform this table into a jQueryUI
-                dialog for a much better user experience.
-                --%>
+                <c:set var="selectedCpt"
+                    value="${variableEntry.dynamicValues[variable.displayName]}" />
+                <c:set var="initialText" value="(none)" />
+                <form:hidden path="${varPath}" cssClass="procedureHiddenInput" />
                 <div class="procedureSelectGroup dialog" title="Select ${variable.displayName}">
                 <table id="procedureTable">
                 <thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></tr></thead>
-                <!-- We're using datatables to provide paging now, but still
-                truncate the list until we improve browser performance. -->
+                </table>
                 
                 <script>
 					procedureArray = new Array();
 					<c:forEach var="procedure" items="${variable.procedures}">
-						var entry = ["<input type=\"radio\" name=\"${varPath}\" value=\"${procedure.cptCode}\" data-display-string=\"${procedure}\"/>",
+						var entry = ["<input type=\"radio\" name=\"${varPath}\" value=\"${procedure.cptCode}\" data-display-string=\"${procedure}\" " +
+						             "<c:if test="${procedure.cptCode == selectedCpt}" >checked=\"checked\"</c:if>/>",
 						             "${procedure.cptCode}",
 						             "${fn:escapeXml(procedure.longDescription)}",
 						             "${procedure.rvu}"];
 						procedureArray.push(entry);
+                    <c:if test="${procedure.cptCode == selectedCpt}" >
+                    <c:set var="initialText" value="${procedure}" />
+                    </c:if>
 					</c:forEach>
                 </script>
-                </table>
+                <span class="procedureDisplay">${initialText}</span>
                 </div>
             </jsp:attribute>
             </srcalc:variableSpecific>
@@ -135,8 +138,6 @@
         	$("div.dataTables_filter input").on('keyup', function () {
         		apiTable.column(1).search('^' + this.value, true, false).draw();
         	});
-        	// Use the CPT code for the proper radio button and set it to checked
-        	$("input:radio[value='${variableEntry.dynamicValues['Procedure']}']").prop("checked",true);
         	// The datatable needs to be initialized first right now in order 
 	    	initEnterVariablesPage();
         });
