@@ -20,9 +20,16 @@ import gov.va.med.srcalc.util.NoNullSet;
 public final class DerivedTerm extends ModelTerm
 {
     private List<ValueMatcher> fMatchers;
-    private String fSummandExpression;
-    private Expression fParsedExpression;
+    private Expression fSummandExpression;
     
+    /**
+     * Constructs an instance.
+     * @param coefficient
+     * @param matchers
+     * @param summandExpression
+     * @throws NullPointerException if any argument is null
+     * @throws IllegalArgumentException if the given expression is not parsable
+     */
     public DerivedTerm(
             final float coefficient,
             final List<ValueMatcher> matchers,
@@ -30,9 +37,16 @@ public final class DerivedTerm extends ModelTerm
     {
         super(coefficient);
         fMatchers = Objects.requireNonNull(matchers);
-        fSummandExpression = Objects.requireNonNull(summandExpression);
         final ExpressionParser parser = new SpelExpressionParser();
-        fParsedExpression = parser.parseExpression(summandExpression);
+        try
+        {
+            fSummandExpression = parser.parseExpression(
+                    Objects.requireNonNull(summandExpression));
+        }
+        catch (final ParseException ex)
+        {
+            throw new IllegalArgumentException("Could not parse given expression.", ex);
+        }
     }
     
     /**
@@ -51,7 +65,7 @@ public final class DerivedTerm extends ModelTerm
      */
     public String getSummandExpression()
     {
-        return fSummandExpression;
+        return fSummandExpression.getExpressionString();
     }
 
     @Override
@@ -68,24 +82,15 @@ public final class DerivedTerm extends ModelTerm
     @Override
     public double getSummand(final Map<Variable, Value> inputValues)
     {
-        final ExpressionParser parser = new SpelExpressionParser();
-        
         // Match all the values
         final HashMap<String, Object> matchedValues = new HashMap<>();
         StandardEvaluationContext context = new StandardEvaluationContext();
         for (final ValueMatcher condition : fMatchers)
         {
+            // Will return null if there is no value for the given variable.
             final Value matchedValue = inputValues.get(condition.getVariable());
-            if (matchedValue == null)
-            {
-                // No match: return 0
-                return 0.0;
-            }
 
-            final Expression conditionExpression =
-                    parser.parseExpression(condition.getBooleanExpression());
-            context.setVariables(matchedValues);
-            if (conditionExpression.getValue(context, matchedValue, Boolean.class))
+            if (matchedValue != null && condition.evaluate(context, matchedValue))
             {
                 matchedValues.put(matchedValue.getVariable().getKey(), matchedValue);
             }
@@ -94,13 +99,14 @@ public final class DerivedTerm extends ModelTerm
                 // No match: return 0
                 return 0.0;
             }
+            
+            // Update the evaluation context with the matched values so far.
+            context.setVariables(matchedValues);
         }
         
         // We matched them all: now just calculate the summand.
-        context.setVariables(matchedValues);
         context.setVariable("coefficient", getCoefficient());
-        
-        return fParsedExpression.getValue(context, Double.class);
+        return fSummandExpression.getValue(context, Double.class);
     }
     
     @Override
@@ -118,6 +124,8 @@ public final class DerivedTerm extends ModelTerm
             return
                     baseEquals(other) &&
                     this.getMatchers().equals(other.getMatchers()) &&
+                    // Note that getSummandExpression() returns the String, not
+                    // the Expression object itself.
                     this.getSummandExpression().equals(other.getSummandExpression());
         }
         else

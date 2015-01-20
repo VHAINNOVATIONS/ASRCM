@@ -11,6 +11,8 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
+import org.springframework.expression.Expression;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 public class DerivedTermTest
 {
@@ -61,7 +63,12 @@ public class DerivedTermTest
     @Test
     public final void testEquals()
     {
+        final SpelExpressionParser parser = new SpelExpressionParser();
+        final Expression e1 = parser.parseExpression("true");
+        final Expression e2 = parser.parseExpression("false");
         EqualsVerifier.forClass(DerivedTerm.class)
+            // Provide expression instances since Expression is an interface
+            .withPrefabValues(Expression.class, e1, e2)
             // The class actually provides an immutable interface.
             .suppress(Warning.NONFINAL_FIELDS)
             // Does not permit nulls.
