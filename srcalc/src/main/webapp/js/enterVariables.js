@@ -28,7 +28,7 @@ function initProcedureSelect() {
     var initialSelection = getSelectedRadio();
     if (initialSelection.length) {
             initialCpt = initialSelection.val();
-            initialDisplayString = initialSelection.attr('alt');
+            initialDisplayString = initialSelection.data('display-string');
     }
     var hiddenInput = $('<input type="hidden" name="' + procedureVarName + '" value="' + initialCpt + '">');
     var userDisplay = $('<span>' + initialDisplayString + '</span>');
@@ -38,7 +38,7 @@ function initProcedureSelect() {
     function onSelectProcedure() {
             var selectedRadio = getSelectedRadio();
             hiddenInput.val(selectedRadio.val());
-            userDisplay.html(selectedRadio.attr('alt'));
+            userDisplay.html(selectedRadio.data('display-string'));
             procedureSelectDialog.dialog("close");
     }
     

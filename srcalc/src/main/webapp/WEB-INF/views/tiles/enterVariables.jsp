@@ -72,11 +72,10 @@
                 <script>
 					procedureArray = new Array();
 					<c:forEach var="procedure" items="${variable.procedures}">
-						var entry = new Array();
-						entry.push("<input type=\"radio\" name=\"${varPath}\" value=\"${procedure.cptCode}\" alt=\"${procedure}\"/>");
-						entry.push("${procedure.cptCode}");
-						entry.push("${fn:escapeXml(procedure.longDescription)}");
-						entry.push("${procedure.rvu}");
+						var entry = ["<input type=\"radio\" name=\"${varPath}\" value=\"${procedure.cptCode}\" data-display-string=\"${procedure}\"/>",
+						             "${procedure.cptCode}",
+						             "${fn:escapeXml(procedure.longDescription)}",
+						             "${procedure.rvu}"];
 						procedureArray.push(entry);
 					</c:forEach>
                 </script>
@@ -106,9 +105,11 @@
         <script type="text/javascript">
         $(document).ready(function(){
         	// Set up the properties for the procedures DataTable
-	    	$("#procedureTable").dataTable({
+	    	var proceduresTable = $("#procedureTable").dataTable({
 	    		"data": procedureArray,
-	    		"aoColumnDefs":[
+	    		"retrieve": true,
+	    		"deferRender": true,
+	    		"columnDefs":[
 				//Make the radio button column smaller so that IE
 				// will adjust column widths properly.
 	    		{
@@ -125,8 +126,17 @@
 	    			"aTargets": [0]
 	    		}]
 	    	});
+        	// Get a DataTables API instance
+        	var apiTable = proceduresTable.dataTable().api();
+        	// Unbind the default global search and keyup
+        	$("div.dataTables_filter input").unbind();
+        	//Add a "starts with" regex to the global search
+        	// Enable regex search and disable smart searching
+        	$("div.dataTables_filter input").on('keyup', function () {
+        		apiTable.column(1).search('^' + this.value, true, false).draw();
+        	});
         	// Use the CPT code for the proper radio button and set it to checked
-        	$("input:radio[value='${selectedProcedure}']").attr("checked",true);
+        	$("input:radio[value='${variableEntry.dynamicValues['Procedure']}']").prop("checked",true);
         	// The datatable needs to be initialized first right now in order 
 	    	initEnterVariablesPage();
         });
