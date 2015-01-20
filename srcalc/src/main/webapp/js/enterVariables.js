@@ -1,5 +1,41 @@
 /* JavaScript code just for the enterVariables page */
 
+$(document).ready(function(){
+	// Set up the properties for the procedures DataTable
+	var proceduresTable = $("#procedureTable").dataTable({
+		"data": procedureArray,
+		"retrieve": true,
+		"deferRender": true,
+		"columnDefs":[
+		//Make the radio button column smaller so that IE
+		// will adjust column widths properly.
+		{
+			"width": "10%",
+			"targets": [0]
+		},
+		// Make the select column, description,  and RVU unsearchable
+		{
+			"bSearchable": false, 
+			"aTargets": [0,2,3]
+		}, {
+			// Make the select button unsortable
+			"bSortable": false,
+			"aTargets": [0]
+		}]
+	});
+	// Get a DataTables API instance
+	var apiTable = proceduresTable.dataTable().api();
+	// Unbind the default global search and keyup
+	$("div.dataTables_filter input").unbind();
+	//Add a "starts with" regex to the global search
+	// Enable regex search and disable smart searching
+	$("div.dataTables_filter input").on('keyup', function () {
+		apiTable.column(1).search('^' + this.value, true, false).draw();
+	});
+	// The datatable needs to be initialized first right now in order 
+	initEnterVariablesPage();
+});
+
 /**
  * Moves the procedureSelectGroup table into a jQuery UI dialog.
  */
@@ -8,9 +44,6 @@ function initProcedureSelect() {
     // on the page.
 
     var procedureSelectGroup = $(".procedureSelectGroup");
-    // Determine the variable name from the first radio button.
-    var procedureVarName =
-            procedureSelectGroup.find('input[type=radio]').first().attr('name');
     
     // Returns a jQuery object wrapping the selected procedure radio
     // button. (May be empty for no selection.)
@@ -24,8 +57,6 @@ function initProcedureSelect() {
     // Get the procedure hidden input, if it exists.
     var hiddenInput = $('.procedureHiddenInput');
     var userDisplay = $('.procedureDisplay');
-    var selectLink = $('<a class="selectProcedureLink" href="#">Select</a>');
-    procedureSelectGroup.after(' ', selectLink);
     
     function onSelectProcedure() {
             var selectedRadio = getSelectedRadio();
@@ -43,7 +74,7 @@ function initProcedureSelect() {
             }
     });
     
-    selectLink.on('click', function() {
+    $('.selectProcedureLink').on('click', function() {
     var windowHeight = $(window).height();
     // Make the height 90% of the current window height.
     procedureSelectDialog.dialog("option", "height", windowHeight * 0.9);
