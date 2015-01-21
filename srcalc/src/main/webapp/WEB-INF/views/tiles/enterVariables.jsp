@@ -65,7 +65,7 @@
                 <form:hidden path="${varPath}" cssClass="procedureHiddenInput" />
                 <div class="procedureSelectGroup dialog" title="Select ${variable.displayName}">
                 <table id="procedureTable">
-                <thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></tr></thead>
+                <thead><tr><th>CPT Code</th><th>Description</th><th>RVU</th><th>Select</th></tr></thead>
                 </table>
                 
                 <script>

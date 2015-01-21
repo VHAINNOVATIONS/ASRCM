@@ -1,5 +1,20 @@
 /* JavaScript code just for the enterVariables page */
 
+// We're about to replace the procedureSelectGroup with a jQuery UI
+// dialog. Insert a hidden input and a textual display as the target
+// of the user selection from the dialog.
+// Get the procedure hidden input, if it exists.
+function onSelectProcedure(cptCode, displayString) {
+	// Get the selected button's value and change the display string
+	var hiddenInput = $('.procedureHiddenInput');
+    hiddenInput.val(cptCode);
+    var userDisplay = $('.procedureDisplay');
+    userDisplay.html(displayString);
+    $(".procedureSelectGroup").dialog("close");
+    // Return false so there is no redirect after clicking
+    return false;
+}
+
 /**
  * Moves the procedureSelectGroup table into a jQuery UI dialog.
  */
@@ -11,68 +26,47 @@ function initProcedureSelect() {
     var hiddenInput = $('.procedureHiddenInput');
     var varName = hiddenInput.attr('name');
     var selectedProcedure = hiddenInput.val();
-
+    var procedureSelectDialog = $(".procedureSelectGroup").dialog({
+        autoOpen: false,
+        width: 700,   // body with is 768px
+        modal: true
+    });
+    
 	// Set up the properties for the procedures DataTable
 	var proceduresTable = $("#procedureTable").dataTable({
 		"data": procedureArray,
 		"retrieve": true,
 		"deferRender": true,
 		columns: [
+		          { data: 'cptCode' },
+		          { data: 'longDescription', searchable: false },
+		          { data: 'rvu', searchable: false },
 		          {
 		              data: 'cptCode',
 		              render: function (data, type, row) {
-		                  return '<input type="radio" name="' + varName +
+		                  return '<a href="#" class="btn-link" name="' + varName +
                               '" value="' + row.cptCode +
                               '" data-display-string="' + row.displayString + '" ' +
-                              ((row.cptCode == selectedProcedure) ? 'checked="checked"' : '') +
-                              '>';
+                              'onclick="onSelectProcedure(\''+ row.cptCode +'\',\'' + row.displayString +'\')">Select</a>';
 		              },
-		              width: '10%', searchable: false, sortable: false },
-		          { data: 'cptCode' },
-		          { data: 'longDescription', searchable: false },
-		          { data: 'rvu', searchable: false }
+		              width: '10%', searchable: false, sortable: false }
               ]
 	});
 	// Get a DataTables API instance
 	var apiTable = proceduresTable.dataTable().api();
 	// Unbind the default global search and keyup
 	$("div.dataTables_filter input").unbind();
-	//Add a "starts with" regex to the global search
+	// Add a "starts with" regex to the global search
 	// Enable regex search and disable smart searching
 	$("div.dataTables_filter input").on('keyup', function () {
 		apiTable.column(1).search('^' + this.value, true, false).draw();
 	});
-
-
-    var procedureSelectGroup = $(".procedureSelectGroup");
-    
-    // Returns a jQuery object wrapping the selected procedure radio
-    // button. (May be empty for no selection.)
-    function getSelectedRadio() {
-            return procedureSelectGroup.find('input[type=radio]:checked');
-    }
-    
-    // We're about to replace the procedureSelectGroup with a jQuery UI
-    // dialog. Insert a hidden input and a textual display as the target
-    // of the user selection from the dialog.
-    // Get the procedure hidden input, if it exists.
-    var userDisplay = $('.procedureDisplay');
-    
-    function onSelectProcedure() {
-            var selectedRadio = getSelectedRadio();
-            hiddenInput.val(selectedRadio.val());
-            userDisplay.html(selectedRadio.data('display-string'));
-            procedureSelectDialog.dialog("close");
-    }
-    
-    var procedureSelectDialog = procedureSelectGroup.dialog({
-            autoOpen: false,
-            width: 700,   // body with is 768px
-            modal: true,
-            buttons: {
-                    "Select": onSelectProcedure
-            }
-    });
+	
+//    var procedureSelectDialog = $(".procedureSelectGroup").dialog({
+//            autoOpen: false,
+//            width: 700,   // body with is 768px
+//            modal: true
+//    });
     
     $('.selectProcedureLink').on('click', function() {
     var windowHeight = $(window).height();
