@@ -230,8 +230,12 @@ form.attributeEditForm td.attributeName {
     border-bottom: 1px solid #ccc;
 }
 
-a.selectProcedureLink {
+a.openProcedureSelect {
 	font-size: 0.9em;
+}
+
+.loadingText {
+	color: #aaa;
 }
 
 

@@ -43,7 +43,8 @@ public class SpecialtyDao
         final Specialty s = (Specialty)q.uniqueResult();
         // Kludge until I figure out how to get Hibernate to automatically load
         // the procedures for a ProcedureVariable.
-        ProcedureLoaderVisitor visitor = new ProcedureLoaderVisitor(getCurrentSession());
+        ProcedureLoaderVisitor visitor =
+                new ProcedureLoaderVisitor(new ProcedureDao(fSessionFactory));
         for (Variable var : s.getModelVariables())
         {
             try

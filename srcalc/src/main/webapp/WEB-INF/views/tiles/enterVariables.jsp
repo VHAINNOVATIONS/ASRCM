@@ -59,33 +59,14 @@
                 </c:forEach>
             </jsp:attribute>
             <jsp:attribute name="procedureFragment">
-                <c:set var="selectedCpt"
-                    value="${variableEntry.dynamicValues[variable.displayName]}" />
-                <c:set var="initialText" value="(none)" />
                 <form:hidden path="${varPath}" cssClass="procedureHiddenInput" />
                 <div class="procedureSelectGroup dialog" title="Select ${variable.displayName}">
                 <table id="procedureTable">
                 <thead><tr><th>CPT Code</th><th>Description</th><th>RVU</th><th>Select</th></tr></thead>
                 </table>
-                
-                <script>
-					procedureArray = new Array();
-					<c:forEach var="procedure" items="${variable.procedures}">
-					var entry = {
-					        'cptCode': "${procedure.cptCode}",
-					        'displayString': "${procedure}",
-					        'longDescription': "${fn:escapeXml(procedure.longDescription)}",
-					        'rvu': "${procedure.rvu}"
-					};
-                    procedureArray.push(entry);
-                    <c:if test="${procedure.cptCode == selectedCpt}" >
-                    <c:set var="initialText" value="${procedure}" />
-                    </c:if>
-					</c:forEach>
-                </script>
                 </div>
-                <span class="procedureDisplay">${initialText}</span>
-                <a class="selectProcedureLink" href="#">Select</a>
+                <%-- This text will be replaced by Javascript. --%>
+                <span class="procedureDisplay"><span class="loadingText">Loading...</span></span>
             </jsp:attribute>
             </srcalc:variableSpecific>
             <%-- Display any errors immediately following the input control. --%>

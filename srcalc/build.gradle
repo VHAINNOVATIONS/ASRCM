@@ -59,13 +59,13 @@ dependencies {
 	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: springSecurityVersion
 	compile 'joda-time:joda-time:2.3'
 	compile 'org.apache.tiles:tiles-jsp:2.2.2'
-	compile 'org.webjars:datatables:1.10.4'
 
     runtime 'ch.qos.logback:logback-classic:1.1.2'
     // VistALink has a hard dependency on log4j.
     runtime group: 'org.slf4j', name: 'log4j-over-slf4j', version: slf4jVersion
     // Spring-Security XML namespace
 	runtime group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
+	runtime 'com.fasterxml.jackson.core:jackson-databind:2.3.5' 
     
     /* Test dependencies */
 
