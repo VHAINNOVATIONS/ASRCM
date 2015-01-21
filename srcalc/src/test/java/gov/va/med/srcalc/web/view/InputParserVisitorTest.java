@@ -250,6 +250,7 @@ public class InputParserVisitorTest
         final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
+        // Clear out the default value.
         variableEntry.getDynamicValues().put(var.getKey(), "");
         
         final BeanPropertyBindingResult errors =
