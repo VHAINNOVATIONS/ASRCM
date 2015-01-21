@@ -37,6 +37,7 @@ function initProcedureSelect(procedures) {
 	// Set up the properties for the procedures DataTable
 	var proceduresTable = $("#procedureTable").dataTable({
 	    data: procedures,
+	    ordering: false,   // disable until we fix the images
 		"deferRender": true,
 		columns: [
 		          { data: 'cptCode' },
