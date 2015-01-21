@@ -54,6 +54,8 @@ function initProcedureSelect(procedures) {
 	});
 	
 	$("#procedureTable").on('click', 'a', function(event){
+	    event.preventDefault();  // Don't navigate.
+
 		var elem = event.target || event.srcElement;
 	    selectProcedure($(elem).data('cpt-code'), $(elem).data('display-string'));
 	});
@@ -83,6 +85,8 @@ function initProcedureSelect(procedures) {
     var openProcedureSelect =
         $('<a class="openProcedureSelect" href="#">Select</a>');
     openProcedureSelect.on('click', function(event) {
+        event.preventDefault();
+
         var windowHeight = $(window).height();
         // Make the height 90% of the current window height.
         procedureSelectDialog.dialog("option", "height", windowHeight * 0.9);
