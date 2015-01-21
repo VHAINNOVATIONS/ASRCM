@@ -37,7 +37,7 @@ function initProcedureSelect(procedures) {
 	// Set up the properties for the procedures DataTable
 	var proceduresTable = $("#procedureTable").dataTable({
 	    data: procedures,
-		"deferRender": true,
+		deferRender: true,
 		columns: [
 		          { data: 'cptCode' },
 		          { data: 'longDescription', searchable: false },
