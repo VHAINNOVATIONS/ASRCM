@@ -1,20 +1,5 @@
 /* JavaScript code just for the enterVariables page */
 
-// We're about to replace the procedureSelectGroup with a jQuery UI
-// dialog. Insert a hidden input and a textual display as the target
-// of the user selection from the dialog.
-// Get the procedure hidden input, if it exists.
-function selectProcedure(cptCode, displayString) {
-	// Get the selected button's value and change the display string
-	var hiddenInput = $('.procedureHiddenInput');
-    hiddenInput.val(cptCode);
-    var userDisplay = $('.procedureDisplay');
-    userDisplay.html(displayString);
-    $(".procedureSelectGroup").dialog("close");
-    // Return false so there is no redirect after clicking
-    return false;
-}
-
 /**
  * Moves the procedureSelectGroup table into a jQuery UI dialog.
  */
@@ -26,12 +11,25 @@ function initProcedureSelect() {
     var hiddenInput = $('.procedureHiddenInput');
     var varName = hiddenInput.attr('name');
     var selectedProcedure = hiddenInput.val();
+    // We're about to replace the procedureSelectGroup with a jQuery UI
+	// dialog. 
     var procedureSelectDialog = $(".procedureSelectGroup").dialog({
         autoOpen: false,
         width: 700,   // body with is 768px
         modal: true
     });
     
+	// Insert a hidden input and a textual display as the target
+	// of the user selection from the dialog.
+	// Get the procedure hidden input, if it exists.
+	function selectProcedure(cptCode, displayString) {
+		// Get the selected button's value and change the display string
+	    hiddenInput.val(cptCode);
+	    var userDisplay = $('.procedureDisplay');
+	    userDisplay.html(displayString);
+	    procedureSelectDialog.dialog("close");
+	}
+
 	// Set up the properties for the procedures DataTable
 	var proceduresTable = $("#procedureTable").dataTable({
 		"data": procedureArray,
