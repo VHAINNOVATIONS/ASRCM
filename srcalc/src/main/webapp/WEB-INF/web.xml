@@ -37,6 +37,17 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>	
+	
+    <filter>
+        <filter-name>etagFilter</filter-name>
+        <filter-class>org.springframework.web.filter.ShallowEtagHeaderFilter</filter-class>
+    </filter>
+    
+    <!-- Allow clients to cache any pages that they already have verbatim. -->
+    <filter-mapping>
+        <filter-name>etagFilter</filter-name>
+        <servlet-name>srcalc</servlet-name>
+    </filter-mapping>
 
 	<!-- Declare that we depend on the jdbc/srcalcDB resource supplied by the
 	     container. -->
