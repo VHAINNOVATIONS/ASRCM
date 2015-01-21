@@ -4,7 +4,7 @@
 // dialog. Insert a hidden input and a textual display as the target
 // of the user selection from the dialog.
 // Get the procedure hidden input, if it exists.
-function onSelectProcedure(cptCode, displayString) {
+function selectProcedure(cptCode, displayString) {
 	// Get the selected button's value and change the display string
 	var hiddenInput = $('.procedureHiddenInput');
     hiddenInput.val(cptCode);
@@ -44,14 +44,19 @@ function initProcedureSelect() {
 		          {
 		              data: 'cptCode',
 		              render: function (data, type, row) {
-		                  return '<a href="#" class="btn-link" name="' + varName +
-                              '" value="' + row.cptCode +
-                              '" data-display-string="' + row.displayString + '" ' +
-                              'onclick="onSelectProcedure(\''+ row.cptCode +'\',\'' + row.displayString +'\')">Select</a>';
+		                  return '<a href="#" class="btn-link"' +
+                              '" data-cpt-code="' + row.cptCode +
+                              '" data-display-string="' + row.displayString + '">Select</a>';
 		              },
 		              width: '10%', searchable: false, sortable: false }
               ]
 	});
+	
+	$("#procedureTable").on('click', 'a', function(event){
+		var elem = event.target || event.srcElement;
+	    selectProcedure($(elem).data('cpt-code'), $(elem).data('display-string'));
+	});
+	
 	// Get a DataTables API instance
 	var apiTable = proceduresTable.dataTable().api();
 	// Unbind the default global search and keyup
@@ -59,15 +64,9 @@ function initProcedureSelect() {
 	// Add a "starts with" regex to the global search
 	// Enable regex search and disable smart searching
 	$("div.dataTables_filter input").on('keyup', function () {
-		apiTable.column(1).search('^' + this.value, true, false).draw();
+		apiTable.column(0).search('^' + this.value, true, false).draw();
 	});
-	
-//    var procedureSelectDialog = $(".procedureSelectGroup").dialog({
-//            autoOpen: false,
-//            width: 700,   // body with is 768px
-//            modal: true
-//    });
-    
+
     $('.selectProcedureLink').on('click', function() {
     var windowHeight = $(window).height();
     // Make the height 90% of the current window height.
