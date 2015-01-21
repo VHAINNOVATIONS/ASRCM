@@ -107,4 +107,9 @@
         <script type="text/javascript" src="${enterVariablesJsUrl}"></script>
         <c:url var="dataTablesUrl" value="/js/vendor/jquery.dataTables.min.js"/>
         <script type="text/javascript" src="${dataTablesUrl}"></script>
+        <script type="text/javascript">
+        $(document).ready(function(){
+                initEnterVariablesPage();
+        });
+        </script>
         </form:form>
