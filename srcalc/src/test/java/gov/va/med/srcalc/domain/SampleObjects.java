@@ -119,7 +119,8 @@ public class SampleObjects
                 sampleAgeVariable(),
                 sampleGenderVariable(),
                 dnrVariable(),
-                functionalStatusVariable());
+                functionalStatusVariable(),
+                wbcVariable());
     }
 
     /**
