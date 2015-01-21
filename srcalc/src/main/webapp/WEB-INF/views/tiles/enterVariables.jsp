@@ -59,23 +59,32 @@
                 </c:forEach>
             </jsp:attribute>
             <jsp:attribute name="procedureFragment">
-                <%--
-                Javascript code below will transform this table into a jQueryUI
-                dialog for a much better user experience.
-                --%>
+                <c:set var="selectedCpt"
+                    value="${variableEntry.dynamicValues[variable.displayName]}" />
+                <c:set var="initialText" value="(none)" />
+                <form:hidden path="${varPath}" cssClass="procedureHiddenInput" />
                 <div class="procedureSelectGroup dialog" title="Select ${variable.displayName}">
                 <table id="procedureTable">
                 <thead><tr><th>Select</th><th>CPT Code</th><th>Description</th><th>RVU</th></tr></thead>
-                <!-- We're using datatables to provide paging now, but still
-                truncate the list until we improve browser performance. -->
-                <c:forEach var="procedure" items="${srcalc:truncateList(variable.procedures, 500)}">
-                <tr>
-                <td class="selectRadio">
-                <form:radiobutton path="${varPath}" value="${procedure.cptCode}" data-display-string="${procedure}"/></td>
-                <td>${procedure.cptCode}</td><td>${procedure.longDescription}</td><td>${procedure.rvu}</td></tr>
-                </c:forEach>
                 </table>
+                
+                <script>
+					procedureArray = new Array();
+					<c:forEach var="procedure" items="${variable.procedures}">
+						var entry = ["<input type=\"radio\" name=\"${varPath}\" value=\"${procedure.cptCode}\" data-display-string=\"${procedure}\" " +
+						             "<c:if test="${procedure.cptCode == selectedCpt}" >checked=\"checked\"</c:if>/>",
+						             "${procedure.cptCode}",
+						             "${fn:escapeXml(procedure.longDescription)}",
+						             "${procedure.rvu}"];
+						procedureArray.push(entry);
+                    <c:if test="${procedure.cptCode == selectedCpt}" >
+                    <c:set var="initialText" value="${procedure}" />
+                    </c:if>
+					</c:forEach>
+                </script>
                 </div>
+                <span class="procedureDisplay">${initialText}</span>
+                <a class="selectProcedureLink" href="#">Select</a>
             </jsp:attribute>
             </srcalc:variableSpecific>
             <%-- Display any errors immediately following the input control. --%>
@@ -97,28 +106,4 @@
         <script type="text/javascript" src="${enterVariablesJsUrl}"></script>
         <c:url var="dataTablesUrl" value="/js/vendor/jquery.dataTables.min.js"/>
         <script type="text/javascript" src="${dataTablesUrl}"></script>
-        <script type="text/javascript">
-        $(document).ready(function(){
-        	initEnterVariablesPage();
-        	// Set up the properties for the procedures DataTable
-	    	var table = $("#procedureTable").dataTable( {
-	    		// Make the radio button column smaller so that IE
-	    		// will adjust column widths properly.
-	    		"aoColumnDefs":[
-	    		{
-	    			"width": "10%",
-	    			"targets": [0]
-	    		},
-	    		// Make the select column,  and RVU unsearchable
-	    		{
-	    			"bSearchable": false, 
-	    			"aTargets": [0,2,3]
-	    		}, {
-	    			// Make the select button unsortable
-	    			"bSortable": false,
-	    			"aTargets": [0]
-	    		}]
-	    	});
-        });
-        </script>
         </form:form>
