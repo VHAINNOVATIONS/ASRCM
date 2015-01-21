@@ -37,7 +37,6 @@ function initProcedureSelect(procedures) {
 	// Set up the properties for the procedures DataTable
 	var proceduresTable = $("#procedureTable").dataTable({
 	    data: procedures,
-	    ordering: false,   // disable until we fix the images
 		"deferRender": true,
 		columns: [
 		          { data: 'cptCode' },
@@ -110,15 +109,18 @@ function initEnterVariablesPage() {
         initProcedureSelect(procedures);
     });
     
-    // If an attributeValue contains both a numerical input and a radio button
-    // to select the numerical input, automatically check the radio button when
-    // the user changes the numerical value.
+    // Tie the numerical text box state to the state of the numerical radio.
     var numericalValueContainers =
         $('.attributeValue').has('input.numerical').has('input.numericalRadio');
-    var numericalInputs = numericalValueContainers.find('input.numerical');
-    // The 'input' event is new in HTML5 and supported by IE9+.
-    numericalInputs.on('input', function() {
-        var radio = $(this).closest('.attributeValue').find('input.numericalRadio');
-        radio.attr('checked', 'checked');
-    })
+    var radios = numericalValueContainers.find('input[type=radio]');
+    radios.on('change', function() {
+        var container = $(this).closest('.attributeValue');
+        var radio = container.find('input.numericalRadio');
+        var numericalInput = container.find('input.numerical');
+        if (radio.prop('checked')) {
+            numericalInput.removeAttr('disabled');
+        } else {
+            numericalInput.attr('disabled', 'disabled');
+        }
+    });
 }

@@ -22,12 +22,6 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
 {
     private static final Logger fLogger = LoggerFactory.getLogger(InputParserVisitor.class);
     
-    /**
-     * A special discrete category value indicating that the user has specified
-     * a numerical input.
-     */
-    public static final String SPECIAL_NUMERICAL = "numerical";
-
     private final VariableEntry fVariableEntry;
     private final Errors fErrors;
     private final ArrayList<Value> fValues;
@@ -200,7 +194,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
             return;
         }
         // Special case: numerical
-        if (categoryName.equals(SPECIAL_NUMERICAL))
+        if (categoryName.equals(VariableEntry.SPECIAL_NUMERICAL))
         {
             final String numericalName = VariableEntry.getNumericalInputName(variable);
             final String stringValue = fVariableEntry.getDynamicValues().get(

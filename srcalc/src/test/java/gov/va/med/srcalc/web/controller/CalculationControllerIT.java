@@ -7,7 +7,7 @@ import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
 import gov.va.med.srcalc.web.controller.CalculationController;
-import gov.va.med.srcalc.web.view.InputParserVisitor;
+import gov.va.med.srcalc.web.view.VariableEntry;
 import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
 
 import org.junit.*;
@@ -26,9 +26,9 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Integration Test for {@link CalculationController}. Note that we only
- * define Integration Tests for controllers because unit tests are of little
- * value.
+ * Integration Test for {@link CalculationController} and {@link
+ * EnterVariablesController}. Note that we only define Integration Tests for
+ * controllers because unit tests are of little value.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.
@@ -100,7 +100,7 @@ public class CalculationControllerIT extends IntegrationTest
         varParams.add("BMI", "18.7");
         varParams.add("Preop Pneumonia", "true");
         varParams.add("Alkaline Phosphatase", ">125mU/ml");
-        varParams.add("BUN", InputParserVisitor.SPECIAL_NUMERICAL);
+        varParams.add("BUN", VariableEntry.SPECIAL_NUMERICAL);
         varParams.add("BUN_numerical", "15.0");
         
         final MockHttpServletRequestBuilder request =
