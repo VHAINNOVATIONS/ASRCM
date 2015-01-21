@@ -56,6 +56,16 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.webjars/datatables/1.10.4/9169fdafda187b81ceb06713bc1094bc94c96f80/datatables-1.10.4-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.webjars/datatables/1.10.4/4fdb6e28e2d8488b5d0252ee13ddedc269c05033/datatables-1.10.4.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.3.5/b80429503e7eba459838a28abe2ef6c40656b8fa/jackson-databind-2.3.5-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.3.5/bcf2820b8e4150b3dac1f74159718340efbfb615/jackson-databind-2.3.5.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/javax/javaee-web-api/7.0/77d008d85d67de12f821827787d215ff68612407/javaee-web-api-7.0-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/javax/javaee-web-api/7.0/b1fce45ba94108ebf7e1cace6427ec8761cabec1/javaee-web-api-7.0.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
@@ -232,6 +242,21 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-template/2.2.2/6da89b5c327d183a73ffc06e6b6a2cbdcc2e8a5f/tiles-template-2.2.2-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-template/2.2.2/52cb821841e4053beeee53bec8c4374cf42d2e68/tiles-template-2.2.2.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.webjars/jquery/1.11.1/7ec1bd12b61dc58ee599ff925ac4141f19b94cbc/jquery-1.11.1-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/org.webjars/jquery/1.11.1/195eda53ac8beba7bff08f9919b48c954c858590/jquery-1.11.1.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.3.0/cc964b08f8d37e3d8465de923b9e6321107a5429/jackson-annotations-2.3.0-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.3.0/f5e853a20b60758922453d56f9ae1e64af5cb3da/jackson-annotations-2.3.0.jar" exported="true">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/david/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.3.5/2423135ef65252308dfd44e727368f8b18306d3d/jackson-core-2.3.5-sources.jar" kind="lib" path="C:/Users/david/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.3.5/ec2c55cae785826d9df494a21203e44bd743c8c0/jackson-core-2.3.5.jar" exported="true">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>

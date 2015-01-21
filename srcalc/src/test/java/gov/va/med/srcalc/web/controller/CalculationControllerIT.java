@@ -2,9 +2,7 @@ package gov.va.med.srcalc.web.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
@@ -155,5 +153,14 @@ public class CalculationControllerIT extends IntegrationTest
             // Note no variable parameters specified.
             .andExpect(model().attributeHasErrors("variableEntry"))
             .andExpect(status().is(200));
+    }
+    
+    @Test
+    public void getProcedures() throws Exception
+    {
+        fMockMvc.perform(get("/procedures").accept("application/json"))
+            .andExpect(status().is(200))
+            .andExpect(content().contentType("application/json"))
+            .andExpect(content().string(startsWith("["))); // a JSON array
     }
 }
