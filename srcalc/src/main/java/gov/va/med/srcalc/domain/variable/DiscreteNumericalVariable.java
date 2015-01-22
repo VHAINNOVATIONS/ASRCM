@@ -185,6 +185,7 @@ public class DiscreteNumericalVariable extends AbstractNumericalVariable impleme
             fOption = Objects.requireNonNull(option);
         }
         
+        @Transient
         public boolean isWnl()
         {
         	return this.getOption().getValue().equalsIgnoreCase("WNL");
