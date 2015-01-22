@@ -3,60 +3,96 @@
 /**
  * Moves the procedureSelectGroup table into a jQuery UI dialog.
  */
-function initProcedureSelect() {
+function initProcedureSelect(procedures) {
     // Note that this code assumes there is only one procedureSelectGroup
     // on the page.
+    
+    // Returns the shorter display string for a procedure.
+    function makeDisplayString(procedure) {
+        return procedure.cptCode + ' - ' +
+            procedure.shortDescription + ' - (' + procedure.rvu + ')';
+    }
+    
+    // Lookup the procedure variable name and the initially-selected procedure.
+    var hiddenInput = $('.procedureHiddenInput');
+    var userDisplay = $('.procedureDisplay');
 
-    var procedureSelectGroup = $(".procedureSelectGroup");
-    // Determine the variable name from the first radio button.
-    var procedureVarName =
-            procedureSelectGroup.find('input[type=radio]').first().attr('name');
-    
-    // Returns a jQuery object wrapping the selected procedure radio
-    // button. (May be empty for no selection.)
-    function getSelectedRadio() {
-            return procedureSelectGroup.find('input[type=radio]:checked');
-    }
-    
-    // We're about to replace the procedureSelectGroup with a jQuery UI
-    // dialog. Insert a hidden input and a textual display as the target
-    // of the user selection from the dialog.
-    var initialCpt = "";
-    var initialDisplayString = "(none)";
-    // If we have a procedure radio selected already, populate the
-    // hidden input and display field with that info.
-    var initialSelection = getSelectedRadio();
-    if (initialSelection.length) {
-            initialCpt = initialSelection.val();
-            initialDisplayString = initialSelection.data('display-string');
-    }
-    var hiddenInput = $('<input type="hidden" name="' + procedureVarName + '" value="' + initialCpt + '">');
-    var userDisplay = $('<span>' + initialDisplayString + '</span>');
-    var selectLink = $('<a class="selectProcedureLink" href="#">Select</a>');
-    procedureSelectGroup.after(hiddenInput, userDisplay, ' ', selectLink);
-    
-    function onSelectProcedure() {
-            var selectedRadio = getSelectedRadio();
-            hiddenInput.val(selectedRadio.val());
-            userDisplay.html(selectedRadio.data('display-string'));
-            procedureSelectDialog.dialog("close");
-    }
-    
-    var procedureSelectDialog = procedureSelectGroup.dialog({
-            autoOpen: false,
-            width: 700,   // body with is 768px
-            modal: true,
-            buttons: {
-                    "Select": onSelectProcedure
-            }
+    // Make the procedureSelectGroup with a jQuery UI dialog. 
+    var procedureSelectDialog = $(".procedureSelectGroup").dialog({
+        autoOpen: false,
+        width: 700,   // body with is 768px
+        modal: true
     });
     
-    selectLink.on('click', function() {
-    var windowHeight = $(window).height();
-    // Make the height 90% of the current window height.
-    procedureSelectDialog.dialog("option", "height", windowHeight * 0.9);
-    procedureSelectDialog.dialog("open");
+	// Insert a hidden input and a textual display as the target
+	// of the user selection from the dialog.
+	// Get the procedure hidden input, if it exists.
+	function selectProcedure(cptCode, displayString) {
+		// Get the selected button's value and change the display string
+	    hiddenInput.val(cptCode);
+	    userDisplay.html(displayString);
+	    procedureSelectDialog.dialog("close");
+	}
+
+	// Set up the properties for the procedures DataTable
+	var proceduresTable = $("#procedureTable").dataTable({
+	    data: procedures,
+		deferRender: true,
+		columns: [
+		          { data: 'cptCode' },
+		          { data: 'longDescription', searchable: false },
+		          { data: 'rvu', searchable: false },
+		          {
+		              data: 'cptCode',
+		              render: function (data, type, row) {
+		                  return '<a href="#" class="btn-link"' +
+                              '" data-cpt-code="' + row.cptCode +
+                              '" data-display-string="' + makeDisplayString(row) + '">Select</a>';
+		              },
+		              width: '10%', searchable: false, sortable: false }
+              ]
+	});
+	
+	$("#procedureTable").on('click', 'a', function(event){
+	    event.preventDefault();  // Don't navigate.
+
+		var elem = event.target || event.srcElement;
+	    selectProcedure($(elem).data('cpt-code'), $(elem).data('display-string'));
+	});
+	
+	// Get a DataTables API instance
+	var apiTable = proceduresTable.dataTable().api();
+	// Unbind the default global search and keyup
+	$("div.dataTables_filter input").unbind();
+	// Add a "starts with" regex to the global search
+	// Enable regex search and disable smart searching
+	$("div.dataTables_filter input").on('keyup', function () {
+		apiTable.column(0).search('^' + this.value, true, false).draw();
+	});
+	
+    
+    // Find selected procedure and update the display string.
+    var selectedCpt = hiddenInput.val();
+    var initialDisplay = "(none)";
+    $.each(procedures, function (index, procedure) {
+        if (procedure.cptCode == selectedCpt) {
+            initialDisplay = makeDisplayString(procedure);
+        }
     });
+    userDisplay.html(initialDisplay);
+    
+    // We're done initializing everything. Add the Select link to the page.
+    var openProcedureSelect =
+        $('<a class="openProcedureSelect" href="#">Select</a>');
+    openProcedureSelect.on('click', function(event) {
+        event.preventDefault();
+
+        var windowHeight = $(window).height();
+        // Make the height 90% of the current window height.
+        procedureSelectDialog.dialog("option", "height", windowHeight * 0.9);
+        procedureSelectDialog.dialog("open");
+    });
+    userDisplay.after(' ', openProcedureSelect);
 	
 }
 
@@ -64,17 +100,27 @@ function initProcedureSelect() {
  * Initializes the page. Should be called after the DOM is ready.
  */
 function initEnterVariablesPage() {
-    initProcedureSelect();
     
-    // If an attributeValue contains both a numerical input and a radio button
-    // to select the numerical input, automatically check the radio button when
-    // the user changes the numerical value.
+    // Load the procedures list separately via AJAX to enable caching of the
+    // large list. We use a manual AJAX request instead of DataTables's built-in
+    // functionality for direct access to the procedure list.
+    $.getJSON('procedures', function (procedures) {
+        // Success callback.
+        initProcedureSelect(procedures);
+    });
+    
+    // Tie the numerical text box state to the state of the numerical radio.
     var numericalValueContainers =
         $('.attributeValue').has('input.numerical').has('input.numericalRadio');
-    var numericalInputs = numericalValueContainers.find('input.numerical');
-    // The 'input' event is new in HTML5 and supported by IE9+.
-    numericalInputs.on('input', function() {
-        var radio = $(this).closest('.attributeValue').find('input.numericalRadio');
-        radio.attr('checked', 'checked');
-    })
+    var radios = numericalValueContainers.find('input[type=radio]');
+    radios.on('change', function() {
+        var container = $(this).closest('.attributeValue');
+        var radio = container.find('input.numericalRadio');
+        var numericalInput = container.find('input.numerical');
+        if (radio.prop('checked')) {
+            numericalInput.removeAttr('disabled');
+        } else {
+            numericalInput.attr('disabled', 'disabled');
+        }
+    });
 }

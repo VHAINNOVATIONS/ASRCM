@@ -1,10 +1,12 @@
 package gov.va.med.srcalc.domain.model;
 
-import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.variable.BooleanVariable;
+import gov.va.med.srcalc.domain.variable.Value;
 
 import java.util.Objects;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
 
 /**
  * <p>A {@link ModelTerm} for a {@link BooleanVariable}.</p>
@@ -79,6 +81,7 @@ public final class BooleanTerm extends SingleVariableTerm
     @Override
     public String toString()
     {
+        // The question mark indicates the boolean nature of the variable.
         return String.format("%s?=>%s", getVariable(), getCoefficient());
     }
 }

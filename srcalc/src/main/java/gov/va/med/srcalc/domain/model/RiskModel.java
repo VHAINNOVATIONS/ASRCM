@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain.model;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.NoNullSet;
+import gov.va.med.srcalc.util.Preconditions;
 
 import java.util.*;
 
@@ -75,12 +76,7 @@ public class RiskModel
      */
     public void setDisplayName(final String displayName)
     {
-        if (displayName.length() > DISPLAY_NAME_MAX)
-        {
-            throw new IllegalArgumentException(
-                    "The display name must be 80 characters or less.");
-        }
-        fDisplayName = displayName;
+        fDisplayName = Preconditions.requireWithin(displayName, DISPLAY_NAME_MAX);
     }
     
     /**

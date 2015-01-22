@@ -10,13 +10,13 @@ INSERT INTO SPECIALTY (id, vista_id, name) VALUES (6, 62, 'Vascular');
 INSERT INTO SPECIALTY (id, vista_id, name) VALUES (7, 48, 'Cardiac');
 
 -- RISK_MODEL table
-INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (1, 'General Surgery 30-Day Mortality Risk', 0.0);
-INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (2, 'Neurosurgery 30-Day Mortality Risk', 0.0);
-INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (3, 'Orthopedic 30-Day Mortality Risk', 0.0);
+INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (1, 'General Surgery 30-Day Mortality Risk', -1.0);
+INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (2, 'Neurosurgery 30-Day Mortality Risk', -2.0);
+INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (3, 'Orthopedic 30-Day Mortality Risk', -3.0);
 INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (4, 'Thoracic 30-Day Mortality Risk', -4.0);
-INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (5, 'Urology 30-Day Mortality Risk', 0.0);
-INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (6, 'Vascular 30-Day Mortality Risk', 0.0);
-INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (7, 'Cardiac 30-Day Mortality Risk', 0.0);
+INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (5, 'Urology 30-Day Mortality Risk', -5.0);
+INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (6, 'Vascular 30-Day Mortality Risk', -6.0);
+INSERT INTO RISK_MODEL (id, display_name, constant) VALUES (7, 'Cardiac 30-Day Mortality Risk', -7.0);
 
 -- SPECIALTY_RISK_MODEL table
 INSERT INTO SPECIALTY_RISK_MODEL (specialty_id, risk_model_id) VALUES (1, 1);

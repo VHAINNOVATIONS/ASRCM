@@ -31,6 +31,12 @@
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.apache.tiles/tiles-jsp/2.2.2/c6e68f203084ae4a2435e7ed33bb8d6c67bcfb0d/tiles-jsp-2.2.2.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.3.0/f5e853a20b60758922453d56f9ae1e64af5cb3da/jackson-annotations-2.3.0.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.3.5/ec2c55cae785826d9df494a21203e44bd743c8c0/jackson-core-2.3.5.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.1.0.GA/c71f2856e7b60efe485db39b37a31811e6c84365/jboss-logging-3.1.0.GA.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
@@ -110,6 +116,9 @@
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.0.7.RELEASE/5d2de0ccee1d6cc02ec2d29c5440a762fd4345f6/spring-webmvc-4.0.7.RELEASE.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.3.5/bcf2820b8e4150b3dac1f74159718340efbfb615/jackson-databind-2.3.5.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/david/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/4.2.13.Final/4d5d10708ee5258d875b4ad80dc11967f1a77f62/hibernate-core-4.2.13.Final.jar">

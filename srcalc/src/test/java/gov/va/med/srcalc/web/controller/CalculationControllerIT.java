@@ -2,14 +2,12 @@ package gov.va.med.srcalc.web.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
 import gov.va.med.srcalc.web.controller.CalculationController;
-import gov.va.med.srcalc.web.view.InputParserVisitor;
+import gov.va.med.srcalc.web.view.VariableEntry;
 import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
 
 import org.junit.*;
@@ -28,9 +26,9 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Integration Test for {@link CalculationController}. Note that we only
- * define Integration Tests for controllers because unit tests are of little
- * value.
+ * Integration Test for {@link CalculationController} and {@link
+ * EnterVariablesController}. Note that we only define Integration Tests for
+ * controllers because unit tests are of little value.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.
@@ -102,7 +100,7 @@ public class CalculationControllerIT extends IntegrationTest
         varParams.add("BMI", "18.7");
         varParams.add("Preop Pneumonia", "true");
         varParams.add("Alkaline Phosphatase", ">125mU/ml");
-        varParams.add("BUN", InputParserVisitor.SPECIAL_NUMERICAL);
+        varParams.add("BUN", VariableEntry.SPECIAL_NUMERICAL);
         varParams.add("BUN_numerical", "15.0");
         
         final MockHttpServletRequestBuilder request =
@@ -155,5 +153,14 @@ public class CalculationControllerIT extends IntegrationTest
             // Note no variable parameters specified.
             .andExpect(model().attributeHasErrors("variableEntry"))
             .andExpect(status().is(200));
+    }
+    
+    @Test
+    public void getProcedures() throws Exception
+    {
+        fMockMvc.perform(get("/procedures").accept("application/json"))
+            .andExpect(status().is(200))
+            .andExpect(content().contentType("application/json"))
+            .andExpect(content().string(startsWith("["))); // a JSON array
     }
 }

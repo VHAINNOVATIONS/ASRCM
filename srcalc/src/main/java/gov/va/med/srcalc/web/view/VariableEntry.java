@@ -1,8 +1,8 @@
 package gov.va.med.srcalc.web.view;
 
-import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable;
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.variable.*;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -16,7 +16,26 @@ import java.util.HashMap;
  */
 public class VariableEntry
 {
+    /**
+     * A special discrete category value indicating that the user has specified
+     * a numerical input.
+     */
+    public static final String SPECIAL_NUMERICAL = "numerical";
+
     private final HashMap<String, String> fDynamicValues = new HashMap<>();
+    
+    /**
+     * Constructs a {@link VariableEntry} with reasonable defaults for some of
+     * the variables.
+     */
+    public VariableEntry(final Collection<? extends Variable> variables)
+    {
+        final DefaultValueGenerator dvg = new DefaultValueGenerator();
+        for (final Variable v : variables)
+        {
+            dvg.visit(v);
+        }
+    }
     
     /**
      * <p>Stores the values entered by the user for dynamic variables (which
@@ -78,4 +97,41 @@ public class VariableEntry
     {
         return "dynamicValues=" + fDynamicValues;
     }
+    
+    final class DefaultValueGenerator extends ExceptionlessVariableVisitor
+    {
+        
+        @Override
+        public void visitNumerical(NumericalVariable variable)
+        {
+            // No default.
+        }
+        
+        @Override
+        public void visitBoolean(BooleanVariable variable)
+        {
+            // No default (false).
+        }
+        
+        @Override
+        public void visitMultiSelect(MultiSelectVariable variable)
+        {
+            // No default.
+        }
+        
+        @Override
+        public void visitProcedure(ProcedureVariable variable)
+        {
+            // No default.
+        }
+        
+        @Override
+        public void visitDiscreteNumerical(DiscreteNumericalVariable variable)
+        {
+            // Default to numerical input but don't specify the numerical value.
+            fDynamicValues.put(variable.getKey(), SPECIAL_NUMERICAL);
+        }
+        
+    }
+
 }

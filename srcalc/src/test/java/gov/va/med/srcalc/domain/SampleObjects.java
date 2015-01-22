@@ -1,6 +1,5 @@
 package gov.va.med.srcalc.domain;
 
-import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable.Category;
@@ -126,7 +125,8 @@ public class SampleObjects
                 sampleAgeVariable(),
                 sampleGenderVariable(),
                 dnrVariable(),
-                functionalStatusVariable());
+                functionalStatusVariable(),
+                wbcVariable());
     }
 
     /**

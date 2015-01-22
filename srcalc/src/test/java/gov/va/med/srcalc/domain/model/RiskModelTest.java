@@ -32,6 +32,15 @@ public class RiskModelTest
         assertEquals(expectedVariables, model.getRequiredVariables());
     }
     
+    @Test(expected = IllegalArgumentException.class)
+    public final void testDisplayNameTooLong()
+    {
+        final RiskModel model = SampleObjects.sampleThoracicRiskModel();
+        model.setDisplayName(
+                // 81 characters
+                "01234567890123456789012345678901234567890123456789012345678901234567890123456789X");
+    }
+    
     @Test
     public final void testToString()
     {
@@ -84,6 +93,17 @@ public class RiskModelTest
         model.calculate(Arrays.asList(
                 new BooleanValue(SampleObjects.dnrVariable(), true),
                 new NumericalValue(SampleObjects.sampleAgeVariable(), 12)));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public final void testCalculateDuplicateValues() throws Exception
+    {
+        final BooleanVariable dnrVar = SampleObjects.dnrVariable();
+        final RiskModel model = SampleObjects.makeSampleRiskModel(
+                "model", dnrVar);
+        
+        model.calculate(Arrays.<Value>asList(
+                dnrVar.makeValue(true), dnrVar.makeValue(false)));
     }
     
 }
