@@ -6,6 +6,7 @@ import java.util.*;
 
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable.Category;
+import gov.va.med.srcalc.test.util.TestHelpers;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -27,22 +28,21 @@ public class DiscreteNumericalVariableTest
     {
         final Category cat1 = new Category(
                 new NumericalRange(1.0f, true, 4.0f, false), new MultiSelectOption("one"));
-        final Category cat2 = new Category(
-                new NumericalRange(4.0f, true, 5.0f, false), new MultiSelectOption("two"));
-        final Category cat3 = new Category(
-                new NumericalRange(5.0f, true, 6.0f, false), new MultiSelectOption("three"));
         // WNL should always be at the start of the list after sorting
-        final Category cat4 = new Category(
+        final Category catWnl = new Category(
         		new NumericalRange(4.0f, true, 4.5f, false), new MultiSelectOption("WNL"));
+        final Category cat2 = new Category(
+                new NumericalRange(4.5f, true, 6.0f, false), new MultiSelectOption("three"));
         // Intentionally put the Categories out of order in this list.
-        final List<Category> cats = Arrays.asList(cat3, cat2, cat1, cat4);
+        final List<Category> cats = Arrays.asList(cat2, cat1, catWnl);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
                 "Creatinine", SampleObjects.labVariableGroup(), new TreeSet<>(cats));
         
         // Behavior verification. The constructed ArrayList should have the
         // right order.
+        TestHelpers.verifyCompareToContract(catWnl, cat1, cat2);
         final List<Category> orderedCats = new ArrayList<>(var.getCategories());
-        assertEquals(Arrays.asList(cat4, cat1, cat2, cat3), orderedCats);
+        assertEquals(Arrays.asList(catWnl, cat1, cat2), orderedCats);
     }
     
     public final void testGetOptions()
