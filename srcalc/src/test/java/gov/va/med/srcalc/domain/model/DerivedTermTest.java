@@ -1,75 +1,67 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static gov.va.med.srcalc.domain.SampleObjects.expression1;
+import static gov.va.med.srcalc.domain.SampleObjects.expression2;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.util.CollectionUtils;
+import gov.va.med.srcalc.util.NoNullSet;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 import org.springframework.expression.Expression;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 public class DerivedTermTest
 {
     @Test
-    public final void testAgeMultiplier() throws Exception
+    public final void testGetSummand() throws Exception
     {
-        // Setup
+        // setup
         final HashMap<Variable, Value> values = new HashMap<>();
-        final NumericalVariable ageVar = SampleObjects.sampleAgeVariable();
-        values.put(ageVar, ageVar.makeValue(25));
-        final MultiSelectVariable fsVar = SampleObjects.functionalStatusVariable();
-        final ValueMatcher totallyDependentMatcher = new ValueMatcher(
-                fsVar, "value == 'Totally dependent'");
-        final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
-        final DerivedTerm term = new DerivedTerm(
-                2.0f,
-                Arrays.asList(totallyDependentMatcher, ageMatcher),
-                "#Age.value * #coefficient");
+        // We actually exercise the Rule in RuleTest, so just test simple
+        // math here.
+        final Rule rule = new Rule(Collections.<ValueMatcher>emptyList(), "#coefficient * 2");
         
-        // Behavior verification
-        values.put(fsVar, fsVar.makeValue(fsVar.getOptions().get(2)));
-        assertEquals(50.0, term.getSummand(values), 0.0f);
+        // behavior verification
+        final float coeff1 = 56.1f;
+        final DerivedTerm term1 = new DerivedTerm(coeff1, rule);
+        assertEquals(coeff1 * 2, term1.getSummand(values), 0.001);
         
-        values.put(fsVar, fsVar.makeValue(fsVar.getOptions().get(1)));
-        assertEquals(0.0, term.getSummand(values), 0.0f);
+        // Test again wit a different term/coefficient.
+        final float coeff2 = -1.7f;
+        final DerivedTerm term2 = new DerivedTerm(coeff2, rule);
+        assertEquals(coeff2 * 2, term2.getSummand(values), 0.001);
     }
     
-    @Test
-    public final void testWeightLoss() throws Exception
+    public final void testBasic() throws Exception
     {
-        // Setup
-        final VariableGroup group = SampleObjects.demographicsVariableGroup();
-        final NumericalVariable currWeight = new NumericalVariable("Weight", group);
-        final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group);
-        final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "true");
-        final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "value < #Weight6MoAgo.value * 0.9");
-        final DerivedTerm term = new DerivedTerm(3.0f, Arrays.asList(weight6MoAgoMatcher, weightLossMatcher), "#coefficient");
+        // setup
+        final float coeff = 9.1f;
+        final Set<Variable> reqVars = CollectionUtils.<Variable>hashSet(
+                SampleObjects.dnrVariable(), SampleObjects.functionalStatusVariable());
+        final Rule mockRule = mock(Rule.class);
+        when(mockRule.getRequiredVariables()).thenReturn(NoNullSet.fromSet(reqVars));
+        final DerivedTerm term = new DerivedTerm(coeff, mockRule);
         
-        // Behavior verification
-        final HashMap<Variable, Value> values = new HashMap<>();
-        values.put(weight6MoAgo, weight6MoAgo.makeValue(150));
-        values.put(currWeight, currWeight.makeValue(100));
-        assertEquals(3.0f, term.getSummand(values), 0.0f);
-        values.put(currWeight, currWeight.makeValue(140));
-        assertEquals(0.0f, term.getSummand(values), 0.0f);
+        // behavior verification
+        assertEquals(coeff, term.getCoefficient(), 0.0f);
+        assertEquals(reqVars, term.getRequiredVariables());
     }
     
     @Test
     public final void testEquals()
     {
-        final SpelExpressionParser parser = new SpelExpressionParser();
-        final Expression e1 = parser.parseExpression("true");
-        final Expression e2 = parser.parseExpression("false");
         EqualsVerifier.forClass(DerivedTerm.class)
             // Provide expression instances since Expression is an interface
-            .withPrefabValues(Expression.class, e1, e2)
-            // The class actually provides an immutable interface.
+            .withPrefabValues(Expression.class, expression1(), expression2())
+            // Relax the immutability rule.
             .suppress(Warning.NONFINAL_FIELDS)
             // Does not permit nulls.
             .suppress(Warning.NULL_FIELDS)
