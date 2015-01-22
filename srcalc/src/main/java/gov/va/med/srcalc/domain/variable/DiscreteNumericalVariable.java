@@ -185,6 +185,11 @@ public class DiscreteNumericalVariable extends AbstractNumericalVariable impleme
             fOption = Objects.requireNonNull(option);
         }
         
+        public boolean isWnl()
+        {
+        	return this.getOption().getValue().equalsIgnoreCase("WNL");
+        }
+        
         @Override
         public String toString()
         {
@@ -221,13 +226,20 @@ public class DiscreteNumericalVariable extends AbstractNumericalVariable impleme
         public int compareTo(Category other)
         {
         	// WNL should always be sorted as less than
-        	if(this.getOption().getValue().equalsIgnoreCase("WNL"))
+        	// If both are WNL, sort by range
+        	if(this.isWnl())
         	{
-        		return -1;
+        		if(!other.isWnl())
+    			{
+        			return -1;
+    			}
         	}
-        	if(other.getOption().getValue().equalsIgnoreCase("WNL"))
+        	else if(other.isWnl())
         	{
-        		return 1;
+        		if(!this.isWnl())
+        		{
+        			return 1;
+        		}
         	}
             // See above: the range is always non-null.
             return this.getRange().compareTo(other.getRange());
