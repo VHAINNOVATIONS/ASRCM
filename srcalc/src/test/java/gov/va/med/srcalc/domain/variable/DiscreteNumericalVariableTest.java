@@ -31,15 +31,18 @@ public class DiscreteNumericalVariableTest
                 new NumericalRange(4.0f, true, 5.0f, false), new MultiSelectOption("two"));
         final Category cat3 = new Category(
                 new NumericalRange(5.0f, true, 6.0f, false), new MultiSelectOption("three"));
+        // WNL should always be at the start of the list after sorting
+        final Category cat4 = new Category(
+        		new NumericalRange(4.0f, true, 4.5f, false), new MultiSelectOption("WNL"));
         // Intentionally put the Categories out of order in this list.
-        final List<Category> cats = Arrays.asList(cat3, cat2, cat1);
+        final List<Category> cats = Arrays.asList(cat3, cat2, cat1, cat4);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
                 "Creatinine", SampleObjects.labVariableGroup(), new TreeSet<>(cats));
         
         // Behavior verification. The constructed ArrayList should have the
         // right order.
         final List<Category> orderedCats = new ArrayList<>(var.getCategories());
-        assertEquals(Arrays.asList(cat1, cat2, cat3), orderedCats);
+        assertEquals(Arrays.asList(cat4, cat1, cat2, cat3), orderedCats);
     }
     
     public final void testGetOptions()

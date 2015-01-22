@@ -220,6 +220,15 @@ public class DiscreteNumericalVariable extends AbstractNumericalVariable impleme
         @Override
         public int compareTo(Category other)
         {
+        	// WNL should always be sorted as less than
+        	if(this.getOption().getValue().equalsIgnoreCase("WNL"))
+        	{
+        		return -1;
+        	}
+        	if(other.getOption().getValue().equalsIgnoreCase("WNL"))
+        	{
+        		return 1;
+        	}
             // See above: the range is always non-null.
             return this.getRange().compareTo(other.getRange());
         }
