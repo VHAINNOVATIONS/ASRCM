@@ -7,6 +7,12 @@ import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
 
 import java.util.*;
 
+import org.springframework.expression.Expression;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+
+/**
+ * Constructs sample instances of various domain objects.
+ */
 public class SampleObjects
 {
     public static Procedure sampleRepairLeftProcedure()
@@ -243,5 +249,23 @@ public class SampleObjects
         var.setMaxValue(50.0f);
         var.setUnits("x1000/mm^3");
         return var;
+    }
+    
+    /**
+     * Constructs a sample {@link Expression} object.
+     */
+    public static Expression expression1()
+    {
+        final SpelExpressionParser parser = new SpelExpressionParser();
+        return parser.parseExpression("true");
+    }
+    
+    /**
+     * Constructs a different sample {@link Expression} object.
+     */
+    public static Expression expression2()
+    {
+        final SpelExpressionParser parser = new SpelExpressionParser();
+        return parser.parseExpression("false");
     }
 }
