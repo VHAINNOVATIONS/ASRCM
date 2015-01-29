@@ -97,6 +97,9 @@ public final class Rule
         final StandardEvaluationContext ec = new StandardEvaluationContext();
         for (final ValueMatcher condition : fMatchers)
         {
+            // TODO: replace each expression's "root object" with the actual
+            // value instead of the Value wrapper object.
+            
             // Will return null if there is no value for the given variable.
             final Value matchedValue = context.getValues().get(condition.getVariable());
 
