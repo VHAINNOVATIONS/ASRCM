@@ -92,7 +92,7 @@ public final class Rule
      */
     public double apply(final EvaluationContext context)
     {
-        // Match all the values
+        /* Match all the values */
         final HashMap<String, Object> matchedValues = new HashMap<>();
         final StandardEvaluationContext ec = new StandardEvaluationContext();
         for (final ValueMatcher condition : fMatchers)
@@ -101,6 +101,7 @@ public final class Rule
             // value instead of the Value wrapper object.
             
             // Will return null if there is no value for the given variable.
+            // TODO: properly handle missing Values
             final Value matchedValue = context.getValues().get(condition.getVariable());
 
             if (matchedValue != null && condition.evaluate(ec, matchedValue))
@@ -113,11 +114,11 @@ public final class Rule
                 return 0.0;
             }
             
-            // Update the evaluation ec with the matched values so far.
+            // Update the SpEL evaluation context with the matched values so far.
             ec.setVariables(matchedValues);
         }
         
-        // We matched them all: now just calculate the summand.
+        /* We matched them all: now just calculate the summand. */
         ec.setVariable("coefficient", context.getCoefficient());
         return fSummandExpression.getValue(ec, Double.class);
     }
