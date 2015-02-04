@@ -1,0 +1,40 @@
+/*
+ * Build script for the prototype CCOW application.
+ */
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+repositories {
+    // Use 'maven central' for resolving dependencies.
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'org.glassfish.jersey.core:jersey-client:2.3'
+
+    testCompile "junit:junit:4.11"
+    testCompile 'org.glassfish.jersey.test-framework:jersey-test-framework-core:2.3'
+    
+    testRuntime 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-simple:2.3'
+}
+
+jar {
+    manifest {
+        attributes(
+            "Class-Path": configurations.runtime.collect { it.name }.join(' '),
+            "Main-Class": "gov.va.med.srcalc.ccow.proto.App")
+    }
+}
+
+task zip(type: Zip) {
+    from 'src/dist'
+    into('libs') {
+        // Include the compiled archives
+        from libsDir
+        // and its dependencies.
+        from configurations.runtime
+    }
+}
+        
