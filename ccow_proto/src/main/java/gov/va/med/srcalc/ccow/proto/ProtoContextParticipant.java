@@ -25,7 +25,10 @@ public class ProtoContextParticipant
     public enum Methods
     {
         ContextChangesPending,
-        ContextChangesAccepted
+        ContextChangesAccepted,
+        ContextChangesCanceled,
+        CommonContextTerminated,
+        Ping
     }
 
     /**
@@ -53,6 +56,32 @@ public class ProtoContextParticipant
             return onContextChangesPending(
                     uriInfo.getQueryParameters().getFirst("contextCoupon"));
         }
+        else if (method.equals(Methods.ContextChangesAccepted.name()))
+        {
+            onContextChangesAccepted(
+                    uriInfo.getQueryParameters().getFirst("contextCoupon"));
+            
+            return new MultivaluedHashMap<>();
+        }
+        else if (method.equals(Methods.ContextChangesCanceled.name()))
+        {
+            onContextChangesCanceled(
+                    uriInfo.getQueryParameters().getFirst("contextCoupon"));
+            
+            return new MultivaluedHashMap<>();
+        }
+        else if (method.equals(Methods.CommonContextTerminated.name()))
+        {
+            onCommonContextTerminated();
+            
+            return new MultivaluedHashMap<>();
+        }
+        else if (method.equals(Methods.Ping.name()))
+        {
+            onPing();
+            
+            return new MultivaluedHashMap<>();
+        }
         else
         {
             throw new WebApplicationException(Response
@@ -71,6 +100,26 @@ public class ProtoContextParticipant
         response.add("decision", "accept");
         response.add("reason", "");
         return response;
+    }
+    
+    public void onContextChangesAccepted(final String contextCoupon)
+    {
+        fLogger.info("Context changed! New coupon: {}", contextCoupon);
+    }
+    
+    public void onContextChangesCanceled(final String contextCoupon)
+    {
+        // We don't care.
+    }
+    
+    public void onCommonContextTerminated()
+    {
+        fLogger.info("CommonContext terminated. Interesting.");
+    }
+    
+    public void onPing()
+    {
+        // No action necessary.
     }
     
 }
