@@ -1,16 +1,23 @@
 package gov.va.med.srcalc.ccow;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.*;
+import javax.ws.rs.core.Response.Status;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A proxy object to the ContextManagementRegistry.
  */
 public class CmrProxy
 {
+    private static final Logger fLogger = LoggerFactory.getLogger(CmrProxy.class);
+    
     /**
      * The well-known address of the ContextManagementRegistry.
      */
@@ -48,8 +55,15 @@ public class CmrProxy
      */
     public static final String COMPNENT_NAME_CM = "CCOW.ContextManager";
 
-    public static ComponentLocation queryLocator()
+    /**
+     * Locates the ContextManager.
+     * @param participantUrl
+     */
+    public static ComponentLocation locate(final String participantUrl)
+        throws IOException
     {
+        fLogger.info("Locating ContextManager for client: {}", participantUrl);
+
         final Client client = ClientBuilder.newClient().register(new ContentTypeOverrideFilter());
         final WebTarget target = client.target(CMR_ADDRESS);
         final Response response = target
@@ -57,9 +71,16 @@ public class CmrProxy
                 .queryParam("method", METHOD_LOCATE)
                 .queryParam("version", VERSION)
                 .queryParam("componentName", COMPNENT_NAME_CM)
-                .queryParam("contextParticipant", "foo")
+                .queryParam("contextParticipant", participantUrl)
                 .request(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
                 .get();
+        
+        if (response.getStatus() != Status.OK.getStatusCode())
+        {
+            throw new IOException(String.format(
+                    "Could not query CMR for ContextManager (status %d).",
+                    response.getStatus()));
+        }
         
         final MultivaluedMap<String, String> responseValues =
                 response.readEntity(MultivaluedMap.class);

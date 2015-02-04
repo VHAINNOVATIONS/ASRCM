@@ -4,42 +4,41 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.server.NetworkListener;
 import org.junit.*;
-import org.simpleframework.http.core.ContainerServer;
-import org.simpleframework.transport.Server;
-import org.simpleframework.transport.connect.Connection;
-import org.simpleframework.transport.connect.SocketConnection;
 
 public class CmrProxyTest
 {
-    private static Connection fMockRegistryConnection;
+    private static HttpServer fMockRegistryServer;
     
     @BeforeClass
     public static void setupMockRegistry() throws IOException
     {
         final MockVergenceCmr mockCmr = new MockVergenceCmr();
-        final Server server = new ContainerServer(mockCmr);
-        fMockRegistryConnection = new SocketConnection(server);
-        SocketAddress address = new InetSocketAddress(CmrProxy.CMR_ADDRESS.getPort());
-        fMockRegistryConnection.connect(address);
+        fMockRegistryServer = new HttpServer();
+        fMockRegistryServer.addListener(new NetworkListener(
+                "mockRegistryListener",
+                "localhost",
+                CmrProxy.CMR_ADDRESS.getPort()));
+        fMockRegistryServer.getServerConfiguration().addHttpHandler(mockCmr, "/");
+        fMockRegistryServer.start();
     }
     
     @AfterClass
     public static void closeMockRegistry() throws IOException
     {
-        if (fMockRegistryConnection != null)
+        if (fMockRegistryServer != null)
         {
-            fMockRegistryConnection.close();
+            fMockRegistryServer.stop();
         }
     }
 
     @Test
-    public final void testQueryLocator()
+    public final void testQueryLocator() throws Exception
     {
-        final ComponentLocation location = CmrProxy.queryLocator();
+        final ComponentLocation location = CmrProxy.locate("foo");
         assertEquals(MockVergenceCmr.CANNED_CM_URL, location.getUrl());
         assertEquals(MockVergenceCmr.CANNED_CM_PARAMETERS, location.getParameters());
         assertEquals(MockVergenceCmr.CANNED_CM_SITE, location.getSite());

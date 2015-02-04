@@ -5,6 +5,8 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
+def jerseyVersion = '2.3'
+
 repositories {
     // Use 'maven central' for resolving dependencies.
     mavenCentral()
@@ -12,12 +14,20 @@ repositories {
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.5'
-    compile 'org.glassfish.jersey.core:jersey-client:2.3'
+    compile group: 'org.glassfish.jersey.core',
+        name: 'jersey-client',
+        version: jerseyVersion
+    // We use Grizzly to host the ContextParticipant interface.
+    compile group: 'org.glassfish.jersey.containers',
+        name: 'jersey-container-grizzly2-http',
+        version: jerseyVersion
 
     runtime 'ch.qos.logback:logback-classic:1.1.2'
 
     testCompile "junit:junit:4.11"
-    testCompile 'org.simpleframework:simple:5.1.4'
+    testCompile group: 'org.glassfish.jersey.test-framework.providers',
+        name: 'jersey-test-framework-provider-grizzly2',
+        version: jerseyVersion
 }
 
 jar {
@@ -29,6 +39,7 @@ jar {
 }
 
 task zip(type: Zip) {
+    dependsOn jar
     from 'src/dist'
     into('libs') {
         // Include the compiled archives
