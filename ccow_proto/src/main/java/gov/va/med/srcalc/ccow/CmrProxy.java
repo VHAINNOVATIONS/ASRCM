@@ -50,7 +50,7 @@ public class CmrProxy
 
     public static ComponentLocation queryLocator()
     {
-        final Client client = ClientBuilder.newClient();
+        final Client client = ClientBuilder.newClient().register(new ContentTypeOverrideFilter());
         final WebTarget target = client.target(CMR_ADDRESS);
         final Response response = target
                 .queryParam("interface", INTERFACE_NAME)

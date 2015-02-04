@@ -3,38 +3,47 @@ package gov.va.med.srcalc.ccow;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-import javax.ws.rs.core.Application;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.test.TestProperties;
-import org.junit.Test;
+import org.junit.*;
+import org.simpleframework.http.core.ContainerServer;
+import org.simpleframework.transport.Server;
+import org.simpleframework.transport.connect.Connection;
+import org.simpleframework.transport.connect.SocketConnection;
 
-/**
- * We use the Jersey Test Framework backwards: instead of testing a Resource,
- * we're actually testing the client but using the test framework to instantiate
- * a Resource in a well-known location.
- */
-public class CmrProxyTest extends JerseyTest
+public class CmrProxyTest
 {
-    @Override
-    protected Application configure()
+    private static Connection fMockRegistryConnection;
+    
+    @BeforeClass
+    public static void setupMockRegistry() throws IOException
     {
-        // Set the port to the well-known CCOW CMR port.
-        System.setProperty(
-                TestProperties.CONTAINER_PORT,
-                Integer.toString(CmrProxy.CMR_ADDRESS.getPort()));
-        return new ResourceConfig(MockRegistry.class);
+        final MockVergenceCmr mockCmr = new MockVergenceCmr();
+        final Server server = new ContainerServer(mockCmr);
+        fMockRegistryConnection = new SocketConnection(server);
+        SocketAddress address = new InetSocketAddress(CmrProxy.CMR_ADDRESS.getPort());
+        fMockRegistryConnection.connect(address);
+    }
+    
+    @AfterClass
+    public static void closeMockRegistry() throws IOException
+    {
+        if (fMockRegistryConnection != null)
+        {
+            fMockRegistryConnection.close();
+        }
     }
 
     @Test
     public final void testQueryLocator()
     {
         final ComponentLocation location = CmrProxy.queryLocator();
-        assertEquals(MockRegistry.CANNED_CM_URL, location.getUrl());
-        assertEquals(MockRegistry.CANNED_CM_PARAMETERS, location.getParameters());
-        assertEquals(MockRegistry.CANNED_CM_SITE, location.getSite());
-        assertThat(location.toString(), containsString(MockRegistry.CANNED_CM_PARAMETERS));
+        assertEquals(MockVergenceCmr.CANNED_CM_URL, location.getUrl());
+        assertEquals(MockVergenceCmr.CANNED_CM_PARAMETERS, location.getParameters());
+        assertEquals(MockVergenceCmr.CANNED_CM_SITE, location.getSite());
+        assertThat(location.toString(), containsString(MockVergenceCmr.CANNED_CM_PARAMETERS));
     }
     
 }
