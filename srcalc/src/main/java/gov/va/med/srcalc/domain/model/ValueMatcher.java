@@ -2,9 +2,15 @@ package gov.va.med.srcalc.domain.model;
 
 import java.util.Objects;
 
+import javax.persistence.Basic;
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
 import org.springframework.expression.*;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import gov.va.med.srcalc.domain.variable.AbstractVariable;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
 
@@ -12,10 +18,15 @@ import gov.va.med.srcalc.domain.variable.Variable;
  * An object which evaluates a {@link Value} to true or false using a Spring
  * Expression Language (SPeL) expression.
  */
+@Embeddable
 public class ValueMatcher
 {
-    private final Variable fVariable;
-    private final Expression fBooleanExpression;
+    private Variable fVariable;
+    private Expression fBooleanExpression;
+    
+    ValueMatcher()
+    {    	
+    }
     
     /**
      * Constructs an instance.
@@ -43,19 +54,41 @@ public class ValueMatcher
      * Returns the {@link Variable} whose {@link Value} this object matches.
      * @return never null
      */
+    @ManyToOne(targetEntity = AbstractVariable.class)
     public Variable getVariable()
     {
         return fVariable;
     }
 
+    void setVariable(final Variable variable)
+    {
+    	this.fVariable = variable;
+    }
+    
     /**
      * Returns the configured boolean expression as a String.
      */
+    @Basic
     public String getBooleanExpression()
     {
         return fBooleanExpression.getExpressionString();
     }
     
+    void setBooleanExpression(final String booleanExpression)
+    {
+    	final SpelExpressionParser parser = new SpelExpressionParser();
+        try
+        {
+            fBooleanExpression = parser.parseExpression(
+                    Objects.requireNonNull(booleanExpression));
+        }
+        catch (final ParseException ex)
+        {
+            throw new IllegalArgumentException("Could not parse given expression.", ex);
+        }
+    }
+    
+    @Transient
     public Expression getParsedExpression()
     {
         return fBooleanExpression;

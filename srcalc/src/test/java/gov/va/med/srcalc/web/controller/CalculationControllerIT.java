@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Integration Test for {@link CalculationController} and {@link
@@ -93,15 +94,15 @@ public class CalculationControllerIT extends IntegrationTest
         selectThoracicSpecialty();
         
         final DynamicVarParams varParams = new DynamicVarParams();
-        varParams.add("Procedure", "26546");
-        varParams.add("ASA Classification", "Class 3");
-        varParams.add("Age", "55");
-        varParams.add("DNR", "false");
-        varParams.add("BMI", "18.7");
-        varParams.add("Preop Pneumonia", "true");
-        varParams.add("Alkaline Phosphatase", ">125mU/ml");
-        varParams.add("BUN", VariableEntry.SPECIAL_NUMERICAL);
-        varParams.add("BUN_numerical", "15.0");
+        varParams.add("procedure", "26546");
+        varParams.add("asaClassification", "Class 3");
+        varParams.add("age", "55");
+        varParams.add("dnr", "false");
+        varParams.add("bmi", "18.7");
+        varParams.add("preopPneumonia", "true");
+        varParams.add("alkalinePhosphatase", ">125mU/ml");
+        varParams.add("bun", VariableEntry.SPECIAL_NUMERICAL);
+        varParams.add("bun_numerical", "15.0");
         
         final MockHttpServletRequestBuilder request =
                 post("/enterVars").session(fSession);
@@ -135,9 +136,9 @@ public class CalculationControllerIT extends IntegrationTest
         selectSpecialty("Cardiac");
         
         final DynamicVarParams varParams = new DynamicVarParams();
-        varParams.add("Gender", "Male");
-        varParams.add("Age", "55");
-        varParams.add("BMI", "18.7");
+        varParams.add("gender", "Male");
+        varParams.add("age", "55");
+        varParams.add("bmi", "18.7");
         
         fMockMvc.perform(
                 varParams.addTo(post("/enterVars").session(fSession)))

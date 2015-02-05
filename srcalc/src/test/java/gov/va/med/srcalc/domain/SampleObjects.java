@@ -170,17 +170,20 @@ public class SampleObjects
         final List<MultiSelectOption> options = Arrays.asList(
                 new MultiSelectOption("Male"),
                 new MultiSelectOption("Female"));
-        return new MultiSelectVariable(
+        final MultiSelectVariable var = new MultiSelectVariable(
                 "Gender",
                 demographicsVariableGroup(),
                 DisplayType.Radio,
                 options);
+        var.setKey("gender");
+        return var;
     }
     
     public static NumericalVariable sampleAgeVariable()
     {
         final NumericalVariable var = new NumericalVariable(
                 "Age", demographicsVariableGroup());
+        var.setKey("age");
         var.setMinValue(0);
         var.setMaxValue(999);
         var.setUnits("years");
@@ -191,13 +194,16 @@ public class SampleObjects
     {
         final ProcedureVariable var = new ProcedureVariable(
                 "Procedure", procedureVariableGroup());
+        var.setKey("procedure");
         var.setProcedures(sampleProcedureList());
         return var;
     }
     
     public static BooleanVariable dnrVariable()
     {
-        return new BooleanVariable("DNR", demographicsVariableGroup());
+    	final BooleanVariable var= new BooleanVariable("DNR", demographicsVariableGroup());
+    	var.setKey("dnr");
+        return var;
     }
     
     public static MultiSelectVariable functionalStatusVariable()
@@ -206,11 +212,13 @@ public class SampleObjects
                 new MultiSelectOption("Independent"),
                 new MultiSelectOption("Partially dependent"),
                 new MultiSelectOption("Totally dependent"));
-        return new MultiSelectVariable(
+        final MultiSelectVariable fsVariable = new MultiSelectVariable(
                 "Functional Status",
                 recentClinicalVariableGroup(),
                 MultiSelectVariable.DisplayType.Radio,
                 fsOptions);
+        fsVariable.setKey("functionalStatus");
+        return fsVariable;
     }
     
     public static DiscreteNumericalVariable wbcVariable()
@@ -224,6 +232,7 @@ public class SampleObjects
         final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
                 "White Blood Count", labVariableGroup(), new HashSet<>(categories));
+        var.setKey("wbc");
         var.setMinValue(2.0f);
         var.setMaxValue(50.0f);
         var.setUnits("x1000/mm^3");
@@ -245,6 +254,7 @@ public class SampleObjects
         final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
                 "White Blood Count", labVariableGroup(), new HashSet<>(categories));
+        var.setKey("wbc");
         var.setMinValue(2.0f);
         var.setMaxValue(50.0f);
         var.setUnits("x1000/mm^3");

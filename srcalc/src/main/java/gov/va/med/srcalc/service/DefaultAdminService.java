@@ -34,16 +34,16 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
-    public AbstractVariable getVariable(final String displayName)
+    public AbstractVariable getVariable(final String keyName)
         throws InvalidIdentifierException
     {
-        fLogger.debug("Loading Variable {}", displayName);
+        fLogger.debug("Loading Variable {}", keyName);
         
-        final AbstractVariable var = fVariableDao.getByName(displayName);
+        final AbstractVariable var = fVariableDao.getByKey(keyName);
         if (var == null)
         {
             throw new InvalidIdentifierException(
-                    "There is no Variable called " + displayName);
+                    "There is no Variable called " + keyName);
         }
         return var;
     }

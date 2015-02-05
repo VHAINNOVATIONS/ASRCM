@@ -20,6 +20,7 @@ public abstract class AbstractVariable implements Variable
     private String fDisplayName;
     private VariableGroup fGroup;
     private String fHelpText;
+    private String fKey;
 
     /**
      * Constructs an instance with dummy values for the basic properties
@@ -27,6 +28,7 @@ public abstract class AbstractVariable implements Variable
      */
     protected AbstractVariable()
     {
+    	fKey = "unset";
         fDisplayName = "unset";
         fGroup = new VariableGroup("unset group", 0);
     }
@@ -58,18 +60,31 @@ public abstract class AbstractVariable implements Variable
         this.fId = id;
     }
     
-    @Override
-    @Transient
+    @Basic
+    @Column(
+    		name = "VARIABLE_KEY",
+    		length = KEY_MAX,
+    		nullable = false,
+    		unique = true)
     public String getKey()
     {
-        return getDisplayName();
+        return fKey;
+    }
+    
+    /**
+     * Sets the internal key of the variable
+     * @throws IllegalArgumentException if the given key is over 40 characters
+     */
+    public void setKey(final String key)
+    {
+    	this.fKey = Preconditions.requireWithin(key, KEY_MAX);
     }
     
     @Basic
     @Column(
             length = DISPLAY_NAME_MAX,
             nullable = false,
-            unique = true)   // for now, we use display name as a key, so don't allow dupes
+            unique = true)
     public String getDisplayName()
     {
         return fDisplayName;

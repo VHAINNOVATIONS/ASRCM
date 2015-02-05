@@ -6,6 +6,16 @@ import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;
 
+import javax.persistence.Basic;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.springframework.expression.Expression;
 import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -23,10 +33,17 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
  * <p>Per Effective Java Item 17, this class is marked final because it was not
  * designed for inheritance.</p>
  */
+@Entity
+@Table(name = "rule")
 public final class Rule
 {
-    private final List<ValueMatcher> fMatchers;
-    private final Expression fSummandExpression;
+	private int fId;
+    private List<ValueMatcher> fMatchers;
+    private Expression fSummandExpression;
+    
+    Rule()
+    {
+    }
     
     /**
      * Constructs an instance.
@@ -52,6 +69,29 @@ public final class Rule
     }
     
     /**
+     * The object's surrogate primary key. Don't show this to the user.
+     */
+    @Id
+    public int getId()
+    {
+        return fId;
+    }
+
+    /**
+     * For reflection-based construction only. Business code should never modify
+     * the surrogate key as it is generated from the database.
+     */
+    void setId(final int id)
+    {
+        this.fId = id;
+    }
+    
+    @ElementCollection(fetch = FetchType.EAGER) // eager-load due to close association
+    // Override strange defaults.
+    @CollectionTable(
+            name = "rule_value_matcher",
+            joinColumns = @JoinColumn(name = "rule_id"))
+    /**
      * The {@link ValueMatcher}s that form the conditional part of the rule.
      * Order is important: each matcher may use SpEL variable references to
      * previously-matched values.
@@ -60,20 +100,41 @@ public final class Rule
     {
         return fMatchers;
     }
+    
+    void setMatchers(final List<ValueMatcher> matchers)
+    {
+    	this.fMatchers = matchers;
+    }
 
     /**
      * The SpEL expression that calculates the summand. May use variable
      * references to the values matched in ValueMatchers.
      */
+    @Basic
     public String getSummandExpression()
     {
         return fSummandExpression.getExpressionString();
+    }
+    
+    void setSummandExpression(final String summandExpression)
+    {
+    	final SpelExpressionParser parser = new SpelExpressionParser();
+        try
+        {
+            fSummandExpression = parser.parseExpression(
+                    Objects.requireNonNull(summandExpression));
+        }
+        catch (final ParseException ex)
+        {
+            throw new IllegalArgumentException("Could not parse given expression.", ex);
+        }
     }
 
     /**
      * Returns all {@link Variable}s required for evaluating the Rule.
      * @return an unmodifiable set
      */
+    @Transient
     public NoNullSet<Variable> getRequiredVariables()
     {
         final HashSet<Variable> variables = new HashSet<>();
@@ -95,6 +156,7 @@ public final class Rule
         /* Match all the values */
         final HashMap<String, Object> matchedValues = new HashMap<>();
         final StandardEvaluationContext ec = new StandardEvaluationContext();
+        
         for (final ValueMatcher condition : fMatchers)
         {
             // TODO: replace each expression's "root object" with the actual
@@ -103,7 +165,6 @@ public final class Rule
             // Will return null if there is no value for the given variable.
             // TODO: properly handle missing Values
             final Value matchedValue = context.getValues().get(condition.getVariable());
-
             if (matchedValue != null && condition.evaluate(ec, matchedValue))
             {
                 matchedValues.put(matchedValue.getVariable().getKey(), matchedValue);

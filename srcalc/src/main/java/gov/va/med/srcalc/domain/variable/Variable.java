@@ -6,6 +6,7 @@ package gov.va.med.srcalc.domain.variable;
 public interface Variable
 {
     public static final int DISPLAY_NAME_MAX = 80;
+    public static final int KEY_MAX = 40;
     
     /**
      * Returns a key which should be unique among all Variables. Ideally should

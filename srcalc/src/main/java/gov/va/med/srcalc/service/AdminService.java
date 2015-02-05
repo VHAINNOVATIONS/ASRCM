@@ -19,7 +19,7 @@ public interface AdminService
      * Returns the Variable with the given display name.
      * @throws InvalidIdentifierException if no such Variable exists
      */
-    public AbstractVariable getVariable(final String displayName)
+    public AbstractVariable getVariable(final String key)
         throws InvalidIdentifierException;
     
     /**

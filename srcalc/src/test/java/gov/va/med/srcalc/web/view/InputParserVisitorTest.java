@@ -46,7 +46,7 @@ public class InputParserVisitorTest
         final MultiSelectVariable var = SampleObjects.sampleGenderVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
-        variableEntry.getDynamicValues().put("Gender", "Unknown");
+        variableEntry.getDynamicValues().put("gender", "Unknown");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -67,7 +67,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         // Sometimes no value may be represented as an empty string.
-        variableEntry.getDynamicValues().put(var.getKey(), "");
+        variableEntry.getDynamicValues().put(var.getDisplayName(), "");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -230,7 +230,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry(
                 Arrays.asList(dnrVariable));
-        variableEntry.getDynamicValues().put(dnrVariable.getKey(), "blah");
+        variableEntry.getDynamicValues().put(dnrVariable.getDisplayName(), "blah");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -293,7 +293,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
-                var.getKey(), VariableEntry.SPECIAL_NUMERICAL);
+                var.getDisplayName(), VariableEntry.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "10.0");
         
         final BeanPropertyBindingResult errors =
@@ -314,7 +314,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
-                var.getKey(), VariableEntry.SPECIAL_NUMERICAL);
+                var.getDisplayName(), VariableEntry.SPECIAL_NUMERICAL);
         // Note: no numerical value actually specified
         
         final BeanPropertyBindingResult errors =
@@ -339,7 +339,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
-                var.getKey(), VariableEntry.SPECIAL_NUMERICAL);
+                var.getDisplayName(), VariableEntry.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "foo");
         
         final BeanPropertyBindingResult errors =
@@ -362,7 +362,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
-                var.getKey(), VariableEntry.SPECIAL_NUMERICAL);
+                var.getDisplayName(), VariableEntry.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "0.1");
         
         final BeanPropertyBindingResult errors =
@@ -385,7 +385,7 @@ public class InputParserVisitorTest
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
-                var.getKey(), VariableEntry.SPECIAL_NUMERICAL);
+                var.getDisplayName(), VariableEntry.SPECIAL_NUMERICAL);
         variableEntry.getDynamicValues().put(numericalName, "51.0");
         
         final BeanPropertyBindingResult errors =
