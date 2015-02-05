@@ -64,7 +64,9 @@ public class CmrProxy
     {
         fLogger.info("Locating ContextManager for client: {}", participantUrl);
 
-        final Client client = ClientBuilder.newClient().register(new ContentTypeOverrideFilter());
+        final Client client = ClientBuilder.newClient()
+                // The Vergence CMR replies with text/html.
+                .register(new ContentTypeOverrideFilter());
         final WebTarget target = client.target(CMR_ADDRESS);
         final Response response = target
                 .queryParam("interface", INTERFACE_NAME)
@@ -82,10 +84,8 @@ public class CmrProxy
                     response.getStatus()));
         }
 
-        final GenericType<MultivaluedMap<String, String>> type =
-                new GenericType<MultivaluedMap<String, String>>() {};
         final MultivaluedMap<String, String> responseValues =
-                response.readEntity(type);
+                response.readEntity(CcowUtils.MULTI_MAP_TYPE);
         
         return new ComponentLocation(
                 responseValues.getFirst("componentUrl"),

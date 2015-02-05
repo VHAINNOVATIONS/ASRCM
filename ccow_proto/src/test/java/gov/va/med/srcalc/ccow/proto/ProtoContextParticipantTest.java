@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.ccow.proto;
 
 import static org.junit.Assert.*;
+import gov.va.med.srcalc.ccow.CcowUtils;
 
 import javax.ws.rs.core.*;
 
@@ -19,13 +20,11 @@ public class ProtoContextParticipantTest extends JerseyTest
     @Test
     public final void testOnContextChangesPending()
     {
-        final GenericType<MultivaluedMap<String, String>> type =
-                new GenericType<MultivaluedMap<String, String>>() {};
         final MultivaluedMap<String, String> response = target("/")
             .queryParam("interface", ProtoContextParticipant.INTERFACE_NAME)
             .queryParam("method", ProtoContextParticipant.Methods.ContextChangesPending.name())
             .queryParam("contextCoupon", "1")
-            .request().get(type);
+            .request().get(CcowUtils.MULTI_MAP_TYPE);
         
         assertEquals("accept", response.getFirst("decision"));
         assertEquals("", response.getFirst("reason"));

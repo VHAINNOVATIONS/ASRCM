@@ -9,8 +9,7 @@
     <target>System.err</target>
   </appender>
   
-  <!-- Change to debug if desired. -->
-  <logger name="gov.va.med.srcalc" level="info"/>
+  <logger name="gov.va.med.srcalc.ccow" level="debug"/>
 
   <root level="info">
     <appender-ref ref="console" />

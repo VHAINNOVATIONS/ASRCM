@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.ccow;
 
+import javax.ws.rs.client.*;
+
 /**
  * Specifies a component location (i.e., the output of of the
  * ContextManagementRegistry.Locate method).
@@ -30,6 +32,16 @@ public final class ComponentLocation
     public String getSite()
     {
         return fSite;
+    }
+    
+    /**
+     * Creates a JAX-RS WebTarget already configured with the proper URL and
+     * component parameters.
+     */
+    public WebTarget makeWebTarget()
+    {
+        final Client client = ClientBuilder.newClient();
+        return client.target(fUrl + "?" + fParameters);
     }
     
     @Override

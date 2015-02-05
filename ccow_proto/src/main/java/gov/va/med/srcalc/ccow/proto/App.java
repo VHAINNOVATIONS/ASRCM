@@ -11,8 +11,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gov.va.med.srcalc.ccow.CmrProxy;
-import gov.va.med.srcalc.ccow.ComponentLocation;
+import gov.va.med.srcalc.ccow.*;
 
 public class App
 {
@@ -65,7 +64,13 @@ public class App
         startContextParticipantServer();
         
         final ComponentLocation cmLocation = CmrProxy.locate(baseCpUri.toString());
-        System.out.println("CM Location: " + cmLocation);
+        final CmProxy contextManager = new CmProxy(cmLocation);
+        
+        final String participantCoupon = contextManager.joinCommonContext(
+                "ccow_proto", baseCpUri.toString(), false, false);
+        final String recentContextCoupon = contextManager.getMostRecentContextCoupon();
+        fLogger.info("Most recent coupon: {}", recentContextCoupon);
+        contextManager.leaveCommonContext(participantCoupon);
         
         stopContextParticipantServer();
     }
