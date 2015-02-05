@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Integration Test for {@link CalculationController} and {@link
