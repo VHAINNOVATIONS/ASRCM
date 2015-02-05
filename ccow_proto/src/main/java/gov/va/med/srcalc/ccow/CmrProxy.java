@@ -81,9 +81,11 @@ public class CmrProxy
                     "Could not query CMR for ContextManager (status %d).",
                     response.getStatus()));
         }
-        
+
+        final GenericType<MultivaluedMap<String, String>> type =
+                new GenericType<MultivaluedMap<String, String>>() {};
         final MultivaluedMap<String, String> responseValues =
-                response.readEntity(MultivaluedMap.class);
+                response.readEntity(type);
         
         return new ComponentLocation(
                 responseValues.getFirst("componentUrl"),

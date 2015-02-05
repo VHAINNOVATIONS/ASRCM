@@ -19,11 +19,13 @@ public class ProtoContextParticipantTest extends JerseyTest
     @Test
     public final void testOnContextChangesPending()
     {
+        final GenericType<MultivaluedMap<String, String>> type =
+                new GenericType<MultivaluedMap<String, String>>() {};
         final MultivaluedMap<String, String> response = target("/")
             .queryParam("interface", ProtoContextParticipant.INTERFACE_NAME)
             .queryParam("method", ProtoContextParticipant.Methods.ContextChangesPending.name())
             .queryParam("contextCoupon", "1")
-            .request().get(MultivaluedMap.class);
+            .request().get(type);
         
         assertEquals("accept", response.getFirst("decision"));
         assertEquals("", response.getFirst("reason"));
