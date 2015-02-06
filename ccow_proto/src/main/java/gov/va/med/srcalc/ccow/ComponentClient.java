@@ -25,11 +25,12 @@ public class ComponentClient
      * @param method the method to execute
      * @param otherArguments all other arguments for the method
      * @return a Map of output parameters
-     * @throws IOException
+     * @throws IOException if an HTTP error occurs
+     * @throws CmaException if the component returns a CMA Exception
      */
     public MultivaluedMap<String, String> request(
             final String method, final Argument... otherArguments)
-            throws IOException
+            throws IOException, CmaException
     {
         WebTarget target = fLocation.makeWebTarget()
                 .queryParam("interface", fInterfaceName)
@@ -49,9 +50,17 @@ public class ComponentClient
                     response.getStatus()));
         }
         
-        // TODO: CMA Exception handling
+        final MultivaluedMap<String, String> responseOutputs =
+                response.readEntity(CcowUtils.MULTI_MAP_TYPE);
         
-        return response.readEntity(CcowUtils.MULTI_MAP_TYPE);
+        if (responseOutputs.containsKey("exception"))
+        {
+            throw new CmaException(
+                    responseOutputs.getFirst("exception"),
+                    responseOutputs.getFirst("exceptionMessage"));
+        }
+        
+        return responseOutputs;
     }
     
     public static class Argument

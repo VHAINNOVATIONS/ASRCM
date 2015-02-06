@@ -47,7 +47,7 @@ public class CmProxy
             final String participantUrl,
             final boolean survey,
             final boolean wait)
-                    throws IOException
+                    throws IOException, CmaException
     {
         fLogger.debug("Joining context...");
         
@@ -65,7 +65,7 @@ public class CmProxy
      * Executes the CMA method GetMostRecentContextCoupon.
      * @return the most recent context coupon
      */
-    public String getMostRecentContextCoupon() throws IOException
+    public String getMostRecentContextCoupon() throws IOException, CmaException
     {
         final MultivaluedMap<String, String> responseValues = fClient.request(
                 Methods.GetMostRecentContextCoupon.name());
@@ -77,7 +77,7 @@ public class CmProxy
      * Executes the CMA method LeaveCommonContext.
      */
     public void leaveCommonContext(final String participantCoupon)
-        throws IOException
+        throws IOException, CmaException
     {
         fLogger.debug("Leaving context...");
         
