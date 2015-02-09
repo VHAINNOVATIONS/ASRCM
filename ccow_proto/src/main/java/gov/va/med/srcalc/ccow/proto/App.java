@@ -2,6 +2,8 @@ package gov.va.med.srcalc.ccow.proto;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.ws.rs.ProcessingException;
 
@@ -65,13 +67,25 @@ public class App
         
         final ComponentLocation cmLocation = CmrProxy.locate(baseCpUri.toString());
         final CmProxy contextManager = new CmProxy(cmLocation);
+        final ScdProxy secureContextData = new ScdProxy(cmLocation);
         
         final String participantCoupon = contextManager.joinCommonContext(
                 "ccow_proto", baseCpUri.toString(), false, false);
-        final String recentContextCoupon = contextManager.getMostRecentContextCoupon();
-        fLogger.info("Most recent coupon: {}", recentContextCoupon);
-        contextManager.leaveCommonContext(participantCoupon);
-        
-        stopContextParticipantServer();
+        fLogger.info("Joined context session as participant {}", participantCoupon);
+        try
+        {
+            final String recentContextCoupon = contextManager.getMostRecentContextCoupon();
+            fLogger.info("Most recent coupon: {}", recentContextCoupon);
+            final List<String> itemValues = secureContextData.getItemValues(
+                    "0", Arrays.asList("Patient.*", "User.*"), false, recentContextCoupon, "")
+                    .getItemValues();
+            fLogger.info("Patient and User Context Data: {}", itemValues);
+        }
+        finally
+        {
+            contextManager.leaveCommonContext(participantCoupon);
+            
+            stopContextParticipantServer();
+        }
     }
 }
