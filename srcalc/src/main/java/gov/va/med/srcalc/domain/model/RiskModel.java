@@ -29,6 +29,7 @@ public class RiskModel
     private Set<DiscreteTerm> fDiscreteTerms = new HashSet<>();
     private Set<NumericalTerm> fNumericalTerms = new HashSet<>();
     private Set<ProcedureTerm> fProcedureTerms = new HashSet<>();
+    private Set<DerivedTerm> fDerivedTerms = new HashSet<>();
     
     /**
      * Mainly intended for reflection-based construction. Business code should
@@ -169,7 +170,7 @@ public class RiskModel
     }
 
     /**
-     * <p>The {@link DerivedTerm}s in the model's sum. Mutable.</p>
+     * <p>The {@link ProcedureTerm}s in the model's sum. Mutable.</p>
      * 
      * <p>See {@link #getTerms()} for a read-only view of all of the terms.</p>
      */
@@ -187,9 +188,33 @@ public class RiskModel
      * For reflection-based construction only. Business code should modify the
      * Set returned by {@link #getProcedureTerms()}.
      */
-    void setProcedureTerms(Set<ProcedureTerm> derivedTerms)
+    void setProcedureTerms(Set<ProcedureTerm> procedureTerms)
     {
-        fProcedureTerms = derivedTerms;
+        fProcedureTerms = procedureTerms;
+    }
+    
+    /**
+     * <p>The {@link DerivedTerm}s in the model's sum. Mutable.</p>
+     * 
+     * <p>See {@link #getTerms()} for a read-only view of all of the terms.</p>
+     */
+    @ElementCollection(fetch = FetchType.EAGER) // eager-load due to close association
+    // Override strange defaults.
+    @CollectionTable(
+            name = "risk_model_derived_term",
+            joinColumns = @JoinColumn(name = "risk_model_id"))
+    public Set<DerivedTerm> getDerivedTerms()
+    {
+        return fDerivedTerms;
+    }
+
+    /**
+     * For reflection-based construction only. Business code should modify the
+     * Set returned by {@link #getProcedureTerms()}.
+     */
+    void setDerivedTerms(Set<DerivedTerm> derivedTerms)
+    {
+        fDerivedTerms = derivedTerms;
     }
     
     /**
@@ -210,6 +235,7 @@ public class RiskModel
         terms.addAll(getDiscreteTerms());
         terms.addAll(getNumericalTerms());
         terms.addAll(getProcedureTerms());
+        terms.addAll(getDerivedTerms());
         return Collections.unmodifiableSet(terms);
     }
 

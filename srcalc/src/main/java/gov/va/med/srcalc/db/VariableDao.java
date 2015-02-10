@@ -48,14 +48,14 @@ public class VariableDao
     }
     
     /**
-     * Returns the persistent Variable with the given display name, or null
+     * Returns the persistent Variable with the given key, or null
      * if no such Variable exists.
      */
-    public AbstractVariable getByName(final String displayName)
+    public AbstractVariable getByKey(final String variableKey)
     {
         final Query q =  getCurrentSession().createQuery(
-                "from AbstractVariable v where v.displayName = :displayName");
-        q.setString("displayName", displayName);
+                "from AbstractVariable v where v.key = :variableKey");
+        q.setString("variableKey", variableKey);
         return (AbstractVariable)q.uniqueResult();
     }
 }

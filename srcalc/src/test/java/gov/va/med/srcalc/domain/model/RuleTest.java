@@ -48,7 +48,7 @@ public class RuleTest
         final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
         final Rule rule = new Rule(
                 Arrays.asList(totallyDependentMatcher, ageMatcher),
-                "#Age.value * #coefficient");
+                "#age.value * #coefficient");
         
         // Behavior verification
         values.put(fsVar, fsVar.makeValue(fsVar.getOptions().get(2)));
@@ -69,10 +69,10 @@ public class RuleTest
     {
         // Setup
         final VariableGroup group = SampleObjects.demographicsVariableGroup();
-        final NumericalVariable currWeight = new NumericalVariable("Weight", group);
-        final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group);
+        final NumericalVariable currWeight = new NumericalVariable("Weight", group, "weight");
+        final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group, "weight6MonthsAgo");
         final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "true");
-        final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "value < #Weight6MoAgo.value * 0.9");
+        final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "value < #weight6MonthsAgo.value * 0.9");
         final Rule rule =
                 new Rule(Arrays.asList(weight6MoAgoMatcher, weightLossMatcher), "#coefficient");
         
@@ -81,7 +81,7 @@ public class RuleTest
         values.put(weight6MoAgo, weight6MoAgo.makeValue(150));
         values.put(currWeight, currWeight.makeValue(100));
         assertEquals(
-                3.0,
+                3.0f,
                 rule.apply(new Rule.EvaluationContext(3.0f, values)),
                 0.0);
 

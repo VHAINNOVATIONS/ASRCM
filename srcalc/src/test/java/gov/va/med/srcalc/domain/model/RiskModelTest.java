@@ -105,5 +105,4 @@ public class RiskModelTest
         model.calculate(Arrays.<Value>asList(
                 dnrVar.makeValue(true), dnrVar.makeValue(false)));
     }
-    
 }

@@ -109,25 +109,25 @@ public class CalculationServiceIT extends IntegrationTest
         // Build a List of Values in the known order for Thoracic.
         final Map<String, Variable> thoracicVars = buildVariableMap(calc.getVariables());
         final ProcedureVariable procedureVar =
-                (ProcedureVariable)thoracicVars.get("Procedure");
+                (ProcedureVariable)thoracicVars.get("procedure");
         final Procedure selectedProcedure = procedureVar.getProcedures().get(1);
         final MultiSelectVariable asaVar =
-                (MultiSelectVariable)thoracicVars.get("ASA Classification");
+                (MultiSelectVariable)thoracicVars.get("asaClassification");
         final DiscreteNumericalVariable apVar =
-                (DiscreteNumericalVariable)thoracicVars.get("Alkaline Phosphatase");
+                (DiscreteNumericalVariable)thoracicVars.get("alkalinePhosphatase");
         final DiscreteNumericalVariable bunVar =
-                (DiscreteNumericalVariable)thoracicVars.get("BUN");
+                (DiscreteNumericalVariable)thoracicVars.get("bun");
         final float age = 66;
         final float bmi = 17.3f;
         // Construct this list in order by variable display name.
         final List<Value> orderedValues = Arrays.asList(
-                ((NumericalVariable)thoracicVars.get("Age")).makeValue(age),
+                ((NumericalVariable)thoracicVars.get("age")).makeValue(age),
                 apVar.makeValue(11.0f),
                 asaVar.makeValue(asaVar.getOptions().get(3)),
-                ((NumericalVariable)thoracicVars.get("BMI")).makeValue(bmi),
+                ((NumericalVariable)thoracicVars.get("bmi")).makeValue(bmi),
                 bunVar.makeValue(50.0f),
-                ((BooleanVariable)thoracicVars.get("DNR")).makeValue(true),
-                ((BooleanVariable)thoracicVars.get("Preop Pneumonia")).makeValue(false),
+                ((BooleanVariable)thoracicVars.get("dnr")).makeValue(true),
+                ((BooleanVariable)thoracicVars.get("preopPneumonia")).makeValue(false),
                 procedureVar.makeValue(selectedProcedure));
         
         // Create a new shuffled list to test Calculation's sorting.

@@ -46,7 +46,7 @@ public class InputParserVisitorTest
         final MultiSelectVariable var = SampleObjects.sampleGenderVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
-        variableEntry.getDynamicValues().put("Gender", "Unknown");
+        variableEntry.getDynamicValues().put("gender", "Unknown");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");

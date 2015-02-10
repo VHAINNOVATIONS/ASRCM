@@ -2,6 +2,10 @@ package gov.va.med.srcalc.domain.model;
 
 import java.util.*;
 
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.NoNullSet;
@@ -13,9 +17,17 @@ import gov.va.med.srcalc.util.NoNullSet;
  * <p>Per Effective Java Item 17, this class is marked final because it was not
  * designed for inheritance.</p>
  */
+@Embeddable
 public final class DerivedTerm extends ModelTerm
 {
-    private final Rule fRule;
+    private Rule fRule;
+    
+    /**
+     * Mainly intended for reflection-based construction.
+     */
+    DerivedTerm()
+    {
+    }
     
     public DerivedTerm(final float coefficient, final Rule rule)
     {
@@ -26,11 +38,22 @@ public final class DerivedTerm extends ModelTerm
     /**
      * Returns the {@link Rule}.
      */
+    @ManyToOne
     public Rule getRule()
     {
         return fRule;
     }
+    
+    /**
+     * Set the current rule for this term.
+     * @param rule A {@link Rule}.
+     */
+    void setRule(final Rule rule)
+    {
+    	this.fRule = rule;
+    }
 
+    @Transient
     @Override
     public NoNullSet<Variable> getRequiredVariables()
     {

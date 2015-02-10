@@ -26,9 +26,9 @@ public class ProcedureVariable extends AbstractVariable
     }
     
     public ProcedureVariable(
-            final String displayName, final VariableGroup group)
+            final String displayName, final VariableGroup group, final String key)
     {
-        super(displayName, group);
+        super(displayName, group, key);
     }
     
     /**

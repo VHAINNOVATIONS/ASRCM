@@ -33,7 +33,7 @@ public class VariableEntryTest
         // Behavior verification.
         final VariableEntry entry = new VariableEntry(vars);
         final HashMap<String, String> expected = new HashMap<>();
-        expected.put(vars.get(5).getDisplayName(), VariableEntry.SPECIAL_NUMERICAL);
+        expected.put(vars.get(5).getKey(), VariableEntry.SPECIAL_NUMERICAL);
         assertEquals(expected, entry.getDynamicValues());
     }
 }

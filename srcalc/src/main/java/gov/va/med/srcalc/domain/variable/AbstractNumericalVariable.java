@@ -22,9 +22,9 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
     {
     }
     
-    public AbstractNumericalVariable(final String displayName, final VariableGroup group)
+    public AbstractNumericalVariable(final String displayName, final VariableGroup group, final String key)
     {
-        super(displayName, group);
+        super(displayName, group, key);
     }
 
     /**
