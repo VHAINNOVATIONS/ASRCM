@@ -112,7 +112,7 @@ public final class Rule
     
     void setSummandExpression(final String summandExpression)
     {
-    	parseSummandExpression(summandExpression);
+    	this.fSummandExpression = parseSummandExpression(summandExpression);
     }
 
     /**
