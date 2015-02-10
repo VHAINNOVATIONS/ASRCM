@@ -22,6 +22,9 @@ public final class DerivedTerm extends ModelTerm
 {
     private Rule fRule;
     
+    /**
+     * Mainly intended for reflection-based construction.
+     */
     DerivedTerm()
     {
     }
@@ -41,6 +44,10 @@ public final class DerivedTerm extends ModelTerm
         return fRule;
     }
     
+    /**
+     * Set the current rule for this term.
+     * @param rule A {@link Rule}.
+     */
     void setRule(final Rule rule)
     {
     	this.fRule = rule;

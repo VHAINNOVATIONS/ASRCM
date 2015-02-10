@@ -24,6 +24,9 @@ public class ValueMatcher
     private Variable fVariable;
     private Expression fBooleanExpression;
     
+    /**
+	 * Mainly intended for reflection-based construction.
+	 */
     ValueMatcher()
     {    	
     }
@@ -38,17 +41,27 @@ public class ValueMatcher
     public ValueMatcher(final Variable variable, final String booleanExpression)
     {
         fVariable = Objects.requireNonNull(variable);
-        final SpelExpressionParser parser = new SpelExpressionParser();
+        fBooleanExpression = parseBooleanExpression(booleanExpression);
+    }
+
+    /**
+     * Parse the designated expression into a SPEL Expression.
+     * @param summandExpression The expression to be parsed into a boolean expression.
+     * @return A valid, parsed SPEL Expression
+     */
+	private Expression parseBooleanExpression(final String booleanExpression)
+	{
+		final SpelExpressionParser parser = new SpelExpressionParser();
         try
         {
-            fBooleanExpression = parser.parseExpression(
+            return parser.parseExpression(
                     Objects.requireNonNull(booleanExpression));
         }
         catch (final ParseException ex)
         {
             throw new IllegalArgumentException("Could not parse given expression.", ex);
         }
-    }
+	}
 
     /**
      * Returns the {@link Variable} whose {@link Value} this object matches.
@@ -76,16 +89,7 @@ public class ValueMatcher
     
     void setBooleanExpression(final String booleanExpression)
     {
-    	final SpelExpressionParser parser = new SpelExpressionParser();
-        try
-        {
-            fBooleanExpression = parser.parseExpression(
-                    Objects.requireNonNull(booleanExpression));
-        }
-        catch (final ParseException ex)
-        {
-            throw new IllegalArgumentException("Could not parse given expression.", ex);
-        }
+    	fBooleanExpression = parseBooleanExpression(booleanExpression);
     }
     
     @Transient

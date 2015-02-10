@@ -34,9 +34,10 @@ public class DiscreteNumericalVariable extends AbstractNumericalVariable impleme
     public DiscreteNumericalVariable(
             final String displayName,
             final VariableGroup group,
-            final Set<Category> categories)
+            final Set<Category> categories,
+            final String key)
     {
-        super(displayName, group);
+        super(displayName, group, key);
         fCategories = new TreeSet<>(categories);
     }
 

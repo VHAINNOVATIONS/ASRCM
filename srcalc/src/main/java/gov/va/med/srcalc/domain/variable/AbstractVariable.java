@@ -36,10 +36,11 @@ public abstract class AbstractVariable implements Variable
     /**
      * Creates an instance with some of the basic properties filled.
      */
-    protected AbstractVariable(final String displayName, final VariableGroup group)
+    protected AbstractVariable(final String displayName, final VariableGroup group, final String key)
     {
         this.fDisplayName = displayName;
         this.fGroup = Objects.requireNonNull(group, "group must not be null");
+        this.fKey = key;
     }
     
     /**
@@ -60,6 +61,11 @@ public abstract class AbstractVariable implements Variable
         this.fId = id;
     }
     
+    /**
+     * The default column name would be "KEY", which is already a 
+     * reserved word in SQL. Because of this, the column name is specified
+     * rather than using the default.
+     */
     @Basic
     @Column(
     		name = "VARIABLE_KEY",
@@ -83,8 +89,7 @@ public abstract class AbstractVariable implements Variable
     @Basic
     @Column(
             length = DISPLAY_NAME_MAX,
-            nullable = false,
-            unique = true)
+            nullable = false)
     public String getDisplayName()
     {
         return fDisplayName;

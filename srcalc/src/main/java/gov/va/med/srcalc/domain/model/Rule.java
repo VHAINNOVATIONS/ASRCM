@@ -41,6 +41,9 @@ public final class Rule
     private List<ValueMatcher> fMatchers;
     private Expression fSummandExpression;
     
+	/**
+	 * Mainly intended for reflection-based construction.
+	 */
     Rule()
     {
     }
@@ -56,16 +59,7 @@ public final class Rule
             final List<ValueMatcher> matchers, final String summandExpression)
     {
         fMatchers = Objects.requireNonNull(matchers);
-        final SpelExpressionParser parser = new SpelExpressionParser();
-        try
-        {
-            fSummandExpression = parser.parseExpression(
-                    Objects.requireNonNull(summandExpression));
-        }
-        catch (final ParseException ex)
-        {
-            throw new IllegalArgumentException("Could not parse given expression.", ex);
-        }
+        fSummandExpression = parseSummandExpression(summandExpression);
     }
     
     /**
@@ -118,17 +112,27 @@ public final class Rule
     
     void setSummandExpression(final String summandExpression)
     {
-    	final SpelExpressionParser parser = new SpelExpressionParser();
+    	parseSummandExpression(summandExpression);
+    }
+
+    /**
+     * Parse the designated expression into a SPEL Expression.
+     * @param summandExpression The expression to be parsed into a summand expression.
+     * @return A valid, parsed SPEL Expression
+     */
+	private Expression parseSummandExpression(final String summandExpression)
+	{
+		final SpelExpressionParser parser = new SpelExpressionParser();
         try
         {
-            fSummandExpression = parser.parseExpression(
+            return parser.parseExpression(
                     Objects.requireNonNull(summandExpression));
         }
         catch (final ParseException ex)
         {
             throw new IllegalArgumentException("Could not parse given expression.", ex);
         }
-    }
+	}
 
     /**
      * Returns all {@link Variable}s required for evaluating the Rule.

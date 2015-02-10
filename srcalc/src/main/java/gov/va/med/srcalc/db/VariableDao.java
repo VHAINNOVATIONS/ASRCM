@@ -58,11 +58,4 @@ public class VariableDao
         q.setString("variableKey", variableKey);
         return (AbstractVariable)q.uniqueResult();
     }
-
-	public AbstractVariable getByDisplayName(final String displayName) {
-		final Query q =  getCurrentSession().createQuery(
-                "from AbstractVariable v where v.displayName = :displayName");
-        q.setString("displayName", displayName);
-        return (AbstractVariable)q.uniqueResult();
-	}
 }

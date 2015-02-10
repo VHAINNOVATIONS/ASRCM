@@ -36,7 +36,7 @@ public class DiscreteNumericalVariableTest
         // Intentionally put the Categories out of order in this list.
         final List<Category> cats = Arrays.asList(cat2, cat1, catWnl);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
-                "Creatinine", SampleObjects.labVariableGroup(), new TreeSet<>(cats));
+                "Creatinine", SampleObjects.labVariableGroup(), new TreeSet<>(cats), "creatinine");
         
         // Behavior verification. The constructed ArrayList should have the
         // right order.
@@ -56,7 +56,7 @@ public class DiscreteNumericalVariableTest
         // Intentionally put the Categories out of order in this list.
         final List<Category> cats = Arrays.asList(cat3, cat2, cat1);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
-                "Creatinine", SampleObjects.labVariableGroup(), new TreeSet<>(cats));
+                "Creatinine", SampleObjects.labVariableGroup(), new TreeSet<>(cats), "creatinine");
         
         assertEquals(
                 Arrays.asList(cat1.getOption(), cat2.getOption(), cat3.getOption()),
