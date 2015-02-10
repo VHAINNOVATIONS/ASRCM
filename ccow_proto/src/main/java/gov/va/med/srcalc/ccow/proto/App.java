@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.ws.rs.ProcessingException;
 
@@ -63,6 +64,10 @@ public class App
 
     public static void main(String[] args) throws Exception
     {
+        // java.util.logging format is ugly, but too hard to improve. So just
+        // set the "org" logger to WARNING so that Grizzly, etc. won't log much.
+        java.util.logging.Logger.getLogger("org").setLevel(Level.WARNING);
+
         startContextParticipantServer();
         
         final ComponentLocation cmLocation = CmrProxy.locate(baseCpUri.toString());
