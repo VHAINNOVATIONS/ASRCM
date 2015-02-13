@@ -1,7 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.variable.*;
-
 import java.util.Objects;
 
 import javax.persistence.Embeddable;
@@ -54,7 +53,16 @@ public final class ProcedureTerm extends SingleVariableTerm
             final ProcedureValue value = (ProcedureValue)inputValue;
             
             // TODO: add the surgical complexity
-            return value.getValue().getRvu() * getCoefficient();
+            double complexityCoefficient = 0.0;
+            if(value.getValue().getComplexity().equals("Complex"))
+            {
+            	complexityCoefficient = -0.5338;
+            }
+            else if(value.getValue().getComplexity().equals("Intermediate"))
+            {
+            	complexityCoefficient = -0.387;
+            }
+            return complexityCoefficient + (value.getValue().getRvu() * getCoefficient());
         }
         catch (ClassCastException ex)
         {

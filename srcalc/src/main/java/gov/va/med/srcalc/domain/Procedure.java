@@ -25,6 +25,8 @@ public final class Procedure
     private String fShortDescription;
     
     private String fLongDescription;
+    
+    private String fComplexity;
 
     /**
      * Package-private default constructor mainly for Hibernate use. Be careful
@@ -40,13 +42,15 @@ public final class Procedure
             final String cptCode,
             final float rvu,
             final String shortDescription,
-            final String longDescription)
+            final String longDescription,
+            final String complexity)
     {
         this.fActive = true;
         this.fCptCode = cptCode;
         this.fRvu = rvu;
         this.fShortDescription = shortDescription;
         this.fLongDescription = longDescription;
+        this.fComplexity = complexity;
     }
 
     @Id // We use method-based property detection throughout the app.
@@ -113,12 +117,12 @@ public final class Procedure
     @Basic
     public String getShortDescription()
     {
-	return fShortDescription;
+    	return fShortDescription;
     }
 
     public void setShortDescription(final String description)
     {
-	fShortDescription = description;
+    	fShortDescription = description;
     }
     
     @Basic
@@ -130,6 +134,17 @@ public final class Procedure
     public void setLongDescription(final String longDescription)
     {
         fLongDescription = longDescription;
+    }
+    
+    @Basic
+    public String getComplexity()
+    {
+    	return fComplexity;
+    }
+    
+    public void setComplexity(final String complexity)
+    {
+    	fComplexity = complexity;
     }
 
     @Override

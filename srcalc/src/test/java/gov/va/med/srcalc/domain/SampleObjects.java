@@ -21,7 +21,8 @@ public class SampleObjects
                 "26546",
                 10.06f,
                 "Repair left hand",
-                "Repair left hand - you know, the thing with fingers");  
+                "Repair left hand - you know, the thing with fingers",
+                "Standard");  
     }
 
     public static Procedure sampleRepairRightProcedure()
@@ -30,7 +31,8 @@ public class SampleObjects
                 "26545",
                 5.05f,
                 "Repair right hand",
-                "Repair right hand - you know, the thing with fingers");  
+                "Repair right hand - you know, the thing with fingers",
+                "Standard");  
     }
     
     public static List<Procedure> sampleProcedureList()
