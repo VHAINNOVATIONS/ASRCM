@@ -51,18 +51,7 @@ public final class ProcedureTerm extends SingleVariableTerm
         try
         {
             final ProcedureValue value = (ProcedureValue)inputValue;
-            
-            // TODO: add the surgical complexity
-            double complexityCoefficient = 0.0;
-            if(value.getValue().getComplexity().equals("Complex"))
-            {
-            	complexityCoefficient = -0.5338;
-            }
-            else if(value.getValue().getComplexity().equals("Intermediate"))
-            {
-            	complexityCoefficient = -0.387;
-            }
-            return complexityCoefficient + (value.getValue().getRvu() * getCoefficient());
+            return (value.getValue().getRvu() * getCoefficient());
         }
         catch (ClassCastException ex)
         {

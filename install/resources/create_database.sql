@@ -1,10 +1,10 @@
-/* Creates the srcalc database on MySQL. */
+/*creates the srcalc database on MySQL. */
 
 CREATE DATABASE srcalc;
 USE srcalc;
 
 create table boolean_variable (id integer not null, primary key (id));
-create table cpt (id integer not null, active boolean not null, cpt_code varchar(255), long_description varchar(255), rvu float not null, short_description varchar(255), primary key (id));
+create table cpt (id integer not null, active boolean not null, complexity varchar(255), cpt_code varchar(255), long_description varchar(255), rvu float not null, short_description varchar(255), primary key (id));
 create table discrete_numerical_var (max_value float not null, min_value float not null, units varchar(40) not null, id integer not null, primary key (id));
 create table discrete_numerical_var_category (variable_id integer not null, option_id integer not null, lower_bound float not null, lower_inclusive boolean not null, upper_bound float not null, upper_inclusive boolean not null, primary key (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive));
 create table multi_select_option (id integer not null, option_value varchar(255), primary key (id));
@@ -12,12 +12,12 @@ create table multi_select_variable (display_type varchar(255), id integer not nu
 create table multi_select_variable_option (variable_id integer not null, option_id integer not null, option_index integer not null, primary key (variable_id, option_index));
 create table numerical_variable (max_value float not null, min_value float not null, units varchar(40) not null, id integer not null, primary key (id));
 create table procedure_variable (id integer not null, primary key (id));
-create table risk_model (id integer not null, constant float, display_name varchar(80) not null, primary key (id));
-create table risk_model_boolean_term (risk_model_id integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, variable, coefficient));
-create table risk_model_derived_term (risk_model_id integer not null, rule integer, coefficient float not null, primary key (risk_model_id, coefficient));
-create table risk_model_discrete_term (risk_model_id integer not null, option_index integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, option_index, variable, coefficient));
-create table risk_model_numerical_term (risk_model_id integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, variable, coefficient));
-create table risk_model_procedure_term (risk_model_id integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, variable, coefficient));
+create table risk_model (id integer not null, constant float, required boolean not null, display_name varchar(80) not null, primary key (id));
+create table risk_model_boolean_term (risk_model_id integer not null, variable integer not null, coefficient float not null, required boolean not null, primary key (risk_model_id, variable, coefficient, required));
+create table risk_model_derived_term (risk_model_id integer not null, rule integer, coefficient float not null, required boolean not null, primary key (risk_model_id, rule, coefficient, required));
+create table risk_model_discrete_term (risk_model_id integer not null, option_index integer not null, variable integer not null, coefficient float not null, required boolean not null, primary key (risk_model_id, option_index, variable, coefficient, required));
+create table risk_model_numerical_term (risk_model_id integer not null, variable integer not null, coefficient float not null, required boolean not null, primary key (risk_model_id, variable, coefficient, required));
+create table risk_model_procedure_term (risk_model_id integer not null, variable integer not null, coefficient float not null, required boolean not null, primary key (risk_model_id, variable, coefficient, required));
 create table rule (id integer not null, summand_expression varchar(255), primary key (id));
 create table rule_value_matcher (rule_id integer not null, boolean_expression varchar(255), variable integer);
 create table specialty (id integer not null, name varchar(255), vista_id integer not null, primary key (id));
@@ -26,7 +26,6 @@ create table variable (id integer not null, display_name varchar(80) not null, h
 create table variable_group (id integer not null, display_order integer not null, name varchar(255), primary key (id));
 alter table multi_select_variable_option add constraint UK_ru3a3572ftqkwimf3nkrnuc5a unique (option_id);
 alter table specialty_risk_model add constraint UK_g44r1aagpmd130bpvefwj08ve unique (risk_model_id);
-alter table variable add constraint UK_mvj8snetl0hhey2ej8vwvvhyu unique (display_name);
 alter table variable add constraint UK_3on3hwgilp01pjk6iqxarybnm unique (variable_key);
 alter table boolean_variable add index FK_8s7i3kftdcnt17a8us2sh6qou (id), add constraint FK_8s7i3kftdcnt17a8us2sh6qou foreign key (id) references variable (id);
 alter table discrete_numerical_var add index FK_1hmr3q0o9tn8xd48slnkwk0ld (id), add constraint FK_1hmr3q0o9tn8xd48slnkwk0ld foreign key (id) references variable (id);
