@@ -66,23 +66,11 @@ public class CalculationControllerIT extends IntegrationTest
             andExpect(model().attributeExists("specialties", "calculation"));
     }
     
-    @Test(expected = ServletException.class)
+    @Test
     public void testStartNewCalculationNoDfn() throws Exception
     {
-        fMockMvc.perform(get("/newCalc").session(fSession));
-    }
-    
-    @Test
-    public void testStartNewCalculationReuseDfn() throws Exception
-    {
-        testStartNewCalculationWithDfn();
-
-        fMockMvc.perform(
-                get("/newCalc").session(fSession))
-            .andExpect(model().attributeExists("specialties"))
-            .andExpect(model().attribute("calculation",
-                    // Verify reused DFN.
-                    hasProperty("patient", hasProperty("dfn", equalTo(MOCK_DFN)))));
+        fMockMvc.perform(get("/newCalc").session(fSession))
+            .andExpect(status().is4xxClientError());
     }
     
     /**

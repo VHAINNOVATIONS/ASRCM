@@ -21,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class CalculationController
 {
-    private static String SESSION_PATIENT_DFN = "srcalc_patientDfn";
     private static String SESSION_CALCULATION = "srcalc_calculation";
     
     private final CalculationService fCalculationService;
@@ -47,60 +46,12 @@ public class CalculationController
         }
         return workflow;
     }
-    
-    /**
-     * Encapsulates the following logic to determine which patient DFN to use:
-     * <ol>
-     * <li>If a DFN was provided in the request, use it.</li>
-     * <li>Otherwise, if there is already a DFN in the session, use it.</li>
-     * <li>Otherwise, abort the calculation.</li>
-     * </ol>
-     * @param providedDfn the patient DFN for the calculation. Only required if
-     * there is not already a current DFN in the Session. -1 represents no value
-     * @param session the HttpSession
-     * @return the patient DFN to use
-     * @throws IllegalArgumentException if we hit #3 above
-     */
-    private int determinePatientDfn(
-            final HttpSession session, final int providedDfn)
-    {
-        // If a DFN was provided in the request, use it.
-        if (providedDfn != -1)
-        {
-            // Store the DFN in the session for the next new calculation.
-            session.setAttribute(SESSION_PATIENT_DFN, providedDfn);
-            
-            return providedDfn;
-        }
-        // Otherwise, if there is already a DFN in the session, use it.
-        else
-        {
-            // Use the boxed type (Integer) since the Session attribute may be null.
-            final Integer sessionDfn = (Integer)session.getAttribute(SESSION_PATIENT_DFN);
-            // If there was no DFN provided or in the session, abort.
-            if (sessionDfn == null)
-            {
-                throw new IllegalArgumentException("A patient DFN is required.");
-            }
 
-            return sessionDfn;
-        }
-    }
-
-    /**
-     * Starts a new calculation.
-     * @param providedDfn the patient DFN for the calculation. Only required if
-     * there is not already a current DFN in the Session. -1 represents no value
-     * @param session the HttpSession
-     * @return the {@link ModelAndView} for continuing the calculation
-     */
     @RequestMapping(value = "/newCalc", method = RequestMethod.GET)
     public ModelAndView startNewCalculation(
-            @RequestParam(value = "patientDfn", defaultValue = "-1") final int providedDfn,
+            @RequestParam(value = "patientDfn") final int patientDfn,
             final HttpSession session)
     {
-        final int patientDfn = determinePatientDfn(session, providedDfn);
-
         // Start the calculation. A Calculation object must be created here to
         // store the start time for reporting.
         final NewCalculation newCalc = fCalculationService.startNewCalculation(patientDfn);
