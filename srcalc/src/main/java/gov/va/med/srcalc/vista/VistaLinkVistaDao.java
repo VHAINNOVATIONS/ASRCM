@@ -79,7 +79,7 @@ public class VistaLinkVistaDao implements VistaDao
     {
         fLogger.debug("Loading VistaPerson for duz {}.", duz);
 
-        final String rpcContext = "XOBV VISTALINK TESTER";
+        final String rpcContext = "SR ASRC";
 
         final VistaLinkDuzConnectionSpec cs =
                 new VistaLinkDuzConnectionSpec(fDivision, duz);
