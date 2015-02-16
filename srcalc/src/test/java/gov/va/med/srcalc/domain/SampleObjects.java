@@ -21,7 +21,8 @@ public class SampleObjects
                 "26546",
                 10.06f,
                 "Repair left hand",
-                "Repair left hand - you know, the thing with fingers");  
+                "Repair left hand - you know, the thing with fingers",
+                "Standard");  
     }
 
     public static Procedure sampleRepairRightProcedure()
@@ -30,7 +31,8 @@ public class SampleObjects
                 "26545",
                 5.05f,
                 "Repair right hand",
-                "Repair right hand - you know, the thing with fingers");  
+                "Repair right hand - you know, the thing with fingers",
+                "Standard");  
     }
     
     public static List<Procedure> sampleProcedureList()
@@ -52,9 +54,11 @@ public class SampleObjects
      * @param variables
      * @return a RiskModel with a term for each given variable
      */
-    public static RiskModel makeSampleRiskModel(final String name, final Variable... variables)
+    public static RiskModel makeSampleRiskModel(final String name, final Set<DerivedTerm> derivedTerms, 
+    		final Variable... variables)
     {
         final RiskModel m = new RiskModel(name);
+        m.getDerivedTerms().addAll(derivedTerms);
         
         final ExceptionlessVariableVisitor visitor = new ExceptionlessVariableVisitor()
         {
