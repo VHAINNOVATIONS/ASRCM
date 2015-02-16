@@ -15,6 +15,7 @@ public class Views
     {
     }
     
+    public static final String SESSION_TIMEOUT = "sessionTimeout.jsp";
     public static final String SELECT_SPECIALTY = "selectSpecialty.jsp";
     public static final String ENTER_VARIABLES = "enterVariables.jsp";
     public static final String DISPLAY_RESULTS = "displayResults.jsp";
