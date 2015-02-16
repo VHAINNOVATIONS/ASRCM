@@ -23,8 +23,6 @@
     <!-- Configure Spring Security. -->
     <security:http>
         <!-- Use the generated form login. -->
-        <!-- TODO: add a page at the root to inform the user that the tool must
-             be launched from CPRS. -->
         <security:form-login default-target-url="/" />
         <security:session-management invalid-session-url="/sessionTimeout" />
         <security:logout logout-url="/logout" />

@@ -12,8 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class DefaultController
 {
-    @RequestMapping(value = "/sessionTimeout", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String defaultPage()
+    {
+        return Views.LAUNCH_FROM_CPRS;
+    }
+
+    @RequestMapping(value = "/sessionTimeout", method = RequestMethod.GET)
+    public String sessionTimeout()
     {
         return Views.SESSION_TIMEOUT;
     }
