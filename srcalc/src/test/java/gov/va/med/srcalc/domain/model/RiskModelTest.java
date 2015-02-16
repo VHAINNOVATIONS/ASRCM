@@ -24,6 +24,7 @@ public class RiskModelTest
         final MultiSelectVariable fsVar = SampleObjects.functionalStatusVariable();
         final RiskModel model = SampleObjects.makeSampleRiskModel(
                 "Thoracic 30-day Mortality Estimate (FY2013)",
+                new HashSet<DerivedTerm>(),
                 procedureVar, dnrVar, ageVar, wbcVar, fsVar);
         
         // Behavior verification
@@ -60,8 +61,14 @@ public class RiskModelTest
         final NumericalVariable ageVar = SampleObjects.sampleAgeVariable();
         final DiscreteNumericalVariable wbcVar = SampleObjects.wbcVariable();
         final MultiSelectVariable fsVar = SampleObjects.functionalStatusVariable();
+        final Set<DerivedTerm> derivedTerms = new HashSet<DerivedTerm>();
+        final ValueMatcher matcher = new ValueMatcher(procedureVar, "#this.value.complexity == \"Standard\"");
+        final List<ValueMatcher> valueMatchers = new ArrayList<ValueMatcher>();
+        valueMatchers.add(matcher);
+        derivedTerms.add(new DerivedTerm(6.0f, new Rule(valueMatchers, "#coefficient")));
         final RiskModel model = SampleObjects.makeSampleRiskModel(
                 "Thoracic 30-day Mortality Estimate (FY2013)",
+                derivedTerms,
                 procedureVar, dnrVar, ageVar, wbcVar, fsVar);
 
         final Procedure selectedProcedure = procedureVar.getProcedures().get(1);
@@ -79,7 +86,8 @@ public class RiskModelTest
                 2.0f * age +
                 3.0f +
                 4.0f +
-                5.0f;
+                5.0f + 
+                6.0f;
         double expectedExp = Math.exp(expectedSum);
         double expectedResult = expectedExp / (1 + expectedExp);
         assertEquals(expectedResult, model.calculate(values), 0.01f);
@@ -100,7 +108,7 @@ public class RiskModelTest
     {
         final BooleanVariable dnrVar = SampleObjects.dnrVariable();
         final RiskModel model = SampleObjects.makeSampleRiskModel(
-                "model", dnrVar);
+                "model", new HashSet<DerivedTerm>(), dnrVar);
         
         model.calculate(Arrays.<Value>asList(
                 dnrVar.makeValue(true), dnrVar.makeValue(false)));

@@ -42,6 +42,7 @@ public class DerivedTermTest
     
     public final void testBasic() throws Exception
     {
+    	// FIXME: David, fix this
         // setup
         final float coeff = 9.1f;
         final Set<Variable> reqVars = CollectionUtils.<Variable>hashSet(
@@ -67,5 +68,4 @@ public class DerivedTermTest
             .suppress(Warning.NULL_FIELDS)
             .verify();
     }
-    
 }

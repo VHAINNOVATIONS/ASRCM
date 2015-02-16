@@ -54,9 +54,11 @@ public class SampleObjects
      * @param variables
      * @return a RiskModel with a term for each given variable
      */
-    public static RiskModel makeSampleRiskModel(final String name, final Variable... variables)
+    public static RiskModel makeSampleRiskModel(final String name, final Set<DerivedTerm> derivedTerms, 
+    		final Variable... variables)
     {
         final RiskModel m = new RiskModel(name);
+        m.getDerivedTerms().addAll(derivedTerms);
         
         final ExceptionlessVariableVisitor visitor = new ExceptionlessVariableVisitor()
         {
