@@ -64,7 +64,7 @@ public class EnterVariablesController
                 CalculationController.getWorkflowFromSession(session);
 
         // Present the view.
-        final ModelAndView mav = new ModelAndView(Tile.ENTER_VARIABLES);
+        final ModelAndView mav = new ModelAndView(Views.ENTER_VARIABLES);
         mav.addObject("calculation", workflow.getCalculation());
         // Note: "variableEntry" object is automatically added through annotated
         // method parameter.

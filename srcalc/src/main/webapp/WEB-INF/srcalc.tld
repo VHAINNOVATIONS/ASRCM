@@ -20,6 +20,17 @@
 	   <function-class>gov.va.med.srcalc.web.view.VariableEntry</function-class>
 	   <function-signature>java.lang.String makeDynamicValuePath(java.lang.String)</function-signature>
 	</function>
+	
+	<!-- Tag files can generate an "implicit TLD" but define them explicitly here
+	     so that JSPs can use both these tags and the below Java-based ones. -->
+	<tag-file >
+	   <name>calcPage</name>
+	   <path>/WEB-INF/tags/calcPage.tag</path>
+	</tag-file>
+	<tag-file >
+	   <name>adminPage</name>
+	   <path>/WEB-INF/tags/adminPage.tag</path>
+	</tag-file>
 
 	<tag>
 	   <name>variableSpecific</name>

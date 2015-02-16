@@ -60,7 +60,7 @@ public class CalculationController
         session.setAttribute(SESSION_CALCULATION, newCalc);
         
         // Present the view.
-        final ModelAndView mav = new ModelAndView(Tile.SELECT_SPECIALTY);
+        final ModelAndView mav = new ModelAndView(Views.SELECT_SPECIALTY);
         mav.addObject("calculation", newCalc.getCalculation());
         mav.addObject("specialties", newCalc.getPossibleSpecialties());
         return mav;
@@ -92,6 +92,6 @@ public class CalculationController
         final CalculationWorkflow workflow = getWorkflowFromSession(session);
         
         model.addAttribute("calculation", workflow.getCalculation());
-        return Tile.DISPLAY_RESULTS;
+        return Views.DISPLAY_RESULTS;
     }
 }
