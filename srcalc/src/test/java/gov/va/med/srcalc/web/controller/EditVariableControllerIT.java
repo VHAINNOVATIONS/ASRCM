@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.web.controller;
 
 import gov.va.med.srcalc.test.util.IntegrationTest;
-import gov.va.med.srcalc.web.view.Tile;
+import gov.va.med.srcalc.web.view.Views;
 
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -62,7 +62,7 @@ public class EditVariableControllerIT extends IntegrationTest
                         // 81 characters
                         "01234567890123456789012345678901234567890123456789012345678901234567890123456789X")).
             andExpect(model().attributeHasErrors("variable")).
-            andExpect(view().name(Tile.EDIT_VARIABLE));
+            andExpect(view().name(Views.EDIT_VARIABLE));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class EditVariableControllerIT extends IntegrationTest
                 param("displayName",
                         "Preop_Pneumonia")).
             andExpect(model().attributeHasErrors("variable")).
-            andExpect(view().name(Tile.EDIT_VARIABLE));
+            andExpect(view().name(Views.EDIT_VARIABLE));
     }
     
 }
