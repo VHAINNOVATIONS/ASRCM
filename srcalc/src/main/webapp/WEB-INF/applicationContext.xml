@@ -26,10 +26,12 @@
         <security:intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
         <security:intercept-url pattern="/**" access="ROLE_USER" />
-        <!-- Use the generated form login. Always redirect to the home page to
-             avoid "No current calculation" errors. -->
-        <security:form-login
-            default-target-url="/" always-use-default-target='true' />
+        <!-- Use the generated form login. -->
+        <!-- TODO: add a page at the root to inform the user that the tool must
+             be launched from CPRS. -->
+        <security:form-login default-target-url="/" />
+        <!-- TODO: handle expired sessions in a friendly manner, instead of just
+             showing the error "no current calculation" after re-logging-in. -->
         <security:logout logout-url="/logout" />
     </security:http>
     
