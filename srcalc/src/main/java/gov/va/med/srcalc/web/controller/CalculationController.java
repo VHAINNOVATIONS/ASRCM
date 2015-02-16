@@ -13,6 +13,7 @@ import gov.va.med.srcalc.web.view.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Controller for creating a new Calculation.
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class CalculationController
 {
+    private static String SESSION_PATIENT_DFN = "srcalc_patientDfn";
     private static String SESSION_CALCULATION = "srcalc_calculation";
     
     private final CalculationService fCalculationService;
@@ -45,26 +47,72 @@ public class CalculationController
         }
         return workflow;
     }
-
-    @RequestMapping(value = "/newCalc", method = RequestMethod.GET)
-    public String presentSelection(final HttpSession session, final Model model)
+    
+    /**
+     * Encapsulates the following logic to determine which patient DFN to use:
+     * <ol>
+     * <li>If a DFN was provided in the request, use it.</li>
+     * <li>Otherwise, if there is already a DFN in the session, use it.</li>
+     * <li>Otherwise, abort the calculation.</li>
+     * </ol>
+     * @param providedDfn the patient DFN for the calculation. Only required if
+     * there is not already a current DFN in the Session. -1 represents no value
+     * @param session the HttpSession
+     * @return the patient DFN to use
+     * @throws IllegalArgumentException if we hit #3 above
+     */
+    private int determinePatientDfn(
+            final HttpSession session, final int providedDfn)
     {
-        // A Calculation object must be created here to store the start time for
-        // the "Time To Completion" report.
-        
-        // FIXME: fake
-        final int FAKE_PATIENT_DFN = 1;
+        // If a DFN was provided in the request, use it.
+        if (providedDfn != -1)
+        {
+            // Store the DFN in the session for the next new calculation.
+            session.setAttribute(SESSION_PATIENT_DFN, providedDfn);
+            
+            return providedDfn;
+        }
+        // Otherwise, if there is already a DFN in the session, use it.
+        else
+        {
+            // Use the boxed type (Integer) since the Session attribute may be null.
+            final Integer sessionDfn = (Integer)session.getAttribute(SESSION_PATIENT_DFN);
+            // If there was no DFN provided or in the session, abort.
+            if (sessionDfn == null)
+            {
+                throw new IllegalArgumentException("A patient DFN is required.");
+            }
 
-        // Start the calculation.
-        final NewCalculation newCalc = fCalculationService.startNewCalculation(FAKE_PATIENT_DFN);
+            return sessionDfn;
+        }
+    }
+
+    /**
+     * Starts a new calculation.
+     * @param providedDfn the patient DFN for the calculation. Only required if
+     * there is not already a current DFN in the Session. -1 represents no value
+     * @param session the HttpSession
+     * @return the {@link ModelAndView} for continuing the calculation
+     */
+    @RequestMapping(value = "/newCalc", method = RequestMethod.GET)
+    public ModelAndView startNewCalculation(
+            @RequestParam(value = "patientDfn", defaultValue = "-1") final int providedDfn,
+            final HttpSession session)
+    {
+        final int patientDfn = determinePatientDfn(session, providedDfn);
+
+        // Start the calculation. A Calculation object must be created here to
+        // store the start time for reporting.
+        final NewCalculation newCalc = fCalculationService.startNewCalculation(patientDfn);
 
         // Store the calculation in the HTTP Session.
         session.setAttribute(SESSION_CALCULATION, newCalc);
         
         // Present the view.
-        model.addAttribute("calculation", newCalc.getCalculation());
-	model.addAttribute("specialties", newCalc.getPossibleSpecialties());
-	return Tile.SELECT_SPECIALTY;
+        final ModelAndView mav = new ModelAndView(Tile.SELECT_SPECIALTY);
+        mav.addObject("calculation", newCalc.getCalculation());
+        mav.addObject("specialties", newCalc.getPossibleSpecialties());
+        return mav;
     }
     
     @RequestMapping(value = "/selectSpecialty", method = RequestMethod.POST)

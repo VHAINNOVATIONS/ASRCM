@@ -5,5 +5,5 @@
         <c:if test="${calculation.specialty != null}">
         <li><label class="variableName">Specialty:</label> ${calculation.specialty}</li>
         </c:if>
-        <li><label class="variableName">Patient:</label> ${calculation.patient}</li>
+        <li><label class="variableName">Patient:</label> ${calculation.patient.name}</li>
         </ol>

@@ -53,7 +53,7 @@ public class Patient implements Serializable
     @Override
     public String toString()
     {
-        return fName;
+        return String.format("Patient %s (DFN: %d)", fName, fDfn);
     }
     
     @Override
