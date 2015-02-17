@@ -11,18 +11,21 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class VistaUserDetailsServiceTest
 {
+    private final String DIVISION = "500";
     private final String ADMIN_DUZ = "20001";
     private final String RADIOLOGIST_DUZ = "11716";
     
     protected VistaPerson sampleRadiologist()
     {
-        final VistaPerson radiologist = new VistaPerson(RADIOLOGIST_DUZ, "RADIOLOGIST,ONE", "unknown");
+        final VistaPerson radiologist = new VistaPerson(
+                DIVISION, RADIOLOGIST_DUZ, "RADIOLOGIST,ONE", "unknown");
         return radiologist;
     }
     
     protected VistaPerson sampleAdministrator()
     {
-        final VistaPerson admin = new VistaPerson(ADMIN_DUZ, "C1", "unknown");
+        final VistaPerson admin = new VistaPerson(
+                DIVISION, ADMIN_DUZ, "C1", "unknown");
         return admin;
     }
 
@@ -53,6 +56,7 @@ public class VistaUserDetailsServiceTest
         
         final VistaUserDetailsService service = new VistaUserDetailsService(mockVistaDaoFactory());
         final VistaUserDetails user = service.loadUserByUsername(samplePerson.getDuz());
+        assertEquals(samplePerson.getDivision(), user.getDivision());
         assertEquals(samplePerson.getDuz(), user.getDuz());
         assertEquals(samplePerson.getDuz(), user.getUsername());
         assertEquals("", user.getPassword());
@@ -68,6 +72,7 @@ public class VistaUserDetailsServiceTest
         
         final VistaUserDetailsService service = new VistaUserDetailsService(mockVistaDaoFactory());
         final VistaUserDetails user = service.loadUserByUsername(samplePerson.getDuz());
+        assertEquals(samplePerson.getDivision(), user.getDivision());
         assertEquals(samplePerson.getDuz(), user.getDuz());
         assertEquals(samplePerson.getDuz(), user.getUsername());
         assertEquals("", user.getPassword());

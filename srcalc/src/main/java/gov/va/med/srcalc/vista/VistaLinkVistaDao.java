@@ -96,7 +96,8 @@ public class VistaLinkVistaDao implements VistaDao
                 // Get the first index in the array. We don't care about the rest.
                 final String userString = response.getResults().split("\n")[0];
                 fLogger.debug("Got user: ", userString);
-                return new VistaPerson(duz, userString, "user class not pulled");
+                return new VistaPerson(
+                        fDivision, duz, userString, "user class not pulled");
             }
             finally
             {
