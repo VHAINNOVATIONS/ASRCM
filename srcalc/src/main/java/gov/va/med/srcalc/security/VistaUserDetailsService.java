@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.vista.VistaDao;
-import gov.va.med.srcalc.vista.VistaDaoFactory;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

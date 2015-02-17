@@ -37,7 +37,7 @@
     </security:http>
     
     <!-- User VistaUserDetailsService to load users. -->
-    <bean id="vistaDaoFactory" class="gov.va.med.srcalc.vista.VistaLinkVistaDaoFactory" />
+    <bean id="vistaDaoFactory" class="gov.va.med.srcalc.security.VistaLinkVistaDaoFactory" />
     <bean id="vistaUserDetailsService" class="gov.va.med.srcalc.security.VistaUserDetailsService" />
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="vistaUserDetailsService" />

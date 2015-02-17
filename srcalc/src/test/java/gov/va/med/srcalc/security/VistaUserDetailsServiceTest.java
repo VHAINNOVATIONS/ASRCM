@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.vista.VistaDao;
-import gov.va.med.srcalc.vista.VistaDaoFactory;
 
 import org.junit.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,9 +1,13 @@
-package gov.va.med.srcalc.vista;
+package gov.va.med.srcalc.security;
 
 import gov.va.med.srcalc.ConfigurationException;
+import gov.va.med.srcalc.vista.VistaDao;
 
 /**
- * Constructs {@link VistaDao}s for a particular VistA division.
+ * <p>Constructs {@link VistaDao}s for a particular VistA division.</p>
+ * 
+ * <p>Allows {@link VistaUserDetailsService} to construct division-specific
+ * {@link VistaDao}s without knowing the implementation.</p>
  */
 public interface VistaDaoFactory
 {

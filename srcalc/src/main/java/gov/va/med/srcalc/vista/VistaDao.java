@@ -5,7 +5,11 @@ import org.springframework.dao.DataAccessException;
 import gov.va.med.srcalc.domain.VistaPerson;
 
 /**
- * Reads and writes remote VistA data.
+ * <p>Reads and writes remote VistA data.</p>
+ * 
+ * <p>This is an interface to allow for
+ * <a href="http://martinfowler.com/eaaCatalog/serviceStub.html">Service Stubs
+ * </a>. See {@link VistaLinkVistaDao} for the "real" implementation.</p>
  */
 public interface VistaDao
 {
