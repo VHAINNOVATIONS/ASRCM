@@ -3,7 +3,7 @@ package gov.va.med.srcalc.security;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import gov.va.med.srcalc.domain.VistaPerson;
-import gov.va.med.srcalc.vista.VistaDao;
+import gov.va.med.srcalc.vista.*;
 
 import org.junit.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,9 +28,9 @@ public class VistaUserDetailsServiceTest
         return admin;
     }
 
-    protected VistaDao mockVistaDao()
+    protected VistaPersonDao mockVistaDao()
     {
-        final VistaDao dao = mock(VistaDao.class);
+        final VistaPersonDao dao = mock(VistaPersonDao.class);
         when(dao.loadVistaPerson(RADIOLOGIST_DUZ)).thenReturn(sampleRadiologist());
         when(dao.loadVistaPerson(ADMIN_DUZ)).thenReturn(sampleAdministrator());
         return dao;
@@ -41,9 +41,15 @@ public class VistaUserDetailsServiceTest
         return new VistaDaoFactory()
         {
             @Override
-            public VistaDao getVistaDao(String division)
+            public VistaPersonDao getVistaPersonDao(String division)
             {
                 return mockVistaDao();
+            }
+            
+            @Override
+            public VistaPatientDao getVistaPatientDao()
+            {
+                return new MockVistaPatientDao();
             }
         };
     }

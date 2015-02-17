@@ -1,22 +1,33 @@
 package gov.va.med.srcalc.security;
 
 import gov.va.med.srcalc.ConfigurationException;
-import gov.va.med.srcalc.vista.VistaDao;
+import gov.va.med.srcalc.vista.VistaPatientDao;
+import gov.va.med.srcalc.vista.VistaPersonDao;
 
 /**
- * <p>Constructs {@link VistaDao}s for a particular VistA division.</p>
- * 
- * <p>Allows {@link VistaUserDetailsService} to construct division-specific
- * {@link VistaDao}s without knowing the implementation.</p>
+ * Allows clients to construct new VistA DAOs without knowing the
+ * implementation.
  */
 public interface VistaDaoFactory
 {
     /**
-     * Returns a {@link VistaDao} for the specific VistA division.
+     * Returns a {@link VistaPersonDao} for the specific VistA division.
      * @param division e.g., "500"
      * @throws ConfigurationException if the VistA communication is somehow
      * misconfigured
      * @throws IllegalArgumentException if the given division is not known
      */
-    public VistaDao getVistaDao(final String division);
+    public VistaPersonDao getVistaPersonDao(final String division);
+
+    /**
+     * <p>Returns a {@link VistaPersonDao} that will execute under the context of
+     * the current user.</p>
+     * 
+     * <p>Note that, unlike {@link #getVistaPersonDao(String)}, the division
+     * is implied in the current user contxt.</p>
+     * 
+     * @throws ConfigurationException if the VistA communication is somehow
+     * misconfigured
+     */
+    public VistaPatientDao getVistaPatientDao();
 }

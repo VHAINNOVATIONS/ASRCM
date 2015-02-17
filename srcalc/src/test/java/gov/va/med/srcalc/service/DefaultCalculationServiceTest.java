@@ -8,6 +8,7 @@ import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
+import gov.va.med.srcalc.vista.MockVistaPatientDao;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class DefaultCalculationServiceTest
     
     public DefaultCalculationService defaultCalculationService()
     {
-        return new DefaultCalculationService(mockSpecialtyDao());
+        return new DefaultCalculationService(mockSpecialtyDao(), new MockVistaPatientDao());
     }
 
     @Test

@@ -37,7 +37,7 @@ public class VistaLinkVistaDaoTest
     {
         final String division = "500";
         
-        final VistaLinkVistaDao dao = new VistaLinkVistaDao(division);
+        final VistaLinkVistaPersonDao dao = new VistaLinkVistaPersonDao(division);
         final VistaPerson person = dao.loadVistaPerson(RADIOLOGIST_DUZ);
         assertEquals(RADIOLOGIST_DUZ, person.getDuz());
         assertEquals(RADIOLOGIST_NAME, person.getDisplayName());
@@ -48,7 +48,7 @@ public class VistaLinkVistaDaoTest
     {
         final String division = "600";
         
-        final VistaLinkVistaDao dao = new VistaLinkVistaDao(division);
+        final VistaLinkVistaPersonDao dao = new VistaLinkVistaPersonDao(division);
         dao.loadVistaPerson(RADIOLOGIST_DUZ);
     }
     

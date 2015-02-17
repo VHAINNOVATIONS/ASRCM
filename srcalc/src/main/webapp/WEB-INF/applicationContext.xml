@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="
        http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
        http://www.springframework.org/schema/jee
        http://www.springframework.org/schema/jee/spring-jee.xsd
        http://www.springframework.org/schema/security
@@ -42,4 +45,14 @@
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="vistaUserDetailsService" />
     </security:authentication-manager>
+    
+    <!-- Provide a request-scoped VistaPatientDao that already knows the current
+         user. -->
+    <bean id="vistaPatientDao" scope="request"
+        factory-bean="vistaDaoFactory" factory-method="getVistaPatientDao">
+        <!-- Create a proxy for injection into singleton beans (e.g.,
+             CalculationService). See <http://tinyurl.com/psgmdwe> -->
+        <aop:scoped-proxy/>
+    </bean>
+
 </beans>

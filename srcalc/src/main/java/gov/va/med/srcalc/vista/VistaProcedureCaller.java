@@ -3,25 +3,24 @@ package gov.va.med.srcalc.vista;
 import javax.naming.*;
 import javax.resource.ResourceException;
 
+import gov.va.med.exception.FoundationsException;
+import gov.va.med.srcalc.ConfigurationException;
+import gov.va.med.vistalink.adapter.cci.*;
+import gov.va.med.vistalink.institution.InstitutionMappingNotFoundException;
+import gov.va.med.vistalink.rpc.*;
+import gov.va.med.vistalink.security.m.SecurityIdentityDeterminationFaultException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.RecoverableDataAccessException;
 
-import gov.va.med.exception.FoundationsException;
-import gov.va.med.srcalc.ConfigurationException;
-import gov.va.med.srcalc.domain.VistaPerson;
-import gov.va.med.vistalink.adapter.cci.*;
-import gov.va.med.vistalink.institution.*;
-import gov.va.med.vistalink.rpc.*;
-import gov.va.med.vistalink.security.m.SecurityIdentityDeterminationFaultException;
-
 /**
- * Implementation of {@link VistaDao} using VistALink.
+ * Provides a simple interface to call VistA Remote Procedures.
  */
-public class VistaLinkVistaDao implements VistaDao
+public class VistaProcedureCaller
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(VistaLinkVistaDao.class);
-
+    private static final Logger fLogger = LoggerFactory.getLogger(VistaProcedureCaller.class);
+    
     /**
      * The division of the remote VistA.
      */
@@ -42,7 +41,7 @@ public class VistaLinkVistaDao implements VistaDao
      * @throws ConfigurationException if VistALink is not configured properly
      * @throws IllegalArgumentException if the given division is not known
      */
-    public VistaLinkVistaDao(final String division)
+    public VistaProcedureCaller(final String division)
     {
         fDivision = division;
         
@@ -75,29 +74,47 @@ public class VistaLinkVistaDao implements VistaDao
         }
     }
     
-    public VistaPerson loadVistaPerson(final String duz)
+    public String getDivision()
     {
-        fLogger.debug("Loading VistaPerson for duz {}.", duz);
+        return fDivision;
+    }
 
+    /**
+     * Performs a Remote Procedure Call.
+     * @param duz the calling user's DUZ
+     * @param rpcName the name of the remote procedure
+     * @param args the remote procedure arguments, if any
+     * @return the RpcResponse object
+     * @throws IllegalArgumentException if the provided DUZ is invalid
+     * @throws RecoverableDataAccessException if a VistALink error occurred
+     */
+    protected RpcResponse doRpc(final String duz, final String rpcName, final String... args)
+    {
         final String rpcContext = "SR ASRC";
 
         final VistaLinkDuzConnectionSpec cs =
                 new VistaLinkDuzConnectionSpec(fDivision, duz);
-        
+
         try
         {
+            fLogger.debug("About to call remote procedure \"{}\"", rpcName);
             final RpcRequest req = RpcRequestFactory.getRpcRequest(
-                    rpcContext, "SR ASRC USER");
+                    rpcContext, rpcName);
+            
+            // Set the arguments.
+            for (int i = 0; i < args.length; ++i)
+            {
+                // VistA starts counting at 1, not 0.
+                final int vistaParamIndex = i + 1;
+                final String arg = args[i];
+                fLogger.debug("Setting parameter {} to {}", vistaParamIndex, arg);
+                req.getParams().setParam(vistaParamIndex, "string", arg);
+            }
+
             final VistaLinkConnection conn = (VistaLinkConnection)fVlcf.getConnection(cs);
             try
             {
-                final RpcResponse response = conn.executeRPC(req);
-                
-                // Get the first index in the array. We don't care about the rest.
-                final String userString = response.getResults().split("\n")[0];
-                fLogger.debug("Got user: ", userString);
-                return new VistaPerson(
-                        fDivision, duz, userString, "user class not pulled");
+                return conn.executeRPC(req);
             }
             finally
             {
@@ -119,4 +136,5 @@ public class VistaLinkVistaDao implements VistaDao
                     "Could not obtain connection to VistA", e);
         }
     }
+    
 }

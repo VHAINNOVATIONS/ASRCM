@@ -14,24 +14,33 @@ import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.workflow.*;
+import gov.va.med.srcalc.vista.VistaPatientDao;
 
 public class DefaultCalculationService implements CalculationService
 {
     private static final Logger fLogger = LoggerFactory.getLogger(DefaultCalculationService.class);
     
     private final SpecialtyDao fSpecialtyDao;
+    private final VistaPatientDao fPatientDao;
     
+    /**
+     * Constructs an instance.
+     * @param specialtyDao DAO to access specialties
+     * @param patientDao DAO to access patient information
+     */
     @Inject
-    public DefaultCalculationService(final SpecialtyDao specialtyDao)
+    public DefaultCalculationService(
+            final SpecialtyDao specialtyDao, final VistaPatientDao patientDao)
     {
         fSpecialtyDao = specialtyDao;
+        fPatientDao = patientDao;
     }
 
     @Override
     @Transactional
     public NewCalculation startNewCalculation(final int patientId)
     {
-        final Patient patient = new Patient(patientId, "PATIENT,TEST" + patientId); //FIXME: fake
+        final Patient patient = fPatientDao.getPatient(patientId);
 
         fLogger.debug("Starting calculation for patient {}.", patient);
 
