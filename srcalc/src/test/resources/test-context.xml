@@ -4,10 +4,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- Use an in-memory HSQLDB database for integration tests. Note that the
-         database will vanish upon completion of tests. -->
-    <bean id="srcalcDataSource" class="org.hsqldb.jdbc.JDBCDataSource">
-        <property name="url" value="jdbc:hsqldb:mem:srcalctest" />
+    <bean id="srcalcDataSource" class="com.mysql.jdbc.jdbc2.optional.MysqlDataSource ">
+        <property name="password" value="" />
+        <property name="user" value="root" />
+        <property name="url" value="jdbc:mysql://localhost:3306/srcalc" />
     </bean>
 
 </beans>

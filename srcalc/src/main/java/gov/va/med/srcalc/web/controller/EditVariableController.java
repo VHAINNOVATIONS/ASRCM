@@ -4,7 +4,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 
 import gov.va.med.srcalc.service.*;
-import gov.va.med.srcalc.web.view.Tile;
+import gov.va.med.srcalc.web.view.Views;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -52,7 +52,7 @@ public class EditVariableController
     {
         // Note: model is populated via addEditVariable() above.
         
-        return Tile.EDIT_VARIABLE;
+        return Views.EDIT_VARIABLE;
     }
 
     @RequestMapping(method = RequestMethod.POST)

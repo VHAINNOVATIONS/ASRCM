@@ -64,7 +64,7 @@ public class CalculationController
         // Present the view.
         model.addAttribute("calculation", newCalc.getCalculation());
 	model.addAttribute("specialties", newCalc.getPossibleSpecialties());
-	return Tile.SELECT_SPECIALTY;
+	return Views.SELECT_SPECIALTY;
     }
     
     @RequestMapping(value = "/selectSpecialty", method = RequestMethod.POST)
@@ -93,6 +93,6 @@ public class CalculationController
         final CalculationWorkflow workflow = getWorkflowFromSession(session);
         
         model.addAttribute("calculation", workflow.getCalculation());
-        return Tile.DISPLAY_RESULTS;
+        return Views.DISPLAY_RESULTS;
     }
 }

@@ -12,7 +12,7 @@
   <!-- We log only at info level to avoid "false positive" test code coverage
        due to debug logging. In the case of test failures it is useful to turn
        this up to debug. -->
-  <logger name="gov.va.med.srcalc" level="info"/>
+  <logger name="gov.va.med.srcalc" level="debug"/>
   
   <!-- Show Hibernate-generated SQL. -->
   <logger name="org.hibernate.SQL" level="debug" />
