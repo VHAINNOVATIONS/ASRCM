@@ -78,7 +78,9 @@
     <div class="actionButtons">
     <ol>
     <li><button type="submit">Run Calculation</button></li>
-    <li><c:url var="newCalcUrl" value="/newCalc" />
+    <li>
+    <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
+    <c:url var="newCalcUrl" value="/newCalc"><c:param name="patientDfn" value="${calculation.patient.dfn}"/></c:url>
     <a class="btn-link" href="${newCalcUrl}">Start New Calculation</a></li>
     </ol>
     </div>
