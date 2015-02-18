@@ -7,6 +7,10 @@ import gov.va.med.srcalc.domain.Patient;
  */
 public interface VistaPatientDao
 {
+    /**
+     * Loads a Patient from VistA given his/her DFN.
+     * @throws DataAccessException if communication with VistA failed
+     */
     public Patient getPatient(final int dfn);
     
 }

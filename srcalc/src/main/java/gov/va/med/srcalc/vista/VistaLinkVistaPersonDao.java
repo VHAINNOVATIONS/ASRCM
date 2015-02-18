@@ -1,10 +1,11 @@
 package gov.va.med.srcalc.vista;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.va.med.srcalc.domain.VistaPerson;
-import gov.va.med.vistalink.rpc.RpcResponse;
 
 /**
  * Implementation of {@link VistaPersonDao} using VistALink.
@@ -24,12 +25,13 @@ public class VistaLinkVistaPersonDao implements VistaPersonDao
     {
         fLogger.debug("Loading VistaPerson for duz {}.", duz);
         
-        final RpcResponse response = fProcedureCaller.doRpc(duz, "SR ASRC USER");
+        final List<String> results = fProcedureCaller.doRpc(duz, "SR ASRC USER");
         
         // Get the first index in the array. We don't care about the rest.
-        final String userString = response.getResults().split("\n")[0];
-        fLogger.debug("Got user: ", userString);
-        return new VistaPerson(
+        final String userString = results.get(0);
+        final VistaPerson person = new VistaPerson(
                 fProcedureCaller.getDivision(), duz, userString, "user class not pulled");
+        fLogger.debug("Loaded {} from VistA.", person);
+        return person;
     }
 }

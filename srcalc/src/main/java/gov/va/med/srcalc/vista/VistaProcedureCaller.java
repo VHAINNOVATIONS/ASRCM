@@ -1,5 +1,8 @@
 package gov.va.med.srcalc.vista;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.naming.*;
 import javax.resource.ResourceException;
 
@@ -19,6 +22,12 @@ import org.springframework.dao.RecoverableDataAccessException;
  */
 public class VistaProcedureCaller
 {
+    /**
+     * The String identifying the VistaLink result is an array. (This should
+     * really be a constant in {@link RpcResponse}.)
+     */
+    public static final String RESULT_TYPE_ARRAY = "array";
+    
     private static final Logger fLogger = LoggerFactory.getLogger(VistaProcedureCaller.class);
     
     /**
@@ -84,11 +93,11 @@ public class VistaProcedureCaller
      * @param duz the calling user's DUZ
      * @param rpcName the name of the remote procedure
      * @param args the remote procedure arguments, if any
-     * @return the RpcResponse object
+     * @return an unmodifiable list of String lines from the response
      * @throws IllegalArgumentException if the provided DUZ is invalid
      * @throws RecoverableDataAccessException if a VistALink error occurred
      */
-    protected RpcResponse doRpc(final String duz, final String rpcName, final String... args)
+    public List<String> doRpc(final String duz, final String rpcName, final String... args)
     {
         final String rpcContext = "SR ASRC";
 
@@ -118,7 +127,15 @@ public class VistaProcedureCaller
                 fLogger.debug(
                         "Got {} response: {}",
                         response.getResultsType(), response.getResults());
-                return response;
+                if (RESULT_TYPE_ARRAY.equals(response.getResultsType()))
+                {
+                    // NB: String.split() strips trailing empty strings.
+                    return Arrays.asList(response.getResults().split("\n"));
+                }
+                else
+                {
+                    return Arrays.asList(response.getResults());
+                }
             }
             finally
             {

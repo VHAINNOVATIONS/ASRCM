@@ -74,6 +74,7 @@ public class MockVistaLinkConnection implements VistaLinkConnection
             // RpcResponse is very hard to simulate. Use Mockito.
             RpcResponse response = mock(RpcResponse.class);
             when(response.getResults()).thenReturn(fReturnedUserName + "\n");
+            when(response.getResultsType()).thenReturn(VistaProcedureCaller.RESULT_TYPE_ARRAY);
             return response;
         }
         else

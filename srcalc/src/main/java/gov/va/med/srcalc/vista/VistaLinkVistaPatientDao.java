@@ -1,10 +1,11 @@
 package gov.va.med.srcalc.vista;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.vistalink.rpc.RpcResponse;
 
 public class VistaLinkVistaPatientDao implements VistaPatientDao
 {
@@ -28,10 +29,10 @@ public class VistaLinkVistaPatientDao implements VistaPatientDao
     @Override
     public Patient getPatient(final int dfn)
     {
-        final RpcResponse response = fProcedureCaller.doRpc(
+        final List<String> results = fProcedureCaller.doRpc(
                 fDuz, "SR ASRC PATIENT", Integer.toString(dfn));
         
-        final String patientName = response.getResults().split("\\^")[0];
+        final String patientName = results.get(0).split("\\^")[0];
         final Patient patient = new Patient(dfn, patientName);
         fLogger.debug("Loaded {} from VistA.", patient);
         return patient;
