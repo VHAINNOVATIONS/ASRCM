@@ -96,6 +96,8 @@ public class VistaProcedureCaller
      * @return an unmodifiable list of String lines from the response
      * @throws IllegalArgumentException if the provided DUZ is invalid
      * @throws RecoverableDataAccessException if a VistALink error occurred
+     * @throws UnsupportedOperationException if VistA provided a non-array
+     * result
      */
     public List<String> doRpc(final String duz, final String rpcName, final String... args)
     {
@@ -134,7 +136,8 @@ public class VistaProcedureCaller
                 }
                 else
                 {
-                    return Arrays.asList(response.getResults());
+                    throw new UnsupportedOperationException(
+                            "non-array results are not supported");
                 }
             }
             finally
