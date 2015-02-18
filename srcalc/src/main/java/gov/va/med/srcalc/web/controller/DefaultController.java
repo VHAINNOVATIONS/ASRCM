@@ -18,6 +18,7 @@ public class DefaultController
         return Views.LAUNCH_FROM_CPRS;
     }
 
+    // This RequestMapping is hit via the spring-security configuration.
     @RequestMapping(value = "/sessionTimeout", method = RequestMethod.GET)
     public String sessionTimeout()
     {

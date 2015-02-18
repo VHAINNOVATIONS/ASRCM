@@ -4,8 +4,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import javax.servlet.ServletException;
-
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
