@@ -31,10 +31,10 @@ public class VistaLinkVistaPatientDao implements VistaPatientDao
         final RpcResponse response = fProcedureCaller.doRpc(
                 fDuz, "SR ASRC PATIENT", Integer.toString(dfn));
         
-        final String result = response.getResults();
-        fLogger.debug("Got patient: {}", result);
-        final String patientName = result.split("\\^")[0];
-        return new Patient(dfn, patientName);
+        final String patientName = response.getResults().split("\\^")[0];
+        final Patient patient = new Patient(dfn, patientName);
+        fLogger.debug("Loaded {} from VistA.", patient);
+        return patient;
     }
     
 }

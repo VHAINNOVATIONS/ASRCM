@@ -114,7 +114,11 @@ public class VistaProcedureCaller
             final VistaLinkConnection conn = (VistaLinkConnection)fVlcf.getConnection(cs);
             try
             {
-                return conn.executeRPC(req);
+                final RpcResponse response = conn.executeRPC(req);
+                fLogger.debug(
+                        "Got {} response: {}",
+                        response.getResultsType(), response.getResults());
+                return response;
             }
             finally
             {
