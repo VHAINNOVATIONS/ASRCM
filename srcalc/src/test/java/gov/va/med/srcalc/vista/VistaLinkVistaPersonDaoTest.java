@@ -18,7 +18,7 @@ public class VistaLinkVistaPersonDaoTest
     public void setup() throws NamingException, ResourceException
     {
         // TODO: can we just mock the VistaLinkProcedureCaller instead?
-        VistaProcedureCallerTest.populateJndiWithMockVlcf();
+        VistaLinkProcedureCallerTest.populateJndiWithMockVlcf();
     }
 
     @Test

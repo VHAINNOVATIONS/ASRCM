@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
-public class VistaProcedureCallerTest
+public class VistaLinkProcedureCallerTest
 {
     private final static String VLCF_JNDI_NAME = "java:comp/env/vlj/Asrc500";
     
@@ -46,8 +46,8 @@ public class VistaProcedureCallerTest
     {
         final String division = "500";
         
-        final VistaProcedureCaller caller =
-                new VistaProcedureCaller(division);
+        final VistaLinkProcedureCaller caller =
+                new VistaLinkProcedureCaller(division);
         final List<String> results = caller.doRpc(
                 "11111", "SR ASRC PATIENT", MockVistaLinkConnection.PATIENT_DFN);
         assertEquals(
@@ -60,7 +60,7 @@ public class VistaProcedureCallerTest
     {
         final String division = "600";
         
-        new VistaProcedureCaller(division);
+        new VistaLinkProcedureCaller(division);
     }
     
 }

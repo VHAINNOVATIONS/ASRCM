@@ -83,7 +83,7 @@ public class MockVistaLinkConnection implements VistaLinkConnection
             RpcResponse response = mock(RpcResponse.class);
             when(response.getResults()).thenReturn(RADIOLOGIST_NAME + "\n");
             when(response.getResultsType())
-                .thenReturn(VistaProcedureCaller.RESULT_TYPE_ARRAY);
+                .thenReturn(VistaLinkProcedureCaller.RESULT_TYPE_ARRAY);
             return response;
         }
         else if (request.getRpcName().equals("SR ASRC PATIENT") &&
@@ -93,7 +93,7 @@ public class MockVistaLinkConnection implements VistaLinkConnection
             RpcResponse response = mock(RpcResponse.class);
             when(response.getResults()).thenReturn(PATIENT_DATA + "\n");
             when(response.getResultsType())
-                .thenReturn(VistaProcedureCaller.RESULT_TYPE_ARRAY);
+                .thenReturn(VistaLinkProcedureCaller.RESULT_TYPE_ARRAY);
             return response;
         }
         else

@@ -11,7 +11,7 @@ public class VistaLinkVistaPatientDao implements VistaPatientDao
 {
     private static final Logger fLogger = LoggerFactory.getLogger(VistaLinkVistaPatientDao.class);
     
-    private final VistaProcedureCaller fProcedureCaller;
+    private final VistaLinkProcedureCaller fProcedureCaller;
     
     private final String fDuz;
     
@@ -22,7 +22,7 @@ public class VistaLinkVistaPatientDao implements VistaPatientDao
      */
     public VistaLinkVistaPatientDao(final String division, final String duz)
     {
-        fProcedureCaller = new VistaProcedureCaller(division);
+        fProcedureCaller = new VistaLinkProcedureCaller(division);
         fDuz = duz;
     }
     

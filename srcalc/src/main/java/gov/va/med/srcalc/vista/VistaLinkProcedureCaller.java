@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.RecoverableDataAccessException;
 
 /**
- * Provides a simple interface to call VistA Remote Procedures.
+ * Provides a simple interface to call VistA Remote Procedures. Uses VistALink.
  */
-public class VistaProcedureCaller
+public class VistaLinkProcedureCaller
 {
     /**
      * The String identifying the VistaLink result is an array. (This should
@@ -28,7 +28,7 @@ public class VistaProcedureCaller
      */
     public static final String RESULT_TYPE_ARRAY = "array";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(VistaProcedureCaller.class);
+    private static final Logger fLogger = LoggerFactory.getLogger(VistaLinkProcedureCaller.class);
     
     /**
      * The division of the remote VistA.
@@ -50,7 +50,7 @@ public class VistaProcedureCaller
      * @throws ConfigurationException if VistALink is not configured properly
      * @throws IllegalArgumentException if the given division is not known
      */
-    public VistaProcedureCaller(final String division)
+    public VistaLinkProcedureCaller(final String division)
     {
         fDivision = division;
         

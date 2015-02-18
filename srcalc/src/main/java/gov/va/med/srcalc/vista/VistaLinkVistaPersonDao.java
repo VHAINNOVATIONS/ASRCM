@@ -14,11 +14,11 @@ public class VistaLinkVistaPersonDao implements VistaPersonDao
 {
     private static final Logger fLogger = LoggerFactory.getLogger(VistaLinkVistaPersonDao.class);
     
-    private final VistaProcedureCaller fProcedureCaller;
+    private final VistaLinkProcedureCaller fProcedureCaller;
     
     public VistaLinkVistaPersonDao(final String division)
     {
-        fProcedureCaller = new VistaProcedureCaller(division);
+        fProcedureCaller = new VistaLinkProcedureCaller(division);
     }
 
     public VistaPerson loadVistaPerson(final String duz)
