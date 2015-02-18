@@ -12,7 +12,7 @@
   </appender>
   
   <!-- Change to debug if desired. -->
-  <logger name="gov.va.med.srcalc" level="debug"/>
+  <logger name="gov.va.med.srcalc" level="info"/>
   
   <!-- Set to DEBUG to show Hibernate-generated SQL. -->
   <logger name="org.hibernate.SQL" level="info" />
