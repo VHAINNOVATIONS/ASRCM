@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
-public class VistaLinkVistaDaoTest
+public class VistaLinkVistaPersonDaoTest
 {
     private final static String RADIOLOGIST_DUZ = "11716";
     private final static String RADIOLOGIST_NAME = "RADIOLOGIST,ONE";
