@@ -1,7 +1,9 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.domain.variable.MissingValueException;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;
@@ -40,6 +42,7 @@ public final class Rule
 	private int fId;
     private List<ValueMatcher> fMatchers;
     private Expression fSummandExpression;
+    private boolean fRequired;
     
 	/**
 	 * Mainly intended for reflection-based construction.
@@ -56,10 +59,11 @@ public final class Rule
      * @throws IllegalArgumentException if the given expression is not parsable
      */
     public Rule(
-            final List<ValueMatcher> matchers, final String summandExpression)
+            final List<ValueMatcher> matchers, final String summandExpression, final boolean required)
     {
         fMatchers = Objects.requireNonNull(matchers);
         fSummandExpression = parseSummandExpression(summandExpression);
+        fRequired = required;
     }
     
     /**
@@ -116,6 +120,22 @@ public final class Rule
     }
 
     /**
+     * Should we bypass this rule if values are missing.
+     * @return
+     */
+    @Basic
+    private boolean isRequired()
+	{
+		return fRequired;
+	}
+	
+	void setRequired(final boolean required)
+	{
+		fRequired = required;
+	}
+
+    
+    /**
      * Parse the designated expression into a SPEL Expression.
      * @param summandExpression The expression to be parsed into a summand expression.
      * @return A valid, parsed SPEL Expression
@@ -133,7 +153,7 @@ public final class Rule
             throw new IllegalArgumentException("Could not parse given expression.", ex);
         }
 	}
-
+	
     /**
      * Returns all {@link Variable}s required for evaluating the Rule.
      * @return an unmodifiable set
@@ -155,28 +175,52 @@ public final class Rule
      * including {@link Value}s and the coefficient
      * @return the summand
      */
-    public double apply(final EvaluationContext context)
+    public double apply(final EvaluationContext context) throws MissingValuesException
     {
         /* Match all the values */
-        final HashMap<String, Object> matchedValues = new HashMap<>();
         final StandardEvaluationContext ec = new StandardEvaluationContext();
-        
+        final MissingValuesException missingValues = new MissingValuesException(
+        		"The calculation is missing values.", new ArrayList<MissingValueException>());
+        // Pass over the matcher list twice. Once to ensure all values are present.
+        // Twice to actually evaluate the value matchers.
         for (final ValueMatcher condition : fMatchers)
         {
             // TODO: replace each expression's "root object" with the actual
             // value instead of the Value wrapper object.
             
             // Will return null if there is no value for the given variable.
-            // TODO: properly handle missing Values
             final Value matchedValue = context.getValues().get(condition.getVariable());
-            if (matchedValue != null && condition.evaluate(ec, matchedValue))
+            if(matchedValue == null)
+            {
+            	if(isRequired())
+            	{
+            		missingValues.getMissingValues().add(new MissingValueException(
+            				"Missing value for " + condition.getVariable().getKey(),
+                    		"noInput",
+                    		condition.getVariable()));
+            		continue;
+            	}
+            	// If the variable is not required, there is no coefficient added to the calculation.
+            	// This essentially makes the rule evaluate to false;
+            	return 0.0;
+            }
+        	
+        }
+        if(missingValues.getMissingValues().size() > 0)
+        {
+        	throw missingValues;
+        }
+        final HashMap<String, Object> matchedValues = new HashMap<>();
+        for (final ValueMatcher condition : fMatchers)
+        {
+        	final Value matchedValue = context.getValues().get(condition.getVariable());
+        	if (condition.evaluate(ec, matchedValue))
             {
                 matchedValues.put(matchedValue.getVariable().getKey(), matchedValue);
             }
             else
             {
-                // No match: return 0
-                return 0.0;
+            	return 0.0;
             }
             
             // Update the SpEL evaluation context with the matched values so far.

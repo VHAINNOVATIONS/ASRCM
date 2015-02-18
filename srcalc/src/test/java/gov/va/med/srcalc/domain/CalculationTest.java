@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import gov.va.med.srcalc.domain.model.DerivedTerm;
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.util.MissingValuesException;
 import static gov.va.med.srcalc.domain.SampleObjects.*;
 
 import java.util.*;
@@ -101,9 +102,10 @@ public class CalculationTest
     
     /**
      * Tests running two dummy risk models.
+     * @throws MissingValuesException 
      */
     @Test
-    public final void testCalculate()
+    public final void testCalculate() throws MissingValuesException
     {
         // Setup
         // we don't actually need any values in here:
@@ -130,7 +132,7 @@ public class CalculationTest
         assertEquals(expectedOutcomes, c.getOutcomes());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = MissingValuesException.class)
     public final void testCalculateIncompleteValues() throws Exception
     {
         final Specialty thoracicSpecialty = SampleObjects.sampleThoracicSpecialty();

@@ -1,8 +1,10 @@
 package gov.va.med.srcalc.web.controller;
 
+import gov.va.med.srcalc.domain.variable.MissingValueException;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.service.CalculationService;
+import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.web.view.*;
 
 import javax.inject.Inject;
@@ -88,6 +90,33 @@ public class EnterVariablesController
             parserVisitor.visit(variable);
         }
         
+        try
+        {
+        	// Set the values on the Calculation.
+        	fCalculationService.runCalculation(
+        			workflow.getCalculation(), parserVisitor.getValues());
+        }
+        catch(final MissingValuesException e)
+        {
+        	// Add all of the missing values to the binding errors
+        	for(final MissingValueException missingValue : e.getMissingValues())
+        	{
+        		// If the variable had invalid input, rather than missing input,
+        		// it would never be included in the values.
+        		final String dynamicKey = VariableEntry.makeDynamicValuePath(missingValue.getVariable().getKey());
+        		fLogger.debug("Field Error: {}", dynamicKey);
+        		// Account for field errors on special fields like discrete numerical
+        		// variables.
+        		if(bindingResultAlreadyContainsError(dynamicKey, valuesBindingResult, missingValue))
+        		{
+        			valuesBindingResult.rejectValue(
+        					dynamicKey,
+        	                missingValue.getCode(),
+        	                missingValue.getMessage());
+        		}
+        	}
+        }
+        
         // If we have any binding errors, return to the Enter Variables screen.
         if (valuesBindingResult.hasErrors())
         {
@@ -97,11 +126,16 @@ public class EnterVariablesController
             return presentVariableEntry(session, values);
         }
 
-        // Set the values on the Calculation.
-        fCalculationService.runCalculation(
-                workflow.getCalculation(), parserVisitor.getValues());
-
         // Using the POST-redirect-GET pattern.
         return new ModelAndView("redirect:/displayResults");
+    }
+    
+    private boolean bindingResultAlreadyContainsError(final String dynamicKey,
+    		final BindingResult valuesBindingResult, final MissingValueException missingValue)
+    {
+    	final String numericalKey = VariableEntry.makeDynamicValuePath(
+				missingValue.getVariable().getKey() + VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL);
+		return !valuesBindingResult.hasFieldErrors(dynamicKey) &&
+				!valuesBindingResult.hasFieldErrors(numericalKey);
     }
 }

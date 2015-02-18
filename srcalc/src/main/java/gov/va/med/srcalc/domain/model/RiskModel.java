@@ -1,7 +1,9 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.domain.variable.MissingValueException;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.NoNullSet;
 import gov.va.med.srcalc.util.Preconditions;
 
@@ -275,8 +277,9 @@ public class RiskModel
      * @return
      * @throws IllegalArgumentException if there is not exactly one input value
      * per required variable.
+     * @throws MissingValuesException if there are any required variables without an assigned value
      */
-    public double calculate(final Collection<Value> inputValues)
+    public double calculate(final Collection<Value> inputValues) throws MissingValuesException
     {
         fLogger.debug("Calculating {}", this);
         
@@ -295,14 +298,27 @@ public class RiskModel
         }
         
         double sum = 0.0;
+        // TODO: Change to a Set rather than List.
+        final List<MissingValueException> missingList = new ArrayList<MissingValueException>();
         for (final ModelTerm term : getTerms())
         {
-            final double termSummand = term.getSummand(valueMap);
-            fLogger.debug("Adding {} for {}", termSummand, term);
-            sum += termSummand;
+        	try
+        	{
+        		final double termSummand = term.getSummand(valueMap);
+                fLogger.debug("Adding {} for {}", termSummand, term);
+                sum += termSummand;
+        	}
+            catch(final MissingValuesException e)
+            {
+            	missingList.addAll(e.getMissingValues());
+            }
         }
-
-        double expSum = Math.exp(sum);
+        
+        if(missingList.size() > 0)
+        {
+        	throw new MissingValuesException("The calculation is missing values.", missingList);
+        }
+        final double expSum = Math.exp(sum);
         
         return expSum / (1 + expSum);
     }

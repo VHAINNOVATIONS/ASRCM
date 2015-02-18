@@ -21,6 +21,13 @@ public class VariableEntry
      * a numerical input.
      */
     public static final String SPECIAL_NUMERICAL = "numerical";
+    
+    /**
+     * A string used to separate a variable's key from the special category
+     * that may be used to name it's field.
+     * (i.e. The 'bun' variable and 'bun$numerical')
+     */
+    public static final String SEPARATOR = "$";
 
     private final HashMap<String, String> fDynamicValues = new HashMap<>();
     
@@ -74,7 +81,7 @@ public class VariableEntry
      */
     public static String getNumericalInputName(final DiscreteNumericalVariable variable)
     {
-        return variable.getKey() + "_numerical";
+        return variable.getKey() + SEPARATOR + SPECIAL_NUMERICAL;
     }
     
     /**
