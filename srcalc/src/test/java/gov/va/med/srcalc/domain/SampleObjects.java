@@ -180,7 +180,6 @@ public class SampleObjects
                 DisplayType.Radio,
                 options,
                 "gender");
-        var.setRequired(true);
         return var;
     }
     
@@ -188,7 +187,6 @@ public class SampleObjects
     {
         final NumericalVariable var = new NumericalVariable(
                 "Age", demographicsVariableGroup(), "age");
-        var.setRequired(true);
         var.setMinValue(0);
         var.setMaxValue(999);
         var.setUnits("years");
@@ -199,7 +197,6 @@ public class SampleObjects
     {
         final ProcedureVariable var = new ProcedureVariable(
                 "Procedure", procedureVariableGroup(), "procedure");
-        var.setRequired(true);
         var.setProcedures(sampleProcedureList());
         return var;
     }
@@ -207,7 +204,6 @@ public class SampleObjects
     public static BooleanVariable dnrVariable()
     {
     	final BooleanVariable var= new BooleanVariable("DNR", demographicsVariableGroup(), "dnr");
-    	var.setRequired(true);
         return var;
     }
     
@@ -223,7 +219,6 @@ public class SampleObjects
                 MultiSelectVariable.DisplayType.Radio,
                 fsOptions,
                 "functionalStatus");
-        fsVariable.setRequired(true);
         return fsVariable;
     }
     
@@ -238,7 +233,6 @@ public class SampleObjects
         final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
                 "White Blood Count", labVariableGroup(), new HashSet<>(categories), "wbc");
-        var.setRequired(true);
         var.setMinValue(2.0f);
         var.setMaxValue(50.0f);
         var.setUnits("x1000/mm^3");
@@ -260,7 +254,6 @@ public class SampleObjects
         final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
                 "White Blood Count", labVariableGroup(), new HashSet<>(categories), "wbc");
-        var.setRequired(true);
         var.setMinValue(2.0f);
         var.setMaxValue(50.0f);
         var.setUnits("x1000/mm^3");

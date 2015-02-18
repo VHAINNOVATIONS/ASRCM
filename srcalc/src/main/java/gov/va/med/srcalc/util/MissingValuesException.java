@@ -7,13 +7,13 @@ import gov.va.med.srcalc.domain.variable.MissingValueException;
 /**
  * Indicates that there is at least one {@link MissingValueException}
  */
-public class MissingValueListException extends Exception
+public class MissingValuesException extends Exception
 {
 	private static final long serialVersionUID = 1L;
 	
 	private final List<MissingValueException> fMissingValues;
 	
-	public MissingValueListException(final String message, final List<MissingValueException> missingValues)
+	public MissingValuesException(final String message, final List<MissingValueException> missingValues)
 	{
 		super(message);
 		fMissingValues = missingValues;

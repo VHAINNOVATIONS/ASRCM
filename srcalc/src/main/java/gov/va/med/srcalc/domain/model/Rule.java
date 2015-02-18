@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain.model;
 import gov.va.med.srcalc.domain.variable.MissingValueException;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;
@@ -58,11 +59,11 @@ public final class Rule
      * @throws IllegalArgumentException if the given expression is not parsable
      */
     public Rule(
-            final List<ValueMatcher> matchers, final String summandExpression, final boolean bypass)
+            final List<ValueMatcher> matchers, final String summandExpression, final boolean required)
     {
         fMatchers = Objects.requireNonNull(matchers);
         fSummandExpression = parseSummandExpression(summandExpression);
-        fRequired = bypass;
+        fRequired = required;
     }
     
     /**
@@ -174,12 +175,14 @@ public final class Rule
      * including {@link Value}s and the coefficient
      * @return the summand
      */
-    public double apply(final EvaluationContext context) throws MissingValueException
+    public double apply(final EvaluationContext context) throws MissingValuesException
     {
         /* Match all the values */
-        final HashMap<String, Object> matchedValues = new HashMap<>();
         final StandardEvaluationContext ec = new StandardEvaluationContext();
-        
+        final MissingValuesException missingValues = new MissingValuesException(
+        		"The calculation is missing values.", new ArrayList<MissingValueException>());
+        // Pass over the matcher list twice. Once to ensure all values are present.
+        // Twice to actually evaluate the value matchers.
         for (final ValueMatcher condition : fMatchers)
         {
             // TODO: replace each expression's "root object" with the actual
@@ -191,12 +194,27 @@ public final class Rule
             {
             	if(isRequired())
             	{
-            		throw new MissingValueException("Missing value for " + condition.getVariable().getKey(),
-                    		"noInput", condition.getVariable());
+            		missingValues.getMissingValues().add(new MissingValueException(
+            				"Missing value for " + condition.getVariable().getKey(),
+                    		"noInput",
+                    		condition.getVariable()));
+            		continue;
             	}
-                return 0.0;
+            	// If the variable is not required, there is no coefficient added to the calculation.
+            	// This essentially makes the rule evaluate to false;
+            	return 0.0;
             }
-            if (condition.evaluate(ec, matchedValue))
+        	
+        }
+        if(missingValues.getMissingValues().size() > 0)
+        {
+        	throw missingValues;
+        }
+        final HashMap<String, Object> matchedValues = new HashMap<>();
+        for (final ValueMatcher condition : fMatchers)
+        {
+        	final Value matchedValue = context.getValues().get(condition.getVariable());
+        	if (condition.evaluate(ec, matchedValue))
             {
                 matchedValues.put(matchedValue.getVariable().getKey(), matchedValue);
             }

@@ -6,6 +6,7 @@ import static gov.va.med.srcalc.domain.SampleObjects.expression1;
 import static gov.va.med.srcalc.domain.SampleObjects.expression2;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.util.CollectionUtils;
+import gov.va.med.srcalc.util.MissingValuesException;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -97,15 +98,13 @@ public class RuleTest
                 0.0f);
     }
     
-    @Test(expected=MissingValueException.class)
+    @Test(expected=MissingValuesException.class)
     public final void testRequired() throws Exception
     {
     	// Setup
         final VariableGroup group = SampleObjects.demographicsVariableGroup();
         final NumericalVariable currWeight = new NumericalVariable("Weight", group, "weight");
-        currWeight.setRequired(true);
         final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group, "weight6MonthsAgo");
-        weight6MoAgo.setRequired(false);
         final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "true");
         final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "value < #weight6MonthsAgo.value * 0.9");
         final Rule rule =

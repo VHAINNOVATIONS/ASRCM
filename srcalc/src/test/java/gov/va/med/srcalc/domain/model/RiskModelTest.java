@@ -8,7 +8,7 @@ import gov.va.med.srcalc.domain.Procedure;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.util.CollectionUtils;
-import gov.va.med.srcalc.util.MissingValueListException;
+import gov.va.med.srcalc.util.MissingValuesException;
 
 import org.junit.Test;
 
@@ -94,7 +94,7 @@ public class RiskModelTest
         assertEquals(expectedResult, model.calculate(values), 0.01f);
     }
     
-    @Test(expected = MissingValueListException.class)
+    @Test(expected = MissingValuesException.class)
     public final void testCalculateIncompleteValues() throws Exception
     {
         final RiskModel model = SampleObjects.sampleThoracicRiskModel();

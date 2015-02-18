@@ -22,7 +22,7 @@ create table rule (id integer not null, required boolean not null, summand_expre
 create table rule_value_matcher (rule_id integer not null, boolean_expression varchar(255), variable integer);
 create table specialty (id integer not null, name varchar(255), vista_id integer not null, primary key (id));
 create table specialty_risk_model (specialty_id integer not null, risk_model_id integer not null, primary key (specialty_id, risk_model_id));
-create table variable (id integer not null, display_name varchar(80) not null, help_text varchar(255), variable_key varchar(40) not null, required boolean not null, variable_group integer not null, primary key (id));
+create table variable (id integer not null, display_name varchar(80) not null, help_text varchar(255), variable_key varchar(40) not null, variable_group integer not null, primary key (id));
 create table variable_group (id integer not null, display_order integer not null, name varchar(255), primary key (id));
 alter table multi_select_variable_option add constraint UK_ru3a3572ftqkwimf3nkrnuc5a unique (option_id);
 alter table specialty_risk_model add constraint UK_g44r1aagpmd130bpvefwj08ve unique (risk_model_id);

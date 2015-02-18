@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.MappedSuperclass;
@@ -9,6 +11,7 @@ import gov.va.med.srcalc.domain.variable.MissingValueException;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.CollectionUtils;
+import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.NoNullSet;
 
 /**
@@ -45,21 +48,15 @@ public abstract class SingleVariableTerm extends ModelTerm
     }
     
     @Override
-    public double getSummand(final Map<Variable, Value> inputValues) throws MissingValueException
+    public double getSummand(final Map<Variable, Value> inputValues) throws MissingValuesException
     {
         final Value value = inputValues.get(getVariable());
-//        if (value == null)
-//        {
-//            throw new IllegalArgumentException("Incomplete input values");
-//        }
         if (value == null)
         {
-        	if(getVariable().getRequired())
-        	{
-        		throw new MissingValueException("Missing value for " + getVariable().getKey(),
-        				"noInput", getVariable());
-        	}
-            return 0.0;
+    		final List<MissingValueException> missingValues = new ArrayList<MissingValueException>();
+    		missingValues.add(new MissingValueException("Missing value for " + getVariable().getKey(),
+    				"noInput", getVariable()));
+    		throw new MissingValuesException("The calculation is missing values.", missingValues);
         }
         return getSummand(value);
     }

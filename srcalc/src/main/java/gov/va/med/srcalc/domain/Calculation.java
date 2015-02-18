@@ -2,7 +2,7 @@ package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.*;
-import gov.va.med.srcalc.util.MissingValueListException;
+import gov.va.med.srcalc.util.MissingValuesException;
 
 import java.io.Serializable;
 import java.util.*;
@@ -178,12 +178,13 @@ public class Calculation implements Serializable
      * Runs the calculation for each outcome with the given Values.
      * @throws IllegalArgumentException if incomplete values are provided
      * @return the outcomes for convenience
-     * @throws MissingValueListException if there are any required variables without an assigned value
+     * @throws MissingValuesException if there are any required variables without an assigned value
      */
-    public SortedMap<String, Double> calculate(final Collection<Value> values) throws MissingValueListException
+    public SortedMap<String, Double> calculate(final Collection<Value> values) throws MissingValuesException
     {
         // Run the calculation first to make sure we don't get any exceptions.
         final TreeMap<String, Double> outcomes = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        // TODO: Change into a Set.
         final List<MissingValueException> missingValues = new ArrayList<MissingValueException>();
         for (final RiskModel model : getSpecialty().getRiskModels())
         {
@@ -191,7 +192,7 @@ public class Calculation implements Serializable
             {
             	outcomes.put(model.getDisplayName(), model.calculate(values));
             }
-            catch(MissingValueListException e)
+            catch(MissingValuesException e)
             {
             	missingValues.addAll(e.getMissingValues());
             }
@@ -199,7 +200,7 @@ public class Calculation implements Serializable
 
         if(missingValues.size() > 0)
         {
-        	throw new MissingValueListException("The calculation is missing values.", missingValues);
+        	throw new MissingValuesException("The calculation is missing values.", missingValues);
         }
         // Store the given values for reference.
         fValues.clear();

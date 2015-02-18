@@ -4,7 +4,7 @@ import gov.va.med.srcalc.domain.variable.MissingValueException;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.service.CalculationService;
-import gov.va.med.srcalc.util.MissingValueListException;
+import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.web.view.*;
 
 import javax.inject.Inject;
@@ -96,21 +96,18 @@ public class EnterVariablesController
         	fCalculationService.runCalculation(
         			workflow.getCalculation(), parserVisitor.getValues());
         }
-        catch(final MissingValueListException e)
+        catch(final MissingValuesException e)
         {
         	// Add all of the missing values to the binding errors
         	for(final MissingValueException missingValue : e.getMissingValues())
         	{
         		// If the variable had invalid input, rather than missing input,
         		// it would never be included in the values.
-        		fLogger.debug("Field Error: {}", VariableEntry.makeDynamicValuePath(missingValue.getVariable().getKey()));
         		final String dynamicKey = VariableEntry.makeDynamicValuePath(missingValue.getVariable().getKey());
+        		fLogger.debug("Field Error: {}", dynamicKey);
         		// Account for field errors on special fields like discrete numerical
         		// variables.
-        		final String numericalKey = VariableEntry.makeDynamicValuePath(
-        				missingValue.getVariable().getKey() + VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL);
-        		if(!valuesBindingResult.hasFieldErrors(dynamicKey) &&
-        				!valuesBindingResult.hasFieldErrors(numericalKey))
+        		if(bindingResultAlreadyContainsError(dynamicKey, valuesBindingResult, missingValue))
         		{
         			valuesBindingResult.rejectValue(
         					dynamicKey,
@@ -131,5 +128,14 @@ public class EnterVariablesController
 
         // Using the POST-redirect-GET pattern.
         return new ModelAndView("redirect:/displayResults");
+    }
+    
+    private boolean bindingResultAlreadyContainsError(final String dynamicKey,
+    		final BindingResult valuesBindingResult, final MissingValueException missingValue)
+    {
+    	final String numericalKey = VariableEntry.makeDynamicValuePath(
+				missingValue.getVariable().getKey() + VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL);
+		return !valuesBindingResult.hasFieldErrors(dynamicKey) &&
+				!valuesBindingResult.hasFieldErrors(numericalKey);
     }
 }

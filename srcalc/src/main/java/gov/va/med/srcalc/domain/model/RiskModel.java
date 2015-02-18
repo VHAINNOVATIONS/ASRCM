@@ -3,7 +3,7 @@ package gov.va.med.srcalc.domain.model;
 import gov.va.med.srcalc.domain.variable.MissingValueException;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
-import gov.va.med.srcalc.util.MissingValueListException;
+import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.NoNullSet;
 import gov.va.med.srcalc.util.Preconditions;
 
@@ -277,9 +277,9 @@ public class RiskModel
      * @return
      * @throws IllegalArgumentException if there is not exactly one input value
      * per required variable.
-     * @throws MissingValueListException if there are any required variables without an assigned value
+     * @throws MissingValuesException if there are any required variables without an assigned value
      */
-    public double calculate(final Collection<Value> inputValues) throws MissingValueListException
+    public double calculate(final Collection<Value> inputValues) throws MissingValuesException
     {
         fLogger.debug("Calculating {}", this);
         
@@ -298,6 +298,7 @@ public class RiskModel
         }
         
         double sum = 0.0;
+        // TODO: Change to a Set rather than List.
         final List<MissingValueException> missingList = new ArrayList<MissingValueException>();
         for (final ModelTerm term : getTerms())
         {
@@ -307,15 +308,15 @@ public class RiskModel
                 fLogger.debug("Adding {} for {}", termSummand, term);
                 sum += termSummand;
         	}
-            catch(final MissingValueException e)
+            catch(final MissingValuesException e)
             {
-            	missingList.add(e);
+            	missingList.addAll(e.getMissingValues());
             }
         }
         
         if(missingList.size() > 0)
         {
-        	throw new MissingValueListException("The calculation is missing values.", missingList);
+        	throw new MissingValuesException("The calculation is missing values.", missingList);
         }
         final double expSum = Math.exp(sum);
         
