@@ -16,14 +16,22 @@ import static org.mockito.Mockito.*;
  */
 public class MockVistaLinkConnection implements VistaLinkConnection
 {
+    /**
+     * The name of the fake radiologist user returned from "SR ASRC USER".
+     */
+    public final static String RADIOLOGIST_NAME = "RADIOLOGIST,ONE";
+    
+    /**
+     * The DFN of the fake patient returned from "SR ASRC PATIENT".
+     */
+    public final static String PATIENT_DFN = "18976";
+    
+    /**
+     * The fake patient data returned from "SR ASRC PATIENT".
+     */
+    public final static String PATIENT_DATA = "PATIENT,MOCKVL^62^M";
+
     private int fTimeout = 0;
-    
-    private final String fReturnedUserName;
-    
-    public MockVistaLinkConnection(final String returnedUserName)
-    {
-        fReturnedUserName = returnedUserName;
-    }
     
     @Override
     public Interaction createInteraction() throws ResourceException
@@ -73,8 +81,19 @@ public class MockVistaLinkConnection implements VistaLinkConnection
         {
             // RpcResponse is very hard to simulate. Use Mockito.
             RpcResponse response = mock(RpcResponse.class);
-            when(response.getResults()).thenReturn(fReturnedUserName + "\n");
-            when(response.getResultsType()).thenReturn(VistaProcedureCaller.RESULT_TYPE_ARRAY);
+            when(response.getResults()).thenReturn(RADIOLOGIST_NAME + "\n");
+            when(response.getResultsType())
+                .thenReturn(VistaProcedureCaller.RESULT_TYPE_ARRAY);
+            return response;
+        }
+        else if (request.getRpcName().equals("SR ASRC PATIENT") &&
+                request.getParams().getParam(1).equals(PATIENT_DFN))
+        {
+            // RpcResponse is very hard to simulate. Use Mockito.
+            RpcResponse response = mock(RpcResponse.class);
+            when(response.getResults()).thenReturn(PATIENT_DATA + "\n");
+            when(response.getResultsType())
+                .thenReturn(VistaProcedureCaller.RESULT_TYPE_ARRAY);
             return response;
         }
         else
