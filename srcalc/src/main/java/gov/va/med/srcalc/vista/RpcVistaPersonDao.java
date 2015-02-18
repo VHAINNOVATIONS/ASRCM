@@ -8,17 +8,17 @@ import org.slf4j.LoggerFactory;
 import gov.va.med.srcalc.domain.VistaPerson;
 
 /**
- * Implementation of {@link VistaPersonDao} using VistALink.
+ * Implementation of {@link VistaPersonDao} using remote procedures.
  */
-public class VistaLinkVistaPersonDao implements VistaPersonDao
+public class RpcVistaPersonDao implements VistaPersonDao
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(VistaLinkVistaPersonDao.class);
+    private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPersonDao.class);
     
-    private final VistaLinkProcedureCaller fProcedureCaller;
+    private final VistaProcedureCaller fProcedureCaller;
     
-    public VistaLinkVistaPersonDao(final String division)
+    public RpcVistaPersonDao(final VistaProcedureCaller procedureCaller)
     {
-        fProcedureCaller = new VistaLinkProcedureCaller(division);
+        fProcedureCaller = procedureCaller;
     }
 
     public VistaPerson loadVistaPerson(final String duz)

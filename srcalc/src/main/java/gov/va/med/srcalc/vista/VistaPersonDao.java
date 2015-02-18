@@ -7,9 +7,8 @@ import gov.va.med.srcalc.domain.VistaPerson;
 /**
  * <p>Data Access Object for VistA Persons (i.e., users).</p>
  * 
- * <p>This is an interface to allow for
- * <a href="http://martinfowler.com/eaaCatalog/serviceStub.html">Service Stubs
- * </a>. See {@link VistaLinkVistaPersonDao} for the "real" implementation.</p>
+ * <p>This is an interface to allow for easy mocking. See {@link
+ * RpcVistaPersonDao} for the "real" implementation.</p>
  */
 public interface VistaPersonDao
 {

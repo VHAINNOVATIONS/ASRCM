@@ -1,10 +1,11 @@
-package gov.va.med.srcalc.vista;
+package gov.va.med.srcalc.vista.vistalink;
 
 import javax.resource.NotSupportedException;
 import javax.resource.ResourceException;
 import javax.resource.cci.*;
 
 import gov.va.med.exception.FoundationsException;
+import gov.va.med.srcalc.vista.vistalink.VistaLinkProcedureCaller;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnection;
 import gov.va.med.vistalink.adapter.record.*;
 import gov.va.med.vistalink.adapter.spi.VistaLinkServerInfo;

@@ -7,22 +7,23 @@ import org.slf4j.LoggerFactory;
 
 import gov.va.med.srcalc.domain.Patient;
 
-public class VistaLinkVistaPatientDao implements VistaPatientDao
+public class RpcVistaPatientDao implements VistaPatientDao
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(VistaLinkVistaPatientDao.class);
+    private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     
-    private final VistaLinkProcedureCaller fProcedureCaller;
+    private final VistaProcedureCaller fProcedureCaller;
     
     private final String fDuz;
     
     /**
      * Constructs an instance.
-     * @param division the division of the VistA to connect to
+     * @param procedureCaller for making the procedure calls
      * @param duz the user DUZ under which to perform the procedure calls
      */
-    public VistaLinkVistaPatientDao(final String division, final String duz)
+    public RpcVistaPatientDao(
+            final VistaProcedureCaller procedureCaller, final String duz)
     {
-        fProcedureCaller = new VistaLinkProcedureCaller(division);
+        fProcedureCaller = procedureCaller;
         fDuz = duz;
     }
     

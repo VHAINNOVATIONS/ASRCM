@@ -4,13 +4,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import gov.va.med.srcalc.vista.*;
+import gov.va.med.srcalc.vista.vistalink.VistaLinkProcedureCaller;
 
 public class VistaLinkVistaDaoFactory implements VistaDaoFactory
 {
     @Override
     public VistaPersonDao getVistaPersonDao(final String division)
     {
-        return new VistaLinkVistaPersonDao(division);
+        return new RpcVistaPersonDao(new VistaLinkProcedureCaller(division));
     }
     
     /**
@@ -31,7 +32,8 @@ public class VistaLinkVistaDaoFactory implements VistaDaoFactory
     {
         final VistaUserDetails principal = getCurrentPrincipal();
 
-        return new VistaLinkVistaPatientDao(
-                principal.getDivision(), principal.getDuz());
+        return new RpcVistaPatientDao(
+                new VistaLinkProcedureCaller(principal.getDivision()),
+                principal.getDuz());
     }
 }

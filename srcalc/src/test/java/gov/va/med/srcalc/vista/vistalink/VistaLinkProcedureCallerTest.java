@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.vista;
+package gov.va.med.srcalc.vista.vistalink;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -9,6 +9,7 @@ import java.util.List;
 import javax.naming.NamingException;
 import javax.resource.ResourceException;
 
+import gov.va.med.srcalc.vista.vistalink.VistaLinkProcedureCaller;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnectionFactory;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnectionSpec;
 
@@ -24,7 +25,7 @@ public class VistaLinkProcedureCallerTest
      * Populate JNDI with a mock VistaLinkConnectionFactory that will return a
      * MockVistaLinkConnection.
      */
-    public static void populateJndiWithMockVlcf()
+    private static void populateJndiWithMockVlcf()
             throws NamingException, ResourceException
     {
         SimpleNamingContextBuilder builder =

@@ -3,7 +3,10 @@ package gov.va.med.srcalc.vista;
 import gov.va.med.srcalc.domain.Patient;
 
 /**
- * Data Access Object for VistA Patients.
+ * <p>Data Access Object for VistA Patients.</p>
+ * 
+ * <p>This is an interface to allow for easy mocking. See {@link
+ * RpcVistaPatientDao} for the "real" implementation.</p>
  */
 public interface VistaPatientDao
 {

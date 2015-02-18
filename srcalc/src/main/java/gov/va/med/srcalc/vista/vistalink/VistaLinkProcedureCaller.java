@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.vista;
+package gov.va.med.srcalc.vista.vistalink;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,6 +8,7 @@ import javax.resource.ResourceException;
 
 import gov.va.med.exception.FoundationsException;
 import gov.va.med.srcalc.ConfigurationException;
+import gov.va.med.srcalc.vista.VistaProcedureCaller;
 import gov.va.med.vistalink.adapter.cci.*;
 import gov.va.med.vistalink.institution.InstitutionMappingNotFoundException;
 import gov.va.med.vistalink.rpc.*;
@@ -15,12 +16,12 @@ import gov.va.med.vistalink.security.m.SecurityIdentityDeterminationFaultExcepti
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.RecoverableDataAccessException;
+import org.springframework.dao.*;
 
 /**
  * Provides a simple interface to call VistA Remote Procedures. Uses VistALink.
  */
-public class VistaLinkProcedureCaller
+public class VistaLinkProcedureCaller implements VistaProcedureCaller
 {
     /**
      * The String identifying the VistaLink result is an array. (This should
@@ -83,22 +84,13 @@ public class VistaLinkProcedureCaller
         }
     }
     
+    @Override
     public String getDivision()
     {
         return fDivision;
     }
 
-    /**
-     * Performs a Remote Procedure Call.
-     * @param duz the calling user's DUZ
-     * @param rpcName the name of the remote procedure
-     * @param args the remote procedure arguments, if any
-     * @return an unmodifiable list of String lines from the response
-     * @throws IllegalArgumentException if the provided DUZ is invalid
-     * @throws RecoverableDataAccessException if a VistALink error occurred
-     * @throws UnsupportedOperationException if VistA provided a non-array
-     * result
-     */
+    @Override
     public List<String> doRpc(final String duz, final String rpcName, final String... args)
     {
         final String rpcContext = "SR ASRC";
@@ -136,7 +128,7 @@ public class VistaLinkProcedureCaller
                 }
                 else
                 {
-                    throw new UnsupportedOperationException(
+                    throw new DataRetrievalFailureException(
                             "non-array results are not supported");
                 }
             }
