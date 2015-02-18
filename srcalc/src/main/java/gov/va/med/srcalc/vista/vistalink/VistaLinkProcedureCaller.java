@@ -93,6 +93,8 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
     @Override
     public List<String> doRpc(final String duz, final String rpcName, final String... args)
     {
+        // This is the RPC context for all ASRC RPCs. (This value is determined
+        // by VistA.)
         final String rpcContext = "SR ASRC";
 
         final VistaLinkDuzConnectionSpec cs =
