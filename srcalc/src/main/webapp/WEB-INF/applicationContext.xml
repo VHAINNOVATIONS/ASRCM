@@ -22,15 +22,18 @@
 
     <!-- Configure Spring Security. -->
     <security:http>
+        <!-- Use the generated form login. -->
+        <security:form-login default-target-url="/" />
+        <security:session-management invalid-session-url="/sessionTimeout" />
+        <security:logout logout-url="/logout" />
+
         <!-- All pages require one to be an authenticated user. -->
         <security:intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+        <!-- Allow anonymous users to see the invalid session page otherwise
+             they need to re-login, only to see that their session timed out. -->
+        <security:intercept-url pattern="/sessionTimeout" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/**" access="ROLE_USER" />
-        <!-- Use the generated form login. Always redirect to the home page to
-             avoid "No current calculation" errors. -->
-        <security:form-login
-            default-target-url="/" always-use-default-target='true' />
-        <security:logout logout-url="/logout" />
     </security:http>
     
     <!-- User VistaUserDetailsService to load users. -->

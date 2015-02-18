@@ -31,7 +31,7 @@ public class DefaultCalculationService implements CalculationService
     @Transactional
     public NewCalculation startNewCalculation(final int patientId)
     {
-        final Patient patient = new Patient(patientId, "Dummy Patient"); //FIXME: fake
+        final Patient patient = new Patient(patientId, "PATIENT,TEST" + patientId); //FIXME: fake
 
         fLogger.debug("Starting calculation for patient {}.", patient);
 

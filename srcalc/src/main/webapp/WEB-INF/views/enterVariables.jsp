@@ -6,11 +6,7 @@
 <srcalc:calcPage title="Enter Variables">
 <section>
     <h2>Enter Risk Variables</h2>
-    <ol class="calculationSummary">
-    <li><label class="variableName">User:</label> <sec:authentication property="principal.displayName" /></li>
-    <li><label class="variableName">Specialty:</label> ${calculation.specialty}</li>
-    <li><label class="variableName">Patient:</label> ${calculation.patient}</li>
-    </ol>
+    <%@include file="fragments/calculationSummary.jspf" %>
     <form:form id="riskVarForm" cssClass="srcalcForm attributeEditForm"
         method="post" action="enterVars" commandName="variableEntry">
     <%-- See srcalc.css for why HTML tables. --%>
@@ -82,7 +78,9 @@
     <div class="actionButtons">
     <ol>
     <li><button type="submit">Run Calculation</button></li>
-    <li><c:url var="newCalcUrl" value="/newCalc" />
+    <li>
+    <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
+    <c:url var="newCalcUrl" value="/newCalc"><c:param name="patientDfn" value="${calculation.patient.dfn}"/></c:url>
     <a class="btn-link" href="${newCalcUrl}">Start New Calculation</a></li>
     </ol>
     </div>

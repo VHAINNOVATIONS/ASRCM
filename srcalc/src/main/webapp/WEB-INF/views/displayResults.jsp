@@ -6,11 +6,7 @@
 <srcalc:calcPage title="Calculation Results">
 <section>
     <h2>Calculation Results</h2>
-    <ol class="calculationSummary">
-    <li><label class="variableName">User:</label> <sec:authentication property="principal.displayName" /></li>
-    <li><label class="variableName">Specialty:</label> ${calculation.specialty}</li>
-    <li><label class="variableName">Patient:</label> ${calculation.patient}</li>
-    </ol>
+    <%@include file="fragments/calculationSummary.jspf" %>
     <h3>Calculation Inputs</h3>
     <table class="srcalcTable" id="inputValueTable">
     <tr><th class="main">Variable</th><th class="main">Value</th></tr>
@@ -27,7 +23,9 @@
     </ol>
     <ol>
     <li><button type="submit" disabled>Sign Calculation</button></li>
-    <li><c:url var="newCalcUrl" value="/newCalc" />
+    <li>
+    <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
+    <c:url var="newCalcUrl" value="/newCalc"><c:param name="patientDfn" value="${calculation.patient.dfn}"/></c:url>
     <a class="btn-link" href="${newCalcUrl}">Start New Calculation</a></li>
     </ol>
     </div>

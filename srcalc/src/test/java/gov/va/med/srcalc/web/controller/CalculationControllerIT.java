@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
@@ -36,6 +37,8 @@ import static org.hamcrest.Matchers.*;
 @Transactional // run each test in its own (rolled-back) transaction
 public class CalculationControllerIT extends IntegrationTest
 {
+    private final int MOCK_DFN = 456123;
+    
     @Autowired
     WebApplicationContext fWac;
     
@@ -54,19 +57,27 @@ public class CalculationControllerIT extends IntegrationTest
     }
     
     @Test
-    public void getSpecialtyList() throws Exception
+    public void testStartNewCalculationWithDfn() throws Exception
     {
-        fMockMvc.perform(get("/newCalc").session(fSession)).
+        fMockMvc.perform(get("/newCalc")
+                .param("patientDfn", Integer.toString(MOCK_DFN)).session(fSession)).
             andExpect(model().attributeExists("specialties", "calculation"));
     }
     
+    @Test
+    public void testStartNewCalculationNoDfn() throws Exception
+    {
+        fMockMvc.perform(get("/newCalc").session(fSession))
+            .andExpect(status().is4xxClientError());
+    }
+    
     /**
-     * Test fragment to call {@link #getSpecialtyList()} and then select the
+     * Test fragment to call {@link #testStartNewCalculationWithDfn()} and then select the
      * given specialty.
      */
     protected void selectSpecialty(final String specialtyName) throws Exception
     {
-        getSpecialtyList();
+        testStartNewCalculationWithDfn();
 
         fMockMvc.perform(post("/selectSpecialty").session(fSession)
                 .param("specialty", specialtyName)).

@@ -6,10 +6,7 @@
 
 <section>
     <h2>Select Surgical Specialty</h2>
-    <ol class="calculationSummary">
-    <li><label class="variableName">User:</label> <sec:authentication property="principal.displayName" /></li>
-    <li><label class="variableName">Patient:</label> ${calculation.patient}</li>
-    </ol>
+    <%@include file="fragments/calculationSummary.jspf" %>
     <h3>Surgical Specialty</h3>
     <form action="selectSpecialty" method="post">
     <ul id="specialtyRadios">

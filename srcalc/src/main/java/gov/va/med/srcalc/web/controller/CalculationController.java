@@ -13,6 +13,7 @@ import gov.va.med.srcalc.web.view.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Controller for creating a new Calculation.
@@ -47,24 +48,22 @@ public class CalculationController
     }
 
     @RequestMapping(value = "/newCalc", method = RequestMethod.GET)
-    public String presentSelection(final HttpSession session, final Model model)
+    public ModelAndView startNewCalculation(
+            @RequestParam(value = "patientDfn") final int patientDfn,
+            final HttpSession session)
     {
-        // A Calculation object must be created here to store the start time for
-        // the "Time To Completion" report.
-        
-        // FIXME: fake
-        final int FAKE_PATIENT_DFN = 1;
-
-        // Start the calculation.
-        final NewCalculation newCalc = fCalculationService.startNewCalculation(FAKE_PATIENT_DFN);
+        // Start the calculation. A Calculation object must be created here to
+        // store the start time for reporting.
+        final NewCalculation newCalc = fCalculationService.startNewCalculation(patientDfn);
 
         // Store the calculation in the HTTP Session.
         session.setAttribute(SESSION_CALCULATION, newCalc);
         
         // Present the view.
-        model.addAttribute("calculation", newCalc.getCalculation());
-	model.addAttribute("specialties", newCalc.getPossibleSpecialties());
-	return Views.SELECT_SPECIALTY;
+        final ModelAndView mav = new ModelAndView(Views.SELECT_SPECIALTY);
+        mav.addObject("calculation", newCalc.getCalculation());
+        mav.addObject("specialties", newCalc.getPossibleSpecialties());
+        return mav;
     }
     
     @RequestMapping(value = "/selectSpecialty", method = RequestMethod.POST)
