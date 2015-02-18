@@ -79,6 +79,8 @@ public class VistaLinkVistaDao implements VistaDao
     {
         fLogger.debug("Loading VistaPerson for duz {}.", duz);
 
+        // This is the RPC context for all ASRC RPCs. (This value is determined
+        // by VistA.)
         final String rpcContext = "SR ASRC";
 
         final VistaLinkDuzConnectionSpec cs =
