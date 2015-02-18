@@ -26,8 +26,11 @@
     </bean>
     
     <!-- Support CSS and JS via Spring (because we make Spring the default serlvet. -->
-    <!-- TODO: support versioning -->
-    <mvc:resources mapping="/css/**" location="/css/" />
-    <mvc:resources mapping="/js/**" location="/js/" />
+    <!-- Force the browser to always check for new versions until we implement
+         a versioning system. Note that cache-period=1 allows for caching while
+         still forcing the browser to check for a new version, while a value of
+         0 completely prevents caching. -->
+    <mvc:resources mapping="/css/**" location="/css/" cache-period="1" />
+    <mvc:resources mapping="/js/**" location="/js/" cache-period="1" />
 
 </beans>
