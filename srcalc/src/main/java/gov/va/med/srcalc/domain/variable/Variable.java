@@ -27,6 +27,8 @@ public interface Variable
 
     public String getHelpText();
     
+    public boolean getRequired();
+    
     /**
      * Accepts the given {@link VariableVisitor}.
      * @throws Exception if the {@link VariableVisitor} throws an Exception

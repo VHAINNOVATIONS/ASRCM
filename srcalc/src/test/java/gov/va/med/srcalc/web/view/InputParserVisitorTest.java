@@ -19,25 +19,6 @@ import org.springframework.validation.BeanPropertyBindingResult;
  */
 public class InputParserVisitorTest
 {
-    @Test
-    public final void testUnspecifiedMultiselect() throws Exception
-    {
-        // Setup variable
-        final MultiSelectVariable var = SampleObjects.sampleGenderVariable();
-
-        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
-        // Note: Gender never set in dynamicValues.
-        
-        final BeanPropertyBindingResult errors =
-                new BeanPropertyBindingResult(variableEntry, "variableEntry");
-        
-        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
-        v.visitMultiSelect(var);
-        
-        assertEquals(
-                "noSelection",
-                errors.getFieldError(makeVariableValuePath(var)).getCode());
-    }
 
     @Test
     public final void testInvalidMultiselect() throws Exception
@@ -97,26 +78,6 @@ public class InputParserVisitorTest
         
         assertEquals(
                 "invalid",
-                errors.getFieldError(makeVariableValuePath(var)).getCode());
-    }
-    
-    @Test
-    public final void testUnspecifiedNumerical() throws Exception
-    {
-        // Setup variable
-        final NumericalVariable var = SampleObjects.sampleAgeVariable();
-
-        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
-        // Note: Age never set in dynamicValues.
-        
-        final BeanPropertyBindingResult errors =
-                new BeanPropertyBindingResult(variableEntry, "variableEntry");
-        
-        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
-        v.visitNumerical(var);
-        
-        assertEquals(
-                "noInput.float",
                 errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
     
@@ -244,27 +205,6 @@ public class InputParserVisitorTest
     }
 
     @Test
-    public final void testUnspecifiedDiscreteNumerical() throws Exception
-    {
-        // Setup variable
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
-
-        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
-        // Clear out the default value.
-        variableEntry.getDynamicValues().put(var.getKey(), "");
-        
-        final BeanPropertyBindingResult errors =
-                new BeanPropertyBindingResult(variableEntry, "variableEntry");
-        
-        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
-        v.visitDiscreteNumerical(var);
-        
-        assertEquals(
-                "noSelection",
-                errors.getFieldError(makeVariableValuePath(var)).getCode());
-    }
-
-    @Test
     public final void testInvalidDiscreteNumerical() throws Exception
     {
         // Setup variable
@@ -304,31 +244,6 @@ public class InputParserVisitorTest
         
         assertNotNull("should have a value", v.getValues().get(0).getValue());
     }
-
-    @Test
-    public final void testUnspecifiedNumberDiscreteNumerical() throws Exception
-    {
-        // Setup variable
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
-        final String numericalName = VariableEntry.getNumericalInputName(var);
-
-        final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
-        variableEntry.getDynamicValues().put(
-                var.getKey(), VariableEntry.SPECIAL_NUMERICAL);
-        // Note: no numerical value actually specified
-        
-        final BeanPropertyBindingResult errors =
-                new BeanPropertyBindingResult(variableEntry, "variableEntry");
-        
-        final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
-        v.visitDiscreteNumerical(var);
-        
-        
-        assertEquals(
-                "noInput.float",
-                errors.getFieldError(makeDynamicValuePath(numericalName)).getCode());
-    }
-
 
     @Test
     public final void testInvalidNumberDiscreteNumerical() throws Exception

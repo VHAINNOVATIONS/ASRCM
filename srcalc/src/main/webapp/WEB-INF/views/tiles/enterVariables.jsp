@@ -50,7 +50,7 @@
                 <!-- Wrap both the radio button and numerical entry in a span.radioLabel
                      for proper spacing. -->
                 <span class="radioLabel"><label><form:radiobutton path="${varPath}" cssClass="numericalRadio" value="numerical"/> Numerical:</label>
-                <c:set var="numericalVarName" value="${variable.key}_numerical" />
+                <c:set var="numericalVarName" value="${variable.key}$numerical" />
                 <c:set var="numericalVarPath" value="${srcalc:dynamicValuePath(numericalVarName)}" />
                 <form:input cssClass="numerical" path="${numericalVarPath}" size="6"/> ${variable.units}</span>
                 <form:errors path="${numericalVarPath}" cssClass="error" /><br>

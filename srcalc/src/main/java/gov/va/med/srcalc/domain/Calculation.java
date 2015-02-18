@@ -2,6 +2,7 @@ package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.util.MissingValueListException;
 
 import java.io.Serializable;
 import java.util.*;
@@ -177,16 +178,29 @@ public class Calculation implements Serializable
      * Runs the calculation for each outcome with the given Values.
      * @throws IllegalArgumentException if incomplete values are provided
      * @return the outcomes for convenience
+     * @throws MissingValueListException if there are any required variables without an assigned value
      */
-    public SortedMap<String, Double> calculate(final Collection<Value> values)
+    public SortedMap<String, Double> calculate(final Collection<Value> values) throws MissingValueListException
     {
         // Run the calculation first to make sure we don't get any exceptions.
         final TreeMap<String, Double> outcomes = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        final List<MissingValueException> missingValues = new ArrayList<MissingValueException>();
         for (final RiskModel model : getSpecialty().getRiskModels())
         {
-            outcomes.put(model.getDisplayName(), model.calculate(values));
+            try
+            {
+            	outcomes.put(model.getDisplayName(), model.calculate(values));
+            }
+            catch(MissingValueListException e)
+            {
+            	missingValues.addAll(e.getMissingValues());
+            }
         }
 
+        if(missingValues.size() > 0)
+        {
+        	throw new MissingValueListException("The calculation is missing values.", missingValues);
+        }
         // Store the given values for reference.
         fValues.clear();
         fValues.addAll(values);

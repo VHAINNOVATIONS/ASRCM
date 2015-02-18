@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import gov.va.med.srcalc.domain.variable.MissingValueException;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.CollectionUtils;
@@ -44,14 +45,22 @@ public abstract class SingleVariableTerm extends ModelTerm
     }
     
     @Override
-    public double getSummand(final Map<Variable, Value> inputValues)
+    public double getSummand(final Map<Variable, Value> inputValues) throws MissingValueException
     {
         final Value value = inputValues.get(getVariable());
+//        if (value == null)
+//        {
+//            throw new IllegalArgumentException("Incomplete input values");
+//        }
         if (value == null)
         {
-            throw new IllegalArgumentException("Incomplete input values");
+        	if(getVariable().getRequired())
+        	{
+        		throw new MissingValueException("Missing value for " + getVariable().getKey(),
+        				"noInput", getVariable());
+        	}
+            return 0.0;
         }
-        
         return getSummand(value);
     }
     

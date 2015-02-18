@@ -21,6 +21,7 @@ public abstract class AbstractVariable implements Variable
     private VariableGroup fGroup;
     private String fHelpText;
     private String fKey;
+    private boolean fRequired;
 
     /**
      * Constructs an instance with dummy values for the basic properties
@@ -84,6 +85,21 @@ public abstract class AbstractVariable implements Variable
     public void setKey(final String key)
     {
     	this.fKey = Preconditions.requireWithin(key, KEY_MAX);
+    }
+    
+    @Basic
+    public boolean getRequired()
+    {
+        return fRequired;
+    }
+    
+    /**
+     * Sets the internal key of the variable
+     * @throws IllegalArgumentException if the given key is over 40 characters
+     */
+    public void setRequired(final boolean required)
+    {
+    	fRequired = required;
     }
     
     @Basic
