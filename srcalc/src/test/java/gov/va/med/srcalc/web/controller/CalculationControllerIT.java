@@ -112,7 +112,7 @@ public class CalculationControllerIT extends IntegrationTest
         varParams.add("preopPneumonia", "true");
         varParams.add("alkalinePhosphatase", ">125mU/ml");
         varParams.add("bun", VariableEntry.SPECIAL_NUMERICAL);
-        varParams.add("bun_numerical", "15.0");
+        varParams.add("bun" + VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL, "15.0");
         
         final MockHttpServletRequestBuilder request =
                 post("/enterVars").session(fSession);
@@ -135,7 +135,7 @@ public class CalculationControllerIT extends IntegrationTest
         selectThoracicSpecialty();
         
         fMockMvc.perform(post("/enterVars").session(fSession)
-                .param(makeDynamicValuePath("Age"), "-2"))
+                .param(makeDynamicValuePath("age"), "-2"))
             .andExpect(model().attributeHasErrors("variableEntry"))
             .andExpect(status().is(200));
     }

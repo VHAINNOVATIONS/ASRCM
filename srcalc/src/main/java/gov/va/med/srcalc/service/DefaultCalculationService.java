@@ -15,6 +15,7 @@ import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.workflow.*;
 import gov.va.med.srcalc.vista.VistaPatientDao;
+import gov.va.med.srcalc.util.MissingValuesException;
 
 public class DefaultCalculationService implements CalculationService
 {
@@ -69,11 +70,18 @@ public class DefaultCalculationService implements CalculationService
     
     @Override
     @Transactional
-    public CalculationWorkflow runCalculation(final Calculation calculation, final List<Value> variableValues)
+    public CalculationWorkflow runCalculation(final Calculation calculation, final List<Value> variableValues) throws MissingValuesException
     {
         fLogger.debug("Running calculation with values: {}", variableValues);
         
-        calculation.calculate(variableValues);
+        try 
+        {
+			calculation.calculate(variableValues);
+		} 
+        catch (MissingValuesException e) 
+        {
+			throw e;
+		}
         
         return new UnsignedCalculation(calculation);
     }

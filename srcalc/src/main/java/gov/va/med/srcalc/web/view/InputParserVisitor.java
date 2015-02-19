@@ -104,7 +104,8 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         final String value = getVariableValue(variable);
         if (StringUtils.isEmpty(value))
         {
-            rejectDynamicValue(variable.getKey(), "noSelection", "no selection");
+        	// Variables are not necessarily required.
+        	// The calculation is checked for missing values later.
             return;
         }
         // Find the selected option.
@@ -138,7 +139,8 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         final String stringValue = getVariableValue(variable);
         if (StringUtils.isEmpty(stringValue))
         {
-            rejectDynamicValue(variable.getKey(), "noInput.float", "no input");
+        	// Variables are not necessarily required.
+        	// The calculation is checked for missing values later.
             return;
         }
         try
@@ -190,7 +192,8 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         final String categoryName = getVariableValue(variable);
         if (StringUtils.isEmpty(categoryName))
         {
-            rejectDynamicValue(variable.getKey(), "noSelection", "no selection");
+        	// Variables are not necessarily required.
+        	// The calculation is checked for missing values later.
             return;
         }
         // Special case: numerical
@@ -202,7 +205,6 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
             fLogger.debug("User specified a numerical value: {}", stringValue);
             if (StringUtils.isEmpty(stringValue))
             {
-                rejectDynamicValue(numericalName, "noInput.float", "no input");
                 return;
             }
             try

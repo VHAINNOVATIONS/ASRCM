@@ -18,7 +18,7 @@ create table risk_model_derived_term (risk_model_id integer not null, rule integ
 create table risk_model_discrete_term (risk_model_id integer not null, option_index integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, option_index, variable, coefficient));
 create table risk_model_numerical_term (risk_model_id integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, variable, coefficient));
 create table risk_model_procedure_term (risk_model_id integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, variable, coefficient));
-create table rule (id integer not null, summand_expression varchar(255), primary key (id));
+create table rule (id integer not null, required boolean not null, summand_expression varchar(255), primary key (id));
 create table rule_value_matcher (rule_id integer not null, boolean_expression varchar(255), variable integer);
 create table specialty (id integer not null, name varchar(255), vista_id integer not null, primary key (id));
 create table specialty_risk_model (specialty_id integer not null, risk_model_id integer not null, primary key (specialty_id, risk_model_id));

@@ -8,6 +8,7 @@ import javax.persistence.Transient;
 
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.NoNullSet;
 
 /**
@@ -61,7 +62,7 @@ public final class DerivedTerm extends ModelTerm
     }
 
     @Override
-    public double getSummand(final Map<Variable, Value> inputValues)
+    public double getSummand(final Map<Variable, Value> inputValues) throws MissingValuesException
     {
         return fRule.apply(
                 new Rule.EvaluationContext(getCoefficient(), inputValues));
