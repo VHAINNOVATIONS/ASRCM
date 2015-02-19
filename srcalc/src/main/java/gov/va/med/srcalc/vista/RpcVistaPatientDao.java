@@ -36,6 +36,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         final List<String> results = fProcedureCaller.doRpc(
                 fDuz, RemoteProcedure.GET_PATIENT, Integer.toString(dfn));
         
+        // Fields are separated by '^'
         final String patientName = results.get(0).split("\\^")[0];
         final Patient patient = new Patient(dfn, patientName);
         fLogger.debug("Loaded {} from VistA.", patient);
