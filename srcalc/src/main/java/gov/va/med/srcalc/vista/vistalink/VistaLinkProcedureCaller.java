@@ -126,6 +126,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
                         response.getResultsType(), response.getResults());
                 if (RESULT_TYPE_ARRAY.equals(response.getResultsType()))
                 {
+                    // VistALink represents arrays as newline-delimited strings.
                     // NB: String.split() strips trailing empty strings.
                     return Arrays.asList(response.getResults().split("\n"));
                 }

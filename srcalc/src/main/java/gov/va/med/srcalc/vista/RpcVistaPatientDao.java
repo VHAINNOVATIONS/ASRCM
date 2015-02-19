@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import gov.va.med.srcalc.domain.Patient;
 
+/**
+ * Implementation of {@link VistaPatientDao} using remote procedures.
+ */
 public class RpcVistaPatientDao implements VistaPatientDao
 {
     private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPatientDao.class);
