@@ -31,7 +31,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
     public Patient getPatient(final int dfn)
     {
         final List<String> results = fProcedureCaller.doRpc(
-                fDuz, "SR ASRC PATIENT", Integer.toString(dfn));
+                fDuz, RemoteProcedure.GET_PATIENT, Integer.toString(dfn));
         
         final String patientName = results.get(0).split("\\^")[0];
         final Patient patient = new Patient(dfn, patientName);

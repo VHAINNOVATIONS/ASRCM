@@ -8,6 +8,7 @@ import javax.resource.ResourceException;
 
 import gov.va.med.exception.FoundationsException;
 import gov.va.med.srcalc.ConfigurationException;
+import gov.va.med.srcalc.vista.RemoteProcedure;
 import gov.va.med.srcalc.vista.VistaProcedureCaller;
 import gov.va.med.vistalink.adapter.cci.*;
 import gov.va.med.vistalink.institution.InstitutionMappingNotFoundException;
@@ -91,7 +92,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
     }
 
     @Override
-    public List<String> doRpc(final String duz, final String rpcName, final String... args)
+    public List<String> doRpc(final String duz, final RemoteProcedure procedure, final String... args)
     {
         // This is the RPC context for all ASRC RPCs. (This value is determined
         // by VistA.)
@@ -102,9 +103,9 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
 
         try
         {
-            fLogger.debug("About to call remote procedure \"{}\"", rpcName);
+            fLogger.debug("About to call remote procedure \"{}\"", procedure.getProcedureName());
             final RpcRequest req = RpcRequestFactory.getRpcRequest(
-                    rpcContext, rpcName);
+                    rpcContext, procedure.getProcedureName());
             
             // Set the arguments.
             for (int i = 0; i < args.length; ++i)

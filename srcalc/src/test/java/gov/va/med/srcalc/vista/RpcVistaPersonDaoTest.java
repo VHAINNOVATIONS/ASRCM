@@ -22,8 +22,8 @@ public class RpcVistaPersonDaoTest
         final String division = "500";
         final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
         when(caller.getDivision()).thenReturn(division);
-        when(caller.doRpc(RADIOLOGIST_DUZ, "SR ASRC USER")).thenReturn(
-                Arrays.asList(RADIOLOGIST_NAME));
+        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_USER))
+            .thenReturn(Arrays.asList(RADIOLOGIST_NAME));
         final RpcVistaPersonDao dao = new RpcVistaPersonDao(caller);
 
         // Behavior verification

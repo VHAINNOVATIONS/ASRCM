@@ -9,6 +9,7 @@ import java.util.List;
 import javax.naming.NamingException;
 import javax.resource.ResourceException;
 
+import gov.va.med.srcalc.vista.RemoteProcedure;
 import gov.va.med.srcalc.vista.vistalink.VistaLinkProcedureCaller;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnectionFactory;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnectionSpec;
@@ -50,7 +51,7 @@ public class VistaLinkProcedureCallerTest
         final VistaLinkProcedureCaller caller =
                 new VistaLinkProcedureCaller(division);
         final List<String> results = caller.doRpc(
-                "11111", "SR ASRC PATIENT", MockVistaLinkConnection.PATIENT_DFN);
+                "11111", RemoteProcedure.GET_PATIENT, MockVistaLinkConnection.PATIENT_DFN);
         assertEquals(
                 Arrays.asList(MockVistaLinkConnection.PATIENT_DATA),
                 results);

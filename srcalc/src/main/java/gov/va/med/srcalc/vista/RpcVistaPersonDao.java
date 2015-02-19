@@ -25,7 +25,7 @@ public class RpcVistaPersonDao implements VistaPersonDao
     {
         fLogger.debug("Loading VistaPerson for duz {}.", duz);
         
-        final List<String> results = fProcedureCaller.doRpc(duz, "SR ASRC USER");
+        final List<String> results = fProcedureCaller.doRpc(duz, RemoteProcedure.GET_USER);
         
         // Get the first index in the array. We don't care about the rest.
         final String userString = results.get(0);
