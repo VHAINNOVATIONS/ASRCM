@@ -1,27 +1,37 @@
-package gov.va.med.srcalc.vista;
+package gov.va.med.srcalc.vista.vistalink;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.naming.*;
 import javax.resource.ResourceException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.dao.RecoverableDataAccessException;
-
 import gov.va.med.exception.FoundationsException;
 import gov.va.med.srcalc.ConfigurationException;
-import gov.va.med.srcalc.domain.VistaPerson;
+import gov.va.med.srcalc.vista.RemoteProcedure;
+import gov.va.med.srcalc.vista.VistaProcedureCaller;
 import gov.va.med.vistalink.adapter.cci.*;
-import gov.va.med.vistalink.institution.*;
+import gov.va.med.vistalink.institution.InstitutionMappingNotFoundException;
 import gov.va.med.vistalink.rpc.*;
 import gov.va.med.vistalink.security.m.SecurityIdentityDeterminationFaultException;
 
-/**
- * Implementation of {@link VistaDao} using VistALink.
- */
-public class VistaLinkVistaDao implements VistaDao
-{
-    private static final Logger fLogger = LoggerFactory.getLogger(VistaLinkVistaDao.class);
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.*;
 
+/**
+ * Provides a simple interface to call VistA Remote Procedures. Uses VistALink.
+ */
+public class VistaLinkProcedureCaller implements VistaProcedureCaller
+{
+    /**
+     * The String identifying the VistaLink result is an array. (This should
+     * really be a constant in {@link RpcResponse}.)
+     */
+    public static final String RESULT_TYPE_ARRAY = "array";
+    
+    private static final Logger fLogger = LoggerFactory.getLogger(VistaLinkProcedureCaller.class);
+    
     /**
      * The division of the remote VistA.
      */
@@ -42,7 +52,7 @@ public class VistaLinkVistaDao implements VistaDao
      * @throws ConfigurationException if VistALink is not configured properly
      * @throws IllegalArgumentException if the given division is not known
      */
-    public VistaLinkVistaDao(final String division)
+    public VistaLinkProcedureCaller(final String division)
     {
         fDivision = division;
         
@@ -75,30 +85,56 @@ public class VistaLinkVistaDao implements VistaDao
         }
     }
     
-    public VistaPerson loadVistaPerson(final String duz)
+    @Override
+    public String getDivision()
     {
-        fLogger.debug("Loading VistaPerson for duz {}.", duz);
+        return fDivision;
+    }
 
+    @Override
+    public List<String> doRpc(final String duz, final RemoteProcedure procedure, final String... args)
+    {
         // This is the RPC context for all ASRC RPCs. (This value is determined
         // by VistA.)
         final String rpcContext = "SR ASRC";
 
         final VistaLinkDuzConnectionSpec cs =
                 new VistaLinkDuzConnectionSpec(fDivision, duz);
-        
+
         try
         {
+            fLogger.debug("About to call remote procedure \"{}\"", procedure.getProcedureName());
             final RpcRequest req = RpcRequestFactory.getRpcRequest(
-                    rpcContext, "SR ASRC USER");
+                    rpcContext, procedure.getProcedureName());
+            
+            // Set the arguments.
+            for (int i = 0; i < args.length; ++i)
+            {
+                // VistA starts counting at 1, not 0.
+                final int vistaParamIndex = i + 1;
+                final String arg = args[i];
+                fLogger.debug("Setting parameter {} to {}", vistaParamIndex, arg);
+                req.getParams().setParam(vistaParamIndex, "string", arg);
+            }
+
             final VistaLinkConnection conn = (VistaLinkConnection)fVlcf.getConnection(cs);
             try
             {
                 final RpcResponse response = conn.executeRPC(req);
-                
-                // Get the first index in the array. We don't care about the rest.
-                final String userString = response.getResults().split("\n")[0];
-                fLogger.debug("Got user: ", userString);
-                return new VistaPerson(duz, userString, "user class not pulled");
+                fLogger.debug(
+                        "Got {} response: {}",
+                        response.getResultsType(), response.getResults());
+                if (RESULT_TYPE_ARRAY.equals(response.getResultsType()))
+                {
+                    // VistALink represents arrays as newline-delimited strings.
+                    // NB: String.split() strips trailing empty strings.
+                    return Arrays.asList(response.getResults().split("\n"));
+                }
+                else
+                {
+                    throw new DataRetrievalFailureException(
+                            "non-array results are not supported");
+                }
             }
             finally
             {
@@ -120,4 +156,5 @@ public class VistaLinkVistaDao implements VistaDao
                     "Could not obtain connection to VistA", e);
         }
     }
+    
 }

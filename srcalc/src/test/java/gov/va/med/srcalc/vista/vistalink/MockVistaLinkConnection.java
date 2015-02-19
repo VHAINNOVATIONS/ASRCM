@@ -1,10 +1,12 @@
-package gov.va.med.srcalc.vista;
+package gov.va.med.srcalc.vista.vistalink;
 
 import javax.resource.NotSupportedException;
 import javax.resource.ResourceException;
 import javax.resource.cci.*;
 
 import gov.va.med.exception.FoundationsException;
+import gov.va.med.srcalc.vista.RemoteProcedure;
+import gov.va.med.srcalc.vista.vistalink.VistaLinkProcedureCaller;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnection;
 import gov.va.med.vistalink.adapter.record.*;
 import gov.va.med.vistalink.adapter.spi.VistaLinkServerInfo;
@@ -16,14 +18,22 @@ import static org.mockito.Mockito.*;
  */
 public class MockVistaLinkConnection implements VistaLinkConnection
 {
+    /**
+     * The name of the fake radiologist user returned from {@link RemoteProcedure#GET_USER}.
+     */
+    public final static String RADIOLOGIST_NAME = "RADIOLOGIST,ONE";
+    
+    /**
+     * The DFN of the fake patient returned from {@link RemoteProcedure#GET_PATIENT}
+     */
+    public final static String PATIENT_DFN = "18976";
+    
+    /**
+     * The fake patient data returned from {@link RemoteProcedure#GET_PATIENT}.
+     */
+    public final static String PATIENT_DATA = "PATIENT,MOCKVL^62^M";
+
     private int fTimeout = 0;
-    
-    private final String fReturnedUserName;
-    
-    public MockVistaLinkConnection(final String returnedUserName)
-    {
-        fReturnedUserName = returnedUserName;
-    }
     
     @Override
     public Interaction createInteraction() throws ResourceException
@@ -69,11 +79,23 @@ public class MockVistaLinkConnection implements VistaLinkConnection
     @Override
     public RpcResponse executeRPC(RpcRequest request) throws VistaLinkFaultException, FoundationsException
     {
-        if (request.getRpcName().equals("SR ASRC USER"))
+        if (request.getRpcName().equals(RemoteProcedure.GET_USER.getProcedureName()))
         {
             // RpcResponse is very hard to simulate. Use Mockito.
             RpcResponse response = mock(RpcResponse.class);
-            when(response.getResults()).thenReturn(fReturnedUserName + "\n");
+            when(response.getResults()).thenReturn(RADIOLOGIST_NAME + "\n");
+            when(response.getResultsType())
+                .thenReturn(VistaLinkProcedureCaller.RESULT_TYPE_ARRAY);
+            return response;
+        }
+        else if (request.getRpcName().equals(RemoteProcedure.GET_PATIENT.getProcedureName()) &&
+                request.getParams().getParam(1).equals(PATIENT_DFN))
+        {
+            // RpcResponse is very hard to simulate. Use Mockito.
+            RpcResponse response = mock(RpcResponse.class);
+            when(response.getResults()).thenReturn(PATIENT_DATA + "\n");
+            when(response.getResultsType())
+                .thenReturn(VistaLinkProcedureCaller.RESULT_TYPE_ARRAY);
             return response;
         }
         else

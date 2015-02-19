@@ -5,9 +5,12 @@ import org.springframework.dao.DataAccessException;
 import gov.va.med.srcalc.domain.VistaPerson;
 
 /**
- * Reads and writes remote VistA data.
+ * <p>Data Access Object for VistA Persons (i.e., users).</p>
+ * 
+ * <p>This is an interface to allow for easy mocking. See {@link
+ * RpcVistaPersonDao} for the "real" implementation.</p>
  */
-public interface VistaDao
+public interface VistaPersonDao
 {
     /**
      * Loads a VistaPerson from VistA given his/her DUZ.
