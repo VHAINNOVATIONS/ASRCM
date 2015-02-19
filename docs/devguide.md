@@ -62,7 +62,7 @@ If the Installation Guide was followed properly, the srcalc database should be c
 
 **Building with Gradle**
 
-The actual Eclipse project for the ASRC is located in the top level of the repository at the `srcalc` folder. The top level of the project folder contains the gradlew.bat and build.gradle files that are required for building the project. To use them, execute the command `gradlew build` in command prompt from the same directory. After a successful build, a .war file will be built in the path `srcalc\build\libs`.
+The actual Eclipse project for the ASRC is located in the top level of the repository at the `srcalc` folder. The top level of the project folder contains the gradlew.bat and build.gradle files that are required for building the project. To use them, execute the command `gradlew build` in command prompt from the same directory. After a successful build, a .war file will be built in the path `srcalc\build\libs`. If there are many build errors such as problems with the build path, use the command `gradlew eclipse` to build an Eclipse project file.
 	
 **Glassfish**
 
