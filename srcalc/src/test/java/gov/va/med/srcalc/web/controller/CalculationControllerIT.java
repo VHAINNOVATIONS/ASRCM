@@ -169,7 +169,7 @@ public class CalculationControllerIT extends IntegrationTest
     @Test
     public void getProcedures() throws Exception
     {
-        fMockMvc.perform(get("/procedures").accept("application/json"))
+        fMockMvc.perform(get("/refdata/procedures").accept("application/json"))
             .andExpect(status().is(200))
             .andExpect(content().contentType("application/json"))
             .andExpect(content().string(startsWith("["))); // a JSON array

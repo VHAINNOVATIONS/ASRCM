@@ -105,7 +105,7 @@ function initEnterVariablesPage() {
     // Load the procedures list separately via AJAX to enable caching of the
     // large list. We use a manual AJAX request instead of DataTables's built-in
     // functionality for direct access to the procedure list.
-    $.getJSON('procedures', function (procedures) {
+    $.getJSON('refdata/procedures', function (procedures) {
         // Success callback.
         initProcedureSelect(procedures);
     });
