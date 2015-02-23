@@ -62,7 +62,12 @@ If the Installation Guide was followed properly, the srcalc database should be c
 
 **Building with Gradle**
 
-The actual Eclipse project for the ASRC is located in the top level of the repository at the `srcalc` folder. The top level of the project folder contains the gradlew.bat and build.gradle files that are required for building the project. To use them, execute the command `gradlew build` in command prompt from the same directory. After a successful build, a .war file will be built in the path `srcalc\build\libs`.
+The actual Eclipse project for the ASRC is located in the top level of the
+repository at the `srcalc` folder. The top level of the project folder contains
+the gradlew.bat and build.gradle files that are required for building the
+project. To use them, execute the command `gradlew build` in command prompt from
+the same directory. After a successful build, a .war file will be built in the
+path `srcalc\build\libs`.
 	
 **Glassfish**
 
@@ -76,7 +81,11 @@ As of right now the target browser versions for ASRC are Internet Explorer 9 and
 	
 **Coding**
 
-Although the coding does not need to be done in Eclipse, the project is kept inside of an Eclipse project and that is the preferred method of developing. It also makes committing code and branching easier since the EGit plugin can be used.
+Although the coding does not need to be done in Eclipse, the tool was initially
+developed using Eclipse and Eclipse provides standard IDE features such as
+graphical debugging and integrated source control via EGit. The Eclipse project
+is not stored in this repository, but may be created automatically by running
+the command `gradlew eclipse` in the `srcalc` directory.
 
 Committing and pushing code to the repository can be done either through an Eclipse plugin, command line, or other git method. However, pushing the branch to the master branch needs to be approved first. After pushing the branch and fixing any conflicts that may occur, a pull request needs to be created in GitHub so that another developer can review the code.
 

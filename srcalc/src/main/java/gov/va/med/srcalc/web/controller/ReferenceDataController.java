@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
  * as JSON.
  */
 @Controller
+// All requests are mapped under /refdata for caching. See web.xml
+@RequestMapping("/refdata")
 public class ReferenceDataController
 {
     private final ReferenceDataService fService;

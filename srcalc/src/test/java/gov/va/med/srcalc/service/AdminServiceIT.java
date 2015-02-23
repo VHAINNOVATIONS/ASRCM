@@ -38,7 +38,7 @@ public class AdminServiceIT extends IntegrationTest
     @Test
     public final void testGetVariable() throws Exception
     {
-        final String key = "Preop Pneumonia";
+        final String key = "preopPneumonia";
         final AbstractVariable actualVar = fAdminService.getVariable(key);
         assertThat(actualVar, instanceOf(BooleanVariable.class));
         assertEquals(key, actualVar.getKey());
@@ -47,18 +47,19 @@ public class AdminServiceIT extends IntegrationTest
     @Test
     public final void testUpdateVariable() throws Exception
     {
+    	final String key = "preopPneumonia";
         final String origName = "Preop Pneumonia";
         final String newName = "Preoperative Issues";
         
         // Setup
-        final AbstractVariable var = fAdminService.getVariable(origName);
-        assertEquals(origName, var.getKey());  // sanity check
+        final AbstractVariable var = fAdminService.getVariable(key);
+        assertEquals(origName, var.getDisplayName());  // sanity check
         
         // Behavior verification.
         final EditVariable ev = EditVariable.fromVariable(var);
         ev.setDisplayName(newName);
         fAdminService.updateVariable(ev);
-        assertEquals(newName, fAdminService.getVariable(newName).getDisplayName());
+        assertEquals(newName, fAdminService.getVariable(key).getDisplayName());
     }
     
 }

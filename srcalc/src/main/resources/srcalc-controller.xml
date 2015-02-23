@@ -19,20 +19,18 @@
     <context:component-scan base-package="gov.va.med.srcalc.web.controller" />
     
     <!-- *** Views *** -->
-    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
-        <property name="definitions">
-            <list>
-                <value>/WEB-INF/tiles-defs.xml</value>
-            </list>
-        </property>
+    <bean id="viewResolver"
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/views/"/>
     </bean>
-    <bean id="tilesViewResolver"
-            class="org.springframework.web.servlet.view.tiles2.TilesViewResolver" />
     
     <!-- Support CSS and JS via Spring (because we make Spring the default serlvet. -->
-    <!-- TODO: support versioning -->
-    <mvc:resources mapping="/css/**" location="/css/" />
-    <mvc:resources mapping="/js/**" location="/js/" />
-    <mvc:resources mapping="/images/**" location="/images/" />
+    <!-- Force the browser to always check for new versions until we implement
+         a versioning system. Note that cache-period=1 allows for caching while
+         still forcing the browser to check for a new version, while a value of
+         0 completely prevents caching. -->
+    <mvc:resources mapping="/css/**" location="/css/" cache-period="1" />
+    <mvc:resources mapping="/js/**" location="/js/" cache-period="1" />
 
 </beans>

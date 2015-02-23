@@ -5,6 +5,7 @@ import java.util.List;
 import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.workflow.*;
+import gov.va.med.srcalc.util.MissingValuesException;
 
 public interface CalculationService
 {
@@ -24,5 +25,5 @@ public interface CalculationService
     public SelectedCalculation setSpecialty(Calculation calculation, String specialtyName)
         throws InvalidIdentifierException;
     
-    public CalculationWorkflow runCalculation(Calculation calculation, List<Value> variableValues);
+    public CalculationWorkflow runCalculation(Calculation calculation, List<Value> variableValues) throws MissingValuesException;
 }

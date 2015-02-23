@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
@@ -36,6 +37,8 @@ import static org.hamcrest.Matchers.*;
 @Transactional // run each test in its own (rolled-back) transaction
 public class CalculationControllerIT extends IntegrationTest
 {
+    private final int MOCK_DFN = 456123;
+    
     @Autowired
     WebApplicationContext fWac;
     
@@ -54,19 +57,27 @@ public class CalculationControllerIT extends IntegrationTest
     }
     
     @Test
-    public void getSpecialtyList() throws Exception
+    public void testStartNewCalculationWithDfn() throws Exception
     {
-        fMockMvc.perform(get("/newCalc").session(fSession)).
+        fMockMvc.perform(get("/newCalc")
+                .param("patientDfn", Integer.toString(MOCK_DFN)).session(fSession)).
             andExpect(model().attributeExists("specialties", "calculation"));
     }
     
+    @Test
+    public void testStartNewCalculationNoDfn() throws Exception
+    {
+        fMockMvc.perform(get("/newCalc").session(fSession))
+            .andExpect(status().is4xxClientError());
+    }
+    
     /**
-     * Test fragment to call {@link #getSpecialtyList()} and then select the
+     * Test fragment to call {@link #testStartNewCalculationWithDfn()} and then select the
      * given specialty.
      */
     protected void selectSpecialty(final String specialtyName) throws Exception
     {
-        getSpecialtyList();
+        testStartNewCalculationWithDfn();
 
         fMockMvc.perform(post("/selectSpecialty").session(fSession)
                 .param("specialty", specialtyName)).
@@ -93,15 +104,15 @@ public class CalculationControllerIT extends IntegrationTest
         selectThoracicSpecialty();
         
         final DynamicVarParams varParams = new DynamicVarParams();
-        varParams.add("Procedure", "26546");
-        varParams.add("ASA Classification", "Class 3");
-        varParams.add("Age", "55");
-        varParams.add("DNR", "false");
-        varParams.add("BMI", "18.7");
-        varParams.add("Preop Pneumonia", "true");
-        varParams.add("Alkaline Phosphatase", ">125mU/ml");
-        varParams.add("BUN", VariableEntry.SPECIAL_NUMERICAL);
-        varParams.add("BUN_numerical", "15.0");
+        varParams.add("procedure", "26546");
+        varParams.add("asaClassification", "Class 3");
+        varParams.add("age", "55");
+        varParams.add("dnr", "false");
+        varParams.add("bmi", "18.7");
+        varParams.add("preopPneumonia", "true");
+        varParams.add("alkalinePhosphatase", ">125mU/ml");
+        varParams.add("bun", VariableEntry.SPECIAL_NUMERICAL);
+        varParams.add("bun" + VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL, "15.0");
         
         final MockHttpServletRequestBuilder request =
                 post("/enterVars").session(fSession);
@@ -124,7 +135,7 @@ public class CalculationControllerIT extends IntegrationTest
         selectThoracicSpecialty();
         
         fMockMvc.perform(post("/enterVars").session(fSession)
-                .param(makeDynamicValuePath("Age"), "-2"))
+                .param(makeDynamicValuePath("age"), "-2"))
             .andExpect(model().attributeHasErrors("variableEntry"))
             .andExpect(status().is(200));
     }
@@ -135,9 +146,9 @@ public class CalculationControllerIT extends IntegrationTest
         selectSpecialty("Cardiac");
         
         final DynamicVarParams varParams = new DynamicVarParams();
-        varParams.add("Gender", "Male");
-        varParams.add("Age", "55");
-        varParams.add("BMI", "18.7");
+        varParams.add("gender", "Male");
+        varParams.add("age", "55");
+        varParams.add("bmi", "18.7");
         
         fMockMvc.perform(
                 varParams.addTo(post("/enterVars").session(fSession)))
@@ -158,7 +169,7 @@ public class CalculationControllerIT extends IntegrationTest
     @Test
     public void getProcedures() throws Exception
     {
-        fMockMvc.perform(get("/procedures").accept("application/json"))
+        fMockMvc.perform(get("/refdata/procedures").accept("application/json"))
             .andExpect(status().is(200))
             .andExpect(content().contentType("application/json"))
             .andExpect(content().string(startsWith("["))); // a JSON array

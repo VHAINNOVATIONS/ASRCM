@@ -38,15 +38,19 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>	
 	
+    <!--
+    Allow clients to cache any dynamically-generated reference data via ETags.
+    Note that Spring automatically adds caching headers for most resources such
+    as CSS (see srcalc-controller.xml) and the srcalc pages themselves should
+    not be cached.
+    -->
     <filter>
         <filter-name>etagFilter</filter-name>
         <filter-class>org.springframework.web.filter.ShallowEtagHeaderFilter</filter-class>
     </filter>
-    
-    <!-- Allow clients to cache any pages that they already have verbatim. -->
     <filter-mapping>
         <filter-name>etagFilter</filter-name>
-        <servlet-name>srcalc</servlet-name>
+        <url-pattern>/refdata/*</url-pattern>
     </filter-mapping>
 
 	<!-- Declare that we depend on the jdbc/srcalcDB resource supplied by the

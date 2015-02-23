@@ -9,5 +9,10 @@
     <bean id="srcalcDataSource" class="org.hsqldb.jdbc.JDBCDataSource">
         <property name="url" value="jdbc:hsqldb:mem:srcalctest" />
     </bean>
+    
+    <!-- Use a mock VistaPatientDao since we can't actually talk to VistA in the
+         ITs. (In the real Application Context, a request-scoped DAO is created
+         for the current user.) -->
+    <bean id="vistaPatientDao" class="gov.va.med.srcalc.vista.MockVistaPatientDao" />
 
 </beans>

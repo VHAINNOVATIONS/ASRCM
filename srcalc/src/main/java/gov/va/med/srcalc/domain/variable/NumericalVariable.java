@@ -16,9 +16,9 @@ public class NumericalVariable extends AbstractNumericalVariable
     {
     }
     
-    public NumericalVariable(final String displayName, final VariableGroup group)
+    public NumericalVariable(final String displayName, final VariableGroup group, final String key)
     {
-        super(displayName, group);
+        super(displayName, group, key);
     }
     
     @Override

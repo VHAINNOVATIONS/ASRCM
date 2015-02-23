@@ -36,16 +36,17 @@ function initProcedureSelect(procedures) {
 
 	// Set up the properties for the procedures DataTable
 	var proceduresTable = $("#procedureTable").dataTable({
-	    data: procedures,
-		deferRender: true,
-		columns: [
-		          { data: 'cptCode' },
-		          { data: 'longDescription', searchable: false },
-		          { data: 'rvu', searchable: false },
-		          {
-		              data: 'cptCode',
-		              render: function (data, type, row) {
-		                  return '<a href="#" class="btn-link"' +
+        data: procedures,
+        ordering: false, // ordering is not a requirement, disable for performance
+        deferRender: true,
+        columns: [
+                  { data: 'cptCode' },
+                  { data: 'longDescription', searchable: false },
+                  { data: 'rvu', searchable: false },
+                  {
+                      data: 'cptCode',
+                      render: function (data, type, row) {
+                          return '<a href="#" class="btn-link"' +
                               '" data-cpt-code="' + row.cptCode +
                               '" data-display-string="' + makeDisplayString(row) + '">Select</a>';
 		              },
@@ -104,7 +105,7 @@ function initEnterVariablesPage() {
     // Load the procedures list separately via AJAX to enable caching of the
     // large list. We use a manual AJAX request instead of DataTables's built-in
     // functionality for direct access to the procedure list.
-    $.getJSON('procedures', function (procedures) {
+    $.getJSON('refdata/procedures', function (procedures) {
         // Success callback.
         initProcedureSelect(procedures);
     });

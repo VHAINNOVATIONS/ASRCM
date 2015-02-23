@@ -37,9 +37,10 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
             final String displayName,
             final VariableGroup group,
             final DisplayType displayType,
-            final List<MultiSelectOption> options)
+            final List<MultiSelectOption> options,
+            final String key)
     {
-        super(displayName, group);
+        super(displayName, group, key);
         fDisplayType = displayType;
         fOptions = options;
     }

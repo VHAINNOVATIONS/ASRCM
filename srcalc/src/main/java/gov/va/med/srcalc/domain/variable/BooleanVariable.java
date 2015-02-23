@@ -19,9 +19,9 @@ public class BooleanVariable extends AbstractVariable
     /**
      * Constructs an instance.
      */
-    public BooleanVariable(final String displayName, final VariableGroup group)
+    public BooleanVariable(final String displayName, final VariableGroup group, final String key)
     {
-        super(displayName, group);
+        super(displayName, group, key);
     }
     
     @Override

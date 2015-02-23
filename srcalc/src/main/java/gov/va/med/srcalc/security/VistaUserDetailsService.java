@@ -6,8 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import gov.va.med.srcalc.domain.VistaPerson;
-import gov.va.med.srcalc.vista.VistaDao;
-import gov.va.med.srcalc.vista.VistaDaoFactory;
+import gov.va.med.srcalc.vista.VistaPersonDao;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,7 +37,7 @@ public class VistaUserDetailsService implements UserDetailsService
     @Override
     public VistaUserDetails loadUserByUsername(final String duz) throws UsernameNotFoundException
     {
-        final VistaDao vistaDao = fVistaDaoFactory.getVistaDao(VISTA_DIVISON);
+        final VistaPersonDao vistaDao = fVistaDaoFactory.getVistaPersonDao(VISTA_DIVISON);
         final VistaPerson person = vistaDao.loadVistaPerson(duz);
         return new VistaUserDetails(person, getUserAuthorities(person));
     }

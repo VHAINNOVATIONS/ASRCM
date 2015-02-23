@@ -42,14 +42,23 @@ public class VistaUserDetails implements UserDetails
         return Collections.unmodifiableList(fAuthorities);
     }
     
+    public String getDivision()
+    {
+        return fVistaPerson.getDivision();
+    }
+    
     public String getDuz()
     {
         return fVistaPerson.getDuz();
     }
     
     /**
-     * The VistA access code functions as a user name, but it is also treated as
-     * private data. We just return the user's DUZ instead.
+     * <p>The VistA access code functions as a user name, but it is also treated as
+     * private data. We just return the user's DUZ instead.</p>
+     * 
+     * <p>The username should probably contain the division as well (e.g.,
+     * 11716@500), but we'll use just the DUZ until we start testing with
+     * multiple sites.</p>
      */
     @Override
     public String getUsername()

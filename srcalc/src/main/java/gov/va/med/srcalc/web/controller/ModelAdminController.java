@@ -7,7 +7,8 @@ import javax.inject.Inject;
 
 import gov.va.med.srcalc.domain.variable.AbstractVariable;
 import gov.va.med.srcalc.service.*;
-import gov.va.med.srcalc.web.view.*;
+import gov.va.med.srcalc.web.view.VariableSummary;
+import gov.va.med.srcalc.web.view.Views;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +41,7 @@ public class ModelAdminController
         }
         model.addAttribute("variables", summaries);
 
-        return Tile.MODEL_ADMIN_HOME;
+        return Views.MODEL_ADMIN_HOME;
     }
 
 }

@@ -14,24 +14,34 @@ import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.Specialty;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.workflow.*;
+import gov.va.med.srcalc.vista.VistaPatientDao;
+import gov.va.med.srcalc.util.MissingValuesException;
 
 public class DefaultCalculationService implements CalculationService
 {
     private static final Logger fLogger = LoggerFactory.getLogger(DefaultCalculationService.class);
     
     private final SpecialtyDao fSpecialtyDao;
+    private final VistaPatientDao fPatientDao;
     
+    /**
+     * Constructs an instance.
+     * @param specialtyDao DAO to access specialties
+     * @param patientDao DAO to access patient information
+     */
     @Inject
-    public DefaultCalculationService(final SpecialtyDao specialtyDao)
+    public DefaultCalculationService(
+            final SpecialtyDao specialtyDao, final VistaPatientDao patientDao)
     {
         fSpecialtyDao = specialtyDao;
+        fPatientDao = patientDao;
     }
 
     @Override
     @Transactional
     public NewCalculation startNewCalculation(final int patientId)
     {
-        final Patient patient = new Patient(patientId, "Dummy Patient"); //FIXME: fake
+        final Patient patient = fPatientDao.getPatient(patientId);
 
         fLogger.debug("Starting calculation for patient {}.", patient);
 
@@ -60,11 +70,18 @@ public class DefaultCalculationService implements CalculationService
     
     @Override
     @Transactional
-    public CalculationWorkflow runCalculation(final Calculation calculation, final List<Value> variableValues)
+    public CalculationWorkflow runCalculation(final Calculation calculation, final List<Value> variableValues) throws MissingValuesException
     {
         fLogger.debug("Running calculation with values: {}", variableValues);
         
-        calculation.calculate(variableValues);
+        try 
+        {
+			calculation.calculate(variableValues);
+		} 
+        catch (MissingValuesException e) 
+        {
+			throw e;
+		}
         
         return new UnsignedCalculation(calculation);
     }

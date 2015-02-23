@@ -3,32 +3,34 @@ package gov.va.med.srcalc.security;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import gov.va.med.srcalc.domain.VistaPerson;
-import gov.va.med.srcalc.vista.VistaDao;
-import gov.va.med.srcalc.vista.VistaDaoFactory;
+import gov.va.med.srcalc.vista.*;
 
 import org.junit.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class VistaUserDetailsServiceTest
 {
+    private final String DIVISION = "500";
     private final String ADMIN_DUZ = "20001";
     private final String RADIOLOGIST_DUZ = "11716";
     
     protected VistaPerson sampleRadiologist()
     {
-        final VistaPerson radiologist = new VistaPerson(RADIOLOGIST_DUZ, "RADIOLOGIST,ONE", "unknown");
+        final VistaPerson radiologist = new VistaPerson(
+                DIVISION, RADIOLOGIST_DUZ, "RADIOLOGIST,ONE", "unknown");
         return radiologist;
     }
     
     protected VistaPerson sampleAdministrator()
     {
-        final VistaPerson admin = new VistaPerson(ADMIN_DUZ, "C1", "unknown");
+        final VistaPerson admin = new VistaPerson(
+                DIVISION, ADMIN_DUZ, "C1", "unknown");
         return admin;
     }
 
-    protected VistaDao mockVistaDao()
+    protected VistaPersonDao mockVistaDao()
     {
-        final VistaDao dao = mock(VistaDao.class);
+        final VistaPersonDao dao = mock(VistaPersonDao.class);
         when(dao.loadVistaPerson(RADIOLOGIST_DUZ)).thenReturn(sampleRadiologist());
         when(dao.loadVistaPerson(ADMIN_DUZ)).thenReturn(sampleAdministrator());
         return dao;
@@ -39,9 +41,15 @@ public class VistaUserDetailsServiceTest
         return new VistaDaoFactory()
         {
             @Override
-            public VistaDao getVistaDao(String division)
+            public VistaPersonDao getVistaPersonDao(String division)
             {
                 return mockVistaDao();
+            }
+            
+            @Override
+            public VistaPatientDao getVistaPatientDao()
+            {
+                return new MockVistaPatientDao();
             }
         };
     }
@@ -53,6 +61,7 @@ public class VistaUserDetailsServiceTest
         
         final VistaUserDetailsService service = new VistaUserDetailsService(mockVistaDaoFactory());
         final VistaUserDetails user = service.loadUserByUsername(samplePerson.getDuz());
+        assertEquals(samplePerson.getDivision(), user.getDivision());
         assertEquals(samplePerson.getDuz(), user.getDuz());
         assertEquals(samplePerson.getDuz(), user.getUsername());
         assertEquals("", user.getPassword());
@@ -68,6 +77,7 @@ public class VistaUserDetailsServiceTest
         
         final VistaUserDetailsService service = new VistaUserDetailsService(mockVistaDaoFactory());
         final VistaUserDetails user = service.loadUserByUsername(samplePerson.getDuz());
+        assertEquals(samplePerson.getDivision(), user.getDivision());
         assertEquals(samplePerson.getDuz(), user.getDuz());
         assertEquals(samplePerson.getDuz(), user.getUsername());
         assertEquals("", user.getPassword());

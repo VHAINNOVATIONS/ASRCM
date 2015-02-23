@@ -29,7 +29,7 @@ public class DefaultAdminServiceTest
         when(dao.getAllVariables()).thenReturn(fSampleVariables);
         // Use a reference to the existing DNR variable so we can do updates.
         final AbstractVariable variable = fSampleVariables.get(3);
-        when(dao.getByName(variable.getKey())).thenReturn(variable);
+        when(dao.getByKey(variable.getKey())).thenReturn(variable);
         return dao;
     }
     
@@ -48,7 +48,7 @@ public class DefaultAdminServiceTest
     @Test
     public final void testGetVariable() throws Exception
     {
-        final String key = "DNR";
+        final String key = "dnr";
         
         // Create the class under test.
         final DefaultAdminService s = new DefaultAdminService(mockVariableDao());
@@ -71,6 +71,7 @@ public class DefaultAdminServiceTest
     @Test
     public final void testUpdateVariable() throws Exception
     {
+    	final String key = "dnr";
         final String origName = "DNR";
         final String newName = "Do Not R";
         
@@ -78,8 +79,8 @@ public class DefaultAdminServiceTest
         final DefaultAdminService s = new DefaultAdminService(mockVariableDao());
         
         // Setup
-        final AbstractVariable var = s.getVariable(origName);
-        assertEquals(origName, var.getKey());  // sanity check
+        final AbstractVariable var = s.getVariable(key);
+        assertEquals(origName, var.getDisplayName());  // sanity check
         
         // Behavior verification.
         final EditVariable ev = EditVariable.fromVariable(var);

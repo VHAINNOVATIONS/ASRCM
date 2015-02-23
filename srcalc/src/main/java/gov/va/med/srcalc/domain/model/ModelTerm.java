@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.NoNullSet;
 
 /**
@@ -67,8 +68,9 @@ public abstract class ModelTerm
      * contain a value for each required variable
      * @throws IllegalArgumentException if the given collection of values does
      * not provide a value for each required variable
+     * @throws MissingValuesException if there are any variables without assigned values
      */
-    public abstract double getSummand(Map<Variable, Value> inputValues);
+    public abstract double getSummand(Map<Variable, Value> inputValues) throws MissingValuesException;
     
     // A reminder to subclasses to implement equals().
     @Override

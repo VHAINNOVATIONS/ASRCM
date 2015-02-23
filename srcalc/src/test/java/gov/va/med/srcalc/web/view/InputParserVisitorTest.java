@@ -19,7 +19,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
  */
 public class InputParserVisitorTest
 {
-    @Test
+	@Test
     public final void testUnspecifiedMultiselect() throws Exception
     {
         // Setup variable
@@ -34,11 +34,12 @@ public class InputParserVisitorTest
         final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
         v.visitMultiSelect(var);
         
+        //Ensure there is no value recorded in {@Link InputParserVisitor}
         assertEquals(
-                "noSelection",
-                errors.getFieldError(makeVariableValuePath(var)).getCode());
+                null,
+                variableEntry.getDynamicValues().get(VariableEntry.makeDynamicValuePath(var.getKey())));
     }
-
+	
     @Test
     public final void testInvalidMultiselect() throws Exception
     {
@@ -46,7 +47,7 @@ public class InputParserVisitorTest
         final MultiSelectVariable var = SampleObjects.sampleGenderVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
-        variableEntry.getDynamicValues().put("Gender", "Unknown");
+        variableEntry.getDynamicValues().put("gender", "Unknown");
         
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(variableEntry, "variableEntry");
@@ -116,8 +117,8 @@ public class InputParserVisitorTest
         v.visitNumerical(var);
         
         assertEquals(
-                "noInput.float",
-                errors.getFieldError(makeVariableValuePath(var)).getCode());
+                null,
+                variableEntry.getDynamicValues().get(VariableEntry.makeDynamicValuePath(var.getKey())));
     }
     
     @Test
@@ -242,7 +243,7 @@ public class InputParserVisitorTest
                 "non-true boolean should be false",
                 Boolean.FALSE, v.getValues().get(0).getValue());
     }
-
+    
     @Test
     public final void testUnspecifiedDiscreteNumerical() throws Exception
     {
@@ -260,10 +261,9 @@ public class InputParserVisitorTest
         v.visitDiscreteNumerical(var);
         
         assertEquals(
-                "noSelection",
-                errors.getFieldError(makeVariableValuePath(var)).getCode());
+                null,
+                variableEntry.getDynamicValues().get(VariableEntry.makeDynamicValuePath(var.getKey())));
     }
-
     @Test
     public final void testInvalidDiscreteNumerical() throws Exception
     {
@@ -323,13 +323,10 @@ public class InputParserVisitorTest
         final InputParserVisitor v = new InputParserVisitor(variableEntry, errors);
         v.visitDiscreteNumerical(var);
         
-        
         assertEquals(
-                "noInput.float",
-                errors.getFieldError(makeDynamicValuePath(numericalName)).getCode());
+        		null,
+                variableEntry.getDynamicValues().get(VariableEntry.makeDynamicValuePath(var.getKey())));
     }
-
-
     @Test
     public final void testInvalidNumberDiscreteNumerical() throws Exception
     {

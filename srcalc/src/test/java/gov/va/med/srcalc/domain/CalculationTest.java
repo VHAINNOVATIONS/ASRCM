@@ -3,8 +3,10 @@ package gov.va.med.srcalc.domain;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import gov.va.med.srcalc.domain.model.DerivedTerm;
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.util.MissingValuesException;
 import static gov.va.med.srcalc.domain.SampleObjects.*;
 
 import java.util.*;
@@ -66,7 +68,7 @@ public class CalculationTest
         final AbstractVariable ageVar = sampleAgeVariable();
         final AbstractVariable genderVar = sampleGenderVariable();
         final RiskModel model = SampleObjects.makeSampleRiskModel(
-                "model", procedureVar, ageVar, genderVar);
+                "model", new HashSet<DerivedTerm>(), procedureVar, ageVar, genderVar);
         final Specialty specialty = new Specialty(48, "Cardiac");
         specialty.getRiskModels().add(model);
 
@@ -100,9 +102,10 @@ public class CalculationTest
     
     /**
      * Tests running two dummy risk models.
+     * @throws MissingValuesException 
      */
     @Test
-    public final void testCalculate()
+    public final void testCalculate() throws MissingValuesException
     {
         // Setup
         // we don't actually need any values in here:
@@ -129,7 +132,7 @@ public class CalculationTest
         assertEquals(expectedOutcomes, c.getOutcomes());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = MissingValuesException.class)
     public final void testCalculateIncompleteValues() throws Exception
     {
         final Specialty thoracicSpecialty = SampleObjects.sampleThoracicSpecialty();

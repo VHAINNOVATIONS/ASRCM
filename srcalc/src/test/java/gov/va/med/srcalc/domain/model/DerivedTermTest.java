@@ -27,7 +27,7 @@ public class DerivedTermTest
         final HashMap<Variable, Value> values = new HashMap<>();
         // We actually exercise the Rule in RuleTest, so just test simple
         // math here.
-        final Rule rule = new Rule(Collections.<ValueMatcher>emptyList(), "#coefficient * 2");
+        final Rule rule = new Rule(Collections.<ValueMatcher>emptyList(), "#coefficient * 2", true);
         
         // behavior verification
         final float coeff1 = 56.1f;
@@ -42,6 +42,7 @@ public class DerivedTermTest
     
     public final void testBasic() throws Exception
     {
+    	// FIXME: David, fix this
         // setup
         final float coeff = 9.1f;
         final Set<Variable> reqVars = CollectionUtils.<Variable>hashSet(
@@ -67,5 +68,4 @@ public class DerivedTermTest
             .suppress(Warning.NULL_FIELDS)
             .verify();
     }
-    
 }

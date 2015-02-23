@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.web.controller;
 
 import gov.va.med.srcalc.test.util.IntegrationTest;
-import gov.va.med.srcalc.web.view.Tile;
+import gov.va.med.srcalc.web.view.Views;
 
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -39,12 +39,12 @@ public class EditVariableControllerIT extends IntegrationTest
     @Test
     public void testEditVariable() throws Exception
     {
-        fMockMvc.perform(get("/admin/models/editVariable/Preop Pneumonia")).
+        fMockMvc.perform(get("/admin/models/editVariable/preopPneumonia")).
             andExpect(status().isOk()).
             andExpect(model().attribute("variable", hasProperty("displayName")));
         
         fMockMvc.perform(
-                post("/admin/models/editVariable/Preop Pneumonia").
+                post("/admin/models/editVariable/preopPneumonia").
                 param("displayName", "Preop Something")).
             andExpect(redirectedUrl("/admin/models"));
     }
@@ -52,32 +52,32 @@ public class EditVariableControllerIT extends IntegrationTest
     @Test
     public void testEditVariableTooLong() throws Exception
     {
-        fMockMvc.perform(get("/admin/models/editVariable/Preop Pneumonia")).
+        fMockMvc.perform(get("/admin/models/editVariable/preopPneumonia")).
             andExpect(status().isOk()).
             andExpect(model().attribute("variable", hasProperty("displayName")));
         
         fMockMvc.perform(
-                post("/admin/models/editVariable/Preop Pneumonia").
+                post("/admin/models/editVariable/preopPneumonia").
                 param("displayName",
                         // 81 characters
                         "01234567890123456789012345678901234567890123456789012345678901234567890123456789X")).
             andExpect(model().attributeHasErrors("variable")).
-            andExpect(view().name(Tile.EDIT_VARIABLE));
+            andExpect(view().name(Views.EDIT_VARIABLE));
     }
 
     @Test
     public void testEditVariableInvalidChars() throws Exception
     {
-        fMockMvc.perform(get("/admin/models/editVariable/Preop Pneumonia")).
+        fMockMvc.perform(get("/admin/models/editVariable/preopPneumonia")).
             andExpect(status().isOk()).
             andExpect(model().attribute("variable", hasProperty("displayName")));
         
         fMockMvc.perform(
-                post("/admin/models/editVariable/Preop Pneumonia").
+                post("/admin/models/editVariable/preopPneumonia").
                 param("displayName",
                         "Preop_Pneumonia")).
             andExpect(model().attributeHasErrors("variable")).
-            andExpect(view().name(Tile.EDIT_VARIABLE));
+            andExpect(view().name(Views.EDIT_VARIABLE));
     }
     
 }
