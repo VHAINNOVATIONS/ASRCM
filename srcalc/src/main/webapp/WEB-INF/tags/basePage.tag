@@ -22,8 +22,8 @@
     <link rel="stylesheet" type="text/css" href="${jqueryUiCss}">
     <c:url var="srcalcCss" value="/css/srcalc.css"/>
     <link rel="stylesheet" type="text/css" href="${srcalcCss}">
-    <c:url var="dataTables" value="/css/jquery.dataTables.css"/>
-    <link rel="stylesheet" type="text/css" href="${dataTables}">
+    <c:url var="dataTablesCss" value="/js/vendor/DataTables-1.10.5/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="${dataTablesCss}">
     <c:url var="modernizrJs" value="/js/vendor/modernizr-2.6.2.min.js"/>
     <script type="text/javascript" src="${modernizrJs}"></script>
     <title>${title}</title>
@@ -32,7 +32,7 @@
     <header>
         <h1>${headerText}</h1>
     </header>
-    <c:url var="jqueryJs" value="/js/vendor/jquery-1.11.1.min.js"/>
+    <c:url var="jqueryJs" value="/js/vendor/jquery-1.11.2.min.js"/>
     <script type="text/javascript" src="${jqueryJs}"></script>
     <c:url var="jqueryUiJs" value="/js/vendor/jquery-ui.min.js"/>
     <script type="text/javascript" src="${jqueryUiJs}"></script>

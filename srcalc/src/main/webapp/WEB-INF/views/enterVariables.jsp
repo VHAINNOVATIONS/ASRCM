@@ -86,7 +86,7 @@
     </div>
     <c:url var="enterVariablesJsUrl" value="/js/enterVariables.js"/>
     <script type="text/javascript" src="${enterVariablesJsUrl}"></script>
-    <c:url var="dataTablesUrl" value="/js/vendor/jquery.dataTables.min.js"/>
+    <c:url var="dataTablesUrl" value="/js/vendor/DataTables-1.10.5/jquery.dataTables.min.js"/>
     <script type="text/javascript" src="${dataTablesUrl}"></script>
     <script type="text/javascript">
     $(document).ready(function(){
