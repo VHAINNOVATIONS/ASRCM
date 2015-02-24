@@ -36,20 +36,20 @@ public class NumericalValueTest
     }
     
     @Test(expected = ValueTooHighException.class)
-    public final void testNumericalUpperBoundInclusive() throws Exception
+    public final void testNumericalUpperBoundInclusiveFail() throws Exception
     {
     	// There is an accompanying test for lower bound in {@link DiscreteNumericalValueTest}
     	final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
-        try
-        {
-        	// Should not throw an exception
-        	DiscreteNumericalValue.fromNumerical(var, 50.0f);
-        }
-        catch(final ValueTooHighException e)
-        {
-        	throw new Exception(e.getMessage());
-        }
     	var.setMaxInclusive(false);
         DiscreteNumericalValue.fromNumerical(var, 50.0f);
+    }
+    
+    @Test
+    public final void testNumericalUpperBoundInclusivePass() throws Exception
+    {
+    	// There is an accompanying test for lower bound in {@link DiscreteNumericalValueTest}
+    	final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+    	// Should not throw an exception
+    	DiscreteNumericalValue.fromNumerical(var, 50.0f);
     }
 }

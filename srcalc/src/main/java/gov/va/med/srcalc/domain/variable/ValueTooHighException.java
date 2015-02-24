@@ -11,7 +11,7 @@ public class ValueTooHighException extends InvalidValueException
     /**
      * Change this when changing the class!
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     /**
      * The constant error code, "tooHighInclusive".
@@ -32,14 +32,5 @@ public class ValueTooHighException extends InvalidValueException
     public ValueTooHighException(final String code, final String message)
     {
         super(code, message);
-    }
-    
-    /**
-     * A constructor that assumes the upper bound is inclusive.
-     * @param message the exception message
-     */
-    public ValueTooHighException(final String message)
-    {
-        super(ERROR_CODE_INCLUSIVE, message);
     }
 }
