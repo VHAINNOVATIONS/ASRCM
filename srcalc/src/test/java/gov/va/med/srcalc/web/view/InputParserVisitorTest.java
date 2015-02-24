@@ -157,7 +157,7 @@ public class InputParserVisitorTest
         v.visitNumerical(var);
         
         assertEquals(
-                "tooLow",
+                "tooLowInclusive",
                 errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
     
@@ -177,7 +177,7 @@ public class InputParserVisitorTest
         v.visitNumerical(var);
         
         assertEquals(
-                "tooHigh",
+                "tooHighInclusive",
                 errors.getFieldError(makeVariableValuePath(var)).getCode());
     }
     
@@ -310,7 +310,6 @@ public class InputParserVisitorTest
     {
         // Setup variable
         final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
-        final String numericalName = VariableEntry.getNumericalInputName(var);
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
@@ -369,7 +368,7 @@ public class InputParserVisitorTest
         v.visitDiscreteNumerical(var);
         
         assertEquals(
-                "tooLow",
+                "tooLowInclusive",
                 errors.getFieldError(makeDynamicValuePath(numericalName)).getCode());
     }
 
@@ -392,7 +391,7 @@ public class InputParserVisitorTest
         v.visitDiscreteNumerical(var);
         
         assertEquals(
-                "tooHigh",
+                "tooHighInclusive",
                 errors.getFieldError(makeDynamicValuePath(numericalName)).getCode());
     }
 }

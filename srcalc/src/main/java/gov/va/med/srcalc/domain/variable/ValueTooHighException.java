@@ -29,7 +29,7 @@ public class ValueTooHighException extends InvalidValueException
      * @param message the exception message
      * @param code the spring error code to use
      */
-    public ValueTooHighException(final String message, final String code)
+    public ValueTooHighException(final String code, final String message)
     {
         super(code, message);
     }
