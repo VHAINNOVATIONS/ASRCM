@@ -125,7 +125,7 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
     	{
     		if (value <= getMinValue())
     		{
-    			throw new ValueTooLowException(
+    			throw new ValueTooLowException(ValueTooLowException.ERROR_CODE_EXCLUSIVE,
                     "value must be greater than " + getMinValue());
     		}
     	}
@@ -141,7 +141,7 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
         {
         	if(value >= getMaxValue())
         	{
-        		throw new ValueTooHighException(
+        		throw new ValueTooHighException(ValueTooLowException.ERROR_CODE_EXCLUSIVE,
                     "value must be less than " + getMaxValue());
         	}
         }
