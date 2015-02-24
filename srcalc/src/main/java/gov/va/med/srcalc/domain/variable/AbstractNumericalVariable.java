@@ -10,8 +10,8 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
      */
     public static final int UNITS_MAX = 40;
     
-    private float fMinValue = 0.0f;
-    private float fMaxValue = Float.POSITIVE_INFINITY;
+    private NumericalRange fRange = new NumericalRange(0.0f, true, Float.POSITIVE_INFINITY, true);
+
     private String fUnits = "";
 
     /**
@@ -30,30 +30,48 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
     /**
      * The minimum allowed value for this variable. Default 0.
      */
-    @Basic
     public float getMinValue()
     {
-        return fMinValue;
+        return fRange.getLowerBound();
     }
 
     public void setMinValue(final float minValue)
     {
-        this.fMinValue = minValue;
+        this.fRange.setLowerBound(minValue);
+    }
+    
+    public boolean getMinInclusive()
+    {
+    	return fRange.isLowerInclusive();
     }
 
+    public void setMinInclusive(final boolean inclusive)
+    {
+    	this.fRange.setLowerInclusive(inclusive);
+    }
+    
+    public boolean getMaxInclusive()
+    {
+    	return fRange.isUpperInclusive();
+    }
+
+    public void setMaxInclusive(final boolean inclusive)
+    {
+    	this.fRange.setUpperInclusive(inclusive);
+    }
+    
     /**
      * The maximum allowed value for this variable. Default
      * {@link Float#POSITIVE_INFINITY}.
      */
-    @Basic
     public float getMaxValue()
     {
-        return fMaxValue;
+        return fRange.getUpperBound();
     }
 
     public void setMaxValue(final float maxValue)
     {
-        this.fMaxValue = maxValue;
+        this.fRange.setUpperBound(maxValue);
     }
     
     /**
@@ -95,15 +113,37 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
     public float checkValue(final float value)
             throws ValueTooLowException, ValueTooHighException
     {
-        if (value < getMinValue())
-        {
-            throw new ValueTooLowException(
+    	if(fRange.isLowerInclusive())
+    	{
+    		if(value < getMinValue())
+    		{
+    			throw new ValueTooLowException(
                     "value must be greater than or equal to " + getMinValue());
-        }
-        else if (value > getMaxValue())
+    		}
+    	}
+    	else
+    	{
+    		if (value <= getMinValue())
+    		{
+    			throw new ValueTooLowException(
+                    "value must be greater than " + getMinValue());
+    		}
+    	}
+        if (fRange.isUpperInclusive())
         {
-            throw new ValueTooHighException(
+        	if(value > getMaxValue())
+        	{
+        		throw new ValueTooHighException(
                     "value must be less than or equal to " + getMaxValue());
+        	}
+        }
+        else
+        {
+        	if(value >= getMaxValue())
+        	{
+        		throw new ValueTooHighException(
+                    "value must be less than " + getMaxValue());
+        	}
         }
         return value;
     }
