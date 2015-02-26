@@ -77,7 +77,7 @@ public class WebUtils
         catch (IOException ex)
         {
             fLogger.warn(
-                    "Could not read application manifest. Will use a default value for the version.",
+                    "Could not read application manifest. Will use default values for the SrcalcInfo.",
                     ex);
             return new SrcalcInfo(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
         }

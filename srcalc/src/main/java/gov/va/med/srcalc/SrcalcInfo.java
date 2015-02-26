@@ -4,12 +4,8 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 /**
- * <p>Contains basic information about the srcalc application, such as the
- * currently-running version.</p>
- * 
- * <p>Right now this class contains <i>only</i> the application version, but it
- * facilitates creating a singleton object (e.g., a Spring bean) containing the
- * version.</p>
+ * Contains basic information about the srcalc application, such as the
+ * currently-running version.
  */
 public class SrcalcInfo
 {
