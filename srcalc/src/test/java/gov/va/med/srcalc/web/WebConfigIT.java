@@ -1,5 +1,10 @@
 package gov.va.med.srcalc.web;
 
+import static org.junit.Assert.*;
+
+import gov.va.med.srcalc.SrcalcInfo;
+
+import javax.inject.Inject;
 import javax.naming.NamingException;
 
 import org.hsqldb.jdbc.JDBCDataSource;
@@ -23,6 +28,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
         "file:src/main/webapp/WEB-INF/applicationContext.xml")
 public class WebConfigIT
 {
+    @Inject // field-based autowiring only in tests
+    SrcalcInfo fInfo;
+    
     @BeforeClass
     public static void setupJndi() throws NamingException
     {
@@ -40,5 +48,9 @@ public class WebConfigIT
     public void testWebConfig()
     {
         // If this method executes, it loaded properly.
+        
+        // But also check the SrcalcInfo bean. It should have been loaded with
+        // the default version string due to no manifest.
+        assertEquals(WebUtils.DEFAULT_APP_VERSION, fInfo.getVersion());
     }
 }

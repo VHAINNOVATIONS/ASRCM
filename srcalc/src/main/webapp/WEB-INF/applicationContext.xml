@@ -16,6 +16,10 @@
        
     <!-- Define our DataSource (from JNDI). -->
     <jee:jndi-lookup id="srcalcDataSource" jndi-name="java:comp/env/jdbc/srcalcDB"/>
+    
+    <!-- Load the SrcalcInfo from the web application's manifest. -->
+    <bean id="srcalcInfo" class="gov.va.med.srcalc.web.WebUtils"
+        factory-method="readSrcalcInfo" autowire="constructor" />
        
     <!-- Import the root (non-web-specific) srcalc beans. -->
     <import resource="classpath:/srcalc-context.xml"/>

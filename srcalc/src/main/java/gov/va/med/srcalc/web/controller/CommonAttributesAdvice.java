@@ -1,14 +1,10 @@
 package gov.va.med.srcalc.web.controller;
 
-import gov.va.med.srcalc.web.WebUtils;
+import javax.inject.Inject;
 
-import java.io.IOException;
-import java.util.jar.Manifest;
+import gov.va.med.srcalc.SrcalcInfo;
 
-import javax.servlet.ServletContext;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -21,50 +17,30 @@ public class CommonAttributesAdvice
 {
     /**
      * The name of the model attribute which contains the app version.
-     * @see #getAppVersion()
+     * @see SrcalcInfo#getVersion()
      */
     public static final String MODEL_ATTRIBUTE_APP_VERSION = "appVersion";
     
-    protected static final String DEFAULT_APP_VERSION = "unknown (no manifest)";
-    
-    private static final Logger fLogger = LoggerFactory.getLogger(CommonAttributesAdvice.class);
-    
-    private final String fAppVersion;
+    private final SrcalcInfo fAppInfo;
     
     /**
-     * Constructs an instance, explicitly specifying all attributes.
+     * Constructs an instance.
+     * @param appInfo information about the running application
      */
-    public CommonAttributesAdvice(final String appVersion)
+    @Inject
+    public CommonAttributesAdvice(final SrcalcInfo appInfo)
     {
-        fAppVersion = appVersion;
-    }
-    
-    /**
-     * Constructs an instance, reading properties from a Manifest resource
-     * in the given {@link ServletContext}.
-     */
-    public static CommonAttributesAdvice fromServletContext(final ServletContext servletContext)
-    {
-        try
-        {
-            final Manifest appManifest = WebUtils.readWebappManifest(servletContext);
-            return new CommonAttributesAdvice(appManifest.getMainAttributes().getValue("Implementation-Version"));
-        }
-        catch (IOException ex)
-        {
-            fLogger.warn("Could not read application manifest. Will use a default value for the version.", ex);
-            return new CommonAttributesAdvice(DEFAULT_APP_VERSION);
-        }
+        fAppInfo = appInfo;
     }
 
     /**
-     * Returns the application version (probably for displaying somewhere on the
-     * UI).
+     * Adds the attributes to the given model.
      */
-    @ModelAttribute(MODEL_ATTRIBUTE_APP_VERSION)
-    public String getAppVersion()
+    @ModelAttribute
+    public void populateModel(final Model springModel)
     {
-        return fAppVersion;
+        springModel.addAttribute(
+                MODEL_ATTRIBUTE_APP_VERSION, fAppInfo.getVersion());
     }
     
 }

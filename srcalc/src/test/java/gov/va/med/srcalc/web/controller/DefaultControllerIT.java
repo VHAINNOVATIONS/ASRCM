@@ -49,8 +49,8 @@ public class DefaultControllerIT extends IntegrationTest
             // seems the best place to test it.
             .andExpect(model().attribute(
                     CommonAttributesAdvice.MODEL_ATTRIBUTE_APP_VERSION,
-                    // No manifest is available in tests: expect the default
-                    CommonAttributesAdvice.DEFAULT_APP_VERSION))
+                    // This is the version specified in test-context.xml.
+                    "0.1.0-test"))
             .andExpect(view().name(Views.LAUNCH_FROM_CPRS));
     }
     
