@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import javax.transaction.Transactional;
 
+import gov.va.med.srcalc.SrcalcInfo;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.web.view.Views;
 
@@ -32,6 +33,9 @@ public class DefaultControllerIT extends IntegrationTest
 {
     @Autowired
     WebApplicationContext fWac;
+    
+    @Autowired
+    SrcalcInfo fSrcalcInfo;
 
     private MockMvc fMockMvc;
     
@@ -48,9 +52,7 @@ public class DefaultControllerIT extends IntegrationTest
             // Test common attributes. These should be in every model but this
             // seems the best place to test it.
             .andExpect(model().attribute(
-                    CommonAttributesAdvice.MODEL_ATTRIBUTE_APP_VERSION,
-                    // This is the version specified in test-context.xml.
-                    "0.1.0-test"))
+                    CommonAttributesSupplier.MODEL_ATTRIBUTE_APP_INFO, fSrcalcInfo))
             .andExpect(view().name(Views.LAUNCH_FROM_CPRS));
     }
     
