@@ -85,7 +85,7 @@ dependencies {
 war {
     manifest {
         // Bake in some standard properties in the manifest
-        attributes 'Implementation-Title': name, 'Implementation-Version': version
+        attributes 'Implementation-Title': 'Automated Surgical Risk Calculator', 'Implementation-Version': version
     }
     // Omit the version number from the WAR name. Nobody uses the WAR as a
     // dependency so it provides no value and only complicates deployment
