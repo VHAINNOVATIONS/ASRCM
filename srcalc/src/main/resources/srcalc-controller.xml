@@ -11,7 +11,15 @@
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
        
-    <mvc:annotation-driven />
+    <!--
+    Enable Web MVC.
+
+    * Don't preserve the Spring model on redirects per Spring's current
+      recommendation for new applications. This prevents model attributes from
+      mysteriously showing up in a redirect URL.
+    -->
+    <mvc:annotation-driven
+        ignore-default-model-on-redirect="true" />
        
     <!--  *** Controllers *** -->
     

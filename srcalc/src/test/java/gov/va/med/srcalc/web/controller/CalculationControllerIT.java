@@ -118,7 +118,6 @@ public class CalculationControllerIT extends IntegrationTest
                 post("/enterVars").session(fSession);
         varParams.addTo(request);
         fMockMvc.perform(request)
-            .andExpect(model().attributeHasNoErrors("variableEntry"))
             .andExpect(redirectedUrl("/displayResults"));
         
         fMockMvc.perform(get("/displayResults").session(fSession))
