@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Implementation-Title: srcalc-test
+Implementation-Version: 0.1.0-test

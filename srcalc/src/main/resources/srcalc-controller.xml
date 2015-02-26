@@ -23,8 +23,18 @@
        
     <!--  *** Controllers *** -->
     
-    <!-- Use component scanning for now. -->
-    <context:component-scan base-package="gov.va.med.srcalc.web.controller" />
+    <!-- Use component scanning for now, but only to find Controllers. -->
+    <context:component-scan base-package="gov.va.med.srcalc.web.controller">
+        <context:include-filter type="annotation"
+            expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    
+    <!-- Activate the CommonAttributesAdvice. -->
+    <!-- Note that @Autowired and @Inject don't seem to work on factory methods
+         so explicity specify autowire="constructor" here. -->
+    <bean id="commonAttributesAdvice"
+        class="gov.va.med.srcalc.web.controller.CommonAttributesAdvice"
+        factory-method="fromServletContext" autowire="constructor"  />
     
     <!-- *** Views *** -->
     <bean id="viewResolver"

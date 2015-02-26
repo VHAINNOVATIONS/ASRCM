@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.web.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import javax.transaction.Transactional;
@@ -43,15 +44,21 @@ public class DefaultControllerIT extends IntegrationTest
     @Test
     public final void testDefaultPage() throws Exception
     {
-        fMockMvc.perform(get("/sessionTimeout"))
-            .andExpect(view().name(Views.SESSION_TIMEOUT));
+        fMockMvc.perform(get("/"))
+            // Test common attributes. These should be in every model but this
+            // seems the best place to test it.
+            .andExpect(model().attribute(
+                    CommonAttributesAdvice.MODEL_ATTRIBUTE_APP_VERSION,
+                    // No manifest is available in tests: expect the default
+                    CommonAttributesAdvice.DEFAULT_APP_VERSION))
+            .andExpect(view().name(Views.LAUNCH_FROM_CPRS));
     }
     
     @Test
     public final void testSessionTimeout() throws Exception
     {
-        fMockMvc.perform(get("/"))
-            .andExpect(view().name(Views.LAUNCH_FROM_CPRS));
+        fMockMvc.perform(get("/sessionTimeout"))
+            .andExpect(view().name(Views.SESSION_TIMEOUT));
     }
     
 }
