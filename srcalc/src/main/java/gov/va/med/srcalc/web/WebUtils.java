@@ -18,6 +18,11 @@ public class WebUtils
     public static final String MANIFEST_PATH = "/META-INF/MANIFEST.MF";
     
     /**
+     * The default name string to use if the manifest could not be read.
+     */
+    protected static final String DEFAULT_APP_NAME = "srcalc";
+    
+    /**
      * The default version string to use if the manifest could not be read.
      */
     protected static final String DEFAULT_APP_VERSION = "unknown (no manifest)";
@@ -74,7 +79,7 @@ public class WebUtils
             fLogger.warn(
                     "Could not read application manifest. Will use a default value for the version.",
                     ex);
-            return new SrcalcInfo(DEFAULT_APP_VERSION);
+            return new SrcalcInfo(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
         }
     }
     

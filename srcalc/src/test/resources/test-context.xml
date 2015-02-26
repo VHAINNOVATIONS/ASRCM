@@ -17,6 +17,7 @@
     
     <!-- Create a dummy SrcalcInfo instance for CommonAttributesAdvice, etc. -->
     <bean id="srcalcInfo" class="gov.va.med.srcalc.SrcalcInfo">
+        <constructor-arg value="srcalc-test" />
         <constructor-arg value="0.1.0-test" />
     </bean>
 

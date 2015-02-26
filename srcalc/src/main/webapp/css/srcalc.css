@@ -80,6 +80,10 @@ footer {
 	border-top: 1px solid #ccc;
 }
 
+.appInfo {
+	font-size: 80%;
+}
+
 /* If Javascript is enabled, pre-hide all dialogs to avoid them flashing on the
    screen before jQuery UI initializes. */
 .js .dialog {

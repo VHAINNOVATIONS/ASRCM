@@ -44,6 +44,7 @@ public class WebUtilsTest
     {
         // Behavior verification
         final SrcalcInfo srcalcInfo = WebUtils.readSrcalcInfo(mockServletContext());
+        assertEquals("srcalc-test", srcalcInfo.getLongName());
         assertEquals("0.1.0-test", srcalcInfo.getVersion());
     }
     

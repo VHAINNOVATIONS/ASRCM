@@ -10,7 +10,6 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <%-- until we get the user-visible footer working: --%><!-- srcalc version: ${appInfo.version} -->
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <%--
@@ -41,5 +40,8 @@
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <jsp:doBody/>
+    <footer>
+    <span class="appInfo">${appInfo.longName} v${appInfo.version}</span>
+    </footer>
 </body>
 </html>

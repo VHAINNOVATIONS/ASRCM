@@ -1,5 +1,6 @@
 package gov.va.med.srcalc;
 
+import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 /**
@@ -12,13 +13,15 @@ import java.util.jar.Manifest;
  */
 public class SrcalcInfo
 {
+    private final String fLongName;
     private final String fVersion;
     
     /**
      * Constructs an instance, explicitly specifying all attributes.
      */
-    public SrcalcInfo(final String version)
+    public SrcalcInfo(final String longName, final String version)
     {
+        fLongName = longName;
         fVersion = version;
     }
     
@@ -27,8 +30,18 @@ public class SrcalcInfo
      */
     public static SrcalcInfo fromManifest(final Manifest manifest)
     {
+        final Attributes mainAttributes = manifest.getMainAttributes();
         return new SrcalcInfo(
-                manifest.getMainAttributes().getValue("Implementation-Version"));
+                mainAttributes.getValue("Implementation-Title"),
+                mainAttributes.getValue("Implementation-Version"));
+    }
+
+    /**
+     * Returns a possibly-multi-word human-friendly name of the application.
+     */
+    public String getLongName()
+    {
+        return fLongName;
     }
 
     /**
