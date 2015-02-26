@@ -20,7 +20,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(
-        {"/srcalc-context.xml", "/test-context.xml", "file:src/main/webapp/WEB-INF/applicationContext.xml"})
+        "file:src/main/webapp/WEB-INF/applicationContext.xml")
 public class WebConfigIT
 {
     @BeforeClass
