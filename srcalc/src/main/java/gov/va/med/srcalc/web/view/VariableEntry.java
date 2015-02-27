@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.web.view;
 
+import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.variable.*;
 
 import java.util.Collection;
@@ -45,8 +46,23 @@ public class VariableEntry
     }
     
     /**
+     * Constructs a {@link VariableEntry} with reasonable defaults for some of
+     * the variables and automatically retrieved values for other variables.
+     */
+    public VariableEntry(final Calculation calculation)
+    {
+        final DefaultValueGenerator dvg = new DefaultValueGenerator();
+        for (final Variable v : calculation.getVariables())
+        {
+            dvg.visit(v);
+        }
+        // TODO: Perhaps make these dynamic so keys are not hard coded.
+        fDynamicValues.put("age", String.valueOf(calculation.getPatient().getAge()));
+    }
+    
+    /**
      * <p>Stores the values entered by the user for dynamic variables (which
-     * happens to be all of them). The Map is from {@link Variable#getDisplayName()}
+     * happens to be all of them). The Map is from {@link Variable#getKey()}
      * to the entered value.</p>
      * 
      * @see #makeDynamicValuePath(String)

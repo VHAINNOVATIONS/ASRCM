@@ -16,15 +16,19 @@ public class Patient implements Serializable
     private int fDfn;
     
     private String fName;
+    private String fGender;
+    private int fAge;
 
     public Patient()
     {
     }
     
-    public Patient(final int dfn, final String name)
+    public Patient(final int dfn, final String name, final String gender, final int age)
     {
         this.fDfn = dfn;
         this.fName = name;
+        this.fGender = gender;
+        this.fAge = age;
     }
 
     /**
@@ -47,7 +51,27 @@ public class Patient implements Serializable
 
     public void setName(final String name)
     {
-	fName = name;
+    	fName = name;
+    }
+    
+    public String getGender()
+    {
+    	return fGender;
+    }
+
+    public void setGender(final String gender)
+    {
+    	fGender = gender;
+    }
+    
+    public int getAge()
+    {
+    	return fAge;
+    }
+
+    public void setAge(final int age)
+    {
+    	fAge = age;
     }
     
     @Override

@@ -18,7 +18,7 @@ public class CalculationTest
 {
     protected Patient dummyPatient()
     {
-        return new Patient(1, "Zach Smith");
+        return new Patient(1, "Zach Smith", "M", 40);
     }
 
     @Test

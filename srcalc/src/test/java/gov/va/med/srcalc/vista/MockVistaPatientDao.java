@@ -10,7 +10,7 @@ public class MockVistaPatientDao implements VistaPatientDao
     @Override
     public Patient getPatient(int dfn)
     {
-        return new Patient(dfn, "PATIENT,TEST" + dfn);
+        return new Patient(dfn, "PATIENT,TEST" + dfn, "M", 40);
     }
     
 }

@@ -47,7 +47,7 @@ public class EnterVariablesController
         final CalculationWorkflow workflow =
                 CalculationController.getWorkflowFromSession(session);
 
-        return new VariableEntry(workflow.getCalculation().getVariables());
+        return new VariableEntry(workflow.getCalculation());
     }
     
     /**
