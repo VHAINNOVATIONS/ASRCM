@@ -41,6 +41,7 @@
     <![endif]-->
     <jsp:doBody/>
     <footer>
+    <%-- CommonAttributesSupplier adds these to the model. --%>
     <span class="appInfo">${appInfo.longName} v${appInfo.version}</span>
     </footer>
 </body>
