@@ -10,6 +10,7 @@ apply plugin: 'jacoco'
 
 // Basic build properties
 sourceCompatibility = '1.7'
+version = '0.5.0-alpha'
 
 repositories {
     // Use 'maven central' for resolving dependencies.
@@ -28,7 +29,7 @@ configurations {
     // org.glassfish.web:javax.servlet.jsp.jstl tries to include these, but we
     // want them 'provided' scope.
     runtime.exclude module: 'servlet-api'
-}    
+}
 
 dependencies {
 
@@ -79,6 +80,17 @@ dependencies {
     
     // Uncomment this to enable testing against MySQL.
     //testRuntime 'mysql:mysql-connector-java:5.1.34'
+}
+
+war {
+    manifest {
+        // Bake in some standard properties in the manifest
+        attributes 'Implementation-Title': 'Automated Surgical Risk Calculator', 'Implementation-Version': version
+    }
+    // Omit the version number from the WAR name. Nobody uses the WAR as a
+    // dependency so it provides no value and only complicates deployment
+    // scripts, etc.
+    archiveName = "${baseName}.${extension}"
 }
 
 // Hardcode Eclipse servlet spec version because eclipse-wtp just assumes 2.4.

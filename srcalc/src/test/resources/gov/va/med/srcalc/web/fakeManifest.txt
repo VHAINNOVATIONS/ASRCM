@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+X-David-Comment: This is just a fake manifest file used in automated tests.
+Implementation-Title: srcalc-test
+Implementation-Version: 0.1.0-test
