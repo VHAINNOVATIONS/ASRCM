@@ -5,6 +5,7 @@ import gov.va.med.srcalc.domain.variable.*;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * <p>The "form backing object" for the Variable Entry Form.</p>
@@ -52,12 +53,22 @@ public class VariableEntry
     public VariableEntry(final Calculation calculation)
     {
         final DefaultValueGenerator dvg = new DefaultValueGenerator();
-        for (final Variable v : calculation.getVariables())
+        final Set<Variable> variables = calculation.getVariables();
+        for (final Variable v : variables)
         {
             dvg.visit(v);
+            // TODO: Exchange the switch statement for a better solution.
+            switch(v.getRetrievalKey())
+            {
+            	case "age":
+            		fDynamicValues.put(v.getKey(), String.valueOf(calculation.getPatient().getAge()));
+            		break;
+            	case "gender":
+            		fDynamicValues.put(v.getKey(), calculation.getPatient().getGender()
+            				.equalsIgnoreCase("M")? "Male": "Female");
+            		break;
+            }
         }
-        // TODO: Perhaps make these dynamic so keys are not hard coded.
-        fDynamicValues.put("age", String.valueOf(calculation.getPatient().getAge()));
     }
     
     /**
