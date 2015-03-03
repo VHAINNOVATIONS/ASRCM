@@ -39,7 +39,7 @@ public class CalculationServiceIT extends IntegrationTest
     public void testStartNewCalculation()
     {
         // Test setup and configuration
-        final int PATIENT_DFN = 878798;
+        final int PATIENT_DFN = 1;
         final DateTime testStartDateTime = new DateTime();
         
         // Behavior verification

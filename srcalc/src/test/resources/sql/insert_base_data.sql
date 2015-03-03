@@ -39,7 +39,7 @@ INSERT INTO VARIABLE_GROUP (id, name, display_order) VALUES (7, 'Clinical Condit
 -- *** Variables ***
 
 -- Cardiac Gender
-INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group) VALUES (1, 'Gender', 'gender', 'gender', 2);
+INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group) VALUES (1, 'Gender', 'gender', 1, 2);
 INSERT INTO MULTI_SELECT_VARIABLE (id, display_type) VALUES (1, 'Radio');
 -- Intentionally reverse Female and Male to verify display order.
 INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (1, 'Female');
@@ -49,7 +49,7 @@ INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_id, option_index) 
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (7, 1, 1, 48.0);
 
 -- Procedure
-INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group) VALUES (3, 'Procedure', 'procedure', 'procedure', 1);
+INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (3, 'Procedure', 'procedure', 1);
 INSERT INTO PROCEDURE_VARIABLE (id) VALUES (3);
 INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (1, 3, 3.1);
 INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (2, 3, 3.2);
@@ -59,7 +59,7 @@ INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VAL
 INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (6, 3, 3.6);
 
 -- Age
-INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group) VALUES (2, 'Age', 'age', 'age', 2);
+INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group) VALUES (2, 'Age', 'age', 2, 2);
 -- There is not really an upper limit on age, but specify an unrealistically high
 -- one to have some idea of significant digits.
 INSERT INTO NUMERICAL_VARIABLE (id, min_value, min_inclusive, max_value, max_inclusive, units) VALUES (2, 18, TRUE, 120, TRUE, 'years');
@@ -72,7 +72,7 @@ INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VAL
 INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (7, 2, 2.7);
 
 -- DNR
-INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group) VALUES (6, 'DNR', 'dnr', 'dnr', 2);
+INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (6, 'DNR', 'dnr', 2);
 INSERT INTO BOOLEAN_VARIABLE (id) VALUES (6);
 INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (1, 6, 6.1);
 INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (2, 6, 6.2);
@@ -83,7 +83,7 @@ INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUE
 INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (7, 6, 6.7);
 
 -- BMI
-INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group) VALUES (5, 'BMI', 'bmi', 'bmi', 3);
+INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (5, 'BMI', 'bmi', 3);
 -- There is not really an upper limit on BMI, but specify an unrealistically high
 -- one to have some idea of significant digits.
 INSERT INTO NUMERICAL_VARIABLE (id, min_value, min_inclusive, max_value, max_inclusive, units) VALUES (5, 0, FALSE, 499, TRUE, '');
@@ -96,7 +96,7 @@ INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VAL
 INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (7, 5, 5.7);
 
 -- ASA Classification 1/2, 3, 4, 5
-INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group) VALUES (8, 'ASA Classification', 'asaClassification', 'asaClassification', 6);
+INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (8, 'ASA Classification', 'asaClassification', 6);
 INSERT INTO MULTI_SELECT_VARIABLE (id, display_type) VALUES (8, 'Radio');
 INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (6, 'Class 1 or 2');
 INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (7, 'Class 3');
@@ -111,7 +111,7 @@ INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coe
 
 
 -- Preop Pneumonia
-INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group) VALUES (7, 'Preop Pneumonia', 'preopPneumonia', 'preopPneumonia', 6);
+INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (7, 'Preop Pneumonia', 'preopPneumonia', 6);
 INSERT INTO BOOLEAN_VARIABLE (id) VALUES (7);
 INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (1, 7, 7.1);
 INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (2, 7, 7.2);
@@ -119,7 +119,7 @@ INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUE
 INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (6, 7, 7.6);
 
 -- Alkaline Phosphatase Lab
-INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group) VALUES (9, 'Alkaline Phosphatase', 'alkalinePhosphatase', 'alkalinePhosphatase', 5);
+INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (9, 'Alkaline Phosphatase', 'alkalinePhosphatase', 5);
 INSERT INTO DISCRETE_NUMERICAL_VAR (id, min_value, min_inclusive, max_value, max_inclusive, units) VALUES (9, 10, TRUE, 750, TRUE, 'mU/ml');
 INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (10, 'WNL');
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (9, 10, -1e12, TRUE, 125.0, TRUE);
@@ -131,7 +131,7 @@ INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coe
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (6, 9, 1, 9.6);
 
 -- BUN Lab
-INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group) VALUES (10, 'BUN', 'bun', 'bun', 5);
+INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (10, 'BUN', 'bun', 5);
 INSERT INTO DISCRETE_NUMERICAL_VAR (id, min_value, min_inclusive, max_value, max_inclusive, units) VALUES (10, 2, TRUE, 90, TRUE, 'mg/dl');
 INSERT INTO MULTI_SELECT_OPTION (id, option_value) VALUES (12, 'WNL');
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_id, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (10, 12, -1e12, TRUE, 25, TRUE);

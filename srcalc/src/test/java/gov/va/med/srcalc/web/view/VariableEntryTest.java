@@ -36,4 +36,19 @@ public class VariableEntryTest
         expected.put(vars.get(5).getKey(), VariableEntry.SPECIAL_NUMERICAL);
         assertEquals(expected, entry.getDynamicValues());
     }
+    
+    @Test
+    public final void testWithRetrievedValues()
+    {
+    	// Contains multiple variables, but only one DiscreteNumericalVariable.
+        final List<AbstractVariable> vars = SampleObjects.sampleVariableList();
+        
+        // Behavior verification.
+        final VariableEntry entry = VariableEntry.withRetrievedValues(vars, SampleObjects.dummyPatient());
+        final HashMap<String, String> expected = new HashMap<>();
+        expected.put(vars.get(1).getKey(), "Male");
+        expected.put(vars.get(2).getKey(), "40");
+        expected.put(vars.get(5).getKey(), VariableEntry.SPECIAL_NUMERICAL);
+        assertEquals(expected, entry.getDynamicValues());
+    }
 }

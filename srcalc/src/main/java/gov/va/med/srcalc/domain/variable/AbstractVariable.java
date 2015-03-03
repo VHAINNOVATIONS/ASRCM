@@ -21,7 +21,7 @@ public abstract class AbstractVariable implements Variable
     private VariableGroup fGroup;
     private String fHelpText;
     private String fKey;
-    private String fRetrievalKey;
+    private Integer fRetrievalKey;
 
     /**
      * Constructs an instance with dummy values for the basic properties
@@ -139,13 +139,13 @@ public abstract class AbstractVariable implements Variable
     @Basic
     @Column(
             length = KEY_MAX,
-            nullable = false)
-    public String getRetrievalKey()
+            nullable = true)
+    public Integer getRetrievalKey()
     {
     	return fRetrievalKey;
     }
     
-    public void setRetrievalKey(final String retrievalKey)
+    public void setRetrievalKey(final Integer retrievalKey)
     {
     	this.fRetrievalKey = retrievalKey;
     }

@@ -16,15 +16,11 @@ import org.junit.Test;
 
 public class CalculationTest
 {
-    protected Patient dummyPatient()
-    {
-        return new Patient(1, "Zach Smith", "M", 40);
-    }
-
+    
     @Test
     public final void testForPatient()
     {
-        final Patient patient = dummyPatient();
+        final Patient patient = SampleObjects.dummyPatient();
         final DateTime testStartDateTime = new DateTime();
         final Calculation c = Calculation.forPatient(patient);
         
@@ -43,7 +39,7 @@ public class CalculationTest
         final Specialty thoracicSpecialty = SampleObjects.sampleThoracicSpecialty();
         
         // Create the class under test.
-        final Calculation calc = Calculation.forPatient(dummyPatient());
+        final Calculation calc = Calculation.forPatient(SampleObjects.dummyPatient());
         
         // Behavior verification
         calc.setSpecialty(thoracicSpecialty);
@@ -57,7 +53,7 @@ public class CalculationTest
     @Test(expected = IllegalStateException.class)
     public final void testGetVariablesIllegal()
     {
-        Calculation.forPatient(dummyPatient()).getVariables();
+        Calculation.forPatient(SampleObjects.dummyPatient()).getVariables();
     }
     
     @Test
@@ -72,7 +68,7 @@ public class CalculationTest
         final Specialty specialty = new Specialty(48, "Cardiac");
         specialty.getRiskModels().add(model);
 
-        final Calculation c = Calculation.forPatient(dummyPatient());
+        final Calculation c = Calculation.forPatient(SampleObjects.dummyPatient());
         c.setSpecialty(specialty);
         
         // Now, build the expected List of PopulatedVariableGroups.
@@ -89,7 +85,7 @@ public class CalculationTest
     @Test(expected = UnsupportedOperationException.class)
     public final void testGetVariableGroupsImmutable()
     {
-        final Calculation c = Calculation.forPatient(dummyPatient());
+        final Calculation c = Calculation.forPatient(SampleObjects.dummyPatient());
         c.setSpecialty(sampleThoracicSpecialty());
         c.getVariableGroups().remove(0);
     }
@@ -97,7 +93,7 @@ public class CalculationTest
     @Test(expected = IllegalStateException.class)
     public final void testGetVariableGroupsIllegal()
     {
-        Calculation.forPatient(dummyPatient()).getVariableGroups();
+        Calculation.forPatient(SampleObjects.dummyPatient()).getVariableGroups();
     }
     
     /**
@@ -121,7 +117,7 @@ public class CalculationTest
         when(dummyModel2.getDisplayName()).thenReturn("model2");
         when(dummyModel2.calculate(values)).thenReturn(22.3);
         s.getRiskModels().add(dummyModel2);
-        final Calculation c = Calculation.forPatient(dummyPatient());
+        final Calculation c = Calculation.forPatient(SampleObjects.dummyPatient());
         c.setSpecialty(s);
         
         // Behavior verification
@@ -138,7 +134,7 @@ public class CalculationTest
         final Specialty thoracicSpecialty = SampleObjects.sampleThoracicSpecialty();
         
         // Create the class under test.
-        final Calculation calc = Calculation.forPatient(dummyPatient());
+        final Calculation calc = Calculation.forPatient(SampleObjects.dummyPatient());
         calc.setSpecialty(thoracicSpecialty);
         
         // Behavior verification

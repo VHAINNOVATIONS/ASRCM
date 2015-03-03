@@ -1,11 +1,10 @@
 package gov.va.med.srcalc.web.view;
 
-import gov.va.med.srcalc.domain.Calculation;
+import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.variable.*;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * <p>The "form backing object" for the Variable Entry Form.</p>
@@ -50,25 +49,31 @@ public class VariableEntry
      * Constructs a {@link VariableEntry} with reasonable defaults for some of
      * the variables and automatically retrieved values for other variables.
      */
-    public VariableEntry(final Calculation calculation)
+    public static VariableEntry withRetrievedValues(final Collection<? extends Variable> variables,
+    		final Patient patient)
     {
-        final DefaultValueGenerator dvg = new DefaultValueGenerator();
-        final Set<Variable> variables = calculation.getVariables();
+    	final VariableEntry variableEntry = new VariableEntry(variables);
         for (final Variable v : variables)
         {
-            dvg.visit(v);
+        	// Must be tested before the switch statement, as null cannot be used
+        	// in a switch statement.
+        	if(v.getRetrievalKey() == null)
+        	{
+        		continue;
+        	}
             // TODO: Exchange the switch statement for a better solution.
             switch(v.getRetrievalKey())
-            {
-            	case "age":
-            		fDynamicValues.put(v.getKey(), String.valueOf(calculation.getPatient().getAge()));
-            		break;
-            	case "gender":
-            		fDynamicValues.put(v.getKey(), calculation.getPatient().getGender()
-            				.equalsIgnoreCase("M")? "Male": "Female");
+            {	
+	            case 1:
+	        		variableEntry.fDynamicValues.put(v.getKey(), patient.getGender()
+        				.equalsIgnoreCase("M")? "Male": "Female");
+	        		break;
+            	case 2:
+            		variableEntry.fDynamicValues.put(v.getKey(), String.valueOf(patient.getAge()));
             		break;
             }
         }
+        return variableEntry;
     }
     
     /**

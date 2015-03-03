@@ -31,7 +31,7 @@ public interface Variable
      * Returns a key that is used to translate vista retrieved values to
      * variable keys. Retrieval keys do not have to be unique.
      */
-    public String getRetrievalKey();
+    public Integer getRetrievalKey();
     
     /**
      * Accepts the given {@link VariableVisitor}.
