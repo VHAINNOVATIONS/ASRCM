@@ -28,6 +28,12 @@ public interface Variable
     public String getHelpText();
     
     /**
+     * Returns a key that is used to translate vista retrieved values to
+     * variable keys. Retrieval keys do not have to be unique.
+     */
+    public Integer getRetrievalKey();
+    
+    /**
      * Accepts the given {@link VariableVisitor}.
      * @throws Exception if the {@link VariableVisitor} throws an Exception
      */

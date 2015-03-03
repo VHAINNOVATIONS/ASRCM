@@ -15,6 +15,11 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
  */
 public class SampleObjects
 {
+	public static Patient dummyPatient(final int dfn)
+    {
+        return new Patient(dfn, "Zach Smith", "M", 40);
+    }
+
     public static Procedure sampleRepairLeftProcedure()
     {
         return new Procedure(
@@ -180,6 +185,7 @@ public class SampleObjects
                 DisplayType.Radio,
                 options,
                 "gender");
+        var.setRetrievalKey(1);
         return var;
     }
     
@@ -190,6 +196,7 @@ public class SampleObjects
         var.setMinValue(0);
         var.setMaxValue(999);
         var.setUnits("years");
+        var.setRetrievalKey(2);
         return var;
     }
 

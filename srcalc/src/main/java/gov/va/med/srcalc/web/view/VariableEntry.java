@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.web.view;
 
+import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.variable.*;
 
 import java.util.Collection;
@@ -45,8 +46,39 @@ public class VariableEntry
     }
     
     /**
+     * Constructs a {@link VariableEntry} with reasonable defaults for some of
+     * the variables and automatically retrieved values for other variables.
+     */
+    public static VariableEntry withRetrievedValues(final Collection<? extends Variable> variables,
+    		final Patient patient)
+    {
+    	final VariableEntry variableEntry = new VariableEntry(variables);
+        for (final Variable v : variables)
+        {
+        	// Must be tested before the switch statement, as null cannot be used
+        	// in a switch statement.
+        	if(v.getRetrievalKey() == null)
+        	{
+        		continue;
+        	}
+            // TODO: Exchange the switch statement for a better solution.
+            switch(v.getRetrievalKey())
+            {	
+//	            case 1:
+//	        		variableEntry.fDynamicValues.put(v.getKey(), patient.getGender()
+//        				.equalsIgnoreCase("M")? "male": "Female");
+//	        		break;
+            	case 2:
+            		variableEntry.fDynamicValues.put(v.getKey(), String.valueOf(patient.getAge()));
+            		break;
+            }
+        }
+        return variableEntry;
+    }
+    
+    /**
      * <p>Stores the values entered by the user for dynamic variables (which
-     * happens to be all of them). The Map is from {@link Variable#getDisplayName()}
+     * happens to be all of them). The Map is from {@link Variable#getKey()}
      * to the entered value.</p>
      * 
      * @see #makeDynamicValuePath(String)

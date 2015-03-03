@@ -46,8 +46,8 @@ public class EnterVariablesController
         // Get the CalculationWorkflow from the session.
         final CalculationWorkflow workflow =
                 CalculationController.getWorkflowFromSession(session);
-
-        return new VariableEntry(workflow.getCalculation().getVariables());
+        return VariableEntry.withRetrievedValues(workflow.getCalculation().getVariables(), 
+        		workflow.getCalculation().getPatient());
     }
     
     /**

@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.vista;
 
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.SampleObjects;
 
 /**
  * A mock {@link VistaPatientDao} just for tests.
@@ -8,9 +9,9 @@ import gov.va.med.srcalc.domain.Patient;
 public class MockVistaPatientDao implements VistaPatientDao
 {
     @Override
-    public Patient getPatient(int dfn)
+    public Patient getPatient(final int dfn)
     {
-        return new Patient(dfn, "PATIENT,TEST" + dfn);
+    	return SampleObjects.dummyPatient(dfn);
     }
     
 }
