@@ -9,9 +9,9 @@ import gov.va.med.srcalc.domain.SampleObjects;
 public class MockVistaPatientDao implements VistaPatientDao
 {
     @Override
-    public Patient getPatient(int dfn)
+    public Patient getPatient(final int dfn)
     {
-    	return SampleObjects.dummyPatient();
+    	return SampleObjects.dummyPatient(dfn);
     }
     
 }

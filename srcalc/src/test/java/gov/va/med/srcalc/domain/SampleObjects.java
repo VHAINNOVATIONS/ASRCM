@@ -15,9 +15,9 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
  */
 public class SampleObjects
 {
-	public static Patient dummyPatient()
+	public static Patient dummyPatient(final int dfn)
     {
-        return new Patient(1, "Zach Smith", "M", 40);
+        return new Patient(dfn, "Zach Smith", "M", 40);
     }
 
     public static Procedure sampleRepairLeftProcedure()
@@ -185,7 +185,7 @@ public class SampleObjects
                 DisplayType.Radio,
                 options,
                 "gender");
-        var.setRetrievalKey(2);
+        var.setRetrievalKey(1);
         return var;
     }
     
@@ -196,7 +196,7 @@ public class SampleObjects
         var.setMinValue(0);
         var.setMaxValue(999);
         var.setUnits("years");
-        var.setRetrievalKey(1);
+        var.setRetrievalKey(2);
         return var;
     }
 

@@ -64,10 +64,10 @@ public class VariableEntry
             // TODO: Exchange the switch statement for a better solution.
             switch(v.getRetrievalKey())
             {	
-	            case 1:
-	        		variableEntry.fDynamicValues.put(v.getKey(), patient.getGender()
-        				.equalsIgnoreCase("M")? "Male": "Female");
-	        		break;
+//	            case 1:
+//	        		variableEntry.fDynamicValues.put(v.getKey(), patient.getGender()
+//        				.equalsIgnoreCase("M")? "male": "Female");
+//	        		break;
             	case 2:
             		variableEntry.fDynamicValues.put(v.getKey(), String.valueOf(patient.getAge()));
             		break;

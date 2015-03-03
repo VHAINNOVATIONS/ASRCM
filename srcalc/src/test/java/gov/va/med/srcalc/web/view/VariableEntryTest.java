@@ -2,6 +2,7 @@ package gov.va.med.srcalc.web.view;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.AbstractVariable;
 import gov.va.med.srcalc.domain.variable.Variable;
@@ -44,10 +45,11 @@ public class VariableEntryTest
         final List<AbstractVariable> vars = SampleObjects.sampleVariableList();
         
         // Behavior verification.
-        final VariableEntry entry = VariableEntry.withRetrievedValues(vars, SampleObjects.dummyPatient());
+        final Patient patient = SampleObjects.dummyPatient(1);
+        final VariableEntry entry = VariableEntry.withRetrievedValues(vars, patient);
         final HashMap<String, String> expected = new HashMap<>();
-        expected.put(vars.get(1).getKey(), "Male");
-        expected.put(vars.get(2).getKey(), "40");
+//        expected.put(vars.get(2).getKey(), "Male");
+        expected.put(vars.get(1).getKey(), String.valueOf(patient.getAge()));
         expected.put(vars.get(5).getKey(), VariableEntry.SPECIAL_NUMERICAL);
         assertEquals(expected, entry.getDynamicValues());
     }
