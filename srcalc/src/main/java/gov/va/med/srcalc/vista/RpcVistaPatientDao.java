@@ -1,6 +1,9 @@
 package gov.va.med.srcalc.vista;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +18,16 @@ public class RpcVistaPatientDao implements VistaPatientDao
 {
     private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     
+    private static final Map<String, String> TRANSLATION_MAP;
+    /**
+     * Static class initializer to fill the translation map with the proper values.
+     */
+	static {
+		final Map<String, String> tempMap = new HashMap<String, String>();
+		tempMap.put("M", "Male");
+		tempMap.put("F", "Female");
+		TRANSLATION_MAP = Collections.unmodifiableMap(tempMap);
+	}
     private final VistaProcedureCaller fProcedureCaller;
     
     private final String fDuz;
@@ -43,7 +56,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
 	        final String[] fieldArray = results.get(0).split("\\^");
 	        final String patientName = fieldArray[0];
 	        final int patientAge = Integer.parseInt(fieldArray[1]);
-	        final String patientGender = fieldArray[2];
+	        final String patientGender = translateFromVista(fieldArray[2]);
 	        final Patient patient = new Patient(dfn, patientName, patientGender, patientAge);
 	        fLogger.debug("Loaded {} from VistA.", patient);
 	        return patient;
@@ -56,4 +69,12 @@ public class RpcVistaPatientDao implements VistaPatientDao
     	}
     }
     
+    private static String translateFromVista(final String vistaField)
+    {
+    	if(TRANSLATION_MAP.containsKey(vistaField))
+    	{
+    		return TRANSLATION_MAP.get(vistaField);
+    	}
+    	return "Unknown";
+    }
 }
