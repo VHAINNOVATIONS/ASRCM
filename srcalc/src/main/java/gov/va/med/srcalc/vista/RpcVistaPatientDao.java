@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
 
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.util.VistaFieldTranslation;
 
 /**
  * Implementation of {@link VistaPatientDao} using remote procedures.
@@ -43,7 +44,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
 	        final String[] fieldArray = results.get(0).split("\\^");
 	        final String patientName = fieldArray[0];
 	        final int patientAge = Integer.parseInt(fieldArray[1]);
-	        final String patientGender = fieldArray[2];
+	        final String patientGender = VistaFieldTranslation.TRANSLATION_MAP.get(fieldArray[2]);
 	        final Patient patient = new Patient(dfn, patientName, patientGender, patientAge);
 	        fLogger.debug("Loaded {} from VistA.", patient);
 	        return patient;
