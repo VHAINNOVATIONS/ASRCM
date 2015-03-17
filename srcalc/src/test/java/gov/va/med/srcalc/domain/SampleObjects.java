@@ -17,7 +17,9 @@ public class SampleObjects
 {
 	public static Patient dummyPatient(final int dfn)
     {
-        return new Patient(dfn, "Zach Smith", "M", 40);
+		final Patient patient = new Patient(dfn, "Zach Smith", "M", 40);
+		patient.setBmi(20.0);
+        return patient;
     }
 
     public static Procedure sampleRepairLeftProcedure()

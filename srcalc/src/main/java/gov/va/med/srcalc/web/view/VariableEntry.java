@@ -2,8 +2,11 @@ package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -62,13 +65,46 @@ public class VariableEntry
         		continue;
         	}
         	// TODO: Exchange the switch statement for a better solution.
+        	String key = v.getKey();
+        	if(v instanceof DiscreteNumericalVariable)
+        	{
+        		key += "$numerical";
+        	}
             switch(v.getRetrievalKey())
             {
 	            case 1:
-	        		variableEntry.fDynamicValues.put(v.getKey(), patient.getGender());
+	        		variableEntry.fDynamicValues.put(key, patient.getGender());
 	        		break;
             	case 2:
-            		variableEntry.fDynamicValues.put(v.getKey(), String.valueOf(patient.getAge()));
+            		variableEntry.fDynamicValues.put(key, String.valueOf(patient.getAge()));
+            		break;
+            	case 3:
+            		if(patient.getBmiDate() != null)
+            		{
+            			variableEntry.fDynamicValues.put(key, String.valueOf(patient.getBmi()));
+            			v.setRetrievalDateString(makeRetrievalMessage(patient.getBmiDate()));
+            		}
+            		break;
+            	case 4:
+            		if(patient.getWeightDate() != null)
+            		{
+            			variableEntry.fDynamicValues.put(key, String.valueOf(patient.getWeight()));
+            			v.setRetrievalDateString(makeRetrievalMessage(patient.getWeightDate()));
+            		}
+            		break;
+            	case 5:
+            		if(patient.getWeight6MonthsAgoDate() != null)
+            		{
+            			variableEntry.fDynamicValues.put(key, String.valueOf(patient.getWeight6MonthsAgo()));
+            			v.setRetrievalDateString(makeRetrievalMessage(patient.getWeight6MonthsAgoDate()));
+            		}
+            		break;
+            	case 6:
+            		if(patient.getHeightDate() != null)
+            		{
+            			variableEntry.fDynamicValues.put(key, String.valueOf(patient.getHeight()));
+            			v.setRetrievalDateString(makeRetrievalMessage(patient.getHeightDate()));
+            		}
             		break;
             }
         }
@@ -128,6 +164,16 @@ public class VariableEntry
     public static String makeVariableValuePath(final Variable var)
     {
         return makeDynamicValuePath(var.getKey());
+    }
+    
+    /**
+     * Produce a message that will tell the user when the retrieved value was measured.
+     * @return
+     */
+    public static String makeRetrievalMessage(final Date retrievalDate)
+    {
+    	final SimpleDateFormat originalFormat = new SimpleDateFormat(RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT);
+    	return "(Measured on: " + originalFormat.format(retrievalDate) + ")";
     }
     
     @Override
