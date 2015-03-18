@@ -25,7 +25,7 @@
         <td class="attributeValue">
         <srcalc:variableSpecific variable="${variable}">
         <jsp:attribute name="numericalFragment">
-            <form:input path="${varPath}" size="6"/> ${variable.units}
+            <form:input path="${varPath}" size="6"/> ${variable.units} ${variable.retrievalDateString}
         </jsp:attribute>
         <jsp:attribute name="multiSelectFragment">
             <c:choose>
@@ -50,7 +50,7 @@
             <span class="radioLabel"><label><form:radiobutton path="${varPath}" cssClass="numericalRadio" value="numerical"/> Numerical:</label>
             <c:set var="numericalVarName" value="${variable.key}$numerical" />
             <c:set var="numericalVarPath" value="${srcalc:dynamicValuePath(numericalVarName)}" />
-            <form:input cssClass="numerical" path="${numericalVarPath}" size="6"/> ${variable.units}</span>
+            <form:input cssClass="numerical" path="${numericalVarPath}" size="6"/> ${variable.units} ${variable.retrievalDateString}</span>
             <form:errors path="${numericalVarPath}" cssClass="error" /><br>
             <c:forEach var="opt" items="${variable.options}">
             <label class="radioLabel"><form:radiobutton path="${varPath}" value="${opt.value}"/> Presumed ${opt.value}</label>

@@ -34,6 +34,14 @@ public interface Variable
     public Integer getRetrievalKey();
     
     /**
+     * Should not be persisted to the database, as the retrieval date comes from
+     * Vista.
+     */
+    public String getRetrievalDateString();
+
+    public void setRetrievalDateString(String retrievalDateString);
+    
+    /**
      * Accepts the given {@link VariableVisitor}.
      * @throws Exception if the {@link VariableVisitor} throws an Exception
      */

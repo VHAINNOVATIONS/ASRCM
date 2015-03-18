@@ -10,7 +10,17 @@ public enum RemoteProcedure
     /**
      * Returns information about the given patient.
      */
-    GET_PATIENT("SR ASRC PATIENT");
+    GET_PATIENT("SR ASRC PATIENT"),
+    
+    /**
+     * Returns the most recent vitals on the patient.
+     */
+    GET_RECENT_VITALS("GMV LATEST VM"),
+    
+    /**
+     * Returns a vital from the given patient with the specified date range.
+     */
+    GET_VITAL("GMV EXTRACT REC");
     
     private final String fProcedureName;
     
