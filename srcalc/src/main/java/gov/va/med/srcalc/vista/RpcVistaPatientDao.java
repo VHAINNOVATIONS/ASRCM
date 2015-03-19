@@ -121,7 +121,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         // most recent weight.
         final Calendar cal = Calendar.getInstance();
         cal.setTime(patient.getWeightDate());
-        cal.add(Calendar.MONTH, -3);
+        cal.add(Calendar.MONTH, -6);
         final String endDateString = String.format("%03d%02d%02d", (cal.get(Calendar.YEAR) - 1700),
         		cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
         cal.setTime(patient.getWeightDate());
@@ -137,8 +137,6 @@ public class RpcVistaPatientDao implements VistaPatientDao
     {
     	// The last entries are the most recent so we use those.
     	// Get the most recent weight measurement within the already specified range.
-    	// TODO: Perhaps this should be the weight closest to 6 months prior.
-    	// TODO: Need to establish rules for which weight is used.
     	final String[] weightLineTokens = weightResults.get(weightResults.size()-2).split("[\\s\\^]+");
     	patient.setWeight6MonthsAgo(Double.parseDouble(weightLineTokens[3]));
     	// Get the date of the measurement
