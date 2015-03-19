@@ -2,6 +2,7 @@ package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.util.RetrievalEnum;
 import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 
 import java.text.SimpleDateFormat;
@@ -56,6 +57,8 @@ public class VariableEntry
     		final Patient patient)
     {
     	final VariableEntry variableEntry = new VariableEntry(variables);
+    	// Only get the enum array once to cut down on the computation of building an array
+    	final RetrievalEnum[] retrievalValues = RetrievalEnum.values();
         for (final Variable v : variables)
         {
         	// Must be tested before the switch statement, as null cannot be used
@@ -64,49 +67,12 @@ public class VariableEntry
         	{
         		continue;
         	}
-        	// TODO: Exchange the switch statement for a better solution.
         	String key = v.getKey();
         	if(v instanceof DiscreteNumericalVariable)
         	{
         		key += "$numerical";
         	}
-            switch(v.getRetrievalKey())
-            {
-	            case 1:
-	        		variableEntry.fDynamicValues.put(key, patient.getGender());
-	        		break;
-            	case 2:
-            		variableEntry.fDynamicValues.put(key, String.valueOf(patient.getAge()));
-            		break;
-            	case 3:
-            		if(patient.getBmiDate() != null)
-            		{
-            			variableEntry.fDynamicValues.put(key, String.valueOf(patient.getBmi()));
-            			v.setRetrievalDateString(makeRetrievalMessage(patient.getBmiDate()));
-            		}
-            		break;
-            	case 4:
-            		if(patient.getWeightDate() != null)
-            		{
-            			variableEntry.fDynamicValues.put(key, String.valueOf(patient.getWeight()));
-            			v.setRetrievalDateString(makeRetrievalMessage(patient.getWeightDate()));
-            		}
-            		break;
-            	case 5:
-            		if(patient.getWeight6MonthsAgoDate() != null)
-            		{
-            			variableEntry.fDynamicValues.put(key, String.valueOf(patient.getWeight6MonthsAgo()));
-            			v.setRetrievalDateString(makeRetrievalMessage(patient.getWeight6MonthsAgoDate()));
-            		}
-            		break;
-            	case 6:
-            		if(patient.getHeightDate() != null)
-            		{
-            			variableEntry.fDynamicValues.put(key, String.valueOf(patient.getHeight()));
-            			v.setRetrievalDateString(makeRetrievalMessage(patient.getHeightDate()));
-            		}
-            		break;
-            }
+        	retrievalValues[v.getRetrievalKey()-1].execute(patient, variableEntry, v, key);
         }
         return variableEntry;
     }
