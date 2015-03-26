@@ -36,6 +36,8 @@ sc start domain1
 REM Configure Glassfish logging
 REM Set VistALink to WARNING because INFO is far too verbose.
 bin\asadmin set-log-levels gov.va.med.vistalink=WARNING
+REM Set srcalc explicitly to INFO to facilitate changing it later.
+bin\asadmin set-log-levels gov.va.med.srcalc=INFO
 bin\asadmin set-log-attributes com.sun.enterprise.server.logging.GFFileHandler.maxHistoryFiles=10
 REM Glassfish must be resarted after this change
 net stop domain1
