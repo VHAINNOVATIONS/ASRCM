@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.domain.variable;
 
+import gov.va.med.srcalc.web.ValueVisitor;
+
 public class MultiSelectValue implements DiscreteValue
 {
     private final MultiSelectVariable fVariable;
@@ -36,6 +38,12 @@ public class MultiSelectValue implements DiscreteValue
     public String getDisplayString()
     {
         return getSelectedOption().getValue();
+    }
+    
+    @Override
+    public void accept(ValueVisitor visitor)
+    {
+    	visitor.visitMultiSelect(this);
     }
     
     @Override

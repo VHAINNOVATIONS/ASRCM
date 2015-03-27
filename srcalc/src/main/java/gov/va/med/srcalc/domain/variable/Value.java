@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.domain.variable;
 
+import gov.va.med.srcalc.web.ValueVisitor;
+
 /**
  * Represents the given value of a {@link Variable}.
  */
@@ -17,4 +19,9 @@ public interface Value
      * user.
      */
     public String getDisplayString();
+
+    /**
+     * Accepts the given {@link ValueVisitor}
+     */
+	public void accept(ValueVisitor valueVisitor);
 }

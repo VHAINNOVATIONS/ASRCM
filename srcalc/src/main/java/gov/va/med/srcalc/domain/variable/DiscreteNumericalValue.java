@@ -2,6 +2,7 @@ package gov.va.med.srcalc.domain.variable;
 
 import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable.Category;
+import gov.va.med.srcalc.web.ValueVisitor;
 
 public class DiscreteNumericalValue implements DiscreteValue
 {
@@ -93,6 +94,12 @@ public class DiscreteNumericalValue implements DiscreteValue
                     Float.toString(fNumericalValue));
         }
     }
+    
+    @Override
+	public void accept(ValueVisitor valueVisitor)
+    {
+		valueVisitor.visitDiscreteNumerical(this);
+	}
     
     @Override
     public String toString()

@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.variable;
 
 import gov.va.med.srcalc.domain.Procedure;
+import gov.va.med.srcalc.web.ValueVisitor;
 
 public class ProcedureValue implements Value
 {
@@ -33,6 +34,11 @@ public class ProcedureValue implements Value
     {
         // Return the long string for results display.
         return getValue().getLongString();
+    }
+    
+    public void accept(final ValueVisitor visitor)
+    {
+    	visitor.visitProcedure(this);
     }
     
     @Override

@@ -1,10 +1,15 @@
 package gov.va.med.srcalc.web.controller;
 
+import gov.va.med.srcalc.domain.variable.DiscreteNumericalValue;
+import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable;
 import gov.va.med.srcalc.domain.variable.MissingValueException;
+import gov.va.med.srcalc.domain.variable.ProcedureValue;
+import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.util.MissingValuesException;
+import gov.va.med.srcalc.web.DynamicValueVisitor;
 import gov.va.med.srcalc.web.view.*;
 
 import javax.inject.Inject;
@@ -68,6 +73,16 @@ public class EnterVariablesController
         // Present the view.
         final ModelAndView mav = new ModelAndView(Views.ENTER_VARIABLES);
         mav.addObject("calculation", workflow.getCalculation());
+        // In the case of using the "Return to Input Form" button, add the values already
+        // in the calculation to the variable entry object to maintain the previously calculated
+        // values on the entry page.
+        for(final Value value: workflow.getCalculation().getValues())
+        {
+        	final DynamicValueVisitor visitor = new DynamicValueVisitor(initialValues);
+        	visitor.visit(value);
+        	fLogger.debug("Key: {} Value: {}", value.getVariable().getKey(), value.getValue().toString());
+        }
+        fLogger.debug("Input Values: {}", workflow.getCalculation().getValues());
         // Note: "variableEntry" object is automatically added through annotated
         // method parameter.
         return mav;
