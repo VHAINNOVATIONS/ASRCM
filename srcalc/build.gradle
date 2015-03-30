@@ -20,7 +20,7 @@ repositories {
 /* Versions of dependencies */
 def springVersion = '4.0.7.RELEASE'
 def springSecurityVersion = '3.2.5.RELEASE'
-def slf4jVersion = '1.7.5'
+def slf4jVersion = '1.7.10'
 
 configurations {
     // Don't ever depend on commons-logging, we use jcl-over-sl4j instead.
@@ -60,9 +60,9 @@ dependencies {
 	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: springSecurityVersion
 	compile 'joda-time:joda-time:2.3'
 
-    runtime 'ch.qos.logback:logback-classic:1.1.2'
-    // VistALink has a hard dependency on log4j.
-    runtime group: 'org.slf4j', name: 'log4j-over-slf4j', version: slf4jVersion
+    // Direct logging to java.util.logging so that it ends up in the Glassfish
+    // log.
+    compile group: 'org.slf4j', name: 'slf4j-jdk14', version: slf4jVersion
     // Spring-Security XML namespace
 	runtime group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
 	runtime 'com.fasterxml.jackson.core:jackson-databind:2.3.5' 
@@ -77,6 +77,11 @@ dependencies {
 	testCompile 'org.hsqldb:hsqldb:2.3.2'
     // This is necessary to complete some of the missing pieces in javaee-web-api.
     testRuntime 'javax.servlet:javax.servlet-api:3.1.0'
+    
+    // VistALink has a hard dependency on log4j. Since we are using a direct
+    // file dependency on VistALink, provide this transitive dependency here to
+    // be able to run the tests.
+    testRuntime group: 'org.slf4j', name: 'log4j-over-slf4j', version: slf4jVersion
     
     // Uncomment this to enable testing against MySQL.
     //testRuntime 'mysql:mysql-connector-java:5.1.34'
