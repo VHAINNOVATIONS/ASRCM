@@ -62,4 +62,9 @@ public class DynamicValueVisitor extends ExceptionlessValueVisitor
 		}
 		fVariableEntry.getDynamicValues().put(key, valueString);
 	}
+	
+	public VariableEntry getValues()
+	{
+		return fVariableEntry;
+	}
 }
