@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import gov.va.med.srcalc.db.SpecialtyDao;
@@ -82,6 +83,10 @@ public class DefaultCalculationService implements CalculationService
         {
 			throw e;
 		}
+        
+        // Log something at INFO level for running a calculation, but don't log
+        // too much to avoid PHI in the log file.
+        fLogger.info( "Ran a {} calculation.", calculation.getSpecialty());
         
         return new UnsignedCalculation(calculation);
     }

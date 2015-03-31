@@ -7,12 +7,14 @@ import gov.va.med.srcalc.vista.*;
 
 import org.junit.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class VistaUserDetailsServiceTest
 {
     private final String DIVISION = "500";
     private final String ADMIN_DUZ = "20001";
     private final String RADIOLOGIST_DUZ = "11716";
+    private final String UNKNOWN_DUZ = "11111";
     
     protected VistaPerson sampleRadiologist()
     {
@@ -33,6 +35,7 @@ public class VistaUserDetailsServiceTest
         final VistaPersonDao dao = mock(VistaPersonDao.class);
         when(dao.loadVistaPerson(RADIOLOGIST_DUZ)).thenReturn(sampleRadiologist());
         when(dao.loadVistaPerson(ADMIN_DUZ)).thenReturn(sampleAdministrator());
+        when(dao.loadVistaPerson(UNKNOWN_DUZ)).thenThrow(new IllegalArgumentException());
         return dao;
     }
     
@@ -86,6 +89,13 @@ public class VistaUserDetailsServiceTest
                 user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER")));
         assertTrue("user does not have ROLE_ADMIN",
                 user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")));
+    }
+    
+    @Test(expected = UsernameNotFoundException.class)
+    public final void testLoadUnknownUser()
+    {
+        final VistaUserDetailsService service = new VistaUserDetailsService(mockVistaDaoFactory());
+        service.loadUserByUsername(UNKNOWN_DUZ);
     }
     
 }
