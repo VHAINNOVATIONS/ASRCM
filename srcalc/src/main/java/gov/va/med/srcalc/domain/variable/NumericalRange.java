@@ -151,12 +151,12 @@ public final class NumericalRange implements Comparable<NumericalRange>
     {
         if (f > MAX)
         {
-            fLogger.debug("Limiting %f to max %f.", f, MAX);
+            fLogger.debug("Limiting {} to max {}.", f, MAX);
             return MAX;
         }
         else if (f < MIN)
         {
-            fLogger.debug("Limiting %f to min %f.", f, MIN);
+            fLogger.debug("Limiting {} to min {}.", f, MIN);
             return MIN;
         }
         else
