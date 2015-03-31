@@ -115,13 +115,20 @@ function initEnterVariablesPage() {
         $('.attributeValue').has('input.numerical').has('input.numericalRadio');
     var radios = numericalValueContainers.find('input[type=radio]');
     radios.on('change', function() {
-        var container = $(this).closest('.attributeValue');
-        var radio = container.find('input.numericalRadio');
-        var numericalInput = container.find('input.numerical');
-        if (radio.prop('checked')) {
-            numericalInput.removeAttr('disabled');
-        } else {
-            numericalInput.attr('disabled', 'disabled');
-        }
+        disableNumerical(this);
     });
+    radios.each(function(){
+    	disableNumerical(this);
+    });
+}
+
+function disableNumerical(radioInput){
+	var container = $(radioInput).closest('.attributeValue');
+    var radio = container.find('input.numericalRadio');
+    var numericalInput = container.find('input.numerical');
+    if (radio.prop('checked')) {
+        numericalInput.removeAttr('disabled');
+    } else {
+        numericalInput.attr('disabled', 'disabled');
+    }
 }
