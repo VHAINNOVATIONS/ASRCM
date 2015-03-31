@@ -2,7 +2,6 @@ package gov.va.med.srcalc.domain.variable;
 
 import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable.Category;
-import gov.va.med.srcalc.web.ValueVisitor;
 
 public class DiscreteNumericalValue implements DiscreteValue
 {
@@ -96,7 +95,7 @@ public class DiscreteNumericalValue implements DiscreteValue
     }
     
     @Override
-	public void accept(ValueVisitor valueVisitor)
+	public void accept(final ValueVisitor valueVisitor)
     {
 		valueVisitor.visitDiscreteNumerical(this);
 	}

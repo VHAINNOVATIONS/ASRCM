@@ -76,11 +76,11 @@ public class EnterVariablesController
         // In the case of using the "Return to Input Form" button, add the values already
         // in the calculation to the variable entry object to maintain the previously calculated
         // values on the entry page.
+        final DynamicValueVisitor visitor = new DynamicValueVisitor(initialValues);
         for(final Value value: workflow.getCalculation().getValues())
         {
-        	final DynamicValueVisitor visitor = new DynamicValueVisitor(initialValues);
         	visitor.visit(value);
-        	fLogger.debug("Key: {} Value: {}", value.getVariable().getKey(), value.getValue().toString());
+        	fLogger.debug("Key: {} Value: {}", value.getVariable().getKey(), value.getValue());
         }
         fLogger.debug("Input Values: {}", workflow.getCalculation().getValues());
         // Note: "variableEntry" object is automatically added through annotated

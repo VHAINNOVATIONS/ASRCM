@@ -5,13 +5,19 @@ import gov.va.med.srcalc.domain.variable.DiscreteNumericalValue;
 import gov.va.med.srcalc.domain.variable.MultiSelectValue;
 import gov.va.med.srcalc.domain.variable.NumericalValue;
 import gov.va.med.srcalc.domain.variable.ProcedureValue;
+import gov.va.med.srcalc.domain.variable.ValueVisitor;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
+/**
+ * A {@link ValueVisitor} that adds a key value pair to the dynamic values used
+ * on the enter variables page to fill values for the input fields.
+ * 
+ */
 public class DynamicValueVisitor extends ExceptionlessValueVisitor
 {
 	private VariableEntry fVariableEntry;
 	
-	public DynamicValueVisitor(VariableEntry variableEntry)
+	public DynamicValueVisitor(final VariableEntry variableEntry)
 	{
 		fVariableEntry = variableEntry;
 	}

@@ -1,7 +1,6 @@
 package gov.va.med.srcalc.domain.variable;
 
 import gov.va.med.srcalc.domain.Procedure;
-import gov.va.med.srcalc.web.ValueVisitor;
 
 public class ProcedureValue implements Value
 {

@@ -6,7 +6,14 @@ import gov.va.med.srcalc.domain.variable.MultiSelectValue;
 import gov.va.med.srcalc.domain.variable.NumericalValue;
 import gov.va.med.srcalc.domain.variable.ProcedureValue;
 import gov.va.med.srcalc.domain.variable.Value;
+import gov.va.med.srcalc.domain.variable.ValueVisitor;
 
+/**
+ * <p>Base class for a {@link ValueVisitor} that doesn't throw any exceptions.
+ * </p>
+ * 
+ * <p>Exists mainly for the convenient {@link #visit(Value)}.</p>
+ */
 public abstract class ExceptionlessValueVisitor implements ValueVisitor
 {
 	@Override

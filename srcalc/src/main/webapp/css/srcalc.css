@@ -99,6 +99,31 @@ a.btn-link:link, a.btn-link:visited {
 	text-decoration: none;
 }
 
+a.btn-em:link {
+	background: #CCCCCC;
+	font-size: 1em;
+}
+
+/* A button that is an emphasized version of the normal button.
+*/
+button.button-em {
+    
+    display: inline-block;
+	color: #666666;
+	background-color: #CCCCEE;
+    font-weight: bold;
+	border: 1px solid rgba(0,0,0,0.3);
+}
+button.button-em:hover {
+    background-color: #e3e3e3;
+    border-color: rgba(0,0,0,0.5);
+}
+	
+button.button-em:active {
+    background-color: #CCC;
+    border-color: rgba(0,0,0,0.9);
+}
+
 /* srcalcForm is the standard form appearance in srcalc */
 
 /* Support fieldsets to group related attributes. */

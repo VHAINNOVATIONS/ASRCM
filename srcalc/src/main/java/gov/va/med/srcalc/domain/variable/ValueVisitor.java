@@ -1,10 +1,5 @@
-package gov.va.med.srcalc.web;
+package gov.va.med.srcalc.domain.variable;
 
-import gov.va.med.srcalc.domain.variable.BooleanValue;
-import gov.va.med.srcalc.domain.variable.DiscreteNumericalValue;
-import gov.va.med.srcalc.domain.variable.MultiSelectValue;
-import gov.va.med.srcalc.domain.variable.NumericalValue;
-import gov.va.med.srcalc.domain.variable.ProcedureValue;
 
 public interface ValueVisitor
 {

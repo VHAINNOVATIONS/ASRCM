@@ -1,6 +1,5 @@
 package gov.va.med.srcalc.domain.variable;
 
-import gov.va.med.srcalc.web.ValueVisitor;
 
 public class BooleanValue implements Value
 {
@@ -32,7 +31,7 @@ public class BooleanValue implements Value
     }
     
     @Override
-    public void accept(ValueVisitor visitor)
+    public void accept(final ValueVisitor visitor)
     {
     	visitor.visitBoolean(this);
     }
