@@ -26,26 +26,33 @@ configurations {
     // Don't ever depend on commons-logging, we use jcl-over-sl4j instead.
     all*.exclude module: 'commons-logging'
     
-    // org.glassfish.web:javax.servlet.jsp.jstl tries to include these, but we
-    // want them 'provided' scope.
-    runtime.exclude module: 'servlet-api'
+    // Annoyingly, the servlet-api changed its name from servlet-api in 2.x to
+    // javax.servlet-api in 3.x. This prevents Gradle's version conflict
+    // resolution from automatically choosing the right version. Manually
+    // exclude the old 2.x versions.
+    all*.exclude group: 'javax.servlet', module: 'servlet-api'
 }
 
 dependencies {
 
-    /* Java EE 7 dependencies */
+    /* Java EE 6 dependencies */
 
-    // Provided by the container (Glassfish).
-    providedCompile 'javax:javaee-web-api:7.0'
-    // This is in the Web Profile; I don't know why it isn't included in the
-    // above library.
-    providedCompile 'javax.resource:javax.resource-api:1.7'
-    // Give Eclipse the JSTL TLDs. They aren't included in the javaee-web-api
-    // JAR.
-    providedCompile 'org.glassfish.web:javax.servlet.jsp.jstl:1.2.1'
+    // Provided by the container (Glassfish 3.1). Unfortunately the
+    // javaee-web-api JAR breaks unit tests, so manually specify the versions
+    // of the various specs. (See <http://www.adam-bien.com/roller/abien/entry/trouble_with_crippled_java_ee>)
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+    providedCompile 'javax.inject:javax.inject:1'
+    providedCompile 'org.glassfish.main.connectors:javax.resource:3.1.2.2'
+    providedCompile 'javax.validation:validation-api:1.0.0.GA'
+    providedCompile 'javax.servlet.jsp:jsp-api:2.2'
+    providedCompile 'javax.servlet.jsp.jstl:jstl-api:1.2'
     // These VistALink JARs represent the dependency on the VistALink Connector,
     // which must be deployed before this application.
     providedCompile files('../lib/vljFoundationsLib-1.6.0.028.jar', '../lib/vljConnector-1.6.0.028.jar')
+
+    // Give Eclipse the JSTL TLDs. They aren't included in the javaee-web-api
+    // JAR.
+    providedRuntime 'org.glassfish.web:javax.servlet.jsp.jstl:1.2.1'
 	
 	/* Other libraries */
 
@@ -75,8 +82,6 @@ dependencies {
 	testCompile 'nl.jqno.equalsverifier:equalsverifier:1.5'
 	testCompile 'org.hamcrest:hamcrest-library:1.3'
 	testCompile 'org.hsqldb:hsqldb:2.3.2'
-    // This is necessary to complete some of the missing pieces in javaee-web-api.
-    testRuntime 'javax.servlet:javax.servlet-api:3.1.0'
     
     // VistALink has a hard dependency on log4j. Since we are using a direct
     // file dependency on VistALink, provide this transitive dependency here to
