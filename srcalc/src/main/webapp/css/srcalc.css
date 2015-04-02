@@ -92,11 +92,38 @@ footer {
 
 /* General button styles */
 
+/* Keep a standard height for all buttons on the application.
+*/
+button {
+	height: 25px;
+	border: 1px solid #888;
+}
+
 /* a.btn-link indicates an <a> that performs an action like a button. Think of
    it as a de-emphasized button. */
 a.btn-link:link, a.btn-link:visited {
 	color: #1C528A;
 	text-decoration: none;
+}
+
+a.btn-em:link {
+	background: #CCCCCC;
+	font-size: 1em;
+}
+
+/* A button that is an emphasized version of the normal button.
+*/
+button.button-em {
+	background-color: #CCCCEE;
+    font-weight: bold;
+}
+
+button.button-em:hover {
+    background-color: #e3e3e3;
+}
+	
+button.button-em:active {
+    background-color: #CCC;
 }
 
 /* srcalcForm is the standard form appearance in srcalc */

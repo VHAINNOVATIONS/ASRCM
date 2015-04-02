@@ -95,6 +95,12 @@ public class DiscreteNumericalValue implements DiscreteValue
     }
     
     @Override
+	public void accept(final ValueVisitor valueVisitor)
+    {
+		valueVisitor.visitDiscreteNumerical(this);
+	}
+    
+    @Override
     public String toString()
     {
         return String.format("%s = %s", getVariable(), getValue());
