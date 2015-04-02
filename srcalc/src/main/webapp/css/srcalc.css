@@ -96,6 +96,7 @@ footer {
 */
 button {
 	height: 25px;
+	border: 1px solid #888;
 }
 
 /* a.btn-link indicates an <a> that performs an action like a button. Think of
@@ -113,19 +114,16 @@ a.btn-em:link {
 /* A button that is an emphasized version of the normal button.
 */
 button.button-em {
-	color: #000;
 	background-color: #CCCCEE;
     font-weight: bold;
-	border: 1px solid rgba(0,0,0,0.3);
 }
+
 button.button-em:hover {
     background-color: #e3e3e3;
-    border-color: rgba(0,0,0,0.5);
 }
 	
 button.button-em:active {
     background-color: #CCC;
-    border-color: rgba(0,0,0,0.9);
 }
 
 /* srcalcForm is the standard form appearance in srcalc */
