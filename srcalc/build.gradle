@@ -31,6 +31,13 @@ configurations {
     // resolution from automatically choosing the right version. Manually
     // exclude the old 2.x versions.
     all*.exclude group: 'javax.servlet', module: 'servlet-api'
+    
+    // We use the log4j binding in the tests, so exclude the JUL binding.
+    testRuntime.exclude module: 'slf4j-jdk14'
+    
+    // Add a "deployed" configuration. Dependencies in this configuration will
+    // _only_ be included in the WAR and not in unit tests, etc.
+    deployed
 }
 
 dependencies {
@@ -67,9 +74,6 @@ dependencies {
 	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: springSecurityVersion
 	compile 'joda-time:joda-time:2.3'
 
-    // Direct logging to java.util.logging so that it ends up in the Glassfish
-    // log.
-    compile group: 'org.slf4j', name: 'slf4j-jdk14', version: slf4jVersion
     // Spring-Security XML namespace
 	runtime group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
 	runtime 'com.fasterxml.jackson.core:jackson-databind:2.3.5' 
@@ -83,20 +87,31 @@ dependencies {
 	testCompile 'org.hamcrest:hamcrest-library:1.3'
 	testCompile 'org.hsqldb:hsqldb:2.3.2'
     
-    // VistALink has a hard dependency on log4j. Since we are using a direct
-    // file dependency on VistALink, provide this transitive dependency here to
-    // be able to run the tests.
-    testRuntime group: 'org.slf4j', name: 'log4j-over-slf4j', version: slf4jVersion
+    // The deployed app uses java.util.logging, but use log4j 1.2 in the tests
+    // because the former is so hard to configure. See the slf4j-jdk14 exclusion
+    // above. (Note: we cannot use log4j 2.x due to Hibernate's lack of support.)
+    testRuntime group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion
     
     // Uncomment this to enable testing against MySQL.
     //testRuntime 'mysql:mysql-connector-java:5.1.34'
+
+    // Direct logging to java.util.logging so that it ends up in the Glassfish
+    // log.
+    deployed group: 'org.slf4j', name: 'slf4j-jdk14', version: slf4jVersion
 }
+
+compileJava {
+    // Warn about deprecated API usage.
+    options.deprecation = true
+}    
 
 war {
     manifest {
         // Bake in some standard properties in the manifest
         attributes 'Implementation-Title': 'Automated Surgical Risk Calculator', 'Implementation-Version': version
     }
+    // Add the "deployed" configuration to the WAR.
+    classpath configurations.deployed
     // Omit the version number from the WAR name. Nobody uses the WAR as a
     // dependency so it provides no value and only complicates deployment
     // scripts, etc.
