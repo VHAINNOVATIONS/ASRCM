@@ -2,6 +2,7 @@ package gov.va.med.srcalc.web;
 
 import gov.va.med.srcalc.domain.variable.BooleanValue;
 import gov.va.med.srcalc.domain.variable.DiscreteNumericalValue;
+import gov.va.med.srcalc.domain.variable.ExceptionlessValueVisitor;
 import gov.va.med.srcalc.domain.variable.MultiSelectValue;
 import gov.va.med.srcalc.domain.variable.NumericalValue;
 import gov.va.med.srcalc.domain.variable.ProcedureValue;
@@ -51,13 +52,13 @@ public class DynamicValueVisitor extends ExceptionlessValueVisitor
 	{
 		String key = value.getVariable().getKey();
 		final String valueString;
-		if(value.getNumericalValue() != value.getNumericalValue())
+		if(Float.isNaN(value.getNumericalValue()))
 		{
 			valueString = value.getValue().getOption().getValue();
 		}
 		else
 		{
-			key += "$numerical";
+			key += VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL;
 			valueString = String.valueOf(value.getNumericalValue());
 		}
 		fVariableEntry.getDynamicValues().put(key, valueString);

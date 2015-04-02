@@ -92,6 +92,12 @@ footer {
 
 /* General button styles */
 
+/* Keep a standard height for all buttons on the application.
+*/
+button {
+	height: 25px;
+}
+
 /* a.btn-link indicates an <a> that performs an action like a button. Think of
    it as a de-emphasized button. */
 a.btn-link:link, a.btn-link:visited {
@@ -107,9 +113,7 @@ a.btn-em:link {
 /* A button that is an emphasized version of the normal button.
 */
 button.button-em {
-    
-    display: inline-block;
-	color: #666666;
+	color: #000;
 	background-color: #CCCCEE;
     font-weight: bold;
 	border: 1px solid rgba(0,0,0,0.3);

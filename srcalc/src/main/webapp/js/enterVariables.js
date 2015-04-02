@@ -115,14 +115,14 @@ function initEnterVariablesPage() {
         $('.attributeValue').has('input.numerical').has('input.numericalRadio');
     var radios = numericalValueContainers.find('input[type=radio]');
     radios.on('change', function() {
-        disableNumerical(this);
+    	toggleNumerical(this);
     });
     radios.each(function(){
-    	disableNumerical(this);
+    	toggleNumerical(this);
     });
 }
 
-function disableNumerical(radioInput){
+function toggleNumerical(radioInput){
 	var container = $(radioInput).closest('.attributeValue');
     var radio = container.find('input.numericalRadio');
     var numericalInput = container.find('input.numerical');

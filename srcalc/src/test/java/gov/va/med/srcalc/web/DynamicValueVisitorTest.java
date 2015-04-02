@@ -1,6 +1,9 @@
 package gov.va.med.srcalc.web;
 
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.variable.BooleanValue;
 import gov.va.med.srcalc.domain.variable.BooleanVariable;
@@ -14,6 +17,7 @@ import gov.va.med.srcalc.domain.variable.NumericalValue;
 import gov.va.med.srcalc.domain.variable.NumericalVariable;
 import gov.va.med.srcalc.domain.variable.ProcedureValue;
 import gov.va.med.srcalc.domain.variable.ProcedureVariable;
+import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
 import org.junit.Before;
@@ -28,9 +32,9 @@ public class DynamicValueVisitorTest
 	private DynamicValueVisitor fVisitor;
 	
 	@Before
-	private void visitorSetup()
+	public void visitorSetup()
 	{
-		final VariableEntry variableEntry = new VariableEntry(null);
+		final VariableEntry variableEntry = new VariableEntry(new ArrayList<Variable>());
 		fVisitor = new DynamicValueVisitor(variableEntry);
 	}
 	
@@ -41,7 +45,7 @@ public class DynamicValueVisitorTest
         final NumericalValue val = new NumericalValue(var, 1.2f);
 
         fVisitor.visitNumerical(val);
-        assertNotNull("should have a value", fVisitor.getValues().getDynamicValues().get("age"));
+        assertEquals(String.valueOf(1.2f), fVisitor.getValues().getDynamicValues().get("age"));
 	}
 	
 	@Test

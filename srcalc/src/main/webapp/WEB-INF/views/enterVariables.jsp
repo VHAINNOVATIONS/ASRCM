@@ -81,7 +81,7 @@
     <li>
     <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
     <c:url var="newCalcUrl" value="/newCalc"><c:param name="patientDfn" value="${calculation.patient.dfn}"/></c:url>
-    <a class="btn-link" href="${newCalcUrl}">Start New Calculation</a></li>
+    <a href="${newCalcUrl}"><button type="button">Start New Calculation</button></a></li>
     </ol>
     </div>
     <c:url var="enterVariablesJsUrl" value="/js/enterVariables.js"/>

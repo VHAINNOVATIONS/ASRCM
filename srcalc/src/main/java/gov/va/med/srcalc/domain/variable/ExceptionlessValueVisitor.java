@@ -1,12 +1,5 @@
-package gov.va.med.srcalc.web;
+package gov.va.med.srcalc.domain.variable;
 
-import gov.va.med.srcalc.domain.variable.BooleanValue;
-import gov.va.med.srcalc.domain.variable.DiscreteNumericalValue;
-import gov.va.med.srcalc.domain.variable.MultiSelectValue;
-import gov.va.med.srcalc.domain.variable.NumericalValue;
-import gov.va.med.srcalc.domain.variable.ProcedureValue;
-import gov.va.med.srcalc.domain.variable.Value;
-import gov.va.med.srcalc.domain.variable.ValueVisitor;
 
 /**
  * <p>Base class for a {@link ValueVisitor} that doesn't throw any exceptions.

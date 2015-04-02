@@ -61,12 +61,13 @@ public class EnterVariablesController
         	fLogger.debug("Key: {} Value: {}", value.getVariable().getKey(), value.getValue());
         }
         return initialValues;
-        
     }
     
     /**
      * Presents that variable entry form.
      * @param session the current HTTP session (required)
+     * @param response needed to alter the response header to expire the page
+     * 		after a completed calculation
      * @param initialValues the initial values to set
      * @return a ModelAndView for view rendering
      */
@@ -75,6 +76,9 @@ public class EnterVariablesController
             final HttpSession session, final HttpServletResponse response,
             @ModelAttribute(ATTR_VARIABLE_ENTRY) final VariableEntry initialValues)
     {
+    	// Expire the page to warn the user that a back button is not viable
+    	// after completing a calculation. The page will require a reload if the back button
+    	// is used to go back to the enter variables page.
     	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     	response.setHeader("Pragma", "no-cache");
     	response.setDateHeader("Expires", 0);
