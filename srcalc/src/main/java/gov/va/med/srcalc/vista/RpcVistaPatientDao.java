@@ -170,6 +170,33 @@ public class RpcVistaPatientDao implements VistaPatientDao
 	@Override
 	public String saveRiskCalculationNote(final Calculation calculation,
 			final String electronicSignature) {
+		final StringBuilder noteBody = buildNoteBody(calculation);
+		try 
+		{
+			final List<String> saveResults;
+			saveResults = fProcedureCaller.doRpc(
+	            fDuz, RemoteProcedure.SAVE_PROGRESS_NOTE, 
+	            fDuz, "Electronic Signature Code",String.valueOf(calculation.getPatient().getDfn()), noteBody.toString());
+			final String[] splitArray = saveResults.get(0).split("^");
+			if(splitArray[0].equals("1"))
+			{
+				return "Success";
+			}
+			else
+			{
+				return "Invalid Electronic Signature Code";
+			}
+		}
+		catch(final Exception e)
+		{
+			// An Exception means an invalid DUZ or a problem with VistALink/VistA
+			// Translate the exception into a status message
+			return VISTA_EXCEPTION_STATUS;
+		}
+	}
+	
+	private StringBuilder buildNoteBody(final Calculation calculation)
+	{
 		// Build the note body to use in the rpc
 		// Each section is separated by a blank line
 		// Specialty
@@ -186,22 +213,6 @@ public class RpcVistaPatientDao implements VistaPatientDao
 		{
 			noteBody.append(String.format("%s = %s%%%n", key, calculation.getOutcomes().get(key) * 100));
 		}
-		try 
-		{
-			final List<String> saveResults;
-			saveResults = fProcedureCaller.doRpc(
-	            fDuz, RemoteProcedure.GET_PATIENT, 
-	            fDuz, "Electronic Signature Code",String.valueOf(calculation.getPatient().getDfn()), "Body note");
-			
-		}
-		catch(final Exception e)
-		{
-			// An Exception means an invalid DUZ or a problem with VistALink/VistA
-			// Translate the exception into a status message
-			return VISTA_EXCEPTION_STATUS;
-		}
-		
-		// Interpret save result and translate it to a status
-		return null;
+		return noteBody;
 	}
 }
