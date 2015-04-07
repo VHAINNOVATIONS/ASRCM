@@ -102,8 +102,12 @@ button {
 /* a.btn-link indicates an <a> that performs an action like a button. Think of
    it as a de-emphasized button. */
 a.btn-link:link, a.btn-link:visited {
-	color: #1C528A;
+	color: #222;
+	background-color: #ccc;
+	display: inline-block;
+	border: 1px solid #888;
 	text-decoration: none;
+	padding: 1px, 6px;
 }
 
 a.btn-em:link {
@@ -260,6 +264,9 @@ form.attributeEditForm td.attributeName {
 .procedureSelectGroup tr {
     border-bottom: 1px solid #ccc;
 }
+
+/* The input form for electronic signatures */
+
 
 a.openProcedureSelect {
 	font-size: 0.9em;

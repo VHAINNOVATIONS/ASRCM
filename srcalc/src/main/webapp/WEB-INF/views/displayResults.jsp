@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="/WEB-INF/srcalc.tld" prefix="srcalc" %>
 
 <srcalc:calcPage title="Calculation Results">
@@ -22,16 +23,41 @@
     </c:forEach>
     </ol>
     <ol>
-    <li><button class="button-em" type="submit" disabled>Sign Calculation</button></li>
+    <li><button id="signCalculationButton" class="button-em" type="submit">Sign Calculation</button>
+        <div class="eSigDialog dialog" title="Enter Electronic Signature Code">
+	        <!-- Needs a submit, cancel, and input field for the electronic signature code. -->
+	        <!-- <form:form id="eSigForm" cssClass="srcalcForm attributeEditForm"
+	            method="post" action="displayResults" commandName="variableEntry">
+	            <input id="eSigInput" size="10"/>
+	        </form:form> -->
+	        <form id="eSigForm" method="post">
+	            <input id="eSigInput" size="20"/>
+	            <br>
+	            <div class="actionButtons">
+	                <ol>
+			            <li><button class="button-em" type="submit">Sign</button></li>
+			            <li><button id="cancelESigButton" type="button">Cancel</button></li>
+		            </ol>
+	            </div>
+	        </form>
+	    </div>
+    </li>
     <li>
     <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
     <c:url var="newCalcUrl" value="/newCalc"><c:param name="patientDfn" value="${calculation.patient.dfn}"/></c:url>
-    <a href="${newCalcUrl}"><button type="button">Start New Calculation</button></a></li>
+    <a href="${newCalcUrl}" class="btn-link">Start New Calculation</a></li>
     <li>
     	<c:url var="enterVarsUrl" value="/enterVars"/>
-    	<a href="${enterVarsUrl}"><button type="button">Return to Variable Input Form</button></a>
+    	<a href="${enterVarsUrl}" class="btn-link">Return to Variable Input Form</a>
     </li>
     </ol>
     </div>
+    <c:url var="displayResultsJsUrl" value="/js/displayResults.js"/>
+    <script type="text/javascript" src="${displayResultsJsUrl}"></script>
+    <script type="text/javascript">
+	    $(document).ready(function(){
+	    	initESigDialog();
+	    });
+    </script>
 </section>
 </srcalc:calcPage>

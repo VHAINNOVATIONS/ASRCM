@@ -20,7 +20,7 @@ function initProcedureSelect(procedures) {
     // Make the procedureSelectGroup with a jQuery UI dialog. 
     var procedureSelectDialog = $(".procedureSelectGroup").dialog({
         autoOpen: false,
-        width: 700,   // body with is 768px
+        width: 700,   // body width is 768px
         modal: true
     });
     

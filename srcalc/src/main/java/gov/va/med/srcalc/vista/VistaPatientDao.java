@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.vista;
 
+import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.Patient;
 
 /**
@@ -15,5 +16,13 @@ public interface VistaPatientDao
      * @throws DataAccessException if communication with VistA failed
      */
     public Patient getPatient(final int dfn);
+    
+    /**
+     * Saves the finished calculation to VistA, given the calculation, electronic signature, 
+     * and the note body (lines separated by new line character)
+     * @param calculation
+     * @return
+     */
+    public String saveRiskCalculationNote(final Calculation calculation, final String electronicSignature);
     
 }

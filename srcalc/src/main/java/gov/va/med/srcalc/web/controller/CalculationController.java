@@ -11,7 +11,6 @@ import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.web.view.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -83,15 +82,4 @@ public class CalculationController
     
     // Variable entry is in EnterVariablesController.
     
-    @RequestMapping(value = "/displayResults", method = RequestMethod.GET)
-    public String displayResults(
-            final HttpSession session,
-            final Model model)
-    {
-        // Get the CalculationWorkflow from the session.
-        final CalculationWorkflow workflow = getWorkflowFromSession(session);
-        
-        model.addAttribute("calculation", workflow.getCalculation());
-        return Views.DISPLAY_RESULTS;
-    }
 }

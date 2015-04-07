@@ -7,6 +7,7 @@ import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
 import gov.va.med.srcalc.web.controller.CalculationController;
+import gov.va.med.srcalc.web.controller.DisplayResultsController;
 import gov.va.med.srcalc.web.view.VariableEntry;
 import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
 
@@ -28,8 +29,8 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**
- * Integration Test for {@link CalculationController} and {@link
- * EnterVariablesController}. Note that we only define Integration Tests for
+ * Integration Test for {@link CalculationController}, {@link DisplayResultsController} and
+ * {@link EnterVariablesController}. Note that we only define Integration Tests for
  * controllers because unit tests are of little value.
  */
 @RunWith(SpringJUnit4ClassRunner.class)

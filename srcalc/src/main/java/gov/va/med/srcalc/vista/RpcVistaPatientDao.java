@@ -13,7 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
 
+import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.variable.Value;
 
 /**
  * Implementation of {@link VistaPatientDao} using remote procedures.
@@ -23,6 +25,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
     private static final String SPLIT_REGEX = "[\\s]+";
+    private static final String VISTA_EXCEPTION_STATUS = "Connection Exception";
+    
     public static final String VISTA_DATE_OUTPUT_FORMAT = "MM/dd/yy@HH:mm";
     
     private static final Map<String, String> TRANSLATION_MAP;
@@ -102,7 +106,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
     	{
     		// There are many DataAccessExcpeionts, but this seems like 
     		// the most appropriate exception to throw here.
-    		throw new NonTransientDataAccessResourceException(e.getMessage());
+    		throw new NonTransientDataAccessResourceException(e.getMessage(), e);
     	}
     }
     
@@ -162,4 +166,42 @@ public class RpcVistaPatientDao implements VistaPatientDao
     	patient.setBmi(Double.parseDouble(bmiLineTokens[bmiLineTokens.length-2]));
     	patient.setBmiDate(patient.getWeightDate());
     }
+
+	@Override
+	public String saveRiskCalculationNote(final Calculation calculation,
+			final String electronicSignature) {
+		// Build the note body to use in the rpc
+		// Each section is separated by a blank line
+		// Specialty
+		final StringBuilder noteBody = new StringBuilder(String.format("Specialty = %s%n%n", calculation.getSpecialty().toString()));
+		// Variable display names and values
+		noteBody.append("Calculation Inputs");
+		for(final Value value: calculation.getValues())
+		{
+			noteBody.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));
+		}
+		// Model results
+		noteBody.append(String.format("%nResults%n"));
+		for(final String key: calculation.getOutcomes().keySet())
+		{
+			noteBody.append(String.format("%s = %s%%%n", key, calculation.getOutcomes().get(key) * 100));
+		}
+		try 
+		{
+			final List<String> saveResults;
+			saveResults = fProcedureCaller.doRpc(
+	            fDuz, RemoteProcedure.GET_PATIENT, 
+	            fDuz, "Electronic Signature Code",String.valueOf(calculation.getPatient().getDfn()), "Body note");
+			
+		}
+		catch(final Exception e)
+		{
+			// An Exception means an invalid DUZ or a problem with VistALink/VistA
+			// Translate the exception into a status message
+			return VISTA_EXCEPTION_STATUS;
+		}
+		
+		// Interpret save result and translate it to a status
+		return null;
+	}
 }
