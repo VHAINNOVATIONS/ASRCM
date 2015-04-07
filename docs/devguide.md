@@ -89,6 +89,39 @@ the command `gradlew eclipse` in the `srcalc` directory.
 
 Committing and pushing code to the repository can be done either through an Eclipse plugin, command line, or other git method. However, pushing the branch to the master branch needs to be approved first. After pushing the branch and fixing any conflicts that may occur, a pull request needs to be created in GitHub so that another developer can review the code.
 
+**Code Standards**
+
+An incomplete list of code standards follows:
+
+Consistent code formatting is important. This repository includes [Eclipse Code Formatter Preferences](asrc_eclipse_format.xml) specifying the Java code format. Some notable features are:
+
+* Opening and closing braces have their own lines.
+* 4-space indents.
+* Use spaces instead of tabs.
+
+Compilation must not generate any errors or warnings. All tests must pass. Verify this with
+`gradle clean build` before publishing any changes.
+
+Logging levels (based on [this blog post ](http://www.nurkiewicz.com/2010/05/clean-code-clean-logs-logging-levels.html)):
+
+* `ERROR` - something terribly wrong had happened, that must be investigated immediately. No system can tolerate items logged on this level.
+
+    Example: NPE, database unavailable, mission critical use case cannot be continued.
+
+* `WARN` - the process might be continued, but take extra caution. Actually I always wanted to have two levels here: one for obvious problems where work-around exists (for example: "Current data unavailable, using cached values") and second (name it: ATTENTION) for potential problems and suggestions. 
+
+    Example: "*Application running in development mode*" or "*Administration console is not secured with a password*". The application can tolerate warning messages, but they should always be justified and examined.
+
+* `INFO` - Important business process has finished. In ideal world, administrator or advanced user should be able to understand INFO messages and quickly find out what the application is doing.
+
+    For example if an application is all about booking airplane tickets, there should be only one INFO statement per each ticket saying "*[Who] booked ticket from [Where] to [Where]*". Other definition of INFO message: each action that changes the state of the application significantly (database update, external system request).
+
+* `DEBUG` - Developers stuff. Example:
+    
+        log.debug("Message with id '{}' processed", message.getJMSMessageID());
+
+* `TRACE` - Very detailed information, intended only for development. You might keep trace messages for a short period of time after deployment on production environment, but treat these log statements as temporary, that should or might be turned-off eventually. The distinction between DEBUG and TRACE is the most difficult, but if you put logging statement and remove it after the feature has been developed and tested, it should probably be on TRACE level.
+
 **Directory Organization**
 
 
