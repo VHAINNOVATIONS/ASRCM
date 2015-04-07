@@ -103,7 +103,7 @@ button {
    it as a de-emphasized button. */
 a.btn-default:link, a.btn-default:visited {
     color: #222;
-    background-color: #ccc;
+    background-color: buttonface;
     display: inline-block;
     border: 1px solid #888;
     text-decoration: none;
