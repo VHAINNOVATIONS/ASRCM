@@ -7,6 +7,9 @@ function initProcedureSelect(procedures) {
     // Note that this code assumes there is only one procedureSelectGroup
     // on the page.
     
+    var procedureAllWords = "";
+    var procedureAnyWords = "";
+    
     // Returns the shorter display string for a procedure.
     function makeDisplayString(procedure) {
         return procedure.cptCode + ' - ' +
@@ -33,6 +36,53 @@ function initProcedureSelect(procedures) {
 	    userDisplay.html(displayString);
 	    procedureSelectDialog.dialog("close");
 	}
+	
+	function procedureSearch(rowData) {
+        var description = rowData[1];
+        
+        var allWords = procedureAllWords;
+        // Skip if none specified.
+        if (allWords) {
+            var words = allWords.split(/\s\s*/);
+            for (var index in words) {
+                // Escape any regular expression characters since this is
+                // from user input.
+                var escapedWord = $.fn.dataTable.util.escapeRegex(words[index]);
+                // If the description does not contain the word, just return
+                // false (short-circuiting any other tests).
+                if (description.search(new RegExp(escapedWord, "i")) < 0) {
+                    return false;
+                }
+            }
+        }
+        
+        var anyWords = procedureAnyWords;
+        // Also skip if none specified.
+        if (anyWords) {
+            var words = anyWords.split(/\s\s*/);
+            for (var index in words) {
+                // Escape any regular expression characters since this is
+                // from user input.
+                var escapedWord = $.fn.dataTable.util.escapeRegex(words[index]);
+                // If the description contains the word, just return true,
+                // since it only needs to contain one of these.
+                if (description.search(new RegExp(escapedWord, "i")) >= 0) {
+                    return true;
+                }
+            }
+            
+            // Didn't contain any anyWords: false.
+            return false;
+        }
+
+        return true;
+	}
+	
+	$.fn.dataTable.ext.search.push(
+        function(settings, rowData, dataIndex) {
+            return procedureSearch(rowData);
+        }
+    );
 
 	// Set up the properties for the procedures DataTable
 	var proceduresTable = $("#procedureTable").dataTable({
@@ -41,7 +91,7 @@ function initProcedureSelect(procedures) {
         deferRender: true,
         columns: [
                   { data: 'cptCode' },
-                  { data: 'longDescription', searchable: false },
+                  { data: 'longDescription' },
                   { data: 'rvu', searchable: false },
                   {
                       data: 'cptCode',
@@ -69,6 +119,18 @@ function initProcedureSelect(procedures) {
 	// Enable regex search and disable smart searching
 	$("div.dataTables_filter input").on('keyup', function () {
 		apiTable.column(0).search('^' + this.value, true, false).draw();
+	});
+	
+	$('#procedureAnyWords').on('keyup paste cut', function() {
+	    // Cache the value for quick filtering.
+	    procedureAnyWords = $(this).val();
+	    apiTable.draw();
+	});
+	
+	$('#procedureAllWords').on('keyup paste cut', function() {
+	    // Cache the value for quick filtering.
+	    procedureAllWords = $(this).val();
+	    apiTable.draw();
 	});
 	
     

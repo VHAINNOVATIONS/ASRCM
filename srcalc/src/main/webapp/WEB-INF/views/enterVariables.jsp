@@ -59,6 +59,8 @@
         <jsp:attribute name="procedureFragment">
             <form:hidden path="${varPath}" cssClass="procedureHiddenInput" />
             <div class="procedureSelectGroup dialog" title="Select ${variable.displayName}">
+            <p>All of these words: <input id="procedureAllWords"></p>
+            <p>Any of these words: <input id="procedureAnyWords"></p>
             <table id="procedureTable">
             <thead><tr><th>CPT Code</th><th>Description</th><th>RVU</th><th>Select</th></tr></thead>
             </table>
