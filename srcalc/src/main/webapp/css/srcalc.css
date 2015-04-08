@@ -108,7 +108,7 @@ button {
 a.btn-default:link, a.btn-default:visited {
 	height: 22px;
     color: #222;
-    background-color: buttonface;
+    background-color: #ddd;
     display: inline-block;
     border: 1px solid #888;
     text-decoration: none;
