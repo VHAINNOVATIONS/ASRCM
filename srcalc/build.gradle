@@ -127,7 +127,7 @@ eclipse {
 	}
     }
 
-    // Fix "Web App Libraries" order. See <http://gsfn.us/t/3jk71>.
+    // Fix "Web App Libraries" order. See <http://tinyurl.com/pln53lc>.
     classpath.file {
         withXml { xml ->
             def node = xml.asNode()
