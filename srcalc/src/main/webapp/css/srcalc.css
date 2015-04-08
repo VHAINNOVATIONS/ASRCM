@@ -95,13 +95,14 @@ footer {
 /* Keep a standard height for all buttons on the application.
 */
 button {
-    height: 25px;
+    height: 26px;
     border: 1px solid #888;
 }
 
 /* a.btn-link indicates an <a> that performs an action like a button. Think of
    it as a de-emphasized button. */
 a.btn-default:link, a.btn-default:visited {
+	height: 22px;
     color: #222;
     background-color: buttonface;
     display: inline-block;
