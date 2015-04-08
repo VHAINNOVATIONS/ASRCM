@@ -16,7 +16,7 @@
     </li>
     </c:forEach>
     </ul>
-    <button type="submit">Continue</button>
+    <button type="submit" class="btn-default">Continue</button>
     </form>
 </section>
 
