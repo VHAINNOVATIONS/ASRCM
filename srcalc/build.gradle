@@ -118,11 +118,14 @@ war {
     archiveName = "${baseName}.${extension}"
 }
 
-// Hardcode Eclipse servlet spec version because eclipse-wtp just assumes 2.4.
 eclipse {
+    // Hardcode Eclipse servlet spec version because eclipse-wtp just assumes
+    // 2.4.
+    //
+    // Note: we cannot ugprade to Gradle 2.3 because it breaks the below
+    // configuration. See <http://tinyurl.com/nsrmd6n>.
     wtp {
 	facet {
-	    facet name: 'java', version: sourceCompatibility
 	    facet name: 'jst.web', version: '3.0'
 	}
     }
