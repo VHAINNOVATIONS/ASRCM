@@ -14,7 +14,7 @@ var ENTERVARIABLES = function() {
     // are set in initPage() below.
     var hiddenInput;
     var userDisplay;
-    var procedureSelectGroup;
+    var procedureSelectDialog;
     
     /**
      * Returns the shorter display string for a procedure.
@@ -75,7 +75,8 @@ var ENTERVARIABLES = function() {
 	}
 
     /**
-     * Moves the procedureSelectGroup table into a jQuery UI dialog.
+     * Initializes the procedure selector control (including the displayed text
+     * and the popup dialog).
      */
     function initProcedureSelect(procedures) {
 
