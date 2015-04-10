@@ -16,6 +16,11 @@ var ENTERVARIABLES = function() {
     var userDisplay;
     var procedureSelectDialog;
     
+    // This is a jQuery selection for the actual procedure table. The table is
+    // lazy-initialized to avoid hanging up initial page rendering. If this
+    // variable is null, then it has not been initialized yet.
+    var procedureTable = null;
+    
     /**
      * Returns the shorter display string for a procedure.
      */
@@ -34,9 +39,9 @@ var ENTERVARIABLES = function() {
 	    procedureSelectDialog.dialog("close");
 	}
 	
-	function initProceduresTable(procedures) {
+	function initProcedureTable(procedures) {
             // Set up the properties for the procedures DataTable
-            var proceduresTable = $("#procedureTable").dataTable({
+            procedureTable = $("#procedureTable").dataTable({
             data: procedures,
             ordering: false, // ordering is not a requirement, disable for performance
             deferRender: true,
@@ -55,7 +60,7 @@ var ENTERVARIABLES = function() {
                   ]
             });
             
-            $("#procedureTable").on('click', 'a', function(event){
+            procedureTable.on('click', 'a', function(event){
                 event.preventDefault();  // Don't navigate.
 
                 var elem = event.target || event.srcElement;
@@ -63,15 +68,20 @@ var ENTERVARIABLES = function() {
             });
             
             // Get a DataTables API instance
-            var apiTable = proceduresTable.dataTable().api();
+            var apiTable = procedureTable.dataTable().api();
+            // Find the input within the container div.
+            var searchInput = $(apiTable.table().container()).
+                find('div.dataTables_filter input');
             // Unbind the default global search and keyup
-            $("div.dataTables_filter input").unbind();
+            searchInput.unbind();
             // Add a "starts with" regex to the global search
             // Enable regex search and disable smart searching
-            $("div.dataTables_filter input").on('keyup', function () {
+            searchInput.on('keyup', function () {
                     apiTable.column(0).search('^' + this.value, true, false).draw();
             });
 	    
+            // The table is done rendering.
+            procedureSelectDialog.removeClass('uninitialized');
 	}
 
     /**
@@ -79,8 +89,6 @@ var ENTERVARIABLES = function() {
      * and the popup dialog).
      */
     function initProcedureSelect(procedures) {
-
-        initProceduresTable(procedures);
         
         // Find selected procedure and update the display string.
         var selectedCpt = hiddenInput.val();
@@ -102,6 +110,14 @@ var ENTERVARIABLES = function() {
             // Make the height 90% of the current window height.
             procedureSelectDialog.dialog("option", "height", windowHeight * 0.9);
             procedureSelectDialog.dialog("open");
+            
+            // Lazy-init the procedureTable.
+            if (!procedureTable) {
+                window.setTimeout(function() {
+                    initProcedureTable(procedures);
+                },
+                0);  // execute asynchronously, but immediately
+            }
         });
         userDisplay.after(' ', openProcedureSelect);
             

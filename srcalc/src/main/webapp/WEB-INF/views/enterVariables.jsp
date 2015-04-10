@@ -58,7 +58,9 @@
         </jsp:attribute>
         <jsp:attribute name="procedureFragment">
             <form:hidden path="${varPath}" cssClass="procedureHiddenInput" />
-            <div class="procedureSelectGroup dialog" title="Select ${variable.displayName}">
+            <div class="procedureSelectGroup dialog uninitialized" title="Select ${variable.displayName}">
+            <span class="loadingText">Loading...</span>
+            <!-- The table will be filled by Javascript. -->
             <table id="procedureTable">
             <thead><tr><th>CPT Code</th><th>Description</th><th>RVU</th><th>Select</th></tr></thead>
             </table>
