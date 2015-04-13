@@ -90,7 +90,7 @@
     <script type="text/javascript" src="${dataTablesUrl}"></script>
     <script type="text/javascript">
     $(document).ready(function(){
-            initEnterVariablesPage();
+        ENTERVARIABLES.initPage();
     });
     </script>
     </form:form>
