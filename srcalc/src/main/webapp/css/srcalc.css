@@ -270,6 +270,26 @@ form.attributeEditForm td.attributeName {
     border-bottom: 1px solid #ccc;
 }
 
+/* Don't display the text ... */
+.procedureSelectGroup .loadingText {
+	display: none;
+}
+
+/* ... except when the procedure select is not yet initialized. */
+.procedureSelectGroup.uninitialized .loadingText {
+	display: inline;
+}
+
+#procedureTable {
+	/* Ensure the procedure table always takes its available width. */
+	width: 100%;
+}
+
+/* Hide the procedure table until it is initialized. */
+.uninitialized #procedureTable {
+	visibility: hidden;
+}
+
 a.openProcedureSelect {
 	font-size: 0.9em;
 }
