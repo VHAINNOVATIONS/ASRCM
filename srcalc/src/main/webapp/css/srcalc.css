@@ -95,15 +95,20 @@ footer {
 /* Keep a standard height for all buttons on the application.
 */
 button {
-    height: 25px;
+    height: 26px;
     border: 1px solid #888;
 }
 
 /* a.btn-link indicates an <a> that performs an action like a button. Think of
-   it as a de-emphasized button. */
-a.btn-link:link, a.btn-link:visited {
+   it as a de-emphasized button. 
+   The total height of a link is intended to be the same as the total height
+   of a button. The btn-default should have a total height of 26px (this includes
+   border and padding).
+   */
+a.btn-default:link, a.btn-default:visited {
+	height: 22px;
     color: #222;
-    background-color: #ccc;
+    background-color: #ddd;
     display: inline-block;
     border: 1px solid #888;
     text-decoration: none;
@@ -111,8 +116,8 @@ a.btn-link:link, a.btn-link:visited {
 }
 
 a.btn-em:link {
-	background: #CCCCCC;
-	font-size: 1em;
+    background: #CCCCCC;
+    font-size: 1em;
 }
 
 /* A button that is an emphasized version of the normal button.
