@@ -124,17 +124,10 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
                 fLogger.debug(
                         "Got {} response: {}",
                         response.getResultsType(), response.getResults());
-                if (RESULT_TYPE_ARRAY.equals(response.getResultsType()))
-                {
-                    // VistALink represents arrays as newline-delimited strings.
-                    // NB: String.split() strips trailing empty strings.
-                    return Arrays.asList(response.getResults().split("\n"));
-                }
-                else
-                {
-                    throw new DataRetrievalFailureException(
-                            "non-array results are not supported");
-                }
+                // The only current possible types are "string" and "array"
+                // VistALink represents arrays as newline-delimited strings.
+                // NB: String.split() strips trailing empty strings.
+                return Arrays.asList(response.getResults().split("\n"));
             }
             finally
             {

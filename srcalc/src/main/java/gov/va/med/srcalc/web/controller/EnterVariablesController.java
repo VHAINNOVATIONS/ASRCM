@@ -27,7 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class EnterVariablesController
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(CalculationController.class);
+    private static final Logger fLogger = LoggerFactory.getLogger(EnterVariablesController.class);
 
     /**
      * Attribute name for the VariableEntry object.

@@ -22,4 +22,5 @@ public class Views
     public static final String DISPLAY_RESULTS = "displayResults.jsp";
     public static final String MODEL_ADMIN_HOME = "modelAdminHome.jsp";
     public static final String EDIT_VARIABLE = "editVariable.jsp";
+	public static final String SUCCESSFUL_SIGN = "successfulSign.jsp";
 }

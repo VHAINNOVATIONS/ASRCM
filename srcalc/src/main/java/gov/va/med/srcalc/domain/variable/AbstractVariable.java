@@ -174,4 +174,29 @@ public abstract class AbstractVariable implements Variable
     {
         return getDisplayName();
     }
+	
+	/**
+	 * Keys are unique, so two {@link AbstractVariable} are equal if their keys are equal.
+	 */
+	@Override
+	public boolean equals(Object other)
+	{
+		if(other instanceof AbstractVariable)
+		{
+			return Objects.equals(this.fKey, ((AbstractVariable) other).getKey());
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/**
+	 * Uses the String.hashCode() implementation.
+	 */
+	@Override
+	public int hashCode()
+	{
+		return this.fKey.hashCode();
+	}
 }

@@ -3,9 +3,14 @@ package gov.va.med.srcalc.web.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.Arrays;
+
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
+import gov.va.med.srcalc.vista.RemoteProcedureMatcher;
+import gov.va.med.srcalc.vista.VistaProcedureCaller;
 import gov.va.med.srcalc.web.controller.CalculationController;
 import gov.va.med.srcalc.web.controller.DisplayResultsController;
 import gov.va.med.srcalc.web.view.VariableEntry;
@@ -14,6 +19,7 @@ import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,6 +33,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Integration Test for {@link CalculationController}, {@link DisplayResultsController} and
@@ -40,6 +50,12 @@ import static org.junit.Assert.*;
 public class CalculationControllerIT extends IntegrationTest
 {
     private final int MOCK_DFN = 456123;
+    private final static String VALID_SIGNATURE_RETURN = "1^Progress note was created and signed successfully.";
+    private final static String ELECTRONIC_SIGNATURE = "TESTSIG";
+    public final static String NOTE_BODY = "Specialty = Thoracic\n\nCalculation Inputs\n"
+    		+ "Age = 45.0\nDNR = No\nFunctional Status = Independent\n"
+    		+ "Procedure = 26546 - Repair left hand - you know, the thing with fingers (10.06)\n\n"
+    		+ "Results\nThoracic 30-day mortality estimate = 100.0%\n";
     
     @Autowired
     WebApplicationContext fWac;
@@ -215,12 +231,40 @@ public class CalculationControllerIT extends IntegrationTest
     	testStartNewCalculationWithDfn();
 
         fMockMvc.perform(post("/selectSpecialty").session(fSession)
-                .param("specialty", "Cardiac")).
-            andExpect(redirectedUrl("/enterVars"));
+            .param("specialty", "Cardiac"))
+            .andExpect(redirectedUrl("/enterVars"));
         
         fMockMvc.perform(get("/enterVars").session(fSession))
             .andExpect(header().string("Cache-Control", "no-cache, no-store, must-revalidate"))
             .andExpect(header().string("Pragma", "no-cache"))
             .andExpect(header().string("Expires", "0"));
+    }
+    
+    @Test
+    public void enterValidElectronicSignature() throws Exception
+    {
+    	selectSpecialty("Cardiac");
+        
+        final DynamicVarParams varParams = new DynamicVarParams();
+        varParams.add("gender", "Male");
+        varParams.add("age", "55");
+        varParams.add("bmi", "18.7");
+        
+        fMockMvc.perform(
+                varParams.addTo(post("/enterVars").session(fSession)))
+            .andExpect(redirectedUrl("/displayResults"));
+        
+        final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
+        when(caller.doRpc(anyString(), argThat(new RemoteProcedureMatcher()),
+        		anyString(), anyString(), anyString(), anyString()))
+            .thenReturn(Arrays.asList(VALID_SIGNATURE_RETURN));
+        
+        fMockMvc.perform(post("/displayResults").session(fSession)
+	        .param("eSig", ELECTRONIC_SIGNATURE))
+	        .andExpect(status().isOk())
+	        .andExpect(content().contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
+	        		MediaType.APPLICATION_JSON.getSubtype())))
+	        .andExpect(jsonPath("$", hasSize(1)))
+	        .andExpect(jsonPath("$[0].status", is("1^Progress note was created and signed successfully.")));
     }
 }

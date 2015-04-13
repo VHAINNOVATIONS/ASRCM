@@ -1,5 +1,9 @@
 package gov.va.med.srcalc.web.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.vista.VistaPatientDao;
 import gov.va.med.srcalc.web.view.Views;
@@ -7,11 +11,14 @@ import gov.va.med.srcalc.web.view.Views;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+@Controller
 public class DisplayResultsController
 {
 	private static String SESSION_CALCULATION = "srcalc_calculation";
@@ -54,21 +61,28 @@ public class DisplayResultsController
     @RequestMapping(
     		value="/displayResults",
     		method = RequestMethod.POST,
-    		produces = "application/json")
+            produces = "application/json")
     @ResponseBody
-    public String signCalculation(final HttpSession session, final Model model)
+    public List<Object> signCalculation(final HttpSession session, 
+    		@RequestParam(value = "eSig") final String electronicSignature,
+    		final Model model)
     {
-    	// Do a normal post with ajax jquery javascript
-    	// Use a JSON object to receive the information from VistA on failure/success
-    	// Make a business call in one line to the domain/business area
-    	// Web code can be as large as needed
-//    	final String resultString = fPatientDao.saveRiskCalculationNote(
-//    			getWorkflowFromSession(session).getCalculation(),
-//    			electronicSignature,
-//    			noteBody)
-    	// Call the RPC that we need to and await the response
-    	
+    	// Build the note body and submit the RPC
+    	final String resultString = fPatientDao.saveRiskCalculationNote(
+    			getWorkflowFromSession(session).getCalculation(),
+    			electronicSignature);
+    	// The json could be expanded to return more information/fields
+    	final List<Object> returnList = new ArrayList<>();
+        final HashMap<String, String> jsonStatus = new HashMap<>();
+        jsonStatus.put("status", resultString);
+        returnList.add(jsonStatus);
     	// Return the result that will be translated to a json response
-    	return "";
+    	return returnList;
+    }
+    
+    @RequestMapping(value="/successfulSign", method = RequestMethod.GET)
+    public String displaySuccess(final HttpSession session, final Model model)
+    {
+    	return Views.SUCCESSFUL_SIGN;
     }
 }

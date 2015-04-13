@@ -25,7 +25,11 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
     private static final String SPLIT_REGEX = "[\\s]+";
+    
+    // Codes to pass back to the controller for the JSON result
+    private static final String SUCCESS = "Success";
     private static final String VISTA_EXCEPTION_STATUS = "Connection Exception";
+    private static final String INVALID_SIGNATURE = "Invalid Electronic Signature Code";
     
     public static final String VISTA_DATE_OUTPUT_FORMAT = "MM/dd/yy@HH:mm";
     
@@ -175,16 +179,16 @@ public class RpcVistaPatientDao implements VistaPatientDao
 		{
 			final List<String> saveResults;
 			saveResults = fProcedureCaller.doRpc(
-	            fDuz, RemoteProcedure.SAVE_PROGRESS_NOTE, 
-	            fDuz, "Electronic Signature Code",String.valueOf(calculation.getPatient().getDfn()), noteBody.toString());
-			final String[] splitArray = saveResults.get(0).split("^");
+	            fDuz, RemoteProcedure.SAVE_PROGRESS_NOTE,
+	            fDuz, electronicSignature, String.valueOf(calculation.getPatient().getDfn()), noteBody.toString());
+			final String[] splitArray = saveResults.get(0).split("\\^");
 			if(splitArray[0].equals("1"))
 			{
-				return "Success";
+				return SUCCESS;
 			}
 			else
 			{
-				return "Invalid Electronic Signature Code";
+				return INVALID_SIGNATURE;
 			}
 		}
 		catch(final Exception e)
@@ -202,7 +206,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
 		// Specialty
 		final StringBuilder noteBody = new StringBuilder(String.format("Specialty = %s%n%n", calculation.getSpecialty().toString()));
 		// Variable display names and values
-		noteBody.append("Calculation Inputs");
+		noteBody.append(String.format("Calculation Inputs%n"));
 		for(final Value value: calculation.getValues())
 		{
 			noteBody.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));

@@ -8,12 +8,15 @@ import java.io.Serializable;
 import java.util.*;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a risk calculation: either in-progress, calculated, or signed.
  */
 public class Calculation implements Serializable
 {
+	private static final Logger fLogger = LoggerFactory.getLogger(Calculation.class);
     /**
      * Change this when changing the class!
      */
@@ -200,6 +203,7 @@ public class Calculation implements Serializable
 
         if(missingValues.size() > 0)
         {
+        	fLogger.debug("Could not run calculation due to missing values: {}", missingValues);
         	throw new MissingValuesException("The calculation is missing values.", missingValues);
         }
         // Store the given values for reference.
