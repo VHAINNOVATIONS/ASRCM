@@ -174,11 +174,11 @@ public class RpcVistaPatientDao implements VistaPatientDao
 	public String saveRiskCalculationNote(final Calculation calculation,
 			final String electronicSignature)
 	{
-		final String noteBody = calculation.buildNoteBody();
+		final Map<String,String> noteBody = calculation.buildNoteBody();
 		try 
 		{
 			final List<String> saveResults;
-			saveResults = fProcedureCaller.doRpc(
+			saveResults = fProcedureCaller.doSaveNoteRpc(
 	            fDuz, RemoteProcedure.SAVE_PROGRESS_NOTE,
 	            fDuz, electronicSignature, String.valueOf(calculation.getPatient().getDfn()), noteBody);
 			final String[] splitArray = saveResults.get(0).split("\\^");

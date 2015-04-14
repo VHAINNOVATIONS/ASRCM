@@ -22,4 +22,7 @@ public interface VistaProcedureCaller
      * VistA.
      */
     public String getDivision();
+
+	public List<String> doSaveNoteRpc(String duz, RemoteProcedure procedure,
+			Object... args);
 }

@@ -55,7 +55,7 @@ public class RpcVistaPatientDaoTest
     public final void testSaveNoteInvalidSignature() throws Exception
     {
     	final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-        when(caller.doRpc(anyString(), eq(RemoteProcedure.SAVE_PROGRESS_NOTE),
+        when(caller.doSaveNoteRpc(anyString(), eq(RemoteProcedure.SAVE_PROGRESS_NOTE),
         		anyString(), anyString(), anyString(), anyString()))
             .thenReturn(Arrays.asList(INVALID_SIGNATURE_RETURN));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
@@ -73,7 +73,7 @@ public class RpcVistaPatientDaoTest
     public final void testSaveNoteSuccess() throws Exception
     {
     	final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-    	 when(caller.doRpc(anyString(), eq(RemoteProcedure.SAVE_PROGRESS_NOTE),
+    	 when(caller.doSaveNoteRpc(anyString(), eq(RemoteProcedure.SAVE_PROGRESS_NOTE),
          		anyString(), anyString(), anyString(), anyString()))
              .thenReturn(Arrays.asList(VALID_SIGNATURE_RETURN));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
