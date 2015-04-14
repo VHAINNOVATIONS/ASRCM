@@ -214,4 +214,25 @@ public class Calculation implements Serializable
 
         return fOutcomes;
     }
+    
+    public String buildNoteBody()
+	{
+		// Build the note body to use in the rpc
+		// Each section is separated by a blank line
+		// Specialty
+		final StringBuilder noteBody = new StringBuilder(String.format("Specialty = %s%n%n", this.getSpecialty().toString()));
+		// Variable display names and values
+		noteBody.append(String.format("Calculation Inputs%n"));
+		for(final Value value: this.getValues())
+		{
+			noteBody.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));
+		}
+		// Model results
+		noteBody.append(String.format("%nResults%n"));
+		for(final String key: this.getOutcomes().keySet())
+		{
+			noteBody.append(String.format("%s = %s%%%n", key, this.getOutcomes().get(key) * 100));
+		}
+		return noteBody.toString();
+	}
 }

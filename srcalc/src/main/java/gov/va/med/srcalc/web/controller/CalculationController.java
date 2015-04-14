@@ -29,22 +29,6 @@ public class CalculationController
     {
         fCalculationService = calculationService;
     }
-    
-    /**
-     * Returns the current CalculationWorkflow object form the HttpSession.
-     * @return never null
-     * @throws IllegalStateException if there is no current calculation
-     */
-    public static CalculationWorkflow getWorkflowFromSession(final HttpSession session)
-    {
-        final CalculationWorkflow workflow =
-                (CalculationWorkflow)session.getAttribute(SESSION_CALCULATION);
-        if (workflow == null)
-        {
-            throw new IllegalStateException("No current calculation.");
-        }
-        return workflow;
-    }
 
     @RequestMapping(value = "/newCalc", method = RequestMethod.GET)
     public ModelAndView startNewCalculation(
@@ -71,7 +55,7 @@ public class CalculationController
             @RequestParam("specialty") final String specialtyName)
                     throws InvalidIdentifierException
     {
-        final CalculationWorkflow workflow = getWorkflowFromSession(session);
+        final CalculationWorkflow workflow = CalculationWorkflowSupplier.getWorkflowFromSession(session);
         final SelectedCalculation selCalc =
                 fCalculationService.setSpecialty(workflow.getCalculation(), specialtyName);
         session.setAttribute(SESSION_CALCULATION, selCalc);

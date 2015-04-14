@@ -4,13 +4,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.Arrays;
-
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
-import gov.va.med.srcalc.vista.RemoteProcedureMatcher;
-import gov.va.med.srcalc.vista.VistaProcedureCaller;
 import gov.va.med.srcalc.web.controller.CalculationController;
 import gov.va.med.srcalc.web.controller.DisplayResultsController;
 import gov.va.med.srcalc.web.view.VariableEntry;
@@ -33,10 +29,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Integration Test for {@link CalculationController}, {@link DisplayResultsController} and
@@ -243,28 +235,14 @@ public class CalculationControllerIT extends IntegrationTest
     @Test
     public void enterValidElectronicSignature() throws Exception
     {
-    	selectSpecialty("Cardiac");
+    	enterValidCardiacVariables();
         
-        final DynamicVarParams varParams = new DynamicVarParams();
-        varParams.add("gender", "Male");
-        varParams.add("age", "55");
-        varParams.add("bmi", "18.7");
-        
-        fMockMvc.perform(
-                varParams.addTo(post("/enterVars").session(fSession)))
-            .andExpect(redirectedUrl("/displayResults"));
-        
-        final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-        when(caller.doRpc(anyString(), argThat(new RemoteProcedureMatcher()),
-        		anyString(), anyString(), anyString(), anyString()))
-            .thenReturn(Arrays.asList(VALID_SIGNATURE_RETURN));
-        
-        fMockMvc.perform(post("/displayResults").session(fSession)
+        fMockMvc.perform(post("/signCalculation").session(fSession)
 	        .param("eSig", ELECTRONIC_SIGNATURE))
 	        .andExpect(status().isOk())
 	        .andExpect(content().contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
 	        		MediaType.APPLICATION_JSON.getSubtype())))
-	        .andExpect(jsonPath("$", hasSize(1)))
-	        .andExpect(jsonPath("$[0].status", is("1^Progress note was created and signed successfully.")));
+	        .andExpect(jsonPath("$.*", hasSize(1)))
+	        .andExpect(jsonPath("$.status", is("1^Progress note was created and signed successfully.")));
     }
 }

@@ -176,7 +176,7 @@ public abstract class AbstractVariable implements Variable
     }
 	
 	/**
-	 * Keys are unique, so two {@link AbstractVariable} are equal if their keys are equal.
+	 * Considers two {@link AbstractVariable} are equal if, and only if their keys are equal.
 	 */
 	@Override
 	public boolean equals(Object other)
@@ -192,7 +192,7 @@ public abstract class AbstractVariable implements Variable
 	}
 	
 	/**
-	 * Uses the String.hashCode() implementation.
+	 * Returns a hash code based on the variable key that uses the String.hashCode() implementation.
 	 */
 	@Override
 	public int hashCode()

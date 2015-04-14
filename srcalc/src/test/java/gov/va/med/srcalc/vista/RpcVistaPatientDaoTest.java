@@ -3,8 +3,8 @@ package gov.va.med.srcalc.vista;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.argThat;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.SampleObjects;
@@ -55,7 +55,7 @@ public class RpcVistaPatientDaoTest
     public final void testSaveNoteInvalidSignature() throws Exception
     {
     	final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-        when(caller.doRpc(anyString(), argThat(new RemoteProcedureMatcher()),
+        when(caller.doRpc(anyString(), eq(RemoteProcedure.SAVE_PROGRESS_NOTE),
         		anyString(), anyString(), anyString(), anyString()))
             .thenReturn(Arrays.asList(INVALID_SIGNATURE_RETURN));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
@@ -73,7 +73,7 @@ public class RpcVistaPatientDaoTest
     public final void testSaveNoteSuccess() throws Exception
     {
     	final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-    	 when(caller.doRpc(anyString(), argThat(new RemoteProcedureMatcher()),
+    	 when(caller.doRpc(anyString(), eq(RemoteProcedure.SAVE_PROGRESS_NOTE),
          		anyString(), anyString(), anyString(), anyString()))
              .thenReturn(Arrays.asList(VALID_SIGNATURE_RETURN));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);

@@ -3,7 +3,7 @@
  */
 function initESigDialog(){
 	// Make the esig with a jQuery UI dialog. 
-    var procedureSelectDialog = $('.eSigDialog').dialog({
+    var electronicSignatureDialog = $('.eSigDialog').dialog({
         autoOpen: false,
         width: 350,   // body width is 768px
         modal: true
@@ -14,36 +14,35 @@ function initESigDialog(){
         event.preventDefault();
 
         var windowHeight = 170;
-        // Make the height 90% of the current window height.
-        procedureSelectDialog.dialog('option', 'height', windowHeight);
-        procedureSelectDialog.dialog('open');
+        electronicSignatureDialog.dialog('option', 'height', windowHeight);
+        electronicSignatureDialog.dialog('open');
     });
     
     $('#eSigForm').on('submit', function(event) {
     	event.preventDefault();
     	var eSigCode = $('#eSigInput').val();
     	$.ajax({
-			url: "displayResults",
+			url: "signCalculation",
 			type: 'POST',
 			dataType: 'json',
 			data: {
 				eSig: eSigCode
 			},
+			/*
+			 * disable button and add loading text
+			 * */
 			beforeSend: function() { 
 				$('#eSigButton').prop('disabled', true);
 				$('#eSigButton').text("Signing");
 			},
-			/*
-			 * disable button and add loading text
-			 * */
 			success: function(result) {
-				if(result[0].status == "Success") {
+				if(result.status == "Success") {
 					// Redirect to the success page.
 					window.location.replace("successfulSign");
 				}
 				else {
 					// Change the span text to the given error text
-					$("#eSigErrorSpan").text(result[0].status);
+					$("#eSigErrorSpan").text(result.status);
 					$('#eSigButton').prop('disabled', false);
 					$('#eSigButton').text("Sign");
 				}
@@ -54,6 +53,6 @@ function initESigDialog(){
     var cancelESigButton = $('#cancelESigButton');
     cancelESigButton.on('click', function(event) {
     	event.preventDefault();
-    	procedureSelectDialog.dialog('close');
+    	electronicSignatureDialog.dialog('close');
     });
 }

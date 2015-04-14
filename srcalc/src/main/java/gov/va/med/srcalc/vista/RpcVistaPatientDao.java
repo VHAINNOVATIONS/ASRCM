@@ -12,10 +12,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
+import org.springframework.dao.RecoverableDataAccessException;
 
 import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.variable.Value;
 
 /**
  * Implementation of {@link VistaPatientDao} using remote procedures.
@@ -26,9 +26,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
     private static final String SPLIT_REGEX = "[\\s]+";
     
-    // Codes to pass back to the controller for the JSON result
+    // Return codes
     private static final String SUCCESS = "Success";
-    private static final String VISTA_EXCEPTION_STATUS = "Connection Exception";
     private static final String INVALID_SIGNATURE = "Invalid Electronic Signature Code";
     
     public static final String VISTA_DATE_OUTPUT_FORMAT = "MM/dd/yy@HH:mm";
@@ -173,14 +172,15 @@ public class RpcVistaPatientDao implements VistaPatientDao
 
 	@Override
 	public String saveRiskCalculationNote(final Calculation calculation,
-			final String electronicSignature) {
-		final StringBuilder noteBody = buildNoteBody(calculation);
+			final String electronicSignature)
+	{
+		final String noteBody = calculation.buildNoteBody();
 		try 
 		{
 			final List<String> saveResults;
 			saveResults = fProcedureCaller.doRpc(
 	            fDuz, RemoteProcedure.SAVE_PROGRESS_NOTE,
-	            fDuz, electronicSignature, String.valueOf(calculation.getPatient().getDfn()), noteBody.toString());
+	            fDuz, electronicSignature, String.valueOf(calculation.getPatient().getDfn()), noteBody);
 			final String[] splitArray = saveResults.get(0).split("\\^");
 			if(splitArray[0].equals("1"))
 			{
@@ -195,28 +195,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
 		{
 			// An Exception means an invalid DUZ or a problem with VistALink/VistA
 			// Translate the exception into a status message
-			return VISTA_EXCEPTION_STATUS;
+			throw new RecoverableDataAccessException(e.getMessage());
 		}
-	}
-	
-	private StringBuilder buildNoteBody(final Calculation calculation)
-	{
-		// Build the note body to use in the rpc
-		// Each section is separated by a blank line
-		// Specialty
-		final StringBuilder noteBody = new StringBuilder(String.format("Specialty = %s%n%n", calculation.getSpecialty().toString()));
-		// Variable display names and values
-		noteBody.append(String.format("Calculation Inputs%n"));
-		for(final Value value: calculation.getValues())
-		{
-			noteBody.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));
-		}
-		// Model results
-		noteBody.append(String.format("%nResults%n"));
-		for(final String key: calculation.getOutcomes().keySet())
-		{
-			noteBody.append(String.format("%s = %s%%%n", key, calculation.getOutcomes().get(key) * 100));
-		}
-		return noteBody;
 	}
 }

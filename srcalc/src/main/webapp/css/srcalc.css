@@ -135,11 +135,6 @@ button.button-em:disabled {
 	opacity: 0.65;
 }
 
-/* errorSpan is used for revealing errors without a page reload*/
-span.errorSpan {
-	color: red;
-}
-
 /* srcalcForm is the standard form appearance in srcalc */
 
 /* Support fieldsets to group related attributes. */
@@ -274,9 +269,6 @@ form.attributeEditForm td.attributeName {
 .procedureSelectGroup tr {
     border-bottom: 1px solid #ccc;
 }
-
-/* The input form for electronic signatures */
-
 
 a.openProcedureSelect {
 	font-size: 0.9em;
