@@ -3,22 +3,34 @@ package gov.va.med.srcalc.domain.variable;
 /**
  * <p>Indicates that a given value was too high for a given {@link Variable}.</p>
  * 
- * <p>The error code will always be {@link #ERROR_CODE}.</p>
+ * <p>The error code will always be {@link #ERROR_CODE_INCLUSIVE} or 
+ * {@link #ERROR_CODE_EXCLUSIVE}.</p>
  */
 public class ValueTooHighException extends InvalidValueException
 {
     /**
      * Change this when changing the class!
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     /**
-     * The constant error code, "tooHigh".
+     * The constant error code, "tooHighInclusive".
      */
-    public static final String ERROR_CODE = "tooHigh";
+    public static final String ERROR_CODE_INCLUSIVE = "tooHighInclusive";
     
-    public ValueTooHighException(String message)
+    /**
+     * The constant error code, "tooHighExclusive".
+     */
+    public static final String ERROR_CODE_EXCLUSIVE = "tooHighExclusive";
+    
+    /**
+     * A constructor that allows inclusive to be specified through the error
+     * code.
+     * @param message the exception message
+     * @param code the spring error code to use
+     */
+    public ValueTooHighException(final String code, final String message)
     {
-        super(ERROR_CODE, message);
+        super(code, message);
     }
 }

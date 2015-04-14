@@ -64,6 +64,24 @@ public class DiscreteNumericalValueTest
         DiscreteNumericalValue.fromNumerical(var, 1.0f);
     }
     
+    @Test(expected = ValueTooLowException.class)
+    public final void testNumericalLowBoundInclusiveFail() throws Exception
+    {
+    	// There is an accompanying test for Upper Bound in {@link NumericalValueTest}
+    	final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+    	var.setMinInclusive(false);
+        DiscreteNumericalValue.fromNumerical(var, 2.0f);
+    }
+    
+    @Test
+    public final void testNumericalLowBoundInclusivePass() throws Exception
+    {
+    	// There is an accompanying test for Upper Bound in {@link NumericalValueTest}
+    	final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+    	// Should not throw an exception
+    	DiscreteNumericalValue.fromNumerical(var, 2.0f);
+    }
+    
     @Test(expected = ConfigurationException.class)
     public final void testNumericalMisconfigured() throws Exception
     {

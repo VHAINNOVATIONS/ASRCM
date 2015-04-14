@@ -1,13 +1,16 @@
 package gov.va.med.srcalc.web.controller;
 
 import gov.va.med.srcalc.domain.variable.MissingValueException;
+import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.util.MissingValuesException;
+import gov.va.med.srcalc.web.DynamicValueVisitor;
 import gov.va.med.srcalc.web.view.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -46,21 +49,39 @@ public class EnterVariablesController
         // Get the CalculationWorkflow from the session.
         final CalculationWorkflow workflow =
                 CalculationController.getWorkflowFromSession(session);
-
-        return new VariableEntry(workflow.getCalculation().getVariables());
+        final VariableEntry initialValues = VariableEntry.withRetrievedValues(workflow.getCalculation().getVariables(), 
+        		workflow.getCalculation().getPatient());
+        // In the case of using the "Return to Input Form" button, add the values already
+        // in the calculation to the variable entry object to maintain the previously calculated
+        // values on the entry page.
+        final DynamicValueVisitor visitor = new DynamicValueVisitor(initialValues);
+        for(final Value value: workflow.getCalculation().getValues())
+        {
+        	visitor.visit(value);
+        	fLogger.debug("Key: {} Value: {}", value.getVariable().getKey(), value.getValue());
+        }
+        return initialValues;
     }
     
     /**
      * Presents that variable entry form.
      * @param session the current HTTP session (required)
+     * @param response needed to alter the response header to expire the page
+     * 		after a completed calculation
      * @param initialValues the initial values to set
      * @return a ModelAndView for view rendering
      */
     @RequestMapping(value = "/enterVars", method = RequestMethod.GET)
     public ModelAndView presentVariableEntry(
-            final HttpSession session,
+            final HttpSession session, final HttpServletResponse response,
             @ModelAttribute(ATTR_VARIABLE_ENTRY) final VariableEntry initialValues)
     {
+    	// Expire the page to warn the user that a back button is not viable
+    	// after completing a calculation. The page will require a reload if the back button
+    	// is used to go back to the enter variables page.
+    	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    	response.setHeader("Pragma", "no-cache");
+    	response.setDateHeader("Expires", 0);
         // Get the CalculationWorkflow from the session.
         final CalculationWorkflow workflow =
                 CalculationController.getWorkflowFromSession(session);
@@ -68,6 +89,8 @@ public class EnterVariablesController
         // Present the view.
         final ModelAndView mav = new ModelAndView(Views.ENTER_VARIABLES);
         mav.addObject("calculation", workflow.getCalculation());
+        
+        fLogger.debug("Input Values: {}", workflow.getCalculation().getValues());
         // Note: "variableEntry" object is automatically added through annotated
         // method parameter.
         return mav;
@@ -75,7 +98,7 @@ public class EnterVariablesController
     
     @RequestMapping(value = "/enterVars", method = RequestMethod.POST)
     public ModelAndView enterVariables(
-            final HttpSession session,
+            final HttpSession session, final HttpServletResponse response,
             @ModelAttribute(ATTR_VARIABLE_ENTRY) final VariableEntry values,
             final BindingResult valuesBindingResult)
     {
@@ -123,7 +146,7 @@ public class EnterVariablesController
             fLogger.debug(
                     "Invalid variables entered by user. Reshowing variable entry screen. Errors: {}",
                     valuesBindingResult.getAllErrors());
-            return presentVariableEntry(session, values);
+            return presentVariableEntry(session, response, values);
         }
 
         // Using the POST-redirect-GET pattern.

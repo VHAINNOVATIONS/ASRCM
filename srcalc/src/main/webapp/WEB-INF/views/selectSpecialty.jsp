@@ -16,20 +16,8 @@
     </li>
     </c:forEach>
     </ul>
-    <button type="submit">Continue</button>
+    <button type="submit" class="btn-default">Continue</button>
     </form>
 </section>
-
-<footer>
-<%--
-Only show the link if the user has access. This is just for user-friendliness,
-of course. The real authorization check is done when making the request to one
-of the /admin pages.
---%>
-<sec:authorize url="/admin/models">
-    <c:url var="adminHome" value="/admin/models" />
-    <a href="${adminHome}">Administration</a>
-</sec:authorize>
-</footer>
 
 </srcalc:calcPage>

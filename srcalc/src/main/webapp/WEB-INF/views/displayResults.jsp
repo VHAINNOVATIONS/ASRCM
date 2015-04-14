@@ -22,11 +22,15 @@
     </c:forEach>
     </ol>
     <ol>
-    <li><button type="submit" disabled>Sign Calculation</button></li>
+    <li><button class="button-em" type="submit" disabled>Sign Calculation</button></li>
     <li>
     <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
     <c:url var="newCalcUrl" value="/newCalc"><c:param name="patientDfn" value="${calculation.patient.dfn}"/></c:url>
-    <a class="btn-link" href="${newCalcUrl}">Start New Calculation</a></li>
+    <a href="${newCalcUrl}" class="btn-default">Start New Calculation</a></li>
+    <li>
+        <c:url var="enterVarsUrl" value="/enterVars"/>
+        <a href="${enterVarsUrl}" class="btn-default">Return to Variable Input Form</a>
+    </li>
     </ol>
     </div>
 </section>

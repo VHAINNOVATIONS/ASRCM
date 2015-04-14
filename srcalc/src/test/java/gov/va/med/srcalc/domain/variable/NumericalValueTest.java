@@ -34,4 +34,22 @@ public class NumericalValueTest
         final NumericalVariable var = SampleObjects.sampleAgeVariable();
         new NumericalValue(var, -1);
     }
+    
+    @Test(expected = ValueTooHighException.class)
+    public final void testNumericalUpperBoundInclusiveFail() throws Exception
+    {
+    	// There is an accompanying test for lower bound in {@link DiscreteNumericalValueTest}
+    	final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+    	var.setMaxInclusive(false);
+        DiscreteNumericalValue.fromNumerical(var, 50.0f);
+    }
+    
+    @Test
+    public final void testNumericalUpperBoundInclusivePass() throws Exception
+    {
+    	// There is an accompanying test for lower bound in {@link DiscreteNumericalValueTest}
+    	final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+    	// Should not throw an exception
+    	DiscreteNumericalValue.fromNumerical(var, 50.0f);
+    }
 }

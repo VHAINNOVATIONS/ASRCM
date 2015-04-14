@@ -40,5 +40,9 @@
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <jsp:doBody/>
+    <footer>
+    <%-- CommonAttributesSupplier adds these to the model. --%>
+    <span class="appInfo">${appInfo.longName} v${appInfo.version}</span>
+    </footer>
 </body>
 </html>

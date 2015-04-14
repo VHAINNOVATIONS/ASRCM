@@ -38,8 +38,15 @@ public class VistaUserDetailsService implements UserDetailsService
     public VistaUserDetails loadUserByUsername(final String duz) throws UsernameNotFoundException
     {
         final VistaPersonDao vistaDao = fVistaDaoFactory.getVistaPersonDao(VISTA_DIVISON);
-        final VistaPerson person = vistaDao.loadVistaPerson(duz);
-        return new VistaUserDetails(person, getUserAuthorities(person));
+        try
+        {
+            final VistaPerson person = vistaDao.loadVistaPerson(duz);
+            return new VistaUserDetails(person, getUserAuthorities(person));
+        }
+        catch (final IllegalArgumentException ex)
+        {
+            throw new UsernameNotFoundException("Invalid user DUZ", ex);
+        }
     }
     
     private List<GrantedAuthority> getUserAuthorities(VistaPerson person)

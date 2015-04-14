@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain.variable;
 
+
 public class NumericalValue implements Value
 {
     private final NumericalVariable fVariable;
@@ -38,6 +39,12 @@ public class NumericalValue implements Value
     public String getDisplayString()
     {
         return getValue().toString();
+    }
+    
+    @Override
+    public void accept(final ValueVisitor visitor)
+    {
+    	visitor.visitNumerical(this);
     }
     
     @Override

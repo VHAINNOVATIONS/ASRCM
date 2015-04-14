@@ -91,6 +91,17 @@ public final class DerivedTerm extends ModelTerm
     }
     
     @Override
+    public String toString()
+    {
+    	String result = "";
+    	for(final ValueMatcher valueMatcher: fRule.getMatchers())
+    	{
+    		result += valueMatcher.getBooleanExpression() + "\n";
+    	}
+    	return result;
+    }
+    
+    @Override
     public int hashCode()
     {
         return Objects.hash(getCoefficient(), getRule());

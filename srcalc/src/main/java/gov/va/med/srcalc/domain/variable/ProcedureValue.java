@@ -35,6 +35,11 @@ public class ProcedureValue implements Value
         return getValue().getLongString();
     }
     
+    public void accept(final ValueVisitor visitor)
+    {
+    	visitor.visitProcedure(this);
+    }
+    
     @Override
     public String toString()
     {

@@ -1,8 +1,13 @@
 package gov.va.med.srcalc.web.view;
 
+import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.util.RetrievalEnum;
+import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -45,8 +50,36 @@ public class VariableEntry
     }
     
     /**
+     * Constructs a {@link VariableEntry} with reasonable defaults for some of
+     * the variables and automatically retrieved values for other variables.
+     */
+    public static VariableEntry withRetrievedValues(final Collection<? extends Variable> variables,
+    		final Patient patient)
+    {
+    	final VariableEntry variableEntry = new VariableEntry(variables);
+    	// Only get the enum array once to cut down on the computation of building an array
+    	final RetrievalEnum[] retrievalValues = RetrievalEnum.values();
+        for (final Variable v : variables)
+        {
+        	// Must be tested before the switch statement, as null cannot be used
+        	// in a switch statement.
+        	if(v.getRetrievalKey() == null)
+        	{
+        		continue;
+        	}
+        	String key = v.getKey();
+        	if(v instanceof DiscreteNumericalVariable)
+        	{
+        		key += "$numerical";
+        	}
+        	retrievalValues[v.getRetrievalKey()-1].execute(patient, variableEntry, v, key);
+        }
+        return variableEntry;
+    }
+    
+    /**
      * <p>Stores the values entered by the user for dynamic variables (which
-     * happens to be all of them). The Map is from {@link Variable#getDisplayName()}
+     * happens to be all of them). The Map is from {@link Variable#getKey()}
      * to the entered value.</p>
      * 
      * @see #makeDynamicValuePath(String)
@@ -97,6 +130,16 @@ public class VariableEntry
     public static String makeVariableValuePath(final Variable var)
     {
         return makeDynamicValuePath(var.getKey());
+    }
+    
+    /**
+     * Produce a message that will tell the user when the retrieved value was measured.
+     * @return
+     */
+    public static String makeRetrievalMessage(final Date retrievalDate)
+    {
+    	final SimpleDateFormat originalFormat = new SimpleDateFormat(RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT);
+    	return "(Measured on: " + originalFormat.format(retrievalDate) + ")";
     }
     
     @Override

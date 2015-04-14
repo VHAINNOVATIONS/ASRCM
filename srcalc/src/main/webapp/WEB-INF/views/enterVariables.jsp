@@ -25,7 +25,7 @@
         <td class="attributeValue">
         <srcalc:variableSpecific variable="${variable}">
         <jsp:attribute name="numericalFragment">
-            <form:input path="${varPath}" size="6"/> ${variable.units}
+            <form:input path="${varPath}" size="6"/> ${variable.units} ${variable.retrievalDateString}
         </jsp:attribute>
         <jsp:attribute name="multiSelectFragment">
             <c:choose>
@@ -50,7 +50,7 @@
             <span class="radioLabel"><label><form:radiobutton path="${varPath}" cssClass="numericalRadio" value="numerical"/> Numerical:</label>
             <c:set var="numericalVarName" value="${variable.key}$numerical" />
             <c:set var="numericalVarPath" value="${srcalc:dynamicValuePath(numericalVarName)}" />
-            <form:input cssClass="numerical" path="${numericalVarPath}" size="6"/> ${variable.units}</span>
+            <form:input cssClass="numerical" path="${numericalVarPath}" size="6"/> ${variable.units} ${variable.retrievalDateString}</span>
             <form:errors path="${numericalVarPath}" cssClass="error" /><br>
             <c:forEach var="opt" items="${variable.options}">
             <label class="radioLabel"><form:radiobutton path="${varPath}" value="${opt.value}"/> Presumed ${opt.value}</label>
@@ -58,7 +58,9 @@
         </jsp:attribute>
         <jsp:attribute name="procedureFragment">
             <form:hidden path="${varPath}" cssClass="procedureHiddenInput" />
-            <div class="procedureSelectGroup dialog" title="Select ${variable.displayName}">
+            <div class="procedureSelectGroup dialog uninitialized" title="Select ${variable.displayName}">
+            <span class="loadingText">Loading...</span>
+            <!-- The table will be filled by Javascript. -->
             <table id="procedureTable">
             <thead><tr><th>CPT Code</th><th>Description</th><th>RVU</th><th>Select</th></tr></thead>
             </table>
@@ -77,11 +79,11 @@
     </table>
     <div class="actionButtons">
     <ol>
-    <li><button type="submit">Run Calculation</button></li>
+    <li><button class="button-em" type="submit">Run Calculation</button></li>
     <li>
     <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
     <c:url var="newCalcUrl" value="/newCalc"><c:param name="patientDfn" value="${calculation.patient.dfn}"/></c:url>
-    <a class="btn-link" href="${newCalcUrl}">Start New Calculation</a></li>
+    <a href="${newCalcUrl}" class="btn-default">Start New Calculation</a></li>
     </ol>
     </div>
     <c:url var="enterVariablesJsUrl" value="/js/enterVariables.js"/>
@@ -90,7 +92,7 @@
     <script type="text/javascript" src="${dataTablesUrl}"></script>
     <script type="text/javascript">
     $(document).ready(function(){
-            initEnterVariablesPage();
+        ENTERVARIABLES.initPage();
     });
     </script>
     </form:form>

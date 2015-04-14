@@ -3,7 +3,6 @@ package gov.va.med.srcalc.web.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
@@ -19,12 +18,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 /**
  * Integration Test for {@link CalculationController} and {@link
@@ -118,7 +119,6 @@ public class CalculationControllerIT extends IntegrationTest
                 post("/enterVars").session(fSession);
         varParams.addTo(request);
         fMockMvc.perform(request)
-            .andExpect(model().attributeHasNoErrors("variableEntry"))
             .andExpect(redirectedUrl("/displayResults"));
         
         fMockMvc.perform(get("/displayResults").session(fSession))
@@ -173,5 +173,53 @@ public class CalculationControllerIT extends IntegrationTest
             .andExpect(status().is(200))
             .andExpect(content().contentType("application/json"))
             .andExpect(content().string(startsWith("["))); // a JSON array
+    }
+    
+    @Test
+    public void populateDynamicValues() throws Exception
+    {
+    	selectThoracicSpecialty();
+        
+        final DynamicVarParams varParams = new DynamicVarParams();
+        varParams.add("procedure", "26546");
+        varParams.add("asaClassification", "Class 3");
+        varParams.add("age", "55.0");
+        varParams.add("dnr", "false");
+        varParams.add("bmi", "18.7");
+        varParams.add("preopPneumonia", "true");
+        varParams.add("alkalinePhosphatase", ">125mU/ml");
+        varParams.add("bun", VariableEntry.SPECIAL_NUMERICAL);
+        varParams.add("bun" + VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL, "15.0");
+        
+        final MockHttpServletRequestBuilder request =
+                post("/enterVars").session(fSession);
+        varParams.addTo(request);
+        fMockMvc.perform(request)
+            .andExpect(redirectedUrl("/displayResults"));
+        
+        fMockMvc.perform(get("/displayResults").session(fSession))
+            .andExpect(status().is(200))
+            .andExpect(model().attribute(
+                    "calculation", hasProperty("values", not(empty()))));
+        final MvcResult result = fMockMvc.perform(get("/enterVars").session(fSession))
+        	.andReturn();
+        final VariableEntry variableEntry = (VariableEntry) result.getModelAndView().getModel().get("variableEntry");
+        assertEquals(varParams.getPairs(), variableEntry.getDynamicValues());
+    }
+    
+    @Test
+    public void checkHeaders() throws Exception
+    {
+    	// Specialty does not matter here
+    	testStartNewCalculationWithDfn();
+
+        fMockMvc.perform(post("/selectSpecialty").session(fSession)
+                .param("specialty", "Cardiac")).
+            andExpect(redirectedUrl("/enterVars"));
+        
+        fMockMvc.perform(get("/enterVars").session(fSession))
+            .andExpect(header().string("Cache-Control", "no-cache, no-store, must-revalidate"))
+            .andExpect(header().string("Pragma", "no-cache"))
+            .andExpect(header().string("Expires", "0"));
     }
 }

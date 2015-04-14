@@ -21,6 +21,8 @@ public abstract class AbstractVariable implements Variable
     private VariableGroup fGroup;
     private String fHelpText;
     private String fKey;
+    private Integer fRetrievalKey;
+    private String fRetrievalDateString;
 
     /**
      * Constructs an instance with dummy values for the basic properties
@@ -31,6 +33,7 @@ public abstract class AbstractVariable implements Variable
     	fKey = "unset";
         fDisplayName = "unset";
         fGroup = new VariableGroup("unset group", 0);
+        fRetrievalDateString = "";
     }
     
     /**
@@ -41,6 +44,7 @@ public abstract class AbstractVariable implements Variable
         this.fDisplayName = displayName;
         this.fGroup = Objects.requireNonNull(group, "group must not be null");
         this.fKey = key;
+        this.fRetrievalDateString = "";
     }
     
     /**
@@ -135,7 +139,37 @@ public abstract class AbstractVariable implements Variable
         this.fHelpText = helpText;
     }
     
-    @Override
+    @Basic
+    @Column(
+            length = KEY_MAX,
+            nullable = true)
+    public Integer getRetrievalKey()
+    {
+    	return fRetrievalKey;
+    }
+    
+    public void setRetrievalKey(final Integer retrievalKey)
+    {
+    	this.fRetrievalKey = retrievalKey;
+    }
+    
+    @Transient
+    public String getRetrievalDateString()
+    {
+		return fRetrievalDateString;
+	}
+
+    /**
+     * 
+     * @param retrievalDateString The properly formatted string representing the date
+     * 		when this variable was automatically retrieved.
+     */
+	public void setRetrievalDateString(final String retrievalDateString)
+	{
+		this.fRetrievalDateString = retrievalDateString;
+	}
+
+	@Override
     public String toString()
     {
         return getDisplayName();

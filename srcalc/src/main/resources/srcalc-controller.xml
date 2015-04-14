@@ -11,11 +11,27 @@
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
        
-    <mvc:annotation-driven />
+    <!--
+    Enable Web MVC.
+
+    * Don't preserve the Spring model on redirects per Spring's current
+      recommendation for new applications. This prevents model attributes from
+      mysteriously showing up in a redirect URL.
+    -->
+    <mvc:annotation-driven
+        ignore-default-model-on-redirect="true" />
+        
+    <!--
+    Use a WebRequestInterceptor to add common attributes immediately before view
+    rendering.
+    -->
+    <mvc:interceptors>
+        <bean class="gov.va.med.srcalc.web.controller.CommonAttributesSupplier" />
+    </mvc:interceptors>
        
     <!--  *** Controllers *** -->
     
-    <!-- Use component scanning for now. -->
+    <!-- Use component scanning for now, but only to find controllers. -->
     <context:component-scan base-package="gov.va.med.srcalc.web.controller" />
     
     <!-- *** Views *** -->

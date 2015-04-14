@@ -1,10 +1,9 @@
 package gov.va.med.srcalc.web.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-import javax.transaction.Transactional;
-
+import gov.va.med.srcalc.SrcalcInfo;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.web.view.Views;
 
@@ -17,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
@@ -31,6 +31,9 @@ public class DefaultControllerIT extends IntegrationTest
 {
     @Autowired
     WebApplicationContext fWac;
+    
+    @Autowired
+    SrcalcInfo fSrcalcInfo;
 
     private MockMvc fMockMvc;
     
@@ -43,15 +46,19 @@ public class DefaultControllerIT extends IntegrationTest
     @Test
     public final void testDefaultPage() throws Exception
     {
-        fMockMvc.perform(get("/sessionTimeout"))
-            .andExpect(view().name(Views.SESSION_TIMEOUT));
+        fMockMvc.perform(get("/"))
+            // Test common attributes. These should be in every model but this
+            // seems the best place to test it.
+            .andExpect(model().attribute(
+                    CommonAttributesSupplier.MODEL_ATTRIBUTE_APP_INFO, fSrcalcInfo))
+            .andExpect(view().name(Views.LAUNCH_FROM_CPRS));
     }
     
     @Test
     public final void testSessionTimeout() throws Exception
     {
-        fMockMvc.perform(get("/"))
-            .andExpect(view().name(Views.LAUNCH_FROM_CPRS));
+        fMockMvc.perform(get("/sessionTimeout"))
+            .andExpect(view().name(Views.SESSION_TIMEOUT));
     }
     
 }
