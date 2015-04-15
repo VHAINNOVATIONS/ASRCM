@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.vista.VistaPersonDao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
@@ -22,6 +24,8 @@ public class VistaUserDetailsService implements UserDetailsService
     private final String VISTA_DIVISON = "500";
     
     private static List<String> adminDuzs = Arrays.asList("1", "20001");
+    
+    private static final Logger fLogger = LoggerFactory.getLogger(VistaUserDetailsService.class);
     
     private final VistaDaoFactory fVistaDaoFactory;
     
@@ -45,6 +49,7 @@ public class VistaUserDetailsService implements UserDetailsService
         }
         catch (final IllegalArgumentException ex)
         {
+            fLogger.debug("Translating IllegalArgumentException into UsernameNotFoundException.", ex);
             throw new UsernameNotFoundException("Invalid user DUZ", ex);
         }
     }
