@@ -42,7 +42,6 @@ import static org.junit.Assert.*;
 public class CalculationControllerIT extends IntegrationTest
 {
     private final int MOCK_DFN = 456123;
-    private final static String VALID_SIGNATURE_RETURN = "1^Progress note was created and signed successfully.";
     private final static String ELECTRONIC_SIGNATURE = "TESTSIG";
     public final static String NOTE_BODY = "Specialty = Thoracic\n\nCalculation Inputs\n"
     		+ "Age = 45.0\nDNR = No\nFunctional Status = Independent\n"
