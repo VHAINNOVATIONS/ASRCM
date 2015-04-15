@@ -3,7 +3,6 @@ package gov.va.med.srcalc.domain;
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.util.MissingValuesException;
-import gov.va.med.vistalink.rpc.RpcRequest;
 
 import java.io.Serializable;
 import java.util.*;
@@ -216,33 +215,24 @@ public class Calculation implements Serializable
         return fOutcomes;
     }
     
-    public Map<String, String> buildNoteBody()
+    public String buildNoteBody()
 	{
-    	final Map<String,String> returnMap = new HashMap<String,String>();
-    	// VistA starts indexing at 1
-    	int index = 1;
-    	// Build the note body to use in the rpc
-		// Each section is separated by a blank line
+    	final StringBuilder returnString = new StringBuilder();
+    	// Build the note body where each section is separated by a blank line
 		// Specialty
-    	returnMap.put(RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",index++)),
-    			String.format("Specialty = %s", this.getSpecialty().toString()));
-    	returnMap.put(RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",index++)),"");
+    	returnString.append(String.format("Specialty = %s%n%n", this.getSpecialty().toString()));
 		// Variable display names and values
-    	returnMap.put(RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",index++)),
-    			"Calculation Inputs");
+    	returnString.append(String.format("Calculation Inputs%n"));
 		for(final Value value: this.getValues())
 		{
-			returnMap.put(RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",index++)),
-					String.format("%s = %s", value.getVariable().getDisplayName(), value.getDisplayString()));
+			returnString.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));
 		}
-		returnMap.put(RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",index++)),"");
 		// Model results
-		returnMap.put(RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",index++)),"Results");
+		returnString.append(String.format("%nResults%n"));
 		for(final String key: this.getOutcomes().keySet())
 		{
-			returnMap.put(RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",index++)),
-					String.format("%s = %s%%", key, this.getOutcomes().get(key) * 100));
+			returnString.append(String.format("%s = %s%%%n", key, this.getOutcomes().get(key) * 100));
 		}
-		return returnMap;
+		return returnString.toString();
 	}
 }

@@ -1,6 +1,5 @@
 package gov.va.med.srcalc.vista;
 
-import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.SampleObjects;
 
@@ -19,8 +18,8 @@ public class MockVistaPatientDao implements VistaPatientDao
      * Assumes the dummy result is returning a valid save.
      */
 	@Override
-	public String saveRiskCalculationNote(final Calculation calculation,
-			final String electronicSignature)
+	public String saveRiskCalculationNote(final Patient patient,
+			final String electronicSignature, final String noteBody)
 	{
 		return "1^Progress note was created and signed successfully.";
 	}

@@ -1,10 +1,9 @@
 package gov.va.med.srcalc.web.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
+import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.vista.VistaPatientDao;
 import gov.va.med.srcalc.web.view.Views;
 
@@ -22,12 +21,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class DisplayResultsController
 {
-	private final VistaPatientDao fPatientDao;
+	private final CalculationService fCalculationService;
     
     @Inject
-    public DisplayResultsController(final VistaPatientDao patientDao)
+    public DisplayResultsController(final CalculationService calculationService)
     {
-        fPatientDao = patientDao;
+        fCalculationService = calculationService;
     }
     
     @RequestMapping(value = "/displayResults", method = RequestMethod.GET)
@@ -55,7 +54,7 @@ public class DisplayResultsController
     	String resultString;
     	try
     	{
-    		resultString  = fPatientDao.saveRiskCalculationNote(
+    		resultString  = fCalculationService.saveRiskCalculationNote(
     				CalculationWorkflowSupplier.getWorkflowFromSession(session).getCalculation(),
     			electronicSignature);
     	}

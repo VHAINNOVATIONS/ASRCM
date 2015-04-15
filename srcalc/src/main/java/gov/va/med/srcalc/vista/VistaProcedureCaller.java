@@ -15,14 +15,11 @@ public interface VistaProcedureCaller
      * VistA
      */
     public List<String> doRpc(
-            final String duz, final RemoteProcedure procedure, final String... args);
+            final String duz, final RemoteProcedure procedure, final Object... args);
     
     /**
      * Returns the division identifier (including any suffix) for the target
      * VistA.
      */
     public String getDivision();
-
-	public List<String> doSaveNoteRpc(String duz, RemoteProcedure procedure,
-			Object... args);
 }

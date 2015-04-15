@@ -55,7 +55,7 @@ public class RpcVistaPatientDaoTest
     public final void testSaveNoteInvalidSignature() throws Exception
     {
     	final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-        when(caller.doSaveNoteRpc(anyString(), eq(RemoteProcedure.SAVE_PROGRESS_NOTE),
+        when(caller.doRpc(anyString(), eq(RemoteProcedure.SAVE_PROGRESS_NOTE),
         		anyString(), anyString(), anyString(), anyString()))
             .thenReturn(Arrays.asList(INVALID_SIGNATURE_RETURN));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
@@ -65,15 +65,17 @@ public class RpcVistaPatientDaoTest
     	calculation.setSpecialty(SampleObjects.sampleThoracicSpecialty());
     	runCalculation(calculation);
     	
-    	assertEquals("Invalid Electronic Signature Code", dao.saveRiskCalculationNote(calculation, "BadSig"));
-    	assertEquals("Invalid Electronic Signature Code", dao.saveRiskCalculationNote(calculation, "AlsoBad"));
+    	assertEquals("Invalid Electronic Signature Code",
+    			dao.saveRiskCalculationNote(calculation.getPatient(), "BadSig", NOTE_BODY));
+    	assertEquals("Invalid Electronic Signature Code",
+    			dao.saveRiskCalculationNote(calculation.getPatient(), "AlsoBad", NOTE_BODY));
     }
     
     @Test
     public final void testSaveNoteSuccess() throws Exception
     {
     	final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-    	 when(caller.doSaveNoteRpc(anyString(), eq(RemoteProcedure.SAVE_PROGRESS_NOTE),
+    	 when(caller.doRpc(anyString(), eq(RemoteProcedure.SAVE_PROGRESS_NOTE),
          		anyString(), anyString(), anyString(), anyString()))
              .thenReturn(Arrays.asList(VALID_SIGNATURE_RETURN));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
@@ -83,7 +85,7 @@ public class RpcVistaPatientDaoTest
     	calculation.setSpecialty(SampleObjects.sampleThoracicSpecialty());
     	runCalculation(calculation);
     	
-    	assertEquals("Success", dao.saveRiskCalculationNote(calculation, ELECTRONIC_SIGNATURE));
+    	assertEquals("Success", dao.saveRiskCalculationNote(calculation.getPatient(), ELECTRONIC_SIGNATURE, NOTE_BODY));
     }
     
     private static void runCalculation(final Calculation calculation) throws Exception

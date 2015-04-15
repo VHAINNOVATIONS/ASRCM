@@ -94,70 +94,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
     }
 
     @Override
-    public List<String> doRpc(final String duz, final RemoteProcedure procedure, final String... args)
-    {
-        // This is the RPC context for all ASRC RPCs. (This value is determined
-        // by VistA.)
-        final String rpcContext = "SR ASRC";
-
-        final VistaLinkDuzConnectionSpec cs =
-                new VistaLinkDuzConnectionSpec(fDivision, duz);
-
-        try
-        {
-            fLogger.debug("About to call remote procedure \"{}\"", procedure.getProcedureName());
-            final RpcRequest req = RpcRequestFactory.getRpcRequest(
-                    rpcContext, procedure.getProcedureName());
-            
-            // Set the arguments.
-            for (int i = 0; i < args.length; ++i)
-            {
-                // VistA starts counting at 1, not 0.
-                final int vistaParamIndex = i + 1;
-                final String arg = args[i];
-                fLogger.debug("Setting parameter {} to {}", vistaParamIndex, arg);
-                req.getParams().setParam(vistaParamIndex, "string", arg);
-            }
-
-            final VistaLinkConnection conn = (VistaLinkConnection)fVlcf.getConnection(cs);
-            try
-            {
-                final RpcResponse response = conn.executeRPC(req);
-                fLogger.debug(
-                        "Got {} response: {}",
-                        response.getResultsType(), response.getResults());
-                // The only current possible types are "string" and "array"
-                // VistALink represents arrays as newline-delimited strings.
-                if(response.getResultsType().equals("array"))
-                {
-                	// NB: String.split() strips trailing empty strings.
-                    return Arrays.asList(response.getResults().split("\n"));
-                }
-                return Arrays.asList(response.getResults());
-            }
-            finally
-            {
-                conn.close();
-            }
-        }
-        catch (SecurityIdentityDeterminationFaultException e)
-        {
-            throw new IllegalArgumentException("Invalid DUZ", e);
-        }
-        catch (FoundationsException e)
-        {
-            throw new RecoverableDataAccessException(
-                    "An internal VistaLink error occurred", e);
-        }
-        catch (ResourceException e)
-        {
-            throw new RecoverableDataAccessException(
-                    "Could not obtain connection to VistA", e);
-        }
-    }
-    
-    @Override
-    public List<String> doSaveNoteRpc(final String duz, final RemoteProcedure procedure, final Object... args)
+    public List<String> doRpc(final String duz, final RemoteProcedure procedure, final Object... args)
     {
         // This is the RPC context for all ASRC RPCs. (This value is determined
         // by VistA.)
@@ -203,7 +140,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
                         response.getResultsType(), response.getResults());
                 // The only current possible types are "string" and "array"
                 // VistALink represents arrays as newline-delimited strings.
-                if(response.getResultsType().equals("array"))
+                if(RESULT_TYPE_ARRAY.equals(response.getResultsType()))
                 {
                 	// NB: String.split() strips trailing empty strings.
                     return Arrays.asList(response.getResults().split("\n"));
@@ -217,21 +154,17 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
         }
         catch (SecurityIdentityDeterminationFaultException e)
         {
-        	fLogger.debug(e.toString());
             throw new IllegalArgumentException("Invalid DUZ", e);
         }
         catch (FoundationsException e)
         {
-        	fLogger.debug(e.toString());
             throw new RecoverableDataAccessException(
                     "An internal VistaLink error occurred", e);
         }
         catch (ResourceException e)
         {
-        	fLogger.debug(e.toString());
             throw new RecoverableDataAccessException(
                     "Could not obtain connection to VistA", e);
         }
     }
-    
 }

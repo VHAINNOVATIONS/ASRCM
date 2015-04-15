@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import gov.va.med.srcalc.db.SpecialtyDao;
@@ -90,5 +89,12 @@ public class DefaultCalculationService implements CalculationService
         
         return new UnsignedCalculation(calculation);
     }
+
+	@Override
+	public String saveRiskCalculationNote(Calculation calculation,
+			String electronicSignature)
+	{
+		return fPatientDao.saveRiskCalculationNote(calculation.getPatient(), electronicSignature, calculation.buildNoteBody());
+	}
     
 }
