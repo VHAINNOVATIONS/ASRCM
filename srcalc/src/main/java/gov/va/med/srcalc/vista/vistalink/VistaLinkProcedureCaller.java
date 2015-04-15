@@ -126,6 +126,10 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
 	                fLogger.debug("Setting parameter {} to {}", vistaParamIndex, arg);
 	                req.getParams().setParam(vistaParamIndex, "array", arg);
                 }
+                else
+                {
+                	throw new ClassCastException();
+                }
             }
 
             final VistaLinkConnection conn = (VistaLinkConnection)fVlcf.getConnection(cs);
