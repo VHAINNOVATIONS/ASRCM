@@ -27,7 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class EnterVariablesController
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(CalculationController.class);
+    private static final Logger fLogger = LoggerFactory.getLogger(EnterVariablesController.class);
 
     /**
      * Attribute name for the VariableEntry object.
@@ -48,7 +48,7 @@ public class EnterVariablesController
     {
         // Get the CalculationWorkflow from the session.
         final CalculationWorkflow workflow =
-                CalculationController.getWorkflowFromSession(session);
+        		CalculationWorkflowSupplier.getWorkflowFromSession(session);
         final VariableEntry initialValues = VariableEntry.withRetrievedValues(workflow.getCalculation().getVariables(), 
         		workflow.getCalculation().getPatient());
         // In the case of using the "Return to Input Form" button, add the values already
@@ -84,7 +84,7 @@ public class EnterVariablesController
     	response.setDateHeader("Expires", 0);
         // Get the CalculationWorkflow from the session.
         final CalculationWorkflow workflow =
-                CalculationController.getWorkflowFromSession(session);
+        		CalculationWorkflowSupplier.getWorkflowFromSession(session);
 
         // Present the view.
         final ModelAndView mav = new ModelAndView(Views.ENTER_VARIABLES);
@@ -104,7 +104,7 @@ public class EnterVariablesController
     {
         // Get the CalculationWorkflow from the session.
         final CalculationWorkflow workflow =
-                CalculationController.getWorkflowFromSession(session);
+        		CalculationWorkflowSupplier.getWorkflowFromSession(session);
         
         // Extract the values from the HTTP POST.
         final InputParserVisitor parserVisitor = new InputParserVisitor(values, valuesBindingResult);

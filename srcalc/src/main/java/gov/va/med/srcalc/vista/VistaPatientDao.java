@@ -16,4 +16,13 @@ public interface VistaPatientDao
      */
     public Patient getPatient(final int dfn);
     
+    /**
+     * Saves the finished calculation to VistA, given the calculation, electronic signature, 
+     * and the note body
+     * @param patient
+     * @param noteBody 
+     * @return
+     */
+    public String saveRiskCalculationNote(final Patient patient, final String electronicSignature, String noteBody);
+    
 }

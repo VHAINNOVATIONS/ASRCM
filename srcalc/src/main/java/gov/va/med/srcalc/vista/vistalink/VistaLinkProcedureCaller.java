@@ -2,6 +2,8 @@ package gov.va.med.srcalc.vista.vistalink;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.naming.*;
 import javax.resource.ResourceException;
@@ -92,7 +94,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
     }
 
     @Override
-    public List<String> doRpc(final String duz, final RemoteProcedure procedure, final String... args)
+    public List<String> doRpc(final String duz, final RemoteProcedure procedure, final Object... args)
     {
         // This is the RPC context for all ASRC RPCs. (This value is determined
         // by VistA.)
@@ -112,9 +114,22 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
             {
                 // VistA starts counting at 1, not 0.
                 final int vistaParamIndex = i + 1;
-                final String arg = args[i];
-                fLogger.debug("Setting parameter {} to {}", vistaParamIndex, arg);
-                req.getParams().setParam(vistaParamIndex, "string", arg);
+                if(args[i] instanceof String)
+                {
+	                final String arg = (String) args[i];
+	                fLogger.debug("Setting parameter {} to {}", vistaParamIndex, arg);
+	                req.getParams().setParam(vistaParamIndex, "string", arg);
+                }
+                else if(args[i] instanceof Map<?,?>)
+                {
+					final Map<?,?> arg =  (Map<?,?>) args[i];
+	                fLogger.debug("Setting parameter {} to {}", vistaParamIndex, arg);
+	                req.getParams().setParam(vistaParamIndex, "array", arg);
+                }
+                else
+                {
+                	throw new ClassCastException();
+                }
             }
 
             final VistaLinkConnection conn = (VistaLinkConnection)fVlcf.getConnection(cs);
@@ -124,17 +139,14 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
                 fLogger.debug(
                         "Got {} response: {}",
                         response.getResultsType(), response.getResults());
-                if (RESULT_TYPE_ARRAY.equals(response.getResultsType()))
+                // The only current possible types are "string" and "array"
+                // VistALink represents arrays as newline-delimited strings.
+                if(RESULT_TYPE_ARRAY.equals(response.getResultsType()))
                 {
-                    // VistALink represents arrays as newline-delimited strings.
-                    // NB: String.split() strips trailing empty strings.
+                	// NB: String.split() strips trailing empty strings.
                     return Arrays.asList(response.getResults().split("\n"));
                 }
-                else
-                {
-                    throw new DataRetrievalFailureException(
-                            "non-array results are not supported");
-                }
+                return Arrays.asList(response.getResults());
             }
             finally
             {
@@ -156,5 +168,4 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
                     "Could not obtain connection to VistA", e);
         }
     }
-    
 }

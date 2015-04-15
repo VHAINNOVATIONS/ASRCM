@@ -26,4 +26,13 @@ public interface CalculationService
         throws InvalidIdentifierException;
     
     public CalculationWorkflow runCalculation(Calculation calculation, List<Value> variableValues) throws MissingValuesException;
+
+    /**
+     * Saves the finished calculation to VistA, given the calculation, electronic signature, 
+     * and the note body
+     * @param calculation
+     * @return
+     */
+    public String saveRiskCalculationNote(Calculation calculation, String electronicSignature);
+    
 }

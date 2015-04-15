@@ -13,5 +13,15 @@ public class MockVistaPatientDao implements VistaPatientDao
     {
     	return SampleObjects.dummyPatient(dfn);
     }
+
+    /**
+     * Assumes the dummy result is returning a valid save.
+     */
+	@Override
+	public String saveRiskCalculationNote(final Patient patient,
+			final String electronicSignature, final String noteBody)
+	{
+		return "1^Progress note was created and signed successfully.";
+	}
     
 }

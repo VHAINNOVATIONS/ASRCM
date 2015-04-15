@@ -126,13 +126,13 @@ button.button-em {
 	background-color: #CCCCEE;
     font-weight: bold;
 }
-
-button.button-em:hover {
-    background-color: #e3e3e3;
-}
 	
 button.button-em:active {
     background-color: #CCC;
+}
+
+button.button-em:disabled {
+	opacity: 0.65;
 }
 
 /* srcalcForm is the standard form appearance in srcalc */

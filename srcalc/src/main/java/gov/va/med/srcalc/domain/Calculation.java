@@ -8,12 +8,15 @@ import java.io.Serializable;
 import java.util.*;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a risk calculation: either in-progress, calculated, or signed.
  */
 public class Calculation implements Serializable
 {
+	private static final Logger fLogger = LoggerFactory.getLogger(Calculation.class);
     /**
      * Change this when changing the class!
      */
@@ -200,6 +203,7 @@ public class Calculation implements Serializable
 
         if(missingValues.size() > 0)
         {
+        	fLogger.debug("Could not run calculation due to missing values: {}", missingValues);
         	throw new MissingValuesException("The calculation is missing values.", missingValues);
         }
         // Store the given values for reference.
@@ -210,4 +214,29 @@ public class Calculation implements Serializable
 
         return fOutcomes;
     }
+    
+    /**
+     * Builds a string version of the completed calculation.
+     * @return a String with a human readable version of the completed calculation.
+     */
+    public String buildNoteBody()
+	{
+    	final StringBuilder returnString = new StringBuilder();
+    	// Build the note body where each section is separated by a blank line
+		// Specialty
+    	returnString.append(String.format("Specialty = %s%n%n", this.getSpecialty().toString()));
+		// Variable display names and values
+    	returnString.append(String.format("Calculation Inputs%n"));
+		for(final Value value: this.getValues())
+		{
+			returnString.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));
+		}
+		// Model results
+		returnString.append(String.format("%nResults%n"));
+		for(final String key: this.getOutcomes().keySet())
+		{
+			returnString.append(String.format("%s = %s%%%n", key, this.getOutcomes().get(key) * 100));
+		}
+		return returnString.toString();
+	}
 }

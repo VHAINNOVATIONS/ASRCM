@@ -3,16 +3,19 @@ package gov.va.med.srcalc.web.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
 import gov.va.med.srcalc.web.controller.CalculationController;
+import gov.va.med.srcalc.web.controller.DisplayResultsController;
 import gov.va.med.srcalc.web.view.VariableEntry;
 import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
 
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -28,8 +31,8 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**
- * Integration Test for {@link CalculationController} and {@link
- * EnterVariablesController}. Note that we only define Integration Tests for
+ * Integration Test for {@link CalculationController}, {@link DisplayResultsController} and
+ * {@link EnterVariablesController}. Note that we only define Integration Tests for
  * controllers because unit tests are of little value.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,6 +42,11 @@ import static org.junit.Assert.*;
 public class CalculationControllerIT extends IntegrationTest
 {
     private final int MOCK_DFN = 456123;
+    private final static String ELECTRONIC_SIGNATURE = "TESTSIG";
+    public final static String NOTE_BODY = "Specialty = Thoracic\n\nCalculation Inputs\n"
+    		+ "Age = 45.0\nDNR = No\nFunctional Status = Independent\n"
+    		+ "Procedure = 26546 - Repair left hand - you know, the thing with fingers (10.06)\n\n"
+    		+ "Results\nThoracic 30-day mortality estimate = 100.0%\n";
     
     @Autowired
     WebApplicationContext fWac;
@@ -214,12 +222,26 @@ public class CalculationControllerIT extends IntegrationTest
     	testStartNewCalculationWithDfn();
 
         fMockMvc.perform(post("/selectSpecialty").session(fSession)
-                .param("specialty", "Cardiac")).
-            andExpect(redirectedUrl("/enterVars"));
+            .param("specialty", "Cardiac"))
+            .andExpect(redirectedUrl("/enterVars"));
         
         fMockMvc.perform(get("/enterVars").session(fSession))
             .andExpect(header().string("Cache-Control", "no-cache, no-store, must-revalidate"))
             .andExpect(header().string("Pragma", "no-cache"))
             .andExpect(header().string("Expires", "0"));
+    }
+    
+    @Test
+    public void enterValidElectronicSignature() throws Exception
+    {
+    	enterValidCardiacVariables();
+        
+        fMockMvc.perform(post("/signCalculation").session(fSession)
+	        .param("eSig", ELECTRONIC_SIGNATURE))
+	        .andExpect(status().isOk())
+	        .andExpect(content().contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
+	        		MediaType.APPLICATION_JSON.getSubtype())))
+	        .andExpect(jsonPath("$.*", hasSize(1)))
+	        .andExpect(jsonPath("$.status", is("1^Progress note was created and signed successfully.")));
     }
 }
