@@ -215,6 +215,10 @@ public class Calculation implements Serializable
         return fOutcomes;
     }
     
+    /**
+     * Builds a string version of the completed calculation.
+     * @return a String with a human readable version of the completed calculation.
+     */
     public String buildNoteBody()
 	{
     	final StringBuilder returnString = new StringBuilder();

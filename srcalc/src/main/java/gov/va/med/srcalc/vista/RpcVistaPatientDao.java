@@ -8,13 +8,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
 import org.springframework.dao.RecoverableDataAccessException;
 
+import gov.va.med.crypto.VistaKernelHash;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.vistalink.rpc.RpcRequest;
 
@@ -175,16 +175,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
 	public String saveRiskCalculationNote(final Patient patient,
 			final String electronicSignature, final String noteBody)
 	{
-//		final Scanner input = new Scanner(noteBody);
-//		final Map<String, String> noteMap = new HashMap<String, String>();
-//		int i = 0;
-//		while(input.hasNextLine())
-//		{
-//			noteMap.put(RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",i + 1)),
-//					input.nextLine());
-//			i++;
-//		}
-		// Split on line feed and carriage return
+		// Split on line feed or carriage return
 		final String[] bodyArray = noteBody.split("\\r?\\n");
 		final Map<String, String> noteMap = new HashMap<String, String>();
 		for(int i = 0; i < bodyArray.length; i++)
@@ -199,7 +190,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
 			final List<String> saveResults;
 			saveResults = fProcedureCaller.doRpc(
 	            fDuz, RemoteProcedure.SAVE_PROGRESS_NOTE,
-	            fDuz, electronicSignature, String.valueOf(patient.getDfn()), noteMap);
+	            fDuz, VistaKernelHash.encrypt(electronicSignature, false), String.valueOf(patient.getDfn()), noteMap);
 			final String[] splitArray = saveResults.get(0).split("\\^");
 			if(splitArray[0].equals("1"))
 			{

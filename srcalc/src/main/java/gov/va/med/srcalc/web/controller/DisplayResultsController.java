@@ -4,12 +4,13 @@ import java.util.HashMap;
 
 import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.service.CalculationService;
-import gov.va.med.srcalc.vista.VistaPatientDao;
 import gov.va.med.srcalc.web.view.Views;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class DisplayResultsController
 {
+	private static final Logger fLogger = LoggerFactory.getLogger(DisplayResultsController.class);
 	private final CalculationService fCalculationService;
     
     @Inject
@@ -60,6 +62,7 @@ public class DisplayResultsController
     	}
     	catch(final RecoverableDataAccessException e)
     	{
+    		fLogger.warn("There was a problem connecting to VistA", e);
     		resultString = "There was a problem connecting to VistA.";
     	}
     	// The json could be expanded to return more information/fields

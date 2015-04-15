@@ -9,6 +9,7 @@ public interface VistaProcedureCaller
      * @param duz the calling user's DUZ
      * @param procedure the remote procedure to call
      * @param args the remote procedure arguments, if any
+     * 		The only valid types for arguments are String and Map<?,?>
      * @return an unmodifiable list of String lines from the response
      * @throws IllegalArgumentException if the provided DUZ is invalid
      * @throws DataAccessException if some error occurred communicating with

@@ -122,10 +122,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
                 }
                 else if(args[i] instanceof Map<?,?>)
                 {
-                	// By getting into this if statement we know that the object is a type of Map
-                	// We can prove that the Object is a Map, so we suppress the warning
-					@SuppressWarnings("unchecked")
-					final Map<String,String> arg =  (HashMap<String,String>) args[i];
+					final Map<?,?> arg =  (Map<?,?>) args[i];
 	                fLogger.debug("Setting parameter {} to {}", vistaParamIndex, arg);
 	                req.getParams().setParam(vistaParamIndex, "array", arg);
                 }
