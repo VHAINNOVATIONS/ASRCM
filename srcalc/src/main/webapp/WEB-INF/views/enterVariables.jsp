@@ -77,12 +77,11 @@
     </table>
     <div class="actionButtons">
     <ol>
-    <li>
-    <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
-    <c:url var="newCalcUrl" value="/newCalc"><c:param name="patientDfn" value="${calculation.patient.dfn}"/></c:url>
-    <a href="${newCalcUrl}" class="btn-link">Start New Calculation</a></li>
     <li><button class="button-em" type="submit">Run Calculation</button></li>
     </ol>
+    <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
+    <c:url var="newCalcUrl" value="/newCalc"><c:param name="patientDfn" value="${calculation.patient.dfn}"/></c:url>
+    <a href="${newCalcUrl}" class="btn-link">Start New Calculation</a>
     </div>
     <c:url var="enterVariablesJsUrl" value="/js/enterVariables.js"/>
     <script type="text/javascript" src="${enterVariablesJsUrl}"></script>

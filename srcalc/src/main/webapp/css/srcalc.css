@@ -176,6 +176,10 @@ form.srcalcForm .error {
 	color: red;
 }
 
+.warning {
+	color: red;
+}
+
 /* .actionButtons indicates a gropup of buttons to perform actions on a page */
 
 .actionButtons > ol {

@@ -22,6 +22,7 @@
     <li>${outcome.key}: <fmt:formatNumber value="${outcome.value * 100}" minFractionDigits="1" maxFractionDigits="1" />%</li>
     </c:forEach>
     </ol>
+    <span class="warning">*Warning: Signing the calculation will save it to the patient's Electronic Health Record.</span>
     <ol>
     <li>
         <c:url var="enterVarsUrl" value="/enterVars"/>
@@ -45,7 +46,6 @@
             </div>
         </form>
     </div>
-    <span class="errorSpan">*Warning: Signing the calculation will save it to the patient's Electronic Health Record.</span>
     </div>
     <c:url var="displayResultsJsUrl" value="/js/displayResults.js"/>
     <script type="text/javascript" src="${displayResultsJsUrl}"></script>
