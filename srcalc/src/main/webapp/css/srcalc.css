@@ -99,9 +99,7 @@ button {
     border: 1px solid #888;
 }
 
-/* a.btn-link indicates an <a> that performs an action like a button. Think of
-   it as a de-emphasized button. 
-   The total height of a link is intended to be the same as the total height
+/* The total height of a link is intended to be the same as the total height
    of a button. The btn-default should have a total height of 26px (this includes
    border and padding).
    */
@@ -113,6 +111,17 @@ a.btn-default:link, a.btn-default:visited {
     border: 1px solid #888;
     text-decoration: none;
     padding: 1px 6px;
+}
+
+/* a.btn-link indicates an <a> that performs an action like a button. Think of
+   it as a de-emphasized button. */
+a.btn-link:link, a.btn-link:visited {
+    color: #1C52BB;
+    text-decoration: none;
+}
+
+a.btn-link:hover {
+	text-decoration: underline;
 }
 
 a.btn-em:link {

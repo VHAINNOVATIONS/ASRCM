@@ -235,7 +235,7 @@ public class Calculation implements Serializable
 		returnString.append(String.format("%nResults%n"));
 		for(final String key: this.getOutcomes().keySet())
 		{
-			returnString.append(String.format("%s = %s%%%n", key, this.getOutcomes().get(key) * 100));
+			returnString.append(String.format("%s = %.1f%%%n", key, this.getOutcomes().get(key) * 100.0));
 		}
 		return returnString.toString();
 	}

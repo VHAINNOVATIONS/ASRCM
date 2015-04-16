@@ -23,24 +23,24 @@
     </c:forEach>
     </ol>
     <ol>
-    <li><button id="signCalculationButton" class="button-em" type="submit">Sign Calculation</button></li>
-    <li>
-    <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
-    <c:url var="newCalcUrl" value="/newCalc"><c:param name="patientDfn" value="${calculation.patient.dfn}"/></c:url>
-    <a href="${newCalcUrl}" class="btn-default">Start New Calculation</a></li>
     <li>
         <c:url var="enterVarsUrl" value="/enterVars"/>
         <a href="${enterVarsUrl}" class="btn-default">Return to Variable Input Form</a>
     </li>
+    <li><button id="signCalculationButton" class="button-em" type="submit">Sign Calculation</button></li>
     </ol>
+    <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
+    <c:url var="newCalcUrl" value="/newCalc"><c:param name="patientDfn" value="${calculation.patient.dfn}"/></c:url>
+    <a href="${newCalcUrl}" class="btn-link">Start New Calculation</a>
+    <br>
     <div class="eSigDialog dialog" title="Enter Electronic Signature Code">
         <form id="eSigForm" method="post" class="srcalcForm">
             <input id="eSigInput" name="eSig" type="password" size="20"/>
             <br><span id="eSigErrorSpan" class="error"></span>
             <div class="actionButtons">
                 <ol>
-                    <li><button id="eSigButton" class="button-em" type="submit">Sign</button></li>
                     <li><button id="cancelESigButton" type="button">Cancel</button></li>
+                    <li><button id="eSigButton" class="button-em" type="submit">Sign</button></li>
                 </ol>
             </div>
         </form>
