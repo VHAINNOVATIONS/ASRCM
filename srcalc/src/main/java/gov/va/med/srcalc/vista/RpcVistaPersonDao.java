@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gov.va.med.crypto.VistaKernelHash;
+import gov.va.med.crypto.VistaKernelHashCountLimitExceededException;
 import gov.va.med.srcalc.domain.VistaPerson;
 
 /**
@@ -33,5 +35,34 @@ public class RpcVistaPersonDao implements VistaPersonDao
                 fProcedureCaller.getDivision(), duz, userString, "user class not pulled");
         fLogger.debug("Loaded {} from VistA.", person);
         return person;
+    }
+    
+    @Override
+    public VistaPerson loadLoggedInPerson(final String loginToken)
+    {
+        fLogger.debug("Loading VistaPerson for login token {}.", loginToken);
+        
+        // The FTL client IP.
+        final String clientIp = "173.252.156.129";
+        
+        List<String> results;
+        try
+        {
+            results = fProcedureCaller.doRpcAsProxy(
+                    "KAAJEE,PROXY",
+                    RemoteProcedure.GET_CCOW_USER,
+                    clientIp,
+                    "asrcserver",
+                    VistaKernelHash.encrypt("~~TOK~~" + loginToken, false));
+        }
+        catch (VistaKernelHashCountLimitExceededException e)
+        {
+            throw new RuntimeException("should not be thrown", e);
+        }
+        
+        fLogger.debug("Got CCOW user info: {}", results);
+        
+        return new VistaPerson(
+                fProcedureCaller.getDivision(), results.get(0), results.get(1), "user class not pulled");
     }
 }

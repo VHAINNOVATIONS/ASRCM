@@ -18,4 +18,11 @@ public interface VistaPersonDao
      * @throws IllegalArgumentException if the DUZ was not a valid DUZ
      */
     public VistaPerson loadVistaPerson(final String duz);
+    
+    /**
+     * Loads the VistaPerson from VistA for the given CCOW login.
+     * @throws DataAccessException if communication with VistA failed
+     * @throws IllegalArgumentException if the token was not valid
+     */
+    public VistaPerson loadLoggedInPerson(final String ccowToken);
 }

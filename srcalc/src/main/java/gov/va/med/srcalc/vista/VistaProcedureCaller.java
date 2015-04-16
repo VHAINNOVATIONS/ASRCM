@@ -17,6 +17,9 @@ public interface VistaProcedureCaller
     public List<String> doRpc(
             final String duz, final RemoteProcedure procedure, final String... args);
     
+    public List<String> doRpcAsProxy(
+            final String proxyName, final RemoteProcedure procedure, final String... args);
+    
     /**
      * Returns the division identifier (including any suffix) for the target
      * VistA.

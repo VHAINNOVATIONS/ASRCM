@@ -8,6 +8,14 @@ public enum RemoteProcedure
     GET_USER("SR ASRC USER"),
     
     /**
+     * Returns information about a logged in user from a CCOW login token.
+     * 
+     * See <a href="http://code.osehra.org/Prod/Visual/files/8994-2877.html">
+     * XUS KAAJEE GET USER VIA PROXY</a> for parameter information.
+     */
+    GET_CCOW_USER("XUS KAAJEE GET USER VIA PROXY"),
+    
+    /**
      * Returns information about the given patient.
      */
     GET_PATIENT("SR ASRC PATIENT"),

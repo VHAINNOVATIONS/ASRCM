@@ -5,10 +5,12 @@ import static org.mockito.Mockito.*;
 import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.vista.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+@Ignore("just for the CCOW prototype")
 public class VistaUserDetailsServiceTest
 {
     private final String DIVISION = "500";

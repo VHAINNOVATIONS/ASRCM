@@ -44,7 +44,7 @@ public class VistaUserDetailsService implements UserDetailsService
         final VistaPersonDao vistaDao = fVistaDaoFactory.getVistaPersonDao(VISTA_DIVISON);
         try
         {
-            final VistaPerson person = vistaDao.loadVistaPerson(duz);
+            final VistaPerson person = vistaDao.loadLoggedInPerson(duz);
             return new VistaUserDetails(person, getUserAuthorities(person));
         }
         catch (final IllegalArgumentException ex)

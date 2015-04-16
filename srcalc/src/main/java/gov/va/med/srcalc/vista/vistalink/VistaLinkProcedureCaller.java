@@ -101,11 +101,26 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
         final VistaLinkDuzConnectionSpec cs =
                 new VistaLinkDuzConnectionSpec(fDivision, duz);
 
+        return doRpc(cs, procedure, rpcContext, args);
+    }
+
+    /**
+     * @param cs
+     * @param procedure
+     * @param rpcContext
+     * @param args
+     * @return
+     */
+    private List<String> doRpc(final VistaLinkConnectionSpec cs, final RemoteProcedure procedure,
+            final String rpcContext, final String... args)
+    {
         try
         {
             fLogger.debug("About to call remote procedure \"{}\"", procedure.getProcedureName());
             final RpcRequest req = RpcRequestFactory.getRpcRequest(
                     rpcContext, procedure.getProcedureName());
+            
+            req.setUseProprietaryMessageFormat(true);
             
             // Set the arguments.
             for (int i = 0; i < args.length; ++i)
@@ -155,6 +170,16 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
             throw new RecoverableDataAccessException(
                     "Could not obtain connection to VistA", e);
         }
+    }
+    
+    @Override
+    public List<String> doRpcAsProxy(String proxyName, RemoteProcedure procedure, String... args)
+    {
+        return doRpc(
+                new VistaLinkAppProxyConnectionSpec(getDivision(), proxyName),
+                procedure,
+                "XUS KAAJEE PROXY LOGON",
+                args);
     }
     
 }
