@@ -10,7 +10,7 @@ apply plugin: 'jacoco'
 
 // Basic build properties
 sourceCompatibility = '1.7'
-version = '0.6.0-alpha'
+version = '0.6.0'
 
 repositories {
     // Use 'maven central' for resolving dependencies.
