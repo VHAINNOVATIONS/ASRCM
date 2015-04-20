@@ -47,7 +47,7 @@
         <jsp:attribute name="discreteNumericalFragment">
             <!-- Wrap both the radio button and numerical entry in a span.radioLabel
                  for proper spacing. -->
-            <span class="radioLabel"><label><form:radiobutton path="${varPath}" cssClass="numericalRadio" value="numerical"/> Numerical:</label>
+            <span class="radioLabel"><label><form:radiobutton path="${varPath}" cssClass="numericalRadio" value="numerical"/></label>
             <c:set var="numericalVarName" value="${variable.key}$numerical" />
             <c:set var="numericalVarPath" value="${srcalc:dynamicValuePath(numericalVarName)}" />
             <form:input cssClass="numerical" path="${numericalVarPath}" size="6"/> ${variable.units} ${variable.retrievalDateString}</span>

@@ -250,6 +250,16 @@ form.attributeEditForm td.attributeName {
 	width: 20%;
 }
 
+/* Alternate colors on variables within a variable group. 
+   The variable group title should not be included in the alternation.*/
+form.attributeEditForm tbody tr:nth-child(2n+2) {
+    background: #FFF;
+}
+
+form.attributeEditForm tbody tr:nth-child(2n+3) {
+    background: #DDD;
+}
+
 /* The Specialty & Patient */
 
 .calculationSummary {
