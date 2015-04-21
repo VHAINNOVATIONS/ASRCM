@@ -38,6 +38,7 @@
 
         <!-- All pages require one to be an authenticated user. -->
         <security:intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <!-- See gov.va.med.srcalc.security.Roles for the available Roles. -->
         <security:intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
         <!-- Allow anonymous users to see the invalid session page otherwise
              they need to re-login, only to see that their session timed out. -->
@@ -49,6 +50,18 @@
     <bean id="vistaDaoFactory" class="gov.va.med.srcalc.security.VistaLinkVistaDaoFactory" />
     <bean id="vistaUserDetailsService" class="gov.va.med.srcalc.security.VistaUserDetailsService" />
     <security:authentication-manager>
+        <!--
+        First, check an in-memory admin user store. Of course an in-memory user
+        store is not appropriate for production, but in production this will be
+        replaced with an authentication mechanism approved by VA OI&T.
+        -->
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="adminone" password="Admin1" authorities="ROLE_ADMIN" />
+                <security:user name="admintwo" password="Admin2" authorities="ROLE_ADMIN" />
+            </security:user-service>
+        </security:authentication-provider>
+        <!-- If the credentials aren't for an admin, try VistA. -->
         <security:authentication-provider user-service-ref="vistaUserDetailsService" />
     </security:authentication-manager>
     
