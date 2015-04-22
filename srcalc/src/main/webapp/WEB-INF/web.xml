@@ -4,6 +4,11 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 	<display-name>srcalc</display-name>
+    
+    <!-- Hook up the AppAttributesInitializer. See its Javadoc. -->
+    <listener>
+        <listener-class>gov.va.med.srcalc.web.AppAttributesInitializer</listener-class>
+    </listener>
 
 	<!-- Spring DispatcherServlet. Will load srcalc-servlet.xml. -->
 	<servlet>
