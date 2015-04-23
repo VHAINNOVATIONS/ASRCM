@@ -20,26 +20,23 @@ public class VistaUserDetails implements UserDetails
     
     private final VistaPerson fVistaPerson;
     
-    private final List<GrantedAuthority> fAuthorities;
-    
     /**
      * Constructs an instance.
      * @param vistaPerson the wrapped VistaPerson
-     * @param authorities the list of authorities for the user
      */
-    public VistaUserDetails(
-            final VistaPerson vistaPerson, final List<GrantedAuthority> authorities)
+    public VistaUserDetails(final VistaPerson vistaPerson)
     {
         fVistaPerson = vistaPerson;
-        fAuthorities = authorities;
     }
 
+    /**
+     * This is simple: all VistA users are treated alike, so this method always
+     * returns a one-element collection containing {@link Roles#ROLE_USER}.
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities()
     {
-        // Return an unmodifiable list to prohibit external code from changing
-        // the user's authorities.
-        return Collections.unmodifiableList(fAuthorities);
+        return Arrays.asList(Roles.ROLE_USER.asGrantedAuthority());
     }
     
     public String getDivision()

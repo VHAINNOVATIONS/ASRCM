@@ -20,14 +20,6 @@
     -->
     <mvc:annotation-driven
         ignore-default-model-on-redirect="true" />
-        
-    <!--
-    Use a WebRequestInterceptor to add common attributes immediately before view
-    rendering.
-    -->
-    <mvc:interceptors>
-        <bean class="gov.va.med.srcalc.web.controller.CommonAttributesSupplier" />
-    </mvc:interceptors>
        
     <!--  *** Controllers *** -->
     

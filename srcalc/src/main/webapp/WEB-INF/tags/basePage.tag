@@ -5,6 +5,10 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+
+<%-- Make the appInfo object (added by AppAttributesInitializer) easily accessible. --%>
+<c:set var="appInfo" scope="page" value="${applicationScope['srcalc.appInfo']}" />
+
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -41,7 +45,6 @@
     <![endif]-->
     <jsp:doBody/>
     <footer>
-    <%-- CommonAttributesSupplier adds these to the model. --%>
     <span class="appInfo">${appInfo.longName} v${appInfo.version}</span>
     </footer>
 </body>

@@ -1,9 +1,7 @@
 package gov.va.med.srcalc.web.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import gov.va.med.srcalc.SrcalcInfo;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.web.view.Views;
 
@@ -31,9 +29,6 @@ public class DefaultControllerIT extends IntegrationTest
 {
     @Autowired
     WebApplicationContext fWac;
-    
-    @Autowired
-    SrcalcInfo fSrcalcInfo;
 
     private MockMvc fMockMvc;
     
@@ -47,10 +42,6 @@ public class DefaultControllerIT extends IntegrationTest
     public final void testDefaultPage() throws Exception
     {
         fMockMvc.perform(get("/"))
-            // Test common attributes. These should be in every model but this
-            // seems the best place to test it.
-            .andExpect(model().attribute(
-                    CommonAttributesSupplier.MODEL_ATTRIBUTE_APP_INFO, fSrcalcInfo))
             .andExpect(view().name(Views.LAUNCH_FROM_CPRS));
     }
     
