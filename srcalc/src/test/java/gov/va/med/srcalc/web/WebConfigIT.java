@@ -6,10 +6,14 @@ import org.hsqldb.jdbc.JDBCDataSource;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.WebApplicationContext;
+
+import static org.junit.Assert.*;
 
 /**
  * <p>Tests the WebApplicationContext.</p>
@@ -23,6 +27,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
         "file:src/main/webapp/WEB-INF/applicationContext.xml")
 public class WebConfigIT
 {
+    @Autowired
+    WebApplicationContext fWac;
+
     @BeforeClass
     public static void setupJndi() throws NamingException
     {
@@ -39,6 +46,11 @@ public class WebConfigIT
     @Test
     public void testWebConfig()
     {
-        // If this method executes, it loaded properly.
+        // If this method executes, there were no Exceptions while loading the
+        // Application Context. Also perform some basic inspection of the
+        // WebApplicationContext to make sure it loaded properly.
+        assertNotNull(
+                "WebApplicationContext should have a ServletContext",
+                fWac.getServletContext());
     }
 }
