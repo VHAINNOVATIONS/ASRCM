@@ -37,7 +37,7 @@
     <c:url var="jqueryUiJs" value="/js/vendor/jquery-ui.min.js"/>
     <script type="text/javascript" src="${jqueryUiJs}"></script>
     <!--[if (gte IE 6)&(lte IE 8)]>
-        <c:url var="selectivizr" value="/js/vendor/selectivizr-min.js"/>
+        <c:url var="selectivizrJs" value="/js/vendor/selectivizr-min.js"/>
 	    <script type="text/javascript" src="${selectivizr}"></script>
 	<![endif]-->
     <!--[if lt IE 7]>
