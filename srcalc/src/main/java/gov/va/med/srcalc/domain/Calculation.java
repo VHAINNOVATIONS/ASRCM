@@ -231,13 +231,13 @@ public class Calculation implements Serializable
     		returnString.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));
     	}
     	// Model results
-		returnString.append(String.format("%nResults%n%n"));
+		returnString.append(String.format("%nResults%n"));
 		for(final String key: this.getOutcomes().keySet())
 		{
 			returnString.append(String.format("%s = %.1f%%%n", key, this.getOutcomes().get(key) * 100.0));
 		}
 		// Variable display names and values
-    	returnString.append(String.format("Calculation Inputs%n"));
+    	returnString.append(String.format("%nCalculation Inputs%n"));
 		for(final Value value: this.getNonProcedureValues())
 		{
 			returnString.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));
@@ -246,7 +246,8 @@ public class Calculation implements Serializable
 	}
     
     /**
-     * Returns a set of only {@link ProcedureValue} objects
+     * Returns a set of only {@link ProcedureValue} objects from the input values
+     * of the calculation.
      * @return a SortedSet with only {@link ProcedureValue} objects in the set
      */
     public SortedSet<Value> getProcedureValues()
@@ -263,7 +264,8 @@ public class Calculation implements Serializable
     }
     
     /**
-     * Returns a set of any non-{@link ProcedureValue} objects
+     * Returns a set of any non-{@link ProcedureValue} objects from the input values
+     * of the calculation.
      * @return a SortedSet with only non-{@link ProcedureValue} objects in the set
      */
     public SortedSet<Value> getNonProcedureValues()

@@ -11,8 +11,11 @@
     <h3>Calculation Inputs</h3>
     <table class="srcalcTable" id="inputValueTable">
     <tr><th class="main">Variable</th><th class="main">Value</th></tr>
-    <c:forEach var="value" items="${calculation.values}">
-    <tr><td>${value.variable.displayName}</td><td>${value.displayString}</td>
+    <c:forEach var="value" items="${calculation.procedureValues}">
+    <tr><td>${value.variable.displayName}</td><td>${value.displayString}</td></tr>
+    </c:forEach>
+    <c:forEach var="value" items="${calculation.nonProcedureValues}">
+    <tr><td>${value.variable.displayName}</td><td>${value.displayString}</td></tr>
     </c:forEach>
     </table>
     <div class="actionButtons">

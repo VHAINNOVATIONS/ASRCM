@@ -28,10 +28,10 @@ public class RpcVistaPatientDaoTest
     private final static String INVALID_SIGNATURE_RETURN = "0^Incorrect Electronic Signature Code Entered.";
     private final static String VALID_SIGNATURE_RETURN = "1^Progress note was created and signed successfully.";
     private final static String ELECTRONIC_SIGNATURE = "TESTSIG";
-    public final static String NOTE_BODY = "Specialty = Thoracic\n\nCalculation Inputs\n"
-    		+ "Age = 45.0\nDNR = No\nFunctional Status = Independent\n"
-    		+ "Procedure = 26546 - Repair left hand - you know, the thing with fingers (10.06)\n\n"
-    		+ "Results\nThoracic 30-day mortality estimate = 100.0%\n";
+    public final static String NOTE_BODY = String.format("Specialty = Thoracic%n%n"
+    		+ "Procedure = 26546 - Repair left hand - you know, the thing with fingers (10.06)%n%n"
+    		+ "Results%nThoracic 30-day mortality estimate = 100.0%%%n%n"
+    		+ "Calculation Inputs%nAge = 45.0%nDNR = No%nFunctional Status = Independent%n");
     private final static int PATIENT_DFN = 500;
 
     @Test
