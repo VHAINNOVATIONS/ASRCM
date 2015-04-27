@@ -8,16 +8,8 @@ import static org.mockito.Matchers.eq;
 import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.BooleanValue;
-import gov.va.med.srcalc.domain.variable.MultiSelectOption;
-import gov.va.med.srcalc.domain.variable.MultiSelectValue;
-import gov.va.med.srcalc.domain.variable.NumericalValue;
-import gov.va.med.srcalc.domain.variable.ProcedureValue;
-import gov.va.med.srcalc.domain.variable.Value;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -57,11 +49,7 @@ public class RpcVistaPatientDaoTest
         		anyString(), anyString(), anyString(), anyString()))
             .thenReturn(Arrays.asList(INVALID_SIGNATURE_RETURN));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
-    	// Get patient and specialty
-    	final Patient patient = SampleObjects.dummyPatient(PATIENT_DFN);
-    	final Calculation calculation = Calculation.forPatient(patient);
-    	calculation.setSpecialty(SampleObjects.sampleThoracicSpecialty());
-    	runCalculation(calculation);
+    	final Calculation calculation = SampleObjects.calculatedCalculation();
     	
     	// The note body being used here should not matter since the doRpc() call is being
     	// mocked and is told what to return.
@@ -79,27 +67,7 @@ public class RpcVistaPatientDaoTest
          		anyString(), anyString(), anyString(), anyString()))
              .thenReturn(Arrays.asList(VALID_SIGNATURE_RETURN));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
-    	// Get patient and specialty
-    	final Patient patient = SampleObjects.dummyPatient(PATIENT_DFN);
-    	final Calculation calculation = Calculation.forPatient(patient);
-    	calculation.setSpecialty(SampleObjects.sampleThoracicSpecialty());
-    	runCalculation(calculation);
     	
-    	assertEquals("Success", dao.saveRiskCalculationNote(calculation.getPatient(), ELECTRONIC_SIGNATURE, DUMMY_BODY));
-    }
-    
-    private static void runCalculation(final Calculation calculation) throws Exception
-    {
-    	calculation.calculate(getCalculationValues());
-    }
-    
-    private static List<Value> getCalculationValues() throws Exception
-    {
-    	List<Value> values = new ArrayList<Value>();
-    	values.add(new ProcedureValue(SampleObjects.sampleProcedureVariable(), SampleObjects.sampleRepairLeftProcedure()));
-    	values.add(new NumericalValue(SampleObjects.sampleAgeVariable(), 45.0f));
-    	values.add(new BooleanValue(SampleObjects.dnrVariable(), false)); 
-    	values.add(new MultiSelectValue(SampleObjects.functionalStatusVariable(), new MultiSelectOption("Independent")));
-    	return values;
+    	assertEquals("Success", dao.saveRiskCalculationNote(SampleObjects.calculatedCalculation().getPatient(), ELECTRONIC_SIGNATURE, DUMMY_BODY));
     }
 }

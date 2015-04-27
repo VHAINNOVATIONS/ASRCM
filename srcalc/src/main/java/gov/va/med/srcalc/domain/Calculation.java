@@ -270,14 +270,14 @@ public class Calculation implements Serializable
      */
     public SortedSet<Value> getNonProcedureValues()
     {
-    	final SortedSet<Value> procedureValues = new TreeSet<>(new ValueVariableComparator(new DisplayNameComparator()));
+    	final SortedSet<Value> nonProcedureValues = new TreeSet<>(new ValueVariableComparator(new DisplayNameComparator()));
     	for(final Value value: fValues)
     	{
     		if(!(value instanceof ProcedureValue))
     		{
-    			procedureValues.add(value);
+    			nonProcedureValues.add(value);
     		}
     	}
-    	return procedureValues;
+    	return nonProcedureValues;
     }
 }

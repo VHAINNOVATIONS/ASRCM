@@ -287,6 +287,12 @@ public class SampleObjects
         return parser.parseExpression("false");
     }
     
+    /**
+     * Create a new calculation for a dummy patient, set the specialty,
+     * and then perform the calculation using the a custom set of values.
+     * @return a {@link Calculation} object after the calculation is performed
+     * @throws Exception
+     */
     public static Calculation calculatedCalculation() throws Exception
     {
     	final Calculation calc = Calculation.forPatient(SampleObjects.dummyPatient(1));
