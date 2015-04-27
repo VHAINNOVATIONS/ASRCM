@@ -225,18 +225,59 @@ public class Calculation implements Serializable
     	// Build the note body where each section is separated by a blank line
 		// Specialty
     	returnString.append(String.format("Specialty = %s%n%n", this.getSpecialty().toString()));
-		// Variable display names and values
-    	returnString.append(String.format("Calculation Inputs%n"));
-		for(final Value value: this.getValues())
-		{
-			returnString.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));
-		}
-		// Model results
+    	//Procedures
+    	for(final Value value: this.getProcedureValues())
+    	{
+    		returnString.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));
+    	}
+    	// Model results
 		returnString.append(String.format("%nResults%n"));
 		for(final String key: this.getOutcomes().keySet())
 		{
 			returnString.append(String.format("%s = %.1f%%%n", key, this.getOutcomes().get(key) * 100.0));
 		}
+		// Variable display names and values
+    	returnString.append(String.format("%nCalculation Inputs%n"));
+		for(final Value value: this.getNonProcedureValues())
+		{
+			returnString.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));
+		}
 		return returnString.toString();
 	}
+    
+    /**
+     * Returns a set of only {@link ProcedureValue} objects from the input values
+     * of the calculation.
+     * @return a SortedSet with only {@link ProcedureValue} objects in the set
+     */
+    public SortedSet<Value> getProcedureValues()
+    {
+    	final SortedSet<Value> procedureValues = new TreeSet<>(new ValueVariableComparator(new DisplayNameComparator()));
+    	for(final Value value: fValues)
+    	{
+    		if(value instanceof ProcedureValue)
+    		{
+    			procedureValues.add(value);
+    		}
+    	}
+    	return procedureValues;
+    }
+    
+    /**
+     * Returns a set of any non-{@link ProcedureValue} objects from the input values
+     * of the calculation.
+     * @return a SortedSet with only non-{@link ProcedureValue} objects in the set
+     */
+    public SortedSet<Value> getNonProcedureValues()
+    {
+    	final SortedSet<Value> nonProcedureValues = new TreeSet<>(new ValueVariableComparator(new DisplayNameComparator()));
+    	for(final Value value: fValues)
+    	{
+    		if(!(value instanceof ProcedureValue))
+    		{
+    			nonProcedureValues.add(value);
+    		}
+    	}
+    	return nonProcedureValues;
+    }
 }

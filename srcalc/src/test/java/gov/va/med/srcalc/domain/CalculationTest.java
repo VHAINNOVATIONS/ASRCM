@@ -16,6 +16,10 @@ import org.junit.Test;
 
 public class CalculationTest
 {
+	private final static String NOTE_BODY = String.format("Specialty = Thoracic%n%n"
+    		+ "Procedure = 26546 - Repair left hand - you know, the thing with fingers (10.06)%n%n"
+    		+ "Results%nThoracic 30-day mortality estimate = 100.0%%%n%n"
+    		+ "Calculation Inputs%nAge = 45.0%nDNR = No%nFunctional Status = Independent%n");
     
     @Test
     public final void testForPatient()
@@ -141,5 +145,27 @@ public class CalculationTest
         calc.calculate(Arrays.asList(
                 new BooleanValue(SampleObjects.dnrVariable(), true),
                 new NumericalValue(SampleObjects.sampleAgeVariable(), 12)));
+    }
+    
+    @Test
+    public final void testBuildNoteBody() throws Exception
+    {
+    	final Calculation calculation = SampleObjects.calculatedCalculation();
+    	
+    	assertEquals(calculation.buildNoteBody(), NOTE_BODY);
+    }
+    
+    @Test
+    public final void testGetProcedureValues() throws Exception
+    {
+    	final Calculation calc = SampleObjects.calculatedCalculation();
+    	assert(calc.getProcedureValues().size() == 1);
+    }
+    
+    @Test
+    public final void testGetNonProcedureValues() throws Exception
+    {
+    	final Calculation calc = SampleObjects.calculatedCalculation();
+    	assert(calc.getNonProcedureValues().size() == 3);
     }
 }

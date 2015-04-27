@@ -286,4 +286,23 @@ public class SampleObjects
         final SpelExpressionParser parser = new SpelExpressionParser();
         return parser.parseExpression("false");
     }
+    
+    /**
+     * Create a new calculation for a dummy patient, set the specialty,
+     * and then perform the calculation using the a custom set of values.
+     * @return a {@link Calculation} object after the calculation is performed
+     * @throws Exception
+     */
+    public static Calculation calculatedCalculation() throws Exception
+    {
+    	final Calculation calc = Calculation.forPatient(SampleObjects.dummyPatient(1));
+    	calc.setSpecialty(sampleThoracicSpecialty());
+    	final List<Value> values = new ArrayList<Value>();
+    	values.add(new BooleanValue(SampleObjects.dnrVariable(), false));
+    	values.add(new NumericalValue(SampleObjects.sampleAgeVariable(), 45.0f));
+    	values.add(new MultiSelectValue(SampleObjects.functionalStatusVariable(), new MultiSelectOption("Independent")));
+    	values.add(new ProcedureValue(SampleObjects.sampleProcedureVariable(), SampleObjects.sampleRepairLeftProcedure()));
+    	calc.calculate(values);
+    	return calc;
+    }
 }
