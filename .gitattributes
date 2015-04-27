@@ -1,0 +1,3 @@
+# Don't try to perform end-of-line conversion on the Javadocs. Just let the
+# Javadoc tool write them as it wishes.
+/srcalc/javadoc/**/*.html -text
