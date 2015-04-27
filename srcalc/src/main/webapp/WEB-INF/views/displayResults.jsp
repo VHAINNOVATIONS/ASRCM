@@ -11,6 +11,8 @@
     <h3>Calculation Inputs</h3>
     <table class="srcalcTable" id="inputValueTable">
     <tr><th class="main">Variable</th><th class="main">Value</th></tr>
+    <%-- The procedure is more important to the calculation so it should be easily  
+        visible to the user. --%>
     <c:forEach var="value" items="${calculation.procedureValues}">
     <tr><td>${value.variable.displayName}</td><td>${value.displayString}</td></tr>
     </c:forEach>

@@ -7,7 +7,6 @@ import gov.va.med.srcalc.domain.model.DerivedTerm;
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.util.MissingValuesException;
-import gov.va.med.srcalc.vista.RpcVistaPatientDaoTest;
 import static gov.va.med.srcalc.domain.SampleObjects.*;
 
 import java.util.*;
@@ -17,6 +16,10 @@ import org.junit.Test;
 
 public class CalculationTest
 {
+	private final static String NOTE_BODY = String.format("Specialty = Thoracic%n%n"
+    		+ "Procedure = 26546 - Repair left hand - you know, the thing with fingers (10.06)%n%n"
+    		+ "Results%nThoracic 30-day mortality estimate = 100.0%%%n%n"
+    		+ "Calculation Inputs%nAge = 45.0%nDNR = No%nFunctional Status = Independent%n");
     
     @Test
     public final void testForPatient()
@@ -147,41 +150,22 @@ public class CalculationTest
     @Test
     public final void testBuildNoteBody() throws Exception
     {
-    	final Calculation calculation = Calculation.forPatient(SampleObjects.dummyPatient(1));
-    	calculation.setSpecialty(SampleObjects.sampleThoracicSpecialty());
-    	calculation.calculate(getCalculationValues());
+    	final Calculation calculation = SampleObjects.calculatedCalculation();
     	
-    	assertEquals(calculation.buildNoteBody(), RpcVistaPatientDaoTest.NOTE_BODY);
+    	assertEquals(calculation.buildNoteBody(), NOTE_BODY);
     }
     
     @Test
     public final void testGetProcedureValues() throws Exception
     {
-    	final Calculation calc = getTestCalculationWithValues();
+    	final Calculation calc = SampleObjects.calculatedCalculation();
     	assert(calc.getProcedureValues().size() == 1);
     }
     
     @Test
     public final void testGetNonProcedureValues() throws Exception
     {
-    	final Calculation calc = getTestCalculationWithValues();
+    	final Calculation calc = SampleObjects.calculatedCalculation();
     	assert(calc.getNonProcedureValues().size() == 3);
-    }
-    
-    private Calculation getTestCalculationWithValues() throws Exception
-    {
-    	final Calculation calc = Calculation.forPatient(SampleObjects.dummyPatient(1));
-    	calc.getValues().addAll(getCalculationValues());
-    	return calc;
-    }
-    
-    private List<Value> getCalculationValues() throws Exception
-    {
-    	List<Value> values = new ArrayList<Value>();
-    	values.add(new BooleanValue(SampleObjects.dnrVariable(), false));
-    	values.add(new NumericalValue(SampleObjects.sampleAgeVariable(), 45.0f));
-    	values.add(new MultiSelectValue(SampleObjects.functionalStatusVariable(), new MultiSelectOption("Independent")));
-    	values.add(new ProcedureValue(SampleObjects.sampleProcedureVariable(), SampleObjects.sampleRepairLeftProcedure()));
-    	return values;
     }
 }

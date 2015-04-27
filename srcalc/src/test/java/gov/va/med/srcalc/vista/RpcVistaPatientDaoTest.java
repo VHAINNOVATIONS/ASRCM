@@ -28,10 +28,8 @@ public class RpcVistaPatientDaoTest
     private final static String INVALID_SIGNATURE_RETURN = "0^Incorrect Electronic Signature Code Entered.";
     private final static String VALID_SIGNATURE_RETURN = "1^Progress note was created and signed successfully.";
     private final static String ELECTRONIC_SIGNATURE = "TESTSIG";
-    public final static String NOTE_BODY = String.format("Specialty = Thoracic%n%n"
-    		+ "Procedure = 26546 - Repair left hand - you know, the thing with fingers (10.06)%n%n"
-    		+ "Results%nThoracic 30-day mortality estimate = 100.0%%%n%n"
-    		+ "Calculation Inputs%nAge = 45.0%nDNR = No%nFunctional Status = Independent%n");
+    private final static String DUMMY_BODY = "Note Body";
+    
     private final static int PATIENT_DFN = 500;
 
     @Test
@@ -65,10 +63,12 @@ public class RpcVistaPatientDaoTest
     	calculation.setSpecialty(SampleObjects.sampleThoracicSpecialty());
     	runCalculation(calculation);
     	
+    	// The note body being used here should not matter since the doRpc() call is being
+    	// mocked and is told what to return.
     	assertEquals("Invalid Electronic Signature Code",
-    			dao.saveRiskCalculationNote(calculation.getPatient(), "BadSig", NOTE_BODY));
+    			dao.saveRiskCalculationNote(calculation.getPatient(), "BadSig", DUMMY_BODY));
     	assertEquals("Invalid Electronic Signature Code",
-    			dao.saveRiskCalculationNote(calculation.getPatient(), "AlsoBad", NOTE_BODY));
+    			dao.saveRiskCalculationNote(calculation.getPatient(), "AlsoBad", DUMMY_BODY));
     }
     
     @Test
@@ -85,7 +85,7 @@ public class RpcVistaPatientDaoTest
     	calculation.setSpecialty(SampleObjects.sampleThoracicSpecialty());
     	runCalculation(calculation);
     	
-    	assertEquals("Success", dao.saveRiskCalculationNote(calculation.getPatient(), ELECTRONIC_SIGNATURE, NOTE_BODY));
+    	assertEquals("Success", dao.saveRiskCalculationNote(calculation.getPatient(), ELECTRONIC_SIGNATURE, DUMMY_BODY));
     }
     
     private static void runCalculation(final Calculation calculation) throws Exception
