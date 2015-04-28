@@ -26,6 +26,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
     private static final String SPLIT_REGEX = "[\\s]+";
+    private static final int MAX_LINE_LENGTH = 80;
     
     // Return codes
     private static final String SUCCESS = "Success";
@@ -176,7 +177,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
 			final String electronicSignature, final String noteBody)
 	{
 		// Split on line feed or carriage return
-		final String[] bodyArray = noteBody.split("\\r?\\n");
+		// Wrap any lines that are too long so that users do not have to 
+		// scroll when viewing the note in CPRS.
+		final String[] bodyArray = wrapLines(noteBody.split("\\r?\\n"));
 		final Map<String, String> noteMap = new HashMap<String, String>();
 		for(int i = 0; i < bodyArray.length; i++)
 		{
@@ -208,5 +211,27 @@ public class RpcVistaPatientDao implements VistaPatientDao
 			// We've tested that this works so any failure at this point is probably recoverable.
 			throw new RecoverableDataAccessException(e.getMessage(), e);
 		}
+	}
+	
+	/**
+	 * Wrap lines at an appropriate length without going over the specified length.
+	 * @param bodyArray
+	 * @return
+	 */
+	private String[] wrapLines(final String[] bodyArray)
+	{
+		for(int i = 0; i < bodyArray.length; i++)
+		{
+			StringBuilder builder = new StringBuilder(bodyArray[i]);
+			int j = 0;
+			while (j + MAX_LINE_LENGTH < builder.length() &&
+					builder.lastIndexOf(" ", j + MAX_LINE_LENGTH) != -1) {
+				j = builder.lastIndexOf(" ", j + MAX_LINE_LENGTH);
+				// Insert a new line and an indentation of 4 spaces.
+				builder.replace(j, j + 1, "\n    ");
+			}
+			bodyArray[i] = builder.toString();
+		}
+		return bodyArray;
 	}
 }
