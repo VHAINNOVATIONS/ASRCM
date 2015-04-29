@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
@@ -179,14 +180,20 @@ public class RpcVistaPatientDao implements VistaPatientDao
 		// Split on line feed or carriage return
 		// Wrap any lines that are too long so that users do not have to 
 		// scroll when viewing the note in CPRS.
-		final String[] bodyArray = wrapLines(noteBody.split("\\r?\\n"));
+		final String[] bodyArray = noteBody.split("\\r?\\n");
+		final StringBuilder wrappedNote = new StringBuilder();
+		for(final String line: bodyArray)
+		{
+			wrappedNote.append(WordUtils.wrap(line, MAX_LINE_LENGTH, "\n    ", false) + "\n");
+		}
+		final String[] wrappedBodyArray = wrappedNote.toString().split("\\n");
 		final Map<String, String> noteMap = new HashMap<String, String>();
-		for(int i = 0; i < bodyArray.length; i++)
+		for(int i = 0; i < wrappedBodyArray.length; i++)
 		{
 			// VistA indexing starts at 1
 			// The current RPC uses multiple subscripts
 			noteMap.put(RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",i + 1)),
-					bodyArray[i]);
+					wrappedBodyArray[i]);
 		}
 		try
 		{
@@ -211,28 +218,5 @@ public class RpcVistaPatientDao implements VistaPatientDao
 			// We've tested that this works so any failure at this point is probably recoverable.
 			throw new RecoverableDataAccessException(e.getMessage(), e);
 		}
-	}
-	
-	/**
-	 * Wrap lines at an appropriate length without going over the specified length.
-	 * This method will not wrap correctly if a word is over 80 characters long.
-	 * @param bodyArray
-	 * @return
-	 */
-	private String[] wrapLines(final String[] bodyArray)
-	{
-		for(int i = 0; i < bodyArray.length; i++)
-		{
-			StringBuilder builder = new StringBuilder(bodyArray[i]);
-			int j = 0;
-			while (j + MAX_LINE_LENGTH < builder.length() &&
-					builder.lastIndexOf(" ", j + MAX_LINE_LENGTH) != -1) {
-				j = builder.lastIndexOf(" ", j + MAX_LINE_LENGTH);
-				// Insert a new line and an indentation of 4 spaces.
-				builder.replace(j, j + 1, "\n    ");
-			}
-			bodyArray[i] = builder.toString();
-		}
-		return bodyArray;
 	}
 }
