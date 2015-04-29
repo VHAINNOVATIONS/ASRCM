@@ -215,6 +215,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
 	
 	/**
 	 * Wrap lines at an appropriate length without going over the specified length.
+	 * This method will not wrap correctly if a word is over 80 characters long.
 	 * @param bodyArray
 	 * @return
 	 */
