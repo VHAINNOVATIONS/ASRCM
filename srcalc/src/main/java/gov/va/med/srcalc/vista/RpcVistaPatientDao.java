@@ -27,10 +27,6 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
     private static final String SPLIT_REGEX = "[\\s]+";
     
-    // Return codes
-    private static final String SUCCESS = "Success";
-    private static final String INVALID_SIGNATURE = "Invalid Electronic Signature Code";
-    
     public static final String VISTA_DATE_OUTPUT_FORMAT = "MM/dd/yy@HH:mm";
     
     private static final Map<String, String> TRANSLATION_MAP;

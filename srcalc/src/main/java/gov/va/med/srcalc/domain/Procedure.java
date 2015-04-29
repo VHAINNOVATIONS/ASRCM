@@ -159,7 +159,7 @@ public final class Procedure
     /**
      * Like {@link #toString()} but uses the long instead of short description.
      * Sometimes the long description is too long to be appropriate for toString().
-     * @return
+     * @return a possibly-long String
      */
     @Transient
     public String getLongString()

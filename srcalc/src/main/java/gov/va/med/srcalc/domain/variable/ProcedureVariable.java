@@ -81,7 +81,6 @@ public class ProcedureVariable extends AbstractVariable
      * Returns a {@link Value} object representing the given procedure
      * selection.
      * @param selectedProcedure
-     * @return
      */
     public ProcedureValue makeValue(final Procedure selectedProcedure)
     {

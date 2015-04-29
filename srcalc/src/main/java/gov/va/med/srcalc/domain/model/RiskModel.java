@@ -274,7 +274,7 @@ public class RiskModel
      * Calculates the result of this model.
      * @param inputValues the input values. There must be exactly one input value
      * per required variable.
-     * @return
+     * @return the calculated result
      * @throws IllegalArgumentException if there is not exactly one input value
      * per required variable.
      * @throws MissingValuesException if there are any required variables without an assigned value

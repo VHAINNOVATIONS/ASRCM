@@ -6,6 +6,7 @@ import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.variable.Value;
 import gov.va.med.srcalc.domain.workflow.*;
 import gov.va.med.srcalc.util.MissingValuesException;
+import gov.va.med.srcalc.vista.VistaPatientDao;
 
 public interface CalculationService
 {
@@ -31,7 +32,7 @@ public interface CalculationService
      * Saves the finished calculation to VistA, given the calculation, electronic signature, 
      * and the note body
      * @param calculation
-     * @return
+     * @return one of the return code strings from {@link VistaPatientDao}
      */
     public String saveRiskCalculationNote(Calculation calculation, String electronicSignature);
     

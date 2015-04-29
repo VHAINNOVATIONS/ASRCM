@@ -10,6 +10,10 @@ import gov.va.med.srcalc.domain.Patient;
  */
 public interface VistaPatientDao
 {
+    // Return codes
+    public static final String SUCCESS = "Success";
+    public static final String INVALID_SIGNATURE = "Invalid Electronic Signature Code";
+
     /**
      * Loads a Patient from VistA given his/her DFN.
      * @throws DataAccessException if communication with VistA failed
@@ -21,7 +25,7 @@ public interface VistaPatientDao
      * and the note body
      * @param patient
      * @param noteBody 
-     * @return
+     * @return one of the above-defined return code strings
      */
     public String saveRiskCalculationNote(final Patient patient, final String electronicSignature, String noteBody);
     

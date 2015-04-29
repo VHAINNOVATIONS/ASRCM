@@ -33,7 +33,6 @@ public class BooleanVariable extends AbstractVariable
     /**
      * Returns a {@link Value} object representing the given boolean value.
      * @param boolValue
-     * @return
      */
     public BooleanValue makeValue(final boolean boolValue)
     {

@@ -77,7 +77,6 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
     /**
      * The units (if any) for the number. May be an empty string if units are
      * not applicable, but will never be null.
-     * @return
      */
     @Basic
     @Column(nullable = false, length = UNITS_MAX)
