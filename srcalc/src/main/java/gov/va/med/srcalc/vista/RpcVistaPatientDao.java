@@ -19,7 +19,9 @@ import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.vistalink.rpc.RpcRequest;
 
 /**
- * Implementation of {@link VistaPatientDao} using remote procedures.
+ * Implementation of {@link VistaPatientDao} using remote procedures. Each
+ * instance is tied to a particular user to avoid having to specify the user
+ * when calling each method.
  */
 public class RpcVistaPatientDao implements VistaPatientDao
 {
