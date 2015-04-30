@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain.model;
 import gov.va.med.srcalc.util.Preconditions;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import javax.persistence.*;
 
@@ -16,6 +17,11 @@ import javax.persistence.*;
 @Table(name = "variable")
 public abstract class AbstractVariable implements Variable
 {
+    /**
+     * Precompiled version of {@link Variable#VALID_KEY_REGEX} for efficiency.
+     */
+    private static final Pattern VALID_KEY_PATTERN  = Pattern.compile(VALID_KEY_REGEX);
+
     private int fId;
     private String fDisplayName;
     private VariableGroup fGroup;
@@ -84,10 +90,15 @@ public abstract class AbstractVariable implements Variable
     /**
      * Sets the internal key of the variable
      * @throws IllegalArgumentException if the given key is over 40 characters
+     * or does not match {@link Variable#VALID_KEY_REGEX}
      */
     public void setKey(final String key)
     {
-    	this.fKey = Preconditions.requireWithin(key, KEY_MAX);
+        // Check preconditions
+        Preconditions.requireWithin(key, KEY_MAX);
+        Preconditions.requireMatches(key, "key", VALID_KEY_PATTERN);
+        
+        fKey = key;
     }
     
     @Basic
@@ -101,11 +112,13 @@ public abstract class AbstractVariable implements Variable
 
     /**
      * Sets the name of the variable for display to the user.
-     * @throws IllegalArgumentException if the given name is over 80 characters
+     * @throws IllegalArgumentException if the given name is over
+     * {@link Variable#DISPLAY_NAME_MAX} characters
      */
     public void setDisplayName(final String displayName)
     {
-        this.fDisplayName = Preconditions.requireWithin(displayName, DISPLAY_NAME_MAX);
+        this.fDisplayName =
+                Preconditions.requireWithin(displayName, DISPLAY_NAME_MAX);
     }
 
     /**
