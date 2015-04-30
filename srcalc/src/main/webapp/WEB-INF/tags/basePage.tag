@@ -30,7 +30,7 @@
     <link rel="stylesheet" type="text/css" href="${dataTablesCss}">
     <c:url var="modernizrJs" value="/js/vendor/modernizr-2.6.2.min.js"/>
     <script type="text/javascript" src="${modernizrJs}"></script>
-    <title>${title}</title>
+    <title>${title} - ${appInfo.longName}</title>
 </head>
 <body>
     <header>
