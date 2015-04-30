@@ -8,6 +8,7 @@ import static org.mockito.Matchers.eq;
 import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.SampleObjects;
+import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
 
 import java.util.Arrays;
 
@@ -53,9 +54,9 @@ public class RpcVistaPatientDaoTest
     	
     	// The note body being used here should not matter since the doRpc() call is being
     	// mocked and is told what to return.
-    	assertEquals("Invalid Electronic Signature Code",
+    	assertEquals(SaveNoteCode.INVALID_SIGNATURE,
     			dao.saveRiskCalculationNote(calculation.getPatient(), "BadSig", DUMMY_BODY));
-    	assertEquals("Invalid Electronic Signature Code",
+    	assertEquals(SaveNoteCode.INVALID_SIGNATURE,
     			dao.saveRiskCalculationNote(calculation.getPatient(), "AlsoBad", DUMMY_BODY));
     }
     
@@ -68,6 +69,8 @@ public class RpcVistaPatientDaoTest
              .thenReturn(Arrays.asList(VALID_SIGNATURE_RETURN));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
     	
-    	assertEquals("Success", dao.saveRiskCalculationNote(SampleObjects.calculatedCalculation().getPatient(), ELECTRONIC_SIGNATURE, DUMMY_BODY));
+    	assertEquals(
+    	        SaveNoteCode.SUCCESS,
+    	        dao.saveRiskCalculationNote(SampleObjects.calculatedCalculation().getPatient(), ELECTRONIC_SIGNATURE, DUMMY_BODY));
     }
 }

@@ -32,8 +32,9 @@ public interface CalculationService
      * Saves the finished calculation to VistA, given the calculation, electronic signature, 
      * and the note body
      * @param calculation
-     * @return one of the return code strings from {@link VistaPatientDao}
+     * @return one of the {@link VistaPatientDao.SaveNoteCode} return codes
      */
-    public String saveRiskCalculationNote(Calculation calculation, String electronicSignature);
+    public VistaPatientDao.SaveNoteCode saveRiskCalculationNote(
+            Calculation calculation, String electronicSignature);
     
 }

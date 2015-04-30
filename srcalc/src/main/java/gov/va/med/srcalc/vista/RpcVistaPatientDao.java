@@ -171,7 +171,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
     }
 
 	@Override
-	public String saveRiskCalculationNote(final Patient patient,
+	public SaveNoteCode saveRiskCalculationNote(final Patient patient,
 			final String electronicSignature, final String noteBody)
 	{
 		// Split on line feed or carriage return
@@ -201,11 +201,11 @@ public class RpcVistaPatientDao implements VistaPatientDao
 			final String[] splitArray = saveResults.get(0).split("\\^");
 			if(splitArray[0].equals("1"))
 			{
-				return SUCCESS;
+				return SaveNoteCode.SUCCESS;
 			}
 			else
 			{
-				return INVALID_SIGNATURE;
+				return SaveNoteCode.INVALID_SIGNATURE;
 			}
 		}
 		catch(final Exception e)
