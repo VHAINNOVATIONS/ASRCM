@@ -27,7 +27,6 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
     private static final String SPLIT_REGEX = "[\\s]+";
-    private static final int MAX_LINE_LENGTH = 80;
     
     // Return codes
     private static final String SUCCESS = "Success";
@@ -184,7 +183,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
 		final StringBuilder wrappedNote = new StringBuilder();
 		for(final String line: bodyArray)
 		{
-			wrappedNote.append(WordUtils.wrap(line, MAX_LINE_LENGTH, "\n    ", false) + "\n");
+			wrappedNote.append(WordUtils.wrap(line, VistaPatientDao.MAX_LINE_LENGTH, "\n    ", false) + "\n");
 		}
 		final String[] wrappedBodyArray = wrappedNote.toString().split("\\n");
 		final Map<String, String> noteMap = new HashMap<String, String>();
