@@ -1,4 +1,4 @@
-<%@ taglib tagdir="/WEB-INF/tags" prefix="srcalc" %>
+<%@ taglib uri="/WEB-INF/srcalc.tld" prefix="srcalc" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
@@ -36,7 +36,9 @@
         <tr>
         <td class="attributeName">Display Text:</td>
         <td>
-            <form:input path="displayName" />
+            <%-- Use the DISPLAY_NAME_MAX for the text box size, but cap it at
+                 40 because any bigger is too big. --%>
+            <form:input path="displayName" size="${srcalc:min(DISPLAY_NAME_MAX, 40)}" />
             <form:errors path="displayName" cssClass="error" />
         </td>
         </tr>

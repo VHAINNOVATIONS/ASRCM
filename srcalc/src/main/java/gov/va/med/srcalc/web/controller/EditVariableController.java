@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.controller;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.service.*;
 import gov.va.med.srcalc.web.view.Views;
 
@@ -53,6 +54,9 @@ public class EditVariableController
     {
         final ModelAndView mav = new ModelAndView(Views.EDIT_BOOLEAN_VARIABLE);
         // Note: "variable" is in the model via createEditVariable() above.
+        
+        // Add reference data (max lengths, valid values, etc.)
+        mav.addObject("DISPLAY_NAME_MAX", Variable.DISPLAY_NAME_MAX);
         
         return mav;
     }
