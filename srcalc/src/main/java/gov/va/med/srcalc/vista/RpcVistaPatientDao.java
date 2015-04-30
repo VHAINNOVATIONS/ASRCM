@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
@@ -174,14 +175,22 @@ public class RpcVistaPatientDao implements VistaPatientDao
 			final String electronicSignature, final String noteBody)
 	{
 		// Split on line feed or carriage return
+		// Wrap any lines that are too long so that users do not have to 
+		// scroll when viewing the note in CPRS.
 		final String[] bodyArray = noteBody.split("\\r?\\n");
+		final StringBuilder wrappedNote = new StringBuilder();
+		for(final String line: bodyArray)
+		{
+			wrappedNote.append(WordUtils.wrap(line, VistaPatientDao.MAX_LINE_LENGTH, "\n    ", false) + "\n");
+		}
+		final String[] wrappedBodyArray = wrappedNote.toString().split("\\n");
 		final Map<String, String> noteMap = new HashMap<String, String>();
-		for(int i = 0; i < bodyArray.length; i++)
+		for(int i = 0; i < wrappedBodyArray.length; i++)
 		{
 			// VistA indexing starts at 1
 			// The current RPC uses multiple subscripts
 			noteMap.put(RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",i + 1)),
-					bodyArray[i]);
+					wrappedBodyArray[i]);
 		}
 		try
 		{

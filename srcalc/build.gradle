@@ -73,6 +73,7 @@ dependencies {
 	compile group: 'org.springframework.security', name: 'spring-security-web', version: springSecurityVersion
 	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: springSecurityVersion
 	compile 'joda-time:joda-time:2.3'
+	compile 'org.apache.commons:commons-lang3:3.3.2'
 
     // Spring-Security XML namespace
 	runtime group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
