@@ -121,7 +121,6 @@ public final class Rule
 
     /**
      * Should we bypass this rule if values are missing.
-     * @return
      */
     @Basic
     private boolean isRequired()

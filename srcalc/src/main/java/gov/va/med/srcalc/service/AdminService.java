@@ -23,10 +23,11 @@ public interface AdminService
         throws InvalidIdentifierException;
     
     /**
-     * Updates a Variable with the given properties.
-     * @param properties contains properties to set
+     * Updates a Variable with the given command object. See the package javadocs
+     * for why we use a command object.
+     * @param command a command object containing the edits to make
      * @throws InvalidIdentifierException if no such Variable exists
      */
-    public void updateVariable(final EditVariable properties)
+    public void updateVariable(final EditVariable command)
         throws InvalidIdentifierException;
 }

@@ -2,6 +2,7 @@ package gov.va.med.srcalc.web.controller;
 
 import java.util.HashMap;
 
+import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.web.view.Views;
@@ -56,9 +57,10 @@ public class DisplayResultsController
     	String resultString;
     	try
     	{
-    		resultString  = fCalculationService.saveRiskCalculationNote(
-    				CalculationWorkflowSupplier.getWorkflowFromSession(session).getCalculation(),
-    			electronicSignature);
+    	    final Calculation calc =
+    	            CalculationWorkflowSupplier.getWorkflowFromSession(session).getCalculation();
+            resultString = fCalculationService.saveRiskCalculationNote(
+                    calc, electronicSignature).getDescription();
     	}
     	catch(final RecoverableDataAccessException e)
     	{

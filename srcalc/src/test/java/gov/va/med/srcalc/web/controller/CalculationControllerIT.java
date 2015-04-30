@@ -3,10 +3,10 @@ package gov.va.med.srcalc.web.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
+import gov.va.med.srcalc.vista.VistaPatientDao;
 import gov.va.med.srcalc.web.controller.CalculationController;
 import gov.va.med.srcalc.web.controller.DisplayResultsController;
 import gov.va.med.srcalc.web.view.VariableEntry;
@@ -242,6 +242,6 @@ public class CalculationControllerIT extends IntegrationTest
 	        .andExpect(content().contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
 	        		MediaType.APPLICATION_JSON.getSubtype())))
 	        .andExpect(jsonPath("$.*", hasSize(1)))
-	        .andExpect(jsonPath("$.status", is("1^Progress note was created and signed successfully.")));
+	        .andExpect(jsonPath("$.status", is(VistaPatientDao.SaveNoteCode.SUCCESS.getDescription())));
     }
 }

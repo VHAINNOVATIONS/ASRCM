@@ -35,7 +35,7 @@ public class EditVariableController
     /**
      * Creates an {@link EditVariable} instance for the variable to edit.
      * @param variableKey the name of the variable to edit
-     * @return
+     * @return the EditVariable instance
      * @throws InvalidIdentifierException
      */
     @ModelAttribute("variable")

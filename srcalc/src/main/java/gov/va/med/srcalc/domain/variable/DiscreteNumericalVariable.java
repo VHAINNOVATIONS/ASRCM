@@ -105,7 +105,6 @@ public class DiscreteNumericalVariable extends AbstractNumericalVariable impleme
     /**
      * Returns a {@link Value} object representing the given Category selection.
      * @param category
-     * @return
      */
     public DiscreteNumericalValue makeValue(final Category category)
     {

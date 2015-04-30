@@ -7,7 +7,7 @@ import gov.va.med.srcalc.domain.variable.AbstractVariable;
 
 /**
  * A command object that updates a {@link AbstractVariable}'s properties. See
- * {@link AdminService#updateVariable(AbstractVariable)} for a primary usage.
+ * {@link AdminService#updateVariable(EditVariable)} for a primary usage.
  */
 public final class EditVariable
 {

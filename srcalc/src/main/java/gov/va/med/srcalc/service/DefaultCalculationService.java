@@ -90,11 +90,12 @@ public class DefaultCalculationService implements CalculationService
         return new UnsignedCalculation(calculation);
     }
 
-	@Override
-	public String saveRiskCalculationNote(Calculation calculation,
-			String electronicSignature)
-	{
-		return fPatientDao.saveRiskCalculationNote(calculation.getPatient(), electronicSignature, calculation.buildNoteBody());
-	}
+    @Override
+    public VistaPatientDao.SaveNoteCode saveRiskCalculationNote(
+            Calculation calculation, String electronicSignature)
+    {
+        return fPatientDao.saveRiskCalculationNote(
+                calculation.getPatient(), electronicSignature, calculation.buildNoteBody());
+    }
     
 }

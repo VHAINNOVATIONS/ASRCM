@@ -20,17 +20,15 @@ import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.vistalink.rpc.RpcRequest;
 
 /**
- * Implementation of {@link VistaPatientDao} using remote procedures.
+ * Implementation of {@link VistaPatientDao} using remote procedures. Each
+ * instance is tied to a particular user to avoid having to specify the user
+ * when calling each method.
  */
 public class RpcVistaPatientDao implements VistaPatientDao
 {
     private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
     private static final String SPLIT_REGEX = "[\\s]+";
-    
-    // Return codes
-    private static final String SUCCESS = "Success";
-    private static final String INVALID_SIGNATURE = "Invalid Electronic Signature Code";
     
     public static final String VISTA_DATE_OUTPUT_FORMAT = "MM/dd/yy@HH:mm";
     
@@ -173,7 +171,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
     }
 
 	@Override
-	public String saveRiskCalculationNote(final Patient patient,
+	public SaveNoteCode saveRiskCalculationNote(final Patient patient,
 			final String electronicSignature, final String noteBody)
 	{
 		// Split on line feed or carriage return
@@ -203,11 +201,11 @@ public class RpcVistaPatientDao implements VistaPatientDao
 			final String[] splitArray = saveResults.get(0).split("\\^");
 			if(splitArray[0].equals("1"))
 			{
-				return SUCCESS;
+				return SaveNoteCode.SUCCESS;
 			}
 			else
 			{
-				return INVALID_SIGNATURE;
+				return SaveNoteCode.INVALID_SIGNATURE;
 			}
 		}
 		catch(final Exception e)

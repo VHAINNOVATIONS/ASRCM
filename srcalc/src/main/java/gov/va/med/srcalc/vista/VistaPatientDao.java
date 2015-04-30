@@ -10,6 +10,24 @@ import gov.va.med.srcalc.domain.Patient;
  */
 public interface VistaPatientDao
 {
+    enum SaveNoteCode
+    {
+        SUCCESS("Success"),
+        INVALID_SIGNATURE("Invalid Electronic Signature Code");
+        
+        private final String fDescription;
+        
+        SaveNoteCode(final String description)
+        {
+            fDescription = description;
+        }
+        
+        public String getDescription()
+        {
+            return fDescription;
+        }
+    }
+
 	/**
 	 * The maximum amount of characters allowed on a line before wrapping the line
 	 * onto a new line.
@@ -28,8 +46,8 @@ public interface VistaPatientDao
      * characters so that the note is easily visible in CPRS without horizontal scrolling.
      * @param patient
      * @param noteBody 
-     * @return
+     * @return one of the {@link SaveNoteCode} return codes
      */
-    public String saveRiskCalculationNote(final Patient patient, final String electronicSignature, String noteBody);
+    public SaveNoteCode saveRiskCalculationNote(final Patient patient, final String electronicSignature, String noteBody);
     
 }
