@@ -50,6 +50,9 @@ public class VariableDao
     /**
      * Returns the persistent Variable with the given key, or null
      * if no such Variable exists.
+     * 
+     * @return a <i>persistent</i> object: any changes made during the current
+     * transaction will automatically be persisted
      */
     public AbstractVariable getByKey(final String variableKey)
     {
@@ -57,5 +60,19 @@ public class VariableDao
                 "from AbstractVariable v where v.key = :variableKey");
         q.setString("variableKey", variableKey);
         return (AbstractVariable)q.uniqueResult();
+    }
+    
+    /**
+     * <p>Overwrites a variable in the database with the given object (matched
+     * by Id).</p>
+     * 
+     * <p>As stated in {@link #getByKey(String) getByKey}, changes are usually
+     * automatically persisted. Call this only to persist changes made after the
+     * transaction in which the object was loaded.</p>
+     * @param variable represents the state to persist
+     */
+    public void updateVariable(final AbstractVariable variable)
+    {
+        getCurrentSession().update(variable);
     }
 }

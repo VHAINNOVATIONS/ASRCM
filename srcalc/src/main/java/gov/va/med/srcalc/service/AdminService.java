@@ -16,18 +16,18 @@ public interface AdminService
     public List<AbstractVariable> getAllVariables();
     
     /**
-     * Returns the Variable with the given display name.
+     * Returns the Variable with the given display name for editing. Note that
+     * the returned object must be given back to {@link
+     * #updateVariable(AbstractVariable)} to persist any changes.
      * @throws InvalidIdentifierException if no such Variable exists
      */
     public AbstractVariable getVariable(final String key)
         throws InvalidIdentifierException;
     
     /**
-     * Updates a Variable with the given command object. See the package javadocs
-     * for why we use a command object.
-     * @param command a command object containing the edits to make
-     * @throws InvalidIdentifierException if no such Variable exists
+     * Updates the given variable in the persistent store.
+     * @param variable the variable to update. The object must have been
+     * previously loaded using {@link #getVariable(String)}.
      */
-    public void updateVariable(final EditVariable command)
-        throws InvalidIdentifierException;
+    public void updateVariable(final AbstractVariable variable);
 }

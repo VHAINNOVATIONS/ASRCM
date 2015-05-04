@@ -75,19 +75,22 @@ public class DefaultAdminServiceTest
         final String newHelpText = "Help me!";
         
         // Create the class under test.
-        final DefaultAdminService s = new DefaultAdminService(mockVariableDao());
+        final VariableDao mockDao = mockVariableDao();
+        final DefaultAdminService s = new DefaultAdminService(mockDao);
         
         // Setup
         final AbstractVariable var = s.getVariable(key);
         assertEquals(origName, var.getDisplayName());  // sanity check
         
         // Behavior verification.
-        final EditVariable ev = EditVariable.fromVariable(var);
-        ev.setDisplayName(newName);
-        ev.setHelpText(newHelpText);
-        s.updateVariable(ev);
-        assertEquals(newName, var.getDisplayName());
-        assertEquals(newHelpText, var.getHelpText());
+        var.setDisplayName(newName);
+        var.setHelpText(newHelpText);
+        s.updateVariable(var);
+        
+        // Normally we try to verify the contract of a method instead of its
+        // implementation, but without Hibernate it is impossible to verify
+        // the contract here. Just verify that the service called update().
+        verify(mockDao).updateVariable(var);
     }
     
 }

@@ -50,11 +50,8 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
-    public void updateVariable(EditVariable properties)
-        throws InvalidIdentifierException
+    public void updateVariable(final AbstractVariable variable)
     {
-        // Why provide a Service Layer method just to do this? For transaction
-        // control.
-        properties.setOntoVariable(getVariable(properties.getKey()));
+        fVariableDao.updateVariable(variable);
     }
 }

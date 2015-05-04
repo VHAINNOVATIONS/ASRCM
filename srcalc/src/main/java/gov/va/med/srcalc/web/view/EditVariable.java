@@ -1,14 +1,10 @@
-package gov.va.med.srcalc.service;
+package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.model.AbstractVariable;
 
-/**
- * A command object that updates a {@link AbstractVariable}'s properties. See
- * {@link AdminService#updateVariable(EditVariable)} for a primary usage.
- */
 public final class EditVariable
 {
-    private String fKey;
+    private final String fKey;
 
     private String fDisplayName;
     

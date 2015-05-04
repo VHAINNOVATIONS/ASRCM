@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.service;
+package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.model.AbstractVariable;
 

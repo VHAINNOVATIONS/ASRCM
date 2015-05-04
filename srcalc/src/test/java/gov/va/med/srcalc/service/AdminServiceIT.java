@@ -50,16 +50,21 @@ public class AdminServiceIT extends IntegrationTest
     	final String key = "preopPneumonia";
         final String origName = "Preop Pneumonia";
         final String newName = "Preoperative Issues";
+        final String newHelpText = "helpppppppp";
         
         // Setup
         final AbstractVariable var = fAdminService.getVariable(key);
         assertEquals(origName, var.getDisplayName());  // sanity check
+        // Clear the session to simulate a new transaction.
+        getHibernateSession().clear();
         
         // Behavior verification.
-        final EditVariable ev = EditVariable.fromVariable(var);
-        ev.setDisplayName(newName);
-        fAdminService.updateVariable(ev);
-        assertEquals(newName, fAdminService.getVariable(key).getDisplayName());
+        var.setDisplayName(newName);
+        var.setHelpText(newHelpText);
+        fAdminService.updateVariable(var);
+        final AbstractVariable newVar = fAdminService.getVariable(key);
+        assertEquals(newName, newVar.getDisplayName());
+        assertEquals(newHelpText, newVar.getHelpText());
     }
     
 }

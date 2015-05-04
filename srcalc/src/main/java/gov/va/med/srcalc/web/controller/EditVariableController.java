@@ -4,8 +4,9 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 
 import gov.va.med.srcalc.domain.model.Variable;
+import gov.va.med.srcalc.domain.model.AbstractVariable;
 import gov.va.med.srcalc.service.*;
-import gov.va.med.srcalc.web.view.Views;
+import gov.va.med.srcalc.web.view.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/admin/variables/{variableKey}")
 public class EditVariableController
 {
+    private static final String ATTRIBUTE_VARIABLE = "variable";
+    
     private final AdminService fAdminService;
     
     @Inject
@@ -40,12 +43,18 @@ public class EditVariableController
      * @return the EditVariable instance
      * @throws InvalidIdentifierException
      */
-    @ModelAttribute("variable")
+    @ModelAttribute(ATTRIBUTE_VARIABLE)
     public EditVariable createEditVariable(
             @PathVariable final String variableKey)
             throws InvalidIdentifierException
     {
-        return EditVariable.fromVariable(fAdminService.getVariable(variableKey));
+        return EditVariable.fromVariable(loadVariable(variableKey));
+    }
+    
+    private AbstractVariable loadVariable(final String variableKey)
+            throws InvalidIdentifierException
+    {
+        return fAdminService.getVariable(variableKey);
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -63,7 +72,7 @@ public class EditVariableController
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveVariable(
-            @ModelAttribute("variable") @Valid final EditVariable editVariable,
+            @ModelAttribute(ATTRIBUTE_VARIABLE) @Valid final EditVariable editVariable,
             final BindingResult bindingResult)
                     throws InvalidIdentifierException
     {
@@ -72,8 +81,12 @@ public class EditVariableController
             // Re-show the edit screen.
             return editVariable();
         }
+        
+        // Apply the changes to the persistent variable.
+        final AbstractVariable var = loadVariable(editVariable.getKey());
+        editVariable.setOntoVariable(var);
+        fAdminService.updateVariable(var);
 
-        fAdminService.updateVariable(editVariable);
         // Using the POST-redirect-GET pattern.
         return new ModelAndView("redirect:/admin/models");
     }
