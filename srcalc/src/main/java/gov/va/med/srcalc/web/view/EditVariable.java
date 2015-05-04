@@ -1,26 +1,58 @@
 package gov.va.med.srcalc.web.view;
 
-import gov.va.med.srcalc.domain.model.AbstractVariable;
+import java.util.Collection;
 
+import com.google.common.base.Optional;
+
+import gov.va.med.srcalc.domain.model.AbstractVariable;
+import gov.va.med.srcalc.domain.model.VariableGroup;
+
+/**
+ * <p>Encapsulates the operation to update an existing variable.</p>
+ * 
+ * <p>Workflow:</p>
+ * 
+ * <ol>
+ * <li>Construct an instance based on an existing variable.</li>
+ * <li>Present the user with the initial values and the "reference data" such
+ * as {@link #getAllGroups()}.</li>
+ * <li>Have the user update the properties as desired.</li>
+ * <li>Use {@link EditVariableValidator} to validate the user's edits.</li>
+ * <li>Call {@link #applyToVariable(AbstractVariable)} to update an existing
+ * variable with the new properties.</li>
+ * </ol>
+ */
 public final class EditVariable
 {
+    private final Collection<VariableGroup> fAllGroups;
+
     private final String fKey;
 
     private String fDisplayName;
     
     private String fHelpText;
     
-    private EditVariable(final String key)
-    {
-        fKey = key;
-    }
+    private int fGroupId;
     
-    public static EditVariable fromVariable(final AbstractVariable variable)
+    /**
+     * Constructs an instance.
+     * @param variable
+     * @param allGroups
+     */
+    public EditVariable(
+            final AbstractVariable variable,
+            final Collection<VariableGroup> allGroups) 
     {
-        final EditVariable ev = new EditVariable(variable.getKey());
-        ev.setDisplayName(variable.getDisplayName());
-        ev.setHelpText(variable.getHelpText());
-        return ev;
+        fKey = variable.getKey();
+        fDisplayName = variable.getDisplayName();
+        fHelpText = variable.getHelpText();
+        fGroupId = variable.getGroup().getId();
+        fAllGroups = allGroups;
+    }
+
+    public Collection<VariableGroup> getAllGroups()
+    {
+        return fAllGroups;
     }
 
     /**
@@ -51,16 +83,56 @@ public final class EditVariable
     {
         fHelpText = helpText;
     }
+    
+    /**
+     * Returns the database ID of the variable's group.
+     */
+    public int getGroupId()
+    {
+        return fGroupId;
+    }
+    
+    /**
+     * Sets the database ID of the variable's group. Accepts an invalid group,
+     * though {@link #applyToVariable(AbstractVariable)} will throw an exception
+     * if an invalid group is set.
+     */
+    public void setGroupId(final int groupId)
+    {
+        fGroupId = groupId;
+    }
+    
+    /**
+     * Returns the actual VariableGroup object corresponding to the set group
+     * ID.
+     * @return an {@link Optional} containing the group if it exists
+     */
+    public Optional<VariableGroup> getGroup()
+    {
+        Optional<VariableGroup> foundGroup = Optional.absent();
+        // There should not be more than 10 groups, so just iterate.
+        for (final VariableGroup g : fAllGroups)
+        {
+            if (g.getId() == fGroupId)
+            {
+                foundGroup = Optional.of(g);
+            }
+        }
+        
+        return foundGroup;
+    }
 
     /**
      * Sets all stored properties on the given Variable.
      * @param variable the variable to modify
      * @return the same Variable reference for convenience
+     * @throws IllegalStateException if no group exists for the set group ID
      */
-    public AbstractVariable setOntoVariable(final AbstractVariable variable)
+    public AbstractVariable applyToVariable(final AbstractVariable variable)
     {
         variable.setDisplayName(fDisplayName);
         variable.setHelpText(fHelpText);
+        variable.setGroup(getGroup().get());
         return variable;
     }
 }

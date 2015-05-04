@@ -5,10 +5,11 @@ import java.util.*;
 import javax.inject.Inject;
 
 import org.hibernate.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import gov.va.med.srcalc.domain.model.AbstractVariable;
-import gov.va.med.srcalc.domain.model.DisplayNameComparator;
+import gov.va.med.srcalc.domain.model.*;
 
 /**
  * DAO for {@link AbstractVariable}s.
@@ -16,6 +17,8 @@ import gov.va.med.srcalc.domain.model.DisplayNameComparator;
 @Repository
 public class VariableDao
 {
+    private static final Logger fLogger = LoggerFactory.getLogger(VariableDao.class);
+    
     private final SessionFactory fSessionFactory;
     
     @Inject // Allow arguments to be autowired.
@@ -45,6 +48,17 @@ public class VariableDao
         final List<AbstractVariable> vars = q.list();
         Collections.sort(vars, new DisplayNameComparator());
         return vars;
+    }
+    
+    public SortedSet<VariableGroup> getAllVariableGroups()
+    {
+        fLogger.trace("Loading all VariableGroups.");
+
+        @SuppressWarnings("unchecked") // trust Hibernate
+        final List<VariableGroup> list =
+                getCurrentSession().createCriteria(VariableGroup.class).list();
+        
+        return new TreeSet<>(list);
     }
     
     /**

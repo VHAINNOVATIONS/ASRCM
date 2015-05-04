@@ -146,25 +146,55 @@ public class SampleModels
         	    new Specialty(62, "Vascular")
                 );
     }
+    
+    /**
+     * Constructs a VariableGroup object with the given properties.
+     * @param name the group name
+     * @param displayOrder the group display order
+     * @return a new VariableGroup object with a mock database ID of
+     * displayOrder + 1
+     */
+    private static VariableGroup makeVariableGroup(
+            final String name, final int displayOrder)
+    {
+        final VariableGroup vg = new VariableGroup(name, displayOrder);
+        // Normally only Hibernate calls the package-private setId() but fake it
+        // here.
+        vg.setId(displayOrder + 1);
+        return vg;
+    }
 
     public static VariableGroup procedureVariableGroup()
     {
-        return new VariableGroup("Planned Procedure", 0);
+        return makeVariableGroup("Planned Procedure", 0);
     }
     
     public static VariableGroup demographicsVariableGroup()
     {
-        return new VariableGroup("Demographics", 1);
+        return makeVariableGroup("Demographics", 1);
     }
     
     public static VariableGroup labVariableGroup()
     {
-        return new VariableGroup("Laboratory Values", 4);
+        return makeVariableGroup("Laboratory Values", 4);
     }
     
     public static VariableGroup recentClinicalVariableGroup()
     {
-        return new VariableGroup("Clinical Conditions or Diseases - Recent", 5);
+        return makeVariableGroup("Clinical Conditions or Diseases - Recent", 5);
+    }
+    
+    /**
+     * Returns a set of 4 Variable Groups, sorted in natural order. The objects
+     * will have mock database IDs.
+     */
+    public static SortedSet<VariableGroup> variableGroups()
+    {
+        return new TreeSet<>(Arrays.asList(
+                procedureVariableGroup(),
+                demographicsVariableGroup(),
+                labVariableGroup(),
+                recentClinicalVariableGroup()));
     }
 
     public static MultiSelectVariable genderVariable()

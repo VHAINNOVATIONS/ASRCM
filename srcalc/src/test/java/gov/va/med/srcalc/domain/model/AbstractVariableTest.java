@@ -10,19 +10,19 @@ public class AbstractVariableTest
     /**
      * A 40-character string.
      */
-    private static final String FORTY_CHARS =
+    public static final String FORTY_CHARS =
             "0123456789012345678901234567890123456789";
 
     /**
      * A 41-character string.
      */
-    private static final String FORTY_ONE_CHARS =
+    public static final String FORTY_ONE_CHARS =
             "0123456789012345678901234567890123456789X";
 
     /**
      * An 81-characeter string.
      */
-    private static final String EIGHTY_ONE_CHARS =
+    public static final String EIGHTY_ONE_CHARS =
             "01234567890123456789012345678901234567890123456789012345678901234567890123456789X";
 
     @Test(expected = NullPointerException.class)

@@ -2,8 +2,10 @@ package gov.va.med.srcalc.service;
 
 import gov.va.med.srcalc.db.VariableDao;
 import gov.va.med.srcalc.domain.model.AbstractVariable;
+import gov.va.med.srcalc.domain.model.VariableGroup;
 
 import java.util.List;
+import java.util.SortedSet;
 
 import javax.inject.Inject;
 
@@ -30,6 +32,13 @@ public class DefaultAdminService implements AdminService
         fLogger.debug("Returning all Variables.");
 
         return fVariableDao.getAllVariables();
+    }
+    
+    @Override
+    @Transactional
+    public SortedSet<VariableGroup> getAllVariableGroups()
+    {
+        return fVariableDao.getAllVariableGroups();
     }
     
     @Override

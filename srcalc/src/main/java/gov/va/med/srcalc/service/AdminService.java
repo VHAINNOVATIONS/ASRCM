@@ -1,8 +1,10 @@
 package gov.va.med.srcalc.service;
 
 import gov.va.med.srcalc.domain.model.AbstractVariable;
+import gov.va.med.srcalc.domain.model.VariableGroup;
 
 import java.util.List;
+import java.util.SortedSet;
 
 /**
  * Service Layer facade for administrative functionalty.
@@ -14,6 +16,12 @@ public interface AdminService
      * Returns all Variables for editing purposes.
      */
     public List<AbstractVariable> getAllVariables();
+    
+    /**
+     * Returns all VariableGroups for editing purposes.
+     * @return a set sorted by the VariableGroups' natural order
+     */
+    public SortedSet<VariableGroup> getAllVariableGroups();
     
     /**
      * Returns the Variable with the given display name for editing. Note that

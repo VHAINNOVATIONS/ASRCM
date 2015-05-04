@@ -42,6 +42,15 @@
             </ul>
         </td>
         </tr>
+        <tr>
+        <td class="attributeName">Group:</td>
+        <td>
+            <form:select path="groupId">
+                <form:options items="${variable.allGroups}" itemValue="id" itemName="name" />
+            </form:select>
+            <form:errors path="groupId" cssClass="error" />
+        </td>
+        </tr>
     </tbody>
     </table>
     <div class="actionButtons">

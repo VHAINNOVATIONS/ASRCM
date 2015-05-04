@@ -2,11 +2,11 @@ package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import gov.va.med.srcalc.domain.model.AbstractVariable;
-import gov.va.med.srcalc.domain.model.BooleanVariable;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 
 import java.util.List;
+import java.util.SortedSet;
 
 import javax.inject.Inject;
 
@@ -36,6 +36,14 @@ public class AdminServiceIT extends IntegrationTest
     }
     
     @Test
+    public final void testGetAllVariableGroups()
+    {
+        final SortedSet<VariableGroup> actualGroups = fAdminService.getAllVariableGroups();
+        assertEquals(7, actualGroups.size());
+        assertEquals("Planned Procedure", actualGroups.first().getName());
+    }
+    
+    @Test
     public final void testGetVariable() throws Exception
     {
         final String key = "preopPneumonia";
@@ -54,17 +62,25 @@ public class AdminServiceIT extends IntegrationTest
         
         // Setup
         final AbstractVariable var = fAdminService.getVariable(key);
+        final VariableGroup newGroup = fAdminService.getAllVariableGroups().first();
         assertEquals(origName, var.getDisplayName());  // sanity check
         // Clear the session to simulate a new transaction.
         getHibernateSession().clear();
         
-        // Behavior verification.
+        // Operation
         var.setDisplayName(newName);
         var.setHelpText(newHelpText);
+        var.setGroup(newGroup);
         fAdminService.updateVariable(var);
+        
+        // Verification
+        // Simulate a new Hibernate Session.
+        getHibernateSession().flush();
+        getHibernateSession().clear();
         final AbstractVariable newVar = fAdminService.getVariable(key);
         assertEquals(newName, newVar.getDisplayName());
         assertEquals(newHelpText, newVar.getHelpText());
+        assertEquals(newGroup, newVar.getGroup());
     }
     
 }

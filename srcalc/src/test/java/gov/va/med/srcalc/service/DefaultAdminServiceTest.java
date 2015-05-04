@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
+import java.util.SortedSet;
 
 import gov.va.med.srcalc.db.VariableDao;
 import gov.va.med.srcalc.domain.model.*;
@@ -14,11 +15,13 @@ import org.junit.Test;
 public class DefaultAdminServiceTest
 {
     private List<AbstractVariable> fSampleVariables;
+    private SortedSet<VariableGroup> fSampleGroups;
     
     @Before
     public final void setup()
     {
         fSampleVariables = SampleModels.sampleVariableList();
+        fSampleGroups = SampleModels.variableGroups();
     }
     
     public VariableDao mockVariableDao()
@@ -28,6 +31,7 @@ public class DefaultAdminServiceTest
         // Use a reference to the existing DNR variable so we can do updates.
         final AbstractVariable variable = fSampleVariables.get(3);
         when(dao.getByKey(variable.getKey())).thenReturn(variable);
+        when(dao.getAllVariableGroups()).thenReturn(fSampleGroups);
         return dao;
     }
     
@@ -41,6 +45,16 @@ public class DefaultAdminServiceTest
         // Variables do not override equals() but this works because we use
         // the same Variable objects.
         assertEquals(fSampleVariables, s.getAllVariables());
+    }
+    
+    @Test
+    public final void testGetAllVariableGroups()
+    {
+        // Create the class under test.
+        final DefaultAdminService s = new DefaultAdminService(mockVariableDao());
+        
+        // Behavior verification.
+        assertEquals(fSampleGroups, s.getAllVariableGroups());
     }
     
     @Test
