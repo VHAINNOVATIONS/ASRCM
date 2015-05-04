@@ -71,13 +71,9 @@ public abstract class AbstractVariable implements Variable
         this.fId = id;
     }
     
-    /**
-     * The default column name would be "KEY", which is already a 
-     * reserved word in SQL. Because of this, the column name is specified
-     * rather than using the default.
-     */
     @Basic
     @Column(
+                // override the default name "KEY" which is a reserved word
     		name = "VARIABLE_KEY",
     		length = KEY_MAX,
     		nullable = false,
@@ -88,11 +84,13 @@ public abstract class AbstractVariable implements Variable
     }
     
     /**
-     * Sets the internal key of the variable
+     * Sets the internal key of the variable. Since the key should not be
+     * updated on an existing variable, this method is for bean construction
+     * only.
      * @throws IllegalArgumentException if the given key is over 40 characters
      * or does not match {@link Variable#VALID_KEY_REGEX}
      */
-    public void setKey(final String key)
+    void setKey(final String key)
     {
         // Check preconditions
         Preconditions.requireWithin(key, KEY_MAX);
