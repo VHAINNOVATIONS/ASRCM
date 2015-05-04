@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.domain.variable;
+package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.SampleObjects;

@@ -3,7 +3,7 @@ package gov.va.med.srcalc.web.controller;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.service.*;
 import gov.va.med.srcalc.web.view.Views;
 

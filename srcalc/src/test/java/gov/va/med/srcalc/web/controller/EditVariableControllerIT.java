@@ -64,20 +64,4 @@ public class EditVariableControllerIT extends IntegrationTest
             andExpect(model().attributeHasErrors("variable")).
             andExpect(view().name(Views.EDIT_BOOLEAN_VARIABLE));
     }
-
-    @Test
-    public void testEditVariableInvalidChars() throws Exception
-    {
-        fMockMvc.perform(get("/admin/variables/preopPneumonia")).
-            andExpect(status().isOk()).
-            andExpect(model().attribute("variable", hasProperty("displayName")));
-        
-        fMockMvc.perform(
-                post("/admin/variables/preopPneumonia").
-                param("displayName",
-                        "Preop_Pneumonia")).
-            andExpect(model().attributeHasErrors("variable")).
-            andExpect(view().name(Views.EDIT_BOOLEAN_VARIABLE));
-    }
-    
 }
