@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
-import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.web.view.InputParserVisitor;
 import gov.va.med.srcalc.web.view.VariableEntry;
@@ -23,7 +22,7 @@ public class InputParserVisitorTest
     public final void testUnspecifiedMultiselect() throws Exception
     {
         // Setup variable
-        final MultiSelectVariable var = SampleObjects.sampleGenderVariable();
+        final MultiSelectVariable var = SampleModels.genderVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         // Note: Gender never set in dynamicValues.
@@ -44,7 +43,7 @@ public class InputParserVisitorTest
     public final void testInvalidMultiselect() throws Exception
     {
         // Setup variable
-        final MultiSelectVariable var = SampleObjects.sampleGenderVariable();
+        final MultiSelectVariable var = SampleModels.genderVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put("gender", "Unknown");
@@ -64,7 +63,7 @@ public class InputParserVisitorTest
     public final void testUnspecifiedProcedure() throws Exception
     {
         // Setup variable
-        final ProcedureVariable var = SampleObjects.sampleProcedureVariable();
+        final ProcedureVariable var = SampleModels.procedureVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         // Sometimes no value may be represented as an empty string.
@@ -85,7 +84,7 @@ public class InputParserVisitorTest
     public final void testInvalidProcedure() throws Exception
     {
         // Setup variable
-        final ProcedureVariable var = SampleObjects.sampleProcedureVariable();
+        final ProcedureVariable var = SampleModels.procedureVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(var.getKey(), "ASDFASDFASDF");
@@ -105,7 +104,7 @@ public class InputParserVisitorTest
     public final void testUnspecifiedNumerical() throws Exception
     {
         // Setup variable
-        final NumericalVariable var = SampleObjects.sampleAgeVariable();
+        final NumericalVariable var = SampleModels.ageVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         // Note: Age never set in dynamicValues.
@@ -125,7 +124,7 @@ public class InputParserVisitorTest
     public final void testInvalidNumerical() throws Exception
     {
         // Setup variable
-        final NumericalVariable var = SampleObjects.sampleAgeVariable();
+        final NumericalVariable var = SampleModels.ageVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(var.getKey(), "asdfasdf");
@@ -145,7 +144,7 @@ public class InputParserVisitorTest
     public final void testTooLowNumerical() throws Exception
     {
         // Setup variable
-        final NumericalVariable var = SampleObjects.sampleAgeVariable();
+        final NumericalVariable var = SampleModels.ageVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(var.getKey(), "-1");
@@ -165,7 +164,7 @@ public class InputParserVisitorTest
     public final void testTooHighNumerical() throws Exception
     {
         // Setup variable
-        final NumericalVariable var = SampleObjects.sampleAgeVariable();
+        final NumericalVariable var = SampleModels.ageVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(var.getKey(), "1000");
@@ -185,7 +184,7 @@ public class InputParserVisitorTest
     public final void testUnspecifiedBoolean() throws Exception
     {
         // Setup variable
-        final BooleanVariable dnrVariable = SampleObjects.dnrVariable();
+        final BooleanVariable dnrVariable = SampleModels.dnrVariable();
 
         final VariableEntry variableEntry = new VariableEntry(
                 Arrays.asList(dnrVariable));
@@ -206,7 +205,7 @@ public class InputParserVisitorTest
     public final void testTrueBoolean() throws Exception
     {
         // Setup variable
-        final BooleanVariable dnrVariable = SampleObjects.dnrVariable();
+        final BooleanVariable dnrVariable = SampleModels.dnrVariable();
 
         final VariableEntry variableEntry = new VariableEntry(
                 Arrays.asList(dnrVariable));
@@ -227,7 +226,7 @@ public class InputParserVisitorTest
     public final void testFalseBoolean() throws Exception
     {
         // Setup variable
-        final BooleanVariable dnrVariable = SampleObjects.dnrVariable();
+        final BooleanVariable dnrVariable = SampleModels.dnrVariable();
 
         final VariableEntry variableEntry = new VariableEntry(
                 Arrays.asList(dnrVariable));
@@ -248,7 +247,7 @@ public class InputParserVisitorTest
     public final void testUnspecifiedDiscreteNumerical() throws Exception
     {
         // Setup variable
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         // Clear out the default value.
@@ -268,7 +267,7 @@ public class InputParserVisitorTest
     public final void testInvalidDiscreteNumerical() throws Exception
     {
         // Setup variable
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(var.getKey(), "Unknown");
@@ -288,7 +287,7 @@ public class InputParserVisitorTest
     public final void testValidNumberDiscreteNumerical() throws Exception
     {
         // Setup variable
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
         final String numericalName = VariableEntry.getNumericalInputName(var);
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
@@ -309,7 +308,7 @@ public class InputParserVisitorTest
     public final void testUnspecifiedNumberDiscreteNumerical() throws Exception
     {
         // Setup variable
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
@@ -330,7 +329,7 @@ public class InputParserVisitorTest
     public final void testInvalidNumberDiscreteNumerical() throws Exception
     {
         // Setup variable
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
         final String numericalName = VariableEntry.getNumericalInputName(var);
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
@@ -353,7 +352,7 @@ public class InputParserVisitorTest
     public final void testTooLowDiscreteNumerical() throws Exception
     {
         // Setup variable
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
         final String numericalName = VariableEntry.getNumericalInputName(var);
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
@@ -376,7 +375,7 @@ public class InputParserVisitorTest
     public final void testTooHighDiscreteNumerical() throws Exception
     {
         // Setup variable
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
         final String numericalName = VariableEntry.getNumericalInputName(var);
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));

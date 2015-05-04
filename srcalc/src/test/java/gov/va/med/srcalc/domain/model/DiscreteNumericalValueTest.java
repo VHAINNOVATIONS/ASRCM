@@ -2,7 +2,7 @@ package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.ConfigurationException;
-import gov.va.med.srcalc.domain.SampleObjects;
+
 import org.junit.Test;
 
 public class DiscreteNumericalValueTest
@@ -23,7 +23,7 @@ public class DiscreteNumericalValueTest
     @Test
     public final void testPresumed()
     {
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
         // Find the WNL Category.
         final DiscreteNumericalVariable.Category wnl = findCategory(var, "WNL");
         final DiscreteNumericalValue val = DiscreteNumericalValue.fromCategory(var, wnl);
@@ -38,7 +38,7 @@ public class DiscreteNumericalValueTest
     @Test
     public final void testNumericalValid() throws Exception
     {
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
         final DiscreteNumericalValue val =
                 DiscreteNumericalValue.fromNumerical(var, 2.0f);
         // getVariable()
@@ -52,14 +52,14 @@ public class DiscreteNumericalValueTest
     @Test(expected = ValueTooHighException.class)
     public final void testNumericalTooHigh() throws Exception
     {
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
         DiscreteNumericalValue.fromNumerical(var, 50.1f);
     }
     
     @Test(expected = ValueTooLowException.class)
     public final void testNumericalTooLow() throws Exception
     {
-        final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
         DiscreteNumericalValue.fromNumerical(var, 1.0f);
     }
     
@@ -67,7 +67,7 @@ public class DiscreteNumericalValueTest
     public final void testNumericalLowBoundInclusiveFail() throws Exception
     {
     	// There is an accompanying test for Upper Bound in {@link NumericalValueTest}
-    	final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+    	final DiscreteNumericalVariable var = SampleModels.wbcVariable();
     	var.setMinInclusive(false);
         DiscreteNumericalValue.fromNumerical(var, 2.0f);
     }
@@ -76,7 +76,7 @@ public class DiscreteNumericalValueTest
     public final void testNumericalLowBoundInclusivePass() throws Exception
     {
     	// There is an accompanying test for Upper Bound in {@link NumericalValueTest}
-    	final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+    	final DiscreteNumericalVariable var = SampleModels.wbcVariable();
     	// Should not throw an exception
     	DiscreteNumericalValue.fromNumerical(var, 2.0f);
     }
@@ -84,7 +84,7 @@ public class DiscreteNumericalValueTest
     @Test(expected = ConfigurationException.class)
     public final void testNumericalMisconfigured() throws Exception
     {
-        final DiscreteNumericalVariable var = SampleObjects.misconfiguredWbcVariable();
+        final DiscreteNumericalVariable var = SampleModels.misconfiguredWbcVariable();
         DiscreteNumericalValue.fromNumerical(var, 10.5f);
     }
     

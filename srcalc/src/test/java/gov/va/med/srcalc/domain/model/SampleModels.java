@@ -1,26 +1,19 @@
-package gov.va.med.srcalc.domain;
+package gov.va.med.srcalc.domain.model;
 
-import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 import gov.va.med.srcalc.domain.model.MultiSelectVariable.DisplayType;
+
 import java.util.*;
 
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 /**
- * Constructs sample instances of various domain objects.
+ * Constructs sample instances of various risk model objects.
  */
-public class SampleObjects
+public class SampleModels
 {
-	public static Patient dummyPatient(final int dfn)
-    {
-		final Patient patient = new Patient(dfn, "Zach Smith", "M", 40);
-		patient.setBmi(20.0);
-        return patient;
-    }
-
-    public static Procedure sampleRepairLeftProcedure()
+    public static Procedure repairLeftProcedure()
     {
         return new Procedure(
                 "26546",
@@ -30,7 +23,7 @@ public class SampleObjects
                 "Standard");  
     }
 
-    public static Procedure sampleRepairRightProcedure()
+    public static Procedure repairRightProcedure()
     {
         return new Procedure(
                 "26545",
@@ -40,9 +33,9 @@ public class SampleObjects
                 "Standard");  
     }
     
-    public static List<Procedure> sampleProcedureList()
+    public static List<Procedure> procedureList()
     {
-        return Arrays.asList(sampleRepairRightProcedure(), sampleRepairLeftProcedure());
+        return Arrays.asList(repairRightProcedure(), repairLeftProcedure());
     }
     
     /**
@@ -106,11 +99,11 @@ public class SampleObjects
         return m;
     }
     
-    public static RiskModel sampleThoracicRiskModel()
+    public static RiskModel thoracicRiskModel()
     {
         final RiskModel m = new RiskModel("Thoracic 30-day mortality estimate");
-        m.getProcedureTerms().add(new ProcedureTerm(sampleProcedureVariable(), 1.0f));
-        m.getNumericalTerms().add(new NumericalTerm(sampleAgeVariable(), 2.0f));
+        m.getProcedureTerms().add(new ProcedureTerm(procedureVariable(), 1.0f));
+        m.getNumericalTerms().add(new NumericalTerm(ageVariable(), 2.0f));
         m.getBooleanTerms().add(new BooleanTerm(dnrVariable(), 0.5f));
         m.getDiscreteTerms().add(new DiscreteTerm(functionalStatusVariable(), 1, 5.0f));
         return m;
@@ -120,19 +113,19 @@ public class SampleObjects
      * Returns a sample Thoracic specialty, for when a single specialty is needed.
      * Includes a sample Variable set.
      */
-    public static Specialty sampleThoracicSpecialty()
+    public static Specialty thoracicSpecialty()
     {
         final Specialty s = new Specialty(58, "Thoracic");
-        s.getRiskModels().add(sampleThoracicRiskModel());
+        s.getRiskModels().add(thoracicRiskModel());
         return s;
     }
     
     public static List<AbstractVariable> sampleVariableList()
     {
         return Arrays.asList(
-                sampleProcedureVariable(),
-                sampleAgeVariable(),
-                sampleGenderVariable(),
+                procedureVariable(),
+                ageVariable(),
+                genderVariable(),
                 dnrVariable(),
                 functionalStatusVariable(),
                 wbcVariable());
@@ -141,14 +134,14 @@ public class SampleObjects
     /**
      * Returns a basic set of Specialty objects.
      */
-    public static List<Specialty> sampleSpecialtyList()
+    public static List<Specialty> specialtyList()
     {
         return Arrays.asList(
         	    new Specialty(48, "Cardiac"),
         	    new Specialty(50, "General Surgery"),
         	    new Specialty(52, "Neurosurgery"),
         	    new Specialty(54, "Orthopedic"),
-        	    SampleObjects.sampleThoracicSpecialty(),
+        	    SampleModels.thoracicSpecialty(),
         	    new Specialty(59, "Urology"),
         	    new Specialty(62, "Vascular")
                 );
@@ -174,7 +167,7 @@ public class SampleObjects
         return new VariableGroup("Clinical Conditions or Diseases - Recent", 5);
     }
 
-    public static MultiSelectVariable sampleGenderVariable()
+    public static MultiSelectVariable genderVariable()
     {
         final List<MultiSelectOption> options = Arrays.asList(
                 new MultiSelectOption("Male"),
@@ -189,7 +182,7 @@ public class SampleObjects
         return var;
     }
     
-    public static NumericalVariable sampleAgeVariable()
+    public static NumericalVariable ageVariable()
     {
         final NumericalVariable var = new NumericalVariable(
                 "Age", demographicsVariableGroup(), "age");
@@ -200,11 +193,11 @@ public class SampleObjects
         return var;
     }
 
-    public static ProcedureVariable sampleProcedureVariable()
+    public static ProcedureVariable procedureVariable()
     {
         final ProcedureVariable var = new ProcedureVariable(
                 "Procedure", procedureVariableGroup(), "procedure");
-        var.setProcedures(sampleProcedureList());
+        var.setProcedures(procedureList());
         return var;
     }
     
@@ -283,24 +276,5 @@ public class SampleObjects
     {
         final SpelExpressionParser parser = new SpelExpressionParser();
         return parser.parseExpression("false");
-    }
-    
-    /**
-     * Create a new calculation for a dummy patient, set the specialty,
-     * and then perform the calculation using the a custom set of values.
-     * @return a {@link Calculation} object after the calculation is performed
-     * @throws Exception
-     */
-    public static Calculation calculatedCalculation() throws Exception
-    {
-    	final Calculation calc = Calculation.forPatient(SampleObjects.dummyPatient(1));
-    	calc.setSpecialty(sampleThoracicSpecialty());
-    	final List<Value> values = new ArrayList<Value>();
-    	values.add(new BooleanValue(SampleObjects.dnrVariable(), false));
-    	values.add(new NumericalValue(SampleObjects.sampleAgeVariable(), 45.0f));
-    	values.add(new MultiSelectValue(SampleObjects.functionalStatusVariable(), new MultiSelectOption("Independent")));
-    	values.add(new ProcedureValue(SampleObjects.sampleProcedureVariable(), SampleObjects.sampleRepairLeftProcedure()));
-    	calc.calculate(values);
-    	return calc;
     }
 }

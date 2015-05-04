@@ -3,7 +3,7 @@ package gov.va.med.srcalc.web.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import gov.va.med.srcalc.domain.SampleObjects;
+import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
 import gov.va.med.srcalc.vista.VistaPatientDao;
@@ -99,7 +99,7 @@ public class CalculationControllerIT extends IntegrationTest
     @Test
     public void selectThoracicSpecialty() throws Exception
     {
-        selectSpecialty(SampleObjects.sampleThoracicSpecialty().getName());
+        selectSpecialty(SampleModels.thoracicSpecialty().getName());
     }
     
     /**

@@ -5,9 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import gov.va.med.srcalc.domain.Calculation;
-import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.SampleObjects;
+import gov.va.med.srcalc.domain.*;
 import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
 
 import java.util.Arrays;
@@ -50,7 +48,7 @@ public class RpcVistaPatientDaoTest
         		anyString(), anyString(), anyString(), anyString()))
             .thenReturn(Arrays.asList(INVALID_SIGNATURE_RETURN));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
-    	final Calculation calculation = SampleObjects.calculatedCalculation();
+    	final Calculation calculation = SampleCalculations.calculatedCalculation();
     	
     	// The note body being used here should not matter since the doRpc() call is being
     	// mocked and is told what to return.
@@ -71,6 +69,6 @@ public class RpcVistaPatientDaoTest
     	
     	assertEquals(
     	        SaveNoteCode.SUCCESS,
-    	        dao.saveRiskCalculationNote(SampleObjects.calculatedCalculation().getPatient(), ELECTRONIC_SIGNATURE, DUMMY_BODY));
+    	        dao.saveRiskCalculationNote(SampleCalculations.calculatedCalculation().getPatient(), ELECTRONIC_SIGNATURE, DUMMY_BODY));
     }
 }

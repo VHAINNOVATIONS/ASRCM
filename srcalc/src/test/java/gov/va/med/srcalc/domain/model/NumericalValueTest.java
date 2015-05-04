@@ -2,7 +2,7 @@ package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import gov.va.med.srcalc.domain.SampleObjects;
+
 import org.junit.Test;
 
 public class NumericalValueTest
@@ -10,7 +10,7 @@ public class NumericalValueTest
     @Test
     public final void testBasic() throws Exception
     {
-        final NumericalVariable var = SampleObjects.sampleAgeVariable();
+        final NumericalVariable var = SampleModels.ageVariable();
         final NumericalValue val = new NumericalValue(var, 1.2f);
         // getVariable()
         assertSame(var, val.getVariable());
@@ -23,14 +23,14 @@ public class NumericalValueTest
     @Test(expected = ValueTooHighException.class)
     public final void testValueTooHigh() throws Exception
     {
-        final NumericalVariable var = SampleObjects.sampleAgeVariable();
+        final NumericalVariable var = SampleModels.ageVariable();
         new NumericalValue(var, 1000);
     }
     
     @Test(expected = ValueTooLowException.class)
     public final void testValueTooLow() throws Exception
     {
-        final NumericalVariable var = SampleObjects.sampleAgeVariable();
+        final NumericalVariable var = SampleModels.ageVariable();
         new NumericalValue(var, -1);
     }
     
@@ -38,7 +38,7 @@ public class NumericalValueTest
     public final void testNumericalUpperBoundInclusiveFail() throws Exception
     {
     	// There is an accompanying test for lower bound in {@link DiscreteNumericalValueTest}
-    	final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+    	final DiscreteNumericalVariable var = SampleModels.wbcVariable();
     	var.setMaxInclusive(false);
         DiscreteNumericalValue.fromNumerical(var, 50.0f);
     }
@@ -47,7 +47,7 @@ public class NumericalValueTest
     public final void testNumericalUpperBoundInclusivePass() throws Exception
     {
     	// There is an accompanying test for lower bound in {@link DiscreteNumericalValueTest}
-    	final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+    	final DiscreteNumericalVariable var = SampleModels.wbcVariable();
     	// Should not throw an exception
     	DiscreteNumericalValue.fromNumerical(var, 50.0f);
     }
