@@ -3,9 +3,8 @@ package gov.va.med.srcalc.web.view;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.model.AbstractVariable;
-import gov.va.med.srcalc.domain.model.Variable;
+import gov.va.med.srcalc.domain.SampleCalculations;
+import gov.va.med.srcalc.domain.model.*;
 
 import java.util.*;
 
@@ -29,7 +28,7 @@ public class VariableEntryTest
     public final void testDefaults()
     {
         // Contains multiple variables, but only one DiscreteNumericalVariable.
-        final List<AbstractVariable> vars = SampleObjects.sampleVariableList();
+        final List<AbstractVariable> vars = SampleModels.sampleVariableList();
         
         // Behavior verification.
         final VariableEntry entry = new VariableEntry(vars);
@@ -42,10 +41,10 @@ public class VariableEntryTest
     public final void testWithRetrievedValues()
     {
     	// Contains multiple variables, but only one DiscreteNumericalVariable.
-        final List<AbstractVariable> vars = SampleObjects.sampleVariableList();
+        final List<AbstractVariable> vars = SampleModels.sampleVariableList();
         
         // Behavior verification.
-        final Patient patient = SampleObjects.dummyPatient(1);
+        final Patient patient = SampleCalculations.dummyPatient(1);
         final VariableEntry entry = VariableEntry.withRetrievedValues(vars, patient);
         final HashMap<String, String> expected = new HashMap<>();
         expected.put(vars.get(1).getKey(), String.valueOf(patient.getAge()));

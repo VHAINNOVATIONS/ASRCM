@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.SampleObjects;
+
 import org.junit.Test;
 
 public class ProcedureValueTest
@@ -9,7 +9,7 @@ public class ProcedureValueTest
     @Test
     public final void testBasic()
     {
-        final ProcedureVariable var = SampleObjects.sampleProcedureVariable();
+        final ProcedureVariable var = SampleModels.procedureVariable();
         final Procedure sel = var.getProcedures().get(1);
         final ProcedureValue val = new ProcedureValue(var, sel);
         // getVariable()

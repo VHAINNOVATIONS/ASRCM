@@ -1,7 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.model.BooleanValue;
 import gov.va.med.srcalc.domain.model.BooleanVariable;
 
@@ -12,7 +11,7 @@ public class BooleanValueTest
     @Test
     public final void testBasicTrue()
     {
-        final BooleanVariable var = SampleObjects.dnrVariable();
+        final BooleanVariable var = SampleModels.dnrVariable();
         final BooleanValue val = new BooleanValue(var, true);
         // getVariable()
         assertSame(var, val.getVariable());
@@ -25,7 +24,7 @@ public class BooleanValueTest
     @Test
     public final void testBasicFalse()
     {
-        final BooleanVariable var = SampleObjects.dnrVariable();
+        final BooleanVariable var = SampleModels.dnrVariable();
         final BooleanValue val = new BooleanValue(var, false);
         // getVariable()
         assertSame(var, val.getVariable());
