@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.SampleObjects;
+
 import java.util.*;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -23,8 +23,8 @@ public class PopulatedVariableGroupTest
     public final void testToString()
     {
         final List<AbstractVariable> variables = Arrays.asList(
-                SampleObjects.sampleAgeVariable(),
-                SampleObjects.sampleGenderVariable());
+                SampleModels.ageVariable(),
+                SampleModels.genderVariable());
         final PopulatedVariableGroup group = new PopulatedVariableGroup(variables);
         
         assertEquals(
@@ -35,8 +35,8 @@ public class PopulatedVariableGroupTest
     @Test
     public final void testBasic()
     {
-        final AbstractVariable genderVar = SampleObjects.sampleGenderVariable();
-        final AbstractVariable ageVar = SampleObjects.sampleAgeVariable();
+        final AbstractVariable genderVar = SampleModels.genderVariable();
+        final AbstractVariable ageVar = SampleModels.ageVariable();
         final List<AbstractVariable> variables = Arrays.asList(
                 ageVar, genderVar);
         final PopulatedVariableGroup group = new PopulatedVariableGroup(variables);
@@ -55,8 +55,8 @@ public class PopulatedVariableGroupTest
     public final void testMixedVariables()
     {
         final List<AbstractVariable> variables = Arrays.asList(
-                SampleObjects.sampleAgeVariable(),
-                SampleObjects.sampleProcedureVariable());
+                SampleModels.ageVariable(),
+                SampleModels.procedureVariable());
         new PopulatedVariableGroup(variables);
     }
     

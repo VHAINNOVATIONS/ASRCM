@@ -3,9 +3,8 @@ package gov.va.med.srcalc.domain.model;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static gov.va.med.srcalc.domain.SampleObjects.expression1;
-import static gov.va.med.srcalc.domain.SampleObjects.expression2;
-import gov.va.med.srcalc.domain.SampleObjects;
+import static gov.va.med.srcalc.domain.model.SampleModels.expression1;
+import static gov.va.med.srcalc.domain.model.SampleModels.expression2;
 import gov.va.med.srcalc.util.CollectionUtils;
 import gov.va.med.srcalc.util.NoNullSet;
 
@@ -45,7 +44,7 @@ public class DerivedTermTest
         // setup
         final float coeff = 9.1f;
         final Set<Variable> reqVars = CollectionUtils.<Variable>hashSet(
-                SampleObjects.dnrVariable(), SampleObjects.functionalStatusVariable());
+                SampleModels.dnrVariable(), SampleModels.functionalStatusVariable());
         final Rule mockRule = mock(Rule.class);
         when(mockRule.getRequiredVariables()).thenReturn(NoNullSet.fromSet(reqVars));
         final DerivedTerm term = new DerivedTerm(coeff, mockRule);

@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.SampleObjects;
+import gov.va.med.srcalc.domain.model.SampleModels;
 
 import org.junit.Test;
 
@@ -28,42 +28,42 @@ public class AbstractVariableTest
     @Test(expected = NullPointerException.class)
     public final void testSetDisplayNameNull()
     {
-        final AbstractVariable var = SampleObjects.sampleAgeVariable();
+        final AbstractVariable var = SampleModels.ageVariable();
         var.setDisplayName(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testSetDisplayNameTooLong()
     {
-        final AbstractVariable var = SampleObjects.sampleAgeVariable();
+        final AbstractVariable var = SampleModels.ageVariable();
         var.setDisplayName(EIGHTY_ONE_CHARS);
     }
     
     @Test(expected = NullPointerException.class)
     public final void testSetKeyNull()
     {
-        final AbstractVariable var = SampleObjects.sampleAgeVariable();
+        final AbstractVariable var = SampleModels.ageVariable();
         var.setKey(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testSetKeyTooLong()
     {
-        final AbstractVariable var = SampleObjects.sampleAgeVariable();
+        final AbstractVariable var = SampleModels.ageVariable();
         var.setKey(FORTY_ONE_CHARS);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testSetKeyInvalidChars()
     {
-        final AbstractVariable var = SampleObjects.sampleAgeVariable();
+        final AbstractVariable var = SampleModels.ageVariable();
         var.setKey("PTA/PCI Procedure");
     }
 
     @Test
     public final void testSetKeyValid()
     {
-        final AbstractVariable var = SampleObjects.sampleAgeVariable();
+        final AbstractVariable var = SampleModels.ageVariable();
         var.setKey(FORTY_CHARS);
         assertEquals(FORTY_CHARS, var.getKey());
     }

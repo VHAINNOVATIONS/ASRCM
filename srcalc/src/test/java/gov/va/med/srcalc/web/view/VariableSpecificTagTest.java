@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.web.view;
 
 import static org.mockito.Mockito.*;
-import gov.va.med.srcalc.domain.SampleObjects;
+import gov.va.med.srcalc.domain.model.SampleModels;
 
 import javax.servlet.jsp.tagext.JspFragment;
 
@@ -39,7 +39,7 @@ public class VariableSpecificTagTest
     public final void testDoTagNumerical() throws Exception
     {
         // Behavior verification.
-        tag.setVariable(SampleObjects.sampleAgeVariable());
+        tag.setVariable(SampleModels.ageVariable());
         tag.doTag();
         verify(numericalFragment).invoke(null);
         verify(booleanFragment, never()).invoke(null);
@@ -52,7 +52,7 @@ public class VariableSpecificTagTest
     public final void testDoTagBoolean() throws Exception
     {
         // Behavior verification.
-        tag.setVariable(SampleObjects.dnrVariable());
+        tag.setVariable(SampleModels.dnrVariable());
         tag.doTag();
         verify(numericalFragment, never()).invoke(null);
         verify(booleanFragment).invoke(null);
@@ -65,7 +65,7 @@ public class VariableSpecificTagTest
     public final void testDoTagMultiSelect() throws Exception
     {
         // Behavior verification.
-        tag.setVariable(SampleObjects.functionalStatusVariable());
+        tag.setVariable(SampleModels.functionalStatusVariable());
         tag.doTag();
         verify(numericalFragment, never()).invoke(null);
         verify(booleanFragment, never()).invoke(null);
@@ -78,7 +78,7 @@ public class VariableSpecificTagTest
     public final void testDoTagProcedure() throws Exception
     {
         // Behavior verification.
-        tag.setVariable(SampleObjects.sampleProcedureVariable());
+        tag.setVariable(SampleModels.procedureVariable());
         tag.doTag();
         verify(numericalFragment, never()).invoke(null);
         verify(booleanFragment, never()).invoke(null);
@@ -91,7 +91,7 @@ public class VariableSpecificTagTest
     public final void testDoTagDiscreteNumerical() throws Exception
     {
         // Behavior verification.
-        tag.setVariable(SampleObjects.wbcVariable());
+        tag.setVariable(SampleModels.wbcVariable());
         tag.doTag();
         verify(numericalFragment, never()).invoke(null);
         verify(booleanFragment, never()).invoke(null);

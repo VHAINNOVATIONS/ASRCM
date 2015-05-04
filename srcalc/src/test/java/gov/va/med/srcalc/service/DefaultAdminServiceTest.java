@@ -6,9 +6,7 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 
 import gov.va.med.srcalc.db.VariableDao;
-import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.model.AbstractVariable;
-import gov.va.med.srcalc.domain.model.BooleanVariable;
+import gov.va.med.srcalc.domain.model.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +18,7 @@ public class DefaultAdminServiceTest
     @Before
     public final void setup()
     {
-        fSampleVariables = SampleObjects.sampleVariableList();
+        fSampleVariables = SampleModels.sampleVariableList();
     }
     
     public VariableDao mockVariableDao()

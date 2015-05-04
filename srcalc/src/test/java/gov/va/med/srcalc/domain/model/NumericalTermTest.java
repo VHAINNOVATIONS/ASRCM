@@ -2,7 +2,6 @@ package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.util.CollectionUtils;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -15,7 +14,7 @@ public class NumericalTermTest
     public final void testBasic()
     {
         final float coeff = 10.1f;
-        final NumericalVariable var = SampleObjects.sampleAgeVariable();
+        final NumericalVariable var = SampleModels.ageVariable();
         final NumericalTerm term = new NumericalTerm(var, coeff);
         
         assertEquals(coeff, term.getCoefficient(), 0.0f);

@@ -1,7 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.SampleObjects;
 import gov.va.med.srcalc.domain.model.MultiSelectValue;
 import gov.va.med.srcalc.domain.model.MultiSelectVariable;
 
@@ -12,7 +11,7 @@ public class MultiSelectValueTest
     @Test
     public final void testBasic()
     {
-        final MultiSelectVariable var = SampleObjects.functionalStatusVariable();
+        final MultiSelectVariable var = SampleModels.functionalStatusVariable();
         final MultiSelectValue val = new MultiSelectValue(var, var.getOptions().get(1));
         // getVariable()
         assertSame(var, val.getVariable());
