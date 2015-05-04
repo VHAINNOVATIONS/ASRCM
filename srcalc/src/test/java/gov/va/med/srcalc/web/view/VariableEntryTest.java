@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.AbstractVariable;
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.model.AbstractVariable;
+import gov.va.med.srcalc.domain.model.Variable;
 
 import java.util.*;
 

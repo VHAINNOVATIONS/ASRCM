@@ -1,10 +1,8 @@
 package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.model.*;
-import gov.va.med.srcalc.domain.variable.*;
-import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable.Category;
-import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
-
+import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
+import gov.va.med.srcalc.domain.model.MultiSelectVariable.DisplayType;
 import java.util.*;
 
 import org.springframework.expression.Expression;

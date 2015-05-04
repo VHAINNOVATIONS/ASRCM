@@ -3,9 +3,7 @@ package gov.va.med.srcalc.domain;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import gov.va.med.srcalc.domain.model.DerivedTerm;
-import gov.va.med.srcalc.domain.model.RiskModel;
-import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.util.MissingValuesException;
 import static gov.va.med.srcalc.domain.SampleObjects.*;
 

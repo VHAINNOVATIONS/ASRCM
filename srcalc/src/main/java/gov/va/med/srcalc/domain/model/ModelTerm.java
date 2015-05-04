@@ -4,8 +4,6 @@ import java.util.Map;
 
 import javax.persistence.*;
 
-import gov.va.med.srcalc.domain.variable.Value;
-import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.NoNullSet;
 

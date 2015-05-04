@@ -2,7 +2,7 @@ package gov.va.med.srcalc.web.view;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.MultiSelectVariable;
+import gov.va.med.srcalc.domain.model.MultiSelectVariable;
 
 import org.junit.Test;
 

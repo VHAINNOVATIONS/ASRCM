@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.service;
 
 import gov.va.med.srcalc.db.VariableDao;
-import gov.va.med.srcalc.domain.variable.AbstractVariable;
+import gov.va.med.srcalc.domain.model.AbstractVariable;
 
 import java.util.List;
 

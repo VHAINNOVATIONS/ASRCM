@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 
 import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.web.view.InputParserVisitor;
 import gov.va.med.srcalc.web.view.VariableEntry;
 import static gov.va.med.srcalc.web.view.VariableEntry.makeVariableValuePath;

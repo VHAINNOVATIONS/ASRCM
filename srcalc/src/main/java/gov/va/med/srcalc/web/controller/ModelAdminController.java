@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import gov.va.med.srcalc.domain.variable.AbstractVariable;
+import gov.va.med.srcalc.domain.model.AbstractVariable;
 import gov.va.med.srcalc.service.*;
 import gov.va.med.srcalc.web.view.VariableSummary;
 import gov.va.med.srcalc.web.view.Views;

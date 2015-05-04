@@ -5,19 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.BooleanValue;
-import gov.va.med.srcalc.domain.variable.BooleanVariable;
-import gov.va.med.srcalc.domain.variable.DiscreteNumericalValue;
-import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable;
-import gov.va.med.srcalc.domain.variable.MultiSelectOption;
-import gov.va.med.srcalc.domain.variable.MultiSelectValue;
-import gov.va.med.srcalc.domain.variable.MultiSelectVariable;
-import gov.va.med.srcalc.domain.variable.NumericalRange;
-import gov.va.med.srcalc.domain.variable.NumericalValue;
-import gov.va.med.srcalc.domain.variable.NumericalVariable;
-import gov.va.med.srcalc.domain.variable.ProcedureValue;
-import gov.va.med.srcalc.domain.variable.ProcedureVariable;
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
 import org.junit.Before;

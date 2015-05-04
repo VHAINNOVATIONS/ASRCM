@@ -1,7 +1,5 @@
 package gov.va.med.srcalc.domain.model;
 
-import gov.va.med.srcalc.domain.variable.Value;
-import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;

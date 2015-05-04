@@ -3,7 +3,7 @@ package gov.va.med.srcalc.domain.workflow;
 import java.util.List;
 
 import gov.va.med.srcalc.domain.Calculation;
-import gov.va.med.srcalc.domain.Specialty;
+import gov.va.med.srcalc.domain.model.Specialty;
 
 /**
  * Represents a brand-new Calculation. 

@@ -6,8 +6,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-import gov.va.med.srcalc.domain.variable.Value;
-import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.NoNullSet;
 

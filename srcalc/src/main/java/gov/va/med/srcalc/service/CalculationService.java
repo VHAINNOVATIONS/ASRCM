@@ -3,7 +3,7 @@ package gov.va.med.srcalc.service;
 import java.util.List;
 
 import gov.va.med.srcalc.domain.Calculation;
-import gov.va.med.srcalc.domain.variable.Value;
+import gov.va.med.srcalc.domain.model.Value;
 import gov.va.med.srcalc.domain.workflow.*;
 import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.vista.VistaPatientDao;

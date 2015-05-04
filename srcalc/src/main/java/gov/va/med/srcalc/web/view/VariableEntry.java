@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.util.RetrievalEnum;
 import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 

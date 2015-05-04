@@ -7,8 +7,8 @@ import javax.inject.Inject;
 import org.hibernate.*;
 import org.springframework.stereotype.Repository;
 
-import gov.va.med.srcalc.domain.variable.AbstractVariable;
-import gov.va.med.srcalc.domain.variable.DisplayNameComparator;
+import gov.va.med.srcalc.domain.model.AbstractVariable;
+import gov.va.med.srcalc.domain.model.DisplayNameComparator;
 
 /**
  * DAO for {@link AbstractVariable}s.

@@ -7,8 +7,8 @@ import java.util.List;
 
 import gov.va.med.srcalc.db.VariableDao;
 import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.BooleanVariable;
-import gov.va.med.srcalc.domain.variable.AbstractVariable;
+import gov.va.med.srcalc.domain.model.AbstractVariable;
+import gov.va.med.srcalc.domain.model.BooleanVariable;
 
 import org.junit.Before;
 import org.junit.Test;

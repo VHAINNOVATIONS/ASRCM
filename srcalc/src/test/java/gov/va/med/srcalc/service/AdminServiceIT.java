@@ -2,8 +2,8 @@ package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import gov.va.med.srcalc.domain.variable.AbstractVariable;
-import gov.va.med.srcalc.domain.variable.BooleanVariable;
+import gov.va.med.srcalc.domain.model.AbstractVariable;
+import gov.va.med.srcalc.domain.model.BooleanVariable;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 
 import java.util.List;

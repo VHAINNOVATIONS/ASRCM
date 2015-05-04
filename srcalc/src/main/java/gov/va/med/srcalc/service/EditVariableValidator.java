@@ -3,7 +3,7 @@ package gov.va.med.srcalc.service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gov.va.med.srcalc.domain.variable.AbstractVariable;
+import gov.va.med.srcalc.domain.model.AbstractVariable;
 
 import org.springframework.validation.*;
 

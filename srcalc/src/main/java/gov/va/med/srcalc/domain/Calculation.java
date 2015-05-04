@@ -1,7 +1,6 @@
 package gov.va.med.srcalc.domain;
 
-import gov.va.med.srcalc.domain.model.RiskModel;
-import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 import java.io.Serializable;

@@ -2,8 +2,7 @@ package gov.va.med.srcalc.web.view;
 
 import java.io.IOException;
 
-import gov.va.med.srcalc.domain.variable.*;
-
+import gov.va.med.srcalc.domain.model.*;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.JspFragment;
 import javax.servlet.jsp.tagext.SimpleTagSupport;

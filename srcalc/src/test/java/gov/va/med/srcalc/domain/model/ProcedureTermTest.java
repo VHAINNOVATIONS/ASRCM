@@ -3,7 +3,6 @@ package gov.va.med.srcalc.domain.model;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.ProcedureVariable;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 

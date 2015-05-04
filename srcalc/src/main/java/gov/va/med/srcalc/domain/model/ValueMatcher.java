@@ -10,10 +10,6 @@ import javax.persistence.Transient;
 import org.springframework.expression.*;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
-import gov.va.med.srcalc.domain.variable.AbstractVariable;
-import gov.va.med.srcalc.domain.variable.Value;
-import gov.va.med.srcalc.domain.variable.Variable;
-
 /**
  * An object which evaluates a {@link Value} to true or false using a Spring
  * Expression Language (SPeL) expression.

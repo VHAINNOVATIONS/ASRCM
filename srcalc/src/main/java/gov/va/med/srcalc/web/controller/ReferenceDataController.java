@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.web.controller;
 
-import gov.va.med.srcalc.domain.Procedure;
+import gov.va.med.srcalc.domain.model.Procedure;
 import gov.va.med.srcalc.service.ReferenceDataService;
 
 import java.util.*;

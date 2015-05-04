@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.Specialty;
+import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
 import gov.va.med.srcalc.vista.MockVistaPatientDao;

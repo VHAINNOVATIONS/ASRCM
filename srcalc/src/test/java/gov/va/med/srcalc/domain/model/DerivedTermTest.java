@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 import static gov.va.med.srcalc.domain.SampleObjects.expression1;
 import static gov.va.med.srcalc.domain.SampleObjects.expression2;
 import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.util.CollectionUtils;
 import gov.va.med.srcalc.util.NoNullSet;
 

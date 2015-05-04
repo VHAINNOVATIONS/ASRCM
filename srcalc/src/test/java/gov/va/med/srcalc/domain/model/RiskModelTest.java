@@ -4,9 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
-import gov.va.med.srcalc.domain.Procedure;
 import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.*;
 import gov.va.med.srcalc.util.CollectionUtils;
 import gov.va.med.srcalc.util.MissingValuesException;
 

@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.service;
 
 import gov.va.med.srcalc.db.ProcedureDao;
-import gov.va.med.srcalc.domain.Procedure;
+import gov.va.med.srcalc.domain.model.Procedure;
 
 import java.util.List;
 

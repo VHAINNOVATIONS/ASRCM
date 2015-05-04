@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.util.*;
 
 import gov.va.med.srcalc.domain.*;
-import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
 import gov.va.med.srcalc.test.util.IntegrationTest;

@@ -7,9 +7,6 @@ import java.util.Map;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import gov.va.med.srcalc.domain.variable.MissingValueException;
-import gov.va.med.srcalc.domain.variable.Value;
-import gov.va.med.srcalc.domain.variable.Variable;
 import gov.va.med.srcalc.util.CollectionUtils;
 import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.NoNullSet;

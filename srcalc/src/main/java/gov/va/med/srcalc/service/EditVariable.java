@@ -1,9 +1,9 @@
 package gov.va.med.srcalc.service;
 
+import gov.va.med.srcalc.domain.model.AbstractVariable;
+
 import java.util.Arrays;
 import java.util.List;
-
-import gov.va.med.srcalc.domain.variable.AbstractVariable;
 
 /**
  * A command object that updates a {@link AbstractVariable}'s properties. See

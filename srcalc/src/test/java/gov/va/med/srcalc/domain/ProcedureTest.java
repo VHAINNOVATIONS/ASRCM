@@ -2,6 +2,7 @@ package gov.va.med.srcalc.domain;
 
 import static org.junit.Assert.*;
 import static gov.va.med.srcalc.domain.SampleObjects.sampleRepairLeftProcedure;
+import gov.va.med.srcalc.domain.model.Procedure;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
