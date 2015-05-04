@@ -87,13 +87,13 @@ public abstract class AbstractVariable implements Variable
      * Sets the internal key of the variable. Since the key should not be
      * updated on an existing variable, this method is for bean construction
      * only.
-     * @throws IllegalArgumentException if the given key is over 40 characters
-     * or does not match {@link Variable#VALID_KEY_REGEX}
+     * @throws IllegalArgumentException if the given key is empty, over 40
+     * characters, or does not match {@link Variable#VALID_KEY_REGEX}
      */
     void setKey(final String key)
     {
         // Check preconditions
-        Preconditions.requireWithin(key, KEY_MAX);
+        Preconditions.requireWithin(key, 1, KEY_MAX); // require at least 1 char
         Preconditions.requireMatches(key, "key", VALID_KEY_PATTERN);
         
         fKey = key;
@@ -110,13 +110,14 @@ public abstract class AbstractVariable implements Variable
 
     /**
      * Sets the name of the variable for display to the user.
-     * @throws IllegalArgumentException if the given name is over
+     * @throws IllegalArgumentException if the given name is empty or over
      * {@link Variable#DISPLAY_NAME_MAX} characters
      */
     public void setDisplayName(final String displayName)
     {
         this.fDisplayName =
-                Preconditions.requireWithin(displayName, DISPLAY_NAME_MAX);
+                // require at least 1 character
+                Preconditions.requireWithin(displayName, 1, DISPLAY_NAME_MAX);
     }
 
     /**

@@ -19,7 +19,15 @@ public class PreconditionsTest
     {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(containsString("2 characters"));
-        Preconditions.requireWithin("aaa", 2);
+        Preconditions.requireWithin("aaa", 0, 2);
+    }
+    
+    @Test
+    public final void testRequireWithinTooShort()
+    {
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage(containsString("3 characters"));
+        Preconditions.requireWithin("bb", 3, 40);
     }
     
     @Test

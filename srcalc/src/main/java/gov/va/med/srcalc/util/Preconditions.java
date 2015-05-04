@@ -16,15 +16,22 @@ public class Preconditions
 
     /**
      * Checks that the given argument is not null and within the provided
-     * length.
+     * lengths.
      * @param s the value to check
-     * @param maxLength the maximum length
+     * @param minLength the minimum length, inclusive
+     * @param maxLength the maximum length, inclusive
      * @return the valid value for convenience
      * @throws NullPointerException if the string is null
      * @throws IllegalArgumentException if string is longer than maxLength
      */
-    public static String requireWithin(final String s, final int maxLength)
+    public static String requireWithin(
+            final String s, final int minLength, final int maxLength)
     {
+        if (s.length() < minLength)
+        {
+            throw new IllegalArgumentException(
+                    "The argument must be " + minLength + " characters or more.");
+        }
         if (s.length() > maxLength)
         {
             throw new IllegalArgumentException(

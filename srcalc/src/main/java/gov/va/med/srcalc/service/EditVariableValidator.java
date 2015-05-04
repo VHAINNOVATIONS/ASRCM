@@ -9,6 +9,11 @@ import org.springframework.validation.*;
  */
 public class EditVariableValidator implements Validator
 {
+    /**
+     * Error code used when a required value is not provided.
+     */
+    public static final String ERROR_NO_VALUE = "noInput";
+    
     @Override
     public boolean supports(Class<?> clazz)
     {
@@ -22,7 +27,7 @@ public class EditVariableValidator implements Validator
         // JSR-303 Bean Validation. I may switch over at some point.
 
         final EditVariable editVariable = (EditVariable)obj;
-        ValidationUtils.rejectIfEmpty(e, "displayName", "displayName.empty");
+        ValidationUtils.rejectIfEmpty(e, "displayName", ERROR_NO_VALUE);
         if (editVariable.getDisplayName().length() > AbstractVariable.DISPLAY_NAME_MAX)
         {
             e.rejectValue(
