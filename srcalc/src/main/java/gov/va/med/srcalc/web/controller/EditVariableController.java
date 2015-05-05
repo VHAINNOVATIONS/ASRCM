@@ -3,8 +3,7 @@ package gov.va.med.srcalc.web.controller;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
-import gov.va.med.srcalc.domain.model.Variable;
-import gov.va.med.srcalc.domain.model.AbstractVariable;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.*;
 import gov.va.med.srcalc.web.view.*;
 
@@ -13,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.common.collect.ImmutableSortedSet;
 
 /**
  * Web MVC controller for administration of variables.
@@ -48,8 +49,11 @@ public class EditVariableController
             @PathVariable final String variableKey)
             throws InvalidIdentifierException
     {
-        final EditVariable ev = new EditVariable(
-                loadVariable(variableKey), fAdminService.getAllVariableGroups());
+        // Sort the groups according to natural ordering for display to the
+        // user.
+        final ImmutableSortedSet<VariableGroup> allGroups =
+                ImmutableSortedSet.copyOf(fAdminService.getAllVariableGroups());
+        final EditVariable ev = new EditVariable(loadVariable(variableKey), allGroups);
         ev.calculateDependentModels(fAdminService.getAllRiskModels());
         return ev;
     }

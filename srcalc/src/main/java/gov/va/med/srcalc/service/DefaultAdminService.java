@@ -1,16 +1,18 @@
 package gov.va.med.srcalc.service;
 
+import java.util.List;
+
 import gov.va.med.srcalc.db.RiskModelDao;
 import gov.va.med.srcalc.db.VariableDao;
 import gov.va.med.srcalc.domain.model.*;
-
-import java.util.*;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.ImmutableCollection;
 
 public class DefaultAdminService implements AdminService
 {
@@ -38,7 +40,7 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
-    public SortedSet<VariableGroup> getAllVariableGroups()
+    public ImmutableCollection<VariableGroup> getAllVariableGroups()
     {
         return fVariableDao.getAllVariableGroups();
     }
@@ -68,7 +70,7 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
-    public Collection<RiskModel> getAllRiskModels()
+    public ImmutableCollection<RiskModel> getAllRiskModels()
     {
         return fRiskModelDao.getAllRiskModels();
     }

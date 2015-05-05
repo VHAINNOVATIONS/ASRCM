@@ -8,6 +8,8 @@ import java.util.*;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import com.google.common.collect.ImmutableSortedSet;
+
 /**
  * Constructs sample instances of various risk model objects.
  */
@@ -203,14 +205,15 @@ public class SampleModels
     /**
      * Returns a set of 4 Variable Groups, sorted in natural order. The objects
      * will have mock database IDs.
+     * @return an immutable set
      */
-    public static SortedSet<VariableGroup> variableGroups()
+    public static ImmutableSortedSet<VariableGroup> variableGroups()
     {
-        return new TreeSet<>(Arrays.asList(
+        return ImmutableSortedSet.of(
                 procedureVariableGroup(),
                 demographicsVariableGroup(),
                 labVariableGroup(),
-                recentClinicalVariableGroup()));
+                recentClinicalVariableGroup());
     }
 
     public static MultiSelectVariable genderVariable()

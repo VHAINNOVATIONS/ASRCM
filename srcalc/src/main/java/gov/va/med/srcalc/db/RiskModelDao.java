@@ -2,13 +2,16 @@ package gov.va.med.srcalc.db;
 
 import gov.va.med.srcalc.domain.model.RiskModel;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 
 @Repository
 public class RiskModelDao
@@ -28,11 +31,14 @@ public class RiskModelDao
     
     /**
      * Returns all RiskModels in the database, in arbitrary order.
+     * @return an ImmutableCollection
      */
-    @SuppressWarnings("unchecked") // trust Hibernate
-    public Collection<RiskModel> getAllRiskModels()
+    public ImmutableCollection<RiskModel> getAllRiskModels()
     {
-        return getCurrentSession().createQuery("from RiskModel").list();
+        @SuppressWarnings("unchecked") // trust Hibernate
+        final List<RiskModel> list =
+                getCurrentSession().createCriteria(RiskModel.class).list();
+        return ImmutableList.copyOf(list);
     }
     
 }

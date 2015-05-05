@@ -3,6 +3,8 @@ package gov.va.med.srcalc.web.view;
 import java.util.*;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 
 import gov.va.med.srcalc.domain.model.*;
 
@@ -23,7 +25,7 @@ import gov.va.med.srcalc.domain.model.*;
  */
 public final class EditVariable
 {
-    private final Collection<VariableGroup> fAllGroups;
+    private final ImmutableList<VariableGroup> fAllGroups;
 
     private final AbstractVariable fTarget;
 
@@ -39,7 +41,8 @@ public final class EditVariable
      * Constructs an instance.
      * @param variable the target variable. Will be stored, but not modified
      * until calling {@link #applyToVariable()}.
-     * @param allGroups all available VariableGroups for user selection
+     * @param allGroups all available VariableGroups for user selection. Will
+     * make a defensive copy, preserving iteration order.
      */
     public EditVariable(
             final AbstractVariable variable,
@@ -49,7 +52,7 @@ public final class EditVariable
         fDisplayName = variable.getDisplayName();
         fHelpText = variable.getHelpText();
         fGroupId = variable.getGroup().getId();
-        fAllGroups = allGroups;
+        fAllGroups = ImmutableList.copyOf(allGroups);
         fDependentModels = new TreeSet<>();
     }
     
@@ -80,7 +83,11 @@ public final class EditVariable
         return fDependentModels;
     }
 
-    public Collection<VariableGroup> getAllGroups()
+    /**
+     * Returns the collection of all VariableGroups provided to the constructor.
+     * Iteration order is preserved.
+     */
+    public ImmutableCollection<VariableGroup> getAllGroups()
     {
         return fAllGroups;
     }

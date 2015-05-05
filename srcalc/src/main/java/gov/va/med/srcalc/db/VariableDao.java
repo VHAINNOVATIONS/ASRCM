@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.db;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -8,6 +9,8 @@ import org.hibernate.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+
+import com.google.common.collect.*;
 
 import gov.va.med.srcalc.domain.model.*;
 
@@ -50,7 +53,11 @@ public class VariableDao
         return vars;
     }
     
-    public SortedSet<VariableGroup> getAllVariableGroups()
+    /**
+     * Returns all VariableGroups in the database, in arbitrary order.
+     * @return an ImmutableCollection
+     */
+    public ImmutableCollection<VariableGroup> getAllVariableGroups()
     {
         fLogger.trace("Loading all VariableGroups.");
 
@@ -58,7 +65,7 @@ public class VariableDao
         final List<VariableGroup> list =
                 getCurrentSession().createCriteria(VariableGroup.class).list();
         
-        return new TreeSet<>(list);
+        return ImmutableList.copyOf(list);
     }
     
     /**
@@ -87,6 +94,7 @@ public class VariableDao
      */
     public void updateVariable(final AbstractVariable variable)
     {
+        fLogger.debug("Updating {} in DB.", variable);
         getCurrentSession().update(variable);
     }
 }

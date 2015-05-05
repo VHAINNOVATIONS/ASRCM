@@ -6,7 +6,6 @@ import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 
 import java.util.List;
-import java.util.SortedSet;
 
 import javax.inject.Inject;
 
@@ -15,6 +14,9 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableSortedSet;
 
 /**
  * Integration Test for {@link AdminService}.
@@ -38,9 +40,14 @@ public class AdminServiceIT extends IntegrationTest
     @Test
     public final void testGetAllVariableGroups()
     {
-        final SortedSet<VariableGroup> actualGroups = fAdminService.getAllVariableGroups();
+        final ImmutableCollection<VariableGroup> actualGroups =
+                fAdminService.getAllVariableGroups();
         assertEquals(7, actualGroups.size());
-        assertEquals("Planned Procedure", actualGroups.first().getName());
+        // Sort the collection and examine the first item, which should be the
+        // Planned Procedure group.
+        final VariableGroup plannedProcedure =
+                ImmutableSortedSet.copyOf(actualGroups).first();
+        assertEquals("Planned Procedure", plannedProcedure.getName());
     }
     
     @Test
@@ -62,8 +69,11 @@ public class AdminServiceIT extends IntegrationTest
         
         // Setup
         final AbstractVariable var = fAdminService.getVariable(key);
-        final VariableGroup newGroup = fAdminService.getAllVariableGroups().first();
         assertEquals(origName, var.getDisplayName());  // sanity check
+        // Sort the groups and pick the 2nd as the new group.
+        final ImmutableSortedSet<VariableGroup> sortedGroups =
+                ImmutableSortedSet.copyOf(fAdminService.getAllVariableGroups());
+        final VariableGroup newGroup = sortedGroups.asList().get(1);
         // Clear the session to simulate a new transaction.
         getHibernateSession().clear();
         

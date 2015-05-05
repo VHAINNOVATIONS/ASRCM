@@ -12,10 +12,13 @@ import gov.va.med.srcalc.domain.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSortedSet;
+
 public class DefaultAdminServiceTest
 {
     private List<AbstractVariable> fSampleVariables;
-    private SortedSet<VariableGroup> fSampleGroups;
+    private ImmutableSortedSet<VariableGroup> fSampleGroups;
     
     @Before
     public final void setup()
@@ -38,7 +41,8 @@ public class DefaultAdminServiceTest
     private RiskModelDao mockRiskModelDao()
     {
         final RiskModelDao dao = mock(RiskModelDao.class);
-        when(dao.getAllRiskModels()).thenReturn(Arrays.asList(SampleModels.thoracicRiskModel()));
+        when(dao.getAllRiskModels()).thenReturn(
+                ImmutableList.of(SampleModels.thoracicRiskModel()));
         return dao;
     }
     

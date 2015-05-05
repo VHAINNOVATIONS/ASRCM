@@ -1,8 +1,10 @@
 package gov.va.med.srcalc.service;
 
+import java.util.List;
+
 import gov.va.med.srcalc.domain.model.*;
 
-import java.util.*;
+import com.google.common.collect.ImmutableCollection;
 
 /**
  * Service Layer facade for administrative functionalty.
@@ -11,15 +13,16 @@ import java.util.*;
 public interface AdminService
 {
     /**
-     * Returns all Variables for editing purposes.
+     * Returns all Variables in the database.
+     * @return a list, in display name order
      */
     public List<AbstractVariable> getAllVariables();
     
     /**
-     * Returns all VariableGroups for editing purposes.
-     * @return a set sorted by the VariableGroups' natural order
+     * Returns all VariableGroups in the database..
+     * @return an ImmutableCollection, in arbitrary order
      */
-    public SortedSet<VariableGroup> getAllVariableGroups();
+    public ImmutableCollection<VariableGroup> getAllVariableGroups();
     
     /**
      * Returns the Variable with the given display name for editing. Note that
@@ -39,7 +42,7 @@ public interface AdminService
     
     /**
      * Returns all {@link RiskModel}s in the database.
-     * @return a collection in arbitrary order
+     * @return an ImmutableCollection, in arbitrary order
      */
-    public Collection<RiskModel> getAllRiskModels();
+    public ImmutableCollection<RiskModel> getAllRiskModels();
 }
