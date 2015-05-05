@@ -20,7 +20,7 @@ public class Views
     public static final String SELECT_SPECIALTY = "selectSpecialty.jsp";
     public static final String ENTER_VARIABLES = "enterVariables.jsp";
     public static final String DISPLAY_RESULTS = "displayResults.jsp";
-    public static final String MODEL_ADMIN_HOME = "modelAdminHome.jsp";
+    public static final String MODEL_ADMIN_HOME = "adminHome.jsp";
     public static final String EDIT_BOOLEAN_VARIABLE = "editBooleanVariable.jsp";
 	public static final String SUCCESSFUL_SIGN = "successfulSign.jsp";
 }
