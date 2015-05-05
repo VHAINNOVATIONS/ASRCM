@@ -107,7 +107,12 @@ dependencies {
 compileJava {
     // Warn about deprecated API usage.
     options.deprecation = true
-}    
+}
+
+compileTestJava {
+    // Warn about deprecated API usage in test code, too.
+    options.deprecation = true
+}
 
 war {
     manifest {
