@@ -192,7 +192,6 @@ public final class Rule
             	{
             		missingValues.getMissingValues().add(new MissingValueException(
             				"Missing value for " + condition.getVariable().getKey(),
-                    		"noInput",
                     		condition.getVariable()));
             		continue;
             	}

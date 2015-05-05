@@ -52,7 +52,7 @@ public abstract class SingleVariableTerm extends ModelTerm
         {
     		final List<MissingValueException> missingValues = new ArrayList<MissingValueException>();
     		missingValues.add(new MissingValueException("Missing value for " + getVariable().getKey(),
-    				"noInput", getVariable()));
+    				getVariable()));
     		throw new MissingValuesException("The calculation is missing values.", missingValues);
         }
         return getSummand(value);

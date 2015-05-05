@@ -32,6 +32,11 @@ public class EnterVariablesController
      */
     public static final String ATTR_VARIABLE_ENTRY = "variableEntry";
     
+    /**
+     * Error code used when a required value is not provided.
+     */
+    public static final String ERROR_NO_VALUE = "noInput";
+    
     private final CalculationService fCalculationService;
     
     @Inject
@@ -130,10 +135,8 @@ public class EnterVariablesController
         		// variables.
         		if(bindingResultAlreadyContainsError(dynamicKey, valuesBindingResult, missingValue))
         		{
-        			valuesBindingResult.rejectValue(
-        					dynamicKey,
-        	                missingValue.getCode(),
-        	                missingValue.getMessage());
+                            valuesBindingResult.rejectValue(
+                                    dynamicKey, ERROR_NO_VALUE, missingValue.getMessage());
         		}
         	}
         }
