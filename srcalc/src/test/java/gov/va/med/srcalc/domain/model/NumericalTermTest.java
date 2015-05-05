@@ -2,11 +2,12 @@ package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import gov.va.med.srcalc.util.CollectionUtils;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableSet;
 
 public class NumericalTermTest
 {
@@ -19,7 +20,7 @@ public class NumericalTermTest
         
         assertEquals(coeff, term.getCoefficient(), 0.0f);
         assertSame(var, term.getVariable());
-        assertEquals(CollectionUtils.hashSet(var), term.getRequiredVariables());
+        assertEquals(ImmutableSet.of(var), term.getRequiredVariables());
         assertThat(term.toString(), allOf(
                 containsString(Float.toString(coeff)),
                 containsString(var.toString())));

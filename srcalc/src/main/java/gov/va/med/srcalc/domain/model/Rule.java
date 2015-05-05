@@ -1,7 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.util.MissingValuesException;
-import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;
 
@@ -19,6 +18,8 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * <p>Encapsulates a configured rule to use in a model calculation, such as
@@ -152,17 +153,17 @@ public final class Rule
 	
     /**
      * Returns all {@link Variable}s required for evaluating the Rule.
-     * @return an unmodifiable set
+     * @return an ImmutableSet
      */
     @Transient
-    public NoNullSet<Variable> getRequiredVariables()
+    public ImmutableSet<Variable> getRequiredVariables()
     {
         final HashSet<Variable> variables = new HashSet<>();
         for (final ValueMatcher vm : fMatchers)
         {
             variables.add(vm.getVariable());
         }
-        return NoNullSet.fromSet(Collections.unmodifiableSet(variables));
+        return ImmutableSet.copyOf(variables);
     }
 
     /**

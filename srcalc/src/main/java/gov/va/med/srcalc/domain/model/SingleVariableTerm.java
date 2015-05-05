@@ -7,9 +7,9 @@ import java.util.Map;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import gov.va.med.srcalc.util.CollectionUtils;
+import com.google.common.collect.ImmutableSet;
+
 import gov.va.med.srcalc.util.MissingValuesException;
-import gov.va.med.srcalc.util.NoNullSet;
 
 /**
  * A ModelTerm that uses a single Variable.
@@ -39,9 +39,9 @@ public abstract class SingleVariableTerm extends ModelTerm
     
     @Override
     @Transient
-    public NoNullSet<Variable> getRequiredVariables()
+    public ImmutableSet<Variable> getRequiredVariables()
     {
-        return NoNullSet.fromSet(CollectionUtils.unmodifiableSet(getVariable()));
+        return ImmutableSet.of(getVariable());
     }
     
     @Override

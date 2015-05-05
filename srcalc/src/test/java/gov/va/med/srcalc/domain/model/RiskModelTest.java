@@ -5,10 +5,11 @@ import static org.junit.Assert.*;
 import java.util.*;
 
 import gov.va.med.srcalc.test.util.TestHelpers;
-import gov.va.med.srcalc.util.CollectionUtils;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableSet;
 
 public class RiskModelTest
 {
@@ -28,7 +29,8 @@ public class RiskModelTest
         
         // Behavior verification
         final Set<AbstractVariable> expectedVariables =
-                CollectionUtils.unmodifiableSet(procedureVar, dnrVar, ageVar, wbcVar, fsVar);
+                ImmutableSet.of(procedureVar, dnrVar, ageVar, wbcVar, fsVar);
+        // Note that Set.equals() does not consider iteration order.
         assertEquals(expectedVariables, model.getRequiredVariables());
     }
     

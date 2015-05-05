@@ -10,6 +10,8 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableSet;
+
 /**
  * Represents a risk calculation: either in-progress, calculated, or signed.
  */
@@ -82,9 +84,9 @@ public class Calculation implements Serializable
     /**
      * Returns the Set of {@link Variable}s that the calculation requires.
      * @throws IllegalStateException if no specialty has been set.
-     * @return an unmodifiable list of Variables.
+     * @return an ImmutableSet
      */
-    public Set<Variable> getVariables()
+    public ImmutableSet<Variable> getVariables()
     {
         // Ensure we are in the proper state.
         if (fSpecialty == null)
@@ -93,7 +95,7 @@ public class Calculation implements Serializable
                     "Cannot return list of variables because no specialty has been set.");
         }
         
-        return Collections.unmodifiableSet(fSpecialty.getModelVariables());
+        return fSpecialty.getModelVariables();
     }
     
     /**

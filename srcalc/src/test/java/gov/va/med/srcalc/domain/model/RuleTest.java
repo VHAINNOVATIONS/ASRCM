@@ -3,7 +3,6 @@ package gov.va.med.srcalc.domain.model;
 import static org.junit.Assert.*;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression1;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression2;
-import gov.va.med.srcalc.util.CollectionUtils;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 import java.util.Arrays;
@@ -14,6 +13,8 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 import org.springframework.expression.Expression;
+
+import com.google.common.collect.ImmutableSet;
 
 public class RuleTest
 {
@@ -30,7 +31,7 @@ public class RuleTest
                 "#Age.value * #coefficient", true);
         
         assertEquals(
-                CollectionUtils.hashSet(ageVar, fsVar),
+                ImmutableSet.of(ageVar, fsVar),
                 rule.getRequiredVariables());
     }
     

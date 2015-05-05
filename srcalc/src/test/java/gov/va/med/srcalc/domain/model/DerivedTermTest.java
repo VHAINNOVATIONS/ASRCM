@@ -5,16 +5,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression1;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression2;
-import gov.va.med.srcalc.util.CollectionUtils;
-import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.expression.Expression;
+
+import com.google.common.collect.ImmutableSet;
 
 public class DerivedTermTest
 {
@@ -38,15 +39,17 @@ public class DerivedTermTest
         assertEquals(coeff2 * 2, term2.getSummand(values), 0.001);
     }
     
+    @Test
+    @Ignore
     public final void testBasic() throws Exception
     {
     	// FIXME: David, fix this
         // setup
         final float coeff = 9.1f;
-        final Set<Variable> reqVars = CollectionUtils.<Variable>hashSet(
+        final Set<Variable> reqVars = ImmutableSet.<Variable>of(
                 SampleModels.dnrVariable(), SampleModels.functionalStatusVariable());
         final Rule mockRule = mock(Rule.class);
-        when(mockRule.getRequiredVariables()).thenReturn(NoNullSet.fromSet(reqVars));
+        when(mockRule.getRequiredVariables()).thenReturn(ImmutableSet.copyOf(reqVars));
         final DerivedTerm term = new DerivedTerm(coeff, mockRule);
         
         // behavior verification

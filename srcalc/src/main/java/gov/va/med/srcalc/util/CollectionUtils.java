@@ -2,8 +2,6 @@ package gov.va.med.srcalc.util;
 
 import java.util.*;
 
-import com.google.common.collect.ImmutableSet;
-
 /**
  * Utility methods for {@link Collection} and its subtypes.
  */
@@ -26,25 +24,6 @@ public class CollectionUtils
     {
         final int numToDisplay = Math.min(full.size(), maxSize);
         return full.subList(0, numToDisplay);
-    }
-    
-    /**
-     * Constructs a new HashSet containing the given elements.
-     */
-    @SafeVarargs // we're not doing anything strange with E[] elem
-    public static <E> HashSet<E> hashSet(final E... elem)
-    {
-        return new HashSet<>(Arrays.asList(elem));
-    }
-    
-    /**
-     * @deprecated use {@link ImmutableSet} instead
-     */
-    @SafeVarargs // we're not doing anything strange with E[] elem
-    @Deprecated
-    public static <E> Set<E> unmodifiableSet(final E... elem)
-    {
-        return Collections.unmodifiableSet(hashSet(elem));
     }
     
 }

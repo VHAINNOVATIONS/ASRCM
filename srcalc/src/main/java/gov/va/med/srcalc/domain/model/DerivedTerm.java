@@ -6,8 +6,9 @@ import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import com.google.common.collect.ImmutableSet;
+
 import gov.va.med.srcalc.util.MissingValuesException;
-import gov.va.med.srcalc.util.NoNullSet;
 
 /**
  * <p>A {@link ModelTerm} derived via a {@link Rule}. A common use-case is
@@ -54,7 +55,7 @@ public final class DerivedTerm extends ModelTerm
 
     @Transient
     @Override
-    public NoNullSet<Variable> getRequiredVariables()
+    public ImmutableSet<Variable> getRequiredVariables()
     {
         return fRule.getRequiredVariables();
     }
