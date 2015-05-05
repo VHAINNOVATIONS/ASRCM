@@ -21,23 +21,11 @@
         <td>Checkbox</td><%-- This JSP is only used for boolean vars. --%>
         </tr>
         <tr>
-        <%--
-        <tr>
-        <td class="attributeName">Currently Used By:</td>
-        <td>
-            <ul>
-            <c:forEach var="model" items="${variable.dependentModels}">
-                <li>${model.displayName}</li>
-            </c:forEach>
-            </ul>
-        </td>
-        </tr>
-        --%>
-        <tr>
         <td class="attributeName">Display Text:</td>
         <td>
             <%-- Use the DISPLAY_NAME_MAX for the text box size, but cap it at
-                 40 because any bigger is too big. --%>
+                 40 because any bigger is too much longer than the expected
+                 length. --%>
             <form:input path="displayName" size="${srcalc:min(DISPLAY_NAME_MAX, 40)}" />
             <form:errors path="displayName" cssClass="error" />
         </td>

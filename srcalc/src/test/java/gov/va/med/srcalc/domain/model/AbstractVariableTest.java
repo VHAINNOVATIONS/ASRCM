@@ -57,7 +57,7 @@ public class AbstractVariableTest
     public final void testSetKeyInvalidChars()
     {
         final AbstractVariable var = SampleModels.ageVariable();
-        var.setKey("PTA/PCI Procedure");
+        var.setKey("PTA/PCI Procedure");  // slashes are not permitted
     }
 
     @Test
