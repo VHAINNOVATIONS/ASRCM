@@ -5,12 +5,26 @@ package gov.va.med.srcalc.domain.model;
  */
 public interface Variable
 {
+    /**
+     * The maximum length of a valid variable display name: {@value}
+     */
     public static final int DISPLAY_NAME_MAX = 80;
+    
+    /**
+     * The maximum length of a valid variable key: {@value}
+     */
     public static final int KEY_MAX = 40;
     
     /**
-     * Returns a key which should be unique among all Variables. Ideally should
-     * be alphanumeric, though this isn't enforced.
+     * A regular expression that defines a valid variable key: {@value}
+     * @see #getKey()
+     */
+    public static final String VALID_KEY_REGEX = "\\w+";
+   
+    /**
+     * Returns a key which should be unique among all Variables. The key will
+     * match the regular expression {@link #VALID_KEY_REGEX} and be no longer
+     * than {@link #KEY_MAX} characters.
      */
     public String getKey();
     

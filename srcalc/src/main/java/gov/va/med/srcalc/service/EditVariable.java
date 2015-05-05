@@ -2,26 +2,17 @@ package gov.va.med.srcalc.service;
 
 import gov.va.med.srcalc.domain.model.AbstractVariable;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * A command object that updates a {@link AbstractVariable}'s properties. See
  * {@link AdminService#updateVariable(EditVariable)} for a primary usage.
  */
 public final class EditVariable
 {
-    /**
-     * Temporarily hardcode the list of variables we /plan/ to integrate. Once
-     * we actually implement automatic retrieval from VistA, this hardcoded list
-     * will go away.
-     */
-    private static final List<String> INTEGRATED_VARIABLE_NAMES = Arrays.asList(
-            "Age", "BMI", "DNR", "Gender");
-    
     private String fKey;
 
     private String fDisplayName;
+    
+    private String fHelpText;
     
     private EditVariable(final String key)
     {
@@ -32,16 +23,8 @@ public final class EditVariable
     {
         final EditVariable ev = new EditVariable(variable.getKey());
         ev.setDisplayName(variable.getDisplayName());
+        ev.setHelpText(variable.getHelpText());
         return ev;
-    }
-    
-    /**
-     * Returns true if the variable is VistA-integrated. Updating the display
-     * name for such variables will break VistA integration.
-     */
-    public boolean isIntegratedVariable()
-    {
-        return INTEGRATED_VARIABLE_NAMES.contains(fDisplayName);
     }
 
     /**
@@ -63,6 +46,16 @@ public final class EditVariable
         fDisplayName = displayName;
     }
     
+    public String getHelpText()
+    {
+        return fHelpText;
+    }
+
+    public void setHelpText(String helpText)
+    {
+        fHelpText = helpText;
+    }
+
     /**
      * Sets all stored properties on the given Variable.
      * @param variable the variable to modify
@@ -71,6 +64,7 @@ public final class EditVariable
     public AbstractVariable setOntoVariable(final AbstractVariable variable)
     {
         variable.setDisplayName(fDisplayName);
+        variable.setHelpText(fHelpText);
         return variable;
     }
 }

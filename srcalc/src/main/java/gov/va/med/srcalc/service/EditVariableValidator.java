@@ -1,8 +1,5 @@
 package gov.va.med.srcalc.service;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import gov.va.med.srcalc.domain.model.AbstractVariable;
 
 import org.springframework.validation.*;
@@ -12,8 +9,11 @@ import org.springframework.validation.*;
  */
 public class EditVariableValidator implements Validator
 {
-    private final Pattern fValidDisplayNamePatter = Pattern.compile("[A-Za-z0-9 ]*");
-
+    /**
+     * Error code used when a required value is not provided.
+     */
+    public static final String ERROR_NO_VALUE = "noInput";
+    
     @Override
     public boolean supports(Class<?> clazz)
     {
@@ -27,7 +27,7 @@ public class EditVariableValidator implements Validator
         // JSR-303 Bean Validation. I may switch over at some point.
 
         final EditVariable editVariable = (EditVariable)obj;
-        ValidationUtils.rejectIfEmpty(e, "displayName", "displayName.empty");
+        ValidationUtils.rejectIfEmpty(e, "displayName", ERROR_NO_VALUE);
         if (editVariable.getDisplayName().length() > AbstractVariable.DISPLAY_NAME_MAX)
         {
             e.rejectValue(
@@ -35,14 +35,6 @@ public class EditVariableValidator implements Validator
                     "tooLong",
                     new Object[] {AbstractVariable.DISPLAY_NAME_MAX},
                     "The display name is too long.");
-        }
-        
-        // Temporary kludge until we support all printable characters in the
-        // display name.
-        final Matcher m = fValidDisplayNamePatter.matcher(editVariable.getDisplayName());
-        if (!m.matches())
-        {
-            e.rejectValue("displayName", "invalidCharacters", "invalid characters");
         }
     }
     

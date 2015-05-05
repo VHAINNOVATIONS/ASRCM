@@ -16,6 +16,12 @@
 	</function>
 	
 	<function>
+        <name>min</name>
+        <function-class>java.lang.Math</function-class>
+        <function-signature>int min(int, int)</function-signature>
+	</function>
+	
+	<function>
 	   <name>dynamicValuePath</name>
 	   <function-class>gov.va.med.srcalc.web.view.VariableEntry</function-class>
 	   <function-signature>java.lang.String makeDynamicValuePath(java.lang.String)</function-signature>

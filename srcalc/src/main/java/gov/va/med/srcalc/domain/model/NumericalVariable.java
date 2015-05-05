@@ -16,7 +16,14 @@ public class NumericalVariable extends AbstractNumericalVariable
     {
     }
     
-    public NumericalVariable(final String displayName, final VariableGroup group, final String key)
+    /**
+     * Constructs an instance.
+     * @throws NullPointerException if any argument is null
+     * @throws IllegalArgumentException if any argument is invalid
+     * @see AbstractVariable#AbstractVariable(String, VariableGroup, String)
+     */
+    public NumericalVariable(
+            final String displayName, final VariableGroup group, final String key)
     {
         super(displayName, group, key);
     }

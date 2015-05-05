@@ -72,11 +72,13 @@ public class RiskModel
      * Sets the display name.
      * @param displayName must not be null
      * @throws NullPointerException if displayName is null
-     * @throws IllegalArgumentException if displayName is longer than {@link #DISPLAY_NAME_MAX}
+     * @throws IllegalArgumentException if displayName is empty or longer than
+     * {@link #DISPLAY_NAME_MAX}
      */
     public void setDisplayName(final String displayName)
     {
-        fDisplayName = Preconditions.requireWithin(displayName, DISPLAY_NAME_MAX);
+        fDisplayName = Preconditions.requireWithin(
+                displayName, 1, DISPLAY_NAME_MAX);
     }
     
     /**

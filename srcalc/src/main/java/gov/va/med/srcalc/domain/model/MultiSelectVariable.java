@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -31,8 +31,18 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
      */
     MultiSelectVariable()
     {
+        fDisplayType = DisplayType.Radio;
+        fOptions = new ArrayList<>();
     }
     
+    /**
+     * Constructs an instance.
+     * @throws NullPointerException if any argument is null
+     * @throws IllegalArgumentException if any argument is invalid
+     * @see AbstractVariable#AbstractVariable(String, VariableGroup, String)
+     * @see #setDisplayType(DisplayType)
+     * @see #setOptions(List)
+     */
     public MultiSelectVariable(
             final String displayName,
             final VariableGroup group,
@@ -41,20 +51,25 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
             final String key)
     {
         super(displayName, group, key);
-        fDisplayType = displayType;
-        fOptions = options;
+        setDisplayType(displayType);
+        setOptions(options);
     }
     
     @Basic
     @Enumerated(EnumType.STRING)  // store as strings in the DB for user-friendliness
-    public DisplayType getDisplayType()
+    public final DisplayType getDisplayType()
     {
         return fDisplayType;
     }
     
-    public void setDisplayType(final DisplayType displayType)
+    /**
+     * Sets the display type of the variable.
+     * @throws NullPointerException if the given value is null. (Yes, you can
+     * pass a null value for an enum.)
+     */
+    public final void setDisplayType(final DisplayType displayType)
     {
-        fDisplayType = displayType;
+        fDisplayType = Objects.requireNonNull(displayType, "display type must not be null");
     }
 
     @OneToMany(fetch = FetchType.EAGER)  // eager load due to close association
@@ -64,14 +79,18 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
             joinColumns = @JoinColumn(name = "variable_id"),
             inverseJoinColumns = @JoinColumn(name = "option_id")
         )
-    public List<MultiSelectOption> getOptions()
+    public final List<MultiSelectOption> getOptions()
     {
         return fOptions;
     }
 
-    public void setOptions(final List<MultiSelectOption> options)
+    /**
+     * Sets the ordered list of {@link MultiSelectOption}s.
+     * @param options
+     */
+    public final void setOptions(final List<MultiSelectOption> options)
     {
-        fOptions = options;
+        fOptions = Objects.requireNonNull(options, "options must not be null");
     }
     
     @Override

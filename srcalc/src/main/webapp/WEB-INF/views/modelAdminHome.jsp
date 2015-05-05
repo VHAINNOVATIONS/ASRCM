@@ -8,7 +8,7 @@
     <table class="srcalcTable" id="variableSummaryTable">
     <tr><th class="main">Name</th><th class="main">Type</th><th>Edit</th></tr>
     <c:forEach var="variable" items="${variables}">
-    <c:url var="editVariable" value="/admin/models/editVariable/${variable.key}" />
+    <c:url var="editVariable" value="/admin/variables/${variable.key}" />
     <tr>
         <td><c:out value="${variable.displayName}"/></td>
         <td><c:out value="${variable.typeName}"/></td>

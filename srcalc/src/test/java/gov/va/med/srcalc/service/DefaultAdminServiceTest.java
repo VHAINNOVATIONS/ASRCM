@@ -72,6 +72,7 @@ public class DefaultAdminServiceTest
     	final String key = "dnr";
         final String origName = "DNR";
         final String newName = "Do Not R";
+        final String newHelpText = "Help me!";
         
         // Create the class under test.
         final DefaultAdminService s = new DefaultAdminService(mockVariableDao());
@@ -82,11 +83,11 @@ public class DefaultAdminServiceTest
         
         // Behavior verification.
         final EditVariable ev = EditVariable.fromVariable(var);
-        assertTrue(ev.isIntegratedVariable());
         ev.setDisplayName(newName);
+        ev.setHelpText(newHelpText);
         s.updateVariable(ev);
-        // Can't test getVariable() due to limitations of the mock.
         assertEquals(newName, var.getDisplayName());
+        assertEquals(newHelpText, var.getHelpText());
     }
     
 }

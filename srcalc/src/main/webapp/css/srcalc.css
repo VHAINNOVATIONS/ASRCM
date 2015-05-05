@@ -253,12 +253,12 @@ form.attributeEditForm td.attributeName {
 /* Alternate colors on variables within a variable group. 
    The variable group title should not be included in the alternation.
    Every even row is white starting with row 2*/
-form.attributeEditForm tbody tr:nth-child(2n+2) {
+#riskVarForm tbody tr:nth-child(2n+2) {
     background: #FFF;
 }
 
 /* Every odd row is light grey starting with row 3*/
-form.attributeEditForm tbody tr:nth-child(2n+3) {
+#riskVarForm tbody tr:nth-child(2n+3) {
     background: #DDD;
 }
 

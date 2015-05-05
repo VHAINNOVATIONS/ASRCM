@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.controller;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.service.*;
 import gov.va.med.srcalc.web.view.Views;
 
@@ -10,12 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Web MVC controller for administration of variables.
  */
 @Controller
-@RequestMapping("/admin/models/editVariable/{variableKey}")
+@RequestMapping("/admin/variables/{variableKey}")
 public class EditVariableController
 {
     private final AdminService fAdminService;
@@ -47,16 +49,20 @@ public class EditVariableController
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String editVariable()
+    public ModelAndView editVariable()
             throws InvalidIdentifierException
     {
-        // Note: model is populated via addEditVariable() above.
+        final ModelAndView mav = new ModelAndView(Views.EDIT_BOOLEAN_VARIABLE);
+        // Note: "variable" is in the model via createEditVariable() above.
         
-        return Views.EDIT_VARIABLE;
+        // Add reference data (max lengths, valid values, etc.)
+        mav.addObject("DISPLAY_NAME_MAX", Variable.DISPLAY_NAME_MAX);
+        
+        return mav;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String saveVariable(
+    public ModelAndView saveVariable(
             @ModelAttribute("variable") @Valid final EditVariable editVariable,
             final BindingResult bindingResult)
                     throws InvalidIdentifierException
@@ -69,7 +75,7 @@ public class EditVariableController
 
         fAdminService.updateVariable(editVariable);
         // Using the POST-redirect-GET pattern.
-        return "redirect:/admin/models";
+        return new ModelAndView("redirect:/admin/models");
     }
     
 }
