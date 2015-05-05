@@ -4,7 +4,7 @@
 
 <srcalc:adminPage title="Edit Variable">
 <section>
-    <h2>Edit <c:out value="${variable.displayName}"/> Variable</h2>
+    <h2>Edit Variable</h2>
     <%-- Calculate the URL for form submission. --%>
     <c:url var="editVariableUrl" value="/admin/variables/${variable.key}"/>
     <form:form id="variableEditForm" cssClass="srcalcForm attributeEditForm"
@@ -61,9 +61,11 @@
     </tbody>
     </table>
     <div class="actionButtons">
-    <c:url var="cancelUrl" value="/admin/models" />
-    <a class="btn-default" href="${cancelUrl}">Cancel</a>
-    <button class="button-em" type="submit">Save Changes</button>
+    <ol>
+    <li><c:url var="cancelUrl" value="/admin/models" />
+        <a class="btn-default" href="${cancelUrl}">Cancel</a></li>
+    <li><button class="button-em" type="submit">Save Changes</button></li>
+    </ol>
     </div>
     </form:form>
 </section>
