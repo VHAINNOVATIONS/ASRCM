@@ -51,6 +51,13 @@
             <form:errors path="groupId" cssClass="error" />
         </td>
         </tr>
+        <tr>
+        <td class="attributeName">VistA Value:</td>
+        <td>
+            <%-- There are no retrievers for Boolean variables. --%>
+            <select><option>N/A</option></select>
+        </td>
+        </tr>
     </tbody>
     </table>
     <div class="actionButtons">
