@@ -21,18 +21,13 @@ public class RuleTest
     @Test
     public final void testGetRequiredVariables()
     {
-        final NumericalVariable ageVar = SampleModels.ageVariable();
-        final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
-        final ValueMatcher totallyDependentMatcher = new ValueMatcher(
-                fsVar, "value == 'Totally dependent'");
-        final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
-        final Rule rule = new Rule(
-                Arrays.asList(totallyDependentMatcher, ageMatcher),
-                "#Age.value * #coefficient", true);
+        final Rule rule = SampleModels.ageAndFsRule();
         
-        assertEquals(
-                ImmutableSet.of(ageVar, fsVar),
-                rule.getRequiredVariables());
+        final ImmutableSet<AbstractVariable> expectedVars = ImmutableSet.of(
+                        SampleModels.ageVariable(),
+                        SampleModels.functionalStatusVariable());
+        
+        assertEquals(expectedVars, rule.getRequiredVariables());
     }
     
     @Test

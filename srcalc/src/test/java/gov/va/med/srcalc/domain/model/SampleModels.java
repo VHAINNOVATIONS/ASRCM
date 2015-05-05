@@ -120,6 +120,22 @@ public class SampleModels
         return s;
     }
     
+    /**
+     * Returns a sample {@link Rule} that multiplies age by the coefficient
+     * if Functional Status == Totally dependent.
+     */
+    public static Rule ageAndFsRule()
+    {
+        final NumericalVariable ageVar = SampleModels.ageVariable();
+        final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
+        final ValueMatcher totallyDependentMatcher = new ValueMatcher(
+                fsVar, "value == 'Totally dependent'");
+        final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
+        return new Rule(
+                Arrays.asList(totallyDependentMatcher, ageMatcher),
+                "#Age.value * #coefficient", true);
+    }
+    
     public static List<AbstractVariable> sampleVariableList()
     {
         return Arrays.asList(
