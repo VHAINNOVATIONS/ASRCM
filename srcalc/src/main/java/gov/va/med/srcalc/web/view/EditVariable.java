@@ -1,11 +1,10 @@
 package gov.va.med.srcalc.web.view;
 
-import java.util.Collection;
+import java.util.*;
 
 import com.google.common.base.Optional;
 
-import gov.va.med.srcalc.domain.model.AbstractVariable;
-import gov.va.med.srcalc.domain.model.VariableGroup;
+import gov.va.med.srcalc.domain.model.*;
 
 /**
  * <p>Encapsulates the operation to update an existing variable.</p>
@@ -26,7 +25,7 @@ public final class EditVariable
 {
     private final Collection<VariableGroup> fAllGroups;
 
-    private final String fKey;
+    private final AbstractVariable fTarget;
 
     private String fDisplayName;
     
@@ -34,20 +33,51 @@ public final class EditVariable
     
     private int fGroupId;
     
+    private final SortedSet<RiskModel> fDependentModels;
+    
     /**
      * Constructs an instance.
-     * @param variable
-     * @param allGroups
+     * @param variable the target variable. Will be stored, but not modified
+     * until calling {@link #applyToVariable()}.
+     * @param allGroups all available VariableGroups for user selection
      */
     public EditVariable(
             final AbstractVariable variable,
             final Collection<VariableGroup> allGroups) 
     {
-        fKey = variable.getKey();
+        fTarget = variable;
         fDisplayName = variable.getDisplayName();
         fHelpText = variable.getHelpText();
         fGroupId = variable.getGroup().getId();
         fAllGroups = allGroups;
+        fDependentModels = new TreeSet<>();
+    }
+    
+    /**
+     * Calculates and stores which, if any, of the given RiskModels depend on
+     * the target variable.
+     * @param allModels the models to check
+     */
+    public void calculateDependentModels(final Collection<RiskModel> allModels)
+    {
+        for (final RiskModel model : allModels)
+        {
+            if (model.getRequiredVariables().contains(fTarget))
+            {
+                fDependentModels.add(model);
+            }
+        }
+    }
+    
+    /**
+     * <p>If {@link #calculateDependentModels(Collection)} has been called,
+     * returns the set of RiskModels that depend on this variable for the
+     * user's reference. Otherwise, returns an empty set.</p>
+     * @return a set sorted by the RiskModels' natural order
+     */
+    public SortedSet<RiskModel> getDependentModels()
+    {
+        return fDependentModels;
     }
 
     public Collection<VariableGroup> getAllGroups()
@@ -61,7 +91,7 @@ public final class EditVariable
      */
     public String getKey()
     {
-        return fKey;
+        return fTarget.getKey();
     }
 
     public String getDisplayName()
@@ -123,16 +153,15 @@ public final class EditVariable
     }
 
     /**
-     * Sets all stored properties on the given Variable.
-     * @param variable the variable to modify
-     * @return the same Variable reference for convenience
+     * Sets all stored properties on the target variable.
+     * @return the stored target variable for convenience
      * @throws IllegalStateException if no group exists for the set group ID
      */
-    public AbstractVariable applyToVariable(final AbstractVariable variable)
+    public AbstractVariable applyToVariable()
     {
-        variable.setDisplayName(fDisplayName);
-        variable.setHelpText(fHelpText);
-        variable.setGroup(getGroup().get());
-        return variable;
+        fTarget.setDisplayName(fDisplayName);
+        fTarget.setHelpText(fHelpText);
+        fTarget.setGroup(getGroup().get());
+        return fTarget;
     }
 }

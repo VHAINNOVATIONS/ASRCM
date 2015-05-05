@@ -2,9 +2,13 @@ package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.model.*;
 
+import java.util.Arrays;
 import java.util.SortedSet;
 
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableSet;
+
 import static org.junit.Assert.*;
 
 public class EditVariableTest
@@ -41,7 +45,26 @@ public class EditVariableTest
     }
     
     @Test
-    public final void testSetOntoVariable()
+    public final void testCalculateDependentModels()
+    {
+        // Setup
+        final AbstractVariable var = SampleModels.dnrVariable();
+        final SortedSet<VariableGroup> allGroups = SampleModels.variableGroups();
+        final RiskModel thoracicModel = SampleModels.thoracicRiskModel();
+        final RiskModel emptyModel = new RiskModel("Empty model");
+        final EditVariable ev = new EditVariable(var, allGroups);
+        
+        // Operation
+        ev.calculateDependentModels(Arrays.asList(thoracicModel, emptyModel));
+        
+        // Verification
+        assertEquals(
+                ImmutableSet.of(thoracicModel),
+                ev.getDependentModels());
+    }
+    
+    @Test
+    public final void testApply()
     {
         final String newDisplayName = "newName";
         final String newHelpText = "newHelpText";
@@ -52,13 +75,13 @@ public class EditVariableTest
         final VariableGroup newGroup = allGroups.first();
         // Ensure we're actually going to test something here.
         assertNotEquals(newGroup, var.getGroup());
-        final EditVariable ev = new EditVariable(var, allGroups);
         
         // Operation
+        final EditVariable ev = new EditVariable(var, allGroups);
         ev.setDisplayName(newDisplayName);
         ev.setHelpText(newHelpText);
         ev.setGroupId(newGroup.getId());
-        ev.applyToVariable(var);
+        ev.applyToVariable();
         
         // Verification
         assertEquals(newDisplayName, var.getDisplayName());

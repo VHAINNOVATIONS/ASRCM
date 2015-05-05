@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * A risk model definition.
  */
 @Entity
-public class RiskModel
+public class RiskModel implements Comparable<RiskModel>
 {
     public static final int DISPLAY_NAME_MAX = 80;
     
@@ -323,4 +323,14 @@ public class RiskModel
     }
     
     // TODO: implement equals() and hashCode()
+    
+    /**
+     * Compares RiskModels based on their display name. Not consistent with
+     * equals!
+     */
+    @Override
+    public int compareTo(final RiskModel other)
+    {
+        return this.fDisplayName.compareTo(other.fDisplayName);
+    }
 }

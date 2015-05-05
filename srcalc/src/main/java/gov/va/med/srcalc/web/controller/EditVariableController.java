@@ -48,8 +48,10 @@ public class EditVariableController
             @PathVariable final String variableKey)
             throws InvalidIdentifierException
     {
-        return new EditVariable(
+        final EditVariable ev = new EditVariable(
                 loadVariable(variableKey), fAdminService.getAllVariableGroups());
+        ev.calculateDependentModels(fAdminService.getAllRiskModels());
+        return ev;
     }
     
     private AbstractVariable loadVariable(final String variableKey)
@@ -84,9 +86,7 @@ public class EditVariableController
         }
         
         // Apply the changes to the persistent variable.
-        final AbstractVariable var = loadVariable(editVariable.getKey());
-        editVariable.applyToVariable(var);
-        fAdminService.updateVariable(var);
+        fAdminService.updateVariable(editVariable.applyToVariable());
 
         // Using the POST-redirect-GET pattern.
         return new ModelAndView("redirect:/admin/models");

@@ -1,10 +1,8 @@
 package gov.va.med.srcalc.service;
 
-import gov.va.med.srcalc.domain.model.AbstractVariable;
-import gov.va.med.srcalc.domain.model.VariableGroup;
+import gov.va.med.srcalc.domain.model.*;
 
-import java.util.List;
-import java.util.SortedSet;
+import java.util.*;
 
 /**
  * Service Layer facade for administrative functionalty.
@@ -38,4 +36,10 @@ public interface AdminService
      * previously loaded using {@link #getVariable(String)}.
      */
     public void updateVariable(final AbstractVariable variable);
+    
+    /**
+     * Returns all {@link RiskModel}s in the database.
+     * @return a collection in arbitrary order
+     */
+    public Collection<RiskModel> getAllRiskModels();
 }

@@ -1,11 +1,10 @@
 package gov.va.med.srcalc.service;
 
+import gov.va.med.srcalc.db.RiskModelDao;
 import gov.va.med.srcalc.db.VariableDao;
-import gov.va.med.srcalc.domain.model.AbstractVariable;
-import gov.va.med.srcalc.domain.model.VariableGroup;
+import gov.va.med.srcalc.domain.model.*;
 
-import java.util.List;
-import java.util.SortedSet;
+import java.util.*;
 
 import javax.inject.Inject;
 
@@ -18,11 +17,14 @@ public class DefaultAdminService implements AdminService
     private static final Logger fLogger = LoggerFactory.getLogger(DefaultAdminService.class);
     
     private final VariableDao fVariableDao;
+    private final RiskModelDao fRiskModelDao;
     
     @Inject
-    public DefaultAdminService(final VariableDao variableDao)
+    public DefaultAdminService(
+            final VariableDao variableDao, final RiskModelDao riskModelDao)
     {
         fVariableDao = variableDao;
+        fRiskModelDao = riskModelDao;
     }
     
     @Override
@@ -62,5 +64,12 @@ public class DefaultAdminService implements AdminService
     public void updateVariable(final AbstractVariable variable)
     {
         fVariableDao.updateVariable(variable);
+    }
+    
+    @Override
+    @Transactional
+    public Collection<RiskModel> getAllRiskModels()
+    {
+        return fRiskModelDao.getAllRiskModels();
     }
 }

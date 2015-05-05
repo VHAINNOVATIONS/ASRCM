@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
+import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.util.CollectionUtils;
 import gov.va.med.srcalc.util.MissingValuesException;
 
@@ -110,5 +111,15 @@ public class RiskModelTest
         
         model.calculate(Arrays.<Value>asList(
                 dnrVar.makeValue(true), dnrVar.makeValue(false)));
+    }
+    
+    @Test
+    public final void testCompareTo()
+    {
+        final RiskModel lesser = new RiskModel("a");
+        final RiskModel middle = new RiskModel("b");
+        final RiskModel greater = new RiskModel("c");
+        
+        TestHelpers.verifyCompareToContract(lesser, middle, greater);
     }
 }

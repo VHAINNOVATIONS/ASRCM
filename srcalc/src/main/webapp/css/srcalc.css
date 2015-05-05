@@ -245,9 +245,23 @@ form.attributeEditForm th.groupName {
 	padding-bottom: 0.2em;
 }
 
+/* Put some vertical space between cells */
+form.attributeEditForm td {
+	vertical-align: top;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+}
+
 form.attributeEditForm td.attributeName {
 	/* Set a minimum width and a hint that the left column should be smaller. */
 	width: 20%;
+}
+
+/* Reduce the padding and margins on lists in attribute edit tables to line up
+ * with other text. */
+form.attributeEditForm td ul {
+	margin: 0;
+	padding-left: 1em;
 }
 
 /* Alternate colors on variables within a variable group. 
