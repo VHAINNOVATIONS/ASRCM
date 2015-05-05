@@ -18,6 +18,9 @@ public class BooleanVariable extends AbstractVariable
     
     /**
      * Constructs an instance.
+     * @throws NullPointerException if any argument is null
+     * @throws IllegalArgumentException if any argument is invalid
+     * @see AbstractVariable#AbstractVariable(String, VariableGroup, String)
      */
     public BooleanVariable(final String displayName, final VariableGroup group, final String key)
     {

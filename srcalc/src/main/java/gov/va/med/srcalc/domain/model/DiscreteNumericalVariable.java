@@ -31,6 +31,12 @@ public class DiscreteNumericalVariable extends AbstractNumericalVariable impleme
     {
     }
     
+    /**
+     * Constructs an instance.
+     * @throws NullPointerException if any argument is null
+     * @throws IllegalArgumentException if any argument is invalid
+     * @see AbstractVariable#AbstractVariable(String, VariableGroup, String)
+     */
     public DiscreteNumericalVariable(
             final String displayName,
             final VariableGroup group,

@@ -44,12 +44,19 @@ public abstract class AbstractVariable implements Variable
     
     /**
      * Creates an instance with some of the basic properties filled.
+     * @throws NullPointerException if any of the given arguments is null.
+     * @throws IllegalArgumentException if a given value is invalid. (See the
+     * respective setters.)
+     * @see #setKey(String)
+     * @see #setDisplayName(String)
+     * @see #setGroup(VariableGroup)
      */
     protected AbstractVariable(final String displayName, final VariableGroup group, final String key)
     {
-        this.fDisplayName = displayName;
-        this.fGroup = Objects.requireNonNull(group, "group must not be null");
-        this.fKey = key;
+        // Use the setters to enforce contraints.
+        setKey(key);
+        setDisplayName(displayName);
+        setGroup(group);
         this.fRetrievalDateString = "";
     }
     
@@ -57,7 +64,7 @@ public abstract class AbstractVariable implements Variable
      * The object's surrogate primary key. Don't show this to the user.
      */
     @Id
-    public int getId()
+    public final int getId()
     {
         return fId;
     }
@@ -66,7 +73,7 @@ public abstract class AbstractVariable implements Variable
      * For reflection-based construction only. Business code should never modify
      * the surrogate key as it is generated from the database.
      */
-    void setId(final int id)
+    final void setId(final int id)
     {
         this.fId = id;
     }
@@ -78,7 +85,7 @@ public abstract class AbstractVariable implements Variable
     		length = KEY_MAX,
     		nullable = false,
     		unique = true)
-    public String getKey()
+    public final String getKey()
     {
         return fKey;
     }
@@ -90,7 +97,7 @@ public abstract class AbstractVariable implements Variable
      * @throws IllegalArgumentException if the given key is empty, over 40
      * characters, or does not match {@link Variable#VALID_KEY_REGEX}
      */
-    void setKey(final String key)
+    final void setKey(final String key)
     {
         // Check preconditions
         Preconditions.requireWithin(key, 1, KEY_MAX); // require at least 1 char
@@ -103,7 +110,7 @@ public abstract class AbstractVariable implements Variable
     @Column(
             length = DISPLAY_NAME_MAX,
             nullable = false)
-    public String getDisplayName()
+    public final String getDisplayName()
     {
         return fDisplayName;
     }
@@ -113,7 +120,7 @@ public abstract class AbstractVariable implements Variable
      * @throws IllegalArgumentException if the given name is empty or over
      * {@link Variable#DISPLAY_NAME_MAX} characters
      */
-    public void setDisplayName(final String displayName)
+    public final void setDisplayName(final String displayName)
     {
         this.fDisplayName =
                 // require at least 1 character
@@ -125,7 +132,7 @@ public abstract class AbstractVariable implements Variable
      */
     @ManyToOne
     @JoinColumn(name = "VARIABLE_GROUP", nullable = false)  // "group" is a SQL reserved word
-    public VariableGroup getGroup()
+    public final VariableGroup getGroup()
     {
         return fGroup;
     }
@@ -135,18 +142,18 @@ public abstract class AbstractVariable implements Variable
      * @param group must not be null
      * @throws NullPointerException if the given group is null
      */
-    public void setGroup(final VariableGroup group)
+    public final void setGroup(final VariableGroup group)
     {
         fGroup = Objects.requireNonNull(group, "group must not be null");
     }
 
     @Basic
-    public String getHelpText()
+    public final String getHelpText()
     {
         return fHelpText;
     }
 
-    public void setHelpText(final String helpText)
+    public final void setHelpText(final String helpText)
     {
         this.fHelpText = helpText;
     }
@@ -155,12 +162,12 @@ public abstract class AbstractVariable implements Variable
     @Column(
             length = KEY_MAX,
             nullable = true)
-    public Integer getRetrievalKey()
+    public final Integer getRetrievalKey()
     {
     	return fRetrievalKey;
     }
     
-    public void setRetrievalKey(final Integer retrievalKey)
+    public final void setRetrievalKey(final Integer retrievalKey)
     {
     	this.fRetrievalKey = retrievalKey;
     }
