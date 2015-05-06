@@ -144,8 +144,8 @@ public final class EditVariable
     
     /**
      * Sets the database ID of the variable's group. Accepts an invalid group,
-     * though {@link #applyToVariable(AbstractVariable)} will throw an exception
-     * if an invalid group is set.
+     * though {@link #applyToVariable()} will throw an exception if an invalid
+     * group is set.
      */
     public void setGroupId(final int groupId)
     {
