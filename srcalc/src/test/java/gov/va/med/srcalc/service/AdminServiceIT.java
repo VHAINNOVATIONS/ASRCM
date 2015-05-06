@@ -44,10 +44,12 @@ public class AdminServiceIT extends IntegrationTest
                 fAdminService.getAllVariableGroups();
         assertEquals(7, actualGroups.size());
         // Sort the collection and examine the first item, which should be the
-        // Planned Procedure group.
+        // Planned Procedure group, just to make sure the data was actually
+        // loaded correctly.
         final VariableGroup plannedProcedure =
                 ImmutableSortedSet.copyOf(actualGroups).first();
         assertEquals("Planned Procedure", plannedProcedure.getName());
+        assertEquals(0, plannedProcedure.getDisplayOrder());
     }
     
     @Test

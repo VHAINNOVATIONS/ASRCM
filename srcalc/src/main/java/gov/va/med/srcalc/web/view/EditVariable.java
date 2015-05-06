@@ -102,21 +102,33 @@ public final class EditVariable
         return fTarget.getKey();
     }
 
+    /**
+     * Returns the display name which {@link #applyToVariable()} will set.
+     */
     public String getDisplayName()
     {
         return fDisplayName;
     }
 
+    /**
+     * Sets the display name which {@link #applyToVariable()} will set.
+     */
     public void setDisplayName(String displayName)
     {
         fDisplayName = displayName;
     }
     
+    /**
+     * Returns the help text which {@link #applyToVariable()} will set.
+     */
     public String getHelpText()
     {
         return fHelpText;
     }
 
+    /**
+     * Sets the help text which {@link #applyToVariable()} will set.
+     */
     public void setHelpText(String helpText)
     {
         fHelpText = helpText;
