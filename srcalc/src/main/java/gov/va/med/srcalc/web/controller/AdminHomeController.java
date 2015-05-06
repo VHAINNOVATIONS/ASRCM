@@ -15,16 +15,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Web MVC controller for risk model administration.
+ * Web MVC controller for the Administration home page.
  */
 @Controller
-@RequestMapping("/admin/models")
-public class ModelAdminController
+@RequestMapping("/admin")
+public class AdminHomeController
 {
     private final AdminService fAdminService;
     
     @Inject
-    public ModelAdminController(final AdminService adminService)
+    public AdminHomeController(final AdminService adminService)
     {
         fAdminService = adminService;
     }

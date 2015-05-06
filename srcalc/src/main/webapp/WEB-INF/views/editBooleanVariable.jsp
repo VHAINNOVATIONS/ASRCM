@@ -72,7 +72,7 @@
     </table>
     <div class="actionButtons">
     <ol>
-    <li><c:url var="cancelUrl" value="/admin/models" />
+    <li><c:url var="cancelUrl" value="/admin" />
         <a class="btn-default" href="${cancelUrl}">Cancel</a></li>
     <li><button class="button-em" type="submit">Save Changes</button></li>
     </ol>

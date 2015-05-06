@@ -20,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.
 @ContextConfiguration({"/srcalc-context.xml", "/srcalc-controller.xml", "/test-context.xml"})
 @Transactional // run each test in its own (rolled-back) transaction
-public class ModelAdminControllerIT extends IntegrationTest
+public class AdminHomeControllerIT extends IntegrationTest
 {
     @Autowired
     WebApplicationContext fWac;
@@ -36,7 +36,7 @@ public class ModelAdminControllerIT extends IntegrationTest
     @Test
     public final void testDefaultPage() throws Exception
     {
-        fMockMvc.perform(get("/admin/models")).
+        fMockMvc.perform(get("/admin")).
             andExpect(model().attributeExists("variables"));
     }
     
