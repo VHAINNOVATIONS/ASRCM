@@ -3,7 +3,6 @@ package gov.va.med.srcalc.domain.model;
 import static org.junit.Assert.*;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression1;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression2;
-import gov.va.med.srcalc.util.CollectionUtils;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 import java.util.Arrays;
@@ -15,23 +14,20 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.expression.Expression;
 
+import com.google.common.collect.ImmutableSet;
+
 public class RuleTest
 {
     @Test
     public final void testGetRequiredVariables()
     {
-        final NumericalVariable ageVar = SampleModels.ageVariable();
-        final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
-        final ValueMatcher totallyDependentMatcher = new ValueMatcher(
-                fsVar, "value == 'Totally dependent'");
-        final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
-        final Rule rule = new Rule(
-                Arrays.asList(totallyDependentMatcher, ageMatcher),
-                "#Age.value * #coefficient", true);
+        final Rule rule = SampleModels.ageAndFsRule();
         
-        assertEquals(
-                CollectionUtils.hashSet(ageVar, fsVar),
-                rule.getRequiredVariables());
+        final ImmutableSet<AbstractVariable> expectedVars = ImmutableSet.of(
+                        SampleModels.ageVariable(),
+                        SampleModels.functionalStatusVariable());
+        
+        assertEquals(expectedVars, rule.getRequiredVariables());
     }
     
     @Test

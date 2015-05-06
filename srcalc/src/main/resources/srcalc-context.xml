@@ -37,6 +37,7 @@
 	<!-- DAOs -->
 	<bean id="specialtyDao" class="gov.va.med.srcalc.db.SpecialtyDao" />
 	<bean id="variableDao" class="gov.va.med.srcalc.db.VariableDao" />
+	<bean id="riskModelDao" class="gov.va.med.srcalc.db.RiskModelDao" />
 	<bean id="procedureDao" class="gov.va.med.srcalc.db.ProcedureDao" />
 	<!-- Note: VistA DAOs are not defined here. See applicationContext.xml. -->
 

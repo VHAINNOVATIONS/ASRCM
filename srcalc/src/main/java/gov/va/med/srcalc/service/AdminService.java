@@ -1,8 +1,10 @@
 package gov.va.med.srcalc.service;
 
-import gov.va.med.srcalc.domain.model.AbstractVariable;
-
 import java.util.List;
+
+import gov.va.med.srcalc.domain.model.*;
+
+import com.google.common.collect.ImmutableCollection;
 
 /**
  * Service Layer facade for administrative functionalty.
@@ -11,23 +13,36 @@ import java.util.List;
 public interface AdminService
 {
     /**
-     * Returns all Variables for editing purposes.
+     * Returns all Variables in the database.
+     * @return a list, in display name order
      */
     public List<AbstractVariable> getAllVariables();
     
     /**
-     * Returns the Variable with the given display name.
+     * Returns all VariableGroups in the database..
+     * @return an ImmutableCollection, in arbitrary order
+     */
+    public ImmutableCollection<VariableGroup> getAllVariableGroups();
+    
+    /**
+     * Returns the Variable with the given display name for editing. Note that
+     * the returned object must be given back to {@link
+     * #updateVariable(AbstractVariable)} to persist any changes.
      * @throws InvalidIdentifierException if no such Variable exists
      */
     public AbstractVariable getVariable(final String key)
         throws InvalidIdentifierException;
     
     /**
-     * Updates a Variable with the given command object. See the package javadocs
-     * for why we use a command object.
-     * @param command a command object containing the edits to make
-     * @throws InvalidIdentifierException if no such Variable exists
+     * Updates the given variable in the persistent store.
+     * @param variable the variable to update. The object must have been
+     * previously loaded using {@link #getVariable(String)}.
      */
-    public void updateVariable(final EditVariable command)
-        throws InvalidIdentifierException;
+    public void updateVariable(final AbstractVariable variable);
+    
+    /**
+     * Returns all {@link RiskModel}s in the database.
+     * @return an ImmutableCollection, in arbitrary order
+     */
+    public ImmutableCollection<RiskModel> getAllRiskModels();
 }

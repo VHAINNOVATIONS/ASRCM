@@ -4,8 +4,9 @@ import java.util.Map;
 
 import javax.persistence.*;
 
+import com.google.common.collect.ImmutableSet;
+
 import gov.va.med.srcalc.util.MissingValuesException;
-import gov.va.med.srcalc.util.NoNullSet;
 
 /**
  * A single summation term in a risk model.
@@ -47,7 +48,7 @@ public abstract class ModelTerm
      * contain nulls.
      */
     @Transient
-    public abstract NoNullSet<Variable> getRequiredVariables();
+    public abstract ImmutableSet<Variable> getRequiredVariables();
     
     /**
      * Base equals() functionality that simply verifies equality of the coefficient.

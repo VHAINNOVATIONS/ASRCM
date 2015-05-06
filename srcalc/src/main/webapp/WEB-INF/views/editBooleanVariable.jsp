@@ -4,7 +4,7 @@
 
 <srcalc:adminPage title="Edit Variable">
 <section>
-    <h2>Edit <c:out value="${variable.displayName}"/> Variable</h2>
+    <h2>Edit Variable</h2>
     <%-- Calculate the URL for form submission. --%>
     <c:url var="editVariableUrl" value="/admin/variables/${variable.key}"/>
     <form:form id="variableEditForm" cssClass="srcalcForm attributeEditForm"
@@ -19,6 +19,16 @@
         <tr>
         <td class="attributeName">Type:</td>
         <td>Checkbox</td><%-- This JSP is only used for boolean vars. --%>
+        </tr>
+        <tr>
+        <td class="attributeName">Dependent Models:</td>
+        <td>
+        <ul>
+        <c:forEach var="model" items="${variable.dependentModels}">
+            <li>${model.displayName}</li>
+        </c:forEach>
+        </ul>
+        </td>
         </tr>
         <tr>
         <td class="attributeName">Display Text:</td>
@@ -42,12 +52,30 @@
             </ul>
         </td>
         </tr>
+        <tr>
+        <td class="attributeName">Group:</td>
+        <td>
+            <form:select path="groupId">
+                <form:options items="${variable.allGroups}" itemValue="id" itemName="name" />
+            </form:select>
+            <form:errors path="groupId" cssClass="error" />
+        </td>
+        </tr>
+        <tr>
+        <td class="attributeName">VistA Value:</td>
+        <td>
+            <%-- There are no retrievers for Boolean variables. --%>
+            <select><option>N/A</option></select>
+        </td>
+        </tr>
     </tbody>
     </table>
     <div class="actionButtons">
-    <c:url var="cancelUrl" value="/admin/models" />
-    <a class="btn-default" href="${cancelUrl}">Cancel</a>
-    <button class="button-em" type="submit">Save Changes</button>
+    <ol>
+    <li><c:url var="cancelUrl" value="/admin/models" />
+        <a class="btn-default" href="${cancelUrl}">Cancel</a></li>
+    <li><button class="button-em" type="submit">Save Changes</button></li>
+    </ol>
     </div>
     </form:form>
 </section>

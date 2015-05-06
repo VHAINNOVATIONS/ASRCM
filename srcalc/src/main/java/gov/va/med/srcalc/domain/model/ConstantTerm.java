@@ -1,11 +1,11 @@
 package gov.va.med.srcalc.domain.model;
 
-import gov.va.med.srcalc.util.NoNullSet;
-
 import java.util.*;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * <p>A constant term. Simply adds a constant to a risk model. (Each risk model
@@ -32,11 +32,9 @@ public final class ConstantTerm extends ModelTerm
 
     @Override
     @Transient
-    public NoNullSet<Variable> getRequiredVariables()
+    public ImmutableSet<Variable> getRequiredVariables()
     {
-        // Two-line construction to get type arguments right.
-        final Set<Variable> emptySet = Collections.emptySet();
-        return NoNullSet.fromSet(emptySet);
+        return ImmutableSet.of();
     }
     
     @Override

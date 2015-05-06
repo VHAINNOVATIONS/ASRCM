@@ -8,6 +8,8 @@ import java.util.*;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import com.google.common.collect.ImmutableSortedSet;
+
 /**
  * Constructs sample instances of various risk model objects.
  */
@@ -120,6 +122,22 @@ public class SampleModels
         return s;
     }
     
+    /**
+     * Returns a sample {@link Rule} that multiplies age by the coefficient
+     * if Functional Status == Totally dependent.
+     */
+    public static Rule ageAndFsRule()
+    {
+        final NumericalVariable ageVar = SampleModels.ageVariable();
+        final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
+        final ValueMatcher totallyDependentMatcher = new ValueMatcher(
+                fsVar, "value == 'Totally dependent'");
+        final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
+        return new Rule(
+                Arrays.asList(totallyDependentMatcher, ageMatcher),
+                "#Age.value * #coefficient", true);
+    }
+    
     public static List<AbstractVariable> sampleVariableList()
     {
         return Arrays.asList(
@@ -146,25 +164,59 @@ public class SampleModels
         	    new Specialty(62, "Vascular")
                 );
     }
+    
+    /**
+     * Constructs a VariableGroup object with the given properties.
+     * @param name the group name
+     * @param displayOrder the group display order
+     * @return a new VariableGroup object with a mock database ID of
+     * displayOrder + 1
+     */
+    private static VariableGroup makeVariableGroup(
+            final String name, final int displayOrder)
+    {
+        final VariableGroup vg = new VariableGroup(name, displayOrder);
+        // Normally only Hibernate calls the package-private setId() but fake it
+        // here.
+        vg.setId(displayOrder + 1);
+        return vg;
+    }
 
     public static VariableGroup procedureVariableGroup()
     {
-        return new VariableGroup("Planned Procedure", 0);
+        return makeVariableGroup("Planned Procedure", 0);
     }
     
     public static VariableGroup demographicsVariableGroup()
     {
-        return new VariableGroup("Demographics", 1);
+        return makeVariableGroup("Demographics", 1);
     }
     
     public static VariableGroup labVariableGroup()
     {
-        return new VariableGroup("Laboratory Values", 4);
+        return makeVariableGroup("Laboratory Values", 4);
     }
     
     public static VariableGroup recentClinicalVariableGroup()
     {
-        return new VariableGroup("Clinical Conditions or Diseases - Recent", 5);
+        return makeVariableGroup("Clinical Conditions or Diseases - Recent", 5);
+    }
+    
+    /**
+     * <p>Returns a set of 4 Variable Groups, sorted in natural order. The objects
+     * will have mock database IDs.</p>
+     * 
+     * <p>Note that there are more groups in production than these four, so the
+     * display order has gaps, i.e. 0,1,4,5.</p>
+     * @return an immutable set
+     */
+    public static ImmutableSortedSet<VariableGroup> variableGroups()
+    {
+        return ImmutableSortedSet.of(
+                procedureVariableGroup(),
+                demographicsVariableGroup(),
+                labVariableGroup(),
+                recentClinicalVariableGroup());
     }
 
     public static MultiSelectVariable genderVariable()

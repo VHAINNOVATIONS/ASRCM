@@ -74,6 +74,7 @@ dependencies {
 	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: springSecurityVersion
 	compile 'joda-time:joda-time:2.3'
 	compile 'org.apache.commons:commons-lang3:3.3.2'
+	compile 'com.google.guava:guava:18.0'
 
     // Spring-Security XML namespace
 	runtime group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
@@ -81,7 +82,7 @@ dependencies {
     
     /* Test dependencies */
 
-    testCompile 'junit:junit:4.11'
+    testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.9.5'
 	testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
 	testCompile 'nl.jqno.equalsverifier:equalsverifier:1.5'
@@ -106,7 +107,12 @@ dependencies {
 compileJava {
     // Warn about deprecated API usage.
     options.deprecation = true
-}    
+}
+
+compileTestJava {
+    // Warn about deprecated API usage in test code, too.
+    options.deprecation = true
+}
 
 war {
     manifest {

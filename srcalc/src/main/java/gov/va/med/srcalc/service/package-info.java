@@ -8,18 +8,15 @@
  * business-operation-oriented methods present a natural transaction boundary
  * and therefore most of them represent one transaction.</p>
  * 
- * <p>Entry-point methods in the Service Layer accept persistent object
- * identifiers, not the objects themselves. This allows the calling objects
- * (that is, the Presentation Layer) to contain just "glue code" and this layer
- * to contain all calls to load objects from persistence, etc.</p>
- * 
- * <p>Accordingly, entry-point methods that update objects take command objects
- * such as {@link gov.va.med.srcalc.service.EditVariable}. The advantage of
- * taking these command objects over simply allowing the calling code to freely
- * modify the domain objects is restricting the valid changes that may be made
- * as part of a particular business operation. For example, the aforementioned
- * {@link gov.va.med.srcalc.service.EditVariable} allows calling code to update
- * a variable's display text and help text but not its key, which should remain
- * static.</p>
+ * <p>Since entry-point methods in the Service Layer represent transactions,
+ * many methods accept persistent object identifiers instead of objects
+ * themselves in order to encapsulate database interaction within the
+ * transaction. For example,
+ * {@link CalculationService#setSpecialty(gov.va.med.srcalc.domain.Calculation, String)}
+ * accepts a String identifying a specialty instead of the specialty object
+ * itself. Other methods, such as
+ * {@link AdminService#updateVariable(gov.va.med.srcalc.domain.variable.AbstractVariable)},
+ * accept domain objects, but require that the caller provide an object that it
+ * previously obtained from a different Service Layer method.</p>
  */
 package gov.va.med.srcalc.service;

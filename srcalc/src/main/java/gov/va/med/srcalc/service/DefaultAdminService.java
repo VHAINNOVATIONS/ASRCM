@@ -1,9 +1,10 @@
 package gov.va.med.srcalc.service;
 
-import gov.va.med.srcalc.db.VariableDao;
-import gov.va.med.srcalc.domain.model.AbstractVariable;
-
 import java.util.List;
+
+import gov.va.med.srcalc.db.RiskModelDao;
+import gov.va.med.srcalc.db.VariableDao;
+import gov.va.med.srcalc.domain.model.*;
 
 import javax.inject.Inject;
 
@@ -11,16 +12,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.ImmutableCollection;
+
 public class DefaultAdminService implements AdminService
 {
     private static final Logger fLogger = LoggerFactory.getLogger(DefaultAdminService.class);
     
     private final VariableDao fVariableDao;
+    private final RiskModelDao fRiskModelDao;
     
     @Inject
-    public DefaultAdminService(final VariableDao variableDao)
+    public DefaultAdminService(
+            final VariableDao variableDao, final RiskModelDao riskModelDao)
     {
         fVariableDao = variableDao;
+        fRiskModelDao = riskModelDao;
     }
     
     @Override
@@ -30,6 +36,13 @@ public class DefaultAdminService implements AdminService
         fLogger.debug("Returning all Variables.");
 
         return fVariableDao.getAllVariables();
+    }
+    
+    @Override
+    @Transactional
+    public ImmutableCollection<VariableGroup> getAllVariableGroups()
+    {
+        return fVariableDao.getAllVariableGroups();
     }
     
     @Override
@@ -50,11 +63,15 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
-    public void updateVariable(EditVariable properties)
-        throws InvalidIdentifierException
+    public void updateVariable(final AbstractVariable variable)
     {
-        // Why provide a Service Layer method just to do this? For transaction
-        // control.
-        properties.setOntoVariable(getVariable(properties.getKey()));
+        fVariableDao.updateVariable(variable);
+    }
+    
+    @Override
+    @Transactional
+    public ImmutableCollection<RiskModel> getAllRiskModels()
+    {
+        return fRiskModelDao.getAllRiskModels();
     }
 }

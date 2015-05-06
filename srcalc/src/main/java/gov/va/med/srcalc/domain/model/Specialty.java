@@ -1,11 +1,11 @@
 package gov.va.med.srcalc.domain.model;
 
-import gov.va.med.srcalc.util.NoNullSet;
-
 import java.io.Serializable;
 import java.util.*;
 
 import javax.persistence.*;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * <p>Represents a surgical specialty, with the associated calcuation variables.</p>
@@ -91,17 +91,17 @@ public final class Specialty implements Serializable
     /**
      * Returns all {@link Variable}s required by all associated {@link
      * RiskModel}s. Caution: lazy-loaded.
-     * @return an unmodifiable set that does not contain null
+     * @return an ImmutableSet
      */
     @Transient
-    public NoNullSet<Variable> getModelVariables()
+    public ImmutableSet<Variable> getModelVariables()
     {
         final HashSet<Variable> allVariables = new HashSet<>();
         for (final RiskModel model : getRiskModels())
         {
             allVariables.addAll(model.getRequiredVariables());
         }
-        return NoNullSet.fromSet(Collections.unmodifiableSet(allVariables));
+        return ImmutableSet.copyOf(allVariables);
     }
     
     /**
