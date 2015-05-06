@@ -19,8 +19,8 @@ import gov.va.med.srcalc.domain.model.*;
  * as {@link #getAllGroups()}.</li>
  * <li>Have the user update the properties as desired.</li>
  * <li>Use {@link EditVariableValidator} to validate the user's edits.</li>
- * <li>Call {@link #applyToVariable(AbstractVariable)} to update an existing
- * variable with the new properties.</li>
+ * <li>Call {@link #applyToVariable()} to update the target variable with the
+ * new properties.</li>
  * </ol>
  */
 public final class EditVariable
@@ -52,7 +52,7 @@ public final class EditVariable
         fDisplayName = variable.getDisplayName();
         fHelpText = variable.getHelpText();
         fGroupId = variable.getGroup().getId();
-        fAllGroups = ImmutableList.copyOf(allGroups);
+        fAllGroups = ImmutableList.copyOf(allGroups);  // defensive copy
         fDependentModels = new TreeSet<>();
     }
     
@@ -98,6 +98,7 @@ public final class EditVariable
      */
     public String getKey()
     {
+        // Just return the current key of the target since it's read-only.
         return fTarget.getKey();
     }
 
