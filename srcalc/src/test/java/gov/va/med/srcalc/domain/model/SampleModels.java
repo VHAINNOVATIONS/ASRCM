@@ -203,8 +203,11 @@ public class SampleModels
     }
     
     /**
-     * Returns a set of 4 Variable Groups, sorted in natural order. The objects
-     * will have mock database IDs.
+     * <p>Returns a set of 4 Variable Groups, sorted in natural order. The objects
+     * will have mock database IDs.</p>
+     * 
+     * <p>Note that there are more groups in production than these four, so the
+     * display order has gaps, i.e. 0,1,4,5.</p>
      * @return an immutable set
      */
     public static ImmutableSortedSet<VariableGroup> variableGroups()
