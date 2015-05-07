@@ -50,7 +50,7 @@ public class EditVariableControllerIT extends IntegrationTest
         fMockMvc.perform(
                 post("/admin/variables/preopPneumonia").
                 param("displayName", "Preop Something")).
-            andExpect(redirectedUrl("/admin/models"));
+            andExpect(redirectedUrl(AdminHomeController.BASE_URL));
     }
     
     @Test
