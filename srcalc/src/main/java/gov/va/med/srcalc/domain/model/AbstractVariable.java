@@ -20,7 +20,15 @@ public abstract class AbstractVariable implements Variable
     /**
      * Precompiled version of {@link Variable#VALID_KEY_REGEX} for efficiency.
      */
-    private static final Pattern VALID_KEY_PATTERN  = Pattern.compile(VALID_KEY_REGEX);
+    public static final Pattern VALID_KEY_PATTERN  =
+            Pattern.compile(VALID_KEY_REGEX);
+    
+    /**
+     * Precompiled version of {@link Variable#VALID_DISPLAY_NAME_REGEX} for
+     * efficiency.
+     */
+    public static final Pattern VALID_DISPLAY_NAME_PATTERN =
+            Pattern.compile(Variable.VALID_DISPLAY_NAME_REGEX);
 
     private int fId;
     private String fDisplayName;
@@ -117,14 +125,16 @@ public abstract class AbstractVariable implements Variable
 
     /**
      * Sets the name of the variable for display to the user.
-     * @throws IllegalArgumentException if the given name is empty or over
-     * {@link Variable#DISPLAY_NAME_MAX} characters
+     * @throws IllegalArgumentException if the given name is empty, over
+     * {@link Variable#DISPLAY_NAME_MAX} characters, or does not match
+     * {@link Variable#VALID_DISPLAY_NAME_REGEX}
      */
     public final void setDisplayName(final String displayName)
     {
-        this.fDisplayName =
-                // require at least 1 character
-                Preconditions.requireWithin(displayName, 1, DISPLAY_NAME_MAX);
+        // require at least 1 character
+        Preconditions.requireWithin(displayName, 1, DISPLAY_NAME_MAX);
+        Preconditions.requireMatches(displayName, "displayName", VALID_DISPLAY_NAME_PATTERN);
+        fDisplayName = displayName;
     }
 
     /**

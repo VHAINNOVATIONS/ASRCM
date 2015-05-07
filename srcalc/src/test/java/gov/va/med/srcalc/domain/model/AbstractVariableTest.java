@@ -24,6 +24,21 @@ public class AbstractVariableTest
      */
     public static final String EIGHTY_ONE_CHARS =
             "01234567890123456789012345678901234567890123456789012345678901234567890123456789X";
+    
+    @Test
+    public final void testSetDisplayNameValid()
+    {
+        // Split it up or else it's greater than the max length.
+        final String validLetters =
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        final String validSymbols = " ~`!@#$%^&*()-_+=|\\.,<>/?'\":;";
+
+        final AbstractVariable var = SampleModels.ageVariable();
+        var.setDisplayName(validLetters);
+        assertEquals(validLetters, var.getDisplayName());
+        var.setDisplayName(validSymbols);
+        assertEquals(validSymbols, var.getDisplayName());
+    }
 
     @Test(expected = NullPointerException.class)
     public final void testSetDisplayNameNull()
@@ -37,6 +52,13 @@ public class AbstractVariableTest
     {
         final AbstractVariable var = SampleModels.ageVariable();
         var.setDisplayName(EIGHTY_ONE_CHARS);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public final void testSetDisplayNameInvalidChars()
+    {
+        final AbstractVariable var = SampleModels.ageVariable();
+        var.setDisplayName("\t");  // tab character is not valid
     }
     
     @Test(expected = NullPointerException.class)

@@ -13,11 +13,11 @@
     <table>
     <c:forEach var="variableGroup" items="${calculation.variableGroups}">
     <tbody>
-    <tr><th colspan="2" class="groupName">${variableGroup.name}</th></tr>
+    <tr><th colspan="2" class="groupName"><c:out value="${variableGroup.name}"/></th></tr>
     <c:forEach var="variable" items="${variableGroup.variables}">
     <tr>
         <c:set var="varPath" value="${srcalc:dynamicValuePath(variable.key)}" />
-        <td class="attributeName">${variable.displayName}:</td>
+        <td class="attributeName"><c:out value="${variable.displayName}"/>:</td>
         <%--
         Use our variableSpecific custom tag to write the corresponding form
         control for each variable type.
@@ -25,14 +25,15 @@
         <td class="attributeValue">
         <srcalc:variableSpecific variable="${variable}">
         <jsp:attribute name="numericalFragment">
-            <form:input path="${varPath}" size="6"/> ${variable.units} ${variable.retrievalDateString}
+            <form:input path="${varPath}" size="6"/>
+            <c:out value="${variable.units} ${variable.retrievalDateString}"/>
         </jsp:attribute>
         <jsp:attribute name="multiSelectFragment">
             <c:choose>
             <c:when test="${variable.displayType == 'Radio'}">
             <%-- Generate a radio button for each option --%>
             <c:forEach var="option" items="${variable.options}">
-            <label class="radioLabel"><form:radiobutton path="${varPath}" value="${option.value}"/> ${option.value}</label>
+            <label class="radioLabel"><form:radiobutton path="${varPath}" value="${option.value}"/> <c:out value="${option.value}"/></label>
             </c:forEach>
             </c:when>
             <c:when test="${variable.displayType == 'Dropdown'}">
@@ -42,7 +43,7 @@
             </c:choose>
         </jsp:attribute>
         <jsp:attribute name="booleanFragment">
-            <label class="checkboxLabel"><form:checkbox path="${varPath}" value="true"/> ${variable.displayName}</label>
+            <label class="checkboxLabel"><form:checkbox path="${varPath}" value="true"/> <c:out value="${variable.displayName}"/></label>
         </jsp:attribute>
         <jsp:attribute name="discreteNumericalFragment">
             <!-- Wrap both the radio button and numerical entry in a span.radioLabel
@@ -50,10 +51,12 @@
             <span class="radioLabel"><form:radiobutton path="${varPath}" cssClass="numericalRadio" value="numerical"/>
             <c:set var="numericalVarName" value="${variable.key}$numerical" />
             <c:set var="numericalVarPath" value="${srcalc:dynamicValuePath(numericalVarName)}" />
-            <form:input cssClass="numerical" path="${numericalVarPath}" size="6"/> ${variable.units} ${variable.retrievalDateString}</span>
+            <form:input cssClass="numerical" path="${numericalVarPath}" size="6"/>
+            <c:out value="${variable.units} ${variable.retrievalDateString}"/></span>
             <form:errors path="${numericalVarPath}" cssClass="error" /><br>
             <c:forEach var="opt" items="${variable.options}">
-            <label class="radioLabel"><form:radiobutton path="${varPath}" value="${opt.value}"/> Presumed ${opt.value}</label>
+            <label class="radioLabel"><form:radiobutton path="${varPath}" value="${opt.value}"/>
+                Presumed <c:out value="${opt.value}"/></label>
             </c:forEach>
         </jsp:attribute>
         <jsp:attribute name="procedureFragment">

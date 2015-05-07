@@ -14,10 +14,16 @@
     <%-- The procedure is more important to the calculation so it should be easily  
         visible to the user. --%>
     <c:forEach var="value" items="${calculation.procedureValues}">
-    <tr><td>${value.variable.displayName}</td><td>${value.displayString}</td></tr>
+    <tr>
+        <td><c:out value="${value.variable.displayName}"/></td>
+        <td><c:out value="${value.displayString}"/></td>
+    </tr>
     </c:forEach>
     <c:forEach var="value" items="${calculation.nonProcedureValues}">
-    <tr><td>${value.variable.displayName}</td><td>${value.displayString}</td></tr>
+    <tr>
+        <td><c:out value="${value.variable.displayName}"/></td>
+        <td><c:out value="${value.displayString}"/></td>
+    </tr>
     </c:forEach>
     </table>
     <div class="actionButtons">
