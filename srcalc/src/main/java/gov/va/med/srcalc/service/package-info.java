@@ -11,11 +11,13 @@
  * <p>Since entry-point methods in the Service Layer represent transactions,
  * many methods accept persistent object identifiers instead of objects
  * themselves in order to encapsulate database interaction within the
- * transaction. For example,
- * {@link CalculationService#setSpecialty(gov.va.med.srcalc.domain.Calculation, String)}
- * accepts a String identifying a specialty instead of the specialty object
- * itself. Other methods, such as
- * {@link AdminService#updateVariable(gov.va.med.srcalc.domain.variable.AbstractVariable)},
+ * transaction. For example, {@link
+ * gov.va.med.srcalc.service.CalculationService#setSpecialty(gov.va.med.srcalc.domain.Calculation,
+ * String) CalculationService.setSpecialty} accepts a String identifying a
+ * specialty instead of the specialty object itself. Other methods, such as
+ * {@link
+ * gov.va.med.srcalc.service.AdminService#updateVariable(gov.va.med.srcalc.domain.model.AbstractVariable)
+ * AdminService.updateVariable},
  * accept domain objects, but require that the caller provide an object that it
  * previously obtained from a different Service Layer method.</p>
  */

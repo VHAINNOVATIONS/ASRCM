@@ -18,9 +18,14 @@ import org.springframework.web.bind.annotation.*;
  * Web MVC controller for the Administration home page.
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping(AdminHomeController.BASE_URL)
 public class AdminHomeController
 {
+    /**
+     * Specifies the base URL for this controller.
+     */
+    public static final String BASE_URL = "/admin";
+    
     private final AdminService fAdminService;
     
     @Inject

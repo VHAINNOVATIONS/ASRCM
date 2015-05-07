@@ -93,7 +93,7 @@ public class EditVariableController
         fAdminService.updateVariable(editVariable.applyToVariable());
 
         // Using the POST-redirect-GET pattern.
-        return new ModelAndView("redirect:/admin/models");
+        return new ModelAndView("redirect:/admin");
     }
     
 }
