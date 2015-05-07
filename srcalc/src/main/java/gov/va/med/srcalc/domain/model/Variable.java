@@ -11,6 +11,20 @@ public interface Variable
     public static final int DISPLAY_NAME_MAX = 80;
     
     /**
+     * English description of the valid display name characters for readable
+     * error messages.
+     * @see #VALID_DISPLAY_NAME_REGEX
+     */
+    public static final String VALID_DISPLAY_NAME_CHARACTERS =
+            "letters, digits, spaces, and ~`!@#$%^&*()-_+=|\\.,<>/?'\":;";
+    
+    /**
+     * A regular expression that defines a valid variable key: {@value}
+     * @see #getDisplayName()
+     */
+    public static final String VALID_DISPLAY_NAME_REGEX = "[\\w ~`!@#$%^&*()-_+=|\\.,<>/?'\":;]+";
+    
+    /**
      * The maximum length of a valid variable key: {@value}
      */
     public static final int KEY_MAX = 40;
@@ -30,7 +44,8 @@ public interface Variable
     
     /**
      * Returns a String suitable for display to humans. Will be no longer than
-     * {@link #DISPLAY_NAME_MAX}.
+     * {@link #DISPLAY_NAME_MAX} and will only contain {@link
+     * #VALID_DISPLAY_NAME_CHARACTERS valid characters}.
      */
     public String getDisplayName();
 

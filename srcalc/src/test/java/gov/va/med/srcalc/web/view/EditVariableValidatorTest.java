@@ -51,6 +51,18 @@ public final class EditVariableValidatorTest
     }
     
     @Test
+    public final void testDisplayNameInvalidCharacters()
+    {
+        final EditVariable ev = makeEditVariable();
+        ev.setDisplayName("\t");
+        final BindingResult errors = validate(ev);
+        
+        assertEquals(
+                EditVariableValidator.ERROR_INVALID_CONTENTS,
+                errors.getFieldError("displayName").getCode());
+    }
+    
+    @Test
     public final void testInvalidGroup()
     {
         final EditVariable ev = makeEditVariable();

@@ -24,18 +24,35 @@ public class EditVariableValidator implements Validator
      */
     public static final String ERROR_INVALID_OPTION = "invalidOption";
     
+    /**
+     * Error code used when a String value contains invalid characters.
+     */
+    public static final String ERROR_INVALID_CONTENTS = "invalidContents";
+    
+    /**
+     * Returns true if, and only if, the given class is {@link EditVariable}.
+     */
     @Override
-    public boolean supports(Class<?> clazz)
+    public boolean supports(final Class<?> clazz)
     {
         return EditVariable.class.equals(clazz);
     }
 
+    /**
+     * @param obj the object to validate. Must be an instance of {@link EditVariable}.
+     * @throws ClassCastException if the given object is not an EditVariable
+     */
     @Override
-    public void validate(Object obj, Errors e)
+    public void validate(final Object obj, final Errors e)
     {
+        // See method Javadoc: we assume that it's an instance of EditVariable.
         final EditVariable editVariable = (EditVariable)obj;
+
+        // Validate displayName constraints. See
+        // AbstractVariable.setDisplayName().
         ValidationUtils.rejectIfEmpty(e, "displayName", ERROR_NO_VALUE);
-        if (editVariable.getDisplayName().length() > AbstractVariable.DISPLAY_NAME_MAX)
+        final String displayName = editVariable.getDisplayName();
+        if (displayName.length() > AbstractVariable.DISPLAY_NAME_MAX)
         {
             e.rejectValue(
                     "displayName",
@@ -43,7 +60,16 @@ public class EditVariableValidator implements Validator
                     new Object[] {AbstractVariable.DISPLAY_NAME_MAX},
                     "The display name is too long.");
         }
+        if (!AbstractVariable.VALID_DISPLAY_NAME_PATTERN.matcher(displayName).matches())
+        {
+            e.rejectValue(
+                    "displayName",
+                    ERROR_INVALID_CONTENTS,
+                    new Object[] {AbstractVariable.VALID_DISPLAY_NAME_CHARACTERS},
+                    "invalid characters in string");
+        }
         
+        // Ensure we have a valid VariableGroup ID.
         if (!editVariable.getGroup().isPresent())
         {
             e.rejectValue("groupId", ERROR_INVALID_OPTION);
