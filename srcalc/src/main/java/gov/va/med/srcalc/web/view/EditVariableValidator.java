@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.model.AbstractVariable;
+import gov.va.med.srcalc.domain.model.Variable;
 
 import org.springframework.validation.*;
 
@@ -73,6 +74,17 @@ public class EditVariableValidator implements Validator
         if (!editVariable.getGroup().isPresent())
         {
             e.rejectValue("groupId", ERROR_INVALID_OPTION);
+        }
+        
+        // Validate helpText constraints. See AbstractVariable.setHelpText().
+        final String helpText = editVariable.getHelpText();
+        if (!helpText.isEmpty() && helpText.length() > Variable.HELP_TEXT_MAX)
+        {
+            e.rejectValue(
+                    "helpText",
+                    ERROR_TOO_LONG,
+                    new Object[] {Variable.HELP_TEXT_MAX},
+                    "too long");
         }
     }
     

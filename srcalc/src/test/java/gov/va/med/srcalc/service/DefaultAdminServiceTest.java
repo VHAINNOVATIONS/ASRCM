@@ -3,7 +3,7 @@ package gov.va.med.srcalc.service;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.util.*;
+import java.util.List;
 
 import gov.va.med.srcalc.db.RiskModelDao;
 import gov.va.med.srcalc.db.VariableDao;
@@ -12,6 +12,7 @@ import gov.va.med.srcalc.domain.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedSet;
 
@@ -114,7 +115,7 @@ public class DefaultAdminServiceTest
         
         // Behavior verification.
         var.setDisplayName(newName);
-        var.setHelpText(newHelpText);
+        var.setHelpText(Optional.of(newHelpText));
         s.updateVariable(var);
         
         // Normally we try to verify the contract of a method instead of its

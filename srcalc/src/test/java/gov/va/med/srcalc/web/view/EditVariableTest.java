@@ -85,7 +85,12 @@ public class EditVariableTest
         
         // Verification
         assertEquals(newDisplayName, var.getDisplayName());
-        assertEquals(newHelpText, var.getHelpText());
+        assertEquals(newHelpText, var.getHelpText().get());
         assertEquals(newGroup, var.getGroup());
+        
+        // Also test the empty string -> absent translation
+        ev.setHelpText("");
+        ev.applyToVariable();
+        assertFalse(var.getHelpText().isPresent());
     }
 }

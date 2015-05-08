@@ -73,4 +73,16 @@ public final class EditVariableValidatorTest
                 EditVariableValidator.ERROR_INVALID_OPTION,
                 errors.getFieldError("groupId").getCode());
     }
+    
+    @Test
+    public final void testHelpTextTooLong()
+    {
+        final EditVariable ev = makeEditVariable();
+        ev.setHelpText(AbstractVariableTest.FOUR_THOUSAND_ONE_CHARS);
+        final BindingResult errors = validate(ev);
+        
+        assertEquals(
+                EditVariableValidator.ERROR_TOO_LONG,
+                errors.getFieldError("helpText").getCode());
+    }
 }

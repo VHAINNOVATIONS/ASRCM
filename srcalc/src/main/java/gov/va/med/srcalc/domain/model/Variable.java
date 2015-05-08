@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
+import com.google.common.base.Optional;
+
 /**
  * A model variable. Just the variable, does not store an inputted value.
  */
@@ -34,6 +36,12 @@ public interface Variable
      * @see #getKey()
      */
     public static final String VALID_KEY_REGEX = "\\w+";
+    
+    /**
+     * The maximum length of a valid help text string: {@value}
+     * @see #getHelpText()
+     */
+    public static final int HELP_TEXT_MAX = 4000;
    
     /**
      * Returns a key which should be unique among all Variables. The key will
@@ -54,7 +62,14 @@ public interface Variable
      */
     public VariableGroup getGroup();
 
-    public String getHelpText();
+    /**
+     * Returns the variable definition or help text to assist a user in
+     * understanding the variable. This is an optional field, so it is
+     * represented by an Optional object.
+     * @return an Optional which, if present, contains a non-empty String no
+     * longer than {@link #HELP_TEXT_MAX} characters. Never null.
+     */
+    public Optional<String> getHelpText();
     
     /**
      * Returns a key that is used to translate vista retrieved values to

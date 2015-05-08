@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.view;
 import java.util.*;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 
@@ -31,7 +32,7 @@ public final class EditVariable
 
     private String fDisplayName;
     
-    private String fHelpText;
+    private Optional<String> fHelpText;
     
     private int fGroupId;
     
@@ -119,19 +120,23 @@ public final class EditVariable
     }
     
     /**
-     * Returns the help text which {@link #applyToVariable()} will set.
+     * Returns the help text which {@link #applyToVariable()} will set. Since
+     * this property is intended to be used directly in JSPs, an absent value
+     * is represented by an empty string.
      */
     public String getHelpText()
     {
-        return fHelpText;
+        return fHelpText.or("");
     }
 
     /**
      * Sets the help text which {@link #applyToVariable()} will set.
+     * @param helpText may be null or empty, which will be translated to an
+     * absent value
      */
     public void setHelpText(String helpText)
     {
-        fHelpText = helpText;
+        fHelpText = Optional.fromNullable(Strings.emptyToNull(helpText));
     }
     
     /**

@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSortedSet;
 
@@ -81,7 +82,7 @@ public class AdminServiceIT extends IntegrationTest
         
         // Operation
         var.setDisplayName(newName);
-        var.setHelpText(newHelpText);
+        var.setHelpText(Optional.of(newHelpText));
         var.setGroup(newGroup);
         fAdminService.updateVariable(var);
         
@@ -91,7 +92,7 @@ public class AdminServiceIT extends IntegrationTest
         getHibernateSession().clear();
         final AbstractVariable newVar = fAdminService.getVariable(key);
         assertEquals(newName, newVar.getDisplayName());
-        assertEquals(newHelpText, newVar.getHelpText());
+        assertEquals(newHelpText, newVar.getHelpText().get());
         assertEquals(newGroup, newVar.getGroup());
     }
     
