@@ -1,8 +1,9 @@
-package gov.va.med.srcalc.domain.model;
+package gov.va.med.srcalc.domain.calculation;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.model.MultiSelectValue;
+import gov.va.med.srcalc.domain.calculation.MultiSelectValue;
 import gov.va.med.srcalc.domain.model.MultiSelectVariable;
+import gov.va.med.srcalc.domain.model.SampleModels;
 
 import org.junit.Test;
 

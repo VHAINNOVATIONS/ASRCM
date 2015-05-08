@@ -1,6 +1,8 @@
-package gov.va.med.srcalc.domain.model;
+package gov.va.med.srcalc.domain.calculation;
 
 import static org.junit.Assert.*;
+import gov.va.med.srcalc.domain.calculation.PopulatedVariableGroup;
+import gov.va.med.srcalc.domain.model.*;
 
 import java.util.*;
 

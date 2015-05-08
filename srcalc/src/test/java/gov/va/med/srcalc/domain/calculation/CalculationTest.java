@@ -1,8 +1,9 @@
-package gov.va.med.srcalc.domain;
+package gov.va.med.srcalc.domain.calculation;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.util.MissingValuesException;
 

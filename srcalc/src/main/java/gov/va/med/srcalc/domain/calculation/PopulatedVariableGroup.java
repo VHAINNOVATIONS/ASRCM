@@ -1,4 +1,7 @@
-package gov.va.med.srcalc.domain.model;
+package gov.va.med.srcalc.domain.calculation;
+
+import gov.va.med.srcalc.domain.model.Variable;
+import gov.va.med.srcalc.domain.model.VariableGroup;
 
 import java.util.*;
 

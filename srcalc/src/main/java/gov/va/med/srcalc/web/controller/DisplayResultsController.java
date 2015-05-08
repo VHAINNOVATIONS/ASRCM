@@ -2,7 +2,7 @@ package gov.va.med.srcalc.web.controller;
 
 import java.util.HashMap;
 
-import gov.va.med.srcalc.domain.Calculation;
+import gov.va.med.srcalc.domain.calculation.Calculation;
 import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.web.view.Views;

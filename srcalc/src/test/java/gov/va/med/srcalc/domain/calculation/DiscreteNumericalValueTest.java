@@ -1,7 +1,10 @@
-package gov.va.med.srcalc.domain.model;
+package gov.va.med.srcalc.domain.calculation;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.ConfigurationException;
+import gov.va.med.srcalc.domain.calculation.DiscreteNumericalValue;
+import gov.va.med.srcalc.domain.model.*;
+import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 
 import org.junit.Test;
 

@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 import java.util.*;

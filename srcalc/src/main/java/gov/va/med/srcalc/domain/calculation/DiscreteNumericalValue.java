@@ -1,6 +1,7 @@
-package gov.va.med.srcalc.domain.model;
+package gov.va.med.srcalc.domain.calculation;
 
 import gov.va.med.srcalc.ConfigurationException;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 
 public class DiscreteNumericalValue implements DiscreteValue

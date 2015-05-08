@@ -3,7 +3,7 @@ package gov.va.med.srcalc.service;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import gov.va.med.srcalc.db.SpecialtyDao;
-import gov.va.med.srcalc.domain.Calculation;
+import gov.va.med.srcalc.domain.calculation.Calculation;
 import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;

@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.vista;
 
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.SampleCalculations;
+import gov.va.med.srcalc.domain.calculation.SampleCalculations;
 
 /**
  * A mock {@link VistaPatientDao} just for tests.

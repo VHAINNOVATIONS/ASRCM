@@ -3,7 +3,7 @@ package gov.va.med.srcalc.web.view;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.SampleCalculations;
+import gov.va.med.srcalc.domain.calculation.SampleCalculations;
 import gov.va.med.srcalc.domain.model.*;
 
 import java.util.*;

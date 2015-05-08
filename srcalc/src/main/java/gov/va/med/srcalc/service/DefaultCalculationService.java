@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import gov.va.med.srcalc.db.SpecialtyDao;
-import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.calculation.Calculation;
+import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.domain.model.Specialty;
-import gov.va.med.srcalc.domain.model.Value;
 import gov.va.med.srcalc.domain.workflow.*;
 import gov.va.med.srcalc.vista.VistaPatientDao;
 import gov.va.med.srcalc.util.MissingValuesException;

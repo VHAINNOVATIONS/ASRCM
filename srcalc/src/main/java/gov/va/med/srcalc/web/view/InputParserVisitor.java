@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 
+import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 

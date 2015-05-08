@@ -6,6 +6,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import gov.va.med.srcalc.domain.*;
+import gov.va.med.srcalc.domain.calculation.Calculation;
+import gov.va.med.srcalc.domain.calculation.SampleCalculations;
 import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
 
 import java.util.Arrays;

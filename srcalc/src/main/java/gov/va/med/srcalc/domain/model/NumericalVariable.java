@@ -1,5 +1,8 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.domain.calculation.NumericalValue;
+import gov.va.med.srcalc.domain.calculation.Value;
+
 import javax.persistence.*;
 
 /**

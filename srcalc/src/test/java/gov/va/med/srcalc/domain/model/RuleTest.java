@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain.model;
 import static org.junit.Assert.*;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression1;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression2;
+import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 import java.util.Arrays;

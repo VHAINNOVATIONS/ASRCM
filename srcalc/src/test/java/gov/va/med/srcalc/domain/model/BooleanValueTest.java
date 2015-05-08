@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.model.BooleanValue;
+import gov.va.med.srcalc.domain.calculation.BooleanValue;
 import gov.va.med.srcalc.domain.model.BooleanVariable;
 
 import org.junit.Test;

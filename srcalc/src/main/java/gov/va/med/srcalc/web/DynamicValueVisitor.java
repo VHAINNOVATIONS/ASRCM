@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.web;
 
-import gov.va.med.srcalc.domain.model.*;
+import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
 /**

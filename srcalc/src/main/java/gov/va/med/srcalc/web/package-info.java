@@ -11,7 +11,7 @@
  * 
  * <ol>
  * <li>the direct objects returned by the Service Layer (e.g.,
- * {@link gov.va.med.srcalc.domain.Calculation}) when they already contain all
+ * {@link gov.va.med.srcalc.domain.calculation.Calculation}) when they already contain all
  * the properties that the view requires; or</li>
  * <li>operation-specific wrappers (e.g.,
  * {@link gov.va.med.srcalc.web.view.EditVariable}) when the view requires

@@ -1,5 +1,7 @@
-package gov.va.med.srcalc.domain;
+package gov.va.med.srcalc.domain.calculation;
 
+import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.*;
 
 import java.util.ArrayList;

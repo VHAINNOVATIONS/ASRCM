@@ -1,7 +1,10 @@
-package gov.va.med.srcalc.domain.model;
+package gov.va.med.srcalc.domain.calculation;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import gov.va.med.srcalc.domain.calculation.DiscreteNumericalValue;
+import gov.va.med.srcalc.domain.calculation.NumericalValue;
+import gov.va.med.srcalc.domain.model.*;
 
 import org.junit.Test;
 

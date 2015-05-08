@@ -1,5 +1,8 @@
 package gov.va.med.srcalc.domain.model;
 
+// TODO: can we eliminate this dependency on the 'calculation' package?
+import gov.va.med.srcalc.domain.calculation.MultiSelectValue;
+
 import java.util.*;
 
 import javax.persistence.Basic;
