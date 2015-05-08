@@ -1,8 +1,8 @@
 package gov.va.med.srcalc.web.controller;
 
+import gov.va.med.srcalc.domain.calculation.Calculation;
 import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.domain.model.*;
-import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.web.DynamicValueVisitor;
@@ -50,16 +50,15 @@ public class EnterVariablesController
     public VariableEntry constructVariableEntry(
             final HttpSession session)
     {
-        // Get the CalculationWorkflow from the session.
-        final CalculationWorkflow workflow =
-        		CalculationWorkflowSupplier.getWorkflowFromSession(session);
-        final VariableEntry initialValues = VariableEntry.withRetrievedValues(workflow.getCalculation().getVariables(), 
-        		workflow.getCalculation().getPatient());
+        // Get the Calculation from the session.
+        final Calculation calculation = SrcalcSession.getCalculation(session);
+        final VariableEntry initialValues = VariableEntry.withRetrievedValues(
+                calculation.getVariables(), calculation.getPatient());
         // In the case of using the "Return to Input Form" button, add the values already
         // in the calculation to the variable entry object to maintain the previously calculated
         // values on the entry page.
         final DynamicValueVisitor visitor = new DynamicValueVisitor(initialValues);
-        for(final Value value: workflow.getCalculation().getValues())
+        for(final Value value: calculation.getValues())
         {
         	visitor.visit(value);
         	fLogger.debug("Key: {} Value: {}", value.getVariable().getKey(), value.getValue());
@@ -86,15 +85,14 @@ public class EnterVariablesController
     	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     	response.setHeader("Pragma", "no-cache");
     	response.setDateHeader("Expires", 0);
-        // Get the CalculationWorkflow from the session.
-        final CalculationWorkflow workflow =
-        		CalculationWorkflowSupplier.getWorkflowFromSession(session);
+        // Get the Calculation from the session.
+        final Calculation calculation = SrcalcSession.getCalculation(session);
+        fLogger.debug("Existing input values: {}", calculation.getValues());
 
         // Present the view.
         final ModelAndView mav = new ModelAndView(Views.ENTER_VARIABLES);
-        mav.addObject("calculation", workflow.getCalculation());
+        mav.addObject("calculation", calculation);
         
-        fLogger.debug("Input Values: {}", workflow.getCalculation().getValues());
         // Note: "variableEntry" object is automatically added through annotated
         // method parameter.
         return mav;
@@ -106,22 +104,21 @@ public class EnterVariablesController
             @ModelAttribute(ATTR_VARIABLE_ENTRY) final VariableEntry values,
             final BindingResult valuesBindingResult)
     {
-        // Get the CalculationWorkflow from the session.
-        final CalculationWorkflow workflow =
-        		CalculationWorkflowSupplier.getWorkflowFromSession(session);
+        // Get the Calculation from the session.
+        final Calculation calculation = SrcalcSession.getCalculation(session);
         
         // Extract the values from the HTTP POST.
         final InputParserVisitor parserVisitor = new InputParserVisitor(values, valuesBindingResult);
-        for (final Variable variable : workflow.getCalculation().getVariables())
+        for (final Variable variable : calculation.getVariables())
         {
             parserVisitor.visit(variable);
         }
         
         try
         {
-        	// Set the values on the Calculation.
-        	fCalculationService.runCalculation(
-        			workflow.getCalculation(), parserVisitor.getValues());
+            // Set the values on the Calculation.
+            fCalculationService.runCalculation(
+                    calculation, parserVisitor.getValues());
         }
         catch(final MissingValuesException e)
         {

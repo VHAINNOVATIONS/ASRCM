@@ -3,7 +3,6 @@ package gov.va.med.srcalc.web.controller;
 import java.util.HashMap;
 
 import gov.va.med.srcalc.domain.calculation.Calculation;
-import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.web.view.Views;
 
@@ -37,10 +36,10 @@ public class DisplayResultsController
             final HttpSession session,
             final Model model)
     {
-        // Get the CalculationWorkflow from the session.
-        final CalculationWorkflow workflow = CalculationWorkflowSupplier.getWorkflowFromSession(session);
+        // Get the current Calculation from the session.
+        final Calculation calculation = SrcalcSession.getCalculation(session);
         
-        model.addAttribute("calculation", workflow.getCalculation());
+        model.addAttribute("calculation", calculation);
         return Views.DISPLAY_RESULTS;
     }
     
@@ -57,8 +56,7 @@ public class DisplayResultsController
     	String resultString;
     	try
     	{
-    	    final Calculation calc =
-    	            CalculationWorkflowSupplier.getWorkflowFromSession(session).getCalculation();
+    	    final Calculation calc = SrcalcSession.getCalculation(session);
             resultString = fCalculationService.saveRiskCalculationNote(
                     calc, electronicSignature).getDescription();
     	}
