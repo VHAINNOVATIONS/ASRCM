@@ -1,8 +1,5 @@
 package gov.va.med.srcalc.domain.calculation;
 
-import gov.va.med.srcalc.domain.calculation.*;
-
-
 public interface ValueVisitor
 {
 	public void visitNumerical(NumericalValue value);

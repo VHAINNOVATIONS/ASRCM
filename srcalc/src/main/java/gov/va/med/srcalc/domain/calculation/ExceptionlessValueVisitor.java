@@ -1,8 +1,5 @@
 package gov.va.med.srcalc.domain.calculation;
 
-import gov.va.med.srcalc.domain.model.*;
-
-
 /**
  * <p>Base class for a {@link ValueVisitor} that doesn't throw any exceptions.
  * </p>
