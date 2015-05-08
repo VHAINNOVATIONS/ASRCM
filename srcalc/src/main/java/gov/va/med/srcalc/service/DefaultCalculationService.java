@@ -13,7 +13,6 @@ import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.calculation.Calculation;
 import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.domain.model.Specialty;
-import gov.va.med.srcalc.domain.workflow.*;
 import gov.va.med.srcalc.vista.VistaPatientDao;
 import gov.va.med.srcalc.util.MissingValuesException;
 
@@ -36,23 +35,28 @@ public class DefaultCalculationService implements CalculationService
         fSpecialtyDao = specialtyDao;
         fPatientDao = patientDao;
     }
+    
+    @Override
+    @Transactional
+    public List<Specialty> getValidSpecialties()
+    {
+        return fSpecialtyDao.getAllSpecialties();
+    }
 
     @Override
     @Transactional
-    public NewCalculation startNewCalculation(final int patientId)
+    public Calculation startNewCalculation(final int patientId)
     {
         final Patient patient = fPatientDao.getPatient(patientId);
 
         fLogger.debug("Starting calculation for patient {}.", patient);
 
-        return new NewCalculation(
-                Calculation.forPatient(patient),
-                fSpecialtyDao.getAllSpecialties());
+        return Calculation.forPatient(patient);
     }
     
     @Override
     @Transactional
-    public SelectedCalculation setSpecialty(final Calculation calculation, final String specialtyName)
+    public void setSpecialty(final Calculation calculation, final String specialtyName)
         throws InvalidIdentifierException
     {
         fLogger.debug("Setting specialty to {}.", specialtyName);
@@ -64,13 +68,11 @@ public class DefaultCalculationService implements CalculationService
                     specialtyName + " is not a valid specialty name.");
         }
         calculation.setSpecialty(specialty);
-
-        return new SelectedCalculation(calculation);
     }
     
     @Override
     @Transactional
-    public CalculationWorkflow runCalculation(final Calculation calculation, final List<Value> variableValues) throws MissingValuesException
+    public void runCalculation(final Calculation calculation, final List<Value> variableValues) throws MissingValuesException
     {
         fLogger.debug("Running calculation with values: {}", variableValues);
         
@@ -86,8 +88,6 @@ public class DefaultCalculationService implements CalculationService
         // Log something at INFO level for running a calculation, but don't log
         // too much to avoid PHI in the log file.
         fLogger.info( "Ran a {} calculation.", calculation.getSpecialty());
-        
-        return new UnsignedCalculation(calculation);
     }
 
     @Override

@@ -4,9 +4,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import gov.va.med.srcalc.domain.calculation.Calculation;
-import gov.va.med.srcalc.domain.workflow.NewCalculation;
-import gov.va.med.srcalc.service.CalculationService;
-import gov.va.med.srcalc.service.InvalidIdentifierException;
+import gov.va.med.srcalc.service.*;
 import gov.va.med.srcalc.web.view.*;
 
 import org.springframework.stereotype.Controller;
@@ -34,15 +32,16 @@ public class CalculationController
     {
         // Start the calculation. A Calculation object must be created here to
         // store the start time for reporting.
-        final NewCalculation newCalc = fCalculationService.startNewCalculation(patientDfn);
+        final Calculation calc = fCalculationService.startNewCalculation(patientDfn);
 
         // Store the calculation in the HTTP Session.
-        SrcalcSession.setCalculation(session, newCalc.getCalculation());
+        SrcalcSession.setCalculation(session, calc);
         
         // Present the view.
         final ModelAndView mav = new ModelAndView(Views.SELECT_SPECIALTY);
-        mav.addObject("calculation", newCalc.getCalculation());
-        mav.addObject("specialties", newCalc.getPossibleSpecialties());
+        mav.addObject("calculation", calc);
+        // Also add the valid specialties for user selection.
+        mav.addObject("specialties", fCalculationService.getValidSpecialties());
         return mav;
     }
     
