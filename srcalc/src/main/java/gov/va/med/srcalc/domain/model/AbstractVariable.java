@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 
 import javax.persistence.*;
 
+import com.google.common.base.Optional;
+
 /**
  * Implements base properties for {@link Variable}. Unlike the latter, this
  * class presents a mutable interface.
@@ -33,7 +35,7 @@ public abstract class AbstractVariable implements Variable
     private int fId;
     private String fDisplayName;
     private VariableGroup fGroup;
-    private String fHelpText;
+    private Optional<String> fHelpText;
     private String fKey;
     private Integer fRetrievalKey;
     private String fRetrievalDateString;
@@ -47,6 +49,7 @@ public abstract class AbstractVariable implements Variable
     	fKey = "unset";
         fDisplayName = "unset";
         fGroup = new VariableGroup("unset group", 0);
+        fHelpText = Optional.absent();
         fRetrievalDateString = "";
     }
     
@@ -65,6 +68,7 @@ public abstract class AbstractVariable implements Variable
         setKey(key);
         setDisplayName(displayName);
         setGroup(group);
+        fHelpText = Optional.absent();
         this.fRetrievalDateString = "";
     }
     
@@ -157,15 +161,51 @@ public abstract class AbstractVariable implements Variable
         fGroup = Objects.requireNonNull(group, "group must not be null");
     }
 
+    /**
+     * Returns the help text as a String, not an Optional. Intended for
+     * Hibernate use.
+     * @return the help text String if present, otherwise null.
+     */
     @Basic
-    public final String getHelpText()
+    @Column(
+            name = "help_text",
+            nullable = true,
+            length = Variable.HELP_TEXT_MAX)
+    final String getHelpTextString()
+    {
+        return fHelpText.orNull();
+    }
+    
+    /**
+     * Sets the help text as a nullable String. Intended for Hibernate use.
+     * @param helpText may be null
+     */
+    public final void setHelpTextString(final String helpText)
+    {
+        setHelpText(Optional.fromNullable(helpText));
+    }
+
+    @Transient // getHelpTextString() is mapped instead
+    public final Optional<String> getHelpText()
     {
         return fHelpText;
     }
 
-    public final void setHelpText(final String helpText)
+    /**
+     * Sets the help text. See {@link #getHelpText()}.
+     * @throws NullPointerException if the given object is null
+     * @throws IllegalArgumentException if the given help text is longer than
+     * {@link Variable#HELP_TEXT_MAX} characters or an empty String. (The
+     * absence of a help text must be represented as an "absent" Optional, not
+     * an empty string.)
+     */
+    public final void setHelpText(final Optional<String> helpText)
     {
-        this.fHelpText = helpText;
+        if (helpText.isPresent())
+        {
+            Preconditions.requireWithin(helpText.get(), 1, HELP_TEXT_MAX);
+        }
+        fHelpText = helpText;
     }
     
     @Basic

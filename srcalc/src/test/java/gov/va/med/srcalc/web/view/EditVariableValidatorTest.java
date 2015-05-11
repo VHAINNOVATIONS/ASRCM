@@ -1,8 +1,8 @@
 package gov.va.med.srcalc.web.view;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.model.AbstractVariableTest;
-import gov.va.med.srcalc.domain.model.SampleModels;
+import gov.va.med.srcalc.domain.model.*;
+import gov.va.med.srcalc.test.util.TestHelpers;
 
 import org.junit.Test;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -42,7 +42,7 @@ public final class EditVariableValidatorTest
     public final void testDisplayNameTooLong()
     {
         final EditVariable ev = makeEditVariable();
-        ev.setDisplayName(AbstractVariableTest.EIGHTY_ONE_CHARS);
+        ev.setDisplayName(TestHelpers.stringOfLength(Variable.DISPLAY_NAME_MAX + 1));
         final BindingResult errors = validate(ev);
         
         assertEquals(
@@ -72,5 +72,17 @@ public final class EditVariableValidatorTest
         assertEquals(
                 EditVariableValidator.ERROR_INVALID_OPTION,
                 errors.getFieldError("groupId").getCode());
+    }
+    
+    @Test
+    public final void testHelpTextTooLong()
+    {
+        final EditVariable ev = makeEditVariable();
+        ev.setHelpText(TestHelpers.stringOfLength(Variable.HELP_TEXT_MAX + 1));
+        final BindingResult errors = validate(ev);
+        
+        assertEquals(
+                EditVariableValidator.ERROR_TOO_LONG,
+                errors.getFieldError("helpText").getCode());
     }
 }

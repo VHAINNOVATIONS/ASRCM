@@ -2,8 +2,20 @@ package gov.va.med.srcalc.test.util;
 
 import static org.junit.Assert.*;
 
+import com.google.common.base.Strings;
+
+/**
+ * Helper methods useful in automated tests.
+ */
 public class TestHelpers
 {
+    /**
+     * Verifies the contract of {@link Comparable#compareTo(Object)} given three
+     * objects of the same type.
+     * @param lesser <code>lesser</code> &lt; <code>middle</code> &lt; <code>greater</code>
+     * @param middle see above
+     * @param greater see above
+     */
     public static <T extends Comparable<T>> void verifyCompareToContract(
             T lesser, T middle, T greater)
     {
@@ -19,5 +31,15 @@ public class TestHelpers
         assertTrue("greater should be greater than lesser", greater.compareTo(lesser) > 0);
         assertTrue("greater should be greater than middle", greater.compareTo(middle) > 0);
         
+    }
+    
+    /**
+     * Returns a String with exactly the given length. Its contents are
+     * otherwise arbitrary
+     * @param length the length of the returned string
+     */
+    public static String stringOfLength(final int length)
+    {
+        return Strings.padEnd("", length, 'X');
     }
 }

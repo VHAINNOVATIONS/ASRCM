@@ -337,6 +337,14 @@ a.openProcedureSelect {
 	color: #aaa;
 }
 
+/* The edit variable pages */
+
+#variableEditForm textarea#helpText {
+	/* The helpText text area is wide. Don't try to put anything else on the
+	   same line. */
+	display: block;
+}
+
 
 /* ==========================================================================
    Media Queries

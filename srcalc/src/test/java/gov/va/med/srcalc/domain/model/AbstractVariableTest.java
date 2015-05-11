@@ -2,29 +2,14 @@ package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.model.SampleModels;
+import gov.va.med.srcalc.test.util.TestHelpers;
 
 import org.junit.Test;
 
+import com.google.common.base.Optional;
+
 public class AbstractVariableTest
 {
-    /**
-     * A 40-character string.
-     */
-    public static final String FORTY_CHARS =
-            "0123456789012345678901234567890123456789";
-
-    /**
-     * A 41-character string.
-     */
-    public static final String FORTY_ONE_CHARS =
-            "0123456789012345678901234567890123456789X";
-
-    /**
-     * An 81-characeter string.
-     */
-    public static final String EIGHTY_ONE_CHARS =
-            "01234567890123456789012345678901234567890123456789012345678901234567890123456789X";
-    
     @Test
     public final void testSetDisplayNameValid()
     {
@@ -51,7 +36,7 @@ public class AbstractVariableTest
     public final void testSetDisplayNameTooLong()
     {
         final AbstractVariable var = SampleModels.ageVariable();
-        var.setDisplayName(EIGHTY_ONE_CHARS);
+        var.setDisplayName(TestHelpers.stringOfLength(Variable.DISPLAY_NAME_MAX + 1));
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -59,6 +44,16 @@ public class AbstractVariableTest
     {
         final AbstractVariable var = SampleModels.ageVariable();
         var.setDisplayName("\t");  // tab character is not valid
+    }
+
+    @Test
+    public final void testSetKeyValid()
+    {
+        final String maxString = TestHelpers.stringOfLength(Variable.KEY_MAX);
+        final AbstractVariable var = SampleModels.ageVariable();
+
+        var.setKey(maxString);
+        assertEquals(maxString, var.getKey());
     }
     
     @Test(expected = NullPointerException.class)
@@ -72,7 +67,7 @@ public class AbstractVariableTest
     public final void testSetKeyTooLong()
     {
         final AbstractVariable var = SampleModels.ageVariable();
-        var.setKey(FORTY_ONE_CHARS);
+        var.setKey(TestHelpers.stringOfLength(Variable.KEY_MAX + 1));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -81,13 +76,42 @@ public class AbstractVariableTest
         final AbstractVariable var = SampleModels.ageVariable();
         var.setKey("PTA/PCI Procedure");  // slashes are not permitted
     }
-
+    
     @Test
-    public final void testSetKeyValid()
+    public final void testSetHelpTextValid()
+    {
+        final String maxString = TestHelpers.stringOfLength(Variable.HELP_TEXT_MAX);
+        final AbstractVariable var = SampleModels.ageVariable();
+        // Try the max length
+        var.setHelpText(Optional.of(maxString));
+        assertEquals(maxString, var.getHelpText().get());
+        assertEquals(maxString, var.getHelpTextString());
+        // Also try an absent optional, which is valid
+        var.setHelpText(Optional.<String>absent());
+        assertFalse(var.getHelpText().isPresent());
+        assertNull(var.getHelpTextString());
+    }
+    
+    @Test(expected = NullPointerException.class)
+    public final void testSetHelpTextNull()
     {
         final AbstractVariable var = SampleModels.ageVariable();
-        var.setKey(FORTY_CHARS);
-        assertEquals(FORTY_CHARS, var.getKey());
+        var.setHelpText(null);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public final void testSetHelpTextEmpty()
+    {
+        final AbstractVariable var = SampleModels.ageVariable();
+        var.setHelpText(Optional.of(""));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public final void testSetHelpTextTooLong()
+    {
+        final AbstractVariable var = SampleModels.ageVariable();
+        var.setHelpText(Optional.of(
+                TestHelpers.stringOfLength(Variable.HELP_TEXT_MAX + 1)));
     }
     
 }
