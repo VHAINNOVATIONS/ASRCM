@@ -110,7 +110,8 @@ public class AbstractVariableTest
     public final void testSetHelpTextTooLong()
     {
         final AbstractVariable var = SampleModels.ageVariable();
-        var.setHelpText(Optional.of(TestHelpers.stringOfLength(4001)));
+        var.setHelpText(Optional.of(
+                TestHelpers.stringOfLength(Variable.HELP_TEXT_MAX + 1)));
     }
     
 }
