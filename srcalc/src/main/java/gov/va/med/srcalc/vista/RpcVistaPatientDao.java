@@ -171,7 +171,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
     }
 
 	@Override
-	public SaveNoteCode saveRiskCalculationNote(final Patient patient,
+	public SaveNoteCode saveRiskCalculationNote(final int patientDfn,
 			final String electronicSignature, final String noteBody)
 	{
 		// Split on line feed or carriage return
@@ -197,7 +197,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
 			final List<String> saveResults;
 			saveResults = fProcedureCaller.doRpc(
 	            fDuz, RemoteProcedure.SAVE_PROGRESS_NOTE,
-	            fDuz, VistaKernelHash.encrypt(electronicSignature, false), String.valueOf(patient.getDfn()), noteMap);
+	            fDuz, VistaKernelHash.encrypt(electronicSignature, false), String.valueOf(patientDfn), noteMap);
 			final String[] splitArray = saveResults.get(0).split("\\^");
 			if(splitArray[0].equals("1"))
 			{

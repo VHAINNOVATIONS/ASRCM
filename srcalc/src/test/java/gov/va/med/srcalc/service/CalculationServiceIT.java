@@ -4,8 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
-import gov.va.med.srcalc.domain.calculation.Calculation;
-import gov.va.med.srcalc.domain.calculation.Value;
+import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 
@@ -150,8 +149,9 @@ public class CalculationServiceIT extends IntegrationTest
         expectedOutcomes.put("Thoracic 30-Day Mortality Risk", expectedResult);
         
         // Behavior verification
-        fCalculationService.runCalculation(calc, orderedValues);
-        assertEquals(orderedValues, new ArrayList<>(calc.getValues()));
-        assertEquals(expectedOutcomes, calc.getOutcomes());
+        final CalculationResult result =
+                fCalculationService.runCalculation(calc, orderedValues);
+        assertEquals(orderedValues, new ArrayList<>(result.getValues()));
+        assertEquals(expectedOutcomes, result.getOutcomes());
     }
 }

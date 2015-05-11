@@ -1,7 +1,6 @@
 package gov.va.med.srcalc.web.controller;
 
-import gov.va.med.srcalc.domain.calculation.Calculation;
-import gov.va.med.srcalc.domain.calculation.Value;
+import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.util.MissingValuesException;
@@ -18,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.common.base.Optional;
 
 /**
  * A "branch" of {@link CalculationController} containing request handlers
@@ -57,11 +58,15 @@ public class EnterVariablesController
         // In the case of using the "Return to Input Form" button, add the values already
         // in the calculation to the variable entry object to maintain the previously calculated
         // values on the entry page.
-        final DynamicValueVisitor visitor = new DynamicValueVisitor(initialValues);
-        for(final Value value: calculation.getValues())
+        final Optional<CalculationResult> lastResults = SrcalcSession.getOptionalLastResult(session);
+        if (lastResults.isPresent())
         {
-        	visitor.visit(value);
-        	fLogger.debug("Key: {} Value: {}", value.getVariable().getKey(), value.getValue());
+            final DynamicValueVisitor visitor = new DynamicValueVisitor(initialValues);
+            fLogger.debug("Pre-existing input values: {}", lastResults.get().getValues());
+            for(final Value value: lastResults.get().getValues())
+            {
+                visitor.visit(value);
+            }
         }
         return initialValues;
     }
@@ -87,7 +92,6 @@ public class EnterVariablesController
     	response.setDateHeader("Expires", 0);
         // Get the Calculation from the session.
         final Calculation calculation = SrcalcSession.getCalculation(session);
-        fLogger.debug("Existing input values: {}", calculation.getValues());
 
         // Present the view.
         final ModelAndView mav = new ModelAndView(Views.ENTER_VARIABLES);
@@ -116,9 +120,10 @@ public class EnterVariablesController
         
         try
         {
-            // Set the values on the Calculation.
-            fCalculationService.runCalculation(
+            final CalculationResult result = fCalculationService.runCalculation(
                     calculation, parserVisitor.getValues());
+            
+            SrcalcSession.setLastResult(session, result);
         }
         catch(final MissingValuesException e)
         {

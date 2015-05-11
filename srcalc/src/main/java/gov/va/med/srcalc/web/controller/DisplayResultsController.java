@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.controller;
 import java.util.HashMap;
 
 import gov.va.med.srcalc.domain.calculation.Calculation;
+import gov.va.med.srcalc.domain.calculation.CalculationResult;
 import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.web.view.Views;
 
@@ -38,8 +39,11 @@ public class DisplayResultsController
     {
         // Get the current Calculation from the session.
         final Calculation calculation = SrcalcSession.getCalculation(session);
-        
         model.addAttribute("calculation", calculation);
+
+        // And get the current CalculationResult from the session.
+        model.addAttribute("result", SrcalcSession.getRequiredLastResult(session));
+        
         return Views.DISPLAY_RESULTS;
     }
     
@@ -56,9 +60,9 @@ public class DisplayResultsController
     	String resultString;
     	try
     	{
-    	    final Calculation calc = SrcalcSession.getCalculation(session);
+    	    final CalculationResult lastResult = SrcalcSession.getRequiredLastResult(session);
             resultString = fCalculationService.saveRiskCalculationNote(
-                    calc, electronicSignature).getDescription();
+                    lastResult, electronicSignature).getDescription();
     	}
     	catch(final RecoverableDataAccessException e)
     	{

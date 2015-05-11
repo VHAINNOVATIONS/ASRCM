@@ -132,9 +132,8 @@ public class CalculationControllerIT extends IntegrationTest
         fMockMvc.perform(get("/displayResults").session(fSession))
             .andExpect(status().is(200))
             // We do not test the calculation itself (see method Javadoc), so
-            // just ensure the values list is populated.
-            .andExpect(model().attribute(
-                    "calculation", hasProperty("values", not(empty()))));
+            // just ensure the expected objects are in the model.
+            .andExpect(model().attributeExists("calculation", "result"));
     }
     
     @Test
@@ -205,10 +204,11 @@ public class CalculationControllerIT extends IntegrationTest
         fMockMvc.perform(request)
             .andExpect(redirectedUrl("/displayResults"));
         
+        // Send a request to the /displayResults page to simulate the workflow
+        // even though we don't directly care about the result.
         fMockMvc.perform(get("/displayResults").session(fSession))
-            .andExpect(status().is(200))
-            .andExpect(model().attribute(
-                    "calculation", hasProperty("values", not(empty()))));
+            .andExpect(status().is(200));
+
         final MvcResult result = fMockMvc.perform(get("/enterVars").session(fSession))
         	.andReturn();
         final VariableEntry variableEntry = (VariableEntry) result.getModelAndView().getModel().get("variableEntry");

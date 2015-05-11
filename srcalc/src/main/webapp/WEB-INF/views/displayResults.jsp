@@ -4,6 +4,14 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="/WEB-INF/srcalc.tld" prefix="srcalc" %>
 
+<%--
+Note: this view is a fusion of two different objects:
+
+* result: an immutable snapshot of the latest calculation result, and
+* calculation: a live Calculation object that enables starting a new calculation
+  or generating a new result with tweaked variable inputs
+--%>
+
 <srcalc:calcPage title="Calculation Results">
 <section>
     <h2>Calculation Results</h2>
@@ -13,13 +21,13 @@
     <tr><th class="main">Variable</th><th class="main">Value</th></tr>
     <%-- The procedure is more important to the calculation so it should be easily  
         visible to the user. --%>
-    <c:forEach var="value" items="${calculation.procedureValues}">
+    <c:forEach var="value" items="${result.procedureValues}">
     <tr>
         <td><c:out value="${value.variable.displayName}"/></td>
         <td><c:out value="${value.displayString}"/></td>
     </tr>
     </c:forEach>
-    <c:forEach var="value" items="${calculation.nonProcedureValues}">
+    <c:forEach var="value" items="${result.nonProcedureValues}">
     <tr>
         <td><c:out value="${value.variable.displayName}"/></td>
         <td><c:out value="${value.displayString}"/></td>
@@ -29,7 +37,7 @@
     <div class="actionButtons">
     <h3>Results</h3>
     <ol>
-    <c:forEach var="outcome" items="${calculation.outcomes}">
+    <c:forEach var="outcome" items="${result.outcomes}">
     <li>${outcome.key}: <fmt:formatNumber value="${outcome.value * 100}" minFractionDigits="1" maxFractionDigits="1" />%</li>
     </c:forEach>
     </ol>

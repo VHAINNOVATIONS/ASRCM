@@ -14,11 +14,6 @@ import org.junit.Test;
 
 public class CalculationTest
 {
-	private final static String NOTE_BODY = String.format("Specialty = Thoracic%n%n"
-    		+ "Procedure = 26546 - Repair left hand - you know, the thing with fingers (10.06)%n%n"
-    		+ "Results%nThoracic 30-day mortality estimate = 100.0%%%n%n"
-    		+ "Calculation Inputs%nAge = 45.0%nDNR = No%nFunctional Status = Independent%n");
-    
     @Test
     public final void testForPatient()
     {
@@ -107,7 +102,7 @@ public class CalculationTest
     {
         // Setup
         // we don't actually need any values in here:
-        final List<Value> values = Collections.emptyList(); 
+        final Set<Value> values = Collections.emptySet();
         // Create a dummy specialty with two risk models.
         final Specialty s = SampleModels.thoracicSpecialty();
         s.getRiskModels().clear();
@@ -123,11 +118,15 @@ public class CalculationTest
         c.setSpecialty(s);
         
         // Behavior verification
+        final CalculationResult result = c.calculate(values);
+        assertEquals(c.getStartDateTime(), result.getStartDateTime());
+        assertEquals(c.getPatient().getDfn(), result.getPatientDfn());
+        assertEquals(s.getName(), result.getSpecialtyName());
+        assertEquals(values, result.getValues());
         final TreeMap<String, Double> expectedOutcomes = new TreeMap<>();
         expectedOutcomes.put("model1", 55.3);
         expectedOutcomes.put("model2", 22.3);
-        assertEquals(expectedOutcomes, c.calculate(values));
-        assertEquals(expectedOutcomes, c.getOutcomes());
+        assertEquals(expectedOutcomes, result.getOutcomes());
     }
 
     @Test(expected = MissingValuesException.class)
@@ -143,27 +142,5 @@ public class CalculationTest
         calc.calculate(Arrays.asList(
                 new BooleanValue(SampleModels.dnrVariable(), true),
                 new NumericalValue(SampleModels.ageVariable(), 12)));
-    }
-    
-    @Test
-    public final void testBuildNoteBody() throws Exception
-    {
-    	final Calculation calculation = SampleCalculations.calculatedCalculation();
-    	
-    	assertEquals(calculation.buildNoteBody(), NOTE_BODY);
-    }
-    
-    @Test
-    public final void testGetProcedureValues() throws Exception
-    {
-    	final Calculation calc = SampleCalculations.calculatedCalculation();
-    	assert(calc.getProcedureValues().size() == 1);
-    }
-    
-    @Test
-    public final void testGetNonProcedureValues() throws Exception
-    {
-    	final Calculation calc = SampleCalculations.calculatedCalculation();
-    	assert(calc.getNonProcedureValues().size() == 3);
     }
 }

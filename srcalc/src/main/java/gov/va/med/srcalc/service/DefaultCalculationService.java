@@ -10,8 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.calculation.Calculation;
-import gov.va.med.srcalc.domain.calculation.Value;
+import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.vista.VistaPatientDao;
 import gov.va.med.srcalc.util.MissingValuesException;
@@ -72,30 +71,27 @@ public class DefaultCalculationService implements CalculationService
     
     @Override
     @Transactional
-    public void runCalculation(final Calculation calculation, final List<Value> variableValues) throws MissingValuesException
+    public CalculationResult runCalculation(
+            final Calculation calculation, final List<Value> variableValues)
+            throws MissingValuesException
     {
         fLogger.debug("Running calculation with values: {}", variableValues);
         
-        try 
-        {
-			calculation.calculate(variableValues);
-		} 
-        catch (MissingValuesException e) 
-        {
-			throw e;
-		}
+        final CalculationResult result = calculation.calculate(variableValues);
         
         // Log something at INFO level for running a calculation, but don't log
         // too much to avoid PHI in the log file.
         fLogger.info( "Ran a {} calculation.", calculation.getSpecialty());
+        
+        return result;
     }
 
     @Override
     public VistaPatientDao.SaveNoteCode saveRiskCalculationNote(
-            Calculation calculation, String electronicSignature)
+            CalculationResult result, String electronicSignature)
     {
         return fPatientDao.saveRiskCalculationNote(
-                calculation.getPatient(), electronicSignature, calculation.buildNoteBody());
+                result.getPatientDfn(), electronicSignature, result.buildNoteBody());
     }
     
 }

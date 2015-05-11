@@ -18,7 +18,7 @@ public class MockVistaPatientDao implements VistaPatientDao
      * Assumes the dummy result is returning a valid save.
      */
 	@Override
-	public SaveNoteCode saveRiskCalculationNote(final Patient patient,
+	public SaveNoteCode saveRiskCalculationNote(final int patientDfn,
 			final String electronicSignature, final String noteBody)
 	{
             return SaveNoteCode.SUCCESS;
