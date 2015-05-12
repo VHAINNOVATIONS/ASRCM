@@ -15,10 +15,13 @@ public class VariableEntryTest
     @Test
     public final void testToString()
     {
-        final VariableEntry entry = new VariableEntry(Collections.<Variable> emptyList());
+        final VariableEntry entry = new VariableEntry(
+                Collections.<Variable>emptyList());
         entry.getDynamicValues().put("one", "1");
         entry.getDynamicValues().put("two", "2");
-        assertThat(entry.toString(), allOf(containsString("one=1"), containsString("two=2")));
+        assertThat(
+                entry.toString(),
+                allOf(containsString("one=1"), containsString("two=2")));
     }
     
     @Test
@@ -37,7 +40,7 @@ public class VariableEntryTest
     @Test
     public final void testWithRetrievedValues()
     {
-        // Contains multiple variables, but only one DiscreteNumericalVariable.
+    	// Contains multiple variables, but only one DiscreteNumericalVariable.
         final List<AbstractVariable> vars = SampleModels.sampleVariableList();
         
         // Behavior verification.
@@ -53,15 +56,15 @@ public class VariableEntryTest
     @Test
     public final void testRetrievedCardiacAge()
     {
-        final List<AbstractVariable> vars = SampleModels.sampleCardiacCABGVariableList();
-        final Patient patient = SampleCalculations.dummyPatient(1);
-        final VariableEntry entry = VariableEntry.withRetrievedValues(vars, patient);
-        final HashMap<String, String> expected = new HashMap<>();
-        expected.put(VariableEntry.getNumericalInputName((DiscreteNumericalVariable) vars.get(0)),
-                String.valueOf(patient.getAge()));
-        expected.put(vars.get(0).getKey(), VariableEntry.SPECIAL_NUMERICAL);
-        expected.put(vars.get(1).getKey(), patient.getGender());
-        
-        assertEquals(expected, entry.getDynamicValues());
+    	final List<AbstractVariable> vars = SampleModels.sampleCardiacCABGVariableList();
+    	final Patient patient = SampleCalculations.dummyPatient(1);
+    	final VariableEntry entry = VariableEntry.withRetrievedValues(vars, patient);
+    	final HashMap<String, String> expected = new HashMap<>();
+    	expected.put(VariableEntry.getNumericalInputName((DiscreteNumericalVariable)vars.get(0)),
+    			String.valueOf(patient.getAge()));
+    	expected.put(vars.get(0).getKey(), VariableEntry.SPECIAL_NUMERICAL);
+    	expected.put(vars.get(1).getKey(), patient.getGender());
+    	
+    	assertEquals(expected, entry.getDynamicValues());
     }
 }

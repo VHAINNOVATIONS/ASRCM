@@ -17,14 +17,22 @@ public class SampleModels
 {
     public static Procedure repairLeftProcedure()
     {
-        return new Procedure("26546", 10.06f, "Repair left hand",
-                "Repair left hand - you know, the thing with fingers", "Standard");
+        return new Procedure(
+                "26546",
+                10.06f,
+                "Repair left hand",
+                "Repair left hand - you know, the thing with fingers",
+                "Standard");  
     }
-    
+
     public static Procedure repairRightProcedure()
     {
-        return new Procedure("26545", 5.05f, "Repair right hand",
-                "Repair right hand - you know, the thing with fingers", "Standard");
+        return new Procedure(
+                "26545",
+                5.05f,
+                "Repair right hand",
+                "Repair right hand - you know, the thing with fingers",
+                "Standard");  
     }
     
     public static List<Procedure> procedureList()
@@ -33,10 +41,8 @@ public class SampleModels
     }
     
     /**
-     * <p>
-     * Convenience function to construct a RiskModel from the given list of Variables. The terms will have coefficients
-     * according to the type:
-     * </p>
+     * <p>Convenience function to construct a RiskModel from the given list of
+     * Variables. The terms will have coefficients according to the type:</p>
      * <ul>
      * <li>ProcedureVariable: 1.0</li>
      * <li>NumericalVariable: 2.0</li>
@@ -44,14 +50,12 @@ public class SampleModels
      * <li>DiscreteNumericalVariable: 4.0</li>
      * <li>BooleanVariable: 5.0</li>
      * </ul>
-     * 
-     * @param name
-     *            the intended name of the model
+     * @param name the intended name of the model
      * @param variables
      * @return a RiskModel with a term for each given variable
      */
-    public static RiskModel makeSampleRiskModel(final String name, final Set<DerivedTerm> derivedTerms,
-            final Variable... variables)
+    public static RiskModel makeSampleRiskModel(final String name, final Set<DerivedTerm> derivedTerms, 
+    		final Variable... variables)
     {
         final RiskModel m = new RiskModel(name);
         m.getDerivedTerms().addAll(derivedTerms);
@@ -93,7 +97,7 @@ public class SampleModels
         {
             visitor.visit(var);
         }
-        
+
         return m;
     }
     
@@ -106,17 +110,18 @@ public class SampleModels
         m.getDiscreteTerms().add(new DiscreteTerm(functionalStatusVariable(), 1, 5.0f));
         return m;
     }
-    
+
     public static RiskModel cardiacCABGModel()
     {
-        final RiskModel m = new RiskModel("Cardiac CABG 30-day mortality estimate");
-        m.getProcedureTerms().add(new ProcedureTerm(procedureVariable(), 1.0f));
-        m.getDiscreteTerms().add(new DiscreteTerm(genderVariable(), 1, 2.0f));
-        return m;
+    	final RiskModel m = new RiskModel("Cardiac CABG 30-day mortality estimate");
+    	m.getProcedureTerms().add(new ProcedureTerm(procedureVariable(), 1.0f));
+    	m.getDiscreteTerms().add(new DiscreteTerm(genderVariable(), 1, 2.0f));
+    	return m;
     }
     
     /**
-     * Returns a sample Thoracic specialty, for when a single specialty is needed. Includes a sample Variable set.
+     * Returns a sample Thoracic specialty, for when a single specialty is needed.
+     * Includes a sample Variable set.
      */
     public static Specialty thoracicSpecialty()
     {
@@ -126,26 +131,38 @@ public class SampleModels
     }
     
     /**
-     * Returns a sample {@link Rule} that multiplies age by the coefficient if Functional Status == Totally dependent.
+     * Returns a sample {@link Rule} that multiplies age by the coefficient
+     * if Functional Status == Totally dependent.
      */
     public static Rule ageAndFsRule()
     {
         final NumericalVariable ageVar = SampleModels.ageVariable();
         final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
-        final ValueMatcher totallyDependentMatcher = new ValueMatcher(fsVar, "value == 'Totally dependent'");
+        final ValueMatcher totallyDependentMatcher = new ValueMatcher(
+                fsVar, "value == 'Totally dependent'");
         final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
-        return new Rule(Arrays.asList(totallyDependentMatcher, ageMatcher), "#Age.value * #coefficient", true);
+        return new Rule(
+                Arrays.asList(totallyDependentMatcher, ageMatcher),
+                "#Age.value * #coefficient", true);
     }
     
     public static List<AbstractVariable> sampleVariableList()
     {
-        return Arrays.asList(procedureVariable(), ageVariable(), genderVariable(), dnrVariable(),
-                functionalStatusVariable(), wbcVariable());
+        return Arrays.asList(
+                procedureVariable(),
+                ageVariable(),
+                genderVariable(),
+                dnrVariable(),
+                functionalStatusVariable(),
+                wbcVariable());
     }
-    
+
     public static List<AbstractVariable> sampleCardiacCABGVariableList()
     {
-        return Arrays.asList(cardiacAgeVariable(), genderVariable(), dnrVariable());
+    	return Arrays.asList(
+    			cardiacAgeVariable(),
+    			genderVariable(),
+    			dnrVariable());
     }
     
     /**
@@ -153,21 +170,26 @@ public class SampleModels
      */
     public static List<Specialty> specialtyList()
     {
-        return Arrays.asList(new Specialty(48, "Cardiac"), new Specialty(50, "General Surgery"), new Specialty(52,
-                "Neurosurgery"), new Specialty(54, "Orthopedic"), SampleModels.thoracicSpecialty(), new Specialty(59,
-                "Urology"), new Specialty(62, "Vascular"));
+        return Arrays.asList(
+        	    new Specialty(48, "Cardiac"),
+        	    new Specialty(50, "General Surgery"),
+        	    new Specialty(52, "Neurosurgery"),
+        	    new Specialty(54, "Orthopedic"),
+        	    SampleModels.thoracicSpecialty(),
+        	    new Specialty(59, "Urology"),
+        	    new Specialty(62, "Vascular")
+                );
     }
     
     /**
      * Constructs a VariableGroup object with the given properties.
-     * 
-     * @param name
-     *            the group name
-     * @param displayOrder
-     *            the group display order
-     * @return a new VariableGroup object with a mock database ID of displayOrder + 1
+     * @param name the group name
+     * @param displayOrder the group display order
+     * @return a new VariableGroup object with a mock database ID of
+     * displayOrder + 1
      */
-    private static VariableGroup makeVariableGroup(final String name, final int displayOrder)
+    private static VariableGroup makeVariableGroup(
+            final String name, final int displayOrder)
     {
         final VariableGroup vg = new VariableGroup(name, displayOrder);
         // Normally only Hibernate calls the package-private setId() but fake it
@@ -175,7 +197,7 @@ public class SampleModels
         vg.setId(displayOrder + 1);
         return vg;
     }
-    
+
     public static VariableGroup procedureVariableGroup()
     {
         return makeVariableGroup("Planned Procedure", 0);
@@ -197,72 +219,88 @@ public class SampleModels
     }
     
     /**
-     * <p>
-     * Returns a set of 4 Variable Groups, sorted in natural order. The objects will have mock database IDs.
-     * </p>
-     * <p>
-     * Note that there are more groups in production than these four, so the display order has gaps, i.e. 0,1,4,5.
-     * </p>
+     * <p>Returns a set of 4 Variable Groups, sorted in natural order. The objects
+     * will have mock database IDs.</p>
      * 
+     * <p>Note that there are more groups in production than these four, so the
+     * display order has gaps, i.e. 0,1,4,5.</p>
      * @return an immutable set
      */
     public static ImmutableSortedSet<VariableGroup> variableGroups()
     {
-        return ImmutableSortedSet.of(procedureVariableGroup(), demographicsVariableGroup(), labVariableGroup(),
+        return ImmutableSortedSet.of(
+                procedureVariableGroup(),
+                demographicsVariableGroup(),
+                labVariableGroup(),
                 recentClinicalVariableGroup());
     }
-    
+
     public static MultiSelectVariable genderVariable()
     {
-        final List<MultiSelectOption> options = Arrays.asList(new MultiSelectOption("Male"), new MultiSelectOption(
-                "Female"));
-        final MultiSelectVariable var = new MultiSelectVariable("Gender", demographicsVariableGroup(),
-                DisplayType.Radio, options, "gender");
+        final List<MultiSelectOption> options = Arrays.asList(
+                new MultiSelectOption("Male"),
+                new MultiSelectOption("Female"));
+        final MultiSelectVariable var = new MultiSelectVariable(
+                "Gender",
+                demographicsVariableGroup(),
+                DisplayType.Radio,
+                options,
+                "gender");
         var.setRetrievalKey(1);
         return var;
     }
     
     public static NumericalVariable ageVariable()
     {
-        final NumericalVariable var = new NumericalVariable("Age", demographicsVariableGroup(), "age");
+        final NumericalVariable var = new NumericalVariable(
+                "Age", demographicsVariableGroup(), "age");
         var.setMinValue(0);
         var.setMaxValue(999);
         var.setUnits("years");
         var.setRetrievalKey(2);
         return var;
     }
-    
+
     public static ProcedureVariable procedureVariable()
     {
-        final ProcedureVariable var = new ProcedureVariable("Procedure", procedureVariableGroup(), "procedure");
+        final ProcedureVariable var = new ProcedureVariable(
+                "Procedure", procedureVariableGroup(), "procedure");
         var.setProcedures(procedureList());
         return var;
     }
     
     public static BooleanVariable dnrVariable()
     {
-        final BooleanVariable var = new BooleanVariable("DNR", demographicsVariableGroup(), "dnr");
+    	final BooleanVariable var= new BooleanVariable("DNR", demographicsVariableGroup(), "dnr");
         return var;
     }
     
     public static MultiSelectVariable functionalStatusVariable()
     {
-        final List<MultiSelectOption> fsOptions = Arrays.asList(new MultiSelectOption("Independent"),
-                new MultiSelectOption("Partially dependent"), new MultiSelectOption("Totally dependent"));
-        final MultiSelectVariable fsVariable = new MultiSelectVariable("Functional Status",
-                recentClinicalVariableGroup(), MultiSelectVariable.DisplayType.Radio, fsOptions, "functionalStatus");
+        final List<MultiSelectOption> fsOptions = Arrays.asList(
+                new MultiSelectOption("Independent"),
+                new MultiSelectOption("Partially dependent"),
+                new MultiSelectOption("Totally dependent"));
+        final MultiSelectVariable fsVariable = new MultiSelectVariable(
+                "Functional Status",
+                recentClinicalVariableGroup(),
+                MultiSelectVariable.DisplayType.Radio,
+                fsOptions,
+                "functionalStatus");
         return fsVariable;
     }
     
     public static DiscreteNumericalVariable wbcVariable()
     {
-        final Category wbcWnl = new Category(new NumericalRange(Float.NEGATIVE_INFINITY, false, 11.0f, true),
+        final Category wbcWnl = new Category(
+                new NumericalRange(Float.NEGATIVE_INFINITY, false, 11.0f, true),
                 new MultiSelectOption("WNL"));
-        final Category wbcHigh = new Category(new NumericalRange(11.0f, false, Float.POSITIVE_INFINITY, false),
+        final Category wbcHigh = new Category(
+                new NumericalRange(11.0f, false, Float.POSITIVE_INFINITY, false),
                 new MultiSelectOption(">11.0"));
         final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
-        final DiscreteNumericalVariable var = new DiscreteNumericalVariable("White Blood Count", labVariableGroup(),
-                new HashSet<>(categories), "wbc");
+        final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
+                "White Blood Count", labVariableGroup(), new HashSet<>(categories), "wbc");
         var.setMinValue(2.0f);
         var.setMaxValue(50.0f);
         var.setUnits("x1000/mm^3");
@@ -271,39 +309,46 @@ public class SampleModels
     
     public static DiscreteNumericalVariable cardiacAgeVariable()
     {
-        final Category ageLessThan50 = new Category(new NumericalRange(Float.NEGATIVE_INFINITY, false, 50.0f, false),
+    	final Category ageLessThan50 = new Category(
+                new NumericalRange(Float.NEGATIVE_INFINITY, false, 50.0f, false),
                 new MultiSelectOption("< 50 years"));
-        final Category ageFiftyToFiftyNine = new Category(new NumericalRange(50.0f, true, 60.0f, false),
+    	final Category ageFiftyToFiftyNine = new Category(
+                new NumericalRange(50.0f, true, 60.0f, false),
                 new MultiSelectOption("50 to 59 years"));
-        final Category ageSixtyToSixtyNine = new Category(new NumericalRange(60.0f, true, 70.0f, false),
-                new MultiSelectOption("60 to 69 years"));
-        final Category ageGreaterThanEqualToSeventy = new Category(new NumericalRange(70.0f, true,
-                Float.POSITIVE_INFINITY, false), new MultiSelectOption(">= 70 years"));
-        final List<Category> categories = Arrays.asList(ageLessThan50, ageFiftyToFiftyNine, ageSixtyToSixtyNine,
-                ageGreaterThanEqualToSeventy);
-        final DiscreteNumericalVariable var = new DiscreteNumericalVariable("Cardiac Age", demographicsVariableGroup(),
-                new HashSet<>(categories), "cardiacAge");
+    	final Category ageSixtyToSixtyNine = new Category(
+    			new NumericalRange(60.0f, true, 70.0f, false),
+    			new MultiSelectOption("60 to 69 years"));
+    	final Category ageGreaterThanEqualToSeventy = new Category(
+    			new NumericalRange(70.0f, true, Float.POSITIVE_INFINITY, false),
+    			new MultiSelectOption(">= 70 years"));
+    	final List<Category> categories = Arrays.asList(ageLessThan50, ageFiftyToFiftyNine,
+    			ageSixtyToSixtyNine, ageGreaterThanEqualToSeventy);
+        final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
+                "Cardiac Age", demographicsVariableGroup(), new HashSet<>(categories), "cardiacAge");
         var.setMinValue(18.0f);
         var.setMinInclusive(true);
         var.setMaxValue(120.0f);
-        var.setMaxInclusive(true);
-        var.setRetrievalKey(7);
-        
-        return var;
+    	var.setMaxInclusive(true);
+    	var.setRetrievalKey(7);
+    	
+    	return var;
     }
     
     /**
-     * Like {@link #wbcVariable()} but has a gap in the categories. Users may do this, you know.
+     * Like {@link #wbcVariable()} but has a gap in the categories. Users may
+     * do this, you know.
      */
     public static DiscreteNumericalVariable misconfiguredWbcVariable()
     {
-        final Category wbcWnl = new Category(new NumericalRange(Float.NEGATIVE_INFINITY, false, 10.0f, true),
+        final Category wbcWnl = new Category(
+                new NumericalRange(Float.NEGATIVE_INFINITY, false, 10.0f, true),
                 new MultiSelectOption("WNL"));
-        final Category wbcHigh = new Category(new NumericalRange(11.0f, false, Float.POSITIVE_INFINITY, false),
+        final Category wbcHigh = new Category(
+                new NumericalRange(11.0f, false, Float.POSITIVE_INFINITY, false),
                 new MultiSelectOption(">11.0"));
         final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
-        final DiscreteNumericalVariable var = new DiscreteNumericalVariable("White Blood Count", labVariableGroup(),
-                new HashSet<>(categories), "wbc");
+        final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
+                "White Blood Count", labVariableGroup(), new HashSet<>(categories), "wbc");
         var.setMinValue(2.0f);
         var.setMaxValue(50.0f);
         var.setUnits("x1000/mm^3");
