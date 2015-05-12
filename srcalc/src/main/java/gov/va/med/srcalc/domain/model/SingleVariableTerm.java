@@ -7,12 +7,10 @@ import java.util.Map;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import gov.va.med.srcalc.domain.variable.MissingValueException;
-import gov.va.med.srcalc.domain.variable.Value;
-import gov.va.med.srcalc.domain.variable.Variable;
-import gov.va.med.srcalc.util.CollectionUtils;
+import com.google.common.collect.ImmutableSet;
+
+import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.util.MissingValuesException;
-import gov.va.med.srcalc.util.NoNullSet;
 
 /**
  * A ModelTerm that uses a single Variable.
@@ -42,9 +40,9 @@ public abstract class SingleVariableTerm extends ModelTerm
     
     @Override
     @Transient
-    public NoNullSet<Variable> getRequiredVariables()
+    public ImmutableSet<Variable> getRequiredVariables()
     {
-        return NoNullSet.fromSet(CollectionUtils.unmodifiableSet(getVariable()));
+        return ImmutableSet.of(getVariable());
     }
     
     @Override
@@ -55,7 +53,7 @@ public abstract class SingleVariableTerm extends ModelTerm
         {
     		final List<MissingValueException> missingValues = new ArrayList<MissingValueException>();
     		missingValues.add(new MissingValueException("Missing value for " + getVariable().getKey(),
-    				"noInput", getVariable()));
+    				getVariable()));
     		throw new MissingValuesException("The calculation is missing values.", missingValues);
         }
         return getSummand(value);

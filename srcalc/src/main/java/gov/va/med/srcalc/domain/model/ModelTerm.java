@@ -4,10 +4,11 @@ import java.util.Map;
 
 import javax.persistence.*;
 
-import gov.va.med.srcalc.domain.variable.Value;
-import gov.va.med.srcalc.domain.variable.Variable;
+import com.google.common.collect.ImmutableSet;
+
+// TODO: can we eliminate this dependency on the 'calculation' package?
+import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.util.MissingValuesException;
-import gov.va.med.srcalc.util.NoNullSet;
 
 /**
  * A single summation term in a risk model.
@@ -49,7 +50,7 @@ public abstract class ModelTerm
      * contain nulls.
      */
     @Transient
-    public abstract NoNullSet<Variable> getRequiredVariables();
+    public abstract ImmutableSet<Variable> getRequiredVariables();
     
     /**
      * Base equals() functionality that simply verifies equality of the coefficient.

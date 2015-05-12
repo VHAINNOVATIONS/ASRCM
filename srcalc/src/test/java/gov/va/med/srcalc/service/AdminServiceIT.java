@@ -2,8 +2,7 @@ package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import gov.va.med.srcalc.domain.variable.AbstractVariable;
-import gov.va.med.srcalc.domain.variable.BooleanVariable;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 
 import java.util.List;
@@ -15,6 +14,10 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableSortedSet;
 
 /**
  * Integration Test for {@link AdminService}.
@@ -36,6 +39,21 @@ public class AdminServiceIT extends IntegrationTest
     }
     
     @Test
+    public final void testGetAllVariableGroups()
+    {
+        final ImmutableCollection<VariableGroup> actualGroups =
+                fAdminService.getAllVariableGroups();
+        assertEquals(7, actualGroups.size());
+        // Sort the collection and examine the first item, which should be the
+        // Planned Procedure group, just to make sure the data was actually
+        // loaded correctly.
+        final VariableGroup plannedProcedure =
+                ImmutableSortedSet.copyOf(actualGroups).first();
+        assertEquals("Planned Procedure", plannedProcedure.getName());
+        assertEquals(0, plannedProcedure.getDisplayOrder());
+    }
+    
+    @Test
     public final void testGetVariable() throws Exception
     {
         final String key = "preopPneumonia";
@@ -50,16 +68,32 @@ public class AdminServiceIT extends IntegrationTest
     	final String key = "preopPneumonia";
         final String origName = "Preop Pneumonia";
         final String newName = "Preoperative Issues";
+        final String newHelpText = "helpppppppp";
         
         // Setup
         final AbstractVariable var = fAdminService.getVariable(key);
         assertEquals(origName, var.getDisplayName());  // sanity check
+        // Sort the groups and pick the 2nd as the new group.
+        final ImmutableSortedSet<VariableGroup> sortedGroups =
+                ImmutableSortedSet.copyOf(fAdminService.getAllVariableGroups());
+        final VariableGroup newGroup = sortedGroups.asList().get(1);
+        // Clear the session to simulate a new transaction.
+        getHibernateSession().clear();
         
-        // Behavior verification.
-        final EditVariable ev = EditVariable.fromVariable(var);
-        ev.setDisplayName(newName);
-        fAdminService.updateVariable(ev);
-        assertEquals(newName, fAdminService.getVariable(key).getDisplayName());
+        // Operation
+        var.setDisplayName(newName);
+        var.setHelpText(Optional.of(newHelpText));
+        var.setGroup(newGroup);
+        fAdminService.updateVariable(var);
+        
+        // Verification
+        // Simulate a new Hibernate Session.
+        getHibernateSession().flush();
+        getHibernateSession().clear();
+        final AbstractVariable newVar = fAdminService.getVariable(key);
+        assertEquals(newName, newVar.getDisplayName());
+        assertEquals(newHelpText, newVar.getHelpText().get());
+        assertEquals(newGroup, newVar.getGroup());
     }
     
 }

@@ -11,7 +11,6 @@ import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.web.view.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,22 +28,6 @@ public class CalculationController
     public CalculationController(final CalculationService calculationService)
     {
         fCalculationService = calculationService;
-    }
-    
-    /**
-     * Returns the current CalculationWorkflow object form the HttpSession.
-     * @return never null
-     * @throws IllegalStateException if there is no current calculation
-     */
-    public static CalculationWorkflow getWorkflowFromSession(final HttpSession session)
-    {
-        final CalculationWorkflow workflow =
-                (CalculationWorkflow)session.getAttribute(SESSION_CALCULATION);
-        if (workflow == null)
-        {
-            throw new IllegalStateException("No current calculation.");
-        }
-        return workflow;
     }
 
     @RequestMapping(value = "/newCalc", method = RequestMethod.GET)
@@ -72,7 +55,7 @@ public class CalculationController
             @RequestParam("specialty") final String specialtyName)
                     throws InvalidIdentifierException
     {
-        final CalculationWorkflow workflow = getWorkflowFromSession(session);
+        final CalculationWorkflow workflow = CalculationWorkflowSupplier.getWorkflowFromSession(session);
         final SelectedCalculation selCalc =
                 fCalculationService.setSpecialty(workflow.getCalculation(), specialtyName);
         session.setAttribute(SESSION_CALCULATION, selCalc);
@@ -83,15 +66,4 @@ public class CalculationController
     
     // Variable entry is in EnterVariablesController.
     
-    @RequestMapping(value = "/displayResults", method = RequestMethod.GET)
-    public String displayResults(
-            final HttpSession session,
-            final Model model)
-    {
-        // Get the CalculationWorkflow from the session.
-        final CalculationWorkflow workflow = getWorkflowFromSession(session);
-        
-        model.addAttribute("calculation", workflow.getCalculation());
-        return Views.DISPLAY_RESULTS;
-    }
 }

@@ -1,11 +1,24 @@
 /**
  * <p>This is the Service Layer for the Surgical Risk Calculator, that is, the
- * domain model's primary interface to the outside world. Unlike the domain
- * model, these classes are oriented around use cases, not objects.</p>
+ * Domain Model's primary interface to the outside world. Unlike the Domain
+ * Model, which consists of many objects with many fine-grained interfaces,
+ * these classes present fewer, higher-level business operations.</p>
  * 
- * <p>Entry-point methods in the Service Layer accept persistent object
- * identifiers, not the objects themselves. This allows the calling objects
- * (that is, the Presentation Layer) to contain just "glue code" and this layer
- * to contain all calls to load objects from persistence, etc.</p>
+ * <p>Beyond facilitating interaction with the Domain Model, these
+ * business-operation-oriented methods present a natural transaction boundary
+ * and therefore most of them represent one transaction.</p>
+ * 
+ * <p>Since entry-point methods in the Service Layer represent transactions,
+ * many methods accept persistent object identifiers instead of objects
+ * themselves in order to encapsulate database interaction within the
+ * transaction. For example, {@link
+ * gov.va.med.srcalc.service.CalculationService#setSpecialty(gov.va.med.srcalc.domain.Calculation,
+ * String) CalculationService.setSpecialty} accepts a String identifying a
+ * specialty instead of the specialty object itself. Other methods, such as
+ * {@link
+ * gov.va.med.srcalc.service.AdminService#updateVariable(gov.va.med.srcalc.domain.model.AbstractVariable)
+ * AdminService.updateVariable},
+ * accept domain objects, but require that the caller provide an object that it
+ * previously obtained from a different Service Layer method.</p>
  */
 package gov.va.med.srcalc.service;

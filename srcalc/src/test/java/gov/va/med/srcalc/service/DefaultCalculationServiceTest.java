@@ -3,9 +3,9 @@ package gov.va.med.srcalc.service;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import gov.va.med.srcalc.db.SpecialtyDao;
-import gov.va.med.srcalc.domain.Calculation;
-import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.Specialty;
+import gov.va.med.srcalc.domain.calculation.Calculation;
+import gov.va.med.srcalc.domain.model.SampleModels;
+import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
 import gov.va.med.srcalc.vista.MockVistaPatientDao;
@@ -20,8 +20,8 @@ public class DefaultCalculationServiceTest
     public SpecialtyDao mockSpecialtyDao()
     {
         final SpecialtyDao dao = mock(SpecialtyDao.class);
-        when(dao.getAllSpecialties()).thenReturn(SampleObjects.sampleSpecialtyList());
-        final Specialty specialty = SampleObjects.sampleThoracicSpecialty();
+        when(dao.getAllSpecialties()).thenReturn(SampleModels.specialtyList());
+        final Specialty specialty = SampleModels.thoracicSpecialty();
         when(dao.getByName(specialty.getName())).thenReturn(specialty);
         return dao;
     }
@@ -49,13 +49,13 @@ public class DefaultCalculationServiceTest
                 calc.getStartDateTime().compareTo(new DateTime()) <= 0);
         assertTrue("start date not after test start",
                 calc.getStartDateTime().compareTo(testStartDateTime) >= 0);
-        assertEquals(SampleObjects.sampleSpecialtyList(), newCalc.getPossibleSpecialties());
+        assertEquals(SampleModels.specialtyList(), newCalc.getPossibleSpecialties());
     }
     
     @Test
     public final void testSetValidSpecialty() throws InvalidIdentifierException
     {
-        final Specialty thoracicSpecialty = SampleObjects.sampleThoracicSpecialty();
+        final Specialty thoracicSpecialty = SampleModels.thoracicSpecialty();
         
         // Create the class under test.
         final DefaultCalculationService s = defaultCalculationService();

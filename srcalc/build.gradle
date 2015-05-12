@@ -10,7 +10,7 @@ apply plugin: 'jacoco'
 
 // Basic build properties
 sourceCompatibility = '1.7'
-version = '0.6.0-alpha'
+version = '0.7.0-alpha'
 
 repositories {
     // Use 'maven central' for resolving dependencies.
@@ -73,6 +73,8 @@ dependencies {
 	compile group: 'org.springframework.security', name: 'spring-security-web', version: springSecurityVersion
 	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: springSecurityVersion
 	compile 'joda-time:joda-time:2.3'
+	compile 'org.apache.commons:commons-lang3:3.3.2'
+	compile 'com.google.guava:guava:18.0'
 
     // Spring-Security XML namespace
 	runtime group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
@@ -80,12 +82,14 @@ dependencies {
     
     /* Test dependencies */
 
-    testCompile 'junit:junit:4.11'
+    testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.9.5'
 	testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
 	testCompile 'nl.jqno.equalsverifier:equalsverifier:1.5'
 	testCompile 'org.hamcrest:hamcrest-library:1.3'
 	testCompile 'org.hsqldb:hsqldb:2.3.2'
+	// Versions higher than 0.9.1 will not work with the current spring code
+	testCompile 'com.jayway.jsonpath:json-path:0.9.1'
     
     // The deployed app uses java.util.logging, but use log4j 1.2 in the tests
     // because the former is so hard to configure. See the slf4j-jdk14 exclusion
@@ -103,7 +107,12 @@ dependencies {
 compileJava {
     // Warn about deprecated API usage.
     options.deprecation = true
-}    
+}
+
+compileTestJava {
+    // Warn about deprecated API usage in test code, too.
+    options.deprecation = true
+}
 
 war {
     manifest {
@@ -127,7 +136,7 @@ eclipse {
 	}
     }
 
-    // Fix "Web App Libraries" order. See <http://gsfn.us/t/3jk71>.
+    // Fix "Web App Libraries" order. See <http://tinyurl.com/pln53lc>.
     classpath.file {
         withXml { xml ->
             def node = xml.asNode()

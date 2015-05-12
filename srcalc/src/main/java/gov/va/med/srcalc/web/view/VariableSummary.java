@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.web.view;
 
-import gov.va.med.srcalc.domain.variable.*;
-import gov.va.med.srcalc.domain.variable.MultiSelectVariable.DisplayType;
+import gov.va.med.srcalc.domain.model.*;
+import gov.va.med.srcalc.domain.model.MultiSelectVariable.DisplayType;
 
 /**
  * {@link Variable} wrapper for displaying summary information (such as the

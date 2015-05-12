@@ -2,7 +2,7 @@ package gov.va.med.srcalc.util;
 
 import java.util.List;
 
-import gov.va.med.srcalc.domain.variable.MissingValueException;
+import gov.va.med.srcalc.domain.model.MissingValueException;
 
 /**
  * Indicates that there is at least one {@link MissingValueException}

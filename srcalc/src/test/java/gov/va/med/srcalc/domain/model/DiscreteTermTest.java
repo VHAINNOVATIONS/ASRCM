@@ -2,9 +2,6 @@ package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.DiscreteVariable;
-import gov.va.med.srcalc.domain.variable.MultiSelectOption;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -16,7 +13,7 @@ public class DiscreteTermTest
     public final void testBasic()
     {
         final float coeff = 2.25f;
-        final DiscreteVariable var = SampleObjects.wbcVariable();
+        final DiscreteVariable var = SampleModels.wbcVariable();
         final MultiSelectOption option = var.getOptions().get(1);
         final DiscreteTerm term = new DiscreteTerm(var, 1, coeff);
         

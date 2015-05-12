@@ -6,14 +6,13 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import gov.va.med.srcalc.db.SpecialtyDao;
-import gov.va.med.srcalc.domain.Calculation;
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.Specialty;
-import gov.va.med.srcalc.domain.variable.Value;
+import gov.va.med.srcalc.domain.calculation.Calculation;
+import gov.va.med.srcalc.domain.calculation.Value;
+import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.domain.workflow.*;
 import gov.va.med.srcalc.vista.VistaPatientDao;
 import gov.va.med.srcalc.util.MissingValuesException;
@@ -89,6 +88,14 @@ public class DefaultCalculationService implements CalculationService
         fLogger.info( "Ran a {} calculation.", calculation.getSpecialty());
         
         return new UnsignedCalculation(calculation);
+    }
+
+    @Override
+    public VistaPatientDao.SaveNoteCode saveRiskCalculationNote(
+            Calculation calculation, String electronicSignature)
+    {
+        return fPatientDao.saveRiskCalculationNote(
+                calculation.getPatient(), electronicSignature, calculation.buildNoteBody());
     }
     
 }

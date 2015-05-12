@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.util;
 
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
 public enum RetrievalEnum {

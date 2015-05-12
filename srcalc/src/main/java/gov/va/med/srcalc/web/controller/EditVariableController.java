@@ -3,21 +3,27 @@ package gov.va.med.srcalc.web.controller;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.*;
-import gov.va.med.srcalc.web.view.Views;
+import gov.va.med.srcalc.web.view.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.google.common.collect.ImmutableSortedSet;
 
 /**
  * Web MVC controller for administration of variables.
  */
 @Controller
-@RequestMapping("/admin/models/editVariable/{variableKey}")
+@RequestMapping("/admin/variables/{variableKey}")
 public class EditVariableController
 {
+    private static final String ATTRIBUTE_VARIABLE = "variable";
+    
     private final AdminService fAdminService;
     
     @Inject
@@ -35,29 +41,45 @@ public class EditVariableController
     /**
      * Creates an {@link EditVariable} instance for the variable to edit.
      * @param variableKey the name of the variable to edit
-     * @return
+     * @return the EditVariable instance
      * @throws InvalidIdentifierException
      */
-    @ModelAttribute("variable")
+    @ModelAttribute(ATTRIBUTE_VARIABLE)
     public EditVariable createEditVariable(
             @PathVariable final String variableKey)
             throws InvalidIdentifierException
     {
-        return EditVariable.fromVariable(fAdminService.getVariable(variableKey));
+        // Sort the groups according to natural ordering for display to the
+        // user.
+        final ImmutableSortedSet<VariableGroup> allGroups =
+                ImmutableSortedSet.copyOf(fAdminService.getAllVariableGroups());
+        final EditVariable ev = new EditVariable(loadVariable(variableKey), allGroups);
+        ev.calculateDependentModels(fAdminService.getAllRiskModels());
+        return ev;
+    }
+    
+    private AbstractVariable loadVariable(final String variableKey)
+            throws InvalidIdentifierException
+    {
+        return fAdminService.getVariable(variableKey);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String editVariable()
+    public ModelAndView editVariable()
             throws InvalidIdentifierException
     {
-        // Note: model is populated via addEditVariable() above.
+        final ModelAndView mav = new ModelAndView(Views.EDIT_BOOLEAN_VARIABLE);
+        // Note: "variable" is in the model via createEditVariable() above.
         
-        return Views.EDIT_VARIABLE;
+        // Add reference data (max lengths, valid values, etc.)
+        mav.addObject("DISPLAY_NAME_MAX", Variable.DISPLAY_NAME_MAX);
+        
+        return mav;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String saveVariable(
-            @ModelAttribute("variable") @Valid final EditVariable editVariable,
+    public ModelAndView saveVariable(
+            @ModelAttribute(ATTRIBUTE_VARIABLE) @Valid final EditVariable editVariable,
             final BindingResult bindingResult)
                     throws InvalidIdentifierException
     {
@@ -66,10 +88,12 @@ public class EditVariableController
             // Re-show the edit screen.
             return editVariable();
         }
+        
+        // Apply the changes to the persistent variable.
+        fAdminService.updateVariable(editVariable.applyToVariable());
 
-        fAdminService.updateVariable(editVariable);
         // Using the POST-redirect-GET pattern.
-        return "redirect:/admin/models";
+        return new ModelAndView("redirect:/admin");
     }
     
 }

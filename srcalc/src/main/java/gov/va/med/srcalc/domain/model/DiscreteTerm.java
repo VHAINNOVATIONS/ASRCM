@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
-import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.calculation.DiscreteValue;
+import gov.va.med.srcalc.domain.calculation.Value;
 
 import java.util.Objects;
 

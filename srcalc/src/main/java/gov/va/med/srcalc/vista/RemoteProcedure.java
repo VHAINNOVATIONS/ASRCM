@@ -20,7 +20,12 @@ public enum RemoteProcedure
     /**
      * Returns a vital from the given patient with the specified date range.
      */
-    GET_VITAL("GMV EXTRACT REC");
+    GET_VITAL("GMV EXTRACT REC"),
+    
+    /**
+     * Submits a completed calculation as a note on the patient's records.
+     */
+    SAVE_PROGRESS_NOTE("SR ASRC PROGRESS NOTE");
     
     private final String fProcedureName;
     

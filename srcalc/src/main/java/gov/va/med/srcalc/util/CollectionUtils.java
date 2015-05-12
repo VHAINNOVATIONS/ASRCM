@@ -26,19 +26,4 @@ public class CollectionUtils
         return full.subList(0, numToDisplay);
     }
     
-    /**
-     * Constructs a new HashSet containing the given elements.
-     */
-    @SafeVarargs // we're not doing anything strange with E[] elem
-    public static <E> HashSet<E> hashSet(final E... elem)
-    {
-        return new HashSet<>(Arrays.asList(elem));
-    }
-    
-    @SafeVarargs // we're not doing anything strange with E[] elem
-    public static <E> Set<E> unmodifiableSet(final E... elem)
-    {
-        return Collections.unmodifiableSet(hashSet(elem));
-    }
-    
 }

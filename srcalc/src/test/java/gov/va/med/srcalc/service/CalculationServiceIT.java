@@ -4,8 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
-import gov.va.med.srcalc.domain.*;
-import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.calculation.Calculation;
+import gov.va.med.srcalc.domain.calculation.Value;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.domain.workflow.NewCalculation;
 import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
 import gov.va.med.srcalc.test.util.IntegrationTest;
@@ -53,14 +54,14 @@ public class CalculationServiceIT extends IntegrationTest
                 calc.getStartDateTime().compareTo(new DateTime()) <= 0);
         assertTrue("start date not after test start",
                 calc.getStartDateTime().compareTo(testStartDateTime) >= 0);
-        assertEquals(SampleObjects.sampleSpecialtyList(), newCalc.getPossibleSpecialties());
+        assertEquals(SampleModels.specialtyList(), newCalc.getPossibleSpecialties());
     }
     
     @Test
     public void testSetValidSpecialty() throws InvalidIdentifierException
     {
         final int PATIENT_DFN = 1;
-        final Specialty sampleSpecialty = SampleObjects.sampleThoracicSpecialty();
+        final Specialty sampleSpecialty = SampleModels.thoracicSpecialty();
         
         // Create the class under test.
         final NewCalculation newCalc = fCalculationService.startNewCalculation(PATIENT_DFN);
@@ -97,7 +98,7 @@ public class CalculationServiceIT extends IntegrationTest
     public void testRunThoracicCalculation() throws Exception
     {
         final int PATIENT_DFN = 1;
-        final Specialty specialty = SampleObjects.sampleThoracicSpecialty();
+        final Specialty specialty = SampleModels.thoracicSpecialty();
         
         // Create the class under test.
         final NewCalculation newCalc = fCalculationService.startNewCalculation(PATIENT_DFN);

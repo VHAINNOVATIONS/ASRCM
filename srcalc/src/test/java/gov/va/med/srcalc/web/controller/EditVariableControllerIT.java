@@ -19,6 +19,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.*;
 
+/**
+ * Integration Test for {@link EditVariableController}. Only tests some basic
+ * happy-path and error-path cases: unit tests should cover the details.
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.
 @ContextConfiguration({"/srcalc-context.xml", "/srcalc-controller.xml", "/test-context.xml"})
@@ -39,45 +43,29 @@ public class EditVariableControllerIT extends IntegrationTest
     @Test
     public void testEditVariable() throws Exception
     {
-        fMockMvc.perform(get("/admin/models/editVariable/preopPneumonia")).
+        fMockMvc.perform(get("/admin/variables/preopPneumonia")).
             andExpect(status().isOk()).
             andExpect(model().attribute("variable", hasProperty("displayName")));
         
         fMockMvc.perform(
-                post("/admin/models/editVariable/preopPneumonia").
+                post("/admin/variables/preopPneumonia").
                 param("displayName", "Preop Something")).
-            andExpect(redirectedUrl("/admin/models"));
+            andExpect(redirectedUrl(AdminHomeController.BASE_URL));
     }
     
     @Test
     public void testEditVariableTooLong() throws Exception
     {
-        fMockMvc.perform(get("/admin/models/editVariable/preopPneumonia")).
+        fMockMvc.perform(get("/admin/variables/preopPneumonia")).
             andExpect(status().isOk()).
             andExpect(model().attribute("variable", hasProperty("displayName")));
         
         fMockMvc.perform(
-                post("/admin/models/editVariable/preopPneumonia").
+                post("/admin/variables/preopPneumonia").
                 param("displayName",
                         // 81 characters
                         "01234567890123456789012345678901234567890123456789012345678901234567890123456789X")).
             andExpect(model().attributeHasErrors("variable")).
-            andExpect(view().name(Views.EDIT_VARIABLE));
+            andExpect(view().name(Views.EDIT_BOOLEAN_VARIABLE));
     }
-
-    @Test
-    public void testEditVariableInvalidChars() throws Exception
-    {
-        fMockMvc.perform(get("/admin/models/editVariable/preopPneumonia")).
-            andExpect(status().isOk()).
-            andExpect(model().attribute("variable", hasProperty("displayName")));
-        
-        fMockMvc.perform(
-                post("/admin/models/editVariable/preopPneumonia").
-                param("displayName",
-                        "Preop_Pneumonia")).
-            andExpect(model().attributeHasErrors("variable")).
-            andExpect(view().name(Views.EDIT_VARIABLE));
-    }
-    
 }

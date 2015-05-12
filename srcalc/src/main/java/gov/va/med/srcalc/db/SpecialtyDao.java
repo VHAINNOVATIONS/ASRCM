@@ -9,9 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
-import gov.va.med.srcalc.domain.Specialty;
-import gov.va.med.srcalc.domain.model.RiskModel;
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.model.*;
 
 @Repository
 public class SpecialtyDao

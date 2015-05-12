@@ -1,10 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
-import gov.va.med.srcalc.domain.variable.MissingValueException;
-import gov.va.med.srcalc.domain.variable.Value;
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.util.MissingValuesException;
-import gov.va.med.srcalc.util.NoNullSet;
 
 import java.util.*;
 
@@ -22,6 +19,8 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * <p>Encapsulates a configured rule to use in a model calculation, such as
@@ -121,7 +120,6 @@ public final class Rule
 
     /**
      * Should we bypass this rule if values are missing.
-     * @return
      */
     @Basic
     private boolean isRequired()
@@ -156,17 +154,17 @@ public final class Rule
 	
     /**
      * Returns all {@link Variable}s required for evaluating the Rule.
-     * @return an unmodifiable set
+     * @return an ImmutableSet
      */
     @Transient
-    public NoNullSet<Variable> getRequiredVariables()
+    public ImmutableSet<Variable> getRequiredVariables()
     {
         final HashSet<Variable> variables = new HashSet<>();
         for (final ValueMatcher vm : fMatchers)
         {
             variables.add(vm.getVariable());
         }
-        return NoNullSet.fromSet(Collections.unmodifiableSet(variables));
+        return ImmutableSet.copyOf(variables);
     }
 
     /**
@@ -196,7 +194,6 @@ public final class Rule
             	{
             		missingValues.getMissingValues().add(new MissingValueException(
             				"Missing value for " + condition.getVariable().getKey(),
-                    		"noInput",
                     		condition.getVariable()));
             		continue;
             	}

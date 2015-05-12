@@ -95,20 +95,38 @@ footer {
 /* Keep a standard height for all buttons on the application.
 */
 button {
-	height: 25px;
-	border: 1px solid #888;
+    height: 26px;
+    border: 1px solid #888;
+}
+
+/* The total height of a link is intended to be the same as the total height
+   of a button. The btn-default should have a total height of 26px (this includes
+   border and padding).
+   */
+a.btn-default:link, a.btn-default:visited {
+	height: 22px;
+    color: #222;
+    background-color: #ddd;
+    display: inline-block;
+    border: 1px solid #888;
+    text-decoration: none;
+    padding: 1px 6px;
 }
 
 /* a.btn-link indicates an <a> that performs an action like a button. Think of
    it as a de-emphasized button. */
 a.btn-link:link, a.btn-link:visited {
-	color: #1C528A;
-	text-decoration: none;
+    color: #1C52BB;
+    text-decoration: none;
+}
+
+a.btn-link:hover {
+	text-decoration: underline;
 }
 
 a.btn-em:link {
-	background: #CCCCCC;
-	font-size: 1em;
+    background: #CCCCCC;
+    font-size: 1em;
 }
 
 /* A button that is an emphasized version of the normal button.
@@ -117,13 +135,13 @@ button.button-em {
 	background-color: #CCCCEE;
     font-weight: bold;
 }
-
-button.button-em:hover {
-    background-color: #e3e3e3;
-}
 	
 button.button-em:active {
     background-color: #CCC;
+}
+
+button.button-em:disabled {
+	opacity: 0.65;
 }
 
 /* srcalcForm is the standard form appearance in srcalc */
@@ -155,6 +173,10 @@ form.srcalcForm label.radioLabel {
 }
 
 form.srcalcForm .error {
+	color: red;
+}
+
+.warning {
 	color: red;
 }
 
@@ -223,9 +245,35 @@ form.attributeEditForm th.groupName {
 	padding-bottom: 0.2em;
 }
 
+/* Put some vertical space between cells */
+form.attributeEditForm td {
+	vertical-align: top;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+}
+
 form.attributeEditForm td.attributeName {
 	/* Set a minimum width and a hint that the left column should be smaller. */
 	width: 20%;
+}
+
+/* Reduce the padding and margins on lists in attribute edit tables to line up
+ * with other text. */
+form.attributeEditForm td ul {
+	margin: 0;
+	padding-left: 1em;
+}
+
+/* Alternate colors on variables within a variable group. 
+   The variable group title should not be included in the alternation.
+   Every even row is white starting with row 2*/
+#riskVarForm tbody tr:nth-child(2n+2) {
+    background: #FFF;
+}
+
+/* Every odd row is light grey starting with row 3*/
+#riskVarForm tbody tr:nth-child(2n+3) {
+    background: #DDD;
 }
 
 /* The Specialty & Patient */
@@ -261,12 +309,40 @@ form.attributeEditForm td.attributeName {
     border-bottom: 1px solid #ccc;
 }
 
+/* Don't display the text ... */
+.procedureSelectGroup .loadingText {
+	display: none;
+}
+
+/* ... except when the procedure select is not yet initialized. */
+.procedureSelectGroup.uninitialized .loadingText {
+	display: inline;
+}
+
+#procedureTable {
+	/* Ensure the procedure table always takes its available width. */
+	width: 100%;
+}
+
+/* Hide the procedure table until it is initialized. */
+.uninitialized #procedureTable {
+	visibility: hidden;
+}
+
 a.openProcedureSelect {
 	font-size: 0.9em;
 }
 
 .loadingText {
 	color: #aaa;
+}
+
+/* The edit variable pages */
+
+#variableEditForm textarea#helpText {
+	/* The helpText text area is wide. Don't try to put anything else on the
+	   same line. */
+	display: block;
 }
 
 

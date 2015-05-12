@@ -4,13 +4,13 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
-import gov.va.med.srcalc.domain.Procedure;
-import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.*;
-import gov.va.med.srcalc.util.CollectionUtils;
+import gov.va.med.srcalc.domain.calculation.*;
+import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableSet;
 
 public class RiskModelTest
 {
@@ -18,26 +18,27 @@ public class RiskModelTest
     public final void testGetRequiredVariables()
     {
         // Setup
-        final ProcedureVariable procedureVar = SampleObjects.sampleProcedureVariable();
-        final BooleanVariable dnrVar = SampleObjects.dnrVariable();
-        final NumericalVariable ageVar = SampleObjects.sampleAgeVariable();
-        final DiscreteNumericalVariable wbcVar = SampleObjects.wbcVariable();
-        final MultiSelectVariable fsVar = SampleObjects.functionalStatusVariable();
-        final RiskModel model = SampleObjects.makeSampleRiskModel(
+        final ProcedureVariable procedureVar = SampleModels.procedureVariable();
+        final BooleanVariable dnrVar = SampleModels.dnrVariable();
+        final NumericalVariable ageVar = SampleModels.ageVariable();
+        final DiscreteNumericalVariable wbcVar = SampleModels.wbcVariable();
+        final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
+        final RiskModel model = SampleModels.makeSampleRiskModel(
                 "Thoracic 30-day Mortality Estimate (FY2013)",
                 new HashSet<DerivedTerm>(),
                 procedureVar, dnrVar, ageVar, wbcVar, fsVar);
         
         // Behavior verification
         final Set<AbstractVariable> expectedVariables =
-                CollectionUtils.unmodifiableSet(procedureVar, dnrVar, ageVar, wbcVar, fsVar);
+                ImmutableSet.of(procedureVar, dnrVar, ageVar, wbcVar, fsVar);
+        // Note that Set.equals() does not consider iteration order.
         assertEquals(expectedVariables, model.getRequiredVariables());
     }
     
     @Test(expected = IllegalArgumentException.class)
     public final void testDisplayNameTooLong()
     {
-        final RiskModel model = SampleObjects.sampleThoracicRiskModel();
+        final RiskModel model = SampleModels.thoracicRiskModel();
         model.setDisplayName(
                 // 81 characters
                 "01234567890123456789012345678901234567890123456789012345678901234567890123456789X");
@@ -46,7 +47,7 @@ public class RiskModelTest
     @Test
     public final void testToString()
     {
-        final RiskModel model = SampleObjects.sampleThoracicRiskModel();
+        final RiskModel model = SampleModels.thoracicRiskModel();
         
         assertEquals(
                 "RiskModel \"Thoracic 30-day mortality estimate\" with 4 terms",
@@ -57,17 +58,17 @@ public class RiskModelTest
     public final void testCalculate() throws Exception
     {
         // Setup
-        final ProcedureVariable procedureVar = SampleObjects.sampleProcedureVariable();
-        final BooleanVariable dnrVar = SampleObjects.dnrVariable();
-        final NumericalVariable ageVar = SampleObjects.sampleAgeVariable();
-        final DiscreteNumericalVariable wbcVar = SampleObjects.wbcVariable();
-        final MultiSelectVariable fsVar = SampleObjects.functionalStatusVariable();
+        final ProcedureVariable procedureVar = SampleModels.procedureVariable();
+        final BooleanVariable dnrVar = SampleModels.dnrVariable();
+        final NumericalVariable ageVar = SampleModels.ageVariable();
+        final DiscreteNumericalVariable wbcVar = SampleModels.wbcVariable();
+        final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
         final Set<DerivedTerm> derivedTerms = new HashSet<DerivedTerm>();
         final ValueMatcher matcher = new ValueMatcher(procedureVar, "#this.value.complexity == \"Standard\"");
         final List<ValueMatcher> valueMatchers = new ArrayList<ValueMatcher>();
         valueMatchers.add(matcher);
         derivedTerms.add(new DerivedTerm(6.0f, new Rule(valueMatchers, "#coefficient", true)));
-        final RiskModel model = SampleObjects.makeSampleRiskModel(
+        final RiskModel model = SampleModels.makeSampleRiskModel(
                 "Thoracic 30-day Mortality Estimate (FY2013)",
                 derivedTerms,
                 procedureVar, dnrVar, ageVar, wbcVar, fsVar);
@@ -97,21 +98,31 @@ public class RiskModelTest
     @Test(expected = MissingValuesException.class)
     public final void testCalculateIncompleteValues() throws Exception
     {
-        final RiskModel model = SampleObjects.sampleThoracicRiskModel();
+        final RiskModel model = SampleModels.thoracicRiskModel();
         
         model.calculate(Arrays.asList(
-                new BooleanValue(SampleObjects.dnrVariable(), true),
-                new NumericalValue(SampleObjects.sampleAgeVariable(), 12)));
+                new BooleanValue(SampleModels.dnrVariable(), true),
+                new NumericalValue(SampleModels.ageVariable(), 12)));
     }
     
     @Test(expected = IllegalArgumentException.class)
     public final void testCalculateDuplicateValues() throws Exception
     {
-        final BooleanVariable dnrVar = SampleObjects.dnrVariable();
-        final RiskModel model = SampleObjects.makeSampleRiskModel(
+        final BooleanVariable dnrVar = SampleModels.dnrVariable();
+        final RiskModel model = SampleModels.makeSampleRiskModel(
                 "model", new HashSet<DerivedTerm>(), dnrVar);
         
         model.calculate(Arrays.<Value>asList(
                 dnrVar.makeValue(true), dnrVar.makeValue(false)));
+    }
+    
+    @Test
+    public final void testCompareTo()
+    {
+        final RiskModel lesser = new RiskModel("a");
+        final RiskModel middle = new RiskModel("b");
+        final RiskModel greater = new RiskModel("c");
+        
+        TestHelpers.verifyCompareToContract(lesser, middle, greater);
     }
 }

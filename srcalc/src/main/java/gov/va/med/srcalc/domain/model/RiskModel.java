@@ -1,10 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
-import gov.va.med.srcalc.domain.variable.MissingValueException;
-import gov.va.med.srcalc.domain.variable.Value;
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.util.MissingValuesException;
-import gov.va.med.srcalc.util.NoNullSet;
 import gov.va.med.srcalc.util.Preconditions;
 
 import java.util.*;
@@ -14,11 +11,13 @@ import javax.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableSet;
+
 /**
  * A risk model definition.
  */
 @Entity
-public class RiskModel
+public class RiskModel implements Comparable<RiskModel>
 {
     public static final int DISPLAY_NAME_MAX = 80;
     
@@ -75,11 +74,13 @@ public class RiskModel
      * Sets the display name.
      * @param displayName must not be null
      * @throws NullPointerException if displayName is null
-     * @throws IllegalArgumentException if displayName is longer than {@link #DISPLAY_NAME_MAX}
+     * @throws IllegalArgumentException if displayName is empty or longer than
+     * {@link #DISPLAY_NAME_MAX}
      */
     public void setDisplayName(final String displayName)
     {
-        fDisplayName = Preconditions.requireWithin(displayName, DISPLAY_NAME_MAX);
+        fDisplayName = Preconditions.requireWithin(
+                displayName, 1, DISPLAY_NAME_MAX);
     }
     
     /**
@@ -227,18 +228,21 @@ public class RiskModel
      * types of ModelTerms are provided via different accessors due to
      * Hibernate's lack of support for polymorphic ElementCollections
      * (HHH-1910).</p>
+     * @return an ImmutableSet
      */
     @Transient
-    public Set<ModelTerm> getTerms()
+    public ImmutableSet<ModelTerm> getTerms()
     {
-        final NoNullSet<ModelTerm> terms = NoNullSet.fromSet(new HashSet<ModelTerm>());
-        terms.add(getConstantTerm());
-        terms.addAll(getBooleanTerms());
-        terms.addAll(getDiscreteTerms());
-        terms.addAll(getNumericalTerms());
-        terms.addAll(getProcedureTerms());
-        terms.addAll(getDerivedTerms());
-        return Collections.unmodifiableSet(terms);
+        // Use a builder to assemble all the subsets into one ImmutableSet
+        // without an intermediate set.
+        return ImmutableSet.<ModelTerm>builder()
+                .add(getConstantTerm())
+                .addAll(getBooleanTerms())
+                .addAll(getDiscreteTerms())
+                .addAll(getNumericalTerms())
+                .addAll(getProcedureTerms())
+                .addAll(getDerivedTerms())
+                .build();
     }
 
     /**
@@ -247,17 +251,17 @@ public class RiskModel
      * <p>Note that Variables define equality as identity, so two different
      * Variable instances with exactly the same attributes may be put into the
      * Set.</p>
-     * @return an unmodifiable set that does not contain null
+     * @return an ImmutableSet
      */
     @Transient
-    public NoNullSet<Variable> getRequiredVariables()
+    public ImmutableSet<Variable> getRequiredVariables()
     {
         final HashSet<Variable> allVariables = new HashSet<>();
         for (final ModelTerm term : getTerms())
         {
             allVariables.addAll(term.getRequiredVariables());
         }
-        return NoNullSet.fromSet(Collections.unmodifiableSet(allVariables));
+        return ImmutableSet.copyOf(allVariables);
     }
     
     @Override
@@ -274,7 +278,7 @@ public class RiskModel
      * Calculates the result of this model.
      * @param inputValues the input values. There must be exactly one input value
      * per required variable.
-     * @return
+     * @return the calculated result
      * @throws IllegalArgumentException if there is not exactly one input value
      * per required variable.
      * @throws MissingValuesException if there are any required variables without an assigned value
@@ -324,4 +328,14 @@ public class RiskModel
     }
     
     // TODO: implement equals() and hashCode()
+    
+    /**
+     * Compares RiskModels based on their display name. Not consistent with
+     * equals!
+     */
+    @Override
+    public int compareTo(final RiskModel other)
+    {
+        return this.fDisplayName.compareTo(other.fDisplayName);
+    }
 }

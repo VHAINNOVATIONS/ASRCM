@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.db;
 
-import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.model.*;
 
 /**
  * Loads procedures into a ProcedureVariable. A kludge until I figure out how

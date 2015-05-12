@@ -4,20 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.BooleanValue;
-import gov.va.med.srcalc.domain.variable.BooleanVariable;
-import gov.va.med.srcalc.domain.variable.DiscreteNumericalValue;
-import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable;
-import gov.va.med.srcalc.domain.variable.MultiSelectOption;
-import gov.va.med.srcalc.domain.variable.MultiSelectValue;
-import gov.va.med.srcalc.domain.variable.MultiSelectVariable;
-import gov.va.med.srcalc.domain.variable.NumericalRange;
-import gov.va.med.srcalc.domain.variable.NumericalValue;
-import gov.va.med.srcalc.domain.variable.NumericalVariable;
-import gov.va.med.srcalc.domain.variable.ProcedureValue;
-import gov.va.med.srcalc.domain.variable.ProcedureVariable;
-import gov.va.med.srcalc.domain.variable.Variable;
+import gov.va.med.srcalc.domain.calculation.*;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
 import org.junit.Before;
@@ -41,7 +29,7 @@ public class DynamicValueVisitorTest
 	@Test
 	public final void testNumerical() throws Exception
 	{
-		final NumericalVariable var = SampleObjects.sampleAgeVariable();
+		final NumericalVariable var = SampleModels.ageVariable();
         final NumericalValue val = new NumericalValue(var, 1.2f);
 
         fVisitor.visitNumerical(val);
@@ -51,7 +39,7 @@ public class DynamicValueVisitorTest
 	@Test
 	public final void testDiscreteNumerical() throws Exception
     {
-		final DiscreteNumericalVariable var = SampleObjects.wbcVariable();
+		final DiscreteNumericalVariable var = SampleModels.wbcVariable();
 		final NumericalRange range = new NumericalRange(1.0f, true, 20.0f, true);
 		final MultiSelectOption option = new MultiSelectOption("WNL");
         final DiscreteNumericalVariable.Category wnl = new DiscreteNumericalVariable.Category(range, option);
@@ -64,7 +52,7 @@ public class DynamicValueVisitorTest
 	@Test
 	public final void testBoolean()
 	{
-		final BooleanVariable var = SampleObjects.dnrVariable();
+		final BooleanVariable var = SampleModels.dnrVariable();
 		final BooleanValue val = new BooleanValue(var, true);
 		fVisitor.visitBoolean(val);
 		assertEquals("true", fVisitor.getValues().getDynamicValues().get("dnr"));
@@ -73,7 +61,7 @@ public class DynamicValueVisitorTest
 	@Test
 	public final void testMultiSelect()
 	{
-		final MultiSelectVariable var = SampleObjects.sampleGenderVariable();
+		final MultiSelectVariable var = SampleModels.genderVariable();
 		final MultiSelectValue val = new MultiSelectValue(var, new MultiSelectOption("Male"));
 		fVisitor.visitMultiSelect(val);
 		assertEquals("Male", fVisitor.getValues().getDynamicValues().get("gender"));
@@ -82,8 +70,8 @@ public class DynamicValueVisitorTest
 	@Test
 	public final void testProcedure()
 	{
-		final ProcedureVariable var = SampleObjects.sampleProcedureVariable();
-		final ProcedureValue val = new ProcedureValue(var, SampleObjects.sampleRepairLeftProcedure());
+		final ProcedureVariable var = SampleModels.procedureVariable();
+		final ProcedureValue val = new ProcedureValue(var, SampleModels.repairLeftProcedure());
 		fVisitor.visitProcedure(val);
 		assertEquals("26546", fVisitor.getValues().getDynamicValues().get("procedure"));
 	}

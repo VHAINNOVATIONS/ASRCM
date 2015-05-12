@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.domain.workflow;
 
-import gov.va.med.srcalc.domain.Calculation;
+import gov.va.med.srcalc.domain.calculation.Calculation;
 
 /**
  * A Calculation for which the variables have been entered and the outcome(s)

@@ -9,20 +9,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
+import org.springframework.dao.RecoverableDataAccessException;
 
+import gov.va.med.crypto.VistaKernelHash;
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.vistalink.rpc.RpcRequest;
 
 /**
- * Implementation of {@link VistaPatientDao} using remote procedures.
+ * Implementation of {@link VistaPatientDao} using remote procedures. Each
+ * instance is tied to a particular user to avoid having to specify the user
+ * when calling each method.
  */
 public class RpcVistaPatientDao implements VistaPatientDao
 {
     private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
     private static final String SPLIT_REGEX = "[\\s]+";
+    
     public static final String VISTA_DATE_OUTPUT_FORMAT = "MM/dd/yy@HH:mm";
     
     private static final Map<String, String> TRANSLATION_MAP;
@@ -102,7 +109,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
     	{
     		// There are many DataAccessExcpeionts, but this seems like 
     		// the most appropriate exception to throw here.
-    		throw new NonTransientDataAccessResourceException(e.getMessage());
+    		throw new NonTransientDataAccessResourceException(e.getMessage(), e);
     	}
     }
     
@@ -162,4 +169,51 @@ public class RpcVistaPatientDao implements VistaPatientDao
     	patient.setBmi(Double.parseDouble(bmiLineTokens[bmiLineTokens.length-2]));
     	patient.setBmiDate(patient.getWeightDate());
     }
+
+	@Override
+	public SaveNoteCode saveRiskCalculationNote(final Patient patient,
+			final String electronicSignature, final String noteBody)
+	{
+		// Split on line feed or carriage return
+		// Wrap any lines that are too long so that users do not have to 
+		// scroll when viewing the note in CPRS.
+		final String[] bodyArray = noteBody.split("\\r?\\n");
+		final StringBuilder wrappedNote = new StringBuilder();
+		for(final String line: bodyArray)
+		{
+			wrappedNote.append(WordUtils.wrap(line, VistaPatientDao.MAX_LINE_LENGTH, "\n    ", false) + "\n");
+		}
+		final String[] wrappedBodyArray = wrappedNote.toString().split("\\n");
+		final Map<String, String> noteMap = new HashMap<String, String>();
+		for(int i = 0; i < wrappedBodyArray.length; i++)
+		{
+			// VistA indexing starts at 1
+			// The current RPC uses multiple subscripts
+			noteMap.put(RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",i + 1)),
+					wrappedBodyArray[i]);
+		}
+		try
+		{
+			final List<String> saveResults;
+			saveResults = fProcedureCaller.doRpc(
+	            fDuz, RemoteProcedure.SAVE_PROGRESS_NOTE,
+	            fDuz, VistaKernelHash.encrypt(electronicSignature, false), String.valueOf(patient.getDfn()), noteMap);
+			final String[] splitArray = saveResults.get(0).split("\\^");
+			if(splitArray[0].equals("1"))
+			{
+				return SaveNoteCode.SUCCESS;
+			}
+			else
+			{
+				return SaveNoteCode.INVALID_SIGNATURE;
+			}
+		}
+		catch(final Exception e)
+		{
+			// An Exception means an invalid DUZ or a problem with VistALink/VistA
+			// Translate the exception into a status message
+			// We've tested that this works so any failure at this point is probably recoverable.
+			throw new RecoverableDataAccessException(e.getMessage(), e);
+		}
+	}
 }

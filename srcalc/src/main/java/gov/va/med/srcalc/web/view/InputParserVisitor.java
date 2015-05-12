@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 
-import gov.va.med.srcalc.domain.Procedure;
-import gov.va.med.srcalc.domain.variable.*;
-import gov.va.med.srcalc.domain.variable.DiscreteNumericalVariable.Category;
+import gov.va.med.srcalc.domain.calculation.Value;
+import gov.va.med.srcalc.domain.model.*;
+import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 
 /**
  * <p>A {@link VariableVisitor} that produces a {@link Value} for each Variable

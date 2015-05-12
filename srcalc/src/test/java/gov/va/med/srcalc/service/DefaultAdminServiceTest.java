@@ -5,31 +5,45 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 
+import gov.va.med.srcalc.db.RiskModelDao;
 import gov.va.med.srcalc.db.VariableDao;
-import gov.va.med.srcalc.domain.SampleObjects;
-import gov.va.med.srcalc.domain.variable.BooleanVariable;
-import gov.va.med.srcalc.domain.variable.AbstractVariable;
+import gov.va.med.srcalc.domain.model.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSortedSet;
+
 public class DefaultAdminServiceTest
 {
     private List<AbstractVariable> fSampleVariables;
+    private ImmutableSortedSet<VariableGroup> fSampleGroups;
     
     @Before
     public final void setup()
     {
-        fSampleVariables = SampleObjects.sampleVariableList();
+        fSampleVariables = SampleModels.sampleVariableList();
+        fSampleGroups = SampleModels.variableGroups();
     }
     
-    public VariableDao mockVariableDao()
+    private VariableDao mockVariableDao()
     {
         final VariableDao dao = mock(VariableDao.class);
         when(dao.getAllVariables()).thenReturn(fSampleVariables);
         // Use a reference to the existing DNR variable so we can do updates.
         final AbstractVariable variable = fSampleVariables.get(3);
         when(dao.getByKey(variable.getKey())).thenReturn(variable);
+        when(dao.getAllVariableGroups()).thenReturn(fSampleGroups);
+        return dao;
+    }
+    
+    private RiskModelDao mockRiskModelDao()
+    {
+        final RiskModelDao dao = mock(RiskModelDao.class);
+        when(dao.getAllRiskModels()).thenReturn(
+                ImmutableList.of(SampleModels.thoracicRiskModel()));
         return dao;
     }
     
@@ -37,7 +51,8 @@ public class DefaultAdminServiceTest
     public final void testGetAllVariables()
     {
         // Create the class under test.
-        final DefaultAdminService s = new DefaultAdminService(mockVariableDao());
+        final DefaultAdminService s = new DefaultAdminService(
+                mockVariableDao(), mockRiskModelDao());
         
         // Behavior verification.
         // Variables do not override equals() but this works because we use
@@ -46,12 +61,24 @@ public class DefaultAdminServiceTest
     }
     
     @Test
+    public final void testGetAllVariableGroups()
+    {
+        // Create the class under test.
+        final DefaultAdminService s = new DefaultAdminService(
+                mockVariableDao(), mockRiskModelDao());
+        
+        // Behavior verification.
+        assertEquals(fSampleGroups, s.getAllVariableGroups());
+    }
+    
+    @Test
     public final void testGetVariable() throws Exception
     {
         final String key = "dnr";
         
         // Create the class under test.
-        final DefaultAdminService s = new DefaultAdminService(mockVariableDao());
+        final DefaultAdminService s = new DefaultAdminService(
+                mockVariableDao(), mockRiskModelDao());
         
         // Behavior verification.
         final BooleanVariable actualVar = (BooleanVariable)s.getVariable(key);
@@ -62,7 +89,8 @@ public class DefaultAdminServiceTest
     public final void testGetInvalidVariable() throws Exception
     {
         // Create the class under test.
-        final DefaultAdminService s = new DefaultAdminService(mockVariableDao());
+        final DefaultAdminService s = new DefaultAdminService(
+                mockVariableDao(), mockRiskModelDao());
         
         // Behavior verification.
         s.getVariable("Does not exist");
@@ -74,21 +102,26 @@ public class DefaultAdminServiceTest
     	final String key = "dnr";
         final String origName = "DNR";
         final String newName = "Do Not R";
+        final String newHelpText = "Help me!";
         
         // Create the class under test.
-        final DefaultAdminService s = new DefaultAdminService(mockVariableDao());
+        final VariableDao mockDao = mockVariableDao();
+        final DefaultAdminService s = new DefaultAdminService(
+                mockDao, mockRiskModelDao());
         
         // Setup
         final AbstractVariable var = s.getVariable(key);
         assertEquals(origName, var.getDisplayName());  // sanity check
         
         // Behavior verification.
-        final EditVariable ev = EditVariable.fromVariable(var);
-        assertTrue(ev.isIntegratedVariable());
-        ev.setDisplayName(newName);
-        s.updateVariable(ev);
-        // Can't test getVariable() due to limitations of the mock.
-        assertEquals(newName, var.getDisplayName());
+        var.setDisplayName(newName);
+        var.setHelpText(Optional.of(newHelpText));
+        s.updateVariable(var);
+        
+        // Normally we try to verify the contract of a method instead of its
+        // implementation, but without Hibernate it is impossible to verify
+        // the contract here. Just verify that the service called update().
+        verify(mockDao).updateVariable(var);
     }
     
 }

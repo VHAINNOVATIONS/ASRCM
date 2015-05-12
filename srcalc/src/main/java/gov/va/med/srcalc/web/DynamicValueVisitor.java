@@ -1,12 +1,6 @@
 package gov.va.med.srcalc.web;
 
-import gov.va.med.srcalc.domain.variable.BooleanValue;
-import gov.va.med.srcalc.domain.variable.DiscreteNumericalValue;
-import gov.va.med.srcalc.domain.variable.ExceptionlessValueVisitor;
-import gov.va.med.srcalc.domain.variable.MultiSelectValue;
-import gov.va.med.srcalc.domain.variable.NumericalValue;
-import gov.va.med.srcalc.domain.variable.ProcedureValue;
-import gov.va.med.srcalc.domain.variable.ValueVisitor;
+import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
 /**

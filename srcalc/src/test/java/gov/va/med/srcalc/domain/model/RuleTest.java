@@ -1,11 +1,9 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.SampleObjects;
-import static gov.va.med.srcalc.domain.SampleObjects.expression1;
-import static gov.va.med.srcalc.domain.SampleObjects.expression2;
-import gov.va.med.srcalc.domain.variable.*;
-import gov.va.med.srcalc.util.CollectionUtils;
+import static gov.va.med.srcalc.domain.model.SampleModels.expression1;
+import static gov.va.med.srcalc.domain.model.SampleModels.expression2;
+import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 import java.util.Arrays;
@@ -17,23 +15,20 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.expression.Expression;
 
+import com.google.common.collect.ImmutableSet;
+
 public class RuleTest
 {
     @Test
     public final void testGetRequiredVariables()
     {
-        final NumericalVariable ageVar = SampleObjects.sampleAgeVariable();
-        final MultiSelectVariable fsVar = SampleObjects.functionalStatusVariable();
-        final ValueMatcher totallyDependentMatcher = new ValueMatcher(
-                fsVar, "value == 'Totally dependent'");
-        final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
-        final Rule rule = new Rule(
-                Arrays.asList(totallyDependentMatcher, ageMatcher),
-                "#Age.value * #coefficient", true);
+        final Rule rule = SampleModels.ageAndFsRule();
         
-        assertEquals(
-                CollectionUtils.hashSet(ageVar, fsVar),
-                rule.getRequiredVariables());
+        final ImmutableSet<AbstractVariable> expectedVars = ImmutableSet.of(
+                        SampleModels.ageVariable(),
+                        SampleModels.functionalStatusVariable());
+        
+        assertEquals(expectedVars, rule.getRequiredVariables());
     }
     
     @Test
@@ -41,9 +36,9 @@ public class RuleTest
     {
         // Setup
         final HashMap<Variable, Value> values = new HashMap<>();
-        final NumericalVariable ageVar = SampleObjects.sampleAgeVariable();
+        final NumericalVariable ageVar = SampleModels.ageVariable();
         values.put(ageVar, ageVar.makeValue(25));
-        final MultiSelectVariable fsVar = SampleObjects.functionalStatusVariable();
+        final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
         final ValueMatcher totallyDependentMatcher = new ValueMatcher(
                 fsVar, "value == 'Totally dependent'");
         final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
@@ -69,7 +64,7 @@ public class RuleTest
     public final void testWeightLoss() throws Exception
     {
         // Setup
-        final VariableGroup group = SampleObjects.demographicsVariableGroup();
+        final VariableGroup group = SampleModels.demographicsVariableGroup();
         final NumericalVariable currWeight = new NumericalVariable("Weight", group, "weight");
         final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group, "weight6MonthsAgo");
         final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "true");
@@ -102,7 +97,7 @@ public class RuleTest
     public final void testRequired() throws Exception
     {
     	// Setup
-        final VariableGroup group = SampleObjects.demographicsVariableGroup();
+        final VariableGroup group = SampleModels.demographicsVariableGroup();
         final NumericalVariable currWeight = new NumericalVariable("Weight", group, "weight");
         final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group, "weight6MonthsAgo");
         final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "true");

@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.variable.*;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.util.RetrievalEnum;
 import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 
@@ -110,7 +110,6 @@ public class VariableEntry
      * Returns the name of the numerical input for the given
      * {@link DiscreteNumericalVariable}.
      * @param variable
-     * @return
      */
     public static String getNumericalInputName(final DiscreteNumericalVariable variable)
     {
@@ -134,7 +133,6 @@ public class VariableEntry
     
     /**
      * Produce a message that will tell the user when the retrieved value was measured.
-     * @return
      */
     public static String makeRetrievalMessage(final Date retrievalDate)
     {
