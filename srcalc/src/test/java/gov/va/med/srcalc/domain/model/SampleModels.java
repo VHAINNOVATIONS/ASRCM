@@ -110,14 +110,6 @@ public class SampleModels
         m.getDiscreteTerms().add(new DiscreteTerm(functionalStatusVariable(), 1, 5.0f));
         return m;
     }
-
-    public static RiskModel cardiacCABGModel()
-    {
-    	final RiskModel m = new RiskModel("Cardiac CABG 30-day mortality estimate");
-    	m.getProcedureTerms().add(new ProcedureTerm(procedureVariable(), 1.0f));
-    	m.getDiscreteTerms().add(new DiscreteTerm(genderVariable(), 1, 2.0f));
-    	return m;
-    }
     
     /**
      * Returns a sample Thoracic specialty, for when a single specialty is needed.
@@ -309,27 +301,30 @@ public class SampleModels
     
     public static DiscreteNumericalVariable cardiacAgeVariable()
     {
-    	final Category ageLessThan50 = new Category(
+        final Category ageLessThan50 = new Category(
                 new NumericalRange(Float.NEGATIVE_INFINITY, false, 50.0f, false),
                 new MultiSelectOption("< 50 years"));
-    	final Category ageFiftyToFiftyNine = new Category(
+        final Category ageFiftyToFiftyNine = new Category(
                 new NumericalRange(50.0f, true, 60.0f, false),
                 new MultiSelectOption("50 to 59 years"));
-    	final Category ageSixtyToSixtyNine = new Category(
-    			new NumericalRange(60.0f, true, 70.0f, false),
-    			new MultiSelectOption("60 to 69 years"));
-    	final Category ageGreaterThanEqualToSeventy = new Category(
-    			new NumericalRange(70.0f, true, Float.POSITIVE_INFINITY, false),
-    			new MultiSelectOption(">= 70 years"));
-    	final List<Category> categories = Arrays.asList(ageLessThan50, ageFiftyToFiftyNine,
-    			ageSixtyToSixtyNine, ageGreaterThanEqualToSeventy);
-        final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
-                "Cardiac Age", demographicsVariableGroup(), new HashSet<>(categories), "cardiacAge");
+        final Category ageSixtyToSixtyNine = new Category(
+                new NumericalRange(60.0f, true, 70.0f, false),
+                new MultiSelectOption("60 to 69 years"));
+        final Category ageGreaterThanEqualToSeventy = new Category(
+                new NumericalRange(70.0f, true,
+                Float.POSITIVE_INFINITY, false), new MultiSelectOption(">= 70 years"));
+        final List<Category> categories = Arrays.asList(
+                ageLessThan50, 
+                ageFiftyToFiftyNine, 
+                ageSixtyToSixtyNine,
+                ageGreaterThanEqualToSeventy);
+        final DiscreteNumericalVariable var = new DiscreteNumericalVariable("Cardiac Age", demographicsVariableGroup(),
+                new HashSet<>(categories), "cardiacAge");
         var.setMinValue(18.0f);
         var.setMinInclusive(true);
         var.setMaxValue(120.0f);
-    	var.setMaxInclusive(true);
-    	var.setRetrievalKey(7);
+        var.setMaxInclusive(true);
+        var.setRetrievalKey(7);
     	
     	return var;
     }
