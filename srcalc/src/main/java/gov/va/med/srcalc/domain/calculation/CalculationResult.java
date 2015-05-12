@@ -9,8 +9,8 @@ import java.util.*;
 
 import org.joda.time.DateTime;
 
-import com.google.common.collect.ImmutableSortedMap;
-import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.base.Optional;
+import com.google.common.collect.*;
 
 /**
  * <p>A calculation result. Stores both the calculation input values and the
@@ -25,12 +25,20 @@ public final class CalculationResult implements Serializable
     /**
      * Change this when changing the class!
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
+    
+    private static final Comparator<Value> VALUE_COMPARATOR =
+            new ValueVariableComparator(new DisplayNameComparator());
 
     private final DateTime fStartDateTime;
     private final int fPatientDfn;
     private final String fSpecialtyName;
-    private final ImmutableSortedSet<Value> fValues;
+    private final Optional<ProcedureValue> fProcedureValue;
+    /**
+     * The non-ProcedureValue values. Store it sorted by display name since we
+     * need that order for {@link #buildNoteBody()}.
+     */
+    private final ImmutableSortedSet<Value> fNonProcedureValues;
     private final ImmutableSortedMap<String, Double> fOutcomes;
     
     /**
@@ -49,6 +57,8 @@ public final class CalculationResult implements Serializable
      * collection may be mutable as this object will take an immutable snapshot.
      * @throws NullPointerException if any argument is null or any value in a
      * collection argument is null
+     * @throws IllegalArgumentException if the given values set contains multiple
+     * ProcedureValues
      */
     public CalculationResult(
             final DateTime startDateTime,
@@ -61,8 +71,34 @@ public final class CalculationResult implements Serializable
         fPatientDfn = patientDfn;
         fSpecialtyName = Objects.requireNonNull(
                 specialtyName, "specialty name must be non-null");
-        fValues = ImmutableSortedSet.copyOf(
-                new ValueVariableComparator(new DisplayNameComparator()), values);
+
+        // Split the values into Procedure and non-Procedure for storage. We do
+        // this early to check the precondition.
+        final ImmutableSortedSet.Builder<Value> otherValuesBuilder =
+                ImmutableSortedSet.orderedBy(VALUE_COMPARATOR);
+        Optional<ProcedureValue> procedureValue = Optional.absent();
+        for (final Value v : values)
+        {
+            if (v instanceof ProcedureValue)
+            {
+                if (procedureValue.isPresent())
+                {
+                    throw new IllegalArgumentException(
+                            "values contains multiple ProcedureValues");
+                }
+                else
+                {
+                    procedureValue = Optional.of((ProcedureValue)v);
+                }
+            }
+            else
+            {
+                otherValuesBuilder.add(v);
+            }
+        }
+        fProcedureValue = procedureValue;
+        fNonProcedureValues = otherValuesBuilder.build();
+
         fOutcomes = ImmutableSortedMap.copyOf(
                 outcomes, String.CASE_INSENSITIVE_ORDER);
     }
@@ -101,9 +137,12 @@ public final class CalculationResult implements Serializable
     /**
      * Returns the input values used to calculate the outcomes.
      */
-    public ImmutableSortedSet<Value> getValues()
+    public ImmutableSet<Value> getValues()
     {
-        return fValues;
+        return ImmutableSet.<Value>builder()
+                .addAll(fProcedureValue.asSet())  // handy!
+                .addAll(fNonProcedureValues)
+                .build();
     }
     
     /**
@@ -116,22 +155,12 @@ public final class CalculationResult implements Serializable
     }
     
     /**
-     * Returns a set of only {@link ProcedureValue} objects from the input values
-     * of the calculation.
-     * @return a SortedSet with only {@link ProcedureValue} objects in the set
+     * Returns the ProcedureValue, which may not exist.
+     * @return an Optional containing the ProcedureValue if it exists
      */
-    public SortedSet<Value> getProcedureValues()
+    public Optional<ProcedureValue> getProcedureValue()
     {
-    	final SortedSet<Value> procedureValues = new TreeSet<>(
-    	        new ValueVariableComparator(new DisplayNameComparator()));
-        for (final Value value : fValues)
-        {
-            if (value instanceof ProcedureValue)
-            {
-                procedureValues.add(value);
-            }
-        }
-    	return procedureValues;
+        return fProcedureValue;
     }
     
     /**
@@ -139,18 +168,11 @@ public final class CalculationResult implements Serializable
      * of the calculation.
      * @return a SortedSet with only non-{@link ProcedureValue} objects in the set
      */
-    public SortedSet<Value> getNonProcedureValues()
+    public ImmutableSet<Value> getNonProcedureValues()
     {
-    	final SortedSet<Value> nonProcedureValues = new TreeSet<>(
-    	        new ValueVariableComparator(new DisplayNameComparator()));
-    	for(final Value value: fValues)
-        {
-            if (!(value instanceof ProcedureValue))
-            {
-                nonProcedureValues.add(value);
-            }
-        }
-    	return nonProcedureValues;
+        // Note: this is actually a SortedSet, but don't specify the sort order
+        // in the contract to reduce coupling.
+    	return fNonProcedureValues;
     }
     
     /**
@@ -164,15 +186,17 @@ public final class CalculationResult implements Serializable
 
         // Specialty
         returnString.append(String.format("Specialty = %s%n%n", fSpecialtyName));
-        // Procedures
-        for (final Value value : this.getProcedureValues())
+        // Procedure (if present)
+        if (fProcedureValue.isPresent())
         {
+            final ProcedureValue value = fProcedureValue.get();
             returnString.append(String.format(
-                    "%s = %s%n",
-                    value.getVariable().getDisplayName(), value.getDisplayString()));
+                    "%s = %s%n%n",
+                    value.getVariable().getDisplayName(),
+                    value.getDisplayString()));
         }
         // Model results
-        returnString.append(String.format("%nResults%n"));
+        returnString.append(String.format("Results%n"));
         for (final String key : this.getOutcomes().keySet())
         {
             returnString.append(String.format(
@@ -181,7 +205,7 @@ public final class CalculationResult implements Serializable
         }
         // Variable display names and values
         returnString.append(String.format("%nCalculation Inputs%n"));
-        for (final Value value : this.getNonProcedureValues())
+        for (final Value value : fNonProcedureValues)
         {
             returnString.append(String.format(
                     "%s = %s%n",

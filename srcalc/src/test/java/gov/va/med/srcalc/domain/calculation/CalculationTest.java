@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain.calculation;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.util.MissingValuesException;
@@ -51,6 +52,22 @@ public class CalculationTest
     public final void testGetVariablesIllegal()
     {
         Calculation.forPatient(SampleCalculations.dummyPatient(1)).getVariables();
+    }
+    
+    @Test(expected = ConfigurationException.class)
+    public final void testMultipleProcedureVariables()
+    {
+        // Create a bad specialty.
+        final RiskModel model = SampleModels.thoracicRiskModel();
+        final ProcedureVariable v = new ProcedureVariable(
+                "dupeProcedure", SampleModels.procedureVariableGroup(), "dupeProcedure");
+        model.getProcedureTerms().add(new ProcedureTerm(v, 2.0f));
+        final Specialty s = SampleModels.thoracicSpecialty();
+        s.getRiskModels().add(model);
+        
+        final Calculation c = Calculation.forPatient(SampleCalculations.dummyPatient(1));
+        c.setSpecialty(s);
+        c.getVariables();
     }
     
     @Test

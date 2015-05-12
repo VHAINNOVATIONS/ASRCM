@@ -2,9 +2,9 @@ package gov.va.med.srcalc.web.controller;
 
 import java.util.HashMap;
 
-import gov.va.med.srcalc.domain.calculation.Calculation;
-import gov.va.med.srcalc.domain.calculation.CalculationResult;
+import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.service.CalculationService;
+import gov.va.med.srcalc.web.view.ValueDisplayOrder;
 import gov.va.med.srcalc.web.view.Views;
 
 import javax.inject.Inject;
@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.common.collect.ImmutableSortedSet;
 
 @Controller
 public class DisplayResultsController
@@ -42,7 +44,13 @@ public class DisplayResultsController
         model.addAttribute("calculation", calculation);
 
         // And get the current CalculationResult from the session.
-        model.addAttribute("result", SrcalcSession.getRequiredLastResult(session));
+        final CalculationResult result = SrcalcSession.getRequiredLastResult(session);
+        model.addAttribute("result", result);
+        // Sort the input values in the desired display order and add to the
+        // model.
+        final ValueDisplayOrder displayOrder = new ValueDisplayOrder();
+        model.addAttribute("inputValues",
+                ImmutableSortedSet.copyOf(displayOrder, result.getValues()));
         
         return Views.DISPLAY_RESULTS;
     }

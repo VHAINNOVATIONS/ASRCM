@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.calculation;
 
 import static org.junit.Assert.*;
+import gov.va.med.srcalc.domain.model.SampleModels;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -39,8 +40,25 @@ public class CalculationResultTest
     {
     	final CalculationResult result = SampleCalculations.thoracicResult();
         
-    	assertEquals(1, result.getProcedureValues().size());
+    	assertTrue(result.getProcedureValue().isPresent());
     	assertEquals(3, result.getNonProcedureValues().size());
+    }
+    
+    @Test
+    public final void testGetValuesNoProcedure() throws Exception
+    {
+        final ImmutableSet<Value> values = ImmutableSet.of(
+                new BooleanValue(SampleModels.dnrVariable(), false),
+                new NumericalValue(SampleModels.ageVariable(), 50.1f));
+        final CalculationResult result = new CalculationResult(
+                new DateTime(),
+                100,
+                SampleModels.thoracicSpecialty().getName(),
+                values,
+                ImmutableMap.of("model1", 0.3));
+        
+        assertFalse(result.getProcedureValue().isPresent());
+        assertEquals(values, result.getNonProcedureValues());
     }
     
 }

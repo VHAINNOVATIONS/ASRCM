@@ -19,15 +19,8 @@ Note: this view is a fusion of two different objects:
     <h3>Calculation Inputs</h3>
     <table class="srcalcTable" id="inputValueTable">
     <tr><th class="main">Variable</th><th class="main">Value</th></tr>
-    <%-- The procedure is more important to the calculation so it should be easily  
-        visible to the user. --%>
-    <c:forEach var="value" items="${result.procedureValues}">
-    <tr>
-        <td><c:out value="${value.variable.displayName}"/></td>
-        <td><c:out value="${value.displayString}"/></td>
-    </tr>
-    </c:forEach>
-    <c:forEach var="value" items="${result.nonProcedureValues}">
+    <%-- Use the special-purpose "inputValues" list which has the procedure on top. --%>
+    <c:forEach var="value" items="${inputValues}">
     <tr>
         <td><c:out value="${value.variable.displayName}"/></td>
         <td><c:out value="${value.displayString}"/></td>

@@ -3,6 +3,10 @@ package gov.va.med.srcalc.web.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.Collection;
+
+import gov.va.med.srcalc.domain.calculation.ProcedureValue;
 import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.service.CalculationServiceIT;
@@ -129,11 +133,20 @@ public class CalculationControllerIT extends IntegrationTest
         fMockMvc.perform(request)
             .andExpect(redirectedUrl("/displayResults"));
         
-        fMockMvc.perform(get("/displayResults").session(fSession))
+        final MvcResult result =
+            fMockMvc.perform(get("/displayResults").session(fSession))
             .andExpect(status().is(200))
             // We do not test the calculation itself (see method Javadoc), so
             // just ensure the expected objects are in the model.
-            .andExpect(model().attributeExists("calculation", "result"));
+            .andExpect(model().attributeExists("calculation", "result", "inputValues"))
+            .andReturn();
+        
+        // Check that the ProcedureValue is first.
+        final Collection<?> inputValues =
+                (Collection<?>)result.getModelAndView().getModel().get("inputValues");
+        assertTrue(
+                "ProcedureValue should be first",
+                inputValues.iterator().next() instanceof ProcedureValue);
     }
     
     @Test

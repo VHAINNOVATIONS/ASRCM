@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import gov.va.med.srcalc.domain.calculation.*;
@@ -39,7 +40,7 @@ public interface CalculationService
      * @return the results as a CalculationResult object
      * @throws MissingValuesException if any required values are missing
      */
-    public CalculationResult runCalculation(Calculation calculation, List<Value> variableValues)
+    public CalculationResult runCalculation(Calculation calculation, Collection<Value> variableValues)
             throws MissingValuesException;
 
     /**

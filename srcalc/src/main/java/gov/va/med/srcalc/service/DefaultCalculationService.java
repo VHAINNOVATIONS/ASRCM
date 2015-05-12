@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -72,7 +73,7 @@ public class DefaultCalculationService implements CalculationService
     @Override
     @Transactional
     public CalculationResult runCalculation(
-            final Calculation calculation, final List<Value> variableValues)
+            final Calculation calculation, final Collection<Value> variableValues)
             throws MissingValuesException
     {
         fLogger.debug("Running calculation with values: {}", variableValues);

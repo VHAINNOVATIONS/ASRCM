@@ -17,6 +17,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.ImmutableSet;
+
 /**
  * <p>Integration Test for {@link CalculationService}. Unlike
  * {@link DefaultCalculationServiceTest}, this class tests real database interaction.</p>
@@ -117,8 +119,7 @@ public class CalculationServiceIT extends IntegrationTest
                 (DiscreteNumericalVariable)thoracicVars.get("bun");
         final float age = 66;
         final float bmi = 17.3f;
-        // Construct this list in order by variable display name.
-        final List<Value> orderedValues = Arrays.asList(
+        final ImmutableSet<Value> expectedValues = ImmutableSet.of(
                 ((NumericalVariable)thoracicVars.get("age")).makeValue(age),
                 apVar.makeValue(11.0f),
                 asaVar.makeValue(asaVar.getOptions().get(3)),
@@ -127,10 +128,6 @@ public class CalculationServiceIT extends IntegrationTest
                 ((BooleanVariable)thoracicVars.get("dnr")).makeValue(true),
                 ((BooleanVariable)thoracicVars.get("preopPneumonia")).makeValue(false),
                 procedureVar.makeValue(selectedProcedure));
-        
-        // Create a new shuffled list to test Calculation's sorting.
-        final List<Value> shuffledValues = new ArrayList<>(orderedValues);
-        Collections.shuffle(shuffledValues);
         
         // Calculate expected sum
         final double expectedSum =
@@ -150,8 +147,8 @@ public class CalculationServiceIT extends IntegrationTest
         
         // Behavior verification
         final CalculationResult result =
-                fCalculationService.runCalculation(calc, orderedValues);
-        assertEquals(orderedValues, new ArrayList<>(result.getValues()));
+                fCalculationService.runCalculation(calc, expectedValues);
+        assertEquals(expectedValues, result.getValues());
         assertEquals(expectedOutcomes, result.getOutcomes());
     }
 }

@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain.calculation;
 
+import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.util.MissingValuesException;
@@ -83,8 +84,13 @@ public class Calculation implements Serializable
     }
     
     /**
-     * Returns the Set of {@link Variable}s that the calculation requires.
+     * <p>Returns the Set of {@link Variable}s that the calculation requires.</p>
+     * 
+     * <p>The set will never contain more than one {@link ProcedureVariable}.</p>
      * @throws IllegalStateException if no specialty has been set.
+     * @throws ConfigurationException if the set specialty requires multiple
+     * ProcedureVariables. (The admin UI does not allow definition of multiple
+     * ProcedureVariables.)
      * @return an ImmutableSet
      */
     public ImmutableSet<Variable> getVariables()
@@ -96,7 +102,40 @@ public class Calculation implements Serializable
                     "Cannot return list of variables because no specialty has been set.");
         }
         
-        return fSpecialty.getModelVariables();
+        final ImmutableSet<Variable> vars = fSpecialty.getModelVariables();
+        // Check our method contract.
+        if (hasMultipleProcedureVariables(vars))
+        {
+            // See method contract.
+            throw new ConfigurationException(
+                    "The specialty requires multiple ProcedureVariables");
+        }
+        return vars;
+    }
+    
+    /**
+     * Returns true if the given collection of variables contains more than 1
+     * instance of {@link ProcedureVariable}. False otherwise.
+     */
+    private static boolean hasMultipleProcedureVariables(
+            final Collection<Variable> variables)
+    {
+        boolean foundProcedure = false;
+        for (final Variable var : variables)
+        {
+            if (var instanceof ProcedureVariable)
+            {
+                if (foundProcedure)
+                {
+                    return true;
+                }
+                else
+                {
+                    foundProcedure = true;
+                }
+            }
+        }
+        return false;
     }
     
     /**
