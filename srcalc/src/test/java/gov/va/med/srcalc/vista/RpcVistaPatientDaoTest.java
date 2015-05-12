@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.anyListOf;
 import gov.va.med.srcalc.domain.*;
 import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
 
@@ -17,7 +17,6 @@ public class RpcVistaPatientDaoTest
 	private final static String RADIOLOGIST_DUZ = "11716";
     private final static String PATIENT_RPC_RETURN = "TESTPATIENT^50^M";
     private final static String INVALID_SIGNATURE_RETURN = "0^Incorrect Electronic Signature Code Entered.";
-    private final static String VALID_SIGNATURE_RETURN = "1^Progress note was created and signed successfully.";
     private final static String ELECTRONIC_SIGNATURE = "TESTSIG";
     private final static String DUMMY_BODY = "Note Body";
     
@@ -44,9 +43,8 @@ public class RpcVistaPatientDaoTest
     public final void testSaveNoteInvalidSignature() throws Exception
     {
     	final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-        when(caller.doRpc(anyString(), eq(RemoteProcedure.SAVE_PROGRESS_NOTE),
-        		anyString(), anyString(), anyString(), anyString()))
-            .thenReturn(Arrays.asList(INVALID_SIGNATURE_RETURN));
+        when(caller.doSaveProgressNoteCall(anyString(), anyString(), anyString(), anyListOf(String.class)))
+            .thenReturn(INVALID_SIGNATURE_RETURN);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
     	
     	// The note body being used here should not matter since the doRpc() call is being
@@ -61,9 +59,8 @@ public class RpcVistaPatientDaoTest
     public final void testSaveNoteSuccess() throws Exception
     {
     	final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-    	 when(caller.doRpc(anyString(), eq(RemoteProcedure.SAVE_PROGRESS_NOTE),
-         		anyString(), anyString(), anyString(), anyString()))
-             .thenReturn(Arrays.asList(VALID_SIGNATURE_RETURN));
+        when(caller.doSaveProgressNoteCall(anyString(), anyString(), anyString(), anyListOf(String.class)))
+            .thenReturn(RemoteProcedure.VALID_SIGNATURE_RETURN);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
     	
     	assertEquals(

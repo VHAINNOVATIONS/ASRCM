@@ -85,7 +85,7 @@ public class MockVistaLinkConnection implements VistaLinkConnection
             RpcResponse response = mock(RpcResponse.class);
             when(response.getResults()).thenReturn(RADIOLOGIST_NAME + "\n");
             when(response.getResultsType())
-                .thenReturn(VistaLinkProcedureCaller.RESULT_TYPE_ARRAY);
+                .thenReturn(VistaLinkProcedureCaller.VlType.array.name());
             return response;
         }
         else if (request.getRpcName().equals(RemoteProcedure.GET_PATIENT.getProcedureName()) &&
@@ -95,7 +95,17 @@ public class MockVistaLinkConnection implements VistaLinkConnection
             RpcResponse response = mock(RpcResponse.class);
             when(response.getResults()).thenReturn(PATIENT_DATA + "\n");
             when(response.getResultsType())
-                .thenReturn(VistaLinkProcedureCaller.RESULT_TYPE_ARRAY);
+                .thenReturn(VistaLinkProcedureCaller.VlType.array.name());
+            return response;
+        }
+        else if (request.getRpcName().equals(RemoteProcedure.SAVE_PROGRESS_NOTE.getProcedureName()))
+        {
+            // RpcResponse is very hard to simulate. Use Mockito.
+            RpcResponse response = mock(RpcResponse.class);
+            when(response.getResults()).thenReturn(RemoteProcedure.VALID_SIGNATURE_RETURN);
+            // This one returns a single value.
+            when(response.getResultsType())
+                .thenReturn(VistaLinkProcedureCaller.VlType.string.name());
             return response;
         }
         else
