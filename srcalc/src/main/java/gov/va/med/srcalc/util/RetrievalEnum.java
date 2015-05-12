@@ -63,6 +63,13 @@ public enum RetrievalEnum {
 				variable.setRetrievalDateString(VariableEntry.makeRetrievalMessage(patient.getHeightDate()));
 			}
 		}
+	}, CARDIAC_AGE {
+		@Override
+		public void execute(final Patient patient, final VariableEntry variableEntry,
+				final Variable variable, final String key)
+		{
+			variableEntry.getDynamicValues().put(key, String.valueOf(patient.getAge()));
+		}
 	};
 	
 	public abstract void execute(final Patient patient, final VariableEntry variableEntry,
