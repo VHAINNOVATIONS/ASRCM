@@ -110,7 +110,7 @@ public class SampleModels
         m.getDiscreteTerms().add(new DiscreteTerm(functionalStatusVariable(), 1, 5.0f));
         return m;
     }
-
+    
     /**
      * Returns a sample Thoracic specialty, for when a single specialty is needed.
      * Includes a sample Variable set.
@@ -149,6 +149,14 @@ public class SampleModels
                 wbcVariable());
     }
 
+    public static List<AbstractVariable> sampleCardiacCABGVariableList()
+    {
+    	return Arrays.asList(
+    			cardiacAgeVariable(),
+    			genderVariable(),
+    			dnrVariable());
+    }
+    
     /**
      * Returns a basic set of Specialty objects.
      */
@@ -289,6 +297,36 @@ public class SampleModels
         var.setMaxValue(50.0f);
         var.setUnits("x1000/mm^3");
         return var;
+    }
+    
+    public static DiscreteNumericalVariable cardiacAgeVariable()
+    {
+        final Category ageLessThan50 = new Category(
+                new NumericalRange(Float.NEGATIVE_INFINITY, false, 50.0f, false),
+                new MultiSelectOption("< 50 years"));
+        final Category ageFiftyToFiftyNine = new Category(
+                new NumericalRange(50.0f, true, 60.0f, false),
+                new MultiSelectOption("50 to 59 years"));
+        final Category ageSixtyToSixtyNine = new Category(
+                new NumericalRange(60.0f, true, 70.0f, false),
+                new MultiSelectOption("60 to 69 years"));
+        final Category ageGreaterThanEqualToSeventy = new Category(
+                new NumericalRange(70.0f, true,
+                Float.POSITIVE_INFINITY, false), new MultiSelectOption(">= 70 years"));
+        final List<Category> categories = Arrays.asList(
+                ageLessThan50, 
+                ageFiftyToFiftyNine, 
+                ageSixtyToSixtyNine,
+                ageGreaterThanEqualToSeventy);
+        final DiscreteNumericalVariable var = new DiscreteNumericalVariable("Cardiac Age", demographicsVariableGroup(),
+                new HashSet<>(categories), "cardiacAge");
+        var.setMinValue(18.0f);
+        var.setMinInclusive(true);
+        var.setMaxValue(120.0f);
+        var.setMaxInclusive(true);
+        var.setRetrievalKey(7);
+    	
+    	return var;
     }
     
     /**
