@@ -111,6 +111,14 @@ public class SampleModels
         return m;
     }
 
+    public static RiskModel cardiacCABGModel()
+    {
+    	final RiskModel m = new RiskModel("Cardiac CABG 30-day mortality estimate");
+    	m.getProcedureTerms().add(new ProcedureTerm(procedureVariable(), 1.0f));
+    	m.getDiscreteTerms().add(new DiscreteTerm(genderVariable(), 1, 2.0f));
+    	return m;
+    }
+    
     /**
      * Returns a sample Thoracic specialty, for when a single specialty is needed.
      * Includes a sample Variable set.
@@ -149,6 +157,14 @@ public class SampleModels
                 wbcVariable());
     }
 
+    public static List<AbstractVariable> sampleCardiacCABGVariableList()
+    {
+    	return Arrays.asList(
+    			cardiacAgeVariable(),
+    			genderVariable(),
+    			dnrVariable());
+    }
+    
     /**
      * Returns a basic set of Specialty objects.
      */

@@ -56,17 +56,14 @@ public class VariableEntryTest
     @Test
     public final void testRetrievedCardiacAge()
     {
-    	final List<AbstractVariable> vars = SampleModels.sampleVariableList();
-    	// Replace numerical age with cardiac age (a DiscreteNumericalVariable)
-    	vars.set(1, SampleModels.cardiacAgeVariable());
+    	final List<AbstractVariable> vars = SampleModels.sampleCardiacCABGVariableList();
     	final Patient patient = SampleCalculations.dummyPatient(1);
     	final VariableEntry entry = VariableEntry.withRetrievedValues(vars, patient);
     	final HashMap<String, String> expected = new HashMap<>();
-    	expected.put(vars.get(1).getKey() + VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL,
+    	expected.put(VariableEntry.getNumericalInputName((DiscreteNumericalVariable)vars.get(0)),
     			String.valueOf(patient.getAge()));
-    	expected.put(vars.get(1).getKey(), VariableEntry.SPECIAL_NUMERICAL);
-    	expected.put(vars.get(2).getKey(), patient.getGender());
-    	expected.put(vars.get(5).getKey(), VariableEntry.SPECIAL_NUMERICAL);
+    	expected.put(vars.get(0).getKey(), VariableEntry.SPECIAL_NUMERICAL);
+    	expected.put(vars.get(1).getKey(), patient.getGender());
     	
     	assertEquals(expected, entry.getDynamicValues());
     }
