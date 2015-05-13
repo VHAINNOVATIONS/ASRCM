@@ -9,12 +9,13 @@ public class VistaOperationResultTest
     @Test
     public final void testFromStringValid()
     {
-        final String sourceString = "1^Progress note was created and signed successfully.";
+        // Test multiple carets, which is supported for flexibility.
+        final String sourceString = "1^Progress note was created^and signed successfully.";
         final VistaOperationResult result = VistaOperationResult.fromString(sourceString);
         
         assertEquals("1", result.getCode());
         assertEquals(
-                "Progress note was created and signed successfully.",
+                "Progress note was created^and signed successfully.",
                 result.getMessage());
         assertEquals(sourceString, result.toString());
     }

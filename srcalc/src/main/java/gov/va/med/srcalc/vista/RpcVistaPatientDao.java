@@ -197,11 +197,11 @@ public class RpcVistaPatientDao implements VistaPatientDao
                             VistaOperationResult.fromString(rpcResultString);
                     if(rpcResult.getCode().equals("1"))
                     {
-                            return SaveNoteCode.SUCCESS;
+                        return SaveNoteCode.SUCCESS;
                     }
                     else
                     {
-                            return SaveNoteCode.INVALID_SIGNATURE;
+                        return SaveNoteCode.INVALID_SIGNATURE;
                     }
 		}
 		catch(final Exception e)

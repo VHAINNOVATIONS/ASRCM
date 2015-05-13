@@ -30,7 +30,9 @@ public final class VistaOperationResult
     }
     
     /**
-     * Constructs an instance from the combined string of "code^message".
+     * Constructs an instance from the combined string of "code^message". The
+     * string will be split at the first caret, so any more carets will end up
+     * part of the message.
      * @see #toString()
      * @throws IllegalArgumentException if the String is not in the proper
      * format

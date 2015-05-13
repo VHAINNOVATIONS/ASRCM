@@ -23,7 +23,7 @@ public interface VistaDaoFactory
      * the current user.</p>
      * 
      * <p>Note that, unlike {@link #getVistaPersonDao(String)}, the division
-     * is implied in the current user contxt.</p>
+     * is implied in the current user context.</p>
      * 
      * @throws ConfigurationException if the VistA communication is somehow
      * misconfigured
@@ -35,7 +35,7 @@ public interface VistaDaoFactory
      * the current user.</p>
      * 
      * <p>Note that, unlike {@link #getVistaPersonDao(String)}, the division
-     * is implied in the current user contxt.</p>
+     * is implied in the current user context.</p>
      * 
      * @throws ConfigurationException if the VistA communication is somehow
      * misconfigured
