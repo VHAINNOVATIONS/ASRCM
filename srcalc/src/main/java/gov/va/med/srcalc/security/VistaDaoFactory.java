@@ -1,8 +1,7 @@
 package gov.va.med.srcalc.security;
 
 import gov.va.med.srcalc.ConfigurationException;
-import gov.va.med.srcalc.vista.VistaPatientDao;
-import gov.va.med.srcalc.vista.VistaPersonDao;
+import gov.va.med.srcalc.vista.*;
 
 /**
  * Allows clients to construct new VistA DAOs without knowing the
@@ -30,4 +29,16 @@ public interface VistaDaoFactory
      * misconfigured
      */
     public VistaPatientDao getVistaPatientDao();
+
+    /**
+     * <p>Returns a {@link VistaSurgeryDao} that will execute under the context of
+     * the current user.</p>
+     * 
+     * <p>Note that, unlike {@link #getVistaPersonDao(String)}, the division
+     * is implied in the current user contxt.</p>
+     * 
+     * @throws ConfigurationException if the VistA communication is somehow
+     * misconfigured
+     */
+    public VistaSurgeryDao getVistaSurgeryDao();
 }

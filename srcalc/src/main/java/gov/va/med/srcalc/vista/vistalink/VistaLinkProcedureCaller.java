@@ -123,6 +123,39 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
     }
     
     /**
+     * Sets a string parameter to the given {@link RpcRequestParams}. Provides
+     * type-safety and logging (since VistALink provides neither well).
+     */
+    private void setStringParam(
+            final RpcRequestParams params, final int index, final String value)
+    {
+        fLogger.debug("Setting param {} to {}", index, value);
+        params.setParam(index, VlType.string.name(), value);
+    }
+    
+    /**
+     * Sets an array parameter to the given {@link RpcRequestParams}. Provides
+     * type-safety and logging (since VistALink provides neither well).
+     */
+    private void setArrayParam(
+            final RpcRequestParams params, final int index, final List<?> value)
+    {
+        fLogger.debug("Setting param {} to {}", index, value);
+        params.setParam(index, VlType.array.name(), value);
+    }
+    
+    /**
+     * Sets an array parameter to the given {@link RpcRequestParams}. Provides
+     * type-safety and logging (since VistALink provides neither well).
+     */
+    private void setArrayParam(
+            final RpcRequestParams params, final int index, final Map<String, ?> value)
+    {
+        fLogger.debug("Setting param {} to {}", index, value);
+        params.setParam(index, VlType.array.name(), value);
+    }
+    
+    /**
      * Performs the given {@link RpcRequest} under the given DUZ.
      * @param duz the calling user's DUZ
      * @param request the RpcRequest to execute
@@ -189,8 +222,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
         {
             // VistA starts counting at 1, not 0.
             final int vistaParamIndex = i + 1;
-            fLogger.debug("Setting parameter {} to {}", vistaParamIndex, args[i]);
-            req.getParams().setParam(vistaParamIndex, VlType.string.name(), args[i]);
+            setStringParam(req.getParams(), vistaParamIndex, args[i]);
         }
         
         return doRpc(duz, req);
@@ -206,9 +238,9 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
         final RpcRequest req = makeRequestObject(RemoteProcedure.SAVE_PROGRESS_NOTE);
         
         // The DUZ is passed as an explicit parameter here.
-        req.getParams().setParam(1, VlType.string.name(), duz);
-        req.getParams().setParam(2, VlType.string.name(), encryptedSignature);
-        req.getParams().setParam(3, VlType.string.name(), patientDfn);
+        setStringParam(req.getParams(), 1, duz);
+        setStringParam(req.getParams(), 2, encryptedSignature);
+        setStringParam(req.getParams(), 3, patientDfn);
         
         // The RPC requires an awkward multi-subscript array here. Transform
         // the given List into the expected format.
@@ -220,7 +252,26 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
                     RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",i + 1)),
                     noteLines.get(i));
         }
-        req.getParams().setParam(4, VlType.array.name(), noteMap);
+        setArrayParam(req.getParams(), 4, noteMap);
+        
+        // We assume only one line in this response.
+        return doRpc(duz, req).get(0);
+    }
+    
+    @Override
+    public String doSaveRiskCalculationCall(
+            final String duz,
+            final String patientDfn,
+            final String cptCode,
+            final String dateTime,
+            final List<String> outcomes)
+    {
+        final RpcRequest req = makeRequestObject(RemoteProcedure.SAVE_RISK);
+        
+        setStringParam(req.getParams(), 1, patientDfn);
+        setStringParam(req.getParams(), 2, cptCode);
+        setStringParam(req.getParams(), 3, dateTime);
+        setArrayParam(req.getParams(), 4, outcomes);
         
         // We assume only one line in this response.
         return doRpc(duz, req).get(0);

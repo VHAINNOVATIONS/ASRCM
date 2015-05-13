@@ -14,6 +14,7 @@ import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.vista.VistaPatientDao;
+import gov.va.med.srcalc.vista.VistaSurgeryDao;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 public class DefaultCalculationService implements CalculationService
@@ -22,18 +23,23 @@ public class DefaultCalculationService implements CalculationService
     
     private final SpecialtyDao fSpecialtyDao;
     private final VistaPatientDao fPatientDao;
+    private final VistaSurgeryDao fSurgeryDao;
     
     /**
      * Constructs an instance.
      * @param specialtyDao DAO to access specialties
      * @param patientDao DAO to access patient information
+     * @param surgeryDao DAO to save VistA Surgery information
      */
     @Inject
     public DefaultCalculationService(
-            final SpecialtyDao specialtyDao, final VistaPatientDao patientDao)
+            final SpecialtyDao specialtyDao,
+            final VistaPatientDao patientDao,
+            final VistaSurgeryDao surgeryDao)
     {
         fSpecialtyDao = specialtyDao;
         fPatientDao = patientDao;
+        fSurgeryDao = surgeryDao;
     }
     
     @Override
@@ -88,11 +94,15 @@ public class DefaultCalculationService implements CalculationService
     }
 
     @Override
-    public VistaPatientDao.SaveNoteCode saveRiskCalculationNote(
+    public VistaPatientDao.SaveNoteCode signRiskCalculation(
             CalculationResult result, String electronicSignature)
     {
-        return fPatientDao.saveRiskCalculationNote(
+        final VistaPatientDao.SaveNoteCode returnCode = 
+            fPatientDao.saveRiskCalculationNote(
                 result.getPatientDfn(), electronicSignature, result.buildNoteBody());
+        final SignedResult signedResult = result.signed();
+        fSurgeryDao.saveCalculationResult(signedResult);
+        return returnCode;
     }
     
 }

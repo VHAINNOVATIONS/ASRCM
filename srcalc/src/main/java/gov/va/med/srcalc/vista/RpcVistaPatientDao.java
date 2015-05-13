@@ -186,22 +186,23 @@ public class RpcVistaPatientDao implements VistaPatientDao
 		}
 		try
 		{
-                    final String saveResults = fProcedureCaller.doSaveProgressNoteCall(
+                    final String rpcResultString = fProcedureCaller.doSaveProgressNoteCall(
                             fDuz,
                             VistaKernelHash.encrypt(electronicSignature, false),
                             String.valueOf(patientDfn),
                             // Use Guava Splitter to get a List.
                             Splitter.on('\n').splitToList(wrappedNote));
 
-                    final String[] splitArray = saveResults.split("\\^");
-			if(splitArray[0].equals("1"))
-			{
-				return SaveNoteCode.SUCCESS;
-			}
-			else
-			{
-				return SaveNoteCode.INVALID_SIGNATURE;
-			}
+                    final VistaOperationResult rpcResult =
+                            VistaOperationResult.fromString(rpcResultString);
+                    if(rpcResult.getCode().equals("1"))
+                    {
+                            return SaveNoteCode.SUCCESS;
+                    }
+                    else
+                    {
+                            return SaveNoteCode.INVALID_SIGNATURE;
+                    }
 		}
 		catch(final Exception e)
 		{

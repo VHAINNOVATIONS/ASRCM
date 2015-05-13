@@ -3,37 +3,49 @@ package gov.va.med.srcalc.service;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import gov.va.med.srcalc.db.SpecialtyDao;
-import gov.va.med.srcalc.domain.calculation.Calculation;
+import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.domain.model.Specialty;
-import gov.va.med.srcalc.vista.MockVistaPatientDao;
+import gov.va.med.srcalc.vista.*;
 
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 
 public class DefaultCalculationServiceTest
 {
     protected static final int SAMPLE_PATIENT_DFN = 1;
-
-    public SpecialtyDao mockSpecialtyDao()
-    {
-        final SpecialtyDao dao = mock(SpecialtyDao.class);
-        when(dao.getAllSpecialties()).thenReturn(SampleModels.specialtyList());
-        final Specialty specialty = SampleModels.thoracicSpecialty();
-        when(dao.getByName(specialty.getName())).thenReturn(specialty);
-        return dao;
-    }
     
-    public DefaultCalculationService defaultCalculationService()
+    private SpecialtyDao fMockSpecialtyDao;
+    private VistaPatientDao fPatientDao;
+    private VistaSurgeryDao fSurgeryDao;
+    
+    @Before
+    public void setup()
     {
-        return new DefaultCalculationService(mockSpecialtyDao(), new MockVistaPatientDao());
+        // Make the SpecialtyDao actually return specialties.
+        fMockSpecialtyDao = mock(SpecialtyDao.class);
+        when(fMockSpecialtyDao.getAllSpecialties()).thenReturn(SampleModels.specialtyList());
+        final Specialty specialty = SampleModels.thoracicSpecialty();
+        when(fMockSpecialtyDao.getByName(specialty.getName())).thenReturn(specialty);
+        
+        // And make VistaPatientDao.getPatient actually return a patient.
+        fPatientDao = mock(VistaPatientDao.class);
+        when(fPatientDao.getPatient(SAMPLE_PATIENT_DFN))
+            .thenReturn(SampleCalculations.dummyPatient(SAMPLE_PATIENT_DFN));
+        when(fPatientDao.saveRiskCalculationNote(anyInt(), anyString(), anyString()))
+            .thenReturn(VistaPatientDao.SaveNoteCode.SUCCESS);
+
+        // These don't need any special setup: we just verify certain calls.
+        fSurgeryDao = MockVistaDaos.mockSurgeryDao();
     }
     
     @Test
     public final void testGetValidSpecialties()
     {
         // Create the class under test.
-        final DefaultCalculationService s = defaultCalculationService();
+        final DefaultCalculationService s = new DefaultCalculationService(
+                fMockSpecialtyDao, fPatientDao, fSurgeryDao);
 
         // Behavior verification.
         assertEquals(SampleModels.specialtyList(), s.getValidSpecialties());
@@ -45,7 +57,8 @@ public class DefaultCalculationServiceTest
         final DateTime testStartDateTime = new DateTime();
 
         // Create the class under test.
-        final DefaultCalculationService s = defaultCalculationService();
+        final DefaultCalculationService s = new DefaultCalculationService(
+                fMockSpecialtyDao, fPatientDao, fSurgeryDao);
         
         // Behavior verification.
         final Calculation calc = s.startNewCalculation(SAMPLE_PATIENT_DFN);
@@ -64,7 +77,8 @@ public class DefaultCalculationServiceTest
         final Specialty thoracicSpecialty = SampleModels.thoracicSpecialty();
         
         // Create the class under test.
-        final DefaultCalculationService s = defaultCalculationService();
+        final DefaultCalculationService s = new DefaultCalculationService(
+                fMockSpecialtyDao, fPatientDao, fSurgeryDao);
         final Calculation calc = s.startNewCalculation(SAMPLE_PATIENT_DFN);
         
         // Behavior verification.
@@ -78,10 +92,31 @@ public class DefaultCalculationServiceTest
         final int PATIENT_DFN = 1;
         
         // Create the class under test.
-        final DefaultCalculationService s = defaultCalculationService();
+        final DefaultCalculationService s = new DefaultCalculationService(
+                fMockSpecialtyDao, fPatientDao, fSurgeryDao);
         final Calculation calc = s.startNewCalculation(PATIENT_DFN);
         
         // Behavior verification.
         s.setSpecialty(calc, "invalid specialty");
+    }
+    
+    public final void testSignCalculation() throws Exception
+    {
+        final String sigCode = "esig";
+        final DefaultCalculationService s = new DefaultCalculationService(
+                fMockSpecialtyDao, fPatientDao, fSurgeryDao);
+        final CalculationResult result = SampleCalculations.thoracicResult();
+        final SignedResult expectedSignedResult = result.signed();
+
+        // Behavior
+        s.signRiskCalculation(result, sigCode);
+        
+        // Verification
+        verify(fPatientDao).saveRiskCalculationNote(
+                result.getPatientDfn(), sigCode, result.buildNoteBody());
+        // SignedResult.equals() compares the times at second precision, so
+        // this test will fail if the second happens to roll over during this
+        // test.
+        verify(fSurgeryDao).saveCalculationResult(expectedSignedResult);
     }
 }

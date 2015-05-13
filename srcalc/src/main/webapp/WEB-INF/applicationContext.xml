@@ -67,5 +67,10 @@
              CalculationService). See <http://tinyurl.com/psgmdwe> -->
         <aop:scoped-proxy/>
     </bean>
+    <!-- Same for VistaSurgeryDao. -->
+    <bean id="vistaSurgeryDao" scope="request"
+        factory-bean="vistaDaoFactory" factory-method="getVistaSurgeryDao">
+        <aop:scoped-proxy/>
+    </bean>
 
 </beans>

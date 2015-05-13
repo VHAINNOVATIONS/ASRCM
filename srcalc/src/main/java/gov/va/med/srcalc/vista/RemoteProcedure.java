@@ -25,13 +25,24 @@ public enum RemoteProcedure
     /**
      * Submits a completed calculation as a note on the patient's records.
      */
-    SAVE_PROGRESS_NOTE("SR ASRC PROGRESS NOTE");
+    SAVE_PROGRESS_NOTE("SR ASRC PROGRESS NOTE"),
+    
+    /**
+     * Saves a Risk Calculation as discrete data to VistA Surgery.
+     */
+    SAVE_RISK("SR ASRC RISK SAVE");
 
     /**
      * VistA returns this string if {@link #SAVE_PROGRESS_NOTE} succeeds.
      */
     public final static String VALID_SIGNATURE_RETURN =
             "1^Progress note was created and signed successfully.";
+    
+    /**
+     * VistA returns this string if {@link #SAVE_RISK} succeeds.
+     */
+    public final static String RISK_SAVED_RETURN =
+            "1^Record created successfully.";
     
     private final String fProcedureName;
     

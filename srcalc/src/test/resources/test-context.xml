@@ -14,6 +14,9 @@
          ITs. (In the real Application Context, a request-scoped DAO is created
          for the current user.) -->
     <bean id="vistaPatientDao" class="gov.va.med.srcalc.vista.MockVistaPatientDao" />
+    <!-- Same for VistaSurgeryDao. -->
+    <bean id="vistaSurgeryDao"
+        class="gov.va.med.srcalc.vista.MockVistaDaos" factory-method="mockSurgeryDao" />
     
     <!-- Create a dummy SrcalcInfo instance for CommonAttributesAdvice, etc. -->
     <bean id="srcalcInfo" class="gov.va.med.srcalc.SrcalcInfo">

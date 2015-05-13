@@ -40,6 +40,23 @@ public interface VistaProcedureCaller
             final List<String> noteLines);
     
     /**
+     * A special-purpose method to call {@link RemoteProcedure#SAVE_RISK}
+     * because it requires a List parameter.
+     * @param duz the calling user's DUZ
+     * @param patientDfn the associated patient's DFN
+     * @param cptCode the CPT code to store (optional, may be an empty string)
+     * @param dateTime the signature date/time in MM/DD/YYYY@HHMM format
+     * @param outcomes the list of outcomes, each outcoming as a String "Outcome name^XX.X"
+     * @return the VistA response as a String. (See {@link RemoteProcedure#RISK_SAVED_RETURN}.)
+     */
+    public String doSaveRiskCalculationCall(
+            final String duz,
+            final String patientDfn,
+            final String cptCode,
+            final String dateTime,
+            final List<String> outcomes);
+    
+    /**
      * Returns the division identifier (including any suffix) for the target
      * VistA.
      */

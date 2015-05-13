@@ -72,6 +72,23 @@ public class VistaLinkProcedureCallerTest
         
         assertEquals(RemoteProcedure.VALID_SIGNATURE_RETURN, result);
     }
+    
+    @Test
+    public final void testDoSaveRiskCalculationCall()
+    {
+        final String division = "500";
+        
+        final VistaLinkProcedureCaller caller =
+                new VistaLinkProcedureCaller(division);
+        final String result = caller.doSaveRiskCalculationCall(
+                "11111",
+                MockVistaLinkConnection.PATIENT_DFN,
+                "12345",
+                "01/01/2015@1001",
+                Arrays.asList("Model^02.1"));
+        
+        assertEquals(RemoteProcedure.RISK_SAVED_RETURN, result);
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testInvalidDivision()

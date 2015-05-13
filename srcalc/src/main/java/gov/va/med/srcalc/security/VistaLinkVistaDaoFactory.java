@@ -36,4 +36,14 @@ public class VistaLinkVistaDaoFactory implements VistaDaoFactory
                 new VistaLinkProcedureCaller(principal.getDivision()),
                 principal.getDuz());
     }
+    
+    @Override
+    public VistaSurgeryDao getVistaSurgeryDao()
+    {
+        final VistaUserDetails principal = getCurrentPrincipal();
+        
+        return new RpcVistaSurgeryDao(
+                new VistaLinkProcedureCaller(principal.getDivision()),
+                principal.getDuz());
+    }
 }
