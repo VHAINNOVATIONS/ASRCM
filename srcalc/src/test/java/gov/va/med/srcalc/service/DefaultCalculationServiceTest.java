@@ -100,6 +100,7 @@ public class DefaultCalculationServiceTest
         s.setSpecialty(calc, "invalid specialty");
     }
     
+    @Test
     public final void testSignCalculation() throws Exception
     {
         final String sigCode = "esig";
@@ -116,7 +117,7 @@ public class DefaultCalculationServiceTest
                 result.getPatientDfn(), sigCode, result.buildNoteBody());
         // SignedResult.equals() compares the times at second precision, so
         // this test will fail if the second happens to roll over during this
-        // test.
+        // test. The chance of this happening should be <1%.
         verify(fSurgeryDao).saveCalculationResult(expectedSignedResult);
     }
 }

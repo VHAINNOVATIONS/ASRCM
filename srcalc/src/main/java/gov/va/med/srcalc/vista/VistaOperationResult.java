@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.vista;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.google.common.base.Splitter;
 
@@ -16,10 +17,16 @@ public final class VistaOperationResult
     private final String fCode;
     private final String fMessage;
     
+    /**
+     * Constructs an instance.
+     * @param code the machine-readable code
+     * @param message the human-readable message
+     * @throws NullPointerException if either argument is null
+     */
     public VistaOperationResult(final String code, final String message)
     {
-        fCode = code;
-        fMessage = message;
+        fCode = Objects.requireNonNull(code, "code must not be null");
+        fMessage = Objects.requireNonNull(message, "message must not be null");
     }
     
     /**
@@ -44,7 +51,7 @@ public final class VistaOperationResult
     }
 
     /**
-     * Returns the machine-friendly code.
+     * Returns the machine-readable code.
      */
     public String getCode()
     {
