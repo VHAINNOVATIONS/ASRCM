@@ -69,7 +69,7 @@ public class DisplayResultsController
     	try
     	{
     	    final CalculationResult lastResult = SrcalcSession.getRequiredLastResult(session);
-            resultString = fCalculationService.saveRiskCalculationNote(
+            resultString = fCalculationService.signRiskCalculation(
                     lastResult, electronicSignature).getDescription();
     	}
     	catch(final RecoverableDataAccessException e)

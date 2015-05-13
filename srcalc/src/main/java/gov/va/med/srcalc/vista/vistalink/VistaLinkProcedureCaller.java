@@ -1,8 +1,7 @@
 package gov.va.med.srcalc.vista.vistalink;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import javax.naming.*;
 import javax.resource.ResourceException;
 
@@ -25,10 +24,20 @@ import org.springframework.dao.*;
 public class VistaLinkProcedureCaller implements VistaProcedureCaller
 {
     /**
-     * The String identifying the VistaLink result is an array. (This should
-     * really be a constant in {@link RpcResponse}.)
+     * The parameter and result types supported by VistALink. These should
+     * really be constants somewhere in VistALink.
      */
-    public static final String RESULT_TYPE_ARRAY = "array";
+    enum VlType
+    {
+        array,
+        string;
+    }
+    
+    /**
+     * This is the RPC context for all ASRC RPCs. (This value is determined by
+     * VistA.)
+     */
+    protected static final String RPC_CONTEXT = "SR ASRC";
     
     private static final Logger fLogger = LoggerFactory.getLogger(VistaLinkProcedureCaller.class);
     
@@ -90,58 +99,94 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
     {
         return fDivision;
     }
-
-    @Override
-    public List<String> doRpc(final String duz, final RemoteProcedure procedure, final Object... args)
+    
+    /**
+     * Makes an {@link RpcRequest} object. The primary benefit of this method
+     * is to translate the meaningless {@link FoundationsException}.
+     * @param procedure the procedure to be called
+     * @return the object
+     * @throws ConfigurationException if VistALink could not make the object
+     */
+    protected RpcRequest makeRequestObject(final RemoteProcedure procedure)
     {
-        // This is the RPC context for all ASRC RPCs. (This value is determined
-        // by VistA.)
-        final String rpcContext = "SR ASRC";
+        try
+        {
+            return RpcRequestFactory.getRpcRequest(RPC_CONTEXT, procedure.getProcedureName());
+        }
+        catch (final FoundationsException ex)
+        {
+            // No VistA comm occurs here so any Exception is a configuration
+            // issue.
+            throw new ConfigurationException(
+                    "Failed to make VistALink RpcRequest object", ex);
+        }
+    }
+    
+    /**
+     * Sets a string parameter to the given {@link RpcRequestParams}. Provides
+     * type-safety and logging (since VistALink provides neither well).
+     */
+    private void setStringParam(
+            final RpcRequestParams params, final int index, final String value)
+    {
+        fLogger.debug("Setting param {} to {}", index, value);
+        params.setParam(index, VlType.string.name(), value);
+    }
+    
+    /**
+     * Sets an array parameter to the given {@link RpcRequestParams}. Provides
+     * type-safety and logging (since VistALink provides neither well).
+     */
+    private void setArrayParam(
+            final RpcRequestParams params, final int index, final List<?> value)
+    {
+        fLogger.debug("Setting param {} to {}", index, value);
+        params.setParam(index, VlType.array.name(), value);
+    }
+    
+    /**
+     * Sets an array parameter to the given {@link RpcRequestParams}. Provides
+     * type-safety and logging (since VistALink provides neither well).
+     */
+    private void setArrayParam(
+            final RpcRequestParams params, final int index, final Map<String, ?> value)
+    {
+        fLogger.debug("Setting param {} to {}", index, value);
+        params.setParam(index, VlType.array.name(), value);
+    }
+    
+    /**
+     * Performs the given {@link RpcRequest} under the given DUZ.
+     * @param duz the calling user's DUZ
+     * @param request the RpcRequest to execute
+     * @return an unmodifiable list of String lines from the reponse
+     * @throws IllegalArgumentException if the given DUZ is invalid
+     * @throws RecoverableDataAccessException if a VistALink connection could
+     * not be obtained or any other VistALink error occurs
+     */
+    protected List<String> doRpc(final String duz, final RpcRequest request)
+    {
+        fLogger.debug(
+                "About to call remote procedure \"{}\"",
+                request.getRpcName());
 
         final VistaLinkDuzConnectionSpec cs =
                 new VistaLinkDuzConnectionSpec(fDivision, duz);
 
         try
         {
-            fLogger.debug("About to call remote procedure \"{}\"", procedure.getProcedureName());
-            final RpcRequest req = RpcRequestFactory.getRpcRequest(
-                    rpcContext, procedure.getProcedureName());
-            
-            // Set the arguments.
-            for (int i = 0; i < args.length; ++i)
-            {
-                // VistA starts counting at 1, not 0.
-                final int vistaParamIndex = i + 1;
-                if(args[i] instanceof String)
-                {
-	                final String arg = (String) args[i];
-	                fLogger.debug("Setting parameter {} to {}", vistaParamIndex, arg);
-	                req.getParams().setParam(vistaParamIndex, "string", arg);
-                }
-                else if(args[i] instanceof Map<?,?>)
-                {
-					final Map<?,?> arg =  (Map<?,?>) args[i];
-	                fLogger.debug("Setting parameter {} to {}", vistaParamIndex, arg);
-	                req.getParams().setParam(vistaParamIndex, "array", arg);
-                }
-                else
-                {
-                	throw new ClassCastException();
-                }
-            }
-
             final VistaLinkConnection conn = (VistaLinkConnection)fVlcf.getConnection(cs);
             try
             {
-                final RpcResponse response = conn.executeRPC(req);
+                final RpcResponse response = conn.executeRPC(request);
                 fLogger.debug(
                         "Got {} response: {}",
                         response.getResultsType(), response.getResults());
                 // The only current possible types are "string" and "array"
                 // VistALink represents arrays as newline-delimited strings.
-                if(RESULT_TYPE_ARRAY.equals(response.getResultsType()))
+                if(VlType.array.name().equals(response.getResultsType()))
                 {
-                	// NB: String.split() strips trailing empty strings.
+                        // NB: String.split() strips trailing empty strings.
                     return Arrays.asList(response.getResults().split("\n"));
                 }
                 return Arrays.asList(response.getResults());
@@ -155,15 +200,80 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
         {
             throw new IllegalArgumentException("Invalid DUZ", e);
         }
-        catch (FoundationsException e)
-        {
-            throw new RecoverableDataAccessException(
-                    "An internal VistaLink error occurred", e);
-        }
         catch (ResourceException e)
         {
             throw new RecoverableDataAccessException(
                     "Could not obtain connection to VistA", e);
         }
+        catch (FoundationsException e)
+        {
+            throw new RecoverableDataAccessException("VistALink error: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<String> doRpc(
+            final String duz, final RemoteProcedure procedure, final String... args)
+    {
+        final RpcRequest req = makeRequestObject(procedure);
+        
+        // Set the arguments.
+        for (int i = 0; i < args.length; ++i)
+        {
+            // VistA starts counting at 1, not 0.
+            final int vistaParamIndex = i + 1;
+            setStringParam(req.getParams(), vistaParamIndex, args[i]);
+        }
+        
+        return doRpc(duz, req);
+    }
+    
+    @Override
+    public String doSaveProgressNoteCall(
+            final String duz,
+            final String encryptedSignature,
+            final String patientDfn,
+            final List<String> noteLines)
+    {
+        final RpcRequest req = makeRequestObject(RemoteProcedure.SAVE_PROGRESS_NOTE);
+        
+        // The DUZ is passed as an explicit parameter here.
+        setStringParam(req.getParams(), 1, duz);
+        setStringParam(req.getParams(), 2, encryptedSignature);
+        setStringParam(req.getParams(), 3, patientDfn);
+        
+        // The RPC requires an awkward multi-subscript array here. Transform
+        // the given List into the expected format.
+        final Map<String, String> noteMap = new HashMap<String, String>(noteLines.size());
+        for(int i = 0; i < noteLines.size(); i++)
+        {
+            noteMap.put(
+                    // VistA indexing starts at 1
+                    RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",i + 1)),
+                    noteLines.get(i));
+        }
+        setArrayParam(req.getParams(), 4, noteMap);
+        
+        // We assume only one line in this response.
+        return doRpc(duz, req).get(0);
+    }
+    
+    @Override
+    public String doSaveRiskCalculationCall(
+            final String duz,
+            final String patientDfn,
+            final String cptCode,
+            final String dateTime,
+            final List<String> outcomes)
+    {
+        final RpcRequest req = makeRequestObject(RemoteProcedure.SAVE_RISK);
+        
+        setStringParam(req.getParams(), 1, patientDfn);
+        setStringParam(req.getParams(), 2, cptCode);
+        setStringParam(req.getParams(), 3, dateTime);
+        setArrayParam(req.getParams(), 4, outcomes);
+        
+        // We assume only one line in this response.
+        return doRpc(duz, req).get(0);
     }
 }

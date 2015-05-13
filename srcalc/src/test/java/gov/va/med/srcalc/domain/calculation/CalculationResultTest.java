@@ -28,24 +28,17 @@ public class CalculationResultTest
     }
     
     @Test
-    public final void testBuildNoteBody() throws Exception
-    {
-    	final CalculationResult result = SampleCalculations.thoracicResult();
-
-    	assertEquals(result.buildNoteBody(), NOTE_BODY);
-    }
-    
-    @Test
-    public final void testGetValues() throws Exception
+    public final void testWithProcedure() throws Exception
     {
     	final CalculationResult result = SampleCalculations.thoracicResult();
         
     	assertTrue(result.getProcedureValue().isPresent());
     	assertEquals(3, result.getNonProcedureValues().size());
+    	assertEquals(result.buildNoteBody(), NOTE_BODY);
     }
     
     @Test
-    public final void testGetValuesNoProcedure() throws Exception
+    public final void testNoProcedure() throws Exception
     {
         final ImmutableSet<Value> values = ImmutableSet.of(
                 new BooleanValue(SampleModels.dnrVariable(), false),

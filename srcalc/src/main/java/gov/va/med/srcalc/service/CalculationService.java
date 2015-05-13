@@ -50,6 +50,6 @@ public interface CalculationService
      * user
      * @return one of the {@link VistaPatientDao.SaveNoteCode} return codes
      */
-    public VistaPatientDao.SaveNoteCode saveRiskCalculationNote(
+    public VistaPatientDao.SaveNoteCode signRiskCalculation(
             CalculationResult result, String electronicSignature);
 }

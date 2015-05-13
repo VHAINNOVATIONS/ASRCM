@@ -44,6 +44,12 @@ public class VistaUserDetailsServiceTest
             {
                 return new MockVistaPatientDao();
             }
+            
+            @Override
+            public VistaSurgeryDao getVistaSurgeryDao()
+            {
+                return MockVistaDaos.mockSurgeryDao();
+            }
         };
     }
 

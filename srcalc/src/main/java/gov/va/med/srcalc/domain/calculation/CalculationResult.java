@@ -104,8 +104,7 @@ public final class CalculationResult implements Serializable
     }
 
     /**
-     * The DateTime at which this Calculation first began (for example, when the
-     * user first opened the tool).
+     * The DateTime at which the user started the calculation.
      */
     public DateTime getStartDateTime()
     {
@@ -212,5 +211,24 @@ public final class CalculationResult implements Serializable
                     value.getVariable().getDisplayName(), value.getDisplayString()));
         }
         return returnString.toString();
+    }
+    
+    /**
+     * Returns a {@link SignedResult} with all the data from this object and a
+     * signature time of now.
+     */
+    public SignedResult signed()
+    {
+        final Optional<String> cptCode = fProcedureValue.isPresent() ?
+                Optional.of(fProcedureValue.get().getValue().getCptCode()) :
+                Optional.<String>absent();
+                
+        return new SignedResult(
+                fPatientDfn,
+                fSpecialtyName,
+                cptCode,
+                fStartDateTime,
+                new DateTime(),   // signed right now
+                fOutcomes);
     }
 }

@@ -76,6 +76,22 @@ public class MockVistaLinkConnection implements VistaLinkConnection
         return null;
     }
     
+    /**
+     * Returns an RpcResponse with the given string result. (The class does not
+     * provide a constructor to do this.)
+     * @return a mock object
+     */
+    private RpcResponse makeStringResponse(final String result)
+    {
+        // RpcResponse is very hard to simulate. Use Mockito.
+        final RpcResponse response = mock(RpcResponse.class);
+        when(response.getResults()).thenReturn(result);
+        // This one returns a single value.
+        when(response.getResultsType())
+            .thenReturn(VistaLinkProcedureCaller.VlType.string.name());
+        return response;
+    }
+    
     @Override
     public RpcResponse executeRPC(RpcRequest request) throws VistaLinkFaultException, FoundationsException
     {
@@ -85,7 +101,7 @@ public class MockVistaLinkConnection implements VistaLinkConnection
             RpcResponse response = mock(RpcResponse.class);
             when(response.getResults()).thenReturn(RADIOLOGIST_NAME + "\n");
             when(response.getResultsType())
-                .thenReturn(VistaLinkProcedureCaller.RESULT_TYPE_ARRAY);
+                .thenReturn(VistaLinkProcedureCaller.VlType.array.name());
             return response;
         }
         else if (request.getRpcName().equals(RemoteProcedure.GET_PATIENT.getProcedureName()) &&
@@ -95,8 +111,16 @@ public class MockVistaLinkConnection implements VistaLinkConnection
             RpcResponse response = mock(RpcResponse.class);
             when(response.getResults()).thenReturn(PATIENT_DATA + "\n");
             when(response.getResultsType())
-                .thenReturn(VistaLinkProcedureCaller.RESULT_TYPE_ARRAY);
+                .thenReturn(VistaLinkProcedureCaller.VlType.array.name());
             return response;
+        }
+        else if (request.getRpcName().equals(RemoteProcedure.SAVE_PROGRESS_NOTE.getProcedureName()))
+        {
+            return makeStringResponse(RemoteProcedure.VALID_SIGNATURE_RETURN);
+        }
+        else if (request.getRpcName().equals(RemoteProcedure.SAVE_RISK.getProcedureName()))
+        {
+            return makeStringResponse(RemoteProcedure.RISK_SAVED_RETURN);
         }
         else
         {

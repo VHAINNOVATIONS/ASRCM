@@ -15,9 +15,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
 import org.springframework.dao.RecoverableDataAccessException;
 
+import com.google.common.base.Splitter;
+
 import gov.va.med.crypto.VistaKernelHash;
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.vistalink.rpc.RpcRequest;
 
 /**
  * Implementation of {@link VistaPatientDao} using remote procedures. Each
@@ -183,30 +184,25 @@ public class RpcVistaPatientDao implements VistaPatientDao
 		{
 			wrappedNote.append(WordUtils.wrap(line, VistaPatientDao.MAX_LINE_LENGTH, "\n    ", false) + "\n");
 		}
-		final String[] wrappedBodyArray = wrappedNote.toString().split("\\n");
-		final Map<String, String> noteMap = new HashMap<String, String>();
-		for(int i = 0; i < wrappedBodyArray.length; i++)
-		{
-			// VistA indexing starts at 1
-			// The current RPC uses multiple subscripts
-			noteMap.put(RpcRequest.buildMultipleMSubscriptKey(String.format("\"TEXT\",%d,0",i + 1)),
-					wrappedBodyArray[i]);
-		}
 		try
 		{
-			final List<String> saveResults;
-			saveResults = fProcedureCaller.doRpc(
-	            fDuz, RemoteProcedure.SAVE_PROGRESS_NOTE,
-	            fDuz, VistaKernelHash.encrypt(electronicSignature, false), String.valueOf(patientDfn), noteMap);
-			final String[] splitArray = saveResults.get(0).split("\\^");
-			if(splitArray[0].equals("1"))
-			{
-				return SaveNoteCode.SUCCESS;
-			}
-			else
-			{
-				return SaveNoteCode.INVALID_SIGNATURE;
-			}
+                    final String rpcResultString = fProcedureCaller.doSaveProgressNoteCall(
+                            fDuz,
+                            VistaKernelHash.encrypt(electronicSignature, false),
+                            String.valueOf(patientDfn),
+                            // Use Guava Splitter to get a List.
+                            Splitter.on('\n').splitToList(wrappedNote));
+
+                    final VistaOperationResult rpcResult =
+                            VistaOperationResult.fromString(rpcResultString);
+                    if(rpcResult.getCode().equals("1"))
+                    {
+                        return SaveNoteCode.SUCCESS;
+                    }
+                    else
+                    {
+                        return SaveNoteCode.INVALID_SIGNATURE;
+                    }
 		}
 		catch(final Exception e)
 		{
