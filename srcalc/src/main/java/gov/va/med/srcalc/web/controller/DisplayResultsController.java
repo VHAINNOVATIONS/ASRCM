@@ -39,12 +39,12 @@ public class DisplayResultsController
             final HttpSession session,
             final Model model)
     {
-        // Get the current Calculation from the session.
-        final Calculation calculation = SrcalcSession.getCalculation(session);
-        model.addAttribute("calculation", calculation);
+        // Get the current CalculationSession.
+        final CalculationSession cs = SrcalcSession.getCalculationSession(session);
+        model.addAttribute("calculation", cs.getCalculation());
 
         // And get the current CalculationResult from the session.
-        final CalculationResult result = SrcalcSession.getRequiredLastResult(session);
+        final CalculationResult result = cs.getRequiredLastResult();
         model.addAttribute("result", result);
         // Sort the input values in the desired display order and add to the
         // model.
@@ -68,7 +68,8 @@ public class DisplayResultsController
     	String resultString;
     	try
     	{
-    	    final CalculationResult lastResult = SrcalcSession.getRequiredLastResult(session);
+    	    final CalculationResult lastResult =
+    	            SrcalcSession.getCalculationSession(session).getRequiredLastResult();
             resultString = fCalculationService.signRiskCalculation(
                     lastResult, electronicSignature).getDescription();
     	}

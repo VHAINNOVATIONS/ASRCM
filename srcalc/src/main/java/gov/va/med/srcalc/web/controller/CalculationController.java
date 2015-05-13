@@ -35,7 +35,7 @@ public class CalculationController
         final Calculation calc = fCalculationService.startNewCalculation(patientDfn);
 
         // Store the calculation in the HTTP Session.
-        SrcalcSession.setCalculation(session, calc);
+        SrcalcSession.setCalculationSession(session, new CalculationSession(calc));
         
         // Present the view.
         final ModelAndView mav = new ModelAndView(Views.SELECT_SPECIALTY);
@@ -51,8 +51,8 @@ public class CalculationController
             @RequestParam("specialty") final String specialtyName)
                     throws InvalidIdentifierException
     {
-        final Calculation calculation = SrcalcSession.getCalculation(session);
-        fCalculationService.setSpecialty(calculation, specialtyName);
+        final CalculationSession cs = SrcalcSession.getCalculationSession(session);
+        fCalculationService.setSpecialty(cs.getCalculation(), specialtyName);
 
         // Using the POST-redirect-GET pattern.
         return "redirect:/enterVars";

@@ -18,8 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.common.base.Optional;
-
 /**
  * A "branch" of {@link CalculationController} containing request handlers
  * specifically for variable entry.
@@ -52,18 +50,19 @@ public class EnterVariablesController
             final HttpSession session)
     {
         // Get the Calculation from the session.
-        final Calculation calculation = SrcalcSession.getCalculation(session);
+        final CalculationSession cs = SrcalcSession.getCalculationSession(session);
+        final Calculation calculation = cs.getCalculation();
         final VariableEntry initialValues = VariableEntry.withRetrievedValues(
                 calculation.getVariables(), calculation.getPatient());
         // In the case of using the "Return to Input Form" button, add the values already
         // in the calculation to the variable entry object to maintain the previously calculated
         // values on the entry page.
-        final Optional<CalculationResult> lastResults = SrcalcSession.getOptionalLastResult(session);
-        if (lastResults.isPresent())
+        if (cs.getOptionalLastResult().isPresent())
         {
+            final CalculationResult lastResult = cs.getRequiredLastResult();
             final DynamicValueVisitor visitor = new DynamicValueVisitor(initialValues);
-            fLogger.debug("Pre-existing input values: {}", lastResults.get().getValues());
-            for(final Value value: lastResults.get().getValues())
+            fLogger.debug("Pre-existing input values: {}", lastResult.getValues());
+            for(final Value value: lastResult.getValues())
             {
                 visitor.visit(value);
             }
@@ -91,7 +90,8 @@ public class EnterVariablesController
     	response.setHeader("Pragma", "no-cache");
     	response.setDateHeader("Expires", 0);
         // Get the Calculation from the session.
-        final Calculation calculation = SrcalcSession.getCalculation(session);
+        final Calculation calculation =
+                SrcalcSession.getCalculationSession(session).getCalculation();
 
         // Present the view.
         final ModelAndView mav = new ModelAndView(Views.ENTER_VARIABLES);
@@ -108,8 +108,9 @@ public class EnterVariablesController
             @ModelAttribute(ATTR_VARIABLE_ENTRY) final VariableEntry values,
             final BindingResult valuesBindingResult)
     {
-        // Get the Calculation from the session.
-        final Calculation calculation = SrcalcSession.getCalculation(session);
+        // Get the CalculationSession.
+        final CalculationSession cs = SrcalcSession.getCalculationSession(session);
+        final Calculation calculation = cs.getCalculation();
         
         // Extract the values from the HTTP POST.
         final InputParserVisitor parserVisitor = new InputParserVisitor(values, valuesBindingResult);
@@ -123,7 +124,7 @@ public class EnterVariablesController
             final CalculationResult result = fCalculationService.runCalculation(
                     calculation, parserVisitor.getValues());
             
-            SrcalcSession.setLastResult(session, result);
+            cs.setLastResult(result);
         }
         catch(final MissingValuesException e)
         {
