@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain.calculation;
 
+import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.util.MissingValuesException;
@@ -14,11 +15,19 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ImmutableSet;
 
 /**
- * Represents a risk calculation: either in-progress, calculated, or signed.
+ * <p>A risk calculation. You can think of this as a step-by-step builder of
+ * {@link CalculationResult} objects: set the patient, specialty, etc., and then
+ * call {@link #calculate(Collection)} to produce the results.</p>
+ * 
+ * <p>A stateful builder such as this (as opposed to a one-shot <code>calculate()</code>
+ * which could take all of the necessary data) allows features such as tracking
+ * the time the user takes to run a calculation and rerunning a calculation with
+ * tweaked input values.</p>
  */
 public class Calculation implements Serializable
 {
-	private static final Logger fLogger = LoggerFactory.getLogger(Calculation.class);
+    private static final Logger fLogger = LoggerFactory.getLogger(Calculation.class);
+
     /**
      * Change this when changing the class!
      */
@@ -27,8 +36,6 @@ public class Calculation implements Serializable
     private DateTime fStartDateTime;
     private Patient fPatient;
     private Specialty fSpecialty;
-    private SortedSet<Value> fValues;
-    private SortedMap<String, Double> fOutcomes;
     
     /**
      * This class presents a pure JavaBean interface, with a default constructor
@@ -38,7 +45,6 @@ public class Calculation implements Serializable
     public Calculation()
     {
         fStartDateTime = new DateTime();
-        fValues = new TreeSet<>(new ValueVariableComparator(new DisplayNameComparator()));
     }
     
     public static Calculation forPatient(final Patient patient)
@@ -49,17 +55,12 @@ public class Calculation implements Serializable
     }
     
     /**
-     * The DateTime at which this Calculation first began (for example, when the
-     * user first opened the tool).
+     * The DateTime at which this builder object was created. Useful for
+     * tracking the amount of time it takes a user to run a calculation.
      */
     public DateTime getStartDateTime()
     {
         return fStartDateTime;
-    }
-
-    public void setStartDateTime(final DateTime startDateTime)
-    {
-        this.fStartDateTime = startDateTime;
     }
 
     public Patient getPatient()
@@ -83,8 +84,13 @@ public class Calculation implements Serializable
     }
     
     /**
-     * Returns the Set of {@link Variable}s that the calculation requires.
+     * <p>Returns the Set of {@link Variable}s that the calculation requires.</p>
+     * 
+     * <p>The set will never contain more than one {@link ProcedureVariable}.</p>
      * @throws IllegalStateException if no specialty has been set.
+     * @throws ConfigurationException if the set specialty requires multiple
+     * ProcedureVariables. (The admin UI does not allow definition of multiple
+     * ProcedureVariables.)
      * @return an ImmutableSet
      */
     public ImmutableSet<Variable> getVariables()
@@ -96,7 +102,40 @@ public class Calculation implements Serializable
                     "Cannot return list of variables because no specialty has been set.");
         }
         
-        return fSpecialty.getModelVariables();
+        final ImmutableSet<Variable> vars = fSpecialty.getModelVariables();
+        // Check our method contract.
+        if (hasMultipleProcedureVariables(vars))
+        {
+            // See method contract.
+            throw new ConfigurationException(
+                    "The specialty requires multiple ProcedureVariables, which is unsupported.");
+        }
+        return vars;
+    }
+    
+    /**
+     * Returns true if the given collection of variables contains more than 1
+     * instance of {@link ProcedureVariable}. False otherwise.
+     */
+    private static boolean hasMultipleProcedureVariables(
+            final Collection<Variable> variables)
+    {
+        boolean foundProcedure = false;
+        for (final Variable var : variables)
+        {
+            if (var instanceof ProcedureVariable)
+            {
+                if (foundProcedure)
+                {
+                    return true;
+                }
+                else
+                {
+                    foundProcedure = true;
+                }
+            }
+        }
+        return false;
     }
     
     /**
@@ -155,37 +194,13 @@ public class Calculation implements Serializable
                 buildVariableGroupList(getVariables()));
     }
 
-    public SortedSet<Value> getValues()
-    {
-        return fValues;
-    }
-    
-    /**
-     * For bean construction only. Replaces the internal Set of Values with the
-     * given one.
-     */
-    void setValues(final SortedSet<Value> values)
-    {
-        fValues = values;
-    }
-    
-    /**
-     * Returns an unmodifiable view of the last-calculated outcomes.
-     */
-    public SortedMap<String, Double> getOutcomes()
-    {
-        // At time of writing, fOutcomes is already unmodifiable, but re-wrap it
-        // just in case we change our minds.
-        return Collections.unmodifiableSortedMap(fOutcomes);
-    }
-
     /**
      * Runs the calculation for each outcome with the given Values.
      * @throws IllegalArgumentException if incomplete values are provided
      * @return the outcomes for convenience
      * @throws MissingValuesException if there are any required variables without an assigned value
      */
-    public SortedMap<String, Double> calculate(final Collection<Value> values) throws MissingValuesException
+    public CalculationResult calculate(final Collection<Value> values) throws MissingValuesException
     {
         // Run the calculation first to make sure we don't get any exceptions.
         final TreeMap<String, Double> outcomes = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -208,78 +223,13 @@ public class Calculation implements Serializable
         	fLogger.debug("Could not run calculation due to missing values: {}", missingValues);
         	throw new MissingValuesException("The calculation is missing values.", missingValues);
         }
-        // Store the given values for reference.
-        fValues.clear();
-        fValues.addAll(values);
-
-        fOutcomes = Collections.unmodifiableSortedMap(outcomes);
-
-        return fOutcomes;
-    }
-    
-    /**
-     * Builds a string version of the completed calculation.
-     * @return a String with a human readable version of the completed calculation.
-     */
-    public String buildNoteBody()
-	{
-    	final StringBuilder returnString = new StringBuilder();
-    	// Build the note body where each section is separated by a blank line
-		// Specialty
-    	returnString.append(String.format("Specialty = %s%n%n", this.getSpecialty().toString()));
-    	//Procedures
-    	for(final Value value: this.getProcedureValues())
-    	{
-    		returnString.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));
-    	}
-    	// Model results
-		returnString.append(String.format("%nResults%n"));
-		for(final String key: this.getOutcomes().keySet())
-		{
-			returnString.append(String.format("%s = %.1f%%%n", key, this.getOutcomes().get(key) * 100.0));
-		}
-		// Variable display names and values
-    	returnString.append(String.format("%nCalculation Inputs%n"));
-		for(final Value value: this.getNonProcedureValues())
-		{
-			returnString.append(String.format("%s = %s%n", value.getVariable().getDisplayName(), value.getDisplayString()));
-		}
-		return returnString.toString();
-	}
-    
-    /**
-     * Returns a set of only {@link ProcedureValue} objects from the input values
-     * of the calculation.
-     * @return a SortedSet with only {@link ProcedureValue} objects in the set
-     */
-    public SortedSet<Value> getProcedureValues()
-    {
-    	final SortedSet<Value> procedureValues = new TreeSet<>(new ValueVariableComparator(new DisplayNameComparator()));
-    	for(final Value value: fValues)
-    	{
-    		if(value instanceof ProcedureValue)
-    		{
-    			procedureValues.add(value);
-    		}
-    	}
-    	return procedureValues;
-    }
-    
-    /**
-     * Returns a set of any non-{@link ProcedureValue} objects from the input values
-     * of the calculation.
-     * @return a SortedSet with only non-{@link ProcedureValue} objects in the set
-     */
-    public SortedSet<Value> getNonProcedureValues()
-    {
-    	final SortedSet<Value> nonProcedureValues = new TreeSet<>(new ValueVariableComparator(new DisplayNameComparator()));
-    	for(final Value value: fValues)
-    	{
-    		if(!(value instanceof ProcedureValue))
-    		{
-    			nonProcedureValues.add(value);
-    		}
-    	}
-    	return nonProcedureValues;
+        
+        return new CalculationResult(
+                fStartDateTime,
+                fPatient.getDfn(),
+                fSpecialty.getName(),
+                // The constructor requires a Set, not just a Collection.
+                ImmutableSet.copyOf(values),
+                outcomes);
     }
 }

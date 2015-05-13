@@ -25,7 +25,7 @@ public class SampleCalculations
      * @return a {@link Calculation} object after the calculation is performed
      * @throws Exception
      */
-    public static Calculation calculatedCalculation() throws Exception
+    public static CalculationResult thoracicResult() throws Exception
     {
     	final Calculation calc = Calculation.forPatient(dummyPatient(1));
     	calc.setSpecialty(SampleModels.thoracicSpecialty());
@@ -34,8 +34,7 @@ public class SampleCalculations
     	values.add(new NumericalValue(SampleModels.ageVariable(), 45.0f));
     	values.add(new MultiSelectValue(SampleModels.functionalStatusVariable(), new MultiSelectOption("Independent")));
     	values.add(new ProcedureValue(SampleModels.procedureVariable(), SampleModels.repairLeftProcedure()));
-    	calc.calculate(values);
-    	return calc;
+    	return calc.calculate(values);
     }
     
 }

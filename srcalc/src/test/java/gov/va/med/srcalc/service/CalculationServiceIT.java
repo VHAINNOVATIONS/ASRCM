@@ -4,11 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
-import gov.va.med.srcalc.domain.calculation.Calculation;
-import gov.va.med.srcalc.domain.calculation.Value;
+import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.*;
-import gov.va.med.srcalc.domain.workflow.NewCalculation;
-import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 
 import javax.inject.Inject;
@@ -19,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * <p>Integration Test for {@link CalculationService}. Unlike
@@ -35,6 +34,14 @@ public class CalculationServiceIT extends IntegrationTest
 {
     @Inject // field-based autowiring only in tests
     CalculationService fCalculationService;
+    
+    @Test
+    public void testGetValidSpecialties()
+    {
+        assertEquals(
+                SampleModels.specialtyList(),
+                fCalculationService.getValidSpecialties());
+    }
 
     @Test
     public void testStartNewCalculation()
@@ -44,9 +51,8 @@ public class CalculationServiceIT extends IntegrationTest
         final DateTime testStartDateTime = new DateTime();
         
         // Behavior verification
-        final NewCalculation newCalc = fCalculationService.startNewCalculation(
+        final Calculation calc = fCalculationService.startNewCalculation(
                 PATIENT_DFN);
-        final Calculation calc = newCalc.getCalculation();
         assertEquals(PATIENT_DFN, calc.getPatient().getDfn());
         assertTrue("start date not in the past",
                 // DateTime has millisecond precision, so the current time may
@@ -54,7 +60,6 @@ public class CalculationServiceIT extends IntegrationTest
                 calc.getStartDateTime().compareTo(new DateTime()) <= 0);
         assertTrue("start date not after test start",
                 calc.getStartDateTime().compareTo(testStartDateTime) >= 0);
-        assertEquals(SampleModels.specialtyList(), newCalc.getPossibleSpecialties());
     }
     
     @Test
@@ -64,14 +69,11 @@ public class CalculationServiceIT extends IntegrationTest
         final Specialty sampleSpecialty = SampleModels.thoracicSpecialty();
         
         // Create the class under test.
-        final NewCalculation newCalc = fCalculationService.startNewCalculation(PATIENT_DFN);
-        final Calculation calc = newCalc.getCalculation();
+        final Calculation calc = fCalculationService.startNewCalculation(PATIENT_DFN);
         
         // Behavior verification.
-        final SelectedCalculation selCalc =
-                fCalculationService.setSpecialty(calc, sampleSpecialty.getName());
-        assertSame("Calculation object not the same", calc,  selCalc.getCalculation());
-        final Specialty actualSpecialty = selCalc.getCalculation().getSpecialty();
+        fCalculationService.setSpecialty(calc, sampleSpecialty.getName());
+        final Specialty actualSpecialty = calc.getSpecialty();
         assertEquals(sampleSpecialty, actualSpecialty);
         // Specialty.equals() does not compare the variables, so do some checks
         // there.
@@ -101,10 +103,8 @@ public class CalculationServiceIT extends IntegrationTest
         final Specialty specialty = SampleModels.thoracicSpecialty();
         
         // Create the class under test.
-        final NewCalculation newCalc = fCalculationService.startNewCalculation(PATIENT_DFN);
-        final Calculation calc = newCalc.getCalculation();
-        final SelectedCalculation selCalc =
-                fCalculationService.setSpecialty(calc, specialty.getName());
+        final Calculation calc = fCalculationService.startNewCalculation(PATIENT_DFN);
+        fCalculationService.setSpecialty(calc, specialty.getName());
 
         // Build a List of Values in the known order for Thoracic.
         final Map<String, Variable> thoracicVars = buildVariableMap(calc.getVariables());
@@ -119,8 +119,7 @@ public class CalculationServiceIT extends IntegrationTest
                 (DiscreteNumericalVariable)thoracicVars.get("bun");
         final float age = 66;
         final float bmi = 17.3f;
-        // Construct this list in order by variable display name.
-        final List<Value> orderedValues = Arrays.asList(
+        final ImmutableSet<Value> expectedValues = ImmutableSet.of(
                 ((NumericalVariable)thoracicVars.get("age")).makeValue(age),
                 apVar.makeValue(11.0f),
                 asaVar.makeValue(asaVar.getOptions().get(3)),
@@ -129,10 +128,6 @@ public class CalculationServiceIT extends IntegrationTest
                 ((BooleanVariable)thoracicVars.get("dnr")).makeValue(true),
                 ((BooleanVariable)thoracicVars.get("preopPneumonia")).makeValue(false),
                 procedureVar.makeValue(selectedProcedure));
-        
-        // Create a new shuffled list to test Calculation's sorting.
-        final List<Value> shuffledValues = new ArrayList<>(orderedValues);
-        Collections.shuffle(shuffledValues);
         
         // Calculate expected sum
         final double expectedSum =
@@ -151,8 +146,9 @@ public class CalculationServiceIT extends IntegrationTest
         expectedOutcomes.put("Thoracic 30-Day Mortality Risk", expectedResult);
         
         // Behavior verification
-        fCalculationService.runCalculation(selCalc.getCalculation(), orderedValues);
-        assertEquals(orderedValues, new ArrayList<>(calc.getValues()));
-        assertEquals(expectedOutcomes, selCalc.getCalculation().getOutcomes());
+        final CalculationResult result =
+                fCalculationService.runCalculation(calc, expectedValues);
+        assertEquals(expectedValues, result.getValues());
+        assertEquals(expectedOutcomes, result.getOutcomes());
     }
 }

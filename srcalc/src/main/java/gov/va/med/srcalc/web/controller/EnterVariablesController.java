@@ -1,8 +1,7 @@
 package gov.va.med.srcalc.web.controller;
 
-import gov.va.med.srcalc.domain.calculation.Value;
+import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.*;
-import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
 import gov.va.med.srcalc.service.CalculationService;
 import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.web.DynamicValueVisitor;
@@ -18,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.common.base.Optional;
 
 /**
  * A "branch" of {@link CalculationController} containing request handlers
@@ -50,19 +51,22 @@ public class EnterVariablesController
     public VariableEntry constructVariableEntry(
             final HttpSession session)
     {
-        // Get the CalculationWorkflow from the session.
-        final CalculationWorkflow workflow =
-        		CalculationWorkflowSupplier.getWorkflowFromSession(session);
-        final VariableEntry initialValues = VariableEntry.withRetrievedValues(workflow.getCalculation().getVariables(), 
-        		workflow.getCalculation().getPatient());
+        // Get the Calculation from the session.
+        final Calculation calculation = SrcalcSession.getCalculation(session);
+        final VariableEntry initialValues = VariableEntry.withRetrievedValues(
+                calculation.getVariables(), calculation.getPatient());
         // In the case of using the "Return to Input Form" button, add the values already
         // in the calculation to the variable entry object to maintain the previously calculated
         // values on the entry page.
-        final DynamicValueVisitor visitor = new DynamicValueVisitor(initialValues);
-        for(final Value value: workflow.getCalculation().getValues())
+        final Optional<CalculationResult> lastResults = SrcalcSession.getOptionalLastResult(session);
+        if (lastResults.isPresent())
         {
-        	visitor.visit(value);
-        	fLogger.debug("Key: {} Value: {}", value.getVariable().getKey(), value.getValue());
+            final DynamicValueVisitor visitor = new DynamicValueVisitor(initialValues);
+            fLogger.debug("Pre-existing input values: {}", lastResults.get().getValues());
+            for(final Value value: lastResults.get().getValues())
+            {
+                visitor.visit(value);
+            }
         }
         return initialValues;
     }
@@ -86,15 +90,13 @@ public class EnterVariablesController
     	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     	response.setHeader("Pragma", "no-cache");
     	response.setDateHeader("Expires", 0);
-        // Get the CalculationWorkflow from the session.
-        final CalculationWorkflow workflow =
-        		CalculationWorkflowSupplier.getWorkflowFromSession(session);
+        // Get the Calculation from the session.
+        final Calculation calculation = SrcalcSession.getCalculation(session);
 
         // Present the view.
         final ModelAndView mav = new ModelAndView(Views.ENTER_VARIABLES);
-        mav.addObject("calculation", workflow.getCalculation());
+        mav.addObject("calculation", calculation);
         
-        fLogger.debug("Input Values: {}", workflow.getCalculation().getValues());
         // Note: "variableEntry" object is automatically added through annotated
         // method parameter.
         return mav;
@@ -106,22 +108,22 @@ public class EnterVariablesController
             @ModelAttribute(ATTR_VARIABLE_ENTRY) final VariableEntry values,
             final BindingResult valuesBindingResult)
     {
-        // Get the CalculationWorkflow from the session.
-        final CalculationWorkflow workflow =
-        		CalculationWorkflowSupplier.getWorkflowFromSession(session);
+        // Get the Calculation from the session.
+        final Calculation calculation = SrcalcSession.getCalculation(session);
         
         // Extract the values from the HTTP POST.
         final InputParserVisitor parserVisitor = new InputParserVisitor(values, valuesBindingResult);
-        for (final Variable variable : workflow.getCalculation().getVariables())
+        for (final Variable variable : calculation.getVariables())
         {
             parserVisitor.visit(variable);
         }
         
         try
         {
-        	// Set the values on the Calculation.
-        	fCalculationService.runCalculation(
-        			workflow.getCalculation(), parserVisitor.getValues());
+            final CalculationResult result = fCalculationService.runCalculation(
+                    calculation, parserVisitor.getValues());
+            
+            SrcalcSession.setLastResult(session, result);
         }
         catch(final MissingValuesException e)
         {

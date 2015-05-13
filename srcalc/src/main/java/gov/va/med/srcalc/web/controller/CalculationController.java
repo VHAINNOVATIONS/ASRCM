@@ -3,11 +3,8 @@ package gov.va.med.srcalc.web.controller;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import gov.va.med.srcalc.domain.workflow.CalculationWorkflow;
-import gov.va.med.srcalc.domain.workflow.NewCalculation;
-import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
-import gov.va.med.srcalc.service.CalculationService;
-import gov.va.med.srcalc.service.InvalidIdentifierException;
+import gov.va.med.srcalc.domain.calculation.Calculation;
+import gov.va.med.srcalc.service.*;
 import gov.va.med.srcalc.web.view.*;
 
 import org.springframework.stereotype.Controller;
@@ -20,8 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class CalculationController
 {
-    private static String SESSION_CALCULATION = "srcalc_calculation";
-    
     private final CalculationService fCalculationService;
     
     @Inject
@@ -37,15 +32,16 @@ public class CalculationController
     {
         // Start the calculation. A Calculation object must be created here to
         // store the start time for reporting.
-        final NewCalculation newCalc = fCalculationService.startNewCalculation(patientDfn);
+        final Calculation calc = fCalculationService.startNewCalculation(patientDfn);
 
         // Store the calculation in the HTTP Session.
-        session.setAttribute(SESSION_CALCULATION, newCalc);
+        SrcalcSession.setCalculation(session, calc);
         
         // Present the view.
         final ModelAndView mav = new ModelAndView(Views.SELECT_SPECIALTY);
-        mav.addObject("calculation", newCalc.getCalculation());
-        mav.addObject("specialties", newCalc.getPossibleSpecialties());
+        mav.addObject("calculation", calc);
+        // Also add the valid specialties for user selection.
+        mav.addObject("specialties", fCalculationService.getValidSpecialties());
         return mav;
     }
     
@@ -55,10 +51,8 @@ public class CalculationController
             @RequestParam("specialty") final String specialtyName)
                     throws InvalidIdentifierException
     {
-        final CalculationWorkflow workflow = CalculationWorkflowSupplier.getWorkflowFromSession(session);
-        final SelectedCalculation selCalc =
-                fCalculationService.setSpecialty(workflow.getCalculation(), specialtyName);
-        session.setAttribute(SESSION_CALCULATION, selCalc);
+        final Calculation calculation = SrcalcSession.getCalculation(session);
+        fCalculationService.setSpecialty(calculation, specialtyName);
 
         // Using the POST-redirect-GET pattern.
         return "redirect:/enterVars";

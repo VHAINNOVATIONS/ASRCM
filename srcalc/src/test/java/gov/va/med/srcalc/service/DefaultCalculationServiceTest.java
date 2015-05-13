@@ -6,8 +6,6 @@ import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.calculation.Calculation;
 import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.domain.model.Specialty;
-import gov.va.med.srcalc.domain.workflow.NewCalculation;
-import gov.va.med.srcalc.domain.workflow.SelectedCalculation;
 import gov.va.med.srcalc.vista.MockVistaPatientDao;
 
 import org.joda.time.DateTime;
@@ -30,6 +28,16 @@ public class DefaultCalculationServiceTest
     {
         return new DefaultCalculationService(mockSpecialtyDao(), new MockVistaPatientDao());
     }
+    
+    @Test
+    public final void testGetValidSpecialties()
+    {
+        // Create the class under test.
+        final DefaultCalculationService s = defaultCalculationService();
+
+        // Behavior verification.
+        assertEquals(SampleModels.specialtyList(), s.getValidSpecialties());
+    }
 
     @Test
     public final void testStartNewCalculation()
@@ -40,8 +48,7 @@ public class DefaultCalculationServiceTest
         final DefaultCalculationService s = defaultCalculationService();
         
         // Behavior verification.
-        final NewCalculation newCalc = s.startNewCalculation(SAMPLE_PATIENT_DFN);
-        final Calculation calc = newCalc.getCalculation();
+        final Calculation calc = s.startNewCalculation(SAMPLE_PATIENT_DFN);
         assertEquals(SAMPLE_PATIENT_DFN, calc.getPatient().getDfn());
         assertTrue("start date not in the past",
                 // DateTime has millisecond precision, so the current time may
@@ -49,7 +56,6 @@ public class DefaultCalculationServiceTest
                 calc.getStartDateTime().compareTo(new DateTime()) <= 0);
         assertTrue("start date not after test start",
                 calc.getStartDateTime().compareTo(testStartDateTime) >= 0);
-        assertEquals(SampleModels.specialtyList(), newCalc.getPossibleSpecialties());
     }
     
     @Test
@@ -59,12 +65,10 @@ public class DefaultCalculationServiceTest
         
         // Create the class under test.
         final DefaultCalculationService s = defaultCalculationService();
-        final Calculation calc = s.startNewCalculation(SAMPLE_PATIENT_DFN).getCalculation();
+        final Calculation calc = s.startNewCalculation(SAMPLE_PATIENT_DFN);
         
         // Behavior verification.
-        final SelectedCalculation selCalc =
-                s.setSpecialty(calc, thoracicSpecialty.getName());
-        assertSame("Calculation object not the same", calc,  selCalc.getCalculation());
+        s.setSpecialty(calc, thoracicSpecialty.getName());
         assertEquals(thoracicSpecialty, calc.getSpecialty());
     }
     
@@ -75,7 +79,7 @@ public class DefaultCalculationServiceTest
         
         // Create the class under test.
         final DefaultCalculationService s = defaultCalculationService();
-        final Calculation calc = s.startNewCalculation(PATIENT_DFN).getCalculation();
+        final Calculation calc = s.startNewCalculation(PATIENT_DFN);
         
         // Behavior verification.
         s.setSpecialty(calc, "invalid specialty");

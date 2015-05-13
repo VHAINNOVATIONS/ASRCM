@@ -41,13 +41,13 @@ public interface VistaPatientDao
     public Patient getPatient(final int dfn);
     
     /**
-     * Saves the finished calculation to VistA, given the calculation, electronic signature, 
+     * Saves the finished calculation to VistA, given the patient, electronic signature, 
      * and the note body. Each line of the noteBody is wrapped at {@link VistaPatientDao#MAX_LINE_LENGTH}
      * characters so that the note is easily visible in CPRS without horizontal scrolling.
-     * @param patient
+     * @param patientDfn the DFN of the patient
      * @param noteBody 
      * @return one of the {@link SaveNoteCode} return codes
      */
-    public SaveNoteCode saveRiskCalculationNote(final Patient patient, final String electronicSignature, String noteBody);
+    public SaveNoteCode saveRiskCalculationNote(final int patientDfn, final String electronicSignature, String noteBody);
     
 }
