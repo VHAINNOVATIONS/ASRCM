@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.util.Preconditions;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -17,6 +19,13 @@ import com.google.common.collect.ImmutableSet;
 public final class Specialty implements Serializable
 {
     /**
+     * The maximum length of a valid surgical specialty: {@value}. VistA
+     * surgical specialties are 40 characters or less, but we support more
+     * in case we want to add a suffix (e.g., two different cardiac models).
+     */
+    public static final int SPECIALTY_NAME_MAX = 100;
+    
+    /**
      * Change this when changing the class!
      */
     private static final long serialVersionUID = 1L;
@@ -33,10 +42,19 @@ public final class Specialty implements Serializable
     {
     }
     
+    /**
+     * Constructs an instance.
+     * @param vistaId See {@link #getVistaId()}
+     * @param name See {@link #getName()}
+     * @throws NullPointerException if any argument is null
+     * @throws IllegalArgumentException if any argument is illegal. (See setter
+     * Javadocs.)
+     */
     public Specialty(final int vistaId, final String name)
     {
-        this.fVistaId = vistaId;
-        this.fName = name;
+        // Use the setters to enforce constraints.
+        setVistaId(vistaId);
+        setName(name);
     }
 
     /**
@@ -63,7 +81,7 @@ public final class Specialty implements Serializable
      * VistA ID.
      */
     @Basic
-    public int getVistaId()
+    public final int getVistaId()
     {
         return fVistaId;
     }
@@ -72,20 +90,33 @@ public final class Specialty implements Serializable
      * For reflection-based construction only. The application assumes that the
      * VistA ID does not change and therefore uses this field for value equality.
      */
-    void setVistaId(final int vistaId)
+    final void setVistaId(final int vistaId)
     {
         this.fVistaId = vistaId;
     }
 
+    /**
+     * The display name of the specialty. Will be no longer than
+     * {@link #SPECIALTY_NAME_MAX} characters.
+     */
     @Basic
-    public String getName()
+    @Column(
+            nullable = false,
+            length = SPECIALTY_NAME_MAX)
+    public final String getName()
     {
 	return fName;
     }
 
-    public void setName(final String name)
+    /**
+     * Sets the display name of the specialty.
+     * @throws NullPointerException if the provided name is null
+     * @throws IllegalArgumentException if the provided name is empty or longer
+     * than {@link #SPECIALTY_NAME_MAX}.
+     */
+    public final void setName(final String name)
     {
-	fName = name;
+	fName = Preconditions.requireWithin(name, 1, SPECIALTY_NAME_MAX);
     }
     
     /**

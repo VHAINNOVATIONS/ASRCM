@@ -108,7 +108,7 @@ public class Calculation implements Serializable
         {
             // See method contract.
             throw new ConfigurationException(
-                    "The specialty requires multiple ProcedureVariables");
+                    "The specialty requires multiple ProcedureVariables, which is unsupported.");
         }
         return vars;
     }
