@@ -13,8 +13,8 @@ import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.Specialty;
-import gov.va.med.srcalc.vista.VistaPatientDao;
-import gov.va.med.srcalc.vista.VistaSurgeryDao;
+import gov.va.med.srcalc.vista.*;
+import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 public class DefaultCalculationService implements CalculationService
@@ -100,8 +100,11 @@ public class DefaultCalculationService implements CalculationService
         final VistaPatientDao.SaveNoteCode returnCode = 
             fPatientDao.saveRiskCalculationNote(
                 result.getPatientDfn(), electronicSignature, result.buildNoteBody());
-        final SignedResult signedResult = result.signed();
-        fSurgeryDao.saveCalculationResult(signedResult);
+        if (returnCode == SaveNoteCode.SUCCESS)
+        {
+            final SignedResult signedResult = result.signed();
+            fSurgeryDao.saveCalculationResult(signedResult);
+        }
         return returnCode;
     }
     

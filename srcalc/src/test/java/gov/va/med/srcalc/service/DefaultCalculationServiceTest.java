@@ -16,6 +16,8 @@ public class DefaultCalculationServiceTest
 {
     protected static final int SAMPLE_PATIENT_DFN = 1;
     
+    private static final String VALID_ESIG_CODE = "eSigCode";
+    
     private SpecialtyDao fMockSpecialtyDao;
     private VistaPatientDao fPatientDao;
     private VistaSurgeryDao fSurgeryDao;
@@ -33,7 +35,10 @@ public class DefaultCalculationServiceTest
         fPatientDao = mock(VistaPatientDao.class);
         when(fPatientDao.getPatient(SAMPLE_PATIENT_DFN))
             .thenReturn(SampleCalculations.dummyPatient(SAMPLE_PATIENT_DFN));
+        // Default to bad signature.
         when(fPatientDao.saveRiskCalculationNote(anyInt(), anyString(), anyString()))
+            .thenReturn(VistaPatientDao.SaveNoteCode.INVALID_SIGNATURE);
+        when(fPatientDao.saveRiskCalculationNote(eq(SAMPLE_PATIENT_DFN), eq(VALID_ESIG_CODE), anyString()))
             .thenReturn(VistaPatientDao.SaveNoteCode.SUCCESS);
 
         // These don't need any special setup: we just verify certain calls.
@@ -103,21 +108,37 @@ public class DefaultCalculationServiceTest
     @Test
     public final void testSignCalculation() throws Exception
     {
-        final String sigCode = "esig";
         final DefaultCalculationService s = new DefaultCalculationService(
                 fMockSpecialtyDao, fPatientDao, fSurgeryDao);
         final CalculationResult result = SampleCalculations.thoracicResult();
         final SignedResult expectedSignedResult = result.signed();
 
         // Behavior
-        s.signRiskCalculation(result, sigCode);
+        s.signRiskCalculation(result, VALID_ESIG_CODE);
         
         // Verification
         verify(fPatientDao).saveRiskCalculationNote(
-                result.getPatientDfn(), sigCode, result.buildNoteBody());
+                result.getPatientDfn(), VALID_ESIG_CODE, result.buildNoteBody());
         // SignedResult.equals() compares the times at second precision, so
         // this test will fail if the second happens to roll over during this
         // test. The chance of this happening should be <1%.
         verify(fSurgeryDao).saveCalculationResult(expectedSignedResult);
+    }
+    
+    @Test
+    public final void testSignCalculationInvalidSig() throws Exception
+    {
+        final String invalidSigCode = "invalidCode";
+        final DefaultCalculationService s = new DefaultCalculationService(
+                fMockSpecialtyDao, fPatientDao, fSurgeryDao);
+        final CalculationResult result = SampleCalculations.thoracicResult();
+
+        // Behavior
+        s.signRiskCalculation(result, invalidSigCode);
+        
+        // Verification
+        verify(fPatientDao).saveRiskCalculationNote(
+                result.getPatientDfn(), invalidSigCode, result.buildNoteBody());
+        verify(fSurgeryDao, never()).saveCalculationResult(any(SignedResult.class));
     }
 }

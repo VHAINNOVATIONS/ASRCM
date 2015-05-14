@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression1;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression2;
@@ -51,6 +52,8 @@ public class DerivedTermTest
         // behavior verification
         assertEquals(coeff, term.getCoefficient(), 0.0f);
         assertEquals(expectedVars, term.getRequiredVariables());
+        // Ensure toString() contains some useful information.
+        assertThat(term.toString(), containsString(rule.toString()));
     }
     
     @Test

@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression1;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression2;
@@ -35,6 +37,7 @@ public class RuleTest
     public final void testAgeMultiplier() throws Exception
     {
         // Setup
+        final String summandExpression = "#age.value * #coefficient";
         final HashMap<Variable, Value> values = new HashMap<>();
         final NumericalVariable ageVar = SampleModels.ageVariable();
         values.put(ageVar, ageVar.makeValue(25));
@@ -44,7 +47,7 @@ public class RuleTest
         final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
         final Rule rule = new Rule(
                 Arrays.asList(totallyDependentMatcher, ageMatcher),
-                "#age.value * #coefficient", true);
+                summandExpression, true);
         
         // Behavior verification
         values.put(fsVar, fsVar.makeValue(fsVar.getOptions().get(2)));
@@ -58,6 +61,13 @@ public class RuleTest
                 0.0,
                 rule.apply(new Rule.EvaluationContext(2.0f, values)),
                 0.0);
+        
+        // The Rule.toString() contract doesn't specify the format, but it says
+        // it will contain the summand expression and the matchers.
+        assertThat(rule.toString(), allOf(
+                containsString(totallyDependentMatcher.toString()),
+                containsString(ageMatcher.toString()),
+                containsString(summandExpression)));
     }
     
     @Test
