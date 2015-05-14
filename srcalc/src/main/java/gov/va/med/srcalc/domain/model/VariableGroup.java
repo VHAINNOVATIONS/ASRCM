@@ -13,6 +13,12 @@ import javax.persistence.*;
 @Entity
 public final class VariableGroup implements Comparable<VariableGroup>
 {
+    /**
+     * The well-known name of the procedure group. This group name cannot
+     * be changed in the administrator UI.
+     */
+    public static final String PROCEDURE_GROUP = "Planned Procedure";
+    
     private int fId;
     private String fName;
     private int fDisplayOrder;
