@@ -20,6 +20,7 @@ import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -227,6 +228,22 @@ public final class Rule
         /* We matched them all: now just calculate the summand. */
         ec.setVariable("coefficient", context.getCoefficient());
         return fSummandExpression.getValue(ec, Double.class);
+    }
+    
+    /**
+     * Returns a String representation of this rule. The format is unspecified,
+     * but it will contain the summand expression and the matchers.
+     */
+    @Override
+    public String toString()
+    {
+        return MoreObjects.toStringHelper(this)
+                .add("id", fId)
+                // fSummandExpression has a bad toString(), use getSummandExpression()
+                .add("summandExpression", getSummandExpression())
+                .add("required", fRequired)
+                .add("matchers", fMatchers)
+                .toString();
     }
     
     @Override

@@ -93,12 +93,9 @@ public final class DerivedTerm extends ModelTerm
     @Override
     public String toString()
     {
-    	String result = "";
-    	for(final ValueMatcher valueMatcher: fRule.getMatchers())
-    	{
-    		result += valueMatcher.getBooleanExpression() + "\n";
-    	}
-    	return result;
+        // Normally we put condition->coefficient, but here put coefficient->
+        // rule because the coefficient is just an input to the rule.
+        return String.format("%f->[%s]", getCoefficient(), fRule);
     }
     
     @Override
