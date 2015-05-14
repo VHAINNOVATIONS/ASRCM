@@ -2,6 +2,7 @@ package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.domain.model.DisplayNameComparator;
+import gov.va.med.srcalc.domain.model.VariableGroup;
 
 import java.util.Comparator;
 
@@ -11,16 +12,14 @@ import java.util.Comparator;
  */
 public class ValueDisplayOrder implements Comparator<Value>
 {
-    private static final String PROCEDURE_GROUP = "Planned Procedure";
-    
     @Override
     public int compare(final Value a, final Value b)
     {
-        // Sort ProcedureValues first.
-        final int aIsProcedure = (a.getVariable().getGroup().getName().equals(PROCEDURE_GROUP)) ? 1 : 0;
-        final int bIsProcedure = (b.getVariable().getGroup().getName().equals(PROCEDURE_GROUP)) ? 1 : 0;
-        // Subtract b from a to because a ProcedureValue is _less than_ a non-
-        // ProcedureValue.
+        // Sort by procedure group first.
+        final int aIsProcedure = (a.getVariable().getGroup().getName().equals(VariableGroup.PROCEDURE_GROUP)) ? 1 : 0;
+        final int bIsProcedure = (b.getVariable().getGroup().getName().equals(VariableGroup.PROCEDURE_GROUP)) ? 1 : 0;
+        // Subtract b from a to because a variable from the procedure group is _less than_ a
+        // variable not from the procedure group.
         final int procedureDelta = bIsProcedure - aIsProcedure;
         if (procedureDelta != 0)
         {
