@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain.calculation;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.DisplayNameComparator;
 import gov.va.med.srcalc.domain.model.Specialty;
+import gov.va.med.srcalc.domain.model.VariableGroup;
 
 import java.io.Serializable;
 import java.util.*;
@@ -77,9 +78,9 @@ public final class CalculationResult implements Serializable
         final ImmutableSortedSet.Builder<Value> otherValuesBuilder =
                 ImmutableSortedSet.orderedBy(VALUE_COMPARATOR);
         Optional<ProcedureValue> procedureValue = Optional.absent();
-        for (final Value v : values)
+        for (final Value value : values)
         {
-            if (v instanceof ProcedureValue)
+            if (value instanceof ProcedureValue)
             {
                 if (procedureValue.isPresent())
                 {
@@ -88,12 +89,12 @@ public final class CalculationResult implements Serializable
                 }
                 else
                 {
-                    procedureValue = Optional.of((ProcedureValue)v);
+                    procedureValue = Optional.of((ProcedureValue)value);
                 }
             }
             else
             {
-                otherValuesBuilder.add(v);
+                otherValuesBuilder.add(value);
             }
         }
         fProcedureValue = procedureValue;
@@ -185,17 +186,40 @@ public final class CalculationResult implements Serializable
 
         // Specialty
         returnString.append(String.format("Specialty = %s%n%n", fSpecialtyName));
-        // Procedure (if present)
+        /* Procedure (if present)
+         * We store the procedure value separately because the CPT code is needed
+         * for storing discrete data in VistA. However, other procedure group values
+         * need to be sorted before the other information.
+         */
         if (fProcedureValue.isPresent())
         {
             final ProcedureValue value = fProcedureValue.get();
             returnString.append(String.format(
-                    "%s = %s%n%n",
+                    "%s = %s%n",
                     value.getVariable().getDisplayName(),
                     value.getDisplayString()));
         }
+        final StringBuilder nonProcedureString = new StringBuilder();
+        for (final Value value : fNonProcedureValues)
+        {
+            // Append the procedure group values now and the non procedure group values later.
+            if(value.getVariable().getGroup().getName().equals(VariableGroup.PROCEDURE_GROUP))
+            {
+                returnString.append(String.format(
+                        "%s = %s%n",
+                        value.getVariable().getDisplayName(),
+                        value.getDisplayString()));
+            }
+            else
+            {
+                // Build the string for use at the end of the results.
+                nonProcedureString.append(String.format(
+                    "%s = %s%n",
+                    value.getVariable().getDisplayName(), value.getDisplayString()));
+            }
+        }
         // Model results
-        returnString.append(String.format("Results%n"));
+        returnString.append(String.format("%nResults%n"));
         for (final String key : this.getOutcomes().keySet())
         {
             returnString.append(String.format(
@@ -204,12 +228,7 @@ public final class CalculationResult implements Serializable
         }
         // Variable display names and values
         returnString.append(String.format("%nCalculation Inputs%n"));
-        for (final Value value : fNonProcedureValues)
-        {
-            returnString.append(String.format(
-                    "%s = %s%n",
-                    value.getVariable().getDisplayName(), value.getDisplayString()));
-        }
+        returnString.append(nonProcedureString);
         return returnString.toString();
     }
     
