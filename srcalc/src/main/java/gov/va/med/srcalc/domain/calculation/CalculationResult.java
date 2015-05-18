@@ -186,7 +186,11 @@ public final class CalculationResult implements Serializable
 
         // Specialty
         returnString.append(String.format("Specialty = %s%n%n", fSpecialtyName));
-        // Procedure (if present)
+        /* Procedure (if present)
+         * We store the procedure value separately because the CPT code is needed
+         * for storing discrete data in VistA. However, other procedure group values
+         * need to be sorted before the other information.
+         */
         if (fProcedureValue.isPresent())
         {
             final ProcedureValue value = fProcedureValue.get();
