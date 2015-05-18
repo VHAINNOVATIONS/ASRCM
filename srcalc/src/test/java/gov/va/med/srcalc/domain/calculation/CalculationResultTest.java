@@ -17,7 +17,7 @@ public class CalculationResultTest
                 + "Results%nThoracic 30-day mortality estimate = 100.0%%%n%n"
                 + "Calculation Inputs%nAge = 45.0%nDNR = No%nFunctional Status = Independent%n");
     private final static String NOTE_BODY_PROCEDURE_GROUP = String.format("Specialty = Dummy Specialty%n%n"
-            + "Dummy Boolean = No%n%n"
+            + "Dummy Boolean = No%nDummy Boolean 2 = No%n%n"
             + "Results%nDummy Model = 100.0%%%n%n"
             + "Calculation Inputs%nAge = 50.0%nDNR = No%n");
     
@@ -68,7 +68,11 @@ public class CalculationResultTest
                 new BooleanValue(new BooleanVariable(
                         "Dummy Boolean",
                         SampleModels.procedureVariableGroup(),
-                        "dummy"), false));
+                        "dummy"), false),
+                new BooleanValue(new BooleanVariable(
+                        "Dummy Boolean 2",
+                        SampleModels.procedureVariableGroup(),
+                        "dummy2"), false));
         final CalculationResult result = new CalculationResult(
                 new DateTime(),
                 100,

@@ -199,7 +199,6 @@ public final class CalculationResult implements Serializable
                     value.getVariable().getDisplayName(),
                     value.getDisplayString()));
         }
-        // Any values that belong to the procedure group
         final StringBuilder nonProcedureString = new StringBuilder();
         for (final Value value : fNonProcedureValues)
         {
