@@ -56,7 +56,6 @@ function initESigDialog(){
     var cancelESigButton = $('#cancelESigButton');
     cancelESigButton.on('click', function(event) {
     	event.preventDefault();
-    	$('#eSigInput').val('');
     	electronicSignatureDialog.dialog('close');
     });
 }
