@@ -4,6 +4,9 @@
 function initESigDialog(){
 	// Make the esig with a jQuery UI dialog. 
     var electronicSignatureDialog = $('.eSigDialog').dialog({
+    	beforeClose: function(event, ui) {
+    		$('#eSigInput').val('');
+    	},
         autoOpen: false,
         width: 350,   // body width is 768px
         modal: true
