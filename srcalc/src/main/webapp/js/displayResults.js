@@ -42,7 +42,7 @@ function initESigDialog(){
 				}
 				else {
 					// Change the span text to the given error text
-					$("#eSigErrorSpan").text(result.status);
+					$('#eSigErrorSpan').text(result.status);
 					$('#eSigButton').prop('disabled', false);
 					$('#eSigButton').text("Sign");
 				}
@@ -53,6 +53,7 @@ function initESigDialog(){
     var cancelESigButton = $('#cancelESigButton');
     cancelESigButton.on('click', function(event) {
     	event.preventDefault();
+    	$('#eSigInput').val('');
     	electronicSignatureDialog.dialog('close');
     });
 }
