@@ -4,6 +4,9 @@
 function initESigDialog(){
 	// Make the esig with a jQuery UI dialog. 
     var electronicSignatureDialog = $('.eSigDialog').dialog({
+    	beforeClose: function(event, ui) {
+    		$('#eSigInput').val('');
+    	},
         autoOpen: false,
         width: 350,   // body width is 768px
         modal: true
@@ -42,7 +45,7 @@ function initESigDialog(){
 				}
 				else {
 					// Change the span text to the given error text
-					$("#eSigErrorSpan").text(result.status);
+					$('#eSigErrorSpan').text(result.status);
 					$('#eSigButton').prop('disabled', false);
 					$('#eSigButton').text("Sign");
 				}
