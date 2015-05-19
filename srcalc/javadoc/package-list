@@ -1,9 +1,8 @@
 gov.va.med.srcalc
 gov.va.med.srcalc.db
 gov.va.med.srcalc.domain
+gov.va.med.srcalc.domain.calculation
 gov.va.med.srcalc.domain.model
-gov.va.med.srcalc.domain.variable
-gov.va.med.srcalc.domain.workflow
 gov.va.med.srcalc.security
 gov.va.med.srcalc.service
 gov.va.med.srcalc.util
