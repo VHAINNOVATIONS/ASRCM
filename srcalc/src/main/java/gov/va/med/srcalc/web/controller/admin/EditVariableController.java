@@ -1,11 +1,12 @@
-package gov.va.med.srcalc.web.controller;
+package gov.va.med.srcalc.web.controller.admin;
+
+import gov.va.med.srcalc.domain.model.AbstractVariable;
+import gov.va.med.srcalc.service.AdminService;
+import gov.va.med.srcalc.service.InvalidIdentifierException;
+import gov.va.med.srcalc.web.view.admin.*;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
-
-import gov.va.med.srcalc.domain.model.*;
-import gov.va.med.srcalc.service.*;
-import gov.va.med.srcalc.web.view.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -13,10 +14,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.common.collect.ImmutableSortedSet;
-
 /**
- * Web MVC controller for administration of variables.
+ * Web MVC controller for editing existing variables.
  */
 @Controller
 @RequestMapping("/admin/variables/{variableKey}")
@@ -26,12 +25,19 @@ public class EditVariableController
     
     private final AdminService fAdminService;
     
+    /**
+     * Constructs an instance.
+     * @param adminService the AdminService to use for operations
+     */
     @Inject
     public EditVariableController(final AdminService adminService)
     {
         fAdminService = adminService;
     }
     
+    /**
+     * Initializes the given WebDataBinder with the necessary validators.
+     */
     @InitBinder
     protected void initBinder(final WebDataBinder binder)
     {
@@ -39,54 +45,42 @@ public class EditVariableController
     }
     
     /**
-     * Creates an {@link EditVariable} instance for the variable to edit.
+     * Creates an {@link EditExistingVariable} instance for the identified
+     * variable.
      * @param variableKey the name of the variable to edit
-     * @return the EditVariable instance
-     * @throws InvalidIdentifierException
+     * @return the EditExistingVariable instance
+     * @throws InvalidIdentifierException if no such variable exists
      */
     @ModelAttribute(ATTRIBUTE_VARIABLE)
-    public EditVariable createEditVariable(
+    public EditExistingVariable createEditVariable(
             @PathVariable final String variableKey)
             throws InvalidIdentifierException
     {
-        // Sort the groups according to natural ordering for display to the
-        // user.
-        final ImmutableSortedSet<VariableGroup> allGroups =
-                ImmutableSortedSet.copyOf(fAdminService.getAllVariableGroups());
-        final EditVariable ev = new EditVariable(loadVariable(variableKey), allGroups);
-        ev.calculateDependentModels(fAdminService.getAllRiskModels());
-        return ev;
-    }
-    
-    private AbstractVariable loadVariable(final String variableKey)
-            throws InvalidIdentifierException
-    {
-        return fAdminService.getVariable(variableKey);
+        final AbstractVariable var = fAdminService.getVariable(variableKey);
+        return EditVariableFactory.getInstance(var, fAdminService);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView editVariable()
+    public ModelAndView displayForm(
+            @ModelAttribute(ATTRIBUTE_VARIABLE) final EditExistingVariable editVariable)
             throws InvalidIdentifierException
     {
-        final ModelAndView mav = new ModelAndView(Views.EDIT_BOOLEAN_VARIABLE);
+        final ModelAndView mav = new ModelAndView(editVariable.getEditViewName());
         // Note: "variable" is in the model via createEditVariable() above.
-        
-        // Add reference data (max lengths, valid values, etc.)
-        mav.addObject("DISPLAY_NAME_MAX", Variable.DISPLAY_NAME_MAX);
         
         return mav;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveVariable(
-            @ModelAttribute(ATTRIBUTE_VARIABLE) @Valid final EditVariable editVariable,
+            @ModelAttribute(ATTRIBUTE_VARIABLE) @Valid final EditExistingVariable editVariable,
             final BindingResult bindingResult)
                     throws InvalidIdentifierException
     {
         if (bindingResult.hasErrors())
         {
             // Re-show the edit screen.
-            return editVariable();
+            return displayForm(editVariable);
         }
         
         // Apply the changes to the persistent variable.

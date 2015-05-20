@@ -1,7 +1,8 @@
-package gov.va.med.srcalc.web.view;
+package gov.va.med.srcalc.web.view.admin;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.model.*;
+import gov.va.med.srcalc.service.MockModelService;
 import gov.va.med.srcalc.test.util.TestHelpers;
 
 import org.junit.Test;
@@ -15,8 +16,9 @@ public final class EditVariableValidatorTest
      */
     private EditVariable makeEditVariable()
     {
-        return new EditVariable(
-                SampleModels.dnrVariable(), SampleModels.variableGroups());
+        // Use EditBooleanVariable as a basic implementation of EditVariable.
+        return new EditBooleanVariable(
+                SampleModels.dnrVariable(), new MockModelService());
     }
     
     /**

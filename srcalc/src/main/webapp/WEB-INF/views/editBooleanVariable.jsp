@@ -9,6 +9,7 @@
     <c:url var="editVariableUrl" value="/admin/variables/${variable.key}"/>
     <form:form id="variableEditForm" cssClass="srcalcForm attributeEditForm"
         method="post" action="${editVariableUrl}" commandName="variable">
+    <%-- Display any object-wide errors --%><form:errors cssClass="error"/>
     <%-- See srcalc.css for why HTML tables. --%>
     <table>
     <tbody>
@@ -18,7 +19,7 @@
         </tr>
         <tr>
         <td class="attributeName">Type:</td>
-        <td>Checkbox</td><%-- This JSP is only used for boolean vars. --%>
+        <td>${variable.typeName}</td>
         </tr>
         <tr>
         <td class="attributeName">Dependent Models:</td>
@@ -36,7 +37,7 @@
             <%-- Use the DISPLAY_NAME_MAX for the text box size, but cap it at
                  40 because any bigger is too much longer than the expected
                  length. --%>
-            <form:input path="displayName" size="${srcalc:min(DISPLAY_NAME_MAX, 40)}" />
+            <form:input path="displayName" size="${srcalc:min(variable.displayNameMax, 40)}" />
             <form:errors path="displayName" cssClass="error" />
         </td>
         </tr>
