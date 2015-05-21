@@ -38,4 +38,16 @@ public class SrcalcSession
     {
         session.setAttribute(CALCULATION_SESSION_ATTR, cs);
     }
+    
+    /**
+     * Returns true if there is a current CalculationSession in the session.
+     * @param session the current session
+     * @return true or false
+     */
+    public static boolean hasCalculationSession(final HttpSession session)
+    {
+        final CalculationSession cs =
+                (CalculationSession)session.getAttribute(CALCULATION_SESSION_ATTR);
+        return cs != null;
+    }
 }

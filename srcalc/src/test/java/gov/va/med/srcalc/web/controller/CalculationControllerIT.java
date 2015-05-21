@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Collection;
 
+import gov.va.med.srcalc.domain.calculation.Calculation;
 import gov.va.med.srcalc.domain.calculation.ProcedureValue;
 import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.test.util.IntegrationTest;
@@ -51,7 +52,7 @@ public class CalculationControllerIT extends IntegrationTest
     		+ "Age = 45.0\nDNR = No\nFunctional Status = Independent\n"
     		+ "Procedure = 26546 - Repair left hand - you know, the thing with fingers (10.06)\n\n"
     		+ "Results\nThoracic 30-day mortality estimate = 100.0%\n";
-    
+   
     @Autowired
     WebApplicationContext fWac;
     
@@ -61,7 +62,7 @@ public class CalculationControllerIT extends IntegrationTest
      * The shared HTTP session between requests.
      */
     private MockHttpSession fSession;
-
+    
     @Before
     public void setup()
     {
@@ -83,6 +84,16 @@ public class CalculationControllerIT extends IntegrationTest
         fMockMvc.perform(get("/newCalc").session(fSession))
             .andExpect(status().is4xxClientError());
     }
+    
+    @Test
+    public void testCalculationInSession() throws Exception
+    {
+        SrcalcSession.setCalculationSession(fSession, new CalculationSession(new Calculation()));
+        fMockMvc.perform(get("/newCalc").session(fSession)
+            .param("patientDfn", Integer.toString(MOCK_DFN)).session(fSession))
+            .andExpect(model().attributeExists("calculation", "newPatientDfn"));
+    }
+    
     
     /**
      * Test fragment to call {@link #testStartNewCalculationWithDfn()} and then select the
