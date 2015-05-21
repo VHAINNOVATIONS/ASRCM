@@ -46,7 +46,7 @@ public class EditExistingBooleanVariable extends EditBooleanVariable implements 
     }
     
     @Override
-    public BooleanVariable getTarget()
+    public BooleanVariable getTargetVariable()
     {
         return fTarget;
     }

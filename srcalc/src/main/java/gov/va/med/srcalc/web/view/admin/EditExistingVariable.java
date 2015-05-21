@@ -10,7 +10,7 @@ public interface EditExistingVariable
     /**
      * Returns the variable which we are editing.
      */
-    public AbstractVariable getTarget();
+    public AbstractVariable getTargetVariable();
     
     /**
      * Returns the name of the View to edit the target variable.

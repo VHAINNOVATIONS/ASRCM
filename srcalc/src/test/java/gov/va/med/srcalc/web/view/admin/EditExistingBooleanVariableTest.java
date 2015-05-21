@@ -31,6 +31,7 @@ public class EditExistingBooleanVariableTest
         ev.applyToVariable();
         
         // Verification
+        assertEquals(var, ev.getTargetVariable());
         assertEquals(newDisplayName, var.getDisplayName());
         assertEquals(newHelpText, var.getHelpText().get());
         assertEquals(newGroup, var.getGroup());
