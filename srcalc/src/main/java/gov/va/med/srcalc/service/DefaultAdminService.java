@@ -39,7 +39,7 @@ public class DefaultAdminService implements AdminService
     }
     
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public ImmutableCollection<VariableGroup> getAllVariableGroups()
     {
         return fVariableDao.getAllVariableGroups();
@@ -69,7 +69,7 @@ public class DefaultAdminService implements AdminService
     }
     
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public ImmutableCollection<RiskModel> getAllRiskModels()
     {
         return fRiskModelDao.getAllRiskModels();

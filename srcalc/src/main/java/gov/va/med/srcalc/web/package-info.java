@@ -14,7 +14,7 @@
  * {@link gov.va.med.srcalc.domain.calculation.Calculation}) when they already contain all
  * the properties that the view requires; or</li>
  * <li>operation-specific wrappers (e.g.,
- * {@link gov.va.med.srcalc.web.view.EditVariable}) when the view requires
+ * {@link gov.va.med.srcalc.web.view.admin.EditBooleanVariable}) when the view requires
  * extra properties.</li>
  * </ol>
  * 

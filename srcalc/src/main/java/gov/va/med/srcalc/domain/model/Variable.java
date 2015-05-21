@@ -27,6 +27,14 @@ public interface Variable
     public static final String VALID_DISPLAY_NAME_REGEX = "[\\w ~`!@#$%^&*()-_+=|\\.,<>/?'\":;]+";
     
     /**
+     * English description of the valid key characters for readable error
+     * messages.
+     * @see #VALID_KEY_REGEX
+     */
+    public static final String VALID_KEY_CHARACTERS =
+            "letters, digits, and spaces";
+    
+    /**
      * The maximum length of a valid variable key: {@value}
      */
     public static final int KEY_MAX = 40;

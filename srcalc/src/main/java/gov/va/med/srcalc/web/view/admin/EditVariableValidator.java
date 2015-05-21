@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.web.view;
+package gov.va.med.srcalc.web.view.admin;
 
 import gov.va.med.srcalc.domain.model.AbstractVariable;
 import gov.va.med.srcalc.domain.model.Variable;
@@ -6,7 +6,8 @@ import gov.va.med.srcalc.domain.model.Variable;
 import org.springframework.validation.*;
 
 /**
- * This Validator validates {@link EditVariable} instances.
+ * This Validator validates the base {@link EditVariable} properties. Other
+ * validators validate subclasses' properties.
  */
 public class EditVariableValidator implements Validator
 {
@@ -31,12 +32,13 @@ public class EditVariableValidator implements Validator
     public static final String ERROR_INVALID_CONTENTS = "invalidContents";
     
     /**
-     * Returns true if, and only if, the given class is {@link EditVariable}.
+     * Returns true if, and only if, the given class is {@link EditVariable} or
+     * a subclass.
      */
     @Override
     public boolean supports(final Class<?> clazz)
     {
-        return EditVariable.class.equals(clazz);
+        return EditVariable.class.isAssignableFrom(clazz);
     }
 
     /**
@@ -78,7 +80,7 @@ public class EditVariableValidator implements Validator
         
         // Validate helpText constraints. See AbstractVariable.setHelpText().
         final String helpText = editVariable.getHelpText();
-        if (!helpText.isEmpty() && helpText.length() > Variable.HELP_TEXT_MAX)
+        if (helpText.length() > Variable.HELP_TEXT_MAX)
         {
             e.rejectValue(
                     "helpText",

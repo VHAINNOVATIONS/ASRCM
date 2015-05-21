@@ -1,0 +1,43 @@
+package gov.va.med.srcalc.web.view.admin;
+
+import gov.va.med.srcalc.domain.model.BooleanVariable;
+import gov.va.med.srcalc.service.ModelInspectionService;
+
+/**
+ * <p>A form backing object for creating a new or editing an existing
+ * BooleanVariable.</p>
+ */
+public class EditBooleanVariable extends EditVariable
+{
+    /**
+     * Constructs an instance with default values for all properties.
+     * @param modelService to provide reference data (e.g., available
+     * VariableGroups) to the user
+     */
+    public EditBooleanVariable(final ModelInspectionService modelService)
+    {
+        super(modelService);
+    }
+    
+    /**
+     * Constructs an instance with the properties initialized to the given
+     * variable.
+     * @param variable the existing variable containing the initial properties.
+     * Not stored.
+     * @param modelService to provide reference data (e.g., available
+     * VariableGroups) to the user
+     */
+    public EditBooleanVariable(
+            final BooleanVariable variable,
+            final ModelInspectionService modelService)
+    {
+        super(variable, modelService);
+    }
+    
+    @Override
+    public String getTypeName()
+    {
+        return "Checkbox";
+    }
+    
+}
