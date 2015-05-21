@@ -50,6 +50,26 @@ public class EditVariableValidator implements Validator
     {
         // See method Javadoc: we assume that it's an instance of EditVariable.
         final EditVariable editVariable = (EditVariable)obj;
+        
+        // Validate variable key constraints. See AbstractVariable.getKey().
+        ValidationUtils.rejectIfEmpty(e, "key", ERROR_NO_VALUE);
+        final String key = editVariable.getKey();
+        if (key.length() > AbstractVariable.KEY_MAX)
+        {
+            e.rejectValue(
+                    "key",
+                    ERROR_TOO_LONG,
+                    new Object[] {AbstractVariable.KEY_MAX},
+                    "The key is too long.");
+        }
+        if (!AbstractVariable.VALID_KEY_PATTERN.matcher(key).matches())
+        {
+            e.rejectValue(
+                    "key",
+                    ERROR_INVALID_CONTENTS,
+                    new Object[] {AbstractVariable.VALID_KEY_CHARACTERS},
+                    "invalid characters in string");
+        }
 
         // Validate displayName constraints. See
         // AbstractVariable.setDisplayName().

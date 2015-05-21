@@ -84,7 +84,7 @@ public class EditVariableController
         }
         
         // Apply the changes to the persistent variable.
-        fAdminService.updateVariable(editVariable.applyToVariable());
+        fAdminService.saveVariable(editVariable.applyToVariable());
 
         // Using the POST-redirect-GET pattern.
         return new ModelAndView("redirect:/admin");

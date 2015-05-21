@@ -337,6 +337,18 @@ a.openProcedureSelect {
 	color: #aaa;
 }
 
+/* === Admin Page-specific Styles === */
+
+.editObjectLink {
+	text-decoration: none;
+}
+
+ul#newVariableLinks {
+	/* Display these in a row, not as a bullet list. */
+	list-style-type: none;
+	padding: 0;
+}
+
 /* The edit variable pages */
 
 #variableEditForm textarea#helpText {

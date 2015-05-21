@@ -18,6 +18,18 @@ import static org.junit.Assert.*;
 public class EditVariableTest
 {
     private final MockModelService fModelService = new MockModelService();
+    
+    @Test
+    public final void testReferenceData()
+    {
+        // Use an EditBooleanVariable to test since it is a very basic
+        // implementation of EditVariable.
+        final EditVariable ev = new EditBooleanVariable(fModelService);
+        
+        assertEquals(Variable.KEY_MAX, ev.getKeyMax());
+        assertEquals(Variable.DISPLAY_NAME_MAX, ev.getDisplayNameMax());
+        assertEquals(fModelService.getAllVariableGroups(), ev.getAllGroups());
+    }
 
     @Test
     public final void testSetGroupValid()

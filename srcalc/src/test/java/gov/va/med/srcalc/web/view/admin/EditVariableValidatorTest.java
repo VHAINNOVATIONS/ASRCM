@@ -39,6 +39,30 @@ public final class EditVariableValidatorTest
 
         assertEquals("error count", 0, errors.getErrorCount());
     }
+    
+    @Test
+    public final void testKeyTooLong()
+    {
+        final EditVariable ev = makeEditVariable();
+        ev.setKey(TestHelpers.stringOfLength(Variable.KEY_MAX + 1));
+        final BindingResult errors = validate(ev);
+        
+        assertEquals(
+                EditVariableValidator.ERROR_TOO_LONG,
+                errors.getFieldError("key").getCode());
+    }
+    
+    @Test
+    public final void testKeyInvalidCharacters()
+    {
+        final EditVariable ev = makeEditVariable();
+        ev.setKey("foo!");
+        final BindingResult errors = validate(ev);
+        
+        assertEquals(
+                EditVariableValidator.ERROR_INVALID_CONTENTS,
+                errors.getFieldError("key").getCode());
+    }
 
     @Test
     public final void testDisplayNameTooLong()

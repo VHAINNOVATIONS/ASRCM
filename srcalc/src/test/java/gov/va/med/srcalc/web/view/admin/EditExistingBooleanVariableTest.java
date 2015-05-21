@@ -42,4 +42,14 @@ public class EditExistingBooleanVariableTest
         assertFalse(var.getHelpText().isPresent());
     }
     
+    @Test(expected = IllegalStateException.class)
+    public final void testApplyKeyChange()
+    {
+        final BooleanVariable var = SampleModels.dnrVariable();
+        final EditExistingBooleanVariable ev =
+                new EditExistingBooleanVariable(var, fModelService);
+        ev.setKey("newKey");
+        ev.applyToVariable();
+    }
+    
 }

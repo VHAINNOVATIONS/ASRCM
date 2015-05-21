@@ -33,7 +33,7 @@ public class DefaultAdminService implements AdminService
     @Transactional
     public List<AbstractVariable> getAllVariables()
     {
-        fLogger.debug("Returning all Variables.");
+        fLogger.debug("Getting all Variables.");
 
         return fVariableDao.getAllVariables();
     }
@@ -42,6 +42,8 @@ public class DefaultAdminService implements AdminService
     @Transactional(readOnly = true)
     public ImmutableCollection<VariableGroup> getAllVariableGroups()
     {
+        fLogger.debug("Getting all VariableGroups.");
+        
         return fVariableDao.getAllVariableGroups();
     }
     
@@ -50,7 +52,7 @@ public class DefaultAdminService implements AdminService
     public AbstractVariable getVariable(final String keyName)
         throws InvalidIdentifierException
     {
-        fLogger.debug("Loading Variable {}", keyName);
+        fLogger.debug("Getting Variable {}.", keyName);
         
         final AbstractVariable var = fVariableDao.getByKey(keyName);
         if (var == null)
@@ -63,15 +65,20 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
-    public void updateVariable(final AbstractVariable variable)
+    public void saveVariable(final AbstractVariable variable)
     {
-        fVariableDao.updateVariable(variable);
+        fLogger.debug("Saving {}.", variable);
+        fVariableDao.mergeVariable(variable);
+        // This is a significant (and infrequent) transaction: log it at INFO
+        // level.
+        fLogger.info("Saved variable {}.", variable.getKey());
     }
     
     @Override
     @Transactional(readOnly = true)
     public ImmutableCollection<RiskModel> getAllRiskModels()
     {
+        fLogger.debug("Getting all RiskModels.");
         return fRiskModelDao.getAllRiskModels();
     }
 }
