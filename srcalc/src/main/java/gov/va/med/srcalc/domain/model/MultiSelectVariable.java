@@ -40,6 +40,8 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
     
     /**
      * Constructs an instance.
+     * @param options the ordered list of options. This constructor will make a
+     * defensive copy of the list.
      * @throws NullPointerException if any argument is null
      * @throws IllegalArgumentException if any argument is invalid
      * @see AbstractVariable#AbstractVariable(String, VariableGroup, String)
@@ -55,7 +57,7 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
     {
         super(displayName, group, key);
         setDisplayType(displayType);
-        setOptions(options);
+        fOptions = new ArrayList<>(options);
     }
     
     @Basic
@@ -75,6 +77,10 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
         fDisplayType = Objects.requireNonNull(displayType, "display type must not be null");
     }
 
+    /**
+     * Returns the ordered list of {@link MultiSelectOption}s.
+     * @return a modifiable list
+     */
     @OneToMany(fetch = FetchType.EAGER)  // eager load due to close association
     @OrderColumn(name = "option_index")
     @JoinTable(
@@ -88,10 +94,13 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
     }
 
     /**
-     * Sets the ordered list of {@link MultiSelectOption}s.
-     * @param options
+     * <p>Sets the ordered list of {@link MultiSelectOption}s.</p>
+     * 
+     * <p>This method is for bean construction only. To modify the collection of
+     * an existing object, modify the list returned by {@link
+     * #getOptions()}.</p>
      */
-    public final void setOptions(final List<MultiSelectOption> options)
+    final void setOptions(final List<MultiSelectOption> options)
     {
         fOptions = Objects.requireNonNull(options, "options must not be null");
     }
