@@ -2,6 +2,7 @@ package gov.va.med.srcalc.web.view.admin;
 
 import gov.va.med.srcalc.domain.model.BooleanVariable;
 import gov.va.med.srcalc.service.ModelInspectionService;
+import gov.va.med.srcalc.web.view.Views;
 
 /**
  * <p>A form backing object for creating a new or editing an existing
@@ -38,6 +39,24 @@ public class EditBooleanVariable extends EditVariable
     public String getTypeName()
     {
         return "Checkbox";
+    }
+
+    /**
+     * Returns {@link Views#NEW_BOOLEAN_VARIABLE}.
+     */
+    @Override
+    public String getNewViewName()
+    {
+        return Views.NEW_BOOLEAN_VARIABLE;
+    }
+    
+    @Override
+    public BooleanVariable buildNew()
+    {
+        final BooleanVariable var =
+                new BooleanVariable(getDisplayName(), getGroup().get(), getKey());
+        applyBaseProperties(var);
+        return var;
     }
     
 }

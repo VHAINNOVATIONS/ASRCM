@@ -1,0 +1,60 @@
+<%--
+A JSP fragment to edit properties common to all variables. This content expects
+to be in a Spring <form> tag with the form object of type EditVariable and
+called 'variable'.
+--%>
+<%@ taglib uri="/WEB-INF/srcalc.tld" prefix="srcalc" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+        <tr>
+        <td class="attributeName">Type:</td>
+        <td>${variable.typeName}</td>
+        </tr>
+        <tr>
+        <td class="attributeName">Dependent Models:</td>
+        <td>
+        <ul>
+        <c:forEach var="model" items="${variable.dependentModels}">
+            <li>${model.displayName}</li>
+        </c:forEach>
+        </ul>
+        </td>
+        </tr>
+        <tr>
+        <td class="attributeName">Display Text:</td>
+        <td>
+            <%-- Use the DISPLAY_NAME_MAX for the text box size, but cap it at
+                 40 because any bigger is too much longer than the expected
+                 length. --%>
+            <form:input path="displayName" size="${srcalc:min(variable.displayNameMax, 40)}" />
+            <form:errors path="displayName" cssClass="error" />
+        </td>
+        </tr>
+        <tr>
+        <td class="attributeName">Help Text:</td>
+        <td>
+            <form:textarea path="helpText" cols="90" rows="8" />
+            <form:errors path="helpText" cssClass="error" />
+            <ul class="helpText">
+            <li>Add a blank line between paragraphs.</li>
+            <li>Bullet lists can be created by starting lines with an asterisk (* Example item).</li>
+            <li>Numbered lists can be created by starting lines with a number (1. Example item).</li>
+            </ul>
+        </td>
+        </tr>
+        <tr>
+        <td class="attributeName">Group:</td>
+        <td>
+            <form:select path="groupId">
+                <form:options items="${variable.allGroups}" itemValue="id" itemName="name" />
+            </form:select>
+            <form:errors path="groupId" cssClass="error" />
+        </td>
+        </tr>
+        <tr>
+        <td class="attributeName">VistA Value:</td>
+        <td>
+            <%-- There are no retrievers for Boolean variables. --%>
+            <select><option>N/A</option></select>
+        </td>
+        </tr>

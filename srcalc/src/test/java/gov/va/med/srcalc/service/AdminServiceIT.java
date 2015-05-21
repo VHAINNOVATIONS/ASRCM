@@ -84,7 +84,7 @@ public class AdminServiceIT extends IntegrationTest
         var.setDisplayName(newName);
         var.setHelpText(Optional.of(newHelpText));
         var.setGroup(newGroup);
-        fAdminService.updateVariable(var);
+        fAdminService.saveVariable(var);
         
         // Verification
         // Simulate a new Hibernate Session.

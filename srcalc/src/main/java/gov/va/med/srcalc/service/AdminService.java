@@ -19,16 +19,16 @@ public interface AdminService extends ModelInspectionService
     /**
      * Returns the Variable with the given display name for editing. Note that
      * the returned object must be given back to {@link
-     * #updateVariable(AbstractVariable)} to persist any changes.
+     * #saveVariable(AbstractVariable)} to persist any changes.
      * @throws InvalidIdentifierException if no such Variable exists
      */
     public AbstractVariable getVariable(final String key)
         throws InvalidIdentifierException;
     
     /**
-     * Updates the given variable in the persistent store.
-     * @param variable the variable to update. The object must have been
-     * previously loaded using {@link #getVariable(String)}.
+     * Saves the given variable to the persistent store. The given variable may
+     * be brand-new or one previously loaded by {@link #getVariable(String)}.
+     * @param variable the variable to save
      */
-    public void updateVariable(final AbstractVariable variable);
+    public void saveVariable(final AbstractVariable variable);
 }

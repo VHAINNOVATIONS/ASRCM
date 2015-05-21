@@ -107,6 +107,15 @@ public abstract class EditVariable
     }
     
     /**
+     * Sets the key to set on the variable.
+     * @see AbstractVariable#getKey()
+     */
+    public final void setKey(final String key)
+    {
+        fKey = key;
+    }
+    
+    /**
      * <p>Returns the maximum valid length of the key to set, {@link
      * Variable#KEY_MAX}, for easy access from views.</p>
      */
@@ -141,9 +150,8 @@ public abstract class EditVariable
     }
     
     /**
-     * Returns the help text which {@link #applyToVariable()} will set. Since
-     * this property is intended to be used directly in JSPs, an absent value
-     * is represented by an empty string.
+     * Returns the optional help text as a String (for use in JSPs). An absent
+     * value is represented by an empty string.
      */
     public final String getHelpText()
     {
@@ -199,6 +207,12 @@ public abstract class EditVariable
     }
     
     /**
+     * Returns the appropriate view name for creating a new variable of the
+     * supported type.
+     */
+    public abstract String getNewViewName();
+    
+    /**
      * <p>Applies the base properties that we store here to an existing
      * variable.</p>
      * 
@@ -209,11 +223,25 @@ public abstract class EditVariable
      * </ul>
      * 
      * @param var the existing variable to modify
+     * @throws IllegalStateException if the key to set doesn't already match
+     * the variable's key
      */
     protected void applyBaseProperties(final AbstractVariable var)
     {
+        if (!Objects.equals(fKey, var.getKey()))
+        {
+            throw new IllegalStateException(String.format(
+                    "The given variable's key does not already match the key to set (%s).",
+                    fKey));
+        }
         var.setDisplayName(fDisplayName);
         var.setHelpText(fHelpText);
         var.setGroup(getGroup().get());
+        // TODO: retrieval key, when we support more than BooleanVariables
     }
+    
+    /**
+     * Builds a new instance based on the stored properties.
+     */
+    public abstract AbstractVariable buildNew();
 }

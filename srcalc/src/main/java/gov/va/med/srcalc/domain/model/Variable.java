@@ -32,7 +32,7 @@ public interface Variable
      * @see #VALID_KEY_REGEX
      */
     public static final String VALID_KEY_CHARACTERS =
-            "letters, digits, and spaces";
+            "letters, digits, and underscores";
     
     /**
      * The maximum length of a valid variable key: {@value}

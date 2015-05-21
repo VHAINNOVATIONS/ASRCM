@@ -84,17 +84,25 @@ public class VariableDao
     }
     
     /**
-     * <p>Overwrites a variable in the database with the given object (matched
-     * by Id).</p>
+     * <p>Persists the given variable to the database using <a
+     * href="http://en.wikibooks.org/wiki/Java_Persistence/Persisting#Merge">JPA
+     * merge semantics</a>.</p>
      * 
      * <p>As stated in {@link #getByKey(String) getByKey}, changes are usually
-     * automatically persisted. Call this only to persist changes made after the
-     * transaction in which the object was loaded.</p>
+     * automatically persisted. Call this only to persist a brand-new object or
+     * to persist changes made after the transaction in which the object was
+     * loaded.</p>
+     * 
+     * <p>Note that the given object is not added to the persistence context,
+     * but the returned object is. If you want to modify further state, use the
+     * returned object.</p>
+     * 
      * @param variable represents the state to persist
      */
-    public void updateVariable(final AbstractVariable variable)
+    public AbstractVariable mergeVariable(final AbstractVariable variable)
     {
-        fLogger.debug("Updating {} in DB.", variable);
-        getCurrentSession().update(variable);
+        fLogger.debug("Merging {} intto persistence context.", variable);
+        // Trust Hibernate with this cast here. (I wish it was generic.)
+        return (AbstractVariable)getCurrentSession().merge(variable);
     }
 }
