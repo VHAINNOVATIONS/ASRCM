@@ -6,6 +6,7 @@ function initESigDialog(){
     var electronicSignatureDialog = $('.eSigDialog').dialog({
     	beforeClose: function(event, ui) {
     		$('#eSigInput').val('');
+    		$('#eSigErrorSpan').text('');
     	},
         autoOpen: false,
         width: 350,   // body width is 768px
