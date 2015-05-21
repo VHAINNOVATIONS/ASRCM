@@ -57,7 +57,7 @@ public class CalculationController
             final Calculation calc = calcSession.getCalculation();
             final ModelAndView mav = new ModelAndView(Views.CONFIRM_NEW_CALC);
             mav.addObject("calculation", calc);
-            mav.addObject("patientDfn", patientDfn);
+            mav.addObject("newPatientDfn", patientDfn);
             return mav;
         }
         

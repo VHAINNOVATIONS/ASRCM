@@ -8,7 +8,7 @@
     <p>If you do not wish to start a new calculation, close this browser window or tab.</p>
     <p>Click the link below to start a new calculation.</p>
     <c:url var="newCalcUrl" value="/newCalc">
-        <c:param name="patientDfn" value="${patientDfn}"/>
+        <c:param name="patientDfn" value="${newPatientDfn}"/>
         <c:param name="force" value="true"/>
     </c:url>
     <a href="${newCalcUrl}" class="btn-link">Start New Calculation</a>

@@ -91,7 +91,7 @@ public class CalculationControllerIT extends IntegrationTest
         SrcalcSession.setCalculationSession(fSession, new CalculationSession(new Calculation()));
         fMockMvc.perform(get("/newCalc").session(fSession)
             .param("patientDfn", Integer.toString(MOCK_DFN)).session(fSession))
-            .andExpect(model().attributeExists("calculation", "patientDfn"));
+            .andExpect(model().attributeExists("calculation", "newPatientDfn"));
     }
     
     
