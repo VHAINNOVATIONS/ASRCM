@@ -19,6 +19,7 @@ import com.google.common.base.Splitter;
 
 import gov.va.med.crypto.VistaKernelHash;
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.util.RetrievedValue;
 
 /**
  * Implementation of {@link VistaPatientDao} using remote procedures. Each
@@ -89,7 +90,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
 	        
 	        // We have to get the current weight before we do this
 	        // If there was no current weight, no need to retrieve other weight
-	        if(patient.getWeightDate() != null)
+	        if(patient.getWeight() != null)
 	        {
 	        	final List<String> weightResults = retrieveWeight6MonthsAgo(patient);
 	        	fLogger.debug("Weight Results: {}", weightResults);
@@ -128,11 +129,11 @@ public class RpcVistaPatientDao implements VistaPatientDao
     	// Our range for weight 6 months ago is 3-12 months prior to the
         // most recent weight.
         final Calendar cal = Calendar.getInstance();
-        cal.setTime(patient.getWeightDate());
+        cal.setTime(patient.getWeight().getMeasureDate());
         cal.add(Calendar.MONTH, -6);
         final String endDateString = String.format("%03d%02d%02d", (cal.get(Calendar.YEAR) - 1700),
         		cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
-        cal.setTime(patient.getWeightDate());
+        cal.setTime(patient.getWeight().getMeasureDate());
         cal.add(Calendar.YEAR, -1);
         final String startDateString = String.format("%03d%02d%02d", (cal.get(Calendar.YEAR) - 1700),
         		cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
@@ -146,11 +147,10 @@ public class RpcVistaPatientDao implements VistaPatientDao
     	// The last entries are the most recent so we use those.
     	// Get the most recent weight measurement within the already specified range.
     	final String[] weightLineTokens = weightResults.get(weightResults.size()-2).split("[\\s\\^]+");
-    	patient.setWeight6MonthsAgo(Double.parseDouble(weightLineTokens[3]));
     	// Get the date of the measurement
     	final SimpleDateFormat dateFormat = new SimpleDateFormat(VISTA_DATE_OUTPUT_FORMAT);
     	final Date measurementDate = dateFormat.parse(weightLineTokens[1]);
-    	patient.setWeight6MonthsAgoDate(measurementDate);
+    	patient.setWeight6MonthsAgo(new RetrievedValue(Double.parseDouble(weightLineTokens[3]), measurementDate));
     	fLogger.debug("Weight 6 months ago: {}", patient.getWeight6MonthsAgo());
     }
     
@@ -160,56 +160,59 @@ public class RpcVistaPatientDao implements VistaPatientDao
     	// Each entry comes with an accompanying date and time.
     	final String[] heightLineTokens = vitalResults.get(5).split(SPLIT_REGEX);
     	final int feet = Integer.parseInt(heightLineTokens[2]);
-    	patient.setHeight((feet * 12) + Integer.parseInt(heightLineTokens[4]));
-    	patient.setHeightDate(dateFormat.parse(heightLineTokens[1]));
+    	patient.setHeight(new RetrievedValue(
+    	        (feet * 12.0) + Double.parseDouble(heightLineTokens[4]),
+    	        dateFormat.parse(heightLineTokens[1])));
     	final String[] weightLineTokens = vitalResults.get(6).split(SPLIT_REGEX);
-    	patient.setWeight(Double.parseDouble(weightLineTokens[2]));
-    	patient.setWeightDate(dateFormat.parse(weightLineTokens[1]));
+    	patient.setWeight(new RetrievedValue(
+    	        Double.parseDouble(weightLineTokens[2]),
+    	        dateFormat.parse(weightLineTokens[1])));
     	final String[] bmiLineTokens = vitalResults.get(7).split(SPLIT_REGEX);
     	// The BMI value is the second to last token on its line
-    	patient.setBmi(Double.parseDouble(bmiLineTokens[bmiLineTokens.length-2]));
-    	patient.setBmiDate(patient.getWeightDate());
+    	patient.setBmi(new RetrievedValue(
+    	    Double.parseDouble(bmiLineTokens[bmiLineTokens.length-2]),
+    	    patient.getWeight().getMeasureDate()));
     }
-
-	@Override
-	public SaveNoteCode saveRiskCalculationNote(final int patientDfn,
-			final String electronicSignature, final String noteBody)
-	{
-		// Split on line feed or carriage return
-		// Wrap any lines that are too long so that users do not have to 
-		// scroll when viewing the note in CPRS.
-		final String[] bodyArray = noteBody.split("\\r?\\n");
-		final StringBuilder wrappedNote = new StringBuilder();
-		for(final String line: bodyArray)
-		{
-			wrappedNote.append(WordUtils.wrap(line, VistaPatientDao.MAX_LINE_LENGTH, "\n    ", false) + "\n");
-		}
-		try
-		{
-                    final String rpcResultString = fProcedureCaller.doSaveProgressNoteCall(
-                            fDuz,
-                            VistaKernelHash.encrypt(electronicSignature, false),
-                            String.valueOf(patientDfn),
-                            // Use Guava Splitter to get a List.
-                            Splitter.on('\n').splitToList(wrappedNote));
-
-                    final VistaOperationResult rpcResult =
-                            VistaOperationResult.fromString(rpcResultString);
-                    if(rpcResult.getCode().equals("1"))
-                    {
-                        return SaveNoteCode.SUCCESS;
-                    }
-                    else
-                    {
-                        return SaveNoteCode.INVALID_SIGNATURE;
-                    }
-		}
-		catch(final Exception e)
-		{
-			// An Exception means an invalid DUZ or a problem with VistALink/VistA
-			// Translate the exception into a status message
-			// We've tested that this works so any failure at this point is probably recoverable.
-			throw new RecoverableDataAccessException(e.getMessage(), e);
-		}
-	}
+    
+    @Override
+    public SaveNoteCode saveRiskCalculationNote(final int patientDfn, final String electronicSignature,
+            final String noteBody)
+    {
+        // Split on line feed or carriage return
+        // Wrap any lines that are too long so that users do not have to
+        // scroll when viewing the note in CPRS.
+        final String[] bodyArray = noteBody.split("\\r?\\n");
+        final StringBuilder wrappedNote = new StringBuilder();
+        for (final String line : bodyArray)
+        {
+            wrappedNote.append(WordUtils.wrap(line, VistaPatientDao.MAX_LINE_LENGTH, "\n    ", false) + "\n");
+        }
+        try
+        {
+            final String rpcResultString = fProcedureCaller.doSaveProgressNoteCall(fDuz,
+                    VistaKernelHash.encrypt(electronicSignature, false), String.valueOf(patientDfn),
+                    // Use Guava Splitter to get a List.
+                    Splitter.on('\n').splitToList(wrappedNote));
+            
+            final VistaOperationResult rpcResult = VistaOperationResult.fromString(rpcResultString);
+            if (rpcResult.getCode().equals("1"))
+            {
+                return SaveNoteCode.SUCCESS;
+            }
+            else
+            {
+                return SaveNoteCode.INVALID_SIGNATURE;
+            }
+        }
+        catch (final Exception e)
+        {
+            // An Exception means an invalid DUZ or a problem with VistALink/VistA
+            // Translate the exception into a status message
+            // We've tested that this works so any failure at this point is probably recoverable.
+            throw new RecoverableDataAccessException(e.getMessage(), e);
+        }
+    }
+    
+//    @Override
+//    public Map<String, Double>
 }
