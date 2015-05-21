@@ -47,6 +47,7 @@ public final class EditVariableValidatorTest
         ev.setKey(TestHelpers.stringOfLength(Variable.KEY_MAX + 1));
         final BindingResult errors = validate(ev);
         
+        assertEquals(1, errors.getErrorCount());
         assertEquals(
                 EditVariableValidator.ERROR_TOO_LONG,
                 errors.getFieldError("key").getCode());
@@ -59,6 +60,7 @@ public final class EditVariableValidatorTest
         ev.setKey("foo!");
         final BindingResult errors = validate(ev);
         
+        assertEquals("error count", 1, errors.getErrorCount());
         assertEquals(
                 EditVariableValidator.ERROR_INVALID_CONTENTS,
                 errors.getFieldError("key").getCode());
@@ -71,6 +73,7 @@ public final class EditVariableValidatorTest
         ev.setDisplayName(TestHelpers.stringOfLength(Variable.DISPLAY_NAME_MAX + 1));
         final BindingResult errors = validate(ev);
         
+        assertEquals("error count", 1, errors.getErrorCount());
         assertEquals(
                 EditVariableValidator.ERROR_TOO_LONG,
                 errors.getFieldError("displayName").getCode());
@@ -83,6 +86,7 @@ public final class EditVariableValidatorTest
         ev.setDisplayName("\t");
         final BindingResult errors = validate(ev);
         
+        assertEquals("error count", 1, errors.getErrorCount());
         assertEquals(
                 EditVariableValidator.ERROR_INVALID_CONTENTS,
                 errors.getFieldError("displayName").getCode());
@@ -95,6 +99,7 @@ public final class EditVariableValidatorTest
         ev.setGroupId(80);
         final BindingResult errors = validate(ev);
         
+        assertEquals("error count", 1, errors.getErrorCount());
         assertEquals(
                 EditVariableValidator.ERROR_INVALID_OPTION,
                 errors.getFieldError("groupId").getCode());
@@ -107,6 +112,7 @@ public final class EditVariableValidatorTest
         ev.setHelpText(TestHelpers.stringOfLength(Variable.HELP_TEXT_MAX + 1));
         final BindingResult errors = validate(ev);
         
+        assertEquals("error count", 1, errors.getErrorCount());
         assertEquals(
                 EditVariableValidator.ERROR_TOO_LONG,
                 errors.getFieldError("helpText").getCode());
