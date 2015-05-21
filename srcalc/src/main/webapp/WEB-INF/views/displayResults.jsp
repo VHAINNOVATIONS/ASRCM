@@ -43,7 +43,10 @@ Note: this view is a fusion of two different objects:
     <li><button id="signCalculationButton" class="button-em" type="submit">Sign Calculation</button></li>
     </ol>
     <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
-    <c:url var="newCalcUrl" value="/newCalc"><c:param name="patientDfn" value="${calculation.patient.dfn}"/></c:url>
+    <c:url var="newCalcUrl" value="/newCalc">
+        <c:param name="patientDfn" value="${calculation.patient.dfn}"/>
+        <c:param name="force" value="true"/>
+    </c:url>
     <a href="${newCalcUrl}" class="btn-link">Start New Calculation</a>
     <br>
     <div class="eSigDialog dialog" title="Enter Electronic Signature Code">

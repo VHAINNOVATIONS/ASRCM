@@ -31,7 +31,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.util.NestedServletException;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -87,34 +86,12 @@ public class CalculationControllerIT extends IntegrationTest
     }
     
     @Test
-    public void testConfirmNewCalculation() throws Exception
-    {
-        SrcalcSession.setCalculationSession(fSession, new CalculationSession(new Calculation()));
-        fMockMvc.perform(get("/confirmNewCalc").session(fSession))
-            .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testConfirmNotInSession() throws Exception
-    {
-        try
-        {
-            fMockMvc.perform(get("/confirmNewCalc").session(fSession));
-            fail("Expected an IllegalStateException to be thrown.");
-        }
-        catch(final NestedServletException e)
-        {
-            assertEquals(e.getRootCause().getMessage(), "No current calculation.");
-        }
-    }
-    
-    @Test
     public void testCalculationInSession() throws Exception
     {
         SrcalcSession.setCalculationSession(fSession, new CalculationSession(new Calculation()));
         fMockMvc.perform(get("/newCalc").session(fSession)
             .param("patientDfn", Integer.toString(MOCK_DFN)).session(fSession))
-            .andExpect(redirectedUrl("/confirmNewCalc"));
+            .andExpect(model().attributeExists("calculation", "patientDfn"));
     }
     
     
