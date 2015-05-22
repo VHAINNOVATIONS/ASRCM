@@ -53,7 +53,7 @@ public final class MultiSelectOption
     }
     
     /**
-     * Creates an instance with the value filled.
+     * Creates an instance with the given value.
      * @throws NullPointerException if the given value is null
      * @throws IllegalArgumentException if the given value is empty, over
      * {@link #VALUE_MAX} characters, or does not match {@link #VALID_VALUE_REGEX}.
