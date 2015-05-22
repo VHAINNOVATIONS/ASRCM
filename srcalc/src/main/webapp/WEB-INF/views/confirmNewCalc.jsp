@@ -14,7 +14,7 @@
     <a href="${newCalcUrl}" id="startNewCalcLink" class="btn-link">Start New Calculation</a>
     <script type="text/javascript">
         $("#startNewCalcLink").on("click", function() {
-        	alert('All other ASRC sessions are no longer valid and should be closed');
+        	alert('All other risk calculations are no longer valid and should be closed');
         });
     </script>
 </section>
