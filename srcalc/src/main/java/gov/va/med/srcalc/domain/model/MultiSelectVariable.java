@@ -5,15 +5,7 @@ import gov.va.med.srcalc.domain.calculation.MultiSelectValue;
 
 import java.util.*;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
+import javax.persistence.*;
 
 @Entity
 public class MultiSelectVariable extends AbstractVariable implements DiscreteVariable
@@ -81,13 +73,12 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
      * Returns the ordered list of {@link MultiSelectOption}s.
      * @return a modifiable list
      */
-    @OneToMany(fetch = FetchType.EAGER)  // eager load due to close association
+    @ElementCollection(fetch = FetchType.EAGER)  // eager load due to close association
     @OrderColumn(name = "option_index")
-    @JoinTable(
+    // Override strange defaults
+    @CollectionTable(
             name = "multi_select_variable_option",
-            joinColumns = @JoinColumn(name = "variable_id"),
-            inverseJoinColumns = @JoinColumn(name = "option_id")
-        )
+            joinColumns = @JoinColumn(name = "variable_id"))
     public final List<MultiSelectOption> getOptions()
     {
         return fOptions;

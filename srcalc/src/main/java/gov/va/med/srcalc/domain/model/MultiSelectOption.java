@@ -8,12 +8,13 @@ import java.util.regex.Pattern;
 import javax.persistence.*;
 
 /**
- * <p>An option for a {@link MultiSelectVariable}.</p>
+ * <p>An option for a {@link MultiSelectVariable}. Simply wraps a String value,
+ * but enforces constraints on the String.</p>
  * 
  * <p>Per Effective Java Item 17, this class is marked final because it was not
  * designed for inheritance.</p>
  */
-@Entity
+@Embeddable
 public final class MultiSelectOption
 {
     /**
@@ -40,7 +41,6 @@ public final class MultiSelectOption
      */
     public static final Pattern VALID_VALUE_PATTERN = Pattern.compile(VALID_VALUE_REGEX);
     
-    private int fId;
     private String fValue;
     
     /**
@@ -63,24 +63,6 @@ public final class MultiSelectOption
     {
         // Use setter to enforce constraints.
         setValue(value);
-    }
-    
-    /**
-     * The object's surrogate primary key. Don't show this to the user.
-     */
-    @Id
-    public int getId()
-    {
-        return fId;
-    }
-
-    /**
-     * For reflection-based construction only. Business code should never modify
-     * the surrogate key as it is generated from the database.
-     */
-    void setId(final int id)
-    {
-        this.fId = id;
     }
     
     /**
