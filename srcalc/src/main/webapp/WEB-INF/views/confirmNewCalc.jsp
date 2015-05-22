@@ -11,6 +11,11 @@
         <c:param name="patientDfn" value="${newPatientDfn}"/>
         <c:param name="force" value="true"/>
     </c:url>
-    <a href="${newCalcUrl}" class="btn-link">Start New Calculation</a>
+    <a href="${newCalcUrl}" id="startNewCalcLink" class="btn-link">Start New Calculation</a>
+    <script type="text/javascript">
+        $("#startNewCalcLink").on("click", function() {
+        	alert('All other risk calculations are no longer valid and should be closed');
+        });
+    </script>
 </section>
 </srcalc:calcPage>
