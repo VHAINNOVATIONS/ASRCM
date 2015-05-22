@@ -178,8 +178,7 @@ public class DiscreteNumericalVariable extends AbstractNumericalVariable impleme
             fRange = Objects.requireNonNull(range);
         }
         
-        @OneToOne
-        @JoinColumn(name = "option_id", nullable = false)
+        @Embedded
         public MultiSelectOption getOption()
         {
             return fOption;
