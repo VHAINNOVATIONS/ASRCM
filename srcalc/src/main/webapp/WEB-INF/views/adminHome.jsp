@@ -26,6 +26,8 @@
     <ul id="newVariableLinks">
     <li><c:url var="newBooleanVar" value="/admin/newBooleanVar" />
         <a href="${newBooleanVar}" class="btn-link">Checkbox</a></li>
+    <li><c:url var="newMultiSelectVar" value="/admin/newMultiSelectVar" />
+        <a href="${newMultiSelectVar}" class="btn-link">Radio</a></li>
     </ul>
 </section>
 </srcalc:adminPage>

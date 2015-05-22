@@ -168,8 +168,17 @@ form.srcalcForm fieldset > ol > li {
 	margin: 5px 0;
 }
 
-form.srcalcForm label.radioLabel {
+/* Put some horizontal padding between radio buttons */
+form.srcalcForm label.radioLabel,
+/* Spring wraps the generated radios in a <span>. (This is documented.) */
+form.srcalcForm .springGeneratedRadios > span {
 	padding-right: 1em;
+}
+
+/* Spring-generated radio buttons don't put any space between the radio and the
+   label, so insert some ourselves. */
+input[type="radio"].springFormGenerated {
+	margin-right: 2px;
 }
 
 form.srcalcForm .error {
@@ -355,6 +364,11 @@ ul#newVariableLinks {
 	/* The helpText text area is wide. Don't try to put anything else on the
 	   same line. */
 	display: block;
+}
+
+#variableEditForm ol#multiSelectOptions {
+	margin: 0;
+	padding-left: 1em;
 }
 
 

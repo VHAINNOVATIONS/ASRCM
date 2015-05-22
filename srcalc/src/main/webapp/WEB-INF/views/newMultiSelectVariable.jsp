@@ -19,6 +19,31 @@
         include the common properties here.
         --%>
         <%@ include file="fragments/commonEditVariableProperties.jspf" %>
+        <tr>
+        <td>Display Type:</td>
+        <td>
+            <span class="springGeneratedRadios">
+            <form:radiobuttons cssClass="springFormGenerated" path="displayType" items="${variable.allDisplayTypes}"/>
+            </span>
+        </td>
+        </tr>
+        <tr>
+        <td>Options:</td>
+        <td>
+            <%-- Display any overall errors --%><form:errors path="options" cssClass="error" />
+            <ol id="multiSelectOptions">
+            <%--
+            Insert the existing options. Javascript will handle adding/removing
+            as the user desires.
+            --%>
+            <c:set var="i" value="0" />
+            <c:forEach items="${variable.options}">
+            <li><form:input path="options[${i}]"/> <form:errors path="options[${i}]" cssClass="error"/></li>
+            <c:set var="i" value="${i+1}" />
+            </c:forEach>
+            </ol>
+        </td>
+        </tr>
     </tbody>
     </table>
     <div class="actionButtons">

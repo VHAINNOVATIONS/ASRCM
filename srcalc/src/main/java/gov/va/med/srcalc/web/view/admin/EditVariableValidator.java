@@ -1,7 +1,8 @@
 package gov.va.med.srcalc.web.view.admin;
 
 import gov.va.med.srcalc.domain.model.AbstractVariable;
-import gov.va.med.srcalc.domain.model.Variable;
+import gov.va.med.srcalc.util.ValidationCodes;
+import gov.va.med.srcalc.util.ValidationUtils2;
 
 import org.springframework.validation.*;
 
@@ -11,26 +12,6 @@ import org.springframework.validation.*;
  */
 public class EditVariableValidator implements Validator
 {
-    /**
-     * Error code used when a required value is not provided.
-     */
-    public static final String ERROR_NO_VALUE = "noInput";
-
-    /**
-     * Error code used when a String value is longer than the maximum length.
-     */
-    public static final String ERROR_TOO_LONG = "tooLong";
-    
-    /**
-     * Error code used when an invalid value is given for a multi-select option.
-     */
-    public static final String ERROR_INVALID_OPTION = "invalidOption";
-    
-    /**
-     * Error code used when a String value contains invalid characters.
-     */
-    public static final String ERROR_INVALID_CONTENTS = "invalidContents";
-    
     /**
      * Returns true if, and only if, the given class is {@link EditVariable} or
      * a subclass.
@@ -42,6 +23,7 @@ public class EditVariableValidator implements Validator
     }
 
     /**
+     * Validates the given object, using error codes from {@link ValidationCodes}.
      * @param obj the object to validate. Must be an instance of {@link EditVariable}.
      * @throws ClassCastException if the given object is not an EditVariable
      */
@@ -52,62 +34,28 @@ public class EditVariableValidator implements Validator
         final EditVariable editVariable = (EditVariable)obj;
         
         // Validate variable key constraints. See AbstractVariable.getKey().
-        ValidationUtils.rejectIfEmpty(e, "key", ERROR_NO_VALUE);
-        final String key = editVariable.getKey();
-        if (key.length() > AbstractVariable.KEY_MAX)
-        {
-            e.rejectValue(
-                    "key",
-                    ERROR_TOO_LONG,
-                    new Object[] {AbstractVariable.KEY_MAX},
-                    "The key is too long.");
-        }
-        if (!AbstractVariable.VALID_KEY_PATTERN.matcher(key).matches())
-        {
-            e.rejectValue(
-                    "key",
-                    ERROR_INVALID_CONTENTS,
-                    new Object[] {AbstractVariable.VALID_KEY_CHARACTERS},
-                    "invalid characters in string");
-        }
+        ValidationUtils.rejectIfEmpty(e, "key", ValidationCodes.NO_VALUE);
+        ValidationUtils2.rejectIfTooLong(e, "key", AbstractVariable.KEY_MAX);
+        ValidationUtils2.rejectIfDoesntMatch(
+                e, "key", AbstractVariable.VALID_KEY_PATTERN,
+                new Object[] {AbstractVariable.VALID_KEY_CHARACTERS});
 
         // Validate displayName constraints. See
         // AbstractVariable.setDisplayName().
-        ValidationUtils.rejectIfEmpty(e, "displayName", ERROR_NO_VALUE);
-        final String displayName = editVariable.getDisplayName();
-        if (displayName.length() > AbstractVariable.DISPLAY_NAME_MAX)
-        {
-            e.rejectValue(
-                    "displayName",
-                    ERROR_TOO_LONG,
-                    new Object[] {AbstractVariable.DISPLAY_NAME_MAX},
-                    "The display name is too long.");
-        }
-        if (!AbstractVariable.VALID_DISPLAY_NAME_PATTERN.matcher(displayName).matches())
-        {
-            e.rejectValue(
-                    "displayName",
-                    ERROR_INVALID_CONTENTS,
-                    new Object[] {AbstractVariable.VALID_DISPLAY_NAME_CHARACTERS},
-                    "invalid characters in string");
-        }
+        ValidationUtils.rejectIfEmpty(e, "displayName", ValidationCodes.NO_VALUE);
+        ValidationUtils2.rejectIfTooLong(e, "displayName", AbstractVariable.DISPLAY_NAME_MAX);
+        ValidationUtils2.rejectIfDoesntMatch(
+                e, "displayName", AbstractVariable.VALID_DISPLAY_NAME_PATTERN,
+                new Object[] {AbstractVariable.VALID_DISPLAY_NAME_CHARACTERS});
         
         // Ensure we have a valid VariableGroup ID.
         if (!editVariable.getGroup().isPresent())
         {
-            e.rejectValue("groupId", ERROR_INVALID_OPTION);
+            e.rejectValue("groupId", ValidationCodes.INVALID_OPTION);
         }
         
         // Validate helpText constraints. See AbstractVariable.setHelpText().
-        final String helpText = editVariable.getHelpText();
-        if (helpText.length() > Variable.HELP_TEXT_MAX)
-        {
-            e.rejectValue(
-                    "helpText",
-                    ERROR_TOO_LONG,
-                    new Object[] {Variable.HELP_TEXT_MAX},
-                    "too long");
-        }
+        ValidationUtils2.rejectIfTooLong(e, "helpText", AbstractVariable.HELP_TEXT_MAX);
     }
     
 }
