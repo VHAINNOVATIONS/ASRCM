@@ -41,6 +41,19 @@ public final class EditVariableValidatorTest
     }
     
     @Test
+    public final void testKeyEmpty()
+    {
+        final EditVariable ev = makeEditVariable();
+        ev.setKey("");
+        final BindingResult errors = validate(ev);
+        
+        assertEquals(1, errors.getErrorCount());
+        assertEquals(
+                EditVariableValidator.ERROR_NO_VALUE,
+                errors.getFieldError("key").getCode());
+    }
+    
+    @Test
     public final void testKeyTooLong()
     {
         final EditVariable ev = makeEditVariable();
@@ -64,6 +77,19 @@ public final class EditVariableValidatorTest
         assertEquals(
                 EditVariableValidator.ERROR_INVALID_CONTENTS,
                 errors.getFieldError("key").getCode());
+    }
+    
+    @Test
+    public final void testDisplayNameEmpty()
+    {
+        final EditVariable ev = makeEditVariable();
+        ev.setDisplayName("");
+        final BindingResult errors = validate(ev);
+        
+        assertEquals(1, errors.getErrorCount());
+        assertEquals(
+                EditVariableValidator.ERROR_NO_VALUE,
+                errors.getFieldError("displayName").getCode());
     }
 
     @Test
