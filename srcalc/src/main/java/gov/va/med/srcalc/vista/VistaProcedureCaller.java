@@ -57,6 +57,19 @@ public interface VistaProcedureCaller
             final List<String> outcomes);
     
     /**
+     * A special-purpose method to call {@link RemoteProcedure#GET_LABS}
+     * because it requires a List parameter.
+     * @param duz the calling user's DUZ
+     * @param patientDfn the associated patient's DFN
+     * @param labNames the list of potential lab names to retrieve results for
+     * @return
+     */
+    public String doRetrieveLabs(
+            final String duz,
+            final String patientDfn,
+            final List<String> labNames);
+    
+    /**
      * Returns the division identifier (including any suffix) for the target
      * VistA.
      */

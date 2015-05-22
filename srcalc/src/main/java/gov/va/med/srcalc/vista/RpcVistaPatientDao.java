@@ -64,55 +64,66 @@ public class RpcVistaPatientDao implements VistaPatientDao
     public Patient getPatient(final int dfn)
     {
         final List<String> basicResults;
-        	basicResults = fProcedureCaller.doRpc(
-                fDuz, RemoteProcedure.GET_PATIENT, String.valueOf(dfn));
+        basicResults = fProcedureCaller.doRpc(fDuz, RemoteProcedure.GET_PATIENT, String.valueOf(dfn));
         final List<String> vitalResults;
-        	vitalResults = fProcedureCaller.doRpc(
-        			fDuz, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(dfn));
-    	try
-    	{
-	        // Fields are separated by '^'
-    		// Basic patient demographics (age, gender)
-	        final String[] basicArray = basicResults.get(0).split("\\^");
-	        final String patientName = basicArray[0];
-	        final int patientAge = Integer.parseInt(basicArray[1]);
-	        final String patientGender = translateFromVista(basicArray[2]);
-	        final Patient patient = new Patient(dfn, patientName, patientGender, patientAge);
-	        // Patient vitals information (including but not limited to BMI, height, weight, weight 6 months ago)
-	        // If there are no results, a single line with an error message is returned.
-	        fLogger.debug("Patient Vital Results: {}" ,vitalResults);
-	        if(vitalResults.size() > 1)
-	        {
-	        	// Parse the returned data and put it into the patient data
-	        	// This will include the most recent height, current weight, and BMI
-	        	parseRecentVitalResults(patient, vitalResults);
-	        }
-	        
-	        // We have to get the current weight before we do this
-	        // If there was no current weight, no need to retrieve other weight
-	        if(patient.getWeight() != null)
-	        {
-	        	final List<String> weightResults = retrieveWeight6MonthsAgo(patient);
-	        	fLogger.debug("Weight Results: {}", weightResults);
-	        	// A line begging with "0^NO" means that no results were retrieved
-	        	// The actual line varies depending on the vital requested.
-		        if(weightResults.size() > 0 && !weightResults.get(0).equals(NO_WEIGHT))
-	        	{
-		        	fLogger.debug("Patient Vital Results: {}",weightResults);
-		        	// Parse the returned data and put it into the patient data
-		        	// This includes weight and BMI currently.
-		        	parseWeightResults(patient, weightResults);
-	        	}
-	        }
-	        fLogger.debug("Loaded {} from VistA.", patient);
-	        return patient;
-    	}
-    	catch(final Exception e)
-    	{
-    		// There are many DataAccessExcpeionts, but this seems like 
-    		// the most appropriate exception to throw here.
-    		throw new NonTransientDataAccessResourceException(e.getMessage(), e);
-    	}
+        vitalResults = fProcedureCaller.doRpc(fDuz, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(dfn));
+        try
+        {
+            // Fields are separated by '^'
+            // Basic patient demographics (age, gender)
+            final String[] basicArray = basicResults.get(0).split("\\^");
+            final String patientName = basicArray[0];
+            final int patientAge = Integer.parseInt(basicArray[1]);
+            final String patientGender = translateFromVista(basicArray[2]);
+            final Patient patient = new Patient(dfn, patientName, patientGender, patientAge);
+            // Patient vitals information (including but not limited to BMI, height, weight, weight 6 months ago)
+            // If there are no results, a single line with an error message is returned.
+            fLogger.debug("Patient Vital Results: {}", vitalResults);
+            if (vitalResults.size() > 1)
+            {
+                // Parse the returned data and put it into the patient data
+                // This will include the most recent height, current weight, and BMI
+                parseRecentVitalResults(patient, vitalResults);
+            }
+            
+            // We have to get the current weight before we do this
+            // If there was no current weight, no need to retrieve other weight
+            if (patient.getWeight() != null)
+            {
+                final List<String> weightResults = retrieveWeight6MonthsAgo(patient);
+                fLogger.debug("Weight Results: {}", weightResults);
+                // A line begging with "0^NO" means that no results were retrieved
+                // The actual line varies depending on the vital requested.
+                if (weightResults.size() > 0 && !weightResults.get(0).equals(NO_WEIGHT))
+                {
+                    fLogger.debug("Patient Vital Results: {}", weightResults);
+                    // Parse the returned data and put it into the patient data
+                    // This includes weight and BMI currently.
+                    parseWeightResults(patient, weightResults);
+                }
+            }
+            
+            // Retrieve all available labs from VistA
+            // for each lab, submit an RPC and add it to the patient's map of labs
+            // use the defined list of lab names to submit
+            for(final List<String> labNameList: LAB_NAME_MAP)
+            {
+                for(final String labName: labNameList)
+                {
+                    // Build the 
+                }
+                fProcedureCaller.doRpc(duz, procedure, args);
+            }
+            
+            fLogger.debug("Loaded {} from VistA.", patient);
+            return patient;
+        }
+        catch (final Exception e)
+        {
+            // There are many DataAccessExcpeionts, but this seems like
+            // the most appropriate exception to throw here.
+            throw new NonTransientDataAccessResourceException(e.getMessage(), e);
+        }
     }
     
     private static String translateFromVista(final String vistaField)
@@ -212,7 +223,4 @@ public class RpcVistaPatientDao implements VistaPatientDao
             throw new RecoverableDataAccessException(e.getMessage(), e);
         }
     }
-    
-//    @Override
-//    public Map<String, Double>
 }

@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain;
 import gov.va.med.srcalc.util.RetrievedValue;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -24,6 +25,7 @@ public class Patient implements Serializable
     private RetrievedValue fWeight;
     private RetrievedValue fWeight6MonthsAgo;
     private RetrievedValue fHeight;
+    private Map<String, RetrievedValue> fLabs;
     
     public Patient()
     {
@@ -144,6 +146,16 @@ public class Patient implements Serializable
     public void setHeight(final RetrievedValue height)
     {
         this.fHeight = height;
+    }
+    
+    public Map<String,RetrievedValue> getLabs()
+    {
+        return fLabs;
+    }
+    
+    public void setLabs(final Map<String, RetrievedValue> labs)
+    {
+        fLabs = labs;
     }
     
     @Override

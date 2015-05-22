@@ -276,4 +276,19 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
         // We assume only one line in this response.
         return doRpc(duz, req).get(0);
     }
+    
+    @Override
+    public String doRetrieveLabs(
+            final String duz,
+            final String patientDfn,
+            final List<String> labNames)
+    {
+        final RpcRequest req = makeRequestObject(RemoteProcedure.GET_LABS);
+        
+        setStringParam(req.getParams(), 1, patientDfn);
+        setArrayParam(req.getParams(), 2, labNames);
+        
+        // We assume only one line in this response.
+        return doRpc(duz, req).get(0);
+    }
 }
