@@ -54,7 +54,9 @@ called 'variable'.
         <tr>
         <td class="attributeName">VistA Value:</td>
         <td>
-            <%-- There are no retrievers for Boolean variables. --%>
-            <select><option>N/A</option></select>
+            <form:select path="retriever">
+                <form:option value="" label="N/A"></form:option>
+                <form:options items="${variable.allRetrievers}" />
+            </form:select>
         </td>
         </tr>

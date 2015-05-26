@@ -2,6 +2,7 @@ package gov.va.med.srcalc.web.view.admin;
 
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.MockModelService;
+import gov.va.med.srcalc.util.RetrievalEnum;
 import gov.va.med.srcalc.web.view.admin.EditBooleanVariable;
 import gov.va.med.srcalc.web.view.admin.EditVariable;
 
@@ -29,6 +30,7 @@ public class EditVariableTest
         assertEquals(Variable.KEY_MAX, ev.getKeyMax());
         assertEquals(Variable.DISPLAY_NAME_MAX, ev.getDisplayNameMax());
         assertEquals(fModelService.getAllVariableGroups(), ev.getAllGroups());
+        assertEquals(0, ev.getAllRetrievers().size());
     }
 
     @Test
@@ -61,6 +63,18 @@ public class EditVariableTest
         ev.setGroupId(90);
         
         assertFalse("Optional should not contain a group", ev.getGroup().isPresent());
+    }
+    
+    @Test(expected = IllegalStateException.class)
+    public final void testSetRetrieverInvalid()
+    {
+        // Use an EditBooleanVariable to test since it is a very basic
+        // implementation of EditVariable.
+        final EditVariable ev = new EditBooleanVariable(SampleModels.dnrVariable(), fModelService);
+        
+        ev.setRetriever(RetrievalEnum.BMI);
+        
+        ev.buildNew();
     }
     
     @Test

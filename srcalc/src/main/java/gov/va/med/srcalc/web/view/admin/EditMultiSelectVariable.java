@@ -8,6 +8,7 @@ import com.google.common.collect.*;
 
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.ModelInspectionService;
+import gov.va.med.srcalc.util.RetrievalEnum;
 import gov.va.med.srcalc.web.view.Views;
 
 /**
@@ -47,6 +48,12 @@ public class EditMultiSelectVariable extends EditVariable
     public String getNewViewName()
     {
         return Views.NEW_MULTI_SELECT_VARIABLE;
+    }
+    
+    @Override
+    public ImmutableSortedSet<RetrievalEnum> getAllRetrievers()
+    {
+        return ImmutableSortedSet.of(RetrievalEnum.GENDER);
     }
     
     /**

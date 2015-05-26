@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.MockModelService;
+import gov.va.med.srcalc.util.RetrievalEnum;
 import gov.va.med.srcalc.web.view.Views;
 
 import org.junit.Test;
@@ -69,6 +70,7 @@ public class EditMultiSelectVariableTest
                 new MultiSelectOption(options.get(0)),
                 new MultiSelectOption(options.get(1)),
                 new MultiSelectOption(options.get(2)));
+        final RetrievalEnum retriever = RetrievalEnum.GENDER;
         
         // Behavior
         final EditMultiSelectVariable ev = new EditMultiSelectVariable(fModelService);
@@ -79,6 +81,8 @@ public class EditMultiSelectVariableTest
         ev.setDisplayType(displayType);
         ev.getOptions().clear();
         ev.getOptions().addAll(options);
+        ev.setRetriever(retriever);
+        assertEquals(retriever, ev.getRetriever());
         final MultiSelectVariable createdVariable = ev.buildNew();
         
         // Verification
@@ -88,6 +92,7 @@ public class EditMultiSelectVariableTest
         assertEquals(helpText, createdVariable.getHelpText().get());
         assertEquals(displayType, createdVariable.getDisplayType());
         assertEquals(multiSelectOptions, createdVariable.getOptions());
+        assertEquals(retriever, createdVariable.getRetriever());
     }
     
 }
