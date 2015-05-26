@@ -39,7 +39,7 @@ INSERT INTO VARIABLE_GROUP (id, name, display_order) VALUES (7, 'Clinical Condit
 -- *** Variables ***
 
 -- Cardiac Gender
-INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group, help_text) VALUES (1, 'Gender', 'gender', 1, 2, 'The Patient Gender');
+INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group, help_text) VALUES (1, 'Gender', 'gender', 0, 2, 'The Patient Gender');
 INSERT INTO MULTI_SELECT_VARIABLE (id, display_type) VALUES (1, 'Radio');
 -- Intentionally reverse Female and Male to verify display order.
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_value, option_index) VALUES (1, 'Female', 1);
@@ -57,7 +57,7 @@ INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VAL
 INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (6, 3, 3.6);
 
 -- Age
-INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group, help_text) VALUES (2, 'Age', 'age', 2, 2, 'The Patient Age');
+INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group, help_text) VALUES (2, 'Age', 'age', 1, 2, 'The Patient Age');
 -- There is not really an upper limit on age, but specify an unrealistically high
 -- one to have some idea of significant digits.
 INSERT INTO NUMERICAL_VARIABLE (id, min_value, min_inclusive, max_value, max_inclusive, units) VALUES (2, 18, TRUE, 120, TRUE, 'years');

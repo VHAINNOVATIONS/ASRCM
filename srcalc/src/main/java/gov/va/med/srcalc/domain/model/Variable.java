@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.util.RetrievalEnum;
+
 import com.google.common.base.Optional;
 
 /**
@@ -92,10 +94,12 @@ public interface Variable
     public Optional<String> getHelpText();
     
     /**
-     * Returns a key that is used to translate vista retrieved values to
-     * variable keys. Retrieval keys do not have to be unique.
+     * Returns the RetrievalEnum that is used to translate VistA retrieved
+     * values to variable keys. Multiple variables may use the same retriever.
+     * 
+     * @return possibly null
      */
-    public Integer getRetrievalKey();
+    public RetrievalEnum getRetriever();
     
     /**
      * Should not be persisted to the database, as the retrieval date comes from

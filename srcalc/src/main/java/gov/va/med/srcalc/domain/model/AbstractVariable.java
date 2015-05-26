@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.util.Preconditions;
+import gov.va.med.srcalc.util.RetrievalEnum;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -49,7 +50,7 @@ public abstract class AbstractVariable implements Variable
     private VariableGroup fGroup;
     private Optional<String> fHelpText;
     private String fKey;
-    private Integer fRetrievalKey;
+    private RetrievalEnum fRetrievalKey;
     private String fRetrievalDateString;
 
     /**
@@ -222,15 +223,14 @@ public abstract class AbstractVariable implements Variable
     }
     
     @Basic
-    @Column(
-            length = KEY_MAX,
-            nullable = true)
-    public final Integer getRetrievalKey()
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "retrieval_key", nullable = true)
+    public final RetrievalEnum getRetriever()
     {
     	return fRetrievalKey;
     }
     
-    public final void setRetrievalKey(final Integer retrievalKey)
+    public final void setRetriever(final RetrievalEnum retrievalKey)
     {
     	this.fRetrievalKey = retrievalKey;
     }
