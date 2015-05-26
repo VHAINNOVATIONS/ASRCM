@@ -54,6 +54,7 @@ public final class Procedure
     }
 
     @Id // We use method-based property detection throughout the app.
+    @GeneratedValue
     public int getId()
     {
         return fId;
