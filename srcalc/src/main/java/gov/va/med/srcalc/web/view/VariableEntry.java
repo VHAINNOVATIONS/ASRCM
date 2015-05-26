@@ -54,25 +54,24 @@ public class VariableEntry
      * the variables and automatically retrieved values for other variables.
      */
     public static VariableEntry withRetrievedValues(final Collection<? extends Variable> variables,
-    		final Patient patient)
+            final Patient patient)
     {
-    	final VariableEntry variableEntry = new VariableEntry(variables);
-    	// Only get the enum array once to cut down on the computation of building an array
-    	final RetrievalEnum[] retrievalValues = RetrievalEnum.values();
+        final VariableEntry variableEntry = new VariableEntry(variables);
+        // Only get the enum array once to cut down on the computation of building an array
+        final RetrievalEnum[] retrievalValues = RetrievalEnum.values();
         for (final Variable v : variables)
         {
-        	// Must be tested before the switch statement, as null cannot be used
-        	// in a switch statement.
-        	if(v.getRetrievalKey() == null)
-        	{
-        		continue;
-        	}
-        	String key = v.getKey();
-        	if(v instanceof DiscreteNumericalVariable)
-        	{
-        		key += "$numerical";
-        	}
-        	retrievalValues[v.getRetrievalKey()-1].execute(patient, variableEntry, v, key);
+            // Ensure the variable actually has a retrieval key.
+            if (v.getRetrievalKey() == null)
+            {
+                continue;
+            }
+            String key = v.getKey();
+            if (v instanceof DiscreteNumericalVariable)
+            {
+                key += "$numerical";
+            }
+            retrievalValues[v.getRetrievalKey() - 1].execute(patient, variableEntry, v, key);
         }
         return variableEntry;
     }

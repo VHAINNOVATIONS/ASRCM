@@ -103,17 +103,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 }
             }
             
-            // Retrieve all available labs from VistA
-            // for each lab, submit an RPC and add it to the patient's map of labs
-            // use the defined list of lab names to submit
-            for(final List<String> labNameList: LAB_NAME_MAP)
-            {
-                for(final String labName: labNameList)
-                {
-                    // Build the 
-                }
-                fProcedureCaller.doRpc(duz, procedure, args);
-            }
+            // Retrieve all labs from VistA
+            retrieveLabs(dfn, patient);
             
             fLogger.debug("Loaded {} from VistA.", patient);
             return patient;
@@ -125,7 +116,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
             throw new NonTransientDataAccessResourceException(e.getMessage(), e);
         }
     }
-    
+
     private static String translateFromVista(final String vistaField)
     {
     	if(TRANSLATION_MAP.containsKey(vistaField))
@@ -183,6 +174,28 @@ public class RpcVistaPatientDao implements VistaPatientDao
     	patient.setBmi(new RetrievedValue(
     	    Double.parseDouble(bmiLineTokens[bmiLineTokens.length-2]),
     	    patient.getWeight().getMeasureDate()));
+    }
+    
+    private void retrieveLabs(final int dfn, final Patient patient) throws ParseException
+    {
+        final LabRetrievalEnum[] enumValues = LabRetrievalEnum.values();
+        for(final LabRetrievalEnum labNameList: enumValues)
+        {
+            final String rpcResultString = fProcedureCaller.doRetrieveLabs(
+                    fDuz,
+                    String.valueOf(dfn),
+                    labNameList.getPossibleLabNames());
+            // If the resultString is a success, add it to the patient's lab data.
+            // Else, we don't need to do anything.
+            if(!rpcResultString.isEmpty())
+            {
+                final String[] rpcSplit = rpcResultString.split("\\^");
+                final double labValue = Double.parseDouble(rpcSplit[1]);
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy@HHmm");
+                patient.getLabs().put(labNameList.name(),
+                        new RetrievedValue(labValue,format.parse(rpcSplit[2])));
+            }
+        }
     }
     
     @Override

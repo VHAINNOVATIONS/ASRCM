@@ -84,6 +84,17 @@ public enum RetrievalEnum
         {
             variableEntry.getDynamicValues().put(key, String.valueOf(patient.getAge()));
         }
+    },
+    ALBUMIN
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            final RetrievedValue value = patient.getLabs().get("ALBUMIN");
+            variableEntry.getDynamicValues().put(key, String.valueOf(value.getValue()));
+            variable.setRetrievalDateString(VariableEntry.makeRetrievalMessage(value.getMeasureDate()));
+        }
     };
     
     public abstract void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,

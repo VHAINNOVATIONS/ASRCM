@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain;
 import gov.va.med.srcalc.util.RetrievedValue;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -37,6 +38,7 @@ public class Patient implements Serializable
         this.fName = name;
         this.fGender = gender;
         this.fAge = age;
+        this.fLabs = new HashMap<String, RetrievedValue>();
     }
     
     /**
