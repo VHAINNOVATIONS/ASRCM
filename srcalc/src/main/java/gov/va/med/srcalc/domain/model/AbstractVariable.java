@@ -76,6 +76,7 @@ public abstract class AbstractVariable implements Variable
      * The object's surrogate primary key. Don't show this to the user.
      */
     @Id
+    @GeneratedValue
     public final int getId()
     {
         return fId;

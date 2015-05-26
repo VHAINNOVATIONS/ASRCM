@@ -5,15 +5,7 @@ import gov.va.med.srcalc.util.MissingValuesException;
 
 import java.util.*;
 
-import javax.persistence.Basic;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.springframework.expression.Expression;
 import org.springframework.expression.ParseException;
@@ -70,6 +62,7 @@ public final class Rule
      * The object's surrogate primary key. Don't show this to the user.
      */
     @Id
+    @GeneratedValue
     public int getId()
     {
         return fId;
