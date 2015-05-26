@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Proxy;
+
 import com.google.common.base.Optional;
 
 /**
@@ -17,6 +19,16 @@ import com.google.common.base.Optional;
 @Inheritance(strategy = InheritanceType.JOINED)
 // This is the base variable entity so name the table accordingly.
 @Table(name = "variable")
+/*
+ * Hibernate, by default, generates proxies of entity classes to support lazy
+ * association fetching. The below "final" methods cause Hibernate to log errors
+ * when attempting to generate these proxies. Since all subclasses are final
+ * anyway, just prohibit the proxy generation.
+ * 
+ * Since this application is not database-heavy, we do not need lazy association
+ * fetching anyway.
+ */
+@Proxy(lazy = false)
 public abstract class AbstractVariable implements Variable
 {
     /**

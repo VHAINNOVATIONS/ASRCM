@@ -3,7 +3,11 @@ package gov.va.med.srcalc.domain.model;
 import com.google.common.base.Optional;
 
 /**
- * A model variable. Just the variable, does not store an inputted value.
+ * <p>A model variable. Just the variable, does not store an inputted value.</p>
+ * 
+ * <p>This interface exists simply to permit subtype interfaces such as
+ * {@link DiscreteVariable}. See {@link AbstractVariable} for the canonical
+ * implementation of this interface.</p>
  */
 public interface Variable
 {

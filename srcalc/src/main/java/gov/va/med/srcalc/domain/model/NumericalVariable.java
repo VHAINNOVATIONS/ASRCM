@@ -6,10 +6,13 @@ import gov.va.med.srcalc.domain.calculation.Value;
 import javax.persistence.*;
 
 /**
- * A Variable with numerical (floating-point) value.
+ * <p>A Variable with numerical (floating-point) value.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
  */
 @Entity
-public class NumericalVariable extends AbstractNumericalVariable
+public final class NumericalVariable extends AbstractNumericalVariable
 {
     /**
      * For reflection-based construction only. Business code should use

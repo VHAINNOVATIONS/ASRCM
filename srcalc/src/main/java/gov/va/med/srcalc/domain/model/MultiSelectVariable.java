@@ -7,8 +7,14 @@ import java.util.*;
 
 import javax.persistence.*;
 
+/**
+ * <p>A Variable that allows selection from one of multiple discrete options.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
+ */
 @Entity
-public class MultiSelectVariable extends AbstractVariable implements DiscreteVariable
+public final class MultiSelectVariable extends AbstractVariable implements DiscreteVariable
 {
     public enum DisplayType
     {
@@ -54,7 +60,7 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
     
     @Basic
     @Enumerated(EnumType.STRING)  // store as strings in the DB for user-friendliness
-    public final DisplayType getDisplayType()
+    public DisplayType getDisplayType()
     {
         return fDisplayType;
     }
@@ -64,7 +70,7 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
      * @throws NullPointerException if the given value is null. (Yes, you can
      * pass a null value for an enum.)
      */
-    public final void setDisplayType(final DisplayType displayType)
+    public void setDisplayType(final DisplayType displayType)
     {
         fDisplayType = Objects.requireNonNull(displayType, "display type must not be null");
     }
@@ -79,7 +85,7 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
     @CollectionTable(
             name = "multi_select_variable_option",
             joinColumns = @JoinColumn(name = "variable_id"))
-    public final List<MultiSelectOption> getOptions()
+    public List<MultiSelectOption> getOptions()
     {
         return fOptions;
     }
