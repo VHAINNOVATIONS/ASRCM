@@ -226,7 +226,7 @@ public abstract class EditVariable
      * @throws IllegalStateException if the key to set doesn't already match
      * the variable's key
      */
-    protected void applyBaseProperties(final AbstractVariable var)
+    protected final void applyBaseProperties(final AbstractVariable var)
     {
         if (!Objects.equals(fKey, var.getKey()))
         {

@@ -11,7 +11,7 @@ public class ValidationCodes
     public static final String NO_VALUE = "noInput";
 
     /**
-     * Error code used when a String value is longer than the maximum length.
+     * Error code used when a value is longer than the maximum length.
      */
     public static final String TOO_LONG = "tooLong";
 

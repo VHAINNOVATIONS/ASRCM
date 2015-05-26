@@ -352,10 +352,20 @@ a.openProcedureSelect {
 	text-decoration: none;
 }
 
-ul#newVariableLinks {
+div#newVariableLinks {
+	margin-top: 1em;
+}
+
+#newVariableLinks ul {
+	/* Put a small margin between the label and the list itself. */
+	margin-top: 0.5em;
 	/* Display these in a row, not as a bullet list. */
 	list-style-type: none;
 	padding: 0;
+}
+
+#newVariableLinks li {
+	display: inline-block;
 }
 
 /* The edit variable pages */

@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.view.admin;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.*;
 
 import gov.va.med.srcalc.domain.model.*;
@@ -20,7 +21,8 @@ public class EditMultiSelectVariable extends EditVariable
     private final ArrayList<String> fOptions;
     
     /**
-     * Constructs an instance with default values for all properties.
+     * Constructs an instance with default values for all properties. The default
+     * list of options is 3 blanks.
      * @param modelService to provide reference data (e.g., available
      * VariableGroups) to the user
      */
@@ -29,7 +31,7 @@ public class EditMultiSelectVariable extends EditVariable
         super(modelService);
         fDisplayType = MultiSelectVariable.DisplayType.Radio;
         // Start with one blank value for the user to fill out.
-        fOptions = Lists.newArrayList("");
+        fOptions = Lists.newArrayList("", "", "");
     }
     
     @Override
@@ -88,14 +90,44 @@ public class EditMultiSelectVariable extends EditVariable
     }
     
     /**
+     * Like {@link #getOptions()} but with trailing blanks trimmed off. (The
+     * HTTP form submission may create spurious trailing blank options.) The
+     * returned list may still contain empty strings in the middle.
+     * @return an ImmutableList
+     */
+    public final ImmutableList<String> getTrimmedOptions()
+    {
+        // Start with a copy of all the options.
+        final ArrayList<String> trimmed = new ArrayList<>(fOptions);
+        
+        // Iterate from the end, removing as we go.
+        for (int i = fOptions.size() - 1; i >= 0; --i)
+        {
+            if (Strings.isNullOrEmpty(trimmed.get(i)))
+            {
+                trimmed.remove(i);
+            }
+            // Break at the first non-empty String.
+            else
+            {
+                break;
+            }
+        }
+        
+        return ImmutableList.copyOf(trimmed);
+    }
+    
+    /**
      * Returns the options as a List of {@link MultiSelectOption}, the type
-     * needed to actually create the variable.
+     * needed to actually create the variable. Internally uses {@link
+     * #getTrimmedOptions()} to omit any trailing blanks.
      * @return an ImmutableList
      */
     protected ImmutableList<MultiSelectOption> getMultiSelectOptions()
     {
-        final ArrayList<MultiSelectOption> options = new ArrayList<>(fOptions.size());
-        for (final String option : fOptions)
+        final ImmutableList<String> trimmed = getTrimmedOptions();
+        final ArrayList<MultiSelectOption> options = new ArrayList<>(trimmed.size());
+        for (final String option : trimmed)
         {
             options.add(new MultiSelectOption(option));
         }
@@ -113,6 +145,17 @@ public class EditMultiSelectVariable extends EditVariable
                 getKey());
         applyBaseProperties(var);
         return var;
+    }
+    
+    /**
+     * Returns the maximum number of valid options. Note that MultiSelecVariable
+     * itself does not enforce this limit, but enforce it here just because we
+     * need to limit the user input somewhere.
+     * @return 20
+     */
+    public int getMaxOptions()
+    {
+        return 20;
     }
     
 }

@@ -2,7 +2,6 @@ package gov.va.med.srcalc.web.view.admin;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.MockModelService;
 import gov.va.med.srcalc.web.view.Views;
@@ -10,6 +9,7 @@ import gov.va.med.srcalc.web.view.Views;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 public class EditMultiSelectVariableTest
 {
@@ -25,6 +25,32 @@ public class EditMultiSelectVariableTest
         assertThat(ev.getTypeName(), not(isEmptyOrNullString()));
         
         assertEquals(Views.NEW_MULTI_SELECT_VARIABLE, ev.getNewViewName());
+        
+        assertEquals(
+                // Use sets because order doesn't matter.
+                ImmutableSet.copyOf(MultiSelectVariable.DisplayType.values()),
+                ImmutableSet.copyOf(ev.getAllDisplayTypes()));
+        
+        // The constructor specifies that the default list of options is 3 blanks.
+        assertEquals(ImmutableList.of("", "", ""), ev.getOptions());
+        
+        assertEquals(20, ev.getMaxOptions());
+    }
+    
+    @Test
+    public final void testTrimmedOptions()
+    {
+        final ImmutableList<String> fullList =
+                ImmutableList.of("a", "b", "", "c", "");
+        final EditMultiSelectVariable ev = new EditMultiSelectVariable(fModelService);
+        ev.getOptions().clear();
+        ev.getOptions().addAll(fullList);
+        
+        assertEquals(
+                ImmutableList.of("a", "b", "", "c"),
+                ev.getTrimmedOptions());
+        // Ensure getOptions() still returns the full list.
+        assertEquals(fullList, ev.getOptions());
     }
     
     @Test

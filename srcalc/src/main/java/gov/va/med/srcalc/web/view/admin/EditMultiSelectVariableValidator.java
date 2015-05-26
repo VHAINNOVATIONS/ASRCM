@@ -6,6 +6,8 @@ import gov.va.med.srcalc.util.ValidationUtils2;
 
 import org.springframework.validation.*;
 
+import com.google.common.collect.ImmutableList;
+
 /**
  * Validates an {@link EditMultiSelectVariable} object.
  */
@@ -40,16 +42,27 @@ public class EditMultiSelectVariableValidator implements Validator
         ValidationUtils.rejectIfEmpty(
                 errors, "displayType", ValidationCodes.NO_VALUE);
         
-        // Validate options
-        if (editVariable.getOptions().isEmpty())
+        // Validate options. Use the getTrimmedOptions since that is what
+        // getMultiSelectOptions will ultimately use. (That is, trailing blanks
+        // are omitted.)
+        final ImmutableList<String> options = editVariable.getTrimmedOptions();
+        if (options.isEmpty())
         {
             errors.rejectValue(
                     "options",
                     ValidationCodes.NO_VALUE,
                     "No options specified.");
         }
+        else if (options.size() > editVariable.getMaxOptions())
+        {
+            errors.rejectValue(
+                    "options",
+                    ValidationCodes.TOO_LONG,
+                    new Object[] { editVariable.getMaxOptions() },
+                    "too many options");
+        }
         // Iterate using the index here because we need it to specify the field.
-        for (int i = 0; i < editVariable.getOptions().size(); ++i)
+        for (int i = 0; i < options.size(); ++i)
         {
             final String fieldName = String.format("options[%d]", i);
             ValidationUtils.rejectIfEmpty(errors, fieldName, ValidationCodes.NO_VALUE);
