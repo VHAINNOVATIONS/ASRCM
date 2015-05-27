@@ -13,13 +13,7 @@
     <%-- See srcalc.css for why HTML tables. --%>
     <table>
     <tbody>
-        <tr>
-        <td class="attributeName">Internal Key:</td>
-        <td>
-            <form:input path="key" size="${variable.keyMax}" />
-            <form:errors path="key" cssClass="error" />
-        </td>
-        </tr>
+        <%@ include file="fragments/editVariableKey.jspf" %>
         <%--
         Boolean variables only have properties common to all variables. Simply
         include the common properties here.

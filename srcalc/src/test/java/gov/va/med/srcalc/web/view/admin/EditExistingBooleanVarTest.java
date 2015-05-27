@@ -6,7 +6,7 @@ import gov.va.med.srcalc.service.MockModelService;
 
 import org.junit.Test;
 
-public class EditExistingBooleanVariableTest
+public class EditExistingBooleanVarTest
 {
     private final MockModelService fModelService = new MockModelService();
 
@@ -23,8 +23,8 @@ public class EditExistingBooleanVariableTest
         assertNotEquals(newGroup, var.getGroup());
         
         // Operation
-        final EditExistingBooleanVariable ev =
-                new EditExistingBooleanVariable(var, fModelService);
+        final EditExistingBooleanVar ev =
+                new EditExistingBooleanVar(var, fModelService);
         ev.setDisplayName(newDisplayName);
         ev.setHelpText(newHelpText);
         ev.setGroupId(newGroup.getId());
@@ -46,8 +46,8 @@ public class EditExistingBooleanVariableTest
     public final void testApplyKeyChange()
     {
         final BooleanVariable var = SampleModels.dnrVariable();
-        final EditExistingBooleanVariable ev =
-                new EditExistingBooleanVariable(var, fModelService);
+        final EditExistingBooleanVar ev =
+                new EditExistingBooleanVar(var, fModelService);
         ev.setKey("newKey");
         ev.applyToVariable();
     }

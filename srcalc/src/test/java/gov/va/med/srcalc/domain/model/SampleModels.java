@@ -2,6 +2,7 @@ package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 import gov.va.med.srcalc.domain.model.MultiSelectVariable.DisplayType;
+import gov.va.med.srcalc.util.RetrievalEnum;
 
 import java.util.*;
 
@@ -238,7 +239,7 @@ public class SampleModels
                 DisplayType.Radio,
                 options,
                 "gender");
-        var.setRetrievalKey(1);
+        var.setRetriever(RetrievalEnum.GENDER);
         return var;
     }
     
@@ -249,7 +250,7 @@ public class SampleModels
         var.setMinValue(0);
         var.setMaxValue(999);
         var.setUnits("years");
-        var.setRetrievalKey(2);
+        var.setRetriever(RetrievalEnum.AGE);
         return var;
     }
 
@@ -324,7 +325,7 @@ public class SampleModels
         var.setMinInclusive(true);
         var.setMaxValue(120.0f);
         var.setMaxInclusive(true);
-        var.setRetrievalKey(7);
+        var.setRetriever(RetrievalEnum.CARDIAC_AGE);
     	
     	return var;
     }

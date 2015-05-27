@@ -13,14 +13,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A {@link Variable} that ultimately represents one of a finite, discrete
+ * <p>A {@link Variable} that ultimately represents one of a finite, discrete
  * set of values. This is mainly useful for a lab results (e.g., White Blood
  * Count &lt;= 11.0x1000/mm^3 or &gt; 11.0x100/mm^3), but may be used for other
- * numerical values such as Body Mass Index.
+ * numerical values such as Body Mass Index.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
  */
 @Entity
 @Table(name = "discrete_numerical_var")  // slightly abbreviate long table name
-public class DiscreteNumericalVariable extends AbstractNumericalVariable implements DiscreteVariable
+public final class DiscreteNumericalVariable extends AbstractNumericalVariable
+    implements DiscreteVariable
 {
     private static final Logger fLogger = LoggerFactory.getLogger(DiscreteNumericalVariable.class);
     

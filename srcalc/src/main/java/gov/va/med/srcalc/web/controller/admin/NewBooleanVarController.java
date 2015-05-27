@@ -45,15 +45,15 @@ public class NewBooleanVarController extends NewVarController
     }
     
     @Override
-    protected EditBooleanVariable createEditVariable()
+    protected EditBooleanVar createEditVar()
     {
-        fLogger.trace("Creating EditBooleanVariable.");
-        return new EditBooleanVariable(getAdminService());
+        fLogger.trace("Creating EditBooleanVar.");
+        return new EditBooleanVar(getAdminService());
     }
     
     @Override
     protected Iterable<Validator> getValidators()
     {
-        return ImmutableList.<Validator>of(new EditVariableValidator());
+        return ImmutableList.<Validator>of(new EditVarValidator());
     }
 }

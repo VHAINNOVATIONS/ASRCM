@@ -21,11 +21,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+/**
+ * Tests the various NewVarControllers, e.g. {@link NewBooleanVarController} and
+ * {@link NewMultiSelectVarController}.
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.
 @ContextConfiguration({"/srcalc-context.xml", "/srcalc-controller.xml", "/test-context.xml"})
 @Transactional // run each test in its own (rolled-back) transaction
-public class NewBooleanVarControllerIT extends IntegrationTest
+public class NewVarControllerIT extends IntegrationTest
 {
     @Autowired
     WebApplicationContext fWac;
@@ -42,13 +46,13 @@ public class NewBooleanVarControllerIT extends IntegrationTest
     }
 
     @Test
-    public final void testNewVariableValid() throws Exception
+    public final void testNewBooleanValid() throws Exception
     {
         final String key = "testNewVariableValidKey";
 
         fMockMvc.perform(get(NewBooleanVarController.BASE_URL))
             .andExpect(status().isOk())
-            .andExpect(model().attribute("variable", hasProperty("key")));
+            .andExpect(model().attribute(NewVarController.ATTRIBUTE_VARIABLE, hasProperty("key")));
         
         fMockMvc.perform(post(NewBooleanVarController.BASE_URL)
                 .param("key", key)
@@ -58,16 +62,47 @@ public class NewBooleanVarControllerIT extends IntegrationTest
             .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
         
         // Verify that the variable was actually created. Individual properties
-        // are tested in EditBooleanVariableTest.
+        // are tested in EditBooleanVarTest.
         assertEquals(key, fAdminService.getVariable(key).getKey());
     }
     
     @Test
-    public final void testNewVariableNoDisplayName() throws Exception
+    public final void testNewBooleanNoDisplayName() throws Exception
     {
         fMockMvc.perform(post(NewBooleanVarController.BASE_URL)
                 .param("key", "newKey")
                 .param("helpText", "myHelpText")
+                .param("groupId", "1"))
+            .andExpect(model().attributeHasErrors(NewVarController.ATTRIBUTE_VARIABLE));
+    }
+    
+    @Test
+    public final void testNewMultiSelectValid() throws Exception
+    {
+        final String key = "testNewMsVarValidKey";
+        
+        fMockMvc.perform(get(NewMultiSelectVarController.BASE_URL))
+            .andExpect(status().isOk())
+            .andExpect(model().attribute(NewVarController.ATTRIBUTE_VARIABLE, hasProperty("key")));
+        
+        fMockMvc.perform(post(NewMultiSelectVarController.BASE_URL)
+                .param("key", key)
+                .param("displayName", "myDisplayName")
+                .param("groupId", "1")
+                .param("options[0]", "option1"))
+            .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+        
+        // Verify that the variable was actually created. Individual properties
+        // are tested in EditMultiSelectVarTest.
+        assertEquals(key, fAdminService.getVariable(key).getKey());
+    }
+    
+    @Test
+    public final void testNewMultiSelectNoOptions() throws Exception
+    {
+        fMockMvc.perform(post(NewMultiSelectVarController.BASE_URL)
+                .param("key", "validKey")
+                .param("displayName", "validDisplayName")
                 .param("groupId", "1"))
             .andExpect(model().attributeHasErrors(NewVarController.ATTRIBUTE_VARIABLE));
     }

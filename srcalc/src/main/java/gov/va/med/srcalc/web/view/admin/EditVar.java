@@ -8,12 +8,16 @@ import com.google.common.collect.ImmutableSortedSet;
 
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.ModelInspectionService;
+import gov.va.med.srcalc.util.RetrievalEnum;
 
 /**
- * Stores basic {@link AbstractVariable} properties for creating a new or
- * editing an existing variable.
+ * <p>Stores basic {@link AbstractVariable} properties for creating a new or
+ * editing an existing variable.</p>
+ * 
+ * <p>We consistently abbreviate "Variable" to "Var" in this class hierarchy
+ * to avoid very long class names (e.g., EditMultiSelectVariableValidator).</p>
  */
-public abstract class EditVariable
+public abstract class EditVar
 {
     private final ImmutableSortedSet<VariableGroup> fAllGroups;
     
@@ -25,6 +29,8 @@ public abstract class EditVariable
     
     private int fGroupId;
     
+    private RetrievalEnum fRetriever;
+    
     private final SortedSet<RiskModel> fDependentModels;
     
     /**
@@ -32,7 +38,7 @@ public abstract class EditVariable
      * @param modelService to provide reference data (e.g., available
      * VariableGroups) to the user
      */
-    public EditVariable(
+    public EditVar(
             final ModelInspectionService modelService) 
     {
         // Sort the groups per the getAllGroups() contract.
@@ -41,6 +47,7 @@ public abstract class EditVariable
         fDisplayName = "";
         fHelpText = Optional.absent();
         fGroupId = 0;
+        fRetriever = null; // No retriever by default
         fDependentModels = new TreeSet<>();
     }
     
@@ -52,7 +59,7 @@ public abstract class EditVariable
      * @param modelService to provide reference data (e.g., available
      * VariableGroups) to the user
      */
-    public EditVariable(
+    public EditVar(
             final AbstractVariable variable,
             final ModelInspectionService modelService)
     {
@@ -61,6 +68,7 @@ public abstract class EditVariable
         fDisplayName = variable.getDisplayName();
         fHelpText = variable.getHelpText();
         fGroupId = variable.getGroup().getId();
+        fRetriever = variable.getRetriever();
 
         // Calculate the dependent models.
         for (final RiskModel model : modelService.getAllRiskModels())
@@ -95,6 +103,18 @@ public abstract class EditVariable
     public final ImmutableSortedSet<VariableGroup> getAllGroups()
     {
         return fAllGroups;
+    }
+    
+    /**
+     * <p>Returns all RetrievalEnum constants valid for setting on this variable.</p>
+     * 
+     * <p>This base implementation returns an empty set, but subclasses are
+     * expected to override as applicable.</p>
+     * @return a Set sorted by the enum's string value
+     */
+    public ImmutableSortedSet<RetrievalEnum> getAllRetrievers()
+    {
+        return ImmutableSortedSet.of();
     }
 
     /**
@@ -187,6 +207,24 @@ public abstract class EditVariable
     }
     
     /**
+     * Returns the VistA retriever to set on the variable.
+     * @see Variable#getRetriever()
+     */
+    public RetrievalEnum getRetriever()
+    {
+        return fRetriever;
+    }
+
+    /**
+     * Sets the VistA retriever to set on the variable.
+     * @see AbstractVariable#getRetriever()
+     */
+    public void setRetriever(RetrievalEnum retriever)
+    {
+        fRetriever = retriever;
+    }
+
+    /**
      * Returns the actual VariableGroup object corresponding to the set group
      * ID.
      * @return an {@link Optional} containing the group if it exists
@@ -220,13 +258,14 @@ public abstract class EditVariable
      * <li>Display Name</li>
      * <li>Help Text</li>
      * <li>Variable Group</li>
+     * <li>Retriever</li>
      * </ul>
      * 
      * @param var the existing variable to modify
      * @throws IllegalStateException if the key to set doesn't already match
-     * the variable's key
+     * the variable's key or if the set retriever is not valid
      */
-    protected void applyBaseProperties(final AbstractVariable var)
+    protected final void applyBaseProperties(final AbstractVariable var)
     {
         if (!Objects.equals(fKey, var.getKey()))
         {
@@ -237,11 +276,16 @@ public abstract class EditVariable
         var.setDisplayName(fDisplayName);
         var.setHelpText(fHelpText);
         var.setGroup(getGroup().get());
-        // TODO: retrieval key, when we support more than BooleanVariables
+        if (fRetriever != null && !getAllRetrievers().contains(fRetriever))
+        {
+            throw new IllegalStateException("The set retriever is not valid for this variable.");
+        }
+        var.setRetriever(fRetriever);
     }
     
     /**
      * Builds a new instance based on the stored properties.
+     * @throws IllegalStateException if any stored property to set is invalid
      */
     public abstract AbstractVariable buildNew();
 }

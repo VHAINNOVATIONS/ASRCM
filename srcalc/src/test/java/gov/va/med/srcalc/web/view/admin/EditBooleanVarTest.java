@@ -8,16 +8,16 @@ import gov.va.med.srcalc.web.view.Views;
 
 import org.junit.Test;
 
-public class EditBooleanVariableTest
+public class EditBooleanVarTest
 {
     private final MockModelService fModelService = new MockModelService();
     
     @Test
     public final void testBasic()
     {
-        final EditBooleanVariable ebv = new EditBooleanVariable(fModelService);
+        final EditBooleanVar ebv = new EditBooleanVar(fModelService);
 
-        // EditBooleanVariable doesn't specify what it returns for getTypeName(),
+        // EditBooleanVar doesn't specify what it returns for getTypeName(),
         // just make sure it returns a non-empty string.
         assertThat(ebv.getTypeName(), not(isEmptyOrNullString()));
         
@@ -34,7 +34,7 @@ public class EditBooleanVariableTest
         final String helpText = "myHelpText";
 
         // Behavior
-        final EditBooleanVariable ebv = new EditBooleanVariable(fModelService);
+        final EditBooleanVar ebv = new EditBooleanVar(fModelService);
         ebv.setKey(key);
         ebv.setDisplayName(displayName);
         ebv.setGroupId(group.getId());

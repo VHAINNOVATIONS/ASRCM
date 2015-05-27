@@ -4,18 +4,18 @@ import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.ModelInspectionService;
 
 /**
- * Constructs an appropriate instance of {@link EditExistingVariable} to edit an
+ * Constructs an appropriate instance of {@link EditExistingVar} to edit an
  * existing variable.
  */
-public class EditVariableFactory
+public class EditVarFactory
 {
     /**
-     * Returns an {@link EditExistingVariable} instance for editing the given variable.
+     * Returns an {@link EditExistingVar} instance for editing the given variable.
      * @param variable the target variable
-     * @param modelService for EditExistingVariable implementations to retrieve
-     * any necessary reference data from the Risk Models
+     * @param modelService for EditExistingVar implementations to retrieve any
+     * necessary reference data from the Risk Models
      */
-    public static EditExistingVariable getInstance(
+    public static EditExistingVar getInstance(
             final AbstractVariable variable,
             final ModelInspectionService modelService)
     {
@@ -23,13 +23,13 @@ public class EditVariableFactory
     }
         
     /**
-     * A Visitor to select the right EditVariable subclass based on the variable
+     * A Visitor to select the right EditVar subclass based on the variable
      * type.
      */
     private static class Visitor extends ExceptionlessVariableVisitor
     {
         private final ModelInspectionService fModelService;
-        private EditExistingVariable fInstance;
+        private EditExistingVar fInstance;
         
         public Visitor(final ModelInspectionService modelService)
         {
@@ -46,7 +46,7 @@ public class EditVariableFactory
         @Override
         public void visitBoolean(final BooleanVariable variable)
         {
-            fInstance = new EditExistingBooleanVariable(
+            fInstance = new EditExistingBooleanVar(
                     variable, fModelService);
         }
 
@@ -74,7 +74,7 @@ public class EditVariableFactory
         /**
          * Visits the given variable and returns the constructed instance.
          */
-        public EditExistingVariable getInstance(final AbstractVariable variable)
+        public EditExistingVar getInstance(final AbstractVariable variable)
         {
             visit(variable);
             return fInstance;

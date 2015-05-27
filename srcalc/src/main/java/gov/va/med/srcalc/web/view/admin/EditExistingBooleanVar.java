@@ -14,12 +14,12 @@ import gov.va.med.srcalc.web.view.Views;
  * <li>Present the user with the initial values and the "reference data" such
  * as {@link #getAllGroups()}.</li>
  * <li>Have the user update the properties as desired.</li>
- * <li>Use {@link EditVariableValidator} to validate the user's edits.</li>
+ * <li>Use {@link EditVarValidator} to validate the user's edits.</li>
  * <li>Call {@link #applyToVariable()} to update the target variable with the
  * new properties.</li>
  * </ol>
  */
-public class EditExistingBooleanVariable extends EditBooleanVariable implements EditExistingVariable
+public class EditExistingBooleanVar extends EditBooleanVar implements EditExistingVar
 {
     private final BooleanVariable fTarget;
     
@@ -29,7 +29,7 @@ public class EditExistingBooleanVariable extends EditBooleanVariable implements 
      * @param modelService to provide reference data (e.g., available
      * VariableGroups) to the user
      */
-    public EditExistingBooleanVariable(
+    public EditExistingBooleanVar(
             final BooleanVariable target,
             final ModelInspectionService modelService)
     {

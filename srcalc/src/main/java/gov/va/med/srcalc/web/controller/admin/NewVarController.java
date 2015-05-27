@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.common.collect.Iterables;
 
 import gov.va.med.srcalc.service.AdminService;
-import gov.va.med.srcalc.web.view.admin.EditVariable;
+import gov.va.med.srcalc.web.view.admin.EditVar;
 
 /**
  * <p>Base Web MVC controller for creating a new variable. Contains common
@@ -28,7 +28,7 @@ import gov.va.med.srcalc.web.view.admin.EditVariable;
 public abstract class NewVarController
 {
     /**
-     * The model attribute key of the {@link EditVariable} object.
+     * The model attribute key of the {@link EditVar} object.
      */
     protected static final String ATTRIBUTE_VARIABLE = "variable";
     
@@ -59,14 +59,14 @@ public abstract class NewVarController
     public abstract String getSaveUrl();
     
     /**
-     * Creates an {@link EditVariable} instance for creating the new variable.
+     * Creates an {@link EditVar} instance for creating the new variable.
      */
     @ModelAttribute(ATTRIBUTE_VARIABLE)
-    protected abstract EditVariable createEditVariable();
+    protected abstract EditVar createEditVar();
     
     /**
      * Returns the Validators to use for validating the object returned by
-     * {@link #createEditVariable()}.
+     * {@link #createEditVar()}.
      * @return an Iterable. May be empty, but I don't recommend that.
      */
     protected abstract Iterable<Validator> getValidators();
@@ -83,26 +83,26 @@ public abstract class NewVarController
     
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView displayForm(
-            @ModelAttribute(ATTRIBUTE_VARIABLE) final EditVariable editVariable)
+            @ModelAttribute(ATTRIBUTE_VARIABLE) final EditVar editVar)
     {
-        final ModelAndView mav = new ModelAndView(editVariable.getNewViewName());
+        final ModelAndView mav = new ModelAndView(editVar.getNewViewName());
         // Provide the URL to save the variable to the view.
         mav.addObject("SAVE_URL", getSaveUrl());
-        // Note: "variable" is already in the model via createEditVariable().
+        // Note: "variable" is already in the model via createEditVar().
         return mav;
     }
     
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveVariable(
-            @ModelAttribute(ATTRIBUTE_VARIABLE) @Valid final EditVariable editVariable,
+            @ModelAttribute(ATTRIBUTE_VARIABLE) @Valid final EditVar editVar,
             final BindingResult bindingResult)
     {
         if (bindingResult.hasErrors())
         {
-            return displayForm(editVariable);
+            return displayForm(editVar);
         }
         
-        fAdminService.saveVariable(editVariable.buildNew());
+        fAdminService.saveVariable(editVar.buildNew());
         
         // Using the POST-redirect-GET pattern.
         return new ModelAndView("redirect:/admin");

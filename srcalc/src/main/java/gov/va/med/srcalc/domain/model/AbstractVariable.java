@@ -1,11 +1,14 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.util.Preconditions;
+import gov.va.med.srcalc.util.RetrievalEnum;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Proxy;
 
 import com.google.common.base.Optional;
 
@@ -17,6 +20,16 @@ import com.google.common.base.Optional;
 @Inheritance(strategy = InheritanceType.JOINED)
 // This is the base variable entity so name the table accordingly.
 @Table(name = "variable")
+/*
+ * Hibernate, by default, generates proxies of entity classes to support lazy
+ * association fetching. The below "final" methods cause Hibernate to log errors
+ * when attempting to generate these proxies. Since all subclasses are final
+ * anyway, just prohibit the proxy generation.
+ * 
+ * Since this application is not database-heavy, we do not need lazy association
+ * fetching anyway.
+ */
+@Proxy(lazy = false)
 public abstract class AbstractVariable implements Variable
 {
     /**
@@ -37,7 +50,7 @@ public abstract class AbstractVariable implements Variable
     private VariableGroup fGroup;
     private Optional<String> fHelpText;
     private String fKey;
-    private Integer fRetrievalKey;
+    private RetrievalEnum fRetrievalKey;
     private String fRetrievalDateString;
 
     /**
@@ -210,15 +223,14 @@ public abstract class AbstractVariable implements Variable
     }
     
     @Basic
-    @Column(
-            length = KEY_MAX,
-            nullable = true)
-    public final Integer getRetrievalKey()
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "retrieval_key", nullable = true)
+    public final RetrievalEnum getRetriever()
     {
     	return fRetrievalKey;
     }
     
-    public final void setRetrievalKey(final Integer retrievalKey)
+    public final void setRetriever(final RetrievalEnum retrievalKey)
     {
     	this.fRetrievalKey = retrievalKey;
     }

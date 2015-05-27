@@ -1,6 +1,6 @@
 <%--
 A JSP fragment to edit properties common to all variables. This content expects
-to be in a Spring <form> tag with the form object of type EditVariable and
+to be in a Spring <form> tag with the form object of type EditVar and
 called 'variable'.
 --%>
 <%@ taglib uri="/WEB-INF/srcalc.tld" prefix="srcalc" %>
@@ -54,7 +54,9 @@ called 'variable'.
         <tr>
         <td class="attributeName">VistA Value:</td>
         <td>
-            <%-- There are no retrievers for Boolean variables. --%>
-            <select><option>N/A</option></select>
+            <form:select path="retriever">
+                <form:option value="" label="N/A"></form:option>
+                <form:options items="${variable.allRetrievers}" />
+            </form:select>
         </td>
         </tr>
