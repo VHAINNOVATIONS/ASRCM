@@ -59,9 +59,10 @@
         <tr>
         <td class="attributeName">Display Text:</td>
         <td>
-            <%-- Use the DISPLAY_NAME_MAX for the text box size, but cap it at
-                 40 because any bigger is too much longer than the expected
-                 length. --%>
+            <%--
+            Use the given displayNameMax for the text box size, but cap it at 40
+            because any bigger is too much longer than the expected length.
+            --%>
             <form:input path="displayName" size="${srcalc:min(variable.displayNameMax, 40)}" />
             <form:errors path="displayName" cssClass="error" />
         </td>
@@ -96,6 +97,7 @@
             </form:select>
         </td>
         </tr>
+        <%-- Include the provided body. --%>
         <jsp:doBody/>
     </tbody>
     </table>
