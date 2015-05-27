@@ -14,10 +14,6 @@
     <table>
     <tbody>
         <%@ include file="fragments/editVariableKey.jspf" %>
-        <%--
-        Boolean variables only have properties common to all variables. Simply
-        include the common properties here.
-        --%>
         <%@ include file="fragments/commonEditVariableProperties.jspf" %>
         <tr>
         <td>Display Type:</td>

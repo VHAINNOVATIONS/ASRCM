@@ -12,8 +12,10 @@ import gov.va.med.srcalc.util.RetrievalEnum;
 import gov.va.med.srcalc.web.view.Views;
 
 /**
- * A form backing object for creating a new or editing an existing
- * MultiSelectVariable.
+ * <p>A form backing object for creating a new or editing an existing
+ * MultiSelectVariable.</p>
+ * 
+ * <p>This code is tightly coupled with newMultiSelectVariable.jsp.</p>
  */
 public class EditMultiSelectVariable extends EditVariable
 {
@@ -23,7 +25,7 @@ public class EditMultiSelectVariable extends EditVariable
     
     /**
      * Constructs an instance with default values for all properties. The default
-     * list of options is 3 blanks.
+     * list of options is 3 blanks (to offer the user 3 text boxes to fill out).
      * @param modelService to provide reference data (e.g., available
      * VariableGroups) to the user
      */
@@ -31,7 +33,6 @@ public class EditMultiSelectVariable extends EditVariable
     {
         super(modelService);
         fDisplayType = MultiSelectVariable.DisplayType.Radio;
-        // Start with one blank value for the user to fill out.
         fOptions = Lists.newArrayList("", "", "");
     }
     

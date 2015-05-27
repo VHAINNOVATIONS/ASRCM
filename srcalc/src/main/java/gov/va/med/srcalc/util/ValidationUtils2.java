@@ -49,9 +49,10 @@ public final class ValidationUtils2
     }
     
     /**
-     * Rejects the identified {@link CharSequence} field if it is longer than
-     * the given maximum length. If the field is rejected, it will be with the
-     * error code {@link ValidationCodes#INVALID_CONTENTS}.
+     * Rejects the identified {@link CharSequence} field if it does not match
+     * the given regular expression. If the field is rejected, it will be with
+     * the error code {@link ValidationCodes#INVALID_CONTENTS}.
+     * 
      * @param e the Errors instance to register errors on
      * @param field identifies the field. The identified field must be a
      * CharSequence.
