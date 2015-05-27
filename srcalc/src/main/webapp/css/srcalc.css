@@ -376,7 +376,7 @@ div#newVariableLinks {
 	display: block;
 }
 
-#variableEditForm ol#multiSelectOptions {
+#variableEditForm ol#multiSelectOptionsList {
 	margin: 0;
 	padding-left: 1em;
 }
