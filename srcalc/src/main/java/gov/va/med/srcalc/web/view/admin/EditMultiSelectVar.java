@@ -17,7 +17,7 @@ import gov.va.med.srcalc.web.view.Views;
  * 
  * <p>This code is tightly coupled with newMultiSelectVariable.jsp.</p>
  */
-public class EditMultiSelectVariable extends EditVariable
+public class EditMultiSelectVar extends EditVar
 {
     private MultiSelectVariable.DisplayType fDisplayType;
     
@@ -29,7 +29,7 @@ public class EditMultiSelectVariable extends EditVariable
      * @param modelService to provide reference data (e.g., available
      * VariableGroups) to the user
      */
-    public EditMultiSelectVariable(final ModelInspectionService modelService)
+    public EditMultiSelectVar(final ModelInspectionService modelService)
     {
         super(modelService);
         fDisplayType = MultiSelectVariable.DisplayType.Radio;

@@ -12,16 +12,16 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-public class EditMultiSelectVariableTest
+public class EditMultiSelectVarTest
 {
     private final MockModelService fModelService = new MockModelService();
 
     @Test
     public final void testBasic()
     {
-        final EditMultiSelectVariable ev = new EditMultiSelectVariable(fModelService);
+        final EditMultiSelectVar ev = new EditMultiSelectVar(fModelService);
 
-        // EditMultiSelectVariable doesn't specify what it returns for
+        // EditMultiSelectVar doesn't specify what it returns for
         // getTypeName(), just make sure it returns a non-empty string.
         assertThat(ev.getTypeName(), not(isEmptyOrNullString()));
         
@@ -43,7 +43,7 @@ public class EditMultiSelectVariableTest
     {
         final ImmutableList<String> fullList =
                 ImmutableList.of("a", "b", "", "c", "");
-        final EditMultiSelectVariable ev = new EditMultiSelectVariable(fModelService);
+        final EditMultiSelectVar ev = new EditMultiSelectVar(fModelService);
         ev.getOptions().clear();
         ev.getOptions().addAll(fullList);
         
@@ -73,7 +73,7 @@ public class EditMultiSelectVariableTest
         final RetrievalEnum retriever = RetrievalEnum.GENDER;
         
         // Behavior
-        final EditMultiSelectVariable ev = new EditMultiSelectVariable(fModelService);
+        final EditMultiSelectVar ev = new EditMultiSelectVar(fModelService);
         ev.setKey(key);
         ev.setDisplayName(displayName);
         ev.setGroupId(group.getId());

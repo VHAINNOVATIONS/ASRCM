@@ -62,7 +62,7 @@ public class NewVarControllerIT extends IntegrationTest
             .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
         
         // Verify that the variable was actually created. Individual properties
-        // are tested in EditBooleanVariableTest.
+        // are tested in EditBooleanVarTest.
         assertEquals(key, fAdminService.getVariable(key).getKey());
     }
     
@@ -93,7 +93,7 @@ public class NewVarControllerIT extends IntegrationTest
             .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
         
         // Verify that the variable was actually created. Individual properties
-        // are tested in EditMultiSelectVariableTest.
+        // are tested in EditMultiSelectVarTest.
         assertEquals(key, fAdminService.getVariable(key).getKey());
     }
     

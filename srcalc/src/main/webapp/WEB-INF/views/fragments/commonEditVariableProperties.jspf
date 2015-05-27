@@ -1,6 +1,6 @@
 <%--
 A JSP fragment to edit properties common to all variables. This content expects
-to be in a Spring <form> tag with the form object of type EditVariable and
+to be in a Spring <form> tag with the form object of type EditVar and
 called 'variable'.
 --%>
 <%@ taglib uri="/WEB-INF/srcalc.tld" prefix="srcalc" %>

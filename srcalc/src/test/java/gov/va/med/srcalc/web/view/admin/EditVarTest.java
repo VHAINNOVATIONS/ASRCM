@@ -3,8 +3,8 @@ package gov.va.med.srcalc.web.view.admin;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.MockModelService;
 import gov.va.med.srcalc.util.RetrievalEnum;
-import gov.va.med.srcalc.web.view.admin.EditBooleanVariable;
-import gov.va.med.srcalc.web.view.admin.EditVariable;
+import gov.va.med.srcalc.web.view.admin.EditBooleanVar;
+import gov.va.med.srcalc.web.view.admin.EditVar;
 
 import org.junit.Test;
 
@@ -13,19 +13,19 @@ import com.google.common.collect.ImmutableSet;
 import static org.junit.Assert.*;
 
 /**
- * {@link EditVariable} is abstract, but this suite tests the concrete
+ * {@link EditVar} is abstract, but this suite tests the concrete
  * functionality.
  */
-public class EditVariableTest
+public class EditVarTest
 {
     private final MockModelService fModelService = new MockModelService();
     
     @Test
     public final void testReferenceData()
     {
-        // Use an EditBooleanVariable to test since it is a very basic
-        // implementation of EditVariable.
-        final EditVariable ev = new EditBooleanVariable(fModelService);
+        // Use an EditBooleanVar to test since it is a very basic
+        // implementation of EditVar.
+        final EditVar ev = new EditBooleanVar(fModelService);
         
         assertEquals(Variable.KEY_MAX, ev.getKeyMax());
         assertEquals(Variable.DISPLAY_NAME_MAX, ev.getDisplayNameMax());
@@ -38,9 +38,9 @@ public class EditVariableTest
     {
         // Setup
         final VariableGroup newGroup = fModelService.getAllVariableGroups().iterator().next();
-        // Use an EditBooleanVariable to test since it is a very basic
-        // implementation of EditVariable.
-        final EditVariable ev = new EditBooleanVariable(fModelService);
+        // Use an EditBooleanVar to test since it is a very basic
+        // implementation of EditVar.
+        final EditVar ev = new EditBooleanVar(fModelService);
 
         // Ensure we're actually going to test something here.
         assertNotEquals(newGroup.getId(), ev.getGroupId());
@@ -56,9 +56,9 @@ public class EditVariableTest
     @Test
     public final void testSetGroupInvalid()
     {
-        // Use an EditBooleanVariable to test since it is a very basic
-        // implementation of EditVariable.
-        final EditVariable ev = new EditBooleanVariable(fModelService);
+        // Use an EditBooleanVar to test since it is a very basic
+        // implementation of EditVar.
+        final EditVar ev = new EditBooleanVar(fModelService);
         
         ev.setGroupId(90);
         
@@ -68,9 +68,9 @@ public class EditVariableTest
     @Test(expected = IllegalStateException.class)
     public final void testSetRetrieverInvalid()
     {
-        // Use an EditBooleanVariable to test since it is a very basic
-        // implementation of EditVariable.
-        final EditVariable ev = new EditBooleanVariable(SampleModels.dnrVariable(), fModelService);
+        // Use an EditBooleanVar to test since it is a very basic
+        // implementation of EditVar.
+        final EditVar ev = new EditBooleanVar(SampleModels.dnrVariable(), fModelService);
         
         ev.setRetriever(RetrievalEnum.BMI);
         
@@ -82,7 +82,7 @@ public class EditVariableTest
     {
         // Setup
         final BooleanVariable var = SampleModels.dnrVariable();
-        final EditVariable ev = new EditBooleanVariable(var, fModelService);
+        final EditVar ev = new EditBooleanVar(var, fModelService);
         
         // Verification
         assertEquals(

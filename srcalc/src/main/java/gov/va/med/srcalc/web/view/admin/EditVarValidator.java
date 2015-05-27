@@ -7,31 +7,31 @@ import gov.va.med.srcalc.util.ValidationUtils2;
 import org.springframework.validation.*;
 
 /**
- * This Validator validates the base {@link EditVariable} properties. Other
+ * This Validator validates the base {@link EditVar} properties. Other
  * validators validate subclasses' properties.
  */
-public class EditVariableValidator implements Validator
+public class EditVarValidator implements Validator
 {
     /**
-     * Returns true if, and only if, the given class is {@link EditVariable} or
+     * Returns true if, and only if, the given class is {@link EditVar} or
      * a subclass.
      */
     @Override
     public boolean supports(final Class<?> clazz)
     {
-        return EditVariable.class.isAssignableFrom(clazz);
+        return EditVar.class.isAssignableFrom(clazz);
     }
 
     /**
      * Validates the given object, using error codes from {@link ValidationCodes}.
-     * @param obj the object to validate. Must be an instance of {@link EditVariable}.
-     * @throws ClassCastException if the given object is not an EditVariable
+     * @param obj the object to validate. Must be an instance of {@link EditVar}.
+     * @throws ClassCastException if the given object is not an EditVar
      */
     @Override
     public void validate(final Object obj, final Errors e)
     {
-        // See method Javadoc: we assume that it's an instance of EditVariable.
-        final EditVariable editVariable = (EditVariable)obj;
+        // See method Javadoc: we assume that it's an instance of EditVar.
+        final EditVar editVar = (EditVar)obj;
         
         // Validate variable key constraints. See AbstractVariable.getKey().
         ValidationUtils.rejectIfEmpty(e, "key", ValidationCodes.NO_VALUE);
@@ -49,7 +49,7 @@ public class EditVariableValidator implements Validator
                 new Object[] {AbstractVariable.VALID_DISPLAY_NAME_CHARACTERS});
         
         // Ensure we have a valid VariableGroup ID.
-        if (!editVariable.getGroup().isPresent())
+        if (!editVar.getGroup().isPresent())
         {
             e.rejectValue("groupId", ValidationCodes.INVALID_OPTION);
         }

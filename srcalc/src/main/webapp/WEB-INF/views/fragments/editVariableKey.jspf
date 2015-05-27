@@ -1,6 +1,6 @@
 <%--
 A simple JSP fragment to edit a variable key. This content expects to be in a
-Spring <form> tag with the form object of type EditVariable and called
+Spring <form> tag with the form object of type EditVar and called
 'variable'.
 --%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>

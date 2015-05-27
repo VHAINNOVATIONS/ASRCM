@@ -8,14 +8,14 @@ import gov.va.med.srcalc.web.view.Views;
  * <p>A form backing object for creating a new or editing an existing
  * BooleanVariable.</p>
  */
-public class EditBooleanVariable extends EditVariable
+public class EditBooleanVar extends EditVar
 {
     /**
      * Constructs an instance with default values for all properties.
      * @param modelService to provide reference data (e.g., available
      * VariableGroups) to the user
      */
-    public EditBooleanVariable(final ModelInspectionService modelService)
+    public EditBooleanVar(final ModelInspectionService modelService)
     {
         super(modelService);
     }
@@ -28,7 +28,7 @@ public class EditBooleanVariable extends EditVariable
      * @param modelService to provide reference data (e.g., available
      * VariableGroups) to the user
      */
-    public EditBooleanVariable(
+    public EditBooleanVar(
             final BooleanVariable variable,
             final ModelInspectionService modelService)
     {

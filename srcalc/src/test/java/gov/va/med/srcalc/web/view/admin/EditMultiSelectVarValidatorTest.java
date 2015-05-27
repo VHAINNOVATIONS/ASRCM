@@ -16,15 +16,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
-public class EditMultiSelectVariableValidatorTest
+public class EditMultiSelectVarValidatorTest
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(EditMultiSelectVariableValidatorTest.class);
+    private static final Logger fLogger = LoggerFactory.getLogger(EditMultiSelectVarValidatorTest.class);
 
     private final MockModelService fModelService = new MockModelService();
 
-    private EditMultiSelectVariable makeEditVariable()
+    private EditMultiSelectVar makeEditVar()
     {
-        final EditMultiSelectVariable ev = new EditMultiSelectVariable(
+        final EditMultiSelectVar ev = new EditMultiSelectVar(
                 fModelService);
         ev.setKey("validKey");
         ev.setDisplayName("validDisplayName");
@@ -61,11 +61,11 @@ public class EditMultiSelectVariableValidatorTest
     /**
      * Validates the given object and returns the binding result.
      */
-    private BeanPropertyBindingResult validate(final EditVariable ev)
+    private BeanPropertyBindingResult validate(final EditVar ev)
     {
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(ev, "variable");
-        new EditMultiSelectVariableValidator().validate(ev, errors);
+        new EditMultiSelectVarValidator().validate(ev, errors);
         fLogger.debug("Errors are: {}", errors);
         return errors;
     }
@@ -73,7 +73,7 @@ public class EditMultiSelectVariableValidatorTest
     @Test
     public final void testValid()
     {
-        final BindingResult errors = validate(makeEditVariable());
+        final BindingResult errors = validate(makeEditVar());
         
         assertEquals("error count", 0, errors.getErrorCount());
     }
@@ -81,7 +81,7 @@ public class EditMultiSelectVariableValidatorTest
     @Test
     public final void testNullDisplayType()
     {
-        final EditMultiSelectVariable ev = makeEditVariable();
+        final EditMultiSelectVar ev = makeEditVar();
         ev.setDisplayType(null);
         
         final BindingResult errors = validate(ev);
@@ -95,7 +95,7 @@ public class EditMultiSelectVariableValidatorTest
     @Test
     public final void testNoOptions()
     {
-        final EditMultiSelectVariable ev = makeEditVariable();
+        final EditMultiSelectVar ev = makeEditVar();
         ev.getOptions().clear();
         ev.getOptions().add(""); // A blank is the same as none at all.
 
@@ -110,7 +110,7 @@ public class EditMultiSelectVariableValidatorTest
     @Test
     public final void testTooManyOptions()
     {
-        final EditMultiSelectVariable ev = makeEditVariable();
+        final EditMultiSelectVar ev = makeEditVar();
         ev.getOptions().add(20, "extraOption");
 
         final BindingResult errors = validate(ev);
@@ -124,7 +124,7 @@ public class EditMultiSelectVariableValidatorTest
     @Test
     public final void testOptionNoValue()
     {
-        final EditMultiSelectVariable ev = makeEditVariable();
+        final EditMultiSelectVar ev = makeEditVar();
         ev.getOptions().remove(0);
         ev.getOptions().add(2, "");
         
@@ -139,7 +139,7 @@ public class EditMultiSelectVariableValidatorTest
     @Test
     public final void testOptionTooLong()
     {
-        final EditMultiSelectVariable ev = makeEditVariable();
+        final EditMultiSelectVar ev = makeEditVar();
         // Remove any existing options for simplicity.
         ev.getOptions().clear();
         ev.getOptions().add(
@@ -156,7 +156,7 @@ public class EditMultiSelectVariableValidatorTest
     @Test
     public final void testOptionInvalidChars()
     {
-        final EditMultiSelectVariable ev = makeEditVariable();
+        final EditMultiSelectVar ev = makeEditVar();
         ev.getOptions().remove(0);
         ev.getOptions().add(0, "foo\t");
         

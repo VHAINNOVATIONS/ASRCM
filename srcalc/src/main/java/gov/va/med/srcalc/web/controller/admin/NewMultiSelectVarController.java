@@ -41,16 +41,16 @@ public class NewMultiSelectVarController extends NewVarController
     }
     
     @Override
-    protected EditVariable createEditVariable()
+    protected EditVar createEditVar()
     {
-        fLogger.trace("Creating EditMultiSelectVariable.");
-        return new EditMultiSelectVariable(getAdminService());
+        fLogger.trace("Creating EditMultiSelectVar.");
+        return new EditMultiSelectVar(getAdminService());
     }
     
     @Override
     protected Iterable<Validator> getValidators()
     {
-        return ImmutableList.<Validator>of(new EditMultiSelectVariableValidator());
+        return ImmutableList.<Validator>of(new EditMultiSelectVarValidator());
     }
     
 }

@@ -9,32 +9,32 @@ import org.springframework.validation.*;
 import com.google.common.collect.ImmutableList;
 
 /**
- * Validates an {@link EditMultiSelectVariable} object.
+ * Validates an {@link EditMultiSelectVar} object.
  */
-public class EditMultiSelectVariableValidator implements Validator
+public class EditMultiSelectVarValidator implements Validator
 {
-    private final EditVariableValidator fBaseValidator = new EditVariableValidator();
+    private final EditVarValidator fBaseValidator = new EditVarValidator();
     
     /**
-     * Returns true if (and only if) the given class is EditMultiSelectVariable
+     * Returns true if (and only if) the given class is {@link EditMultiSelectVar}
      * or a subclass.
      */
     @Override
     public boolean supports(final Class<?> clazz)
     {
-        return EditMultiSelectVariable.class.isAssignableFrom(clazz);
+        return EditMultiSelectVar.class.isAssignableFrom(clazz);
     }
     
     /**
      * Validates the given object, using error codes from {@link ValidationCodes}.
-     * @param obj the object to validate. Must be an instance of {@link EditMultiSelectVariable}.
-     * @throws ClassCastException if the given object is not an EditMultiSelectVariable
+     * @param obj the object to validate. Must be an instance of {@link EditMultiSelectVar}.
+     * @throws ClassCastException if the given object is not an EditMultiSelectVar
      */
     @Override
     public void validate(final Object target, final Errors errors)
     {
-        final EditMultiSelectVariable editVariable = (EditMultiSelectVariable)target;
-        // First, delegate to EditVariableValidator for validating the basic
+        final EditMultiSelectVar editVar = (EditMultiSelectVar)target;
+        // First, delegate to EditVarValidator for validating the basic
         // properties.
         fBaseValidator.validate(target, errors);
         
@@ -45,7 +45,7 @@ public class EditMultiSelectVariableValidator implements Validator
         // Validate options. Use the getTrimmedOptions since that is what
         // getMultiSelectOptions will ultimately use. (That is, trailing blanks
         // are omitted.)
-        final ImmutableList<String> options = editVariable.getTrimmedOptions();
+        final ImmutableList<String> options = editVar.getTrimmedOptions();
         if (options.isEmpty())
         {
             errors.rejectValue(
@@ -53,12 +53,12 @@ public class EditMultiSelectVariableValidator implements Validator
                     ValidationCodes.NO_VALUE,
                     "No options specified.");
         }
-        else if (options.size() > editVariable.getMaxOptions())
+        else if (options.size() > editVar.getMaxOptions())
         {
             errors.rejectValue(
                     "options",
                     ValidationCodes.TOO_LONG,
-                    new Object[] { editVariable.getMaxOptions() },
+                    new Object[] { editVar.getMaxOptions() },
                     "too many options");
         }
         // Iterate using the index here because we need it to specify the field.

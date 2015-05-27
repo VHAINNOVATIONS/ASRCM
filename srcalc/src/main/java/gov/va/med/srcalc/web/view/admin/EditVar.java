@@ -11,10 +11,13 @@ import gov.va.med.srcalc.service.ModelInspectionService;
 import gov.va.med.srcalc.util.RetrievalEnum;
 
 /**
- * Stores basic {@link AbstractVariable} properties for creating a new or
- * editing an existing variable.
+ * <p>Stores basic {@link AbstractVariable} properties for creating a new or
+ * editing an existing variable.</p>
+ * 
+ * <p>We consistently abbreviate "Variable" to "Var" in this class hierarchy
+ * to avoid very long class names (e.g., EditMultiSelectVariableValidator).</p>
  */
-public abstract class EditVariable
+public abstract class EditVar
 {
     private final ImmutableSortedSet<VariableGroup> fAllGroups;
     
@@ -35,7 +38,7 @@ public abstract class EditVariable
      * @param modelService to provide reference data (e.g., available
      * VariableGroups) to the user
      */
-    public EditVariable(
+    public EditVar(
             final ModelInspectionService modelService) 
     {
         // Sort the groups per the getAllGroups() contract.
@@ -56,7 +59,7 @@ public abstract class EditVariable
      * @param modelService to provide reference data (e.g., available
      * VariableGroups) to the user
      */
-    public EditVariable(
+    public EditVar(
             final AbstractVariable variable,
             final ModelInspectionService modelService)
     {

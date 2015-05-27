@@ -5,7 +5,7 @@ import gov.va.med.srcalc.domain.model.AbstractVariable;
 /**
  * An interface for editing an existing {@link AbstractVariable}.
  */
-public interface EditExistingVariable
+public interface EditExistingVar
 {
     /**
      * Returns the variable which we are editing.
