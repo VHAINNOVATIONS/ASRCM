@@ -98,9 +98,13 @@ public class EditMultiSelectVar extends EditVar
     }
     
     /**
-     * Like {@link #getOptions()} but with trailing blanks trimmed off. (The
-     * HTTP form submission may create spurious trailing blank options.) The
-     * returned list may still contain empty strings in the middle.
+     * <p>Like {@link #getOptions()} but with trailing blanks trimmed off.</p>
+     * 
+     * <p>This method is useful because the HTTP form submission may create
+     * spurious trailing blank options. The form submission should not, however,
+     * create spurious blanks in the middle of the list so we consider those
+     * intentional user input and preserve them.</p>
+     * 
      * @return an ImmutableList
      */
     public final ImmutableList<String> getTrimmedOptions()
