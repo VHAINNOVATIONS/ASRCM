@@ -24,16 +24,15 @@ public class CalculationController
     {
         fCalculationService = calculationService;
     }
-
-    @RequestMapping(value = "/newCalc", method = RequestMethod.GET)
-    public ModelAndView startNewCalculation(
+    
+    @RequestMapping(value = "/newCalc", method = RequestMethod.GET, params="force")
+    public ModelAndView forceStartNewCalculation(
             @RequestParam(value = "patientDfn") final int patientDfn,
             final HttpSession session)
     {
         // Start the calculation. A Calculation object must be created here to
         // store the start time for reporting.
         final Calculation calc = fCalculationService.startNewCalculation(patientDfn);
-
         // Store the calculation in the HTTP Session.
         SrcalcSession.setCalculationSession(session, new CalculationSession(calc));
         
@@ -43,6 +42,27 @@ public class CalculationController
         // Also add the valid specialties for user selection.
         mav.addObject("specialties", fCalculationService.getValidSpecialties());
         return mav;
+    }
+
+    @RequestMapping(value = "/newCalc", method = RequestMethod.GET)
+    public ModelAndView startNewCalculation(
+            @RequestParam(value = "patientDfn") final int patientDfn,
+            final HttpSession session)
+    {
+        // If there is a calculation already in the session, ask the user
+        // if they wish to override the in-progress calculation.
+        if(SrcalcSession.hasCalculationSession(session))
+        {
+            final CalculationSession calcSession = SrcalcSession.getCalculationSession(session);
+            final Calculation calc = calcSession.getCalculation();
+            final ModelAndView mav = new ModelAndView(Views.CONFIRM_NEW_CALC);
+            mav.addObject("calculation", calc);
+            mav.addObject("newPatientDfn", patientDfn);
+            return mav;
+        }
+        
+        // If there is no calculation in the session, we start a new calculation.
+        return forceStartNewCalculation(patientDfn, session);
     }
     
     @RequestMapping(value = "/selectSpecialty", method = RequestMethod.POST)

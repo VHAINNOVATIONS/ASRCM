@@ -22,5 +22,14 @@
     </tr>
     </c:forEach>
     </table>
+    <div id="newVariableLinks">
+    Add New:
+    <ul>
+    <li><c:url var="newBooleanVar" value="/admin/newBooleanVar" />
+        <a href="${newBooleanVar}" class="btn-default">Checkbox</a></li>
+    <li><c:url var="newMultiSelectVar" value="/admin/newMultiSelectVar" />
+        <a href="${newMultiSelectVar}" class="btn-default">Radio</a></li>
+    </ul>
+    </div>
 </section>
 </srcalc:adminPage>

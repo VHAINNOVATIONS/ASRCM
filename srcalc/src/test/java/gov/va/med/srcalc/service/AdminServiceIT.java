@@ -84,7 +84,7 @@ public class AdminServiceIT extends IntegrationTest
         var.setDisplayName(newName);
         var.setHelpText(Optional.of(newHelpText));
         var.setGroup(newGroup);
-        fAdminService.updateVariable(var);
+        fAdminService.saveVariable(var);
         
         // Verification
         // Simulate a new Hibernate Session.
@@ -94,6 +94,23 @@ public class AdminServiceIT extends IntegrationTest
         assertEquals(newName, newVar.getDisplayName());
         assertEquals(newHelpText, newVar.getHelpText().get());
         assertEquals(newGroup, newVar.getGroup());
+    }
+    
+    @Test(expected = DuplicateVariableKeyException.class)
+    public final void testSaveDuplicateVariableKey() throws Exception
+    {
+        final AbstractVariable var = SampleModels.dnrVariable();
+        try
+        {
+            fAdminService.saveVariable(var);
+        }
+        finally
+        {
+            // Normally the Session would be dead and gone by now, but in these
+            // ITs the Transaction is still open, so manually clear the Session
+            // due to the Exception that occurred in the DAO.
+            getHibernateSession().clear();
+        }
     }
     
 }

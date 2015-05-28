@@ -1,9 +1,18 @@
-package gov.va.med.srcalc.web.controller;
+package gov.va.med.srcalc.web.controller.admin;
 
+import static org.hamcrest.CoreMatchers.isA;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import gov.va.med.srcalc.test.util.IntegrationTest;
+import gov.va.med.srcalc.web.controller.AdminHomeController;
 import gov.va.med.srcalc.web.view.Views;
+import gov.va.med.srcalc.web.view.admin.EditExistingBooleanVar;
+import gov.va.med.srcalc.web.view.admin.EditExistingMultiSelectVar;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -13,11 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.hamcrest.Matchers.*;
 
 /**
  * Integration Test for {@link EditVariableController}. Only tests some basic
@@ -45,11 +49,25 @@ public class EditVariableControllerIT extends IntegrationTest
     {
         fMockMvc.perform(get("/admin/variables/preopPneumonia")).
             andExpect(status().isOk()).
-            andExpect(model().attribute("variable", hasProperty("displayName")));
+            andExpect(model().attribute("variable", isA(EditExistingBooleanVar.class)));
         
         fMockMvc.perform(
                 post("/admin/variables/preopPneumonia").
                 param("displayName", "Preop Something")).
+            andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+    }
+    
+    @Test
+    public void testEditMultiSelectVariable() throws Exception
+    {
+        fMockMvc.perform(get("/admin/variables/gender")).
+            andExpect(status().isOk()).
+            andExpect(model().attribute("variable", isA(EditExistingMultiSelectVar.class)));
+        
+        fMockMvc.perform(
+                post("/admin/variables/preopPneumonia").
+                param("option1", "My First Option").
+                param("option2", "My Second Option")).
             andExpect(redirectedUrl(AdminHomeController.BASE_URL));
     }
     

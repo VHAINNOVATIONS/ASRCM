@@ -8,8 +8,16 @@ import java.util.*;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+/**
+ * <p>Similar to a {@link MultiSelectVariable}, but the selections are a
+ * procedure list. This special case is helpful because there are thousands of
+ * procedures.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
+ */
 @Entity
-public class ProcedureVariable extends AbstractVariable
+public final class ProcedureVariable extends AbstractVariable
 {
     private List<Procedure> fProcedures;
     private HashMap<String, Procedure> fProcedureMap;

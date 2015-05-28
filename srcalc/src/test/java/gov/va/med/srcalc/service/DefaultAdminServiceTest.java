@@ -116,12 +116,12 @@ public class DefaultAdminServiceTest
         // Behavior verification.
         var.setDisplayName(newName);
         var.setHelpText(Optional.of(newHelpText));
-        s.updateVariable(var);
+        s.saveVariable(var);
         
         // Normally we try to verify the contract of a method instead of its
         // implementation, but without Hibernate it is impossible to verify
         // the contract here. Just verify that the service called update().
-        verify(mockDao).updateVariable(var);
+        verify(mockDao).mergeVariable(var);
     }
     
 }

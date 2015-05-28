@@ -16,9 +16,8 @@
  * String) CalculationService.setSpecialty} accepts a String identifying a
  * specialty instead of the specialty object itself. Other methods, such as
  * {@link
- * gov.va.med.srcalc.service.AdminService#updateVariable(gov.va.med.srcalc.domain.model.AbstractVariable)
+ * gov.va.med.srcalc.service.AdminService#saveVariable(gov.va.med.srcalc.domain.model.AbstractVariable)
  * AdminService.updateVariable},
- * accept domain objects, but require that the caller provide an object that it
- * previously obtained from a different Service Layer method.</p>
+ * do accept domain objects but still encapsulate a single transaction.</p>
  */
 package gov.va.med.srcalc.service;

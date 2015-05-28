@@ -168,8 +168,17 @@ form.srcalcForm fieldset > ol > li {
 	margin: 5px 0;
 }
 
-form.srcalcForm label.radioLabel {
+/* Put some horizontal padding between radio buttons */
+form.srcalcForm label.radioLabel,
+/* Spring wraps the generated radios in a <span>. (This is documented.) */
+form.srcalcForm .springGeneratedRadios > span {
 	padding-right: 1em;
+}
+
+/* Spring-generated radio buttons don't put any space between the radio and the
+   label, so insert some ourselves. */
+input[type="radio"].springFormGenerated {
+	margin-right: 2px;
 }
 
 form.srcalcForm .error {
@@ -337,12 +346,39 @@ a.openProcedureSelect {
 	color: #aaa;
 }
 
+/* === Admin Page-specific Styles === */
+
+.editObjectLink {
+	text-decoration: none;
+}
+
+div#newVariableLinks {
+	margin-top: 1em;
+}
+
+#newVariableLinks ul {
+	/* Put a small margin between the label and the list itself. */
+	margin-top: 0.5em;
+	/* Display these in a row, not as a bullet list. */
+	list-style-type: none;
+	padding: 0;
+}
+
+#newVariableLinks li {
+	display: inline-block;
+}
+
 /* The edit variable pages */
 
 #variableEditForm textarea#helpText {
 	/* The helpText text area is wide. Don't try to put anything else on the
 	   same line. */
 	display: block;
+}
+
+#variableEditForm ol#multiSelectOptionsList {
+	margin: 0;
+	padding-left: 1em;
 }
 
 

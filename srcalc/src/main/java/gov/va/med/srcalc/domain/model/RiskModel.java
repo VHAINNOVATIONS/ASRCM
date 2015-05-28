@@ -49,6 +49,7 @@ public class RiskModel implements Comparable<RiskModel>
      * The object's surrogate primary key. Don't show this to the user.
      */
     @Id
+    @GeneratedValue
     public int getId()
     {
         return fId;

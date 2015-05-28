@@ -1,9 +1,15 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.util.RetrievalEnum;
+
 import com.google.common.base.Optional;
 
 /**
- * A model variable. Just the variable, does not store an inputted value.
+ * <p>A model variable. Just the variable, does not store an inputted value.</p>
+ * 
+ * <p>This interface exists simply to permit subtype interfaces such as
+ * {@link DiscreteVariable}. See {@link AbstractVariable} for the canonical
+ * implementation of this interface.</p>
  */
 public interface Variable
 {
@@ -21,10 +27,22 @@ public interface Variable
             "letters, digits, spaces, and ~`!@#$%^&*()-_+=|\\.,<>/?'\":;";
     
     /**
-     * A regular expression that defines a valid variable key: {@value}
+     * <p>A regular expression that defines a valid variable key: {@value}</p>
+     * 
+     * <p>Note that this expression permits a string of any length. Validation
+     * code should check the string length first with a length-specific error
+     * message.</p>
      * @see #getDisplayName()
      */
-    public static final String VALID_DISPLAY_NAME_REGEX = "[\\w ~`!@#$%^&*()-_+=|\\.,<>/?'\":;]+";
+    public static final String VALID_DISPLAY_NAME_REGEX = "[\\w ~`!@#$%^&*()-_+=|\\.,<>/?'\":;]*";
+    
+    /**
+     * English description of the valid key characters for readable error
+     * messages.
+     * @see #VALID_KEY_REGEX
+     */
+    public static final String VALID_KEY_CHARACTERS =
+            "letters, digits, and underscores";
     
     /**
      * The maximum length of a valid variable key: {@value}
@@ -32,10 +50,14 @@ public interface Variable
     public static final int KEY_MAX = 40;
     
     /**
-     * A regular expression that defines a valid variable key: {@value}
+     * <p>A regular expression that defines a valid variable key: {@value}</p>
+     * 
+     * <p>Note that this expression permits a string of any length. Validation
+     * code should check the string length first with a length-specific error
+     * message.</p>
      * @see #getKey()
      */
-    public static final String VALID_KEY_REGEX = "\\w+";
+    public static final String VALID_KEY_REGEX = "\\w*";
     
     /**
      * The maximum length of a valid help text string: {@value}
@@ -72,10 +94,12 @@ public interface Variable
     public Optional<String> getHelpText();
     
     /**
-     * Returns a key that is used to translate vista retrieved values to
-     * variable keys. Retrieval keys do not have to be unique.
+     * Returns the RetrievalEnum that is used to translate VistA retrieved
+     * values to variable keys. Multiple variables may use the same retriever.
+     * 
+     * @return possibly null
      */
-    public Integer getRetrievalKey();
+    public RetrievalEnum getRetriever();
     
     /**
      * Should not be persisted to the database, as the retrieval date comes from

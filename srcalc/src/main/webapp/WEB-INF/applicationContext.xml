@@ -37,6 +37,7 @@
         <!-- Allow anonymous users to see the invalid session page otherwise
              they need to re-login, only to see that their session timed out. -->
         <security:intercept-url pattern="/sessionTimeout" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/js/**" access="ROLE_USER,ROLE_ADMIN"/>
         <security:intercept-url pattern="/**" access="ROLE_USER" />
     </security:http>
     

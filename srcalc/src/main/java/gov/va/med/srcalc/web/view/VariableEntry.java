@@ -2,7 +2,6 @@ package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.*;
-import gov.va.med.srcalc.util.RetrievalEnum;
 import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 
 import java.text.SimpleDateFormat;
@@ -57,12 +56,10 @@ public class VariableEntry
             final Patient patient)
     {
         final VariableEntry variableEntry = new VariableEntry(variables);
-        // Only get the enum array once to cut down on the computation of building an array
-        final RetrievalEnum[] retrievalValues = RetrievalEnum.values();
         for (final Variable v : variables)
         {
-            // Ensure the variable actually has a retrieval key.
-            if (v.getRetrievalKey() == null)
+            // Skip this if the variable doesn't have an associated retriever.
+            if (v.getRetriever() == null)
             {
                 continue;
             }
@@ -71,7 +68,7 @@ public class VariableEntry
             {
                 key += "$numerical";
             }
-            retrievalValues[v.getRetrievalKey() - 1].execute(patient, variableEntry, v, key);
+            v.getRetriever().execute(patient, variableEntry, v, key);
         }
         return variableEntry;
     }

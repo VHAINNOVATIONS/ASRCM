@@ -5,18 +5,16 @@ import gov.va.med.srcalc.domain.calculation.MultiSelectValue;
 
 import java.util.*;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
+import javax.persistence.*;
 
+/**
+ * <p>A Variable that allows selection from one of multiple discrete options.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
+ */
 @Entity
-public class MultiSelectVariable extends AbstractVariable implements DiscreteVariable
+public final class MultiSelectVariable extends AbstractVariable implements DiscreteVariable
 {
     public enum DisplayType
     {
@@ -40,6 +38,8 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
     
     /**
      * Constructs an instance.
+     * @param options the ordered list of options. This constructor will make a
+     * defensive copy of the list.
      * @throws NullPointerException if any argument is null
      * @throws IllegalArgumentException if any argument is invalid
      * @see AbstractVariable#AbstractVariable(String, VariableGroup, String)
@@ -55,12 +55,12 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
     {
         super(displayName, group, key);
         setDisplayType(displayType);
-        setOptions(options);
+        fOptions = new ArrayList<>(options);
     }
     
     @Basic
     @Enumerated(EnumType.STRING)  // store as strings in the DB for user-friendliness
-    public final DisplayType getDisplayType()
+    public DisplayType getDisplayType()
     {
         return fDisplayType;
     }
@@ -70,28 +70,34 @@ public class MultiSelectVariable extends AbstractVariable implements DiscreteVar
      * @throws NullPointerException if the given value is null. (Yes, you can
      * pass a null value for an enum.)
      */
-    public final void setDisplayType(final DisplayType displayType)
+    public void setDisplayType(final DisplayType displayType)
     {
         fDisplayType = Objects.requireNonNull(displayType, "display type must not be null");
     }
 
-    @OneToMany(fetch = FetchType.EAGER)  // eager load due to close association
+    /**
+     * Returns the ordered list of {@link MultiSelectOption}s.
+     * @return a modifiable list
+     */
+    @ElementCollection(fetch = FetchType.EAGER)  // eager load due to close association
     @OrderColumn(name = "option_index")
-    @JoinTable(
+    // Override strange defaults
+    @CollectionTable(
             name = "multi_select_variable_option",
-            joinColumns = @JoinColumn(name = "variable_id"),
-            inverseJoinColumns = @JoinColumn(name = "option_id")
-        )
-    public final List<MultiSelectOption> getOptions()
+            joinColumns = @JoinColumn(name = "variable_id"))
+    public List<MultiSelectOption> getOptions()
     {
         return fOptions;
     }
 
     /**
-     * Sets the ordered list of {@link MultiSelectOption}s.
-     * @param options
+     * <p>Sets the ordered list of {@link MultiSelectOption}s.</p>
+     * 
+     * <p>This method is for bean construction only. To modify the collection of
+     * an existing object, modify the list returned by {@link
+     * #getOptions()}.</p>
      */
-    public final void setOptions(final List<MultiSelectOption> options)
+    final void setOptions(final List<MultiSelectOption> options)
     {
         fOptions = Objects.requireNonNull(options, "options must not be null");
     }

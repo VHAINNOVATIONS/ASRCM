@@ -6,10 +6,13 @@ import gov.va.med.srcalc.domain.calculation.Value;
 import javax.persistence.Entity;
 
 /**
- * A Variable with Boolean (yes/no) value.
+ * <p>A Variable with Boolean (yes/no) value.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
  */
 @Entity
-public class BooleanVariable extends AbstractVariable
+public final class BooleanVariable extends AbstractVariable
 {
     /**
      * For reflection-based construction only. Business code should use
