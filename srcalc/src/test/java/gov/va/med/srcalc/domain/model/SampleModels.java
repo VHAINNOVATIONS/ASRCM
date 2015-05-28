@@ -325,7 +325,7 @@ public class SampleModels
         var.setMinInclusive(true);
         var.setMaxValue(120.0f);
         var.setMaxInclusive(true);
-        var.setRetriever(RetrievalEnum.CARDIAC_AGE);
+        var.setRetriever(RetrievalEnum.AGE);
     	
     	return var;
     }

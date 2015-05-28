@@ -1,7 +1,11 @@
 package gov.va.med.srcalc.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.Variable;
+import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
 public enum RetrievalEnum
@@ -33,7 +37,10 @@ public enum RetrievalEnum
             if (patient.getBmi() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getBmi().getValue()));
-                variable.setRetrievalDateString(VariableEntry.makeRetrievalMessage(patient.getBmi().getMeasureDate()));
+                variable.setRetrievalDateString(makeRetrievalString(
+                        patient.getBmi().getValue(),
+                        patient.getBmi().getMeasureDate(),
+                        patient.getBmi().getUnits()));
             }
         }
     },
@@ -46,7 +53,10 @@ public enum RetrievalEnum
             if (patient.getWeight() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getWeight().getValue()));
-                variable.setRetrievalDateString(VariableEntry.makeRetrievalMessage(patient.getWeight().getMeasureDate()));
+                variable.setRetrievalDateString(makeRetrievalString(
+                        patient.getWeight().getValue(),
+                        patient.getWeight().getMeasureDate(),
+                        patient.getWeight().getUnits()));
             }
         }
     },
@@ -59,7 +69,10 @@ public enum RetrievalEnum
             if (patient.getWeight6MonthsAgo() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getWeight6MonthsAgo().getValue()));
-                variable.setRetrievalDateString(VariableEntry.makeRetrievalMessage(patient.getWeight6MonthsAgo().getMeasureDate()));
+                variable.setRetrievalDateString(makeRetrievalString(
+                        patient.getWeight6MonthsAgo().getValue(),
+                        patient.getWeight6MonthsAgo().getMeasureDate(),
+                        patient.getWeight6MonthsAgo().getUnits()));
             }
         }
     },
@@ -72,17 +85,11 @@ public enum RetrievalEnum
             if (patient.getHeight() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getHeight().getValue()));
-                variable.setRetrievalDateString(VariableEntry.makeRetrievalMessage(patient.getHeight().getMeasureDate()));
+                variable.setRetrievalDateString(makeRetrievalString(
+                        patient.getHeight().getValue(),
+                        patient.getHeight().getMeasureDate(),
+                        patient.getHeight().getUnits()));
             }
-        }
-    },
-    CARDIAC_AGE
-    {
-        @Override
-        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
-                final String key)
-        {
-            variableEntry.getDynamicValues().put(key, String.valueOf(patient.getAge()));
         }
     },
     ALBUMIN
@@ -91,12 +98,34 @@ public enum RetrievalEnum
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            final RetrievedValue value = patient.getLabs().get("ALBUMIN");
-            variableEntry.getDynamicValues().put(key, String.valueOf(value.getValue()));
-            variable.setRetrievalDateString(VariableEntry.makeRetrievalMessage(value.getMeasureDate()));
+            final RetrievedValue albuminValue = patient.getLabs().get("ALBUMIN");
+            variableEntry.getDynamicValues().put(key, String.valueOf(albuminValue.getValue()));
+            variable.setRetrievalDateString(makeRetrievalString(
+                    albuminValue.getValue(), 
+                    albuminValue.getMeasureDate(), 
+                    albuminValue.getUnits()));
         }
     };
     
     public abstract void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
             final String key);
+    
+    /**
+     * Make a string to tell the user information about the automatically retrieved value.
+     * @param value the retrieved value to display
+     * @param measureDate the date on which the value was measured
+     * @param units the units in which the value was measured, can be empty but not null
+     * @return
+     */
+    protected String makeRetrievalString(final double value, final Date measureDate, final String units)
+    {
+        final SimpleDateFormat originalFormat = new SimpleDateFormat(RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT);
+        final String dateString = " on " + originalFormat.format(measureDate);
+        String unitString = "";
+        if(units.length() > 0)
+        {
+            unitString = " " + units;
+        }
+        return String.format("(Retrieved: %.2f%s%s)", value, unitString, dateString);
+    }
 }

@@ -25,7 +25,7 @@ public class RpcVistaPatientDaoTest
     private final static String INVALID_SIGNATURE_RETURN = "0^Incorrect Electronic Signature Code Entered.";
     private final static String ELECTRONIC_SIGNATURE = "TESTSIG";
     private final static String DUMMY_BODY = "Note Body";
-    private final static String ALBUMIN_SUCCESS = "ALBUMIN^3.0^02/02/2015@1435";
+    private final static String ALBUMIN_SUCCESS = "ALBUMIN^3.0^02/02/2015@14:35:12^g/dl";
     
     private final static int PATIENT_DFN = 500;
 
@@ -110,7 +110,7 @@ public class RpcVistaPatientDaoTest
         final RetrievedValue value = patient.getLabs().get("ALBUMIN");
         assertEquals(3.0, value.getValue(), .0001);
         final Calendar cal = Calendar.getInstance();
-        cal.set(2015, 1, 2, 14, 35, 0);
+        cal.set(2015, 1, 2, 14, 35, 12);
         cal.set(Calendar.MILLISECOND, 0);
         assertEquals(cal.getTime(), value.getMeasureDate());
     }

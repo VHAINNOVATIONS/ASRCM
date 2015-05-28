@@ -17,7 +17,7 @@ public class SampleCalculations
     public static Patient dummyPatient(final int dfn)
     {
         final Patient patient = new Patient(dfn, "Zach Smith", "M", 40);
-        patient.setBmi(new RetrievedValue(20.0, new Date()));
+        patient.setBmi(new RetrievedValue(20.0, new Date(), ""));
         return patient;
     }
 

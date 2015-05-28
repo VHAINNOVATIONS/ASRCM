@@ -31,10 +31,13 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
     private static final String SPLIT_REGEX = "[\\s]+";
+    private static final String WEIGHT_UNITS = "lbs.";
+    private static final String HEIGHT_UNITS = "inches";
     
     public static final String VISTA_DATE_OUTPUT_FORMAT = "MM/dd/yy@HH:mm";
     
     private static final Map<String, String> TRANSLATION_MAP;
+
     /**
      * Static class initializer to fill the translation map with the proper values.
      */
@@ -152,7 +155,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
     	// Get the date of the measurement
     	final SimpleDateFormat dateFormat = new SimpleDateFormat(VISTA_DATE_OUTPUT_FORMAT);
     	final Date measurementDate = dateFormat.parse(weightLineTokens[1]);
-    	patient.setWeight6MonthsAgo(new RetrievedValue(Double.parseDouble(weightLineTokens[3]), measurementDate));
+    	patient.setWeight6MonthsAgo(new RetrievedValue(
+    	        Double.parseDouble(weightLineTokens[3]), measurementDate, WEIGHT_UNITS));
     	fLogger.debug("Weight 6 months ago: {}", patient.getWeight6MonthsAgo());
     }
     
@@ -164,16 +168,19 @@ public class RpcVistaPatientDao implements VistaPatientDao
     	final int feet = Integer.parseInt(heightLineTokens[2]);
     	patient.setHeight(new RetrievedValue(
     	        (feet * 12.0) + Double.parseDouble(heightLineTokens[4]),
-    	        dateFormat.parse(heightLineTokens[1])));
+    	        dateFormat.parse(heightLineTokens[1]),
+    	        HEIGHT_UNITS));
     	final String[] weightLineTokens = vitalResults.get(6).split(SPLIT_REGEX);
     	patient.setWeight(new RetrievedValue(
     	        Double.parseDouble(weightLineTokens[2]),
-    	        dateFormat.parse(weightLineTokens[1])));
+    	        dateFormat.parse(weightLineTokens[1]),
+    	        WEIGHT_UNITS));
     	final String[] bmiLineTokens = vitalResults.get(7).split(SPLIT_REGEX);
     	// The BMI value is the second to last token on its line
     	patient.setBmi(new RetrievedValue(
     	    Double.parseDouble(bmiLineTokens[bmiLineTokens.length-2]),
-    	    patient.getWeight().getMeasureDate()));
+    	    patient.getWeight().getMeasureDate(),
+    	    ""));
     }
     
     private void retrieveLabs(final int dfn, final Patient patient) throws ParseException
@@ -191,9 +198,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
             {
                 final String[] rpcSplit = rpcResultString.split("\\^");
                 final double labValue = Double.parseDouble(rpcSplit[1]);
-                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy@HHmm");
+                final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy@HH:mm:ss");
                 patient.getLabs().put(labNameList.name(),
-                        new RetrievedValue(labValue,format.parse(rpcSplit[2])));
+                        new RetrievedValue(labValue, format.parse(rpcSplit[2]), rpcSplit[3]));
             }
         }
     }

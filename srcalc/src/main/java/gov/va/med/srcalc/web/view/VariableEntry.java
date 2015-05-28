@@ -2,11 +2,8 @@ package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.*;
-import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -68,6 +65,7 @@ public class VariableEntry
             {
                 key += "$numerical";
             }
+            
             v.getRetriever().execute(patient, variableEntry, v, key);
         }
         return variableEntry;
@@ -125,15 +123,6 @@ public class VariableEntry
     public static String makeVariableValuePath(final Variable var)
     {
         return makeDynamicValuePath(var.getKey());
-    }
-    
-    /**
-     * Produce a message that will tell the user when the retrieved value was measured.
-     */
-    public static String makeRetrievalMessage(final Date retrievalDate)
-    {
-    	final SimpleDateFormat originalFormat = new SimpleDateFormat(RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT);
-    	return "(Measured on: " + originalFormat.format(retrievalDate) + ")";
     }
     
     @Override
