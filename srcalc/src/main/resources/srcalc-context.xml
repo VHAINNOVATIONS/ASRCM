@@ -33,13 +33,16 @@
 	     DAOs and Services. This reduces the amount of configuration necessary
 	     in this file while still allowing the objects to be used as POJOs out-
 	     side of the Spring container. -->
-	
-	<!-- DAOs -->
-	<bean id="specialtyDao" class="gov.va.med.srcalc.db.SpecialtyDao" />
-	<bean id="variableDao" class="gov.va.med.srcalc.db.VariableDao" />
-	<bean id="riskModelDao" class="gov.va.med.srcalc.db.RiskModelDao" />
-	<bean id="procedureDao" class="gov.va.med.srcalc.db.ProcedureDao" />
-	<!-- Note: VistA DAOs are not defined here. See applicationContext.xml. -->
+
+    <!-- DAOs -->
+    <!-- Note: VistA DAOs are not defined here. See applicationContext.xml. -->
+    <bean id="specialtyDao" class="gov.va.med.srcalc.db.SpecialtyDao" />
+    <bean id="variableDao" class="gov.va.med.srcalc.db.VariableDao" />
+    <bean id="riskModelDao" class="gov.va.med.srcalc.db.RiskModelDao" />
+    <bean id="procedureDao" class="gov.va.med.srcalc.db.ProcedureDao" />
+    <!-- Automatically translate any exceptions from the DAOs to Spring's
+         DataAccessException hierarchy. -->
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
     <!-- Services -->
 	<bean id="calculationService" class="gov.va.med.srcalc.service.DefaultCalculationService" />
