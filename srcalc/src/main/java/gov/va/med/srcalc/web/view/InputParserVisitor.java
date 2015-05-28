@@ -158,7 +158,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
             rejectDynamicValue(
                     variable.getKey(),
                     ex.getErrorCode(),
-                    new Object[]{ variable.getMinValue() },
+                    new Object[]{ variable.getValidRange().getLowerBound() },
                     ex.getMessage());
         }
         catch (final ValueTooHighException ex)
@@ -166,7 +166,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
             rejectDynamicValue(
                     variable.getKey(),
                     ex.getErrorCode(),
-                    new Object[]{ variable.getMaxValue() },
+                    new Object[]{ variable.getValidRange().getUpperBound() },
                     ex.getMessage());
         }
     }
@@ -223,7 +223,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
                 rejectDynamicValue(
                         numericalName,
                         ex.getErrorCode(),
-                        new Object[]{ variable.getMinValue() },
+                        new Object[]{ variable.getValidRange().getLowerBound() },
                         ex.getMessage());
             }
             catch (final ValueTooHighException ex)
@@ -231,7 +231,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
                 rejectDynamicValue(
                         numericalName,
                         ex.getErrorCode(),
-                        new Object[]{ variable.getMaxValue() },
+                        new Object[]{ variable.getValidRange().getUpperBound() },
                         ex.getMessage());
             }
         }

@@ -193,6 +193,56 @@ public final class NumericalRange implements Comparable<NumericalRange>
     }
     
     /**
+     * Checks the given value against this range. If the value is in the range,
+     * returns the value. Otherwise, throws an {@link InvalidValueException}.
+     * @return the valid value for convenience
+     * @throws ValueTooLowException if the value is below the minimum
+     * @throws ValueTooHighException if the value is above the minimum
+     */
+    public float checkValue(final float value)
+            throws ValueTooLowException, ValueTooHighException
+    {
+        if (fLowerInclusive)
+        {
+            if (value < fLowerBound)
+            {
+                throw new ValueTooLowException(
+                        ValueTooLowException.ERROR_CODE_INCLUSIVE,
+                        "value must be greater than or equal to " + fLowerBound);
+            }
+        }
+        else
+        {
+            if (value <= fLowerBound)
+            {
+                throw new ValueTooLowException(
+                        ValueTooLowException.ERROR_CODE_EXCLUSIVE,
+                        "value must be greater than " + fLowerBound);
+            }
+        }
+
+        if (fUpperInclusive)
+        {
+            if (value > fUpperBound)
+            {
+                throw new ValueTooHighException(
+                        ValueTooHighException.ERROR_CODE_INCLUSIVE,
+                        "value must be less than or equal to " + fUpperBound);
+            }
+        }
+        else
+        {
+            if (value >= fUpperBound)
+            {
+                throw new ValueTooHighException(
+                        ValueTooHighException.ERROR_CODE_EXCLUSIVE,
+                        "value must be less than " + fUpperBound);
+            }
+        }
+        return value;
+    }
+    
+    /**
      * Returns the interval in mathematical notation. (See class Javadocs.)
      */
     @Override
