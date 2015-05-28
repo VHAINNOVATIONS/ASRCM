@@ -5,19 +5,7 @@ import gov.va.med.srcalc.service.ModelInspectionService;
 import gov.va.med.srcalc.web.view.Views;
 
 /**
- * <p>Encapsulates the operation to update an existing BooleanVariable.</p>
- * 
- * <p>Workflow:</p>
- * 
- * <ol>
- * <li>Construct an instance based on an existing variable.</li>
- * <li>Present the user with the initial values and the "reference data" such
- * as {@link #getAllGroups()}.</li>
- * <li>Have the user update the properties as desired.</li>
- * <li>Use {@link EditVarValidator} to validate the user's edits.</li>
- * <li>Call {@link #applyToVariable()} to update the target variable with the
- * new properties.</li>
- * </ol>
+ * Encapsulates the operation to update an existing BooleanVariable.
  */
 public class EditExistingBooleanVar extends EditBooleanVar implements EditExistingVar
 {

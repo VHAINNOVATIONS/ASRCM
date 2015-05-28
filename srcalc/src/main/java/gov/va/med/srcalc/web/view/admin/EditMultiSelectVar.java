@@ -36,6 +36,28 @@ public class EditMultiSelectVar extends EditVar
         fOptions = Lists.newArrayList("", "", "");
     }
     
+    /**
+     * Constructs an instance with the properties initialized to the given
+     * variable.
+     * @param variable the existing variable containing the initial properties.
+     * The properties are copied but this object is not stored.
+     * @param modelService to provide reference data (e.g., available
+     * VariableGroups) to the user
+     */
+    public EditMultiSelectVar(
+            final MultiSelectVariable variable,
+            final ModelInspectionService modelService)
+    {
+        super(variable, modelService);
+        fDisplayType = variable.getDisplayType();
+        // Translate the List<MultiSelectOption> to List<String>
+        fOptions = new ArrayList<>(variable.getOptions().size());
+        for (final MultiSelectOption option : variable.getOptions())
+        {
+            fOptions.add(option.getValue());
+        }
+    }
+    
     @Override
     public String getTypeName()
     {
