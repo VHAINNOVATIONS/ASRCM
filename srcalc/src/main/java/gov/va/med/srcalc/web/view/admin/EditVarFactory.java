@@ -46,15 +46,13 @@ public class EditVarFactory
         @Override
         public void visitBoolean(final BooleanVariable variable)
         {
-            fInstance = new EditExistingBooleanVar(
-                    variable, fModelService);
+            fInstance = new EditExistingBooleanVar(variable, fModelService);
         }
 
         @Override
         public void visitMultiSelect(final MultiSelectVariable variable)
         {
-            throw new UnsupportedOperationException(
-                    "Editing multi-select variables is not yet supported.");
+            fInstance = new EditExistingMultiSelectVar(variable, fModelService);
         }
 
         @Override

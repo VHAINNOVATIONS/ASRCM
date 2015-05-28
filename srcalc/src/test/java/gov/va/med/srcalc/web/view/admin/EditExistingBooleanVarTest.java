@@ -11,6 +11,14 @@ public class EditExistingBooleanVarTest
     private final MockModelService fModelService = new MockModelService();
 
     @Test
+    public final void testEditExistingVarMethods()
+    {
+        final EditExistingBooleanVar ev = new EditExistingBooleanVar(
+                SampleModels.dnrVariable(), fModelService);
+        EditExistingVarTest.testEditExistingVarMethods(ev);
+    }
+
+    @Test
     public final void testApplyToVariable()
     {
         final String newDisplayName = "newName";

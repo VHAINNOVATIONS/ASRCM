@@ -26,4 +26,5 @@ public class Views
     public static final String EDIT_BOOLEAN_VARIABLE = "editBooleanVariable.jsp";
     public static final String NEW_BOOLEAN_VARIABLE = "newBooleanVariable.jsp";
     public static final String NEW_MULTI_SELECT_VARIABLE = "newMultiSelectVariable.jsp";
+    public static final String EDIT_MULTI_SELECT_VARIABLE = "editMultiSelectVariable.jsp";
 }
