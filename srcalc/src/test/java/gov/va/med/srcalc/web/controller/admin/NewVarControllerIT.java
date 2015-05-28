@@ -77,6 +77,22 @@ public class NewVarControllerIT extends IntegrationTest
     }
     
     @Test
+    public final void testNewBooleanDuplicateKey() throws Exception
+    {
+        fMockMvc.perform(post(NewBooleanVarController.BASE_URL)
+                .param("key", "preopPneumonia")
+                .param("displayName", "myDisplayName")
+                .param("helpText", "myHelpText")
+                .param("groupId", "1"))
+            .andExpect(model().attributeHasErrors(NewVarController.ATTRIBUTE_VARIABLE));
+        
+        // Normally the Session would be dead and gone by now, but in these ITs
+        // the Transaction is still open, so manually clear the Session due to
+        // the Exception that occurred in the DAO.
+        getHibernateSession().clear();
+    }
+    
+    @Test
     public final void testNewMultiSelectValid() throws Exception
     {
         final String key = "testNewMsVarValidKey";

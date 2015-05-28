@@ -24,6 +24,11 @@ public class ValidationCodes
      * Error code used when a String value contains invalid characters.
      */
     public static final String INVALID_CONTENTS = "invalidContents";
+    
+    /**
+     * Error code used when a value must be unique but is not.
+     */
+    public static final String DUPLICATE_VALUE = "duplicateValue";
 
     /**
      * No construction.

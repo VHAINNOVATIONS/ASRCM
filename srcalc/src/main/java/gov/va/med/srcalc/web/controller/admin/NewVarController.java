@@ -13,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.common.collect.Iterables;
 
 import gov.va.med.srcalc.service.AdminService;
+import gov.va.med.srcalc.service.DuplicateVariableKeyException;
+import gov.va.med.srcalc.util.ValidationCodes;
 import gov.va.med.srcalc.web.view.admin.EditVar;
 
 /**
@@ -101,8 +103,22 @@ public abstract class NewVarController
         {
             return displayForm(editVar);
         }
+
+        // Note that the validators do not check for uniqueness of the variable
+        // key, so we may get here with a duplicate variable key and the below
+        // call to saveVariable() may fail. Thus we handle that exception below.
         
-        fAdminService.saveVariable(editVar.buildNew());
+        try
+        {
+            fAdminService.saveVariable(editVar.buildNew());
+        }
+        // Translate the possible DuplicateVariableKeyException into a
+        // validation error.
+        catch (final DuplicateVariableKeyException ex)
+        {
+            bindingResult.rejectValue("key", ValidationCodes.DUPLICATE_VALUE, "duplicate key");
+            return displayForm(editVar);
+        }
         
         // Using the POST-redirect-GET pattern.
         return new ModelAndView("redirect:/admin");

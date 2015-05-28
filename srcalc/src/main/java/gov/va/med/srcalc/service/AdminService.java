@@ -2,6 +2,8 @@ package gov.va.med.srcalc.service;
 
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
+
 import gov.va.med.srcalc.domain.model.*;
 
 /**
@@ -29,6 +31,10 @@ public interface AdminService extends ModelInspectionService
      * Saves the given variable to the persistent store. The given variable may
      * be brand-new or one previously loaded by {@link #getVariable(String)}.
      * @param variable the variable to save
+     * @throws DuplicateVariableKeyException if the provided variable key is
+     * non-unique
+     * @throws DataAccessException if any other error occurs when trying to save
+     * the variable to the persistent store
      */
     public void saveVariable(final AbstractVariable variable);
 }
