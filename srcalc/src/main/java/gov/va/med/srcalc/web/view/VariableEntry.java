@@ -131,7 +131,8 @@ public class VariableEntry
     }
     
     /**
-     * Returns the retrieved value for an {@link AbstractVariable}
+     * Returns a string indicating the retrieved date, value, and units
+     * of an {@link AbstractVariable}
      * @param key the name of the field to automatically fill
      */
     public String getMeasureDate(final String key)
@@ -145,7 +146,8 @@ public class VariableEntry
     }
     
     /**
-     * Returns the retrieved value for a {@link DiscreteNumericalVariable}.
+     * Returns a string indicating the retrieved date, value, and units
+     * of a {@link DiscreteNumericalVariable}.
      * @param key the name of the {@link DiscreteNumericalVariable} to automatically fill
      */
     public String getNumericalMeasureDate(final String key)
