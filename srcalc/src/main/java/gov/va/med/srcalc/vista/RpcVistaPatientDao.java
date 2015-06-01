@@ -67,7 +67,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
      * {@inheritDoc}
      * <p>This method will eager load all available information about the patient including vitals,
      * basic information, and lab results. Eager loading is done to sacrifice efficiency for
-     * simplicity. The same thing is done in VistA CPRS</p>
+     * simplicity. The number of eager remote procedure calls is comparable to VistA CPRS.</p>
      * @param dfn the dfn identifying the specified patient
      */
     @Override

@@ -131,7 +131,7 @@ public class VariableEntry
     }
     
     /**
-     * Returns the retrieved value for a {@link Variable}
+     * Returns the retrieved value for an {@link AbstractVariable}
      * @param key the name of the field to automatically fill
      */
     public String getMeasureDate(final String key)

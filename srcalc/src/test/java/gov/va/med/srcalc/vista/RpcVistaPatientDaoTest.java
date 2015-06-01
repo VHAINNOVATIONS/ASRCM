@@ -13,7 +13,6 @@ import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -32,6 +31,9 @@ public class RpcVistaPatientDaoTest
     private static VistaProcedureCaller mockVistaProcedureCaller()
     {
         final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
+        // Anything besides a valid measurement is returned as an empty string
+        when(caller.doRetrieveLabs(eq(RADIOLOGIST_DUZ), eq(String.valueOf(PATIENT_DFN)), anyListOf(String.class)))
+            .thenReturn("");
         // Setup the necessary actions for getting patient data.
         when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_PATIENT, String.valueOf(PATIENT_DFN)))
             .thenReturn(Arrays.asList(PATIENT_RPC_RETURN));
@@ -48,11 +50,7 @@ public class RpcVistaPatientDaoTest
     {
         // Setup
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
-        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_PATIENT, String.valueOf(PATIENT_DFN)))
-            .thenReturn(Arrays.asList(PATIENT_RPC_RETURN));
-        // Anything besides a valid measurement is returned as an empty string
-        when(caller.doRetrieveLabs(eq(RADIOLOGIST_DUZ), eq(String.valueOf(PATIENT_DFN)), anyListOf(String.class)))
-            .thenReturn("");
+        
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
 
         // Behavior verification
@@ -95,12 +93,7 @@ public class RpcVistaPatientDaoTest
     @Test
     public final void testLabRetrievalFailure() throws Exception
     {
-        final List<String> labNames = new ArrayList<String>();
-        labNames.add("ALBUMIN");
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
-        // Anything besides a valid measurement is returned as an empty string
-        when(caller.doRetrieveLabs(eq(RADIOLOGIST_DUZ), eq(String.valueOf(PATIENT_DFN)), anyListOf(String.class)))
-            .thenReturn("");
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         // Behavior verification
         final Patient patient = dao.getPatient(PATIENT_DFN);
