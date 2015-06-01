@@ -37,7 +37,7 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
     
     /**
      * Returns the range of valid values for the variable. The default is
-     * [0.0,100.0].
+     * [0.0,200.0].
      */
     @Embedded
     public NumericalRange getValidRange()
