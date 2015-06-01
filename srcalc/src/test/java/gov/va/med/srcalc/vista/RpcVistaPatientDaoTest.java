@@ -12,10 +12,10 @@ import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 public class RpcVistaPatientDaoTest
@@ -122,10 +122,9 @@ public class RpcVistaPatientDaoTest
         assertEquals(1, patient.getLabs().size());
         final RetrievedValue value = patient.getLabs().get("ALBUMIN");
         assertEquals(3.0, value.getValue(), .0001);
-        final Calendar cal = Calendar.getInstance();
-        cal.set(2015, 1, 2, 14, 35, 12);
-        cal.set(Calendar.MILLISECOND, 0);
-        assertEquals(cal.getTime(), value.getMeasureDate());
+        final DateTime expectedTime = new DateTime(2015, 2, 2, 14, 35, 12, 0);
+
+        assertEquals(expectedTime.toDate(), value.getMeasureDate());
     }
     
     
