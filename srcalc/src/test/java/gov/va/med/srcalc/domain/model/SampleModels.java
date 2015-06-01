@@ -247,8 +247,7 @@ public class SampleModels
     {
         final NumericalVariable var = new NumericalVariable(
                 "Age", demographicsVariableGroup(), "age");
-        var.setMinValue(0);
-        var.setMaxValue(999);
+        var.setValidRange(new NumericalRange(0.0f, true, 999.0f, true));
         var.setUnits("years");
         var.setRetriever(ValueRetriever.AGE);
         return var;
@@ -294,8 +293,7 @@ public class SampleModels
         final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
                 "White Blood Count", labVariableGroup(), new HashSet<>(categories), "wbc");
-        var.setMinValue(2.0f);
-        var.setMaxValue(50.0f);
+        var.setValidRange(new NumericalRange(2.0f, true, 50.0f, true));
         var.setUnits("x1000/mm^3");
         return var;
     }
@@ -321,10 +319,7 @@ public class SampleModels
                 ageGreaterThanEqualToSeventy);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable("Cardiac Age", demographicsVariableGroup(),
                 new HashSet<>(categories), "cardiacAge");
-        var.setMinValue(18.0f);
-        var.setMinInclusive(true);
-        var.setMaxValue(120.0f);
-        var.setMaxInclusive(true);
+        var.setValidRange(new NumericalRange(18.0f, true, 120.0f, true));
         var.setRetriever(ValueRetriever.AGE);
     	
     	return var;
@@ -345,8 +340,7 @@ public class SampleModels
         final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
                 "White Blood Count", labVariableGroup(), new HashSet<>(categories), "wbc");
-        var.setMinValue(2.0f);
-        var.setMaxValue(50.0f);
+        var.setValidRange(new NumericalRange(2.0f, true, 50.0f, true));
         var.setUnits("x1000/mm^3");
         return var;
     }
