@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
-import gov.va.med.srcalc.util.RetrievalEnum;
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 
 import com.google.common.base.Optional;
 
@@ -99,15 +99,7 @@ public interface Variable
      * 
      * @return possibly null
      */
-    public RetrievalEnum getRetriever();
-    
-    /**
-     * Should not be persisted to the database, as the retrieval date comes from
-     * Vista.
-     */
-    public String getRetrievalDateString();
-
-    public void setRetrievalDateString(String retrievalDateString);
+    public ValueRetriever getRetriever();
     
     /**
      * Accepts the given {@link VariableVisitor}.

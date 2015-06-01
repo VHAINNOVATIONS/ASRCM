@@ -19,7 +19,7 @@ import com.google.common.base.Splitter;
 
 import gov.va.med.crypto.VistaKernelHash;
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.util.RetrievedValue;
+import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 
 /**
  * Implementation of {@link VistaPatientDao} using remote procedures. Each
@@ -63,6 +63,13 @@ public class RpcVistaPatientDao implements VistaPatientDao
         fDuz = duz;
     }
     
+    /**
+     * {@inheritDoc}
+     * <p>This method will eager load all available information about the patient including vitals,
+     * basic information, and lab results. Eager loading is done to sacrifice efficiency for
+     * simplicity. The same thing is done in VistA CPRS</p>
+     * @param dfn the dfn identifying the specified patient
+     */
     @Override
     public Patient getPatient(final int dfn)
     {
@@ -185,13 +192,13 @@ public class RpcVistaPatientDao implements VistaPatientDao
     
     private void retrieveLabs(final int dfn, final Patient patient) throws ParseException
     {
-        final LabRetrievalEnum[] enumValues = LabRetrievalEnum.values();
-        for(final LabRetrievalEnum labNameList: enumValues)
+        final VistaLabs[] enumValues = VistaLabs.values();
+        for(final VistaLabs labRetrievalEnum: enumValues)
         {
             final String rpcResultString = fProcedureCaller.doRetrieveLabs(
                     fDuz,
                     String.valueOf(dfn),
-                    labNameList.getPossibleLabNames());
+                    labRetrievalEnum.getPossibleLabNames());
             // If the resultString is a success, add it to the patient's lab data.
             // Else, we don't need to do anything.
             if(!rpcResultString.isEmpty())
@@ -199,7 +206,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 final String[] rpcSplit = rpcResultString.split("\\^");
                 final double labValue = Double.parseDouble(rpcSplit[1]);
                 final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy@HH:mm:ss");
-                patient.getLabs().put(labNameList.name(),
+                patient.getLabs().put(labRetrievalEnum.name(),
                         new RetrievedValue(labValue, format.parse(rpcSplit[2]), rpcSplit[3]));
             }
         }

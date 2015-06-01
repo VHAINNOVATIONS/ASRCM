@@ -1,13 +1,13 @@
 package gov.va.med.srcalc.vista;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
 import gov.va.med.srcalc.domain.*;
-import gov.va.med.srcalc.util.RetrievedValue;
+import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
 
 import java.util.ArrayList;
@@ -29,11 +29,25 @@ public class RpcVistaPatientDaoTest
     
     private final static int PATIENT_DFN = 500;
 
+    private static VistaProcedureCaller mockVistaProcedureCaller()
+    {
+        final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
+        // Setup the necessary actions for getting patient data.
+        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_PATIENT, String.valueOf(PATIENT_DFN)))
+            .thenReturn(Arrays.asList(PATIENT_RPC_RETURN));
+        // Return empty vitals
+        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(PATIENT_DFN)))
+            .thenReturn(new ArrayList<String>());
+        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_VITAL, ""))
+            .thenReturn(new ArrayList<String>());
+        return caller;
+    }
+    
     @Test
     public final void testLoadVistaPatientValid()
     {
         // Setup
-        final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_PATIENT, String.valueOf(PATIENT_DFN)))
             .thenReturn(Arrays.asList(PATIENT_RPC_RETURN));
         // Anything besides a valid measurement is returned as an empty string
@@ -52,7 +66,7 @@ public class RpcVistaPatientDaoTest
     @Test
     public final void testSaveNoteInvalidSignature() throws Exception
     {
-    	final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
+    	final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doSaveProgressNoteCall(anyString(), anyString(), anyString(), anyListOf(String.class)))
             .thenReturn(INVALID_SIGNATURE_RETURN);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
@@ -68,7 +82,7 @@ public class RpcVistaPatientDaoTest
     @Test
     public final void testSaveNoteSuccess() throws Exception
     {
-    	final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
+    	final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doSaveProgressNoteCall(anyString(), anyString(), anyString(), anyListOf(String.class)))
             .thenReturn(RemoteProcedure.VALID_SIGNATURE_RETURN);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
@@ -83,8 +97,7 @@ public class RpcVistaPatientDaoTest
     {
         final List<String> labNames = new ArrayList<String>();
         labNames.add("ALBUMIN");
-        final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-        rpcSetup(caller);
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
         // Anything besides a valid measurement is returned as an empty string
         when(caller.doRetrieveLabs(eq(RADIOLOGIST_DUZ), eq(String.valueOf(PATIENT_DFN)), anyListOf(String.class)))
             .thenReturn("");
@@ -97,11 +110,11 @@ public class RpcVistaPatientDaoTest
     @Test
     public final void testLabRetrievalSuccess() throws Exception
     {
-        final List<String> labNames = new ArrayList<String>();
-        labNames.add("ALBUMIN");
-        final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-        rpcSetup(caller);
-        when(caller.doRetrieveLabs(RADIOLOGIST_DUZ, String.valueOf(PATIENT_DFN), labNames))
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRetrieveLabs(
+                RADIOLOGIST_DUZ, 
+                String.valueOf(PATIENT_DFN),
+                VistaLabs.ALBUMIN.getPossibleLabNames()))
             .thenReturn(ALBUMIN_SUCCESS);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         // Behavior verification
@@ -115,15 +128,5 @@ public class RpcVistaPatientDaoTest
         assertEquals(cal.getTime(), value.getMeasureDate());
     }
     
-    private static void rpcSetup(final VistaProcedureCaller caller)
-    {
-        // Setup the necessary actions for getting patient data.
-        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_PATIENT, String.valueOf(PATIENT_DFN)))
-            .thenReturn(Arrays.asList(PATIENT_RPC_RETURN));
-        // Return empty vitals
-        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(PATIENT_DFN)))
-            .thenReturn(new ArrayList<String>());
-        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_VITAL, ""))
-            .thenReturn(new ArrayList<String>());
-    }
+    
 }

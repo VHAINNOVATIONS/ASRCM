@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.domain.model.MultiSelectVariable.DisplayType;
 import gov.va.med.srcalc.service.MockModelService;
-import gov.va.med.srcalc.util.RetrievalEnum;
 
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ public class EditExistingMultiSelectVarTest
         final String origDisplayName = var.getDisplayName();
         final VariableGroup origGroup = var.getGroup();
         final Optional<String> origHelpText = var.getHelpText();
-        final RetrievalEnum origRetriever = var.getRetriever();
+        final ValueRetriever origRetriever = var.getRetriever();
         final DisplayType origDisplayType = var.getDisplayType();
         final List<MultiSelectOption> origOptions = var.getOptions();
         
@@ -68,7 +68,7 @@ public class EditExistingMultiSelectVarTest
                 new MultiSelectOption(options.get(0)),
                 new MultiSelectOption(options.get(1)),
                 new MultiSelectOption(options.get(2)));
-        final RetrievalEnum retriever = null;
+        final ValueRetriever retriever = null;
         
         // Behavior
         final EditExistingMultiSelectVar ev = new EditExistingMultiSelectVar(

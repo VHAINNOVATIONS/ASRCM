@@ -6,9 +6,9 @@ import java.util.List;
 import com.google.common.base.Strings;
 import com.google.common.collect.*;
 
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.ModelInspectionService;
-import gov.va.med.srcalc.util.RetrievalEnum;
 import gov.va.med.srcalc.web.view.Views;
 
 /**
@@ -74,9 +74,9 @@ public class EditMultiSelectVar extends EditVar
     }
     
     @Override
-    public ImmutableSortedSet<RetrievalEnum> getAllRetrievers()
+    public ImmutableSortedSet<ValueRetriever> getAllRetrievers()
     {
-        return ImmutableSortedSet.of(RetrievalEnum.GENDER);
+        return ImmutableSortedSet.of(ValueRetriever.GENDER);
     }
     
     /**

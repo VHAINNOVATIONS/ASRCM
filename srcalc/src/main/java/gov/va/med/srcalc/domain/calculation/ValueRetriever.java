@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.util;
+package gov.va.med.srcalc.domain.calculation;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,7 +8,7 @@ import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
-public enum RetrievalEnum
+public enum ValueRetriever
 {
     GENDER
     {
@@ -37,10 +37,13 @@ public enum RetrievalEnum
             if (patient.getBmi() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getBmi().getValue()));
-                variable.setRetrievalDateString(makeRetrievalString(
+                final String retrievalString = makeRetrievalString(
                         patient.getBmi().getValue(),
                         patient.getBmi().getMeasureDate(),
-                        patient.getBmi().getUnits()));
+                        patient.getBmi().getUnits());
+                variableEntry.getDynamicValues().put(
+                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
+                        retrievalString);
             }
         }
     },
@@ -53,10 +56,14 @@ public enum RetrievalEnum
             if (patient.getWeight() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getWeight().getValue()));
-                variable.setRetrievalDateString(makeRetrievalString(
+                final String retrievalString = makeRetrievalString(
                         patient.getWeight().getValue(),
                         patient.getWeight().getMeasureDate(),
-                        patient.getWeight().getUnits()));
+                        patient.getWeight().getUnits());
+                variableEntry.getDynamicValues().put(
+                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
+                        retrievalString);
+                
             }
         }
     },
@@ -69,10 +76,13 @@ public enum RetrievalEnum
             if (patient.getWeight6MonthsAgo() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getWeight6MonthsAgo().getValue()));
-                variable.setRetrievalDateString(makeRetrievalString(
+                final String retrievalString = makeRetrievalString(
                         patient.getWeight6MonthsAgo().getValue(),
                         patient.getWeight6MonthsAgo().getMeasureDate(),
-                        patient.getWeight6MonthsAgo().getUnits()));
+                        patient.getWeight6MonthsAgo().getUnits());
+                variableEntry.getDynamicValues().put(
+                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
+                        retrievalString);
             }
         }
     },
@@ -85,10 +95,13 @@ public enum RetrievalEnum
             if (patient.getHeight() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getHeight().getValue()));
-                variable.setRetrievalDateString(makeRetrievalString(
+                final String retrievalString = makeRetrievalString(
                         patient.getHeight().getValue(),
                         patient.getHeight().getMeasureDate(),
-                        patient.getHeight().getUnits()));
+                        patient.getHeight().getUnits());
+                variableEntry.getDynamicValues().put(
+                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
+                        retrievalString);
             }
         }
     },
@@ -99,11 +112,17 @@ public enum RetrievalEnum
                 final String key)
         {
             final RetrievedValue albuminValue = patient.getLabs().get("ALBUMIN");
-            variableEntry.getDynamicValues().put(key, String.valueOf(albuminValue.getValue()));
-            variable.setRetrievalDateString(makeRetrievalString(
-                    albuminValue.getValue(), 
-                    albuminValue.getMeasureDate(), 
-                    albuminValue.getUnits()));
+            if(albuminValue != null)
+            {
+                variableEntry.getDynamicValues().put(key, String.valueOf(albuminValue.getValue()));
+                final String retrievalString = makeRetrievalString(
+                        albuminValue.getValue(),
+                        albuminValue.getMeasureDate(),
+                        albuminValue.getUnits());
+                variableEntry.getDynamicValues().put(
+                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
+                        retrievalString);
+            }
         }
     };
     

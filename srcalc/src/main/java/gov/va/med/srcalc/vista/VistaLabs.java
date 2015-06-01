@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
-enum LabRetrievalEnum
+enum VistaLabs
 {
     ALBUMIN
     {

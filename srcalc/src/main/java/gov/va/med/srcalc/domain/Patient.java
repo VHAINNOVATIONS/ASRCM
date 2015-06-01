@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.domain;
 
-import gov.va.med.srcalc.util.RetrievedValue;
+import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 
 import java.io.Serializable;
 import java.util.HashMap;

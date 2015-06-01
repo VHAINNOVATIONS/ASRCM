@@ -29,6 +29,11 @@ public class VariableEntry
      * (i.e. The 'bun' variable and 'bun$numerical')
      */
     public static final String SEPARATOR = "$";
+    
+    /**
+     * A way to delineate the information regarding a retrieved value.
+     */
+    public static final String RETRIEVAL_STRING = "retrievalDate";
 
     private final HashMap<String, String> fDynamicValues = new HashMap<>();
     
@@ -123,6 +128,29 @@ public class VariableEntry
     public static String makeVariableValuePath(final Variable var)
     {
         return makeDynamicValuePath(var.getKey());
+    }
+    
+    /**
+     * Returns the retrieved value for a {@link Variable}
+     * @param key the name of the field to automatically fill
+     */
+    public String getMeasureDate(final String key)
+    {
+        final String retrievedString = fDynamicValues.get(key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING);
+        if(retrievedString == null)
+        {
+            return "";
+        }
+        return retrievedString;
+    }
+    
+    /**
+     * Returns the retrieved value for a {@link DiscreteNumericalVariable}.
+     * @param key the name of the {@link DiscreteNumericalVariable} to automatically fill
+     */
+    public String getNumericalMeasureDate(final String key)
+    {
+        return getMeasureDate(key + VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL);
     }
     
     @Override

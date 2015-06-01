@@ -1,11 +1,11 @@
-package gov.va.med.srcalc.util;
+package gov.va.med.srcalc.domain.calculation;
 
 import java.util.Date;
 
 /**
  * A class that will store the value of a retrieved field as well as the
- * date on which that field was measured. The value and date should not change
- * after they are stored. The class currently only supports the double type.
+ * date on which that field was measured. Instances of this class are immutable.
+ * The class currently only supports the double type.
  */
 public class RetrievedValue
 {   

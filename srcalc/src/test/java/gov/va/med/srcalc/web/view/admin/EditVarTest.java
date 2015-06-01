@@ -1,8 +1,8 @@
 package gov.va.med.srcalc.web.view.admin;
 
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.MockModelService;
-import gov.va.med.srcalc.util.RetrievalEnum;
 import gov.va.med.srcalc.web.view.admin.EditBooleanVar;
 import gov.va.med.srcalc.web.view.admin.EditVar;
 
@@ -72,7 +72,7 @@ public class EditVarTest
         // implementation of EditVar.
         final EditVar ev = new EditBooleanVar(SampleModels.dnrVariable(), fModelService);
         
-        ev.setRetriever(RetrievalEnum.BMI);
+        ev.setRetriever(ValueRetriever.BMI);
         
         ev.buildNew();
     }
