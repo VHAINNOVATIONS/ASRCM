@@ -24,7 +24,7 @@ public class EditBooleanVar extends EditVar
      * Constructs an instance with the properties initialized to the given
      * variable.
      * @param variable the existing variable containing the initial properties.
-     * Not stored.
+     * The properties are copied but this object is not stored.
      * @param modelService to provide reference data (e.g., available
      * VariableGroups) to the user
      */
