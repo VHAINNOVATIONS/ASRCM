@@ -18,7 +18,7 @@ public class NumericalValue implements Value
             throws ValueTooLowException, ValueTooHighException
     {
         fVariable = variable;
-        fValue = fVariable.checkValue(value);
+        fValue = fVariable.getValidRange().checkValue(value);
     }
     
     @Override

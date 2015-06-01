@@ -26,6 +26,34 @@ public class NumericalRangeTest
         assertFalse("above range2", range2.isValueInRange(50.21f));
     }
     
+    @Test(expected = ValueTooHighException.class)
+    public final void testCheckValueTooHighInclusive() throws Exception
+    {
+        final NumericalRange range = new NumericalRange(0.0f, true, 50.0f, true);
+        range.checkValue(50.1f);
+    }
+    
+    @Test(expected = ValueTooHighException.class)
+    public final void testCheckValueTooHighExclusive() throws Exception
+    {
+        final NumericalRange range = new NumericalRange(0.0f, true, 50.0f, false);
+        range.checkValue(50.0f);
+    }
+    
+    @Test(expected = ValueTooLowException.class)
+    public final void testCheckValueTooLowInclusive() throws Exception
+    {
+        final NumericalRange range = new NumericalRange(10.0f, true, 50.0f, true);
+        range.checkValue(9.99f);
+    }
+    
+    @Test(expected = ValueTooLowException.class)
+    public final void testCheckValueTooLowExclusive() throws Exception
+    {
+        final NumericalRange range = new NumericalRange(10.0f, false, 50.0f, true);
+        range.checkValue(10.0f);
+    }
+    
     @Test
     public final void testToString()
     {

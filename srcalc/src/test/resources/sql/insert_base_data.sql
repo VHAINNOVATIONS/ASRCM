@@ -60,7 +60,7 @@ INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VAL
 INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group, help_text) VALUES (2, 'Age', 'age', 1, 2, 'The Patient Age');
 -- There is not really an upper limit on age, but specify an unrealistically high
 -- one to have some idea of significant digits.
-INSERT INTO NUMERICAL_VARIABLE (id, min_value, min_inclusive, max_value, max_inclusive, units) VALUES (2, 18, TRUE, 120, TRUE, 'years');
+INSERT INTO NUMERICAL_VARIABLE (id, lower_bound, lower_inclusive, upper_bound, upper_inclusive, units) VALUES (2, 18, TRUE, 120, TRUE, 'years');
 INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (1, 2, 2.1);
 INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (2, 2, 2.2);
 INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (3, 2, 2.3);
@@ -84,7 +84,7 @@ INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUE
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group, help_text) VALUES (5, 'BMI', 'bmi', 3, 'Body Mass Index, deduced by visually examining the patient');
 -- There is not really an upper limit on BMI, but specify an unrealistically high
 -- one to have some idea of significant digits.
-INSERT INTO NUMERICAL_VARIABLE (id, min_value, min_inclusive, max_value, max_inclusive, units) VALUES (5, 0, FALSE, 499, TRUE, '');
+INSERT INTO NUMERICAL_VARIABLE (id, lower_bound, lower_inclusive, upper_bound, upper_inclusive, units) VALUES (5, 0, FALSE, 499, TRUE, '');
 INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (1, 5, 5.1);
 INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (2, 5, 5.2);
 INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (3, 5, 5.3);
@@ -114,7 +114,7 @@ INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUE
 
 -- Alkaline Phosphatase Lab
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (9, 'Alkaline Phosphatase', 'alkalinePhosphatase', 5);
-INSERT INTO DISCRETE_NUMERICAL_VAR (id, min_value, min_inclusive, max_value, max_inclusive, units) VALUES (9, 10, TRUE, 750, TRUE, 'mU/ml');
+INSERT INTO DISCRETE_NUMERICAL_VAR (id, lower_bound, lower_inclusive, upper_bound, upper_inclusive, units) VALUES (9, 10, TRUE, 750, TRUE, 'mU/ml');
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (9, 'WNL', -1e12, TRUE, 125.0, TRUE);
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (9, '>125mU/ml', 125.0, FALSE, 1e12, TRUE);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 9, 1, 9.1);
@@ -124,7 +124,7 @@ INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coe
 
 -- BUN Lab
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (10, 'BUN', 'bun', 5);
-INSERT INTO DISCRETE_NUMERICAL_VAR (id, min_value, min_inclusive, max_value, max_inclusive, units) VALUES (10, 2, TRUE, 90, TRUE, 'mg/dl');
+INSERT INTO DISCRETE_NUMERICAL_VAR (id, lower_bound, lower_inclusive, upper_bound, upper_inclusive, units) VALUES (10, 2, TRUE, 90, TRUE, 'mg/dl');
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (10, 'WNL', -1e12, TRUE, 25, TRUE);
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, lower_bound, lower_inclusive, upper_bound, upper_inclusive) VALUES (10, '>25mg/dl', 25, FALSE, 1e12, TRUE);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 10, 1, 10.1);

@@ -40,7 +40,7 @@ public class DiscreteNumericalValue implements DiscreteValue
                     throws ValueTooLowException, ValueTooHighException
     {
         // Ensure the value is in within range.
-        variable.checkValue(numericalValue);
+        variable.getValidRange().checkValue(numericalValue);
 
         final Category category = variable.getContainingCategory(numericalValue);
         if (category == null)
