@@ -111,21 +111,54 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            final RetrievedValue albuminValue = patient.getLabs().get("ALBUMIN");
-            if(albuminValue != null)
-            {
-                variableEntry.getDynamicValues().put(key, String.valueOf(albuminValue.getValue()));
-                final String retrievalString = makeRetrievalString(
-                        albuminValue.getValue(),
-                        albuminValue.getMeasureDate(),
-                        albuminValue.getUnits());
-                variableEntry.getDynamicValues().put(
-                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
-                        retrievalString);
-            }
+            addLabValue("ALBUMIN", patient, variableEntry, key);
+        }
+    },
+    CREATININE
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            addLabValue("CREATININE", patient, variableEntry, key);
+        }
+    },
+    ALKALINE_PHOSPHATASE
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            addLabValue("ALKALINE_PHOSPHATASE", patient, variableEntry, key);
+        }
+    },
+    BUN
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            addLabValue("BUN", patient, variableEntry, key);
+        }
+    },
+    SGOT
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            addLabValue("SGOT", patient, variableEntry, key);
         }
     };
     
+    /**
+     * Attempt to add the retrieved value to the {@link VariableEntry} object. Do nothing if
+     * there is no retrieved value for the specified variable.
+     * @param patient the current patient
+     * @param variableEntry the {@link VariableEntry} object to put the retrieved value into
+     * @param variable the variable to get the retrieved value for
+     * @param key the variable's fully qualified key (i.e. "bmi$numerical" for bmi)
+     */
     public abstract void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
             final String key);
     
@@ -146,5 +179,30 @@ public enum ValueRetriever
             unitString = " " + units;
         }
         return String.format("(Retrieved: %.2f%s%s)", value, unitString, dateString);
+    }
+    
+    /**
+     * If there was a retrieved value for the specified lab, it will be added to the variable entry.
+     * If there was no value then nothing needs to be done.
+     * @param labName the well-known name of the lab
+     * @param patient the current patient
+     * @param variableEntry the {@link VariableEntry} object to put the retrieved value into
+     * @param key the variable's fully qualified key (i.e. "bmi$numerical" for bmi)
+     */
+    protected void addLabValue(final String labName, final Patient patient, final VariableEntry variableEntry,
+            final String key)
+    {
+        final RetrievedValue labValue = patient.getLabs().get(labName);
+        if(labValue != null)
+        {
+            variableEntry.getDynamicValues().put(key, String.valueOf(labValue.getValue()));
+            final String retrievalString = makeRetrievalString(
+                    labValue.getValue(),
+                    labValue.getMeasureDate(),
+                    labValue.getUnits());
+            variableEntry.getDynamicValues().put(
+                    key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
+                    retrievalString);
+        }
     }
 }
