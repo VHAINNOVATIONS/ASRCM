@@ -1,6 +1,9 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.util.Preconditions;
+
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import javax.persistence.*;
 
@@ -11,6 +14,24 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
      * The maximum length of the units string.
      */
     public static final int UNITS_MAX = 40;
+    
+    /**
+     * A regular expression that defines a valid units string. Same as
+     * {@link Variable#VALID_DISPLAY_NAME_REGEX}.
+     */
+    public static final String VALID_UNITS_REGEX = Variable.VALID_DISPLAY_NAME_REGEX;
+    
+    /**
+     * English description of the valid units characters for readable error
+     * messages.
+     * @see #VALID_UNITS_REGEX
+     */
+    public static final String VALID_UNITS_CHARACTERS = Variable.VALID_DISPLAY_NAME_CHARACTERS;
+    
+    /**
+     * Precompiled version of {@link #VALID_UNITS_REGEX} for efficiency.
+     */
+    public static final Pattern VALID_UNITS_PATTERN = Pattern.compile(VALID_UNITS_REGEX);
     
     private NumericalRange fRange = new NumericalRange(0.0f, true, 200.0f, true);
 
@@ -73,11 +94,10 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
      */
     public void setUnits(final String units)
     {
-        // Note: will throw an NPE if the argument is null
-        if (units.length() > UNITS_MAX)
-        {
-            throw new IllegalArgumentException("The units must be 40 characters or less.");
-        }
+        // Check preconditions
+        Preconditions.requireWithin(units, 0, UNITS_MAX);
+        Preconditions.requireMatches(units, "units", VALID_UNITS_PATTERN);
+
         fUnits = units;
     }
 }

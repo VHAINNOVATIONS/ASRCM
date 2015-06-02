@@ -63,6 +63,7 @@ public class EditMultiSelectVarTest
         final String displayName = "msDisplayName";
         final VariableGroup group = fModelService.getAllVariableGroups().iterator().next();
         final String helpText = "msHelpText";
+        final ValueRetriever retriever = ValueRetriever.GENDER;
         final MultiSelectVariable.DisplayType displayType =
                 MultiSelectVariable.DisplayType.Dropdown;
         final ImmutableList<String> options =
@@ -71,7 +72,6 @@ public class EditMultiSelectVarTest
                 new MultiSelectOption(options.get(0)),
                 new MultiSelectOption(options.get(1)),
                 new MultiSelectOption(options.get(2)));
-        final ValueRetriever retriever = ValueRetriever.GENDER;
         
         // Behavior
         final EditMultiSelectVar ev = new EditMultiSelectVar(fModelService);
@@ -79,10 +79,10 @@ public class EditMultiSelectVarTest
         ev.setDisplayName(displayName);
         ev.setGroupId(group.getId());
         ev.setHelpText(helpText);
+        ev.setRetriever(retriever);
         ev.setDisplayType(displayType);
         ev.getOptions().clear();
         ev.getOptions().addAll(options);
-        ev.setRetriever(retriever);
         assertEquals(retriever, ev.getRetriever());
         final MultiSelectVariable createdVariable = ev.buildNew();
         
@@ -91,9 +91,9 @@ public class EditMultiSelectVarTest
         assertEquals(displayName, createdVariable.getDisplayName());
         assertEquals(group, createdVariable.getGroup());
         assertEquals(helpText, createdVariable.getHelpText().get());
+        assertEquals(retriever, createdVariable.getRetriever());
         assertEquals(displayType, createdVariable.getDisplayType());
         assertEquals(multiSelectOptions, createdVariable.getOptions());
-        assertEquals(retriever, createdVariable.getRetriever());
     }
     
 }

@@ -67,6 +67,7 @@ public class EditMultiSelectVarValidatorTest
                 new BeanPropertyBindingResult(ev, "variable");
         // Use getValidator() to test that as well.
         final EditMultiSelectVarValidator validator = ev.getValidator();
+        assertTrue(validator.supports(ev.getClass()));
         validator.validate(ev, errors);
         fLogger.debug("Errors are: {}", errors);
         return errors;
