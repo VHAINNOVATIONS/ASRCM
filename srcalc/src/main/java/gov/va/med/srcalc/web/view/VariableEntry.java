@@ -6,6 +6,9 @@ import gov.va.med.srcalc.domain.model.*;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * <p>The "form backing object" for the Variable Entry Form.</p>
  * 
@@ -34,6 +37,8 @@ public class VariableEntry
      * A way to delineate the information regarding a retrieved value.
      */
     public static final String RETRIEVAL_STRING = "retrievalDate";
+    
+    private static final Logger fLogger = LoggerFactory.getLogger(VariableEntry.class);
 
     private final HashMap<String, String> fDynamicValues = new HashMap<>();
     
@@ -71,6 +76,7 @@ public class VariableEntry
                 key += "$numerical";
             }
             
+            fLogger.debug("Executing retriever {} for key {}", v.getRetriever(), key);
             v.getRetriever().execute(patient, variableEntry, v, key);
         }
         return variableEntry;
