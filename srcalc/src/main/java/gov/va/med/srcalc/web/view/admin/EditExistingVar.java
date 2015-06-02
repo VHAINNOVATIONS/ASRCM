@@ -17,7 +17,7 @@ import gov.va.med.srcalc.domain.model.AbstractVariable;
  * new properties.</li>
  * </ol>
  */
-public interface EditExistingVar
+public interface EditExistingVar extends EditVar
 {
     /**
      * Returns the variable which we are editing.

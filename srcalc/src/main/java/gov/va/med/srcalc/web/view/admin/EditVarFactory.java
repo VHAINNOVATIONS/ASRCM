@@ -23,8 +23,8 @@ public class EditVarFactory
     }
         
     /**
-     * A Visitor to select the right EditVar subclass based on the variable
-     * type.
+     * A Visitor to select the right EditExistingVar subclass based on the
+     * variable type.
      */
     private static class Visitor extends ExceptionlessVariableVisitor
     {

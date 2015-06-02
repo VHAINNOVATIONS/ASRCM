@@ -2,6 +2,7 @@ package gov.va.med.srcalc.web.view.admin;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.MockModelService;
 import gov.va.med.srcalc.web.view.Views;
@@ -22,6 +23,7 @@ public class EditBooleanVarTest
         assertThat(ebv.getTypeName(), not(isEmptyOrNullString()));
         
         assertEquals(Views.NEW_BOOLEAN_VARIABLE, ebv.getNewViewName());
+        assertEquals(0, ebv.getAllRetrievers().size());
     }
     
     @Test
@@ -48,4 +50,14 @@ public class EditBooleanVarTest
         assertEquals(helpText, createdVariable.getHelpText().get());
     }
     
+    @Test(expected = IllegalStateException.class)
+    public final void testSetRetrieverInvalid()
+    {
+        final EditBooleanVar ev =
+                new EditBooleanVar(SampleModels.dnrVariable(), fModelService);
+        
+        ev.setRetriever(ValueRetriever.BMI);
+        
+        ev.buildNew();
+    }
 }

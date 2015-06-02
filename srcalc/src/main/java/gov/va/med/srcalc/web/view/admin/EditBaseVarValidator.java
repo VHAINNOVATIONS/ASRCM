@@ -7,31 +7,31 @@ import gov.va.med.srcalc.util.ValidationUtils2;
 import org.springframework.validation.*;
 
 /**
- * This Validator validates the base {@link EditVar} properties. Other
- * validators validate subclasses' properties.
+ * This Validator validates the {@link EditBaseVar} properties. Other validators
+ * validate subclasses' properties.
  */
-public class EditVarValidator implements Validator
+public class EditBaseVarValidator implements Validator
 {
     /**
-     * Returns true if, and only if, the given class is {@link EditVar} or
+     * Returns true if, and only if, the given class is {@link EditBaseVar} or
      * a subclass.
      */
     @Override
     public boolean supports(final Class<?> clazz)
     {
-        return EditVar.class.isAssignableFrom(clazz);
+        return EditBaseVar.class.isAssignableFrom(clazz);
     }
 
     /**
      * Validates the given object, using error codes from {@link ValidationCodes}.
-     * @param obj the object to validate. Must be an instance of {@link EditVar}.
-     * @throws ClassCastException if the given object is not an EditVar
+     * @param obj the object to validate. Must be an instance of {@link EditBaseVar}.
+     * @throws ClassCastException if the given object is not an EditBaseVar
      */
     @Override
     public void validate(final Object obj, final Errors e)
     {
-        // See method Javadoc: we assume that it's an instance of EditVar.
-        final EditVar editVar = (EditVar)obj;
+        // See method Javadoc: we assume that it's an instance of EditBaseVar.
+        final EditBaseVar editVar = (EditBaseVar)obj;
         
         // Validate variable key constraints. See AbstractVariable.getKey().
         ValidationUtils.rejectIfEmpty(e, "key", ValidationCodes.NO_VALUE);

@@ -10,12 +10,12 @@ import org.junit.Test;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
-public final class EditVarValidatorTest
+public final class EditBaseVarValidatorTest
 {
     /**
-     * Instantiates a basic {@link EditVar} instance.
+     * Instantiates a basic {@link EditBaseVar} instance.
      */
-    private EditVar makeEditVar()
+    private EditBaseVar makeEditVar()
     {
         // Use EditBooleanVar as a basic implementation of EditVar.
         return new EditBooleanVar(
@@ -25,11 +25,12 @@ public final class EditVarValidatorTest
     /**
      * Validates the given object and returns the binding result.
      */
-    private BeanPropertyBindingResult validate(final EditVar ev)
+    private BeanPropertyBindingResult validate(final EditBaseVar ev)
     {
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(ev, "variable");
-        new EditVarValidator().validate(ev, errors);
+        // Use EditBaseVar.getValidator() to test that as well.
+        ev.getValidator().validate(ev, errors);
         return errors;
     }
     
@@ -44,7 +45,7 @@ public final class EditVarValidatorTest
     @Test
     public final void testKeyEmpty()
     {
-        final EditVar ev = makeEditVar();
+        final EditBaseVar ev = makeEditVar();
         ev.setKey("");
         final BindingResult errors = validate(ev);
         
@@ -57,7 +58,7 @@ public final class EditVarValidatorTest
     @Test
     public final void testKeyTooLong()
     {
-        final EditVar ev = makeEditVar();
+        final EditBaseVar ev = makeEditVar();
         ev.setKey(TestHelpers.stringOfLength(Variable.KEY_MAX + 1));
         final BindingResult errors = validate(ev);
         
@@ -70,7 +71,7 @@ public final class EditVarValidatorTest
     @Test
     public final void testKeyInvalidCharacters()
     {
-        final EditVar ev = makeEditVar();
+        final EditBaseVar ev = makeEditVar();
         ev.setKey("foo!");
         final BindingResult errors = validate(ev);
         
@@ -83,7 +84,7 @@ public final class EditVarValidatorTest
     @Test
     public final void testDisplayNameEmpty()
     {
-        final EditVar ev = makeEditVar();
+        final EditBaseVar ev = makeEditVar();
         ev.setDisplayName("");
         final BindingResult errors = validate(ev);
         
@@ -96,7 +97,7 @@ public final class EditVarValidatorTest
     @Test
     public final void testDisplayNameTooLong()
     {
-        final EditVar ev = makeEditVar();
+        final EditBaseVar ev = makeEditVar();
         ev.setDisplayName(TestHelpers.stringOfLength(Variable.DISPLAY_NAME_MAX + 1));
         final BindingResult errors = validate(ev);
         
@@ -109,7 +110,7 @@ public final class EditVarValidatorTest
     @Test
     public final void testDisplayNameInvalidCharacters()
     {
-        final EditVar ev = makeEditVar();
+        final EditBaseVar ev = makeEditVar();
         ev.setDisplayName("\t");
         final BindingResult errors = validate(ev);
         
@@ -122,7 +123,7 @@ public final class EditVarValidatorTest
     @Test
     public final void testInvalidGroup()
     {
-        final EditVar ev = makeEditVar();
+        final EditBaseVar ev = makeEditVar();
         ev.setGroupId(80);
         final BindingResult errors = validate(ev);
         
@@ -135,7 +136,7 @@ public final class EditVarValidatorTest
     @Test
     public final void testHelpTextTooLong()
     {
-        final EditVar ev = makeEditVar();
+        final EditBaseVar ev = makeEditVar();
         ev.setHelpText(TestHelpers.stringOfLength(Variable.HELP_TEXT_MAX + 1));
         final BindingResult errors = validate(ev);
         

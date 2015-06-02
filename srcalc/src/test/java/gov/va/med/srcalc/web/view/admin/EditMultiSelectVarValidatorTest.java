@@ -61,11 +61,13 @@ public class EditMultiSelectVarValidatorTest
     /**
      * Validates the given object and returns the binding result.
      */
-    private BeanPropertyBindingResult validate(final EditVar ev)
+    private BeanPropertyBindingResult validate(final EditMultiSelectVar ev)
     {
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(ev, "variable");
-        new EditMultiSelectVarValidator().validate(ev, errors);
+        // Use getValidator() to test that as well.
+        final EditMultiSelectVarValidator validator = ev.getValidator();
+        validator.validate(ev, errors);
         fLogger.debug("Errors are: {}", errors);
         return errors;
     }

@@ -36,6 +36,7 @@ public class EditMultiSelectVarTest
         assertEquals(ImmutableList.of("", "", ""), ev.getOptions());
         
         assertEquals(20, ev.getMaxOptions());
+        assertEquals(MultiSelectOption.VALUE_MAX, ev.getOptionLengthMax());
     }
     
     @Test

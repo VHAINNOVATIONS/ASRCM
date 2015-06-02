@@ -6,11 +6,11 @@ import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.web.view.admin.*;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,6 +23,8 @@ public class EditVariableController
 {
     private static final String ATTRIBUTE_VARIABLE = "variable";
     
+    private static final Logger fLogger = LoggerFactory.getLogger(EditVariableController.class);
+    
     private final AdminService fAdminService;
     
     /**
@@ -33,15 +35,6 @@ public class EditVariableController
     public EditVariableController(final AdminService adminService)
     {
         fAdminService = adminService;
-    }
-    
-    /**
-     * Initializes the given WebDataBinder with the necessary validators.
-     */
-    @InitBinder
-    protected void initBinder(final WebDataBinder binder)
-    {
-        binder.addValidators(new EditVarValidator());
     }
     
     /**
@@ -73,12 +66,21 @@ public class EditVariableController
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveVariable(
-            @ModelAttribute(ATTRIBUTE_VARIABLE) @Valid final EditExistingVar editVar,
+            @ModelAttribute(ATTRIBUTE_VARIABLE) final EditExistingVar editVar,
             final BindingResult bindingResult)
                     throws InvalidIdentifierException
     {
+        // Spring has already bound the user input to editVar; now validate
+        // the input using the appropriate validator.
+        //
+        // Note that we must do this here instead of configuring the
+        // WebDataBinder to use this validator because we need access to the
+        // variable-specific editVar instance to call getValidator().
+        editVar.getValidator().validate(editVar, bindingResult);
+
         if (bindingResult.hasErrors())
         {
+            fLogger.debug("EditExistingVar has errors: {}", bindingResult);
             // Re-show the edit screen.
             return displayForm(editVar);
         }

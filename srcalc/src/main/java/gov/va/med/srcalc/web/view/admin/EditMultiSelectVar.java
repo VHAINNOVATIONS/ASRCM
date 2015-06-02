@@ -17,7 +17,7 @@ import gov.va.med.srcalc.web.view.Views;
  * 
  * <p>This code is tightly coupled with newMultiSelectVariable.jsp.</p>
  */
-public class EditMultiSelectVar extends EditVar
+public class EditMultiSelectVar extends EditBaseVar
 {
     private MultiSelectVariable.DisplayType fDisplayType;
     
@@ -62,6 +62,12 @@ public class EditMultiSelectVar extends EditVar
     public String getTypeName()
     {
         return "Multi-Select";
+    }
+    
+    @Override
+    public EditMultiSelectVarValidator getValidator()
+    {
+        return new EditMultiSelectVarValidator();
     }
     
     /**
@@ -190,6 +196,15 @@ public class EditMultiSelectVar extends EditVar
     public int getMaxOptions()
     {
         return 20;
+    }
+    
+    /**
+     * Returns the maximum valid length of an option value, {@link
+     * MultiSelectOption#VALUE_MAX}.
+     */
+    public int getOptionLengthMax()
+    {
+        return MultiSelectOption.VALUE_MAX;
     }
     
 }

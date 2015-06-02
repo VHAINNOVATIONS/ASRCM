@@ -1,5 +1,8 @@
 package gov.va.med.srcalc.web.view.admin;
 
+import com.google.common.collect.ImmutableSortedSet;
+
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.BooleanVariable;
 import gov.va.med.srcalc.service.ModelInspectionService;
 import gov.va.med.srcalc.web.view.Views;
@@ -8,7 +11,7 @@ import gov.va.med.srcalc.web.view.Views;
  * <p>A form backing object for creating a new or editing an existing
  * BooleanVariable.</p>
  */
-public class EditBooleanVar extends EditVar
+public class EditBooleanVar extends EditBaseVar
 {
     /**
      * Constructs an instance with default values for all properties.
@@ -39,6 +42,23 @@ public class EditBooleanVar extends EditVar
     public String getTypeName()
     {
         return "Checkbox";
+    }
+    
+    @Override
+    public EditBaseVarValidator getValidator()
+    {
+        // Boolean variables only have common properties: just use the
+        // EditBaseVarValidator.
+        return new EditBaseVarValidator();
+    }
+    
+    /**
+     * Returns an empty set. There are no retrievers for boolean variables.
+     */
+    @Override
+    public ImmutableSortedSet<ValueRetriever> getAllRetrievers()
+    {
+        return ImmutableSortedSet.of();
     }
 
     /**
