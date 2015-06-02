@@ -8,10 +8,7 @@ import gov.va.med.srcalc.web.view.admin.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * Web MVC controller for creating a new Multi-Select variable.
@@ -41,16 +38,10 @@ public class NewMultiSelectVarController extends NewVarController
     }
     
     @Override
-    protected EditVar createEditVar()
+    protected EditBaseVar createEditBaseVar()
     {
         fLogger.trace("Creating EditMultiSelectVar.");
         return new EditMultiSelectVar(getAdminService());
-    }
-    
-    @Override
-    protected Iterable<Validator> getValidators()
-    {
-        return ImmutableList.<Validator>of(new EditMultiSelectVarValidator());
     }
     
 }

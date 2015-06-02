@@ -8,10 +8,7 @@ import gov.va.med.srcalc.web.view.admin.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * Web MVC controller for creating a new Boolean variable.
@@ -45,15 +42,9 @@ public class NewBooleanVarController extends NewVarController
     }
     
     @Override
-    protected EditBooleanVar createEditVar()
+    protected EditBooleanVar createEditBaseVar()
     {
         fLogger.trace("Creating EditBooleanVar.");
         return new EditBooleanVar(getAdminService());
-    }
-    
-    @Override
-    protected Iterable<Validator> getValidators()
-    {
-        return ImmutableList.<Validator>of(new EditVarValidator());
     }
 }

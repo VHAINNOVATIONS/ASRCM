@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableList;
  */
 public class EditMultiSelectVarValidator implements Validator
 {
-    private final EditVarValidator fBaseValidator = new EditVarValidator();
+    private final EditBaseVarValidator fBaseValidator = new EditBaseVarValidator();
     
     /**
      * Returns true if (and only if) the given class is {@link EditMultiSelectVar}
@@ -34,7 +34,7 @@ public class EditMultiSelectVarValidator implements Validator
     public void validate(final Object target, final Errors errors)
     {
         final EditMultiSelectVar editVar = (EditMultiSelectVar)target;
-        // First, delegate to EditVarValidator for validating the basic
+        // First, delegate to EditBaseVarValidator for validating the basic
         // properties.
         fBaseValidator.validate(target, errors);
         

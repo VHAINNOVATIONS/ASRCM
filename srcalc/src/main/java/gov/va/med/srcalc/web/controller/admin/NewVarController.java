@@ -2,20 +2,16 @@ package gov.va.med.srcalc.web.controller.admin;
 
 import java.util.Objects;
 
-import javax.validation.Valid;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.google.common.collect.Iterables;
 
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.DuplicateVariableKeyException;
 import gov.va.med.srcalc.util.ValidationCodes;
-import gov.va.med.srcalc.web.view.admin.EditVar;
+import gov.va.med.srcalc.web.view.admin.EditBaseVar;
 
 /**
  * <p>Base Web MVC controller for creating a new variable. Contains common
@@ -30,9 +26,11 @@ import gov.va.med.srcalc.web.view.admin.EditVar;
 public abstract class NewVarController
 {
     /**
-     * The model attribute key of the {@link EditVar} object.
+     * The model attribute key of the {@link EditBaseVar} object.
      */
     protected static final String ATTRIBUTE_VARIABLE = "variable";
+    
+    private static final Logger fLogger = LoggerFactory.getLogger(NewVarController.class);
     
     private final AdminService fAdminService;
     
@@ -61,46 +59,38 @@ public abstract class NewVarController
     public abstract String getSaveUrl();
     
     /**
-     * Creates an {@link EditVar} instance for creating the new variable.
+     * Creates an {@link EditBaseVar} instance for creating the new variable.
      */
     @ModelAttribute(ATTRIBUTE_VARIABLE)
-    protected abstract EditVar createEditVar();
-    
-    /**
-     * Returns the Validators to use for validating the object returned by
-     * {@link #createEditVar()}.
-     * @return an Iterable. May be empty, but I don't recommend that.
-     */
-    protected abstract Iterable<Validator> getValidators();
-    
-    /**
-     * Initializes the given WebDataBinder with the necessary validators.
-     */
-    @InitBinder
-    protected void initBinder(final WebDataBinder binder)
-    {
-        // addValidators() is varargs, so transform the Iterable into an array.
-        binder.addValidators(Iterables.toArray(getValidators(), Validator.class));
-    }
+    protected abstract EditBaseVar createEditBaseVar();
     
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView displayForm(
-            @ModelAttribute(ATTRIBUTE_VARIABLE) final EditVar editVar)
+            @ModelAttribute(ATTRIBUTE_VARIABLE) final EditBaseVar editVar)
     {
         final ModelAndView mav = new ModelAndView(editVar.getNewViewName());
         // Provide the URL to save the variable to the view.
         mav.addObject("SAVE_URL", getSaveUrl());
-        // Note: "variable" is already in the model via createEditVar().
+        // Note: "variable" is already in the model via createEditBaseVar().
         return mav;
     }
     
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveVariable(
-            @ModelAttribute(ATTRIBUTE_VARIABLE) @Valid final EditVar editVar,
+            @ModelAttribute(ATTRIBUTE_VARIABLE) final EditBaseVar editVar,
             final BindingResult bindingResult)
     {
+        // Spring has already bound the user input to editVar; now validate
+        // the input using the appropriate validator.
+        //
+        // Note that we must do this here instead of configuring the
+        // WebDataBinder to use this validator because we need access to the
+        // variable-specific editVar instance to call getValidator().
+        editVar.getValidator().validate(editVar, bindingResult);
+
         if (bindingResult.hasErrors())
         {
+            fLogger.debug("EditVar has errors: {}", bindingResult);
             return displayForm(editVar);
         }
 
