@@ -2,9 +2,9 @@ package gov.va.med.srcalc.web.view.admin;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.MockModelService;
-import gov.va.med.srcalc.util.RetrievalEnum;
 import gov.va.med.srcalc.web.view.Views;
 
 import org.junit.Test;
@@ -70,7 +70,7 @@ public class EditMultiSelectVarTest
                 new MultiSelectOption(options.get(0)),
                 new MultiSelectOption(options.get(1)),
                 new MultiSelectOption(options.get(2)));
-        final RetrievalEnum retriever = RetrievalEnum.GENDER;
+        final ValueRetriever retriever = ValueRetriever.GENDER;
         
         // Behavior
         final EditMultiSelectVar ev = new EditMultiSelectVar(fModelService);

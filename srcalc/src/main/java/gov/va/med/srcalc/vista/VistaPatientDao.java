@@ -35,7 +35,8 @@ public interface VistaPatientDao
 	public static final int MAX_LINE_LENGTH = 80;
 	
     /**
-     * Loads a Patient from VistA given his/her DFN.
+     * Loads a Patient from VistA given his/her DFN. This includes the patient's
+     * vitals and available lab measurements.
      * @throws DataAccessException if communication with VistA failed
      */
     public Patient getPatient(final int dfn);

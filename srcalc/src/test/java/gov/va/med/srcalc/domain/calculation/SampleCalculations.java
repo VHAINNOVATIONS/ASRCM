@@ -4,6 +4,7 @@ import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class SampleCalculations
     public static Patient dummyPatient(final int dfn)
     {
         final Patient patient = new Patient(dfn, "Zach Smith", "M", 40);
-        patient.setBmi(20.0);
+        patient.setBmi(new RetrievedValue(20.0, new Date(), ""));
         return patient;
     }
 

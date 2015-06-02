@@ -2,12 +2,12 @@ package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.*;
-import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>The "form backing object" for the Variable Entry Form.</p>
@@ -32,6 +32,13 @@ public class VariableEntry
      * (i.e. The 'bun' variable and 'bun$numerical')
      */
     public static final String SEPARATOR = "$";
+    
+    /**
+     * A way to delineate the information regarding a retrieved value.
+     */
+    public static final String RETRIEVAL_STRING = "retrievalDate";
+    
+    private static final Logger fLogger = LoggerFactory.getLogger(VariableEntry.class);
 
     private final HashMap<String, String> fDynamicValues = new HashMap<>();
     
@@ -53,22 +60,24 @@ public class VariableEntry
      * the variables and automatically retrieved values for other variables.
      */
     public static VariableEntry withRetrievedValues(final Collection<? extends Variable> variables,
-    		final Patient patient)
+            final Patient patient)
     {
-    	final VariableEntry variableEntry = new VariableEntry(variables);
+        final VariableEntry variableEntry = new VariableEntry(variables);
         for (final Variable v : variables)
         {
-                // Skip this if the variable doesn't have an associated retriever.
-        	if(v.getRetriever() == null)
-        	{
-        		continue;
-        	}
-        	String key = v.getKey();
-        	if(v instanceof DiscreteNumericalVariable)
-        	{
-        		key += "$numerical";
-        	}
-        	v.getRetriever().execute(patient, variableEntry, v, key);
+            // Skip this if the variable doesn't have an associated retriever.
+            if (v.getRetriever() == null)
+            {
+                continue;
+            }
+            String key = v.getKey();
+            if (v instanceof DiscreteNumericalVariable)
+            {
+                key += "$numerical";
+            }
+            
+            fLogger.debug("Executing retriever {} for key {}", v.getRetriever(), key);
+            v.getRetriever().execute(patient, variableEntry, v, key);
         }
         return variableEntry;
     }
@@ -128,12 +137,28 @@ public class VariableEntry
     }
     
     /**
-     * Produce a message that will tell the user when the retrieved value was measured.
+     * Returns a string indicating the retrieved date, value, and units
+     * of an {@link AbstractVariable}
+     * @param key the name of the field to automatically fill
      */
-    public static String makeRetrievalMessage(final Date retrievalDate)
+    public String getMeasureDate(final String key)
     {
-    	final SimpleDateFormat originalFormat = new SimpleDateFormat(RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT);
-    	return "(Measured on: " + originalFormat.format(retrievalDate) + ")";
+        final String retrievedString = fDynamicValues.get(key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING);
+        if(retrievedString == null)
+        {
+            return "";
+        }
+        return retrievedString;
+    }
+    
+    /**
+     * Returns a string indicating the retrieved date, value, and units
+     * of a {@link DiscreteNumericalVariable}.
+     * @param key the name of the {@link DiscreteNumericalVariable} to automatically fill
+     */
+    public String getNumericalMeasureDate(final String key)
+    {
+        return getMeasureDate(key + VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL);
     }
     
     @Override

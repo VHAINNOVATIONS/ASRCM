@@ -30,7 +30,12 @@ public enum RemoteProcedure
     /**
      * Saves a Risk Calculation as discrete data to VistA Surgery.
      */
-    SAVE_RISK("SR ASRC RISK SAVE");
+    SAVE_RISK("SR ASRC RISK SAVE"),
+    
+    /**
+     * Returns the most recent result for the given lab name possibilities.
+     */
+    GET_LABS("SR ASRC LAB RESULTS");
 
     /**
      * VistA returns this string if {@link #SAVE_PROGRESS_NOTE} succeeds.

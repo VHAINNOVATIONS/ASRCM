@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.util.Preconditions;
-import gov.va.med.srcalc.util.RetrievalEnum;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -50,8 +50,7 @@ public abstract class AbstractVariable implements Variable
     private VariableGroup fGroup;
     private Optional<String> fHelpText;
     private String fKey;
-    private RetrievalEnum fRetrievalKey;
-    private String fRetrievalDateString;
+    private ValueRetriever fRetrievalKey;
 
     /**
      * Constructs an instance with dummy values for the basic properties
@@ -63,7 +62,6 @@ public abstract class AbstractVariable implements Variable
         fDisplayName = "unset";
         fGroup = new VariableGroup("unset group", 0);
         fHelpText = Optional.absent();
-        fRetrievalDateString = "";
     }
     
     /**
@@ -82,7 +80,6 @@ public abstract class AbstractVariable implements Variable
         setDisplayName(displayName);
         setGroup(group);
         fHelpText = Optional.absent();
-        this.fRetrievalDateString = "";
     }
     
     /**
@@ -225,33 +222,17 @@ public abstract class AbstractVariable implements Variable
     @Basic
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "retrieval_key", nullable = true)
-    public final RetrievalEnum getRetriever()
+    public final ValueRetriever getRetriever()
     {
     	return fRetrievalKey;
     }
     
-    public final void setRetriever(final RetrievalEnum retrievalKey)
+    public final void setRetriever(final ValueRetriever retrievalKey)
     {
     	this.fRetrievalKey = retrievalKey;
     }
     
-    @Transient
-    public String getRetrievalDateString()
-    {
-		return fRetrievalDateString;
-	}
-
-    /**
-     * 
-     * @param retrievalDateString The properly formatted string representing the date
-     * 		when this variable was automatically retrieved.
-     */
-	public void setRetrievalDateString(final String retrievalDateString)
-	{
-		this.fRetrievalDateString = retrievalDateString;
-	}
-
-	@Override
+    @Override
     public String toString()
     {
         return getDisplayName();

@@ -6,9 +6,9 @@ import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSortedSet;
 
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.ModelInspectionService;
-import gov.va.med.srcalc.util.RetrievalEnum;
 
 /**
  * <p>Stores basic {@link AbstractVariable} properties for creating a new or
@@ -29,7 +29,7 @@ public abstract class EditVar
     
     private int fGroupId;
     
-    private RetrievalEnum fRetriever;
+    private ValueRetriever fRetriever;
     
     private final SortedSet<RiskModel> fDependentModels;
     
@@ -112,7 +112,7 @@ public abstract class EditVar
      * expected to override as applicable.</p>
      * @return a Set sorted by the enum's string value
      */
-    public ImmutableSortedSet<RetrievalEnum> getAllRetrievers()
+    public ImmutableSortedSet<ValueRetriever> getAllRetrievers()
     {
         return ImmutableSortedSet.of();
     }
@@ -210,7 +210,7 @@ public abstract class EditVar
      * Returns the VistA retriever to set on the variable.
      * @see Variable#getRetriever()
      */
-    public RetrievalEnum getRetriever()
+    public ValueRetriever getRetriever()
     {
         return fRetriever;
     }
@@ -219,7 +219,7 @@ public abstract class EditVar
      * Sets the VistA retriever to set on the variable.
      * @see AbstractVariable#getRetriever()
      */
-    public void setRetriever(RetrievalEnum retriever)
+    public void setRetriever(ValueRetriever retriever)
     {
         fRetriever = retriever;
     }

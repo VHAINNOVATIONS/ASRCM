@@ -1,8 +1,8 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 import gov.va.med.srcalc.domain.model.MultiSelectVariable.DisplayType;
-import gov.va.med.srcalc.util.RetrievalEnum;
 
 import java.util.*;
 
@@ -239,7 +239,7 @@ public class SampleModels
                 DisplayType.Radio,
                 options,
                 "gender");
-        var.setRetriever(RetrievalEnum.GENDER);
+        var.setRetriever(ValueRetriever.GENDER);
         return var;
     }
     
@@ -249,7 +249,7 @@ public class SampleModels
                 "Age", demographicsVariableGroup(), "age");
         var.setValidRange(new NumericalRange(0.0f, true, 999.0f, true));
         var.setUnits("years");
-        var.setRetriever(RetrievalEnum.AGE);
+        var.setRetriever(ValueRetriever.AGE);
         return var;
     }
 
@@ -320,7 +320,7 @@ public class SampleModels
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable("Cardiac Age", demographicsVariableGroup(),
                 new HashSet<>(categories), "cardiacAge");
         var.setValidRange(new NumericalRange(18.0f, true, 120.0f, true));
-        var.setRetriever(RetrievalEnum.CARDIAC_AGE);
+        var.setRetriever(ValueRetriever.AGE);
     	
     	return var;
     }
