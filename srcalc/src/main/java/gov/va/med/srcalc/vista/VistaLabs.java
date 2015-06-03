@@ -52,6 +52,66 @@ enum VistaLabs
                     "Aspartate Aminotransferase",
                     "AST");
         }
+    },
+    WBC
+    {
+        @Override
+        List<String> getPossibleLabNames()
+        {
+            return ImmutableList.of(
+                    "WBC",
+                    "WHITE BLOOD COUNT");
+        }
+    },
+    PLATELETS
+    {
+        @Override
+        List<String> getPossibleLabNames()
+        {
+            return ImmutableList.of("PLATELET COUNT");
+        }
+    },
+    HEMATOCRIT
+    {
+        @Override
+        List<String> getPossibleLabNames()
+        {
+            return ImmutableList.of("HCT");
+        }
+    },
+    SODIUM
+    {
+        @Override
+        List<String> getPossibleLabNames()
+        {
+            return ImmutableList.of(
+                    "SODIUM",
+                    "NA");
+        }
+    },
+    INR
+    {
+        @Override
+        List<String> getPossibleLabNames()
+        {
+            return ImmutableList.of("INR");
+        }
+    },
+    BILIRUBIN
+    {
+        @Override
+        List<String> getPossibleLabNames()
+        {
+            return ImmutableList.of("TOT. BILIRUBIN");
+        }
+    },
+    PTT
+    {
+        @Override
+        List<String> getPossibleLabNames()
+        {
+            return ImmutableList.of("PTT");
+        }
     };
     
     abstract List<String> getPossibleLabNames();
