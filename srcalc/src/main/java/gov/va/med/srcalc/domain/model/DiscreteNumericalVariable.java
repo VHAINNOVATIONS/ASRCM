@@ -298,7 +298,9 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
         }
         
         /**
-         * Orders categories by their upper bounds.
+         * Orders categories in ascending upper bound order. If two categories have the
+         * same upper bound, one with an inclusive upper bound will be considered greater
+         * than one with an exclusive upper bound since it does contain higher numbers.
          */
         @Override
         public int compareTo(final Category other)
@@ -309,8 +311,6 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
                 return boundDelta;
             }
             
-            // The upper bounds were exactly equal: now try the inclusivity of the upper
-            // bound. An inclusive bound should be sorted higher than an exclusive one.
             return Boolean.compare(this.fUpperInclusive, other.fUpperInclusive);
         }
     }
