@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.web.view.admin;
 
+import java.util.*;
+
 import com.google.common.collect.*;
 
 import gov.va.med.srcalc.domain.calculation.ValueRetriever;
@@ -11,6 +13,17 @@ import gov.va.med.srcalc.service.ModelInspectionService;
  */
 public abstract class EditAbstractNumericalVar extends EditBaseVar
 {
+    private static final ImmutableSortedSet<ValueRetriever> RETRIEVERS;
+    static
+    {
+        // Kludge: all the retrievers happen to be numerical except for gender,
+        // so use that fact to build the list of numerical retrievers.
+        final HashSet<ValueRetriever> tempRetrievers =
+                new HashSet<>(Arrays.asList(ValueRetriever.values()));
+        tempRetrievers.remove(ValueRetriever.GENDER);
+        RETRIEVERS = ImmutableSortedSet.copyOf(Ordering.usingToString(), tempRetrievers);
+    }
+
     private String fUnits;
     private final NumericalRangeBuilder fValidRange;
     
@@ -30,16 +43,7 @@ public abstract class EditAbstractNumericalVar extends EditBaseVar
     @Override
     public ImmutableSortedSet<ValueRetriever> getAllRetrievers()
     {
-        final ImmutableSet<ValueRetriever> retrievers = ImmutableSet.of(
-                // FIXME: this is totally unsustainable. We need to split the
-                // enum.
-                ValueRetriever.AGE,
-                ValueRetriever.BMI,
-                ValueRetriever.HEIGHT,
-                ValueRetriever.WEIGHT,
-                ValueRetriever.WEIGHT_6_MONTHS_AGO,
-                ValueRetriever.ALBUMIN);
-        return ImmutableSortedSet.copyOf(Ordering.usingToString(), retrievers);
+        return RETRIEVERS;
     }
     
     /**

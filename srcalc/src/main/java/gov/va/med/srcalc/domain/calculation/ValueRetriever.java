@@ -8,6 +8,14 @@ import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
+/**
+ * <p>The set of retrievers that extract a particular variable's value from a
+ * Patient object.</p>
+ * 
+ * <p>Most of these retrieve a numerical (floating-point) value, but GENDER
+ * retrieves discrete String values. TODO: this enumeration should probably be
+ * split based on this discrepancy.</p>
+ */
 public enum ValueRetriever
 {
     GENDER
