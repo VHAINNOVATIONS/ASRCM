@@ -149,6 +149,69 @@ public enum ValueRetriever
         {
             addLabValue("SGOT", patient, variableEntry, key);
         }
+    },
+    WBC
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            addLabValue("WBC", patient, variableEntry, key);
+        }
+    },
+    PLATELETS
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            addLabValue("PLATELETS", patient, variableEntry, key);
+        }
+    },
+    HEMATOCRIT
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            addLabValue("HEMATOCRIT", patient, variableEntry, key);
+        }
+    },
+    SODIUM
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            addLabValue("SODIUM", patient, variableEntry, key);
+        }
+    },
+    INR
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            addLabValue("INR", patient, variableEntry, key);
+        }
+    },
+    BILIRUBIN
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            addLabValue("BILIRUBIN", patient, variableEntry, key);
+        }
+    },
+    PTT
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            addLabValue("PTT", patient, variableEntry, key);
+        }
     };
     
     /**
