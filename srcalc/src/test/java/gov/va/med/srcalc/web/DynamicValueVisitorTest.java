@@ -36,15 +36,15 @@ public class DynamicValueVisitorTest
         assertEquals(String.valueOf(1.2f), fVisitor.getValues().getDynamicValues().get("age"));
 	}
 	
-	@Test
-	public final void testDiscreteNumerical() throws Exception
+    @Test
+    public final void testDiscreteNumerical() throws Exception
     {
-		final DiscreteNumericalVariable var = SampleModels.wbcVariable();
-		final NumericalRange range = new NumericalRange(1.0f, true, 20.0f, true);
-		final MultiSelectOption option = new MultiSelectOption("WNL");
-        final DiscreteNumericalVariable.Category wnl = new DiscreteNumericalVariable.Category(range, option);
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
+        final MultiSelectOption option = new MultiSelectOption("WNL");
+        final DiscreteNumericalVariable.Category wnl =
+                new DiscreteNumericalVariable.Category(option, 20.0f, true);
         final DiscreteNumericalValue val = DiscreteNumericalValue.fromCategory(var, wnl);
-
+        
         fVisitor.visitDiscreteNumerical(val);
         assertNotNull("should have a value", fVisitor.getValues().getDynamicValues().get("wbc"));
     }

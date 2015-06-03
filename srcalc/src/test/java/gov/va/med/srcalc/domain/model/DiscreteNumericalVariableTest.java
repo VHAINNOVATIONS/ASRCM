@@ -23,41 +23,43 @@ public class DiscreteNumericalVariableTest
     }
     
     @Test
-    public final void testCategoryOrdering()
+    public final void testCategories()
     {
-        final Category cat1 = new Category(
-                new NumericalRange(1.0f, true, 4.0f, false), new MultiSelectOption("one"));
-        final Category catWnl = new Category(
-                new NumericalRange(4.0f, true, 4.5f, false), new MultiSelectOption("WNL"));
-        final Category cat3 = new Category(
-                new NumericalRange(4.5f, true, 6.0f, false), new MultiSelectOption("three"));
+        final Category cat1 = new Category(new MultiSelectOption("one"), 4.0f, false);
+        final Category catWnl = new Category(new MultiSelectOption("WNL"), 4.5f, false);
+        final Category cat3 = new Category(new MultiSelectOption("three"), 6.0f, false);
+        // Note: this category includes the bound so it's a little higher.
+        final Category cat4 = new Category(new MultiSelectOption("four"), 6.0f, true);
         // Intentionally put the Categories out of order in this set.
-        final ImmutableSet<Category> cats = ImmutableSet.of(cat3, catWnl, cat1);
+        final ImmutableSet<Category> cats = ImmutableSet.of(cat3, cat4, catWnl, cat1);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
                 "Creatinine", SampleModels.labVariableGroup(), cats, "creatinine");
         
         // Behavior verification.
-        TestHelpers.verifyCompareToContract(cat1, catWnl, cat3);
+        TestHelpers.verifyCompareToContract(cat1, cat3, cat4);
         assertEquals(
-                ImmutableList.of(cat1, catWnl, cat3),
+                ImmutableList.of(cat1, catWnl, cat3, cat4),
                 // Convert the sorted set into a List for order comparison.
                 ImmutableList.copyOf(var.getCategories()));
         
+        // Test getContainingCategory().
+        assertEquals(cat1, var.getContainingCategory(1.0f));
+        assertEquals(catWnl, var.getContainingCategory(4.0f));
+        assertEquals(cat3, var.getContainingCategory(4.6f));
+        assertEquals(cat4, var.getContainingCategory(6.0f));
+        
         // Also test getCategoriesWnlFirst().
         assertEquals(
-                ImmutableList.of(catWnl, cat1, cat3),
+                ImmutableList.of(catWnl, cat1, cat3, cat4),
                 var.getCategoriesWnlFirst().asList());
     }
     
     @Test
     public final void testGetOptions()
     {
-        final Category cat1 = new Category(
-                new NumericalRange(1.0f, true, 4.0f, false), new MultiSelectOption("one"));
-        final Category cat2 = new Category(
-                new NumericalRange(4.0f, true, 5.0f, false), new MultiSelectOption("two"));
-        final Category cat3 = new Category(
-                new NumericalRange(5.0f, true, 6.0f, false), new MultiSelectOption("three"));
+        final Category cat1 = new Category(new MultiSelectOption("one"), 4.0f, false);
+        final Category cat2 = new Category(new MultiSelectOption("two"), 5.0f, false);
+        final Category cat3 = new Category(new MultiSelectOption("three"), 6.0f, false);
         // Intentionally put the Categories out of order in this set.
         final ImmutableSet<Category> cats = ImmutableSet.of(cat3, cat2, cat1);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
