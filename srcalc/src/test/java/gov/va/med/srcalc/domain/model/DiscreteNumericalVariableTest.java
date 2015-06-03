@@ -1,15 +1,15 @@
 package gov.va.med.srcalc.domain.model;
 
 import static org.junit.Assert.*;
-
-import java.util.*;
-
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 import gov.va.med.srcalc.test.util.TestHelpers;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 public class DiscreteNumericalVariableTest
 {
@@ -27,23 +27,29 @@ public class DiscreteNumericalVariableTest
     {
         final Category cat1 = new Category(
                 new NumericalRange(1.0f, true, 4.0f, false), new MultiSelectOption("one"));
-        // WNL should always be at the start of the list after sorting
         final Category catWnl = new Category(
-        		new NumericalRange(4.0f, true, 4.5f, false), new MultiSelectOption("WNL"));
-        final Category cat2 = new Category(
+                new NumericalRange(4.0f, true, 4.5f, false), new MultiSelectOption("WNL"));
+        final Category cat3 = new Category(
                 new NumericalRange(4.5f, true, 6.0f, false), new MultiSelectOption("three"));
-        // Intentionally put the Categories out of order in this list.
-        final List<Category> cats = Arrays.asList(cat2, cat1, catWnl);
+        // Intentionally put the Categories out of order in this set.
+        final ImmutableSet<Category> cats = ImmutableSet.of(cat3, catWnl, cat1);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
-                "Creatinine", SampleModels.labVariableGroup(), new TreeSet<>(cats), "creatinine");
+                "Creatinine", SampleModels.labVariableGroup(), cats, "creatinine");
         
-        // Behavior verification. The constructed ArrayList should have the
-        // right order.
-        TestHelpers.verifyCompareToContract(catWnl, cat1, cat2);
-        final List<Category> orderedCats = new ArrayList<>(var.getCategories());
-        assertEquals(Arrays.asList(catWnl, cat1, cat2), orderedCats);
+        // Behavior verification.
+        TestHelpers.verifyCompareToContract(cat1, catWnl, cat3);
+        assertEquals(
+                ImmutableList.of(cat1, catWnl, cat3),
+                // Convert the sorted set into a List for order comparison.
+                ImmutableList.copyOf(var.getCategories()));
+        
+        // Also test getCategoriesWnlFirst().
+        assertEquals(
+                ImmutableList.of(catWnl, cat1, cat3),
+                var.getCategoriesWnlFirst().asList());
     }
     
+    @Test
     public final void testGetOptions()
     {
         final Category cat1 = new Category(
@@ -52,13 +58,13 @@ public class DiscreteNumericalVariableTest
                 new NumericalRange(4.0f, true, 5.0f, false), new MultiSelectOption("two"));
         final Category cat3 = new Category(
                 new NumericalRange(5.0f, true, 6.0f, false), new MultiSelectOption("three"));
-        // Intentionally put the Categories out of order in this list.
-        final List<Category> cats = Arrays.asList(cat3, cat2, cat1);
+        // Intentionally put the Categories out of order in this set.
+        final ImmutableSet<Category> cats = ImmutableSet.of(cat3, cat2, cat1);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
-                "Creatinine", SampleModels.labVariableGroup(), new TreeSet<>(cats), "creatinine");
+                "Creatinine", SampleModels.labVariableGroup(), cats, "creatinine");
         
         assertEquals(
-                Arrays.asList(cat1.getOption(), cat2.getOption(), cat3.getOption()),
+                ImmutableList.of(cat1.getOption(), cat2.getOption(), cat3.getOption()),
                 var.getOptions());
     }
 }

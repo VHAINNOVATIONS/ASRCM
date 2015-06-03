@@ -12,6 +12,8 @@ import org.hibernate.annotations.SortType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableSortedSet;
+
 /**
  * <p>A {@link Variable} that ultimately represents one of a finite, discrete
  * set of values. This is mainly useful for a lab results (e.g., White Blood
@@ -71,7 +73,23 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
     }
     
     /**
-     * Returns the list of discrete options.
+     * <p>Returns the Categories as {@link #getCategories()}, but WNL is always
+     * sorted first.</p>
+     * 
+     * <p>This order is mainly useful for views, but provide it here for
+     * convenience.</p>
+     * @return an immutable sorted set
+     */
+    @Transient
+    public ImmutableSortedSet<Category> getCategoriesWnlFirst()
+    {
+        return ImmutableSortedSet.copyOf(
+                new WnlFirstCategoryComparator(), fCategories);
+    }
+    
+    /**
+     * Returns the list of discrete options, in the same order as {@link
+     * #getCategories()}.
      * @return an unmodifiable list
      */
     @Override
@@ -236,26 +254,45 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
          * Orders categories by their {@link NumericalRange}s.
          */
         @Override
-        public int compareTo(Category other)
+        public int compareTo(final Category other)
         {
-        	// WNL should always be sorted as less than
-        	// If both are WNL, sort by range
-        	if(this.isWnl())
-        	{
-        		if(!other.isWnl())
-    			{
-        			return -1;
-    			}
-        	}
-        	else if(other.isWnl())
-        	{
-        		if(!this.isWnl())
-        		{
-        			return 1;
-        		}
-        	}
             // See above: the range is always non-null.
             return this.getRange().compareTo(other.getRange());
         }
+    }
+
+    /**
+     * <p>
+     * Orders Categories for {@link DiscreteNumericalVariable#getCategoriesWnlFirst()}.
+     * </p>
+     * <p>
+     * Per Effective Java Item 17, this class is marked final because it was not
+     * designed for inheritance.
+     * </p>
+     */
+    private final class WnlFirstCategoryComparator
+        implements Comparator<Category>
+    {
+        @Override
+        public int compare(final Category a, final Category b)
+        {
+            if (a.isWnl())
+            {
+                if (!b.isWnl())
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                if (b.isWnl())
+                {
+                    return 1;
+                }
+            }
+            
+            return a.compareTo(b);
+        }
+        
     }
 }
