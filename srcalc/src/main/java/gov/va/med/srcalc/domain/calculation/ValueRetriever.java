@@ -232,7 +232,7 @@ public enum ValueRetriever
      * @param units the units in which the value was measured, can be empty but not null
      * @return
      */
-    protected String makeRetrievalString(final double value, final Date measureDate, final String units)
+    public static String makeRetrievalString(final double value, final Date measureDate, final String units)
     {
         final SimpleDateFormat originalFormat = new SimpleDateFormat(RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT);
         final String dateString = " on " + originalFormat.format(measureDate);
@@ -252,7 +252,7 @@ public enum ValueRetriever
      * @param variableEntry the {@link VariableEntry} object to put the retrieved value into
      * @param key the variable's fully qualified key (i.e. "bmi$numerical" for bmi)
      */
-    protected void addLabValue(final String labName, final Patient patient, final VariableEntry variableEntry,
+    protected static void addLabValue(final String labName, final Patient patient, final VariableEntry variableEntry,
             final String key)
     {
         final RetrievedValue labValue = patient.getLabs().get(labName);

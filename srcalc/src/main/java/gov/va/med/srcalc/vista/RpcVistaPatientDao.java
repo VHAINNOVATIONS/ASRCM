@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
@@ -81,10 +82,10 @@ public class RpcVistaPatientDao implements VistaPatientDao
         {
             // Fields are separated by '^'
             // Basic patient demographics (age, gender)
-            final String[] basicArray = basicResults.get(0).split("\\^");
-            final String patientName = basicArray[0];
-            final int patientAge = Integer.parseInt(basicArray[1]);
-            final String patientGender = translateFromVista(basicArray[2]);
+            final List<String> basicArray = Splitter.on('^').splitToList(basicResults.get(0));
+            final String patientName = basicArray.get(0);
+            final int patientAge = Integer.parseInt(basicArray.get(1));
+            final String patientGender = translateFromVista(basicArray.get(2));
             final Patient patient = new Patient(dfn, patientName, patientGender, patientAge);
             // Patient vitals information (including but not limited to BMI, height, weight, weight 6 months ago)
             // If there are no results, a single line with an error message is returned.
@@ -158,12 +159,14 @@ public class RpcVistaPatientDao implements VistaPatientDao
     {
     	// The last entries are the most recent so we use those.
     	// Get the most recent weight measurement within the already specified range.
-    	final String[] weightLineTokens = weightResults.get(weightResults.size()-2).split("[\\s\\^]+");
+        final List<String> weightLineTokens = Splitter.on(Pattern.compile("[\\s\\^]+"))
+                .splitToList(weightResults.get(weightResults.size()-3));
     	// Get the date of the measurement
     	final SimpleDateFormat dateFormat = new SimpleDateFormat(VISTA_DATE_OUTPUT_FORMAT);
-    	final Date measurementDate = dateFormat.parse(weightLineTokens[1]);
+    	fLogger.debug("weight line tokens: {}", weightResults);
+    	final Date measurementDate = dateFormat.parse(weightLineTokens.get(1));
     	patient.setWeight6MonthsAgo(new RetrievedValue(
-    	        Double.parseDouble(weightLineTokens[3]), measurementDate, WEIGHT_UNITS));
+    	        Double.parseDouble(weightLineTokens.get(3)), measurementDate, WEIGHT_UNITS));
     	fLogger.debug("Weight 6 months ago: {}", patient.getWeight6MonthsAgo());
     }
     
@@ -171,21 +174,21 @@ public class RpcVistaPatientDao implements VistaPatientDao
     {
     	final SimpleDateFormat dateFormat = new SimpleDateFormat("(" + VISTA_DATE_OUTPUT_FORMAT + ")");
     	// Each entry comes with an accompanying date and time.
-    	final String[] heightLineTokens = vitalResults.get(5).split(SPLIT_REGEX);
-    	final int feet = Integer.parseInt(heightLineTokens[2]);
+    	final List<String> heightLineTokens = Splitter.on(Pattern.compile(SPLIT_REGEX)).splitToList(vitalResults.get(5));
+    	final int feet = Integer.parseInt(heightLineTokens.get(2));
     	patient.setHeight(new RetrievedValue(
-    	        (feet * 12.0) + Double.parseDouble(heightLineTokens[4]),
-    	        dateFormat.parse(heightLineTokens[1]),
+    	        (feet * 12.0) + Double.parseDouble(heightLineTokens.get(4)),
+    	        dateFormat.parse(heightLineTokens.get(1)),
     	        HEIGHT_UNITS));
-    	final String[] weightLineTokens = vitalResults.get(6).split(SPLIT_REGEX);
+    	final List<String> weightLineTokens = Splitter.on(Pattern.compile(SPLIT_REGEX)).splitToList(vitalResults.get(6));
     	patient.setWeight(new RetrievedValue(
-    	        Double.parseDouble(weightLineTokens[2]),
-    	        dateFormat.parse(weightLineTokens[1]),
+    	        Double.parseDouble(weightLineTokens.get(2)),
+    	        dateFormat.parse(weightLineTokens.get(1)),
     	        WEIGHT_UNITS));
-    	final String[] bmiLineTokens = vitalResults.get(7).split(SPLIT_REGEX);
+    	final List<String> bmiLineTokens = Splitter.on(Pattern.compile(SPLIT_REGEX)).splitToList(vitalResults.get(7));
     	// The BMI value is the second to last token on its line
     	patient.setBmi(new RetrievedValue(
-    	    Double.parseDouble(bmiLineTokens[bmiLineTokens.length-2]),
+    	    Double.parseDouble(bmiLineTokens.get(bmiLineTokens.size()-2)),
     	    patient.getWeight().getMeasureDate(),
     	    ""));
     }
@@ -203,11 +206,11 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // Else, we don't need to do anything.
             if(!rpcResultString.isEmpty())
             {
-                final String[] rpcSplit = rpcResultString.split("\\^");
-                final double labValue = Double.parseDouble(rpcSplit[1]);
+                List<String> rpcSplit = Splitter.on('^').splitToList(rpcResultString);
+                final double labValue = Double.parseDouble(rpcSplit.get(1));
                 final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy@HH:mm:ss");
                 patient.getLabs().put(labRetrievalEnum.name(),
-                        new RetrievedValue(labValue, format.parse(rpcSplit[2]), rpcSplit[3]));
+                        new RetrievedValue(labValue, format.parse(rpcSplit.get(2)), rpcSplit.get(3)));
             }
         }
     }
@@ -219,7 +222,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         // Split on line feed or carriage return
         // Wrap any lines that are too long so that users do not have to
         // scroll when viewing the note in CPRS.
-        final String[] bodyArray = noteBody.split("\\r?\\n");
+        final List<String> bodyArray = Splitter.on(Pattern.compile("\\r?\\n")).splitToList(noteBody);
         final StringBuilder wrappedNote = new StringBuilder();
         for (final String line : bodyArray)
         {

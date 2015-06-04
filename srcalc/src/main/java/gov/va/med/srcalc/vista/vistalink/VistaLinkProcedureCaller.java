@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.*;
 
+import com.google.common.base.Splitter;
+
 /**
  * Provides a simple interface to call VistA Remote Procedures. Uses VistALink.
  */
@@ -186,8 +188,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
                 // VistALink represents arrays as newline-delimited strings.
                 if(VlType.array.name().equals(response.getResultsType()))
                 {
-                        // NB: String.split() strips trailing empty strings.
-                    return Arrays.asList(response.getResults().split("\n"));
+                    return Splitter.on('\n').splitToList(response.getResults());
                 }
                 return Arrays.asList(response.getResults());
             }
