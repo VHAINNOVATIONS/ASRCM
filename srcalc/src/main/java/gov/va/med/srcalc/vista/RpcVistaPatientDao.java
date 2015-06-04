@@ -160,7 +160,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
     	// The last entries are the most recent so we use those.
     	// Get the most recent weight measurement within the already specified range.
         final List<String> weightLineTokens = Splitter.on(Pattern.compile("[\\s\\^]+"))
-                .splitToList(weightResults.get(weightResults.size()-3));
+                .splitToList(weightResults.get(weightResults.size()-2));
     	// Get the date of the measurement
     	final SimpleDateFormat dateFormat = new SimpleDateFormat(VISTA_DATE_OUTPUT_FORMAT);
     	fLogger.debug("weight line tokens: {}", weightResults);
