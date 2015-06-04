@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%--
-A JSP fragment to edit MultiSelectVariable-specific properties. This content is
+A JSP fragment to edit DiscreteNumericalVariable-specific properties. This content is
 intended as the body of an <editVariablePage> tag.
 --%>
         <tr>
@@ -41,8 +41,8 @@ intended as the body of an <editVariablePage> tag.
             <%-- Display any overall errors --%><form:errors path="categories" cssClass="error" />
             <ol id="categoriesList" data-max-categories="${variable.maxCategories}">
             <%--
-            Insert the existing categories. Javascript will handle adding/removing as the
-            user desires.
+            Insert the existing categories. Javascript will handle adding as the user
+            desires.
             --%>
             <c:set var="i" value="0" />
             <c:forEach items="${variable.categories}">
@@ -54,8 +54,8 @@ intended as the body of an <editVariablePage> tag.
                 <label><form:checkbox path="${catPath}.upperInclusive" /> Inclusive</label>
                 </span>
                 <%--
-                Again, lump all errors at the end to avoid messing up the flow.
-                The applicable control should be apparent.
+                Again, lump all errors at the end to avoid messing up the flow. The
+                applicable control should be apparent.
                 --%>
                 <form:errors cssClass="error" path="${catPath}.*" />
             </li>

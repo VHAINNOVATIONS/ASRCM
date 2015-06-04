@@ -60,6 +60,10 @@ function initEditVariablePage() {
         categoriesList.append(newLi);
     }
 
+    /**
+     * Replaces the add category button with an informational message if we have reached
+     * the maximum number of categories.
+     */
     function toggleAddCategoryLink() {
         var currentCount = categoriesList.find('li').length;
         var maxCategories = categoriesList.data('max-categories');
