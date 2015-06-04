@@ -38,21 +38,21 @@ function initEditVariablePage() {
         // it for the new index.
         var existingInputs = categoriesList.find('.categoryInputs:first');
         var newInputs = existingInputs.clone();
-        // Just iterate through the contrcategoriesLists and update the category index.
+        // Just iterate through the controls and update the category index.
         newInputs.find('input').each(function() {
             var input = $(this);
-            // Spring contrcategoriesLists put the path in the 'name' attribute and sometimes the 'id'
+            // Spring controls put the path in the 'name' attribute and sometimes the 'id'
             // attribute. Update them both.
 
             // name
-            var categoriesListdName = input.attr('name');
-            var newName = categoriesListdName.replace(/categories\[\d\d*\]\./, 'categories[' + index + '].');
+            var oldName = input.attr('name');
+            var newName = oldName.replace(/categories\[\d\d*\]\./, 'categories[' + index + '].');
             input.attr('name', newName);
             
             // id
-            var categoriesListdId = input.attr('id');
-            if (categoriesListdId) {
-                var newId = categoriesListdId.replace(/categories\d\d*\./, 'categories' + index + '.');
+            var oldId = input.attr('id');
+            if (oldId) {
+                var newId = oldId.replace(/categories\d\d*\./, 'categories' + index + '.');
                 input.attr('id', newId);
             }
         });

@@ -133,7 +133,7 @@ public class NewVarControllerIT extends IntegrationTest
     @Test
     public final void testNewDiscreteNumericalValid() throws Exception
     {
-        final String key = "testNewMsVarValidKey";
+        final String key = "testNewDnVarValidKey";
         final String category3Name = "category3";
         
         fMockMvc.perform(get(NewDiscreteNumericalVarController.BASE_URL))

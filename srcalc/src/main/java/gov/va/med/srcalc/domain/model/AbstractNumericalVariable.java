@@ -33,7 +33,7 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
      */
     public static final Pattern VALID_UNITS_PATTERN = Pattern.compile(VALID_UNITS_REGEX);
     
-    private NumericalRange fRange = new NumericalRange(0.0f, true, 200.0f, true);
+    private NumericalRange fRange = new NumericalRange(0.0f, true, 100.0f, true);
 
     private String fUnits = "";
 
@@ -58,7 +58,7 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
     
     /**
      * Returns the range of valid values for the variable. The default is
-     * [0.0,200.0].
+     * [0.0,100.0].
      */
     @Embedded
     public NumericalRange getValidRange()

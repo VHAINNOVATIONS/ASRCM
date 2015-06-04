@@ -52,7 +52,7 @@ public final class CategoryBuilder
     }
 
     /**
-     * Sets the value of the Categroy.
+     * Sets the value of the Category.
      * @see DiscreteNumericalVariable.Category#getOption()
      * @return this builder for convenience
      */
