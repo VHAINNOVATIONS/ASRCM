@@ -6,7 +6,7 @@ USE srcalc;
 create table boolean_variable (id integer not null, primary key (id));
 create table cpt (id integer not null auto_increment, active boolean not null, complexity varchar(255), cpt_code varchar(255), long_description varchar(255), rvu float not null, short_description varchar(255), primary key (id));
 create table discrete_numerical_var (units varchar(40) not null, lower_bound float not null, lower_inclusive boolean not null, upper_bound float not null, upper_inclusive boolean not null, id integer not null, primary key (id));
-create table discrete_numerical_var_category (variable_id integer not null, option_value varchar(80) not null, lower_bound float not null, lower_inclusive boolean not null, upper_bound float not null, upper_inclusive boolean not null, primary key (variable_id, option_value, lower_bound, lower_inclusive, upper_bound, upper_inclusive));
+create table discrete_numerical_var_category (variable_id integer not null, option_value varchar(80) not null, upper_bound float not null, upper_inclusive boolean not null, primary key (variable_id, option_value, upper_bound, upper_inclusive));
 create table multi_select_variable (display_type varchar(255), id integer not null, primary key (id));
 create table multi_select_variable_option (variable_id integer not null, option_value varchar(80) not null, option_index integer not null, primary key (variable_id, option_index));
 create table numerical_variable (units varchar(40) not null, lower_bound float not null, lower_inclusive boolean not null, upper_bound float not null, upper_inclusive boolean not null, id integer not null, primary key (id));
