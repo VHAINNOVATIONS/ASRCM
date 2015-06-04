@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain.calculation;
 
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.calculation.DiscreteNumericalValue;
@@ -32,7 +33,7 @@ public class DiscreteNumericalValueTest
         // getVariable()
         assertSame(var, val.getVariable());
         // toString()
-        assertEquals("White Blood Count = WNL[range=(-1.0E12, 11.0]]", val.toString());
+        assertThat(val.toString(), startsWith("White Blood Count = WNL"));
         // getDisplayString()
         assertEquals("Presumed WNL", val.getDisplayString());
     }
@@ -46,7 +47,7 @@ public class DiscreteNumericalValueTest
         // getVariable()
         assertSame(var, val.getVariable());
         // toString()
-        assertEquals("White Blood Count = WNL[range=(-1.0E12, 11.0]]", val.toString());
+        assertThat(val.toString(), startsWith("White Blood Count = WNL"));
         // getDisplayString()
         assertEquals("WNL (Actual Value: 2.0)", val.getDisplayString());
     }
@@ -77,8 +78,14 @@ public class DiscreteNumericalValueTest
     @Test(expected = ConfigurationException.class)
     public final void testNumericalMisconfigured() throws Exception
     {
-        final DiscreteNumericalVariable var = SampleModels.misconfiguredWbcVariable();
-        DiscreteNumericalValue.fromNumerical(var, 10.5f);
+        // A DiscreteNumericalVariable may be misconfigured if the last category does not
+        // include the rest of the valid range. Test what happens.
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
+        // Completely remove the last category, leaving a hole.
+        var.getCategories().remove(var.getCategories().last());
+
+        // This should throw a ConfigurationException now.
+        DiscreteNumericalValue.fromNumerical(var, var.getValidRange().getUpperBound() - 0.1f);
     }
     
 }

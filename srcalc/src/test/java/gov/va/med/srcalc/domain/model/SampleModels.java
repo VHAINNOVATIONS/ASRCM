@@ -285,11 +285,9 @@ public class SampleModels
     public static DiscreteNumericalVariable wbcVariable()
     {
         final Category wbcWnl = new Category(
-                new NumericalRange(Float.NEGATIVE_INFINITY, false, 11.0f, true),
-                new MultiSelectOption("WNL"));
+                new MultiSelectOption("WNL"), 11.0f, true);
         final Category wbcHigh = new Category(
-                new NumericalRange(11.0f, false, Float.POSITIVE_INFINITY, false),
-                new MultiSelectOption(">11.0"));
+                new MultiSelectOption(">11.0"), Float.POSITIVE_INFINITY, false);
         final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
                 "White Blood Count", labVariableGroup(), new HashSet<>(categories), "wbc");
@@ -301,48 +299,27 @@ public class SampleModels
     public static DiscreteNumericalVariable cardiacAgeVariable()
     {
         final Category ageLessThan50 = new Category(
-                new NumericalRange(Float.NEGATIVE_INFINITY, false, 50.0f, false),
-                new MultiSelectOption("< 50 years"));
+                new MultiSelectOption("< 50 years"), 50.0f, false);
         final Category ageFiftyToFiftyNine = new Category(
-                new NumericalRange(50.0f, true, 60.0f, false),
-                new MultiSelectOption("50 to 59 years"));
+                new MultiSelectOption("50 to 59 years"), 60.0f, false);
         final Category ageSixtyToSixtyNine = new Category(
-                new NumericalRange(60.0f, true, 70.0f, false),
-                new MultiSelectOption("60 to 69 years"));
+                new MultiSelectOption("60 to 69 years"), 70.0f, false);
         final Category ageGreaterThanEqualToSeventy = new Category(
-                new NumericalRange(70.0f, true,
-                Float.POSITIVE_INFINITY, false), new MultiSelectOption(">= 70 years"));
+                new MultiSelectOption(">= 70 years"), Float.POSITIVE_INFINITY, false);
         final List<Category> categories = Arrays.asList(
                 ageLessThan50, 
                 ageFiftyToFiftyNine, 
                 ageSixtyToSixtyNine,
                 ageGreaterThanEqualToSeventy);
-        final DiscreteNumericalVariable var = new DiscreteNumericalVariable("Cardiac Age", demographicsVariableGroup(),
-                new HashSet<>(categories), "cardiacAge");
+        final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
+                "Cardiac Age",
+                demographicsVariableGroup(),
+                new HashSet<>(categories),
+                "cardiacAge");
         var.setValidRange(new NumericalRange(18.0f, true, 120.0f, true));
         var.setRetriever(ValueRetriever.AGE);
     	
     	return var;
-    }
-    
-    /**
-     * Like {@link #wbcVariable()} but has a gap in the categories. Users may
-     * do this, you know.
-     */
-    public static DiscreteNumericalVariable misconfiguredWbcVariable()
-    {
-        final Category wbcWnl = new Category(
-                new NumericalRange(Float.NEGATIVE_INFINITY, false, 10.0f, true),
-                new MultiSelectOption("WNL"));
-        final Category wbcHigh = new Category(
-                new NumericalRange(11.0f, false, Float.POSITIVE_INFINITY, false),
-                new MultiSelectOption(">11.0"));
-        final List<Category> categories = Arrays.asList(wbcWnl, wbcHigh);
-        final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
-                "White Blood Count", labVariableGroup(), new HashSet<>(categories), "wbc");
-        var.setValidRange(new NumericalRange(2.0f, true, 50.0f, true));
-        var.setUnits("x1000/mm^3");
-        return var;
     }
     
     /**

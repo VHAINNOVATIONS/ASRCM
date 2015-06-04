@@ -12,6 +12,8 @@ import org.hibernate.annotations.SortType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableSortedSet;
+
 /**
  * <p>A {@link Variable} that ultimately represents one of a finite, discrete
  * set of values. This is mainly useful for a lab results (e.g., White Blood
@@ -71,7 +73,23 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
     }
     
     /**
-     * Returns the list of discrete options.
+     * <p>Returns the Categories as {@link #getCategories()}, but WNL is always
+     * sorted first.</p>
+     * 
+     * <p>This order is mainly useful for views, but provide it here for
+     * convenience.</p>
+     * @return an immutable sorted set
+     */
+    @Transient
+    public ImmutableSortedSet<Category> getCategoriesWnlFirst()
+    {
+        return ImmutableSortedSet.copyOf(
+                new WnlFirstCategoryComparator(), fCategories);
+    }
+    
+    /**
+     * Returns the list of discrete options, in the same order as {@link
+     * #getCategories()}.
      * @return an unmodifiable list
      */
     @Override
@@ -102,11 +120,12 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
      */
     public Category getContainingCategory(final float value)
     {
-        // There should be less than 10 categories in the real world, so just
-        // search via iteration.
+        // Category.contains() only checks whether the given value is within the upper
+        // bound. So we iterate over the categories in ascending order, returning the
+        // first Category that contains the value.
         for (final Category c : getCategories())
         {
-            if (c.getRange().isValueInRange(value))
+            if (c.contains(value))
             {
                 return c;
             }
@@ -139,13 +158,19 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
     }
 
     /**
-     * A Category for a {@link DiscreteNumericalVariable}. Presents an immutable
-     * public interface.
+     * <p>A Category for a {@link DiscreteNumericalVariable}. Presents an immutable
+     * public interface.</p>
+     * 
+     * <p>This class only stores an upper bound. The lower bound is inferred
+     * from the preceding Category. In the case of the first category, the lower
+     * bound is that of the valid range.</p>
      */
     @Embeddable
     public static final class Category implements Comparable<Category>
     {
-        private NumericalRange fRange;
+        private float fUpperBound;
+        
+        private boolean fUpperInclusive;
         
         private MultiSelectOption fOption;
         
@@ -161,29 +186,66 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
          * Constructs an instance.
          */
         public Category(
-                final NumericalRange range, final MultiSelectOption option)
+                final MultiSelectOption option,
+                final float upperBound,
+                final boolean upperInclusive)
         {
-            fRange = Objects.requireNonNull(range);
             fOption = Objects.requireNonNull(option);
-        }
-        
-        @Embedded
-        public NumericalRange getRange()
-        {
-            return fRange;
+            fUpperBound = upperBound;
+            fUpperInclusive = upperInclusive;
         }
         
         /**
-         * For reflection-based construction only.
-         * @param range must not be null
+         * <p>Returns the upper bound of this Category.</p>
+         * 
+         * <p>Note that we do not store a lower bound. See the class Javadoc.</p>
          */
-        void setRange(NumericalRange range)
+        @Basic
+        public final float getUpperBound()
         {
-            fRange = Objects.requireNonNull(range);
+            return fUpperBound;
+        }
+        
+        /**
+         * Sets the upper bound. For reflection-based construction only: this class
+         * presents an immutable public interface.
+         */
+        final void setUpperBound(final float upperBound)
+        {
+            fUpperBound = upperBound;
+        }
+
+        /**
+         * <p>Returns whether the upper bound is inclusive.</p>
+         */
+        @Basic
+        public final boolean isUpperInclusive()
+        {
+            return fUpperInclusive;
+        }
+        
+        /**
+         * Sets whether the upper bound is inclusive. For reflection-based construction
+         * only: this class presents an immutable public interface.
+         */
+        final void setUpperInclusive(final boolean upperInclusive)
+        {
+            fUpperInclusive = upperInclusive;
+        }
+        
+        /**
+         * Returns whether this Category contains the given number. Note that this class
+         * does not store a lower bound so this method only considers whether the number
+         * is within the upper bound.
+         * @return true if the given number is within the upper bound
+         */
+        public boolean contains(final float f)
+        {
+            return fUpperInclusive ? (f <= fUpperBound) : (f < fUpperBound);
         }
         
         @Embedded
-        public MultiSelectOption getOption()
+        public final MultiSelectOption getOption()
         {
             return fOption;
         }
@@ -206,18 +268,21 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
         @Override
         public String toString()
         {
-            return String.format("%s[range=%s]", getOption(), getRange());
+            return String.format(
+                    "%s[upperBound=%s,inclusive=%s]",
+                    getOption(), fUpperBound, fUpperInclusive);
         }
         
         @Override
-        public boolean equals(Object obj)
+        public boolean equals(final Object obj)
         {
             if (obj instanceof Category)
             {
                 final Category other = (Category)obj;
-                // See above: range and option are always non-null.
                 return 
-                        this.getRange().equals(other.getRange()) &&
+                        new Float(this.fUpperBound).equals(other.fUpperBound) &&
+                        this.fUpperInclusive == other.fUpperInclusive &&
+                        // See above: option is always non-null.
                         this.getOption().equals(other.getOption());
             }
             else
@@ -229,33 +294,59 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
         @Override
         public int hashCode()
         {
-            return Objects.hash(getRange(), getOption());
+            return Objects.hash(fUpperBound, fUpperInclusive, getOption());
         }
         
         /**
-         * Orders categories by their {@link NumericalRange}s.
+         * Orders categories in ascending upper bound order. If two categories have the
+         * same upper bound, one with an inclusive upper bound will be considered greater
+         * than one with an exclusive upper bound since it does contain higher numbers.
          */
         @Override
-        public int compareTo(Category other)
+        public int compareTo(final Category other)
         {
-        	// WNL should always be sorted as less than
-        	// If both are WNL, sort by range
-        	if(this.isWnl())
-        	{
-        		if(!other.isWnl())
-    			{
-        			return -1;
-    			}
-        	}
-        	else if(other.isWnl())
-        	{
-        		if(!this.isWnl())
-        		{
-        			return 1;
-        		}
-        	}
-            // See above: the range is always non-null.
-            return this.getRange().compareTo(other.getRange());
+            int boundDelta = Float.compare(this.fUpperBound, other.fUpperBound);
+            if (boundDelta != 0)
+            {
+                return boundDelta;
+            }
+            
+            return Boolean.compare(this.fUpperInclusive, other.fUpperInclusive);
         }
+    }
+
+    /**
+     * <p>
+     * Orders Categories for {@link DiscreteNumericalVariable#getCategoriesWnlFirst()}.
+     * </p>
+     * <p>
+     * Per Effective Java Item 17, this class is marked final because it was not
+     * designed for inheritance.
+     * </p>
+     */
+    private final class WnlFirstCategoryComparator
+        implements Comparator<Category>
+    {
+        @Override
+        public int compare(final Category a, final Category b)
+        {
+            if (a.isWnl())
+            {
+                if (!b.isWnl())
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                if (b.isWnl())
+                {
+                    return 1;
+                }
+            }
+            
+            return a.compareTo(b);
+        }
+        
     }
 }

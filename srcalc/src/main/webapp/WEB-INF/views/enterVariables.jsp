@@ -54,9 +54,9 @@
             <form:input cssClass="numerical" path="${numericalVarPath}" size="6"/>
             <c:out value="${variable.units} ${variableEntry.getNumericalMeasureDate(variable.key)}"/></span>
             <form:errors path="${numericalVarPath}" cssClass="error" /><br>
-            <c:forEach var="opt" items="${variable.options}">
-            <label class="radioLabel"><form:radiobutton path="${varPath}" value="${opt.value}"/>
-                Presumed <c:out value="${opt.value}"/></label>
+            <c:forEach var="cat" items="${variable.categoriesWnlFirst}">
+            <label class="radioLabel"><form:radiobutton path="${varPath}" value="${cat.option.value}"/>
+                Presumed <c:out value="${cat.option.value}"/></label>
             </c:forEach>
         </jsp:attribute>
         <jsp:attribute name="procedureFragment">
