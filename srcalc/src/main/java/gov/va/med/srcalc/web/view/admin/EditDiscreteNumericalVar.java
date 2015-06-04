@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
+import com.google.common.base.Strings;
+import com.google.common.collect.*;
 
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable;
 import gov.va.med.srcalc.service.ModelInspectionService;
@@ -64,6 +64,38 @@ public final class EditDiscreteNumericalVar extends EditAbstractNumericalVar
     }
     
     /**
+     * <p>Like {@link #getCategories()} but with trailing blank categories trimmed off. A
+     * Category is considered blank if its value is blank. (The user still may have
+     * inputted an upper bound.)</p>
+     * 
+     * <p>This method is useful because we allow the user to delete trailing categories
+     * by clearing out the category names.</p>
+     * 
+     * @return an ImmutableList
+     */
+    public ImmutableList<CategoryBuilder> getTrimmedCategories()
+    {
+        // Start with a copy of all the categories.
+        final ArrayList<CategoryBuilder> trimmed = new ArrayList<>(fCategories);
+        
+        // Iterate from the end, removing as we go.
+        for (int i = fCategories.size() - 1; i >= 0; --i)
+        {
+            if (Strings.isNullOrEmpty(trimmed.get(i).getValue()))
+            {
+                trimmed.remove(i);
+            }
+            // Break at the first non-empty String.
+            else
+            {
+                break;
+            }
+        }
+        
+        return ImmutableList.copyOf(trimmed);
+    }
+    
+    /**
      * Returns the minimum supported number of categories, {@value #MIN_CATEGORIES}.
      */
     public int getMinCategories()
@@ -95,7 +127,7 @@ public final class EditDiscreteNumericalVar extends EditAbstractNumericalVar
 
         final ImmutableSet.Builder<DiscreteNumericalVariable.Category> categories =
                 ImmutableSet.builder();
-        for (final CategoryBuilder catBuilder : fCategories)
+        for (final CategoryBuilder catBuilder : getTrimmedCategories())
         {
             categories.add(catBuilder.build());
         }

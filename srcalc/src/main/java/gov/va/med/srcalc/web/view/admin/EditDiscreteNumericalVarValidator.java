@@ -51,7 +51,7 @@ public class EditDiscreteNumericalVarValidator implements Validator
         // converting from strings to numbers, but Spring will detect that.
 
         // Validate categories
-        final List<CategoryBuilder> categories = editVar.getCategories();
+        final List<CategoryBuilder> categories = editVar.getTrimmedCategories();
         if (categories.size() < editVar.getMinCategories())
         {
             errors.rejectValue(

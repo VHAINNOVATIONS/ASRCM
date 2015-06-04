@@ -29,6 +29,7 @@ intended as the body of an <editVariablePage> tag.
         <tr>
         <td>
             <p>Categories:</p>
+            (Trailing blanks will be omitted.)
         </td>
         <td id="categories">
             <ul class="preInstructions">

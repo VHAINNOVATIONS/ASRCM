@@ -68,6 +68,8 @@ public class EditDiscreteNumericalVarTest
         ev.getCategories().add(CategoryBuilder.fromPrototype(category1));
         ev.getCategories().add(CategoryBuilder.fromPrototype(category2));
         ev.getCategories().add(CategoryBuilder.fromPrototype(category3));
+        // Add an extra CategoryBuilder which should be trimmed.
+        ev.getCategories().add(new CategoryBuilder().setValue(""));
         final DiscreteNumericalVariable createdVariable = ev.buildNew();
         
         // Verification

@@ -132,6 +132,16 @@ public class EditDiscreteNumericalVarValidatorTest
         assertEquals(
                 ValidationCodes.TOO_SHORT,
                 errors2.getFieldError("categories").getCode());
+        
+        // Now try with 2, but with the second one blank (which should be trimmed).
+        ev.getCategories().add(new CategoryBuilder().setValue(""));
+        
+        final BindingResult errors3 = validate(ev);
+        
+        assertEquals(1, errors3.getErrorCount());
+        assertEquals(
+                ValidationCodes.TOO_SHORT,
+                errors3.getFieldError("categories").getCode());
     }
     
     @Test
