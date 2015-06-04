@@ -72,7 +72,7 @@
         <td>
             <form:textarea path="helpText" cols="90" rows="8" />
             <form:errors path="helpText" cssClass="error" />
-            <ul class="helpText">
+            <ul class="postInstructions">
             <li>Add a blank line between paragraphs.</li>
             <li>Bullet lists can be created by starting lines with an asterisk (* Example item).</li>
             <li>Numbered lists can be created by starting lines with a number (1. Example item).</li>

@@ -1,8 +1,7 @@
 package gov.va.med.srcalc.web.view.admin;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable;
-import gov.va.med.srcalc.domain.model.VariableGroup;
+import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.MockModelService;
 import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.util.ValidationCodes;
@@ -34,6 +33,29 @@ public class EditDiscreteNumericalVarValidatorTest
         ev.setHelpText("validHelpText");
         ev.setUnits("valid/units");
         // Just leave the range at default, which is valid.
+        // Populate the maximum (10) contiguous categories.
+        ev.getCategories().clear();
+        ev.getCategories().add(
+                new CategoryBuilder().setValue("category1").setUpperBound(0.5f));
+        ev.getCategories().add(
+                new CategoryBuilder().setValue("category2").setUpperBound(10.0f));
+        ev.getCategories().add(
+                new CategoryBuilder().setValue("category3").setUpperBound(20.0f));
+        ev.getCategories().add(
+                new CategoryBuilder().setValue("category4").setUpperBound(30.0f));
+        ev.getCategories().add(
+                new CategoryBuilder().setValue("category5").setUpperBound(40.0f));
+        ev.getCategories().add(
+                new CategoryBuilder().setValue("category6").setUpperBound(50.0f));
+        ev.getCategories().add(
+                new CategoryBuilder().setValue("category7").setUpperBound(60.0f));
+        ev.getCategories().add(
+                new CategoryBuilder().setValue("category8").setUpperBound(70.0f));
+        ev.getCategories().add(
+                new CategoryBuilder().setValue("category9").setUpperBound(80.0f));
+        ev.getCategories().add(
+                new CategoryBuilder().setValue("category10").setUpperBound(100.0f));
+        
         return ev;
     }
     
@@ -86,4 +108,85 @@ public class EditDiscreteNumericalVarValidatorTest
                 errors.getFieldError("units").getCode());
     }
     
+    @Test
+    public final void testTooFewCategories()
+    {
+        final EditDiscreteNumericalVar ev = makeEditVar();
+
+        // First try with 0.
+        ev.getCategories().clear();
+        
+        final BindingResult errors = validate(ev);
+        
+        assertEquals(1, errors.getErrorCount());
+        assertEquals(
+                ValidationCodes.TOO_SHORT,
+                errors.getFieldError("categories").getCode());
+        
+        // Now try with 1.
+        ev.getCategories().add(new CategoryBuilder().setValue("category1"));
+        
+        final BindingResult errors2 = validate(ev);
+        
+        assertEquals(1, errors2.getErrorCount());
+        assertEquals(
+                ValidationCodes.TOO_SHORT,
+                errors2.getFieldError("categories").getCode());
+    }
+    
+    @Test
+    public final void testTooManyCategories()
+    {
+        final EditDiscreteNumericalVar ev = makeEditVar();
+        ev.getCategories().add(new CategoryBuilder().setValue("category11"));
+        
+        final BindingResult errors = validate(ev);
+        
+        assertEquals(1, errors.getErrorCount());
+        assertEquals(
+                ValidationCodes.TOO_LONG,
+                errors.getFieldError("categories").getCode());
+    }
+    
+    @Test
+    public final void testEmptyCategoryValue()
+    {
+        final EditDiscreteNumericalVar ev = makeEditVar();
+        ev.getCategories().get(1).setValue("");
+        
+        final BindingResult errors = validate(ev);
+        
+        assertEquals(1, errors.getErrorCount());
+        assertEquals(
+                ValidationCodes.NO_VALUE,
+                errors.getFieldError("categories[1].value").getCode());
+    }
+
+    @Test
+    public final void testCategoryValueTooLong()
+    {
+        final EditDiscreteNumericalVar ev = makeEditVar();
+        ev.getCategories().get(2).setValue(TestHelpers.stringOfLength(MultiSelectOption.VALUE_MAX + 1));
+        
+        final BindingResult errors = validate(ev);
+        
+        assertEquals(1, errors.getErrorCount());
+        assertEquals(
+                ValidationCodes.TOO_LONG,
+                errors.getFieldError("categories[2].value").getCode());
+    }
+
+    @Test
+    public final void testCategoryValueInvalidCharacters()
+    {
+        final EditDiscreteNumericalVar ev = makeEditVar();
+        ev.getCategories().get(0).setValue("foo\t");
+
+        final BindingResult errors = validate(ev);
+        
+        assertEquals(1, errors.getErrorCount());
+        assertEquals(
+                ValidationCodes.INVALID_CONTENTS,
+                errors.getFieldError("categories[0].value").getCode());
+    }
 }

@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import gov.va.med.srcalc.domain.model.AbstractNumericalVariable;
+import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.test.util.TestHelpers;
@@ -132,6 +133,7 @@ public class NewVarControllerIT extends IntegrationTest
     public final void testNewDiscreteNumericalValid() throws Exception
     {
         final String key = "testNewMsVarValidKey";
+        final String category3Name = "category3";
         
         fMockMvc.perform(get(NewDiscreteNumericalVarController.BASE_URL))
             .andExpect(status().isOk())
@@ -147,13 +149,22 @@ public class NewVarControllerIT extends IntegrationTest
                 .param("validRange.lowerInclusive", "true")
                 .param("validRange.lowerBound", "100.0")
                 .param("validRange.upperBound", "150.0")
-                .param("validRange.upperInclusive", "false"))
+                .param("validRange.upperInclusive", "false")
+                .param("categories[0].value", "category1")
+                .param("categories[0].upperBound", "120.0")
+                .param("categories[1].value", "category2")
+                .param("categories[1].upperBound", "130.0")
+                .param("categories[2].value", category3Name)
+                .param("categories[2].upperBound", "150.0"))
             .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
         
-        // Verify that the variable was actually created. Individual properties
-        // are tested in EditDiscreteNumericalVarTest.
-        assertEquals(key, fAdminService.getVariable(key).getKey());
-        
+        // Verify that the variable was actually created and verify that some of
+        // the properties are correct. All properties are tested in
+        // EditDiscreteNumericalVarTest.
+        final DiscreteNumericalVariable var = 
+                (DiscreteNumericalVariable)fAdminService.getVariable(key);
+        assertEquals(key, var.getKey());
+        assertEquals(category3Name, var.getCategories().last().getOption().getValue());
     }
     
     @Test

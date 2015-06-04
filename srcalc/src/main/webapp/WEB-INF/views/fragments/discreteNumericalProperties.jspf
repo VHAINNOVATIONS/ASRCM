@@ -16,8 +16,8 @@ intended as the body of an <editVariablePage> tag.
         <td>Valid Range:</td>
         <td>
             <label><form:checkbox path="validRange.lowerInclusive" /> Inclusive</label>
-            <form:input path="validRange.lowerBound" size="7" />,
-            <form:input path="validRange.upperBound" size="7" />
+            <form:input path="validRange.lowerBound" size="6" />,
+            <form:input path="validRange.upperBound" size="6" />
             <label><form:checkbox path="validRange.upperInclusive" /> Inclusive</label>
             <%--
             Lump all errors at the end to avoid messing up the flow. The
@@ -27,8 +27,40 @@ intended as the body of an <editVariablePage> tag.
         </td>
         </tr>
         <tr>
-        <td>Categories:</td>
+        <td>
+            <p>Categories:</p>
+        </td>
         <td id="categories">
-            TODO: will just create an empty set of categories for now
+            <ul class="preInstructions">
+            <li>Please enter these categories in ascending value order.</li>
+            <li>"WNL" will automatically be sorted first when displaying to the user.</li>
+            <li>The lower bounds need not be entered: they are inferred from the previous
+            category's upper bound.</li>
+            </ul>
+            <%-- Display any overall errors --%><form:errors path="categories" cssClass="error" />
+            <ol id="categoriesList" data-max-categories="${variable.maxCategories}">
+            <%--
+            Insert the existing categories. Javascript will handle adding/removing as the
+            user desires.
+            --%>
+            <c:set var="i" value="0" />
+            <c:forEach items="${variable.categories}">
+            <li>
+                <c:set var="catPath" value="categories[${i}]" />
+                <span class="categoryInputs">
+                <form:input path="${catPath}.value" size="20"/>
+                Upper bound: <form:input path="${catPath}.upperBound" size="6" />
+                <label><form:checkbox path="${catPath}.upperInclusive" /> Inclusive</label>
+                </span>
+                <%--
+                Again, lump all errors at the end to avoid messing up the flow.
+                The applicable control should be apparent.
+                --%>
+                <form:errors cssClass="error" path="${catPath}.*" />
+            </li>
+            <c:set var="i" value="${i+1}" />
+            </c:forEach>
+            </ol>
+            <a id="addNewCategory" class="btn-link" href="#">Add Another</a>
         </td>
         </tr>

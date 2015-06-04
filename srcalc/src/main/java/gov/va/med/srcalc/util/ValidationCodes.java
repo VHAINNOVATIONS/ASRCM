@@ -9,6 +9,11 @@ public class ValidationCodes
      * Error code used when a required value is not provided.
      */
     public static final String NO_VALUE = "noInput";
+    
+    /**
+     * Error code used when a value is shorter than the minimum length.
+     */
+    public static final String TOO_SHORT = "tooShort";
 
     /**
      * Error code used when a value is longer than the maximum length.

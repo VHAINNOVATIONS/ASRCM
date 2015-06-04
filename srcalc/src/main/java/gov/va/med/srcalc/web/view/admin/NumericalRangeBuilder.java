@@ -1,13 +1,19 @@
 package gov.va.med.srcalc.web.view.admin;
 
+import com.google.common.base.MoreObjects;
+
 import gov.va.med.srcalc.domain.model.NumericalRange;
 
 /**
- * Builds a {@link NumericalRange} from incrementally-specified component parts.
- * This class is useful because NumericalRange is immutable: you must specify
- * all properties in its constructor and you can't use it as a Java bean.
+ * <p>Builds a {@link NumericalRange} from incrementally-specified component
+ * parts. This class is useful because NumericalRange is immutable: you must
+ * specify all properties in its constructor and you can't use it as a Java
+ * bean.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
  */
-public class NumericalRangeBuilder
+public final class NumericalRangeBuilder
 {
     private float fLowerBound;
     private boolean fLowerInclusive;
@@ -23,6 +29,37 @@ public class NumericalRangeBuilder
         fLowerInclusive = true;
         fUpperBound = 100.0f;
         fUpperInclusive = true;
+    }
+    
+    /**
+     * Constructs an instance with the given initial values. These initial
+     * values may, of course, be changed before calling {@link #build()}.
+     */
+    public NumericalRangeBuilder(
+            final float initialLowerBound,
+            final boolean initialLowerInclusive,
+            final float initialUpperBound,
+            final boolean initialUpperInclusive)
+    {
+        fLowerBound = initialLowerBound;
+        fLowerInclusive = initialLowerInclusive;
+        fUpperBound = initialUpperBound;
+        fUpperInclusive = initialUpperInclusive;
+    }
+    
+    /**
+     * Factory method to create an instance based on a prototype NumericalRange.
+     * @return a new builder that will build ranges equivalent to the given
+     * prototype
+     */
+    public static NumericalRangeBuilder fromPrototype(
+            final NumericalRange prototypeRange)
+    {
+        return new NumericalRangeBuilder(
+                prototypeRange.getLowerBound(),
+                prototypeRange.isLowerInclusive(),
+                prototypeRange.getUpperBound(),
+                prototypeRange.isUpperInclusive());
     }
 
     /**
@@ -96,5 +133,20 @@ public class NumericalRangeBuilder
     {
         return new NumericalRange(
                 fLowerBound, fLowerInclusive, fUpperBound, fUpperInclusive);
+    }
+    
+    /**
+     * Returns a string representing the object. The exact format is unspecified
+     * but it will contain the currently-set bounds and inclusive flags.
+     */
+    @Override
+    public String toString()
+    {
+        return MoreObjects.toStringHelper(this)
+                .add("fLowerBound", fLowerBound)
+                .add("fUpperInclusive", fUpperInclusive)
+                .add("fUpperBound", fUpperBound)
+                .add("fUpperInclusive", fUpperInclusive)
+                .toString();
     }
 }
