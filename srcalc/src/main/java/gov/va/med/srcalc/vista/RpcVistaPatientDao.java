@@ -31,7 +31,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
 {
     private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
-    private static final String SPLIT_REGEX = "[\\s]+";
+    private static final String VITALS_SPLIT_REGEX = "[\\s]+";
     private static final String WEIGHT_UNITS = "lbs.";
     private static final String HEIGHT_UNITS = "inches";
     
@@ -157,8 +157,18 @@ public class RpcVistaPatientDao implements VistaPatientDao
     
     private void parseWeightResults(final Patient patient, final List<String> weightResults) throws ParseException
     {
-    	// The last entries are the most recent so we use those.
-    	// Get the most recent weight measurement within the already specified range.
+    	/* The last entries are the most recent so we use those.
+    	* Get the most recent weight measurement within the already specified range.
+    	* The format expected from VistA is:
+    	*   21557^04/17/09@12:00   Wt:   185.00 lb (84.09 kg)  _NURSE,ONE
+        *          @12:00   Body Mass Index:   25.86
+        *   22296^08/24/09@14:00   Wt:   190.00 lb (86.36 kg)  _NURSE,ONE
+        *          @14:00   Body Mass Index:   26.56
+    	* Where the most recent weight is the last result and each result consists of two lines.
+    	* The first line is a measurement identifier, the date and time, the weight in pounds and kilograms
+    	* and the person providing the measurement. The second line is the time on the same date as the
+    	* weight measurement, along with the BMI for the patient.
+        */ 
         final List<String> weightLineTokens = Splitter.on(Pattern.compile("[\\s\\^]+"))
                 .splitToList(weightResults.get(weightResults.size()-2));
     	// Get the date of the measurement
@@ -173,19 +183,20 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private void parseRecentVitalResults(final Patient patient, final List<String> vitalResults) throws ParseException
     {
     	final SimpleDateFormat dateFormat = new SimpleDateFormat("(" + VISTA_DATE_OUTPUT_FORMAT + ")");
+    	final Pattern compliedPattern = Pattern.compile(VITALS_SPLIT_REGEX);
     	// Each entry comes with an accompanying date and time.
-    	final List<String> heightLineTokens = Splitter.on(Pattern.compile(SPLIT_REGEX)).splitToList(vitalResults.get(5));
+    	final List<String> heightLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(5));
     	final int feet = Integer.parseInt(heightLineTokens.get(2));
     	patient.setHeight(new RetrievedValue(
     	        (feet * 12.0) + Double.parseDouble(heightLineTokens.get(4)),
     	        dateFormat.parse(heightLineTokens.get(1)),
     	        HEIGHT_UNITS));
-    	final List<String> weightLineTokens = Splitter.on(Pattern.compile(SPLIT_REGEX)).splitToList(vitalResults.get(6));
+    	final List<String> weightLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(6));
     	patient.setWeight(new RetrievedValue(
     	        Double.parseDouble(weightLineTokens.get(2)),
     	        dateFormat.parse(weightLineTokens.get(1)),
     	        WEIGHT_UNITS));
-    	final List<String> bmiLineTokens = Splitter.on(Pattern.compile(SPLIT_REGEX)).splitToList(vitalResults.get(7));
+    	final List<String> bmiLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(7));
     	// The BMI value is the second to last token on its line
     	patient.setBmi(new RetrievedValue(
     	    Double.parseDouble(bmiLineTokens.get(bmiLineTokens.size()-2)),
@@ -198,19 +209,28 @@ public class RpcVistaPatientDao implements VistaPatientDao
         final VistaLabs[] enumValues = VistaLabs.values();
         for(final VistaLabs labRetrievalEnum: enumValues)
         {
-            final String rpcResultString = fProcedureCaller.doRetrieveLabs(
-                    fDuz,
-                    String.valueOf(dfn),
-                    labRetrievalEnum.getPossibleLabNames());
-            // If the resultString is a success, add it to the patient's lab data.
-            // Else, we don't need to do anything.
-            if(!rpcResultString.isEmpty())
+            try
             {
-                List<String> rpcSplit = Splitter.on('^').splitToList(rpcResultString);
-                final double labValue = Double.parseDouble(rpcSplit.get(1));
-                final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy@HH:mm:ss");
-                patient.getLabs().put(labRetrievalEnum.name(),
-                        new RetrievedValue(labValue, format.parse(rpcSplit.get(2)), rpcSplit.get(3)));
+                final String rpcResultString = fProcedureCaller.doRetrieveLabs(
+                        fDuz,
+                        String.valueOf(dfn),
+                        labRetrievalEnum.getPossibleLabNames());
+                // If the resultString is a success, add it to the patient's lab data.
+                // Else, we don't need to do anything.
+                if(!rpcResultString.isEmpty())
+                {
+                    List<String> rpcSplit = Splitter.on('^').splitToList(rpcResultString);
+                    final double labValue = Double.parseDouble(rpcSplit.get(1));
+                    final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy@HH:mm:ss");
+                    patient.getLabs().put(labRetrievalEnum.name(),
+                            new RetrievedValue(labValue, format.parse(rpcSplit.get(2)), rpcSplit.get(3)));
+                }
+            }
+            catch(final Exception e)
+            {
+                // If an exception occurs for any reason, move to the next lab so that as much patient
+                // data as possible can still be retrieved.
+                fLogger.debug("Unable to retrieve lab {}. {}", labRetrievalEnum.name(), e.toString());
             }
         }
     }

@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 import gov.va.med.srcalc.domain.calculation.SampleCalculations;
-import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 
 import java.util.*;
@@ -86,7 +85,7 @@ public class VariableEntryTest
         final String dateString = numericalString + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING;
         final RetrievedValue labValue = patient.getLabs().get("WBC");
         
-        final String retrievalString = ValueRetriever.makeRetrievalString(
+        final String retrievalString = VariableEntry.makeRetrievalString(
                 labValue.getValue(),
                 labValue.getMeasureDate(),
                 labValue.getUnits());

@@ -1,11 +1,9 @@
 package gov.va.med.srcalc.domain.calculation;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.Variable;
-import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
 public enum ValueRetriever
@@ -226,22 +224,11 @@ public enum ValueRetriever
             final String key);
     
     /**
-     * Make a string to tell the user information about the automatically retrieved value.
-     * @param value the retrieved value to display
-     * @param measureDate the date on which the value was measured
-     * @param units the units in which the value was measured, can be empty but not null
-     * @return
+     * {@see VariableEntry#makeRetrievalString(double, Date, String)}
      */
-    public static String makeRetrievalString(final double value, final Date measureDate, final String units)
+    protected static String makeRetrievalString(final double value, final Date measureDate, final String units)
     {
-        final SimpleDateFormat originalFormat = new SimpleDateFormat(RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT);
-        final String dateString = " on " + originalFormat.format(measureDate);
-        String unitString = "";
-        if(units.length() > 0)
-        {
-            unitString = " " + units;
-        }
-        return String.format("(Retrieved: %.2f%s%s)", value, unitString, dateString);
+        return VariableEntry.makeRetrievalString(value, measureDate, units);
     }
     
     /**

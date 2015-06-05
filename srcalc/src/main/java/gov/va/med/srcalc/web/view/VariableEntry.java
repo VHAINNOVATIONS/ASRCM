@@ -2,8 +2,11 @@ package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.*;
+import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
@@ -159,6 +162,25 @@ public class VariableEntry
     public String getNumericalMeasureDate(final String key)
     {
         return getMeasureDate(key + VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL);
+    }
+    
+    /**
+     * Make a string to tell the user information about the automatically retrieved value.
+     * @param value the retrieved value to display
+     * @param measureDate the date on which the value was measured
+     * @param units the units in which the value was measured, can be empty but not null
+     * @return the string to display to the user
+     */
+    public static String makeRetrievalString(final double value, final Date measureDate, final String units)
+    {
+        final SimpleDateFormat originalFormat = new SimpleDateFormat(RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT);
+        final String dateString = " on " + originalFormat.format(measureDate);
+        String unitString = "";
+        if(units.length() > 0)
+        {
+            unitString = " " + units;
+        }
+        return String.format("(Retrieved: %.2f%s%s)", value, unitString, dateString);
     }
     
     @Override

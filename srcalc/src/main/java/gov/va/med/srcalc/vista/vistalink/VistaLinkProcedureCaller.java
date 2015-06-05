@@ -186,8 +186,9 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
                 // VistALink represents arrays as newline-delimited strings.
                 if(VlType.array.name().equals(response.getResultsType()))
                 {
-                    // String.split() is used here because it eliminates an empty string
-                    // at the end of the response result, which is the desired behavior.
+                    // String.split() is used here instead of Guava's Splitter 
+                    // because it eliminates an empty string at the end of the 
+                    // response result, which is the desired behavior.
                     return Arrays.asList(response.getResults().split("\n"));
                 }
                 return Arrays.asList(response.getResults());
