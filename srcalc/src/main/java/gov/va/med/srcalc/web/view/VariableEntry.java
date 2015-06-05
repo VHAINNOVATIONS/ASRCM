@@ -155,6 +155,17 @@ public class VariableEntry
     }
     
     /**
+     * This method will place a key-value pair into the dynamic values by using a fully-qualified 
+     * variable key and a string notifying the user of information about the retrieved value.
+     * @param key the fully qualified variable key to add to the dynamic values
+     * @param retrievalString the string to display to the user
+     */
+    public void setMeasureDate(final String key, final String retrievalString)
+    {
+        fDynamicValues.put(key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING, retrievalString);
+    }
+    
+    /**
      * Returns a string indicating the retrieved date, value, and units
      * of a {@link DiscreteNumericalVariable}.
      * @param key the name of the {@link DiscreteNumericalVariable} to automatically fill

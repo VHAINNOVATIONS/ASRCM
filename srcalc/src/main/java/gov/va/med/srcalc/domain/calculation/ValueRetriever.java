@@ -39,9 +39,7 @@ public enum ValueRetriever
                         patient.getBmi().getValue(),
                         patient.getBmi().getMeasureDate(),
                         patient.getBmi().getUnits());
-                variableEntry.getDynamicValues().put(
-                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
-                        retrievalString);
+                variableEntry.setMeasureDate(key, retrievalString);
             }
         }
     },
@@ -58,10 +56,7 @@ public enum ValueRetriever
                         patient.getWeight().getValue(),
                         patient.getWeight().getMeasureDate(),
                         patient.getWeight().getUnits());
-                variableEntry.getDynamicValues().put(
-                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
-                        retrievalString);
-                
+                variableEntry.setMeasureDate(key, retrievalString);
             }
         }
     },
@@ -78,9 +73,7 @@ public enum ValueRetriever
                         patient.getWeight6MonthsAgo().getValue(),
                         patient.getWeight6MonthsAgo().getMeasureDate(),
                         patient.getWeight6MonthsAgo().getUnits());
-                variableEntry.getDynamicValues().put(
-                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
-                        retrievalString);
+                variableEntry.setMeasureDate(key, retrievalString);
             }
         }
     },
@@ -97,9 +90,7 @@ public enum ValueRetriever
                         patient.getHeight().getValue(),
                         patient.getHeight().getMeasureDate(),
                         patient.getHeight().getUnits());
-                variableEntry.getDynamicValues().put(
-                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
-                        retrievalString);
+                variableEntry.setMeasureDate(key, retrievalString);
             }
         }
     },
@@ -250,9 +241,7 @@ public enum ValueRetriever
                     labValue.getValue(),
                     labValue.getMeasureDate(),
                     labValue.getUnits());
-            variableEntry.getDynamicValues().put(
-                    key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
-                    retrievalString);
+            variableEntry.setMeasureDate(key, retrievalString);
         }
     }
 }
