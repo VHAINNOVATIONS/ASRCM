@@ -18,12 +18,11 @@ public final class CategoryBuilder
     private String fValue;
     
     /**
-     * Constructs an instance with default values. The default upper bound is 100
+     * Constructs an instance with default values. The default upper bound is 0
      * inclusive and the default value is an empty string.
      */
     public CategoryBuilder()
     {
-        fUpperBound = 100f;
         fUpperInclusive = true;
         fValue = "";
     }

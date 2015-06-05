@@ -20,7 +20,7 @@ public class CategoryBuilderTest
         final String value = "firstValue";
         assertSame(builder, builder.setValue(value)); // note: modifying builder
         assertEquals(
-                new Category(new MultiSelectOption(value), 100f, true),
+                new Category(new MultiSelectOption(value), 0f, true),
                 builder.build());
         
         // Test building with a different range.
