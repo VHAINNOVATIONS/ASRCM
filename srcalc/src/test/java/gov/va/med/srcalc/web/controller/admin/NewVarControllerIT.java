@@ -1,13 +1,18 @@
 package gov.va.med.srcalc.web.controller.admin;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.CoreMatchers.isA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import gov.va.med.srcalc.domain.model.AbstractNumericalVariable;
+import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.test.util.IntegrationTest;
+import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.web.controller.AdminHomeController;
+import gov.va.med.srcalc.web.view.Views;
+import gov.va.med.srcalc.web.view.admin.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +57,8 @@ public class NewVarControllerIT extends IntegrationTest
 
         fMockMvc.perform(get(NewBooleanVarController.BASE_URL))
             .andExpect(status().isOk())
-            .andExpect(model().attribute(NewVarController.ATTRIBUTE_VARIABLE, hasProperty("key")));
+            .andExpect(model().attribute(
+                    NewVarController.ATTRIBUTE_VARIABLE, isA(EditBooleanVar.class)));
         
         fMockMvc.perform(post(NewBooleanVarController.BASE_URL)
                 .param("key", key)
@@ -99,7 +105,8 @@ public class NewVarControllerIT extends IntegrationTest
         
         fMockMvc.perform(get(NewMultiSelectVarController.BASE_URL))
             .andExpect(status().isOk())
-            .andExpect(model().attribute(NewVarController.ATTRIBUTE_VARIABLE, hasProperty("key")));
+            .andExpect(model().attribute(
+                    NewVarController.ATTRIBUTE_VARIABLE, isA(EditMultiSelectVar.class)));
         
         fMockMvc.perform(post(NewMultiSelectVarController.BASE_URL)
                 .param("key", key)
@@ -121,5 +128,54 @@ public class NewVarControllerIT extends IntegrationTest
                 .param("displayName", "validDisplayName")
                 .param("groupId", "1"))
             .andExpect(model().attributeHasErrors(NewVarController.ATTRIBUTE_VARIABLE));
+    }
+    
+    @Test
+    public final void testNewDiscreteNumericalValid() throws Exception
+    {
+        final String key = "testNewDnVarValidKey";
+        final String category3Name = "category3";
+        
+        fMockMvc.perform(get(NewDiscreteNumericalVarController.BASE_URL))
+            .andExpect(status().isOk())
+            .andExpect(model().attribute(
+                    NewVarController.ATTRIBUTE_VARIABLE,
+                    isA(EditDiscreteNumericalVar.class)));
+        
+        fMockMvc.perform(post(NewDiscreteNumericalVarController.BASE_URL)
+                .param("key", key)
+                .param("displayName", "myDisplayName")
+                .param("groupId", "1")
+                .param("units", "g/dl")
+                .param("validRange.lowerInclusive", "true")
+                .param("validRange.lowerBound", "100.0")
+                .param("validRange.upperBound", "150.0")
+                .param("validRange.upperInclusive", "false")
+                .param("categories[0].value", "category1")
+                .param("categories[0].upperBound", "120.0")
+                .param("categories[1].value", "category2")
+                .param("categories[1].upperBound", "130.0")
+                .param("categories[2].value", category3Name)
+                .param("categories[2].upperBound", "150.0")
+                // No value: this category should be omitted.
+                .param("categories[4].upperBound", "160"))
+            .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+        
+        // Verify that the variable was actually created and verify that some of
+        // the properties are correct. All properties are tested in
+        // EditDiscreteNumericalVarTest.
+        final DiscreteNumericalVariable var = 
+                (DiscreteNumericalVariable)fAdminService.getVariable(key);
+        assertEquals(key, var.getKey());
+        assertEquals(category3Name, var.getCategories().last().getOption().getValue());
+    }
+    
+    @Test
+    public final void testNewDiscreteNumericalUnitsTooLong() throws Exception
+    {
+        fMockMvc.perform(post(NewDiscreteNumericalVarController.BASE_URL)
+                .param("units", TestHelpers.stringOfLength(AbstractNumericalVariable.UNITS_MAX + 1)))
+            .andExpect(view().name(Views.NEW_DISCRETE_NUMERICAL_VARIABLE))
+            .andExpect(model().attributeHasFieldErrors(NewVarController.ATTRIBUTE_VARIABLE, "units"));
     }
 }

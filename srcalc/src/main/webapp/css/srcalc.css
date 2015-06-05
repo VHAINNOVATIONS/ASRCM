@@ -268,9 +268,14 @@ form.attributeEditForm td.attributeName {
 
 /* Reduce the padding and margins on lists in attribute edit tables to line up
  * with other text. */
-form.attributeEditForm td ul {
+form.attributeEditForm td ul, form.attributeEditForm td ol {
 	margin: 0;
 	padding-left: 1em;
+}
+
+/* Put some margin between instructions and the following controls. */
+form.attributeEditForm td .preInstructions {
+	margin-bottom: 0.5em;
 }
 
 /* Alternate colors on variables within a variable group. 
@@ -370,15 +375,16 @@ div#newVariableLinks {
 
 /* The edit variable pages */
 
+/* We use <p> tags inside this table for notes to the user. Shrink the margins. */
+#variableEditForm td p {
+	margin-top: 0;
+	margin-bottom: 0.5em;
+}
+
 #variableEditForm textarea#helpText {
 	/* The helpText text area is wide. Don't try to put anything else on the
 	   same line. */
 	display: block;
-}
-
-#variableEditForm ol#multiSelectOptionsList {
-	margin: 0;
-	padding-left: 1em;
 }
 
 

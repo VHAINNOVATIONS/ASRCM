@@ -76,7 +76,9 @@ public class RuleTest
         // Setup
         final VariableGroup group = SampleModels.demographicsVariableGroup();
         final NumericalVariable currWeight = new NumericalVariable("Weight", group, "weight");
+        currWeight.setValidRange(new NumericalRange(0.0f, false, 1000f, false));
         final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group, "weight6MonthsAgo");
+        weight6MoAgo.setValidRange(new NumericalRange(0.0f, false, 1000f, false));
         final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "true");
         final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "value < #weight6MonthsAgo.value * 0.9");
         final Rule rule =

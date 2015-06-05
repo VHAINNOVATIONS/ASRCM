@@ -55,6 +55,9 @@ public final class NumericalRange implements Comparable<NumericalRange>
      */
     NumericalRange()
     {
+        // Set invalid sentinel values to ensure clients call the setters.
+        fLowerBound = Float.NaN;
+        fUpperBound = Float.NaN;
     }
     
     /**

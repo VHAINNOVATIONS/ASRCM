@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.model.NumericalVariable;
+import gov.va.med.srcalc.test.util.TestHelpers;
 
 import org.junit.Test;
 
@@ -17,9 +18,14 @@ public class NumericalVariableTest
     public final void testSetUnitsTooLong()
     {
         final NumericalVariable var = SampleModels.ageVariable();
-        var.setUnits(
-                // 41 characters
-                "0123456789012345678901234567890123456789X");
+        var.setUnits(TestHelpers.stringOfLength(NumericalVariable.UNITS_MAX + 1));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public final void testSetUnitsInvalidCharacters()
+    {
+        final NumericalVariable var = SampleModels.ageVariable();
+        var.setUnits("\t");
     }
     
     

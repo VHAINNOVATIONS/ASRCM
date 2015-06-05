@@ -7,8 +7,7 @@ import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.util.ValidationCodes;
 
 import org.junit.Test;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.*;
 
 public final class EditBaseVarValidatorTest
 {
@@ -30,7 +29,9 @@ public final class EditBaseVarValidatorTest
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(ev, "variable");
         // Use EditBaseVar.getValidator() to test that as well.
-        ev.getValidator().validate(ev, errors);
+        final Validator validator = ev.getValidator();
+        assertTrue(validator.supports(ev.getClass()));
+        validator.validate(ev, errors);
         return errors;
     }
     

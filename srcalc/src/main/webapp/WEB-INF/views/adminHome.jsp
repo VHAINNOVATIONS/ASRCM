@@ -29,6 +29,8 @@
         <a href="${newBooleanVar}" class="btn-default">Checkbox</a></li>
     <li><c:url var="newMultiSelectVar" value="/admin/newMultiSelectVar" />
         <a href="${newMultiSelectVar}" class="btn-default">Radio</a></li>
+    <li><c:url var="newDiscreteVar" value="/admin/newDiscreteVar" />
+        <a href="${newDiscreteVar}" class="btn-default">Discrete Numerical</a></li>
     </ul>
     </div>
 </section>

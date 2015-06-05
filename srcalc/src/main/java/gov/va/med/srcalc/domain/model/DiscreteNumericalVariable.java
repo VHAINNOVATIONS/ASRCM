@@ -42,6 +42,8 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
     
     /**
      * Constructs an instance.
+     * @param categories the initial set of categories. This constructor will
+     * make a defensive copy of the set.
      * @throws NullPointerException if any argument is null
      * @throws IllegalArgumentException if any argument is invalid
      * @see AbstractVariable#AbstractVariable(String, VariableGroup, String)
@@ -244,6 +246,10 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
             return fUpperInclusive ? (f <= fUpperBound) : (f < fUpperBound);
         }
         
+        /**
+         * Returns the {@link MultiSelectOption} representing this category's
+         * discrete value.
+         */
         @Embedded
         public final MultiSelectOption getOption()
         {

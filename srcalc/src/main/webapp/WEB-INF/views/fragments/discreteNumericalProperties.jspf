@@ -1,0 +1,67 @@
+<%@ taglib uri="/WEB-INF/srcalc.tld" prefix="srcalc" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%--
+A JSP fragment to edit DiscreteNumericalVariable-specific properties. This content is
+intended as the body of an <editVariablePage> tag.
+--%>
+        <tr>
+        <td>Units:</td>
+        <td>
+            <form:input path="units" size="${srcalc:min(variable.unitsMax, 15)}"/>
+            <form:errors cssClass="error" path="units" />
+        </td>
+        </tr>
+        <tr>
+        <td>Valid Range:</td>
+        <td>
+            <label><form:checkbox path="validRange.lowerInclusive" /> Inclusive</label>
+            <form:input path="validRange.lowerBound" size="6" />,
+            <form:input path="validRange.upperBound" size="6" />
+            <label><form:checkbox path="validRange.upperInclusive" /> Inclusive</label>
+            <%--
+            Lump all errors at the end to avoid messing up the flow. The
+            applicable control should be apparent.
+            --%>
+            <form:errors cssClass="error" path="validRange.*" />
+        </td>
+        </tr>
+        <tr>
+        <td>
+            <p>Categories:</p>
+            (Trailing blanks will be omitted.)
+        </td>
+        <td id="categories">
+            <ul class="preInstructions">
+            <li>Please enter these categories in ascending value order.</li>
+            <li>"WNL" will automatically be sorted first when displaying to the user.</li>
+            <li>The lower bounds need not be entered: they are inferred from the previous
+            category's upper bound.</li>
+            </ul>
+            <%-- Display any overall errors --%><form:errors path="categories" cssClass="error" />
+            <ol id="categoriesList" data-max-categories="${variable.maxCategories}">
+            <%--
+            Insert the existing categories. Javascript will handle adding as the user
+            desires.
+            --%>
+            <c:set var="i" value="0" />
+            <c:forEach items="${variable.categories}">
+            <li>
+                <c:set var="catPath" value="categories[${i}]" />
+                <span class="categoryInputs">
+                <form:input path="${catPath}.value" size="20"/>
+                Upper bound: <form:input path="${catPath}.upperBound" size="6" />
+                <label><form:checkbox path="${catPath}.upperInclusive" /> Inclusive</label>
+                </span>
+                <%--
+                Again, lump all errors at the end to avoid messing up the flow. The
+                applicable control should be apparent.
+                --%>
+                <form:errors cssClass="error" path="${catPath}.*" />
+            </li>
+            <c:set var="i" value="${i+1}" />
+            </c:forEach>
+            </ol>
+            <a id="addNewCategory" class="btn-link" href="#">Add Another</a>
+        </td>
+        </tr>
