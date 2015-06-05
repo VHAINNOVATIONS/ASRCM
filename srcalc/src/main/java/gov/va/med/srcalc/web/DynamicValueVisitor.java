@@ -52,7 +52,7 @@ public class DynamicValueVisitor extends ExceptionlessValueVisitor
 		}
 		else
 		{
-			key += VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL;
+			key = VariableEntry.makeNumericalInputName(key);
 			valueString = String.valueOf(value.getNumericalValue());
 		}
 		fVariableEntry.getDynamicValues().put(key, valueString);

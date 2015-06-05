@@ -161,9 +161,8 @@ public class EnterVariablesController
     private boolean bindingResultAlreadyContainsError(final String dynamicKey,
     		final BindingResult valuesBindingResult, final MissingValueException missingValue)
     {
-    	final String numericalKey = VariableEntry.makeDynamicValuePath(
-				missingValue.getVariable().getKey() + VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL);
-		return !valuesBindingResult.hasFieldErrors(dynamicKey) &&
-				!valuesBindingResult.hasFieldErrors(numericalKey);
+        final String numericalKey = VariableEntry.makeDynamicValuePath(
+                VariableEntry.makeNumericalInputName(missingValue.getVariable().getKey()));
+        return !valuesBindingResult.hasFieldErrors(dynamicKey) && !valuesBindingResult.hasFieldErrors(numericalKey);
     }
 }

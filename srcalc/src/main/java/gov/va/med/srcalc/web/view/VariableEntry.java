@@ -2,8 +2,11 @@ package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.*;
+import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
@@ -31,12 +34,12 @@ public class VariableEntry
      * that may be used to name it's field.
      * (i.e. The 'bun' variable and 'bun$numerical')
      */
-    public static final String SEPARATOR = "$";
+    private static final String SEPARATOR = "$";
     
     /**
      * A way to delineate the information regarding a retrieved value.
      */
-    public static final String RETRIEVAL_STRING = "retrievalDate";
+    private static final String RETRIEVAL_STRING = "retrievalDate";
     
     private static final Logger fLogger = LoggerFactory.getLogger(VariableEntry.class);
 
@@ -112,13 +115,20 @@ public class VariableEntry
     }
 
     /**
-     * Returns the name of the numerical input for the given
-     * {@link DiscreteNumericalVariable}.
+     * Returns the name of the numerical input for the given key
      * @param variable
      */
-    public static String getNumericalInputName(final DiscreteNumericalVariable variable)
+    public static String makeNumericalInputName(final String key)
     {
-        return variable.getKey() + SEPARATOR + SPECIAL_NUMERICAL;
+        return key + SEPARATOR + SPECIAL_NUMERICAL;
+    }
+    
+    /**
+     * Returns the name of the key concatenated with the retrieval tag.
+     */
+    public static String makeRetrievalString(final String key)
+    {
+        return key + SEPARATOR + RETRIEVAL_STRING;
     }
     
     /**
@@ -152,6 +162,17 @@ public class VariableEntry
     }
     
     /**
+     * This method will place a key-value pair into the dynamic values by using a fully-qualified 
+     * variable key and a string notifying the user of information about the retrieved value.
+     * @param key the fully qualified variable key to add to the dynamic values
+     * @param retrievalString the string to display to the user
+     */
+    public void setMeasureDate(final String key, final String retrievalString)
+    {
+        fDynamicValues.put(key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING, retrievalString);
+    }
+    
+    /**
      * Returns a string indicating the retrieved date, value, and units
      * of a {@link DiscreteNumericalVariable}.
      * @param key the name of the {@link DiscreteNumericalVariable} to automatically fill
@@ -159,6 +180,25 @@ public class VariableEntry
     public String getNumericalMeasureDate(final String key)
     {
         return getMeasureDate(key + VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL);
+    }
+    
+    /**
+     * Make a string to tell the user information about the automatically retrieved value.
+     * @param value the retrieved value to display
+     * @param measureDate the date on which the value was measured
+     * @param units the units in which the value was measured, can be empty but not null
+     * @return the string to display to the user
+     */
+    public static String makeRetrievalString(final double value, final Date measureDate, final String units)
+    {
+        final SimpleDateFormat originalFormat = new SimpleDateFormat(RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT);
+        final String dateString = " on " + originalFormat.format(measureDate);
+        String unitString = "";
+        if(units.length() > 0)
+        {
+            unitString = " " + units;
+        }
+        return String.format("(Retrieved: %.2f%s%s)", value, unitString, dateString);
     }
     
     @Override

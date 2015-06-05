@@ -199,7 +199,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         // Special case: numerical
         if (categoryName.equals(VariableEntry.SPECIAL_NUMERICAL))
         {
-            final String numericalName = VariableEntry.getNumericalInputName(variable);
+            final String numericalName = VariableEntry.makeNumericalInputName(variable.getKey());
             final String stringValue = fVariableEntry.getDynamicValues().get(
                     numericalName);
             fLogger.debug("User specified a numerical value: {}", stringValue);

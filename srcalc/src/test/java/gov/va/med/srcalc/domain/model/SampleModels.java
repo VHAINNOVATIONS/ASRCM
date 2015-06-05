@@ -293,6 +293,7 @@ public class SampleModels
                 "White Blood Count", labVariableGroup(), new HashSet<>(categories), "wbc");
         var.setValidRange(new NumericalRange(2.0f, true, 50.0f, true));
         var.setUnits("x1000/mm^3");
+        var.setRetriever(ValueRetriever.WBC);
         return var;
     }
     

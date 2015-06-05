@@ -1,11 +1,7 @@
 package gov.va.med.srcalc.domain.calculation;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.Variable;
-import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
 /**
@@ -45,13 +41,11 @@ public enum ValueRetriever
             if (patient.getBmi() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getBmi().getValue()));
-                final String retrievalString = makeRetrievalString(
+                final String retrievalString = VariableEntry.makeRetrievalString(
                         patient.getBmi().getValue(),
                         patient.getBmi().getMeasureDate(),
                         patient.getBmi().getUnits());
-                variableEntry.getDynamicValues().put(
-                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
-                        retrievalString);
+                variableEntry.setMeasureDate(key, retrievalString);
             }
         }
     },
@@ -64,14 +58,11 @@ public enum ValueRetriever
             if (patient.getWeight() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getWeight().getValue()));
-                final String retrievalString = makeRetrievalString(
+                final String retrievalString = VariableEntry.makeRetrievalString(
                         patient.getWeight().getValue(),
                         patient.getWeight().getMeasureDate(),
                         patient.getWeight().getUnits());
-                variableEntry.getDynamicValues().put(
-                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
-                        retrievalString);
-                
+                variableEntry.setMeasureDate(key, retrievalString);
             }
         }
     },
@@ -84,13 +75,11 @@ public enum ValueRetriever
             if (patient.getWeight6MonthsAgo() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getWeight6MonthsAgo().getValue()));
-                final String retrievalString = makeRetrievalString(
+                final String retrievalString = VariableEntry.makeRetrievalString(
                         patient.getWeight6MonthsAgo().getValue(),
                         patient.getWeight6MonthsAgo().getMeasureDate(),
                         patient.getWeight6MonthsAgo().getUnits());
-                variableEntry.getDynamicValues().put(
-                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
-                        retrievalString);
+                variableEntry.setMeasureDate(key, retrievalString);
             }
         }
     },
@@ -103,13 +92,11 @@ public enum ValueRetriever
             if (patient.getHeight() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getHeight().getValue()));
-                final String retrievalString = makeRetrievalString(
+                final String retrievalString = VariableEntry.makeRetrievalString(
                         patient.getHeight().getValue(),
                         patient.getHeight().getMeasureDate(),
                         patient.getHeight().getUnits());
-                variableEntry.getDynamicValues().put(
-                        key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
-                        retrievalString);
+                variableEntry.setMeasureDate(key, retrievalString);
             }
         }
     },
@@ -234,25 +221,6 @@ public enum ValueRetriever
             final String key);
     
     /**
-     * Make a string to tell the user information about the automatically retrieved value.
-     * @param value the retrieved value to display
-     * @param measureDate the date on which the value was measured
-     * @param units the units in which the value was measured, can be empty but not null
-     * @return
-     */
-    protected String makeRetrievalString(final double value, final Date measureDate, final String units)
-    {
-        final SimpleDateFormat originalFormat = new SimpleDateFormat(RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT);
-        final String dateString = " on " + originalFormat.format(measureDate);
-        String unitString = "";
-        if(units.length() > 0)
-        {
-            unitString = " " + units;
-        }
-        return String.format("(Retrieved: %.2f%s%s)", value, unitString, dateString);
-    }
-    
-    /**
      * If there was a retrieved value for the specified lab, it will be added to the variable entry.
      * If there was no value then nothing needs to be done.
      * @param labName the well-known name of the lab
@@ -260,20 +228,18 @@ public enum ValueRetriever
      * @param variableEntry the {@link VariableEntry} object to put the retrieved value into
      * @param key the variable's fully qualified key (i.e. "bmi$numerical" for bmi)
      */
-    protected void addLabValue(final String labName, final Patient patient, final VariableEntry variableEntry,
+    protected static void addLabValue(final String labName, final Patient patient, final VariableEntry variableEntry,
             final String key)
     {
         final RetrievedValue labValue = patient.getLabs().get(labName);
         if(labValue != null)
         {
             variableEntry.getDynamicValues().put(key, String.valueOf(labValue.getValue()));
-            final String retrievalString = makeRetrievalString(
+            final String retrievalString = VariableEntry.makeRetrievalString(
                     labValue.getValue(),
                     labValue.getMeasureDate(),
                     labValue.getUnits());
-            variableEntry.getDynamicValues().put(
-                    key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING,
-                    retrievalString);
+            variableEntry.setMeasureDate(key, retrievalString);
         }
     }
 }

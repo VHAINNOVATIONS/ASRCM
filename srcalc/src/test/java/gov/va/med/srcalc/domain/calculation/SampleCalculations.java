@@ -5,7 +5,9 @@ import gov.va.med.srcalc.domain.model.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Constructs sample instances of {@link Calculation}s and related objects.
@@ -20,6 +22,16 @@ public class SampleCalculations
         return patient;
     }
 
+    public static Patient dummyPatientWithLabs(final int dfn)
+    {
+        final Patient patient = dummyPatient(dfn);
+        final Map<String, RetrievedValue> labs = new HashMap<String, RetrievedValue>();
+        labs.put("WBC", new RetrievedValue(10.0, new Date(), "x1000/mm^3"));
+        labs.put("INR", new RetrievedValue(1.0, new Date(), ""));
+        patient.setLabs(labs);
+        return patient;
+    }
+    
     /**
      * Create a new calculation for a dummy patient, set the specialty,
      * and then perform the calculation using the a custom set of values.
