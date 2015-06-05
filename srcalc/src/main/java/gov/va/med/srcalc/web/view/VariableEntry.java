@@ -34,12 +34,12 @@ public class VariableEntry
      * that may be used to name it's field.
      * (i.e. The 'bun' variable and 'bun$numerical')
      */
-    public static final String SEPARATOR = "$";
+    private static final String SEPARATOR = "$";
     
     /**
      * A way to delineate the information regarding a retrieved value.
      */
-    public static final String RETRIEVAL_STRING = "retrievalDate";
+    private static final String RETRIEVAL_STRING = "retrievalDate";
     
     private static final Logger fLogger = LoggerFactory.getLogger(VariableEntry.class);
 
@@ -115,13 +115,20 @@ public class VariableEntry
     }
 
     /**
-     * Returns the name of the numerical input for the given
-     * {@link DiscreteNumericalVariable}.
+     * Returns the name of the numerical input for the given key
      * @param variable
      */
-    public static String getNumericalInputName(final DiscreteNumericalVariable variable)
+    public static String makeNumericalInputName(final String key)
     {
-        return variable.getKey() + SEPARATOR + SPECIAL_NUMERICAL;
+        return key + SEPARATOR + SPECIAL_NUMERICAL;
+    }
+    
+    /**
+     * Returns the name of the key concatenated with the retrieval tag.
+     */
+    public static String makeRetrievalString(final String key)
+    {
+        return key + SEPARATOR + RETRIEVAL_STRING;
     }
     
     /**

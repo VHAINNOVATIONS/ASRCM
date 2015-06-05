@@ -288,7 +288,7 @@ public class InputParserVisitorTest
     {
         // Setup variable
         final DiscreteNumericalVariable var = SampleModels.wbcVariable();
-        final String numericalName = VariableEntry.getNumericalInputName(var);
+        final String numericalName = VariableEntry.makeNumericalInputName(var.getKey());
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
@@ -330,7 +330,7 @@ public class InputParserVisitorTest
     {
         // Setup variable
         final DiscreteNumericalVariable var = SampleModels.wbcVariable();
-        final String numericalName = VariableEntry.getNumericalInputName(var);
+        final String numericalName = VariableEntry.makeNumericalInputName(var.getKey());
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
@@ -353,7 +353,7 @@ public class InputParserVisitorTest
     {
         // Setup variable
         final DiscreteNumericalVariable var = SampleModels.wbcVariable();
-        final String numericalName = VariableEntry.getNumericalInputName(var);
+        final String numericalName = VariableEntry.makeNumericalInputName(var.getKey());
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(
@@ -376,7 +376,7 @@ public class InputParserVisitorTest
     {
         // Setup variable
         final DiscreteNumericalVariable var = SampleModels.wbcVariable();
-        final String numericalName = VariableEntry.getNumericalInputName(var);
+        final String numericalName = VariableEntry.makeNumericalInputName(var.getKey());
 
         final VariableEntry variableEntry = new VariableEntry(Arrays.asList(var));
         variableEntry.getDynamicValues().put(

@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 import gov.va.med.srcalc.domain.calculation.SampleCalculations;
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 
 import java.util.*;
@@ -61,7 +62,7 @@ public class VariableEntryTest
     	final Patient patient = SampleCalculations.dummyPatient(1);
     	final VariableEntry entry = VariableEntry.withRetrievedValues(vars, patient);
     	final HashMap<String, String> expected = new HashMap<>();
-    	expected.put(VariableEntry.getNumericalInputName((DiscreteNumericalVariable)vars.get(0)),
+    	expected.put(VariableEntry.makeNumericalInputName(vars.get(0).getKey()),
     			String.valueOf(patient.getAge()));
     	expected.put(vars.get(0).getKey(), VariableEntry.SPECIAL_NUMERICAL);
     	expected.put(vars.get(1).getKey(), patient.getGender());
@@ -81,8 +82,6 @@ public class VariableEntryTest
         expected.put(vars.get(2).getKey(), patient.getGender());
         expected.put(vars.get(5).getKey(), VariableEntry.SPECIAL_NUMERICAL);
         
-        final String numericalString = VariableEntry.SEPARATOR + VariableEntry.SPECIAL_NUMERICAL;
-        final String dateString = numericalString + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING;
         final RetrievedValue labValue = patient.getLabs().get("WBC");
         
         final String retrievalString = VariableEntry.makeRetrievalString(
@@ -90,9 +89,37 @@ public class VariableEntryTest
                 labValue.getMeasureDate(),
                 labValue.getUnits());
         
-        expected.put(vars.get(5).getKey() + numericalString,
+        expected.put(VariableEntry.makeNumericalInputName(vars.get(5).getKey()),
                 String.valueOf(labValue.getValue()));
-        expected.put(vars.get(5).getKey() + dateString, retrievalString);
+        expected.put(
+                VariableEntry.makeRetrievalString(
+                        VariableEntry.makeNumericalInputName(vars.get(5).getKey())),
+                retrievalString);
+        assertEquals(expected, entry.getDynamicValues());
+    }
+    
+
+    @Test
+    public final void testBlankUnits()
+    {
+        final NumericalVariable var = new NumericalVariable(
+                "INR", SampleModels.labVariableGroup(), "inr");
+        var.setValidRange(new NumericalRange(0.0f, true, 7.0f, true));
+        var.setRetriever(ValueRetriever.INR);
+        final List<AbstractVariable> vars = new ArrayList<AbstractVariable>();
+        vars.add(var);
+        final Patient patient = SampleCalculations.dummyPatientWithLabs(1);
+        final VariableEntry entry = VariableEntry.withRetrievedValues(vars, patient);
+        final RetrievedValue labValue = patient.getLabs().get("INR");
+        final String retrievalString = VariableEntry.makeRetrievalString(
+                labValue.getValue(),
+                labValue.getMeasureDate(),
+                labValue.getUnits());
+        
+        final HashMap<String, String> expected = new HashMap<>();
+        expected.put(var.getKey(), String.valueOf(1.0f));
+        expected.put(VariableEntry.makeRetrievalString(var.getKey()), retrievalString);
+        
         assertEquals(expected, entry.getDynamicValues());
     }
 }

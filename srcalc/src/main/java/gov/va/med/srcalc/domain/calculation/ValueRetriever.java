@@ -1,7 +1,5 @@
 package gov.va.med.srcalc.domain.calculation;
 
-import java.util.Date;
-
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.web.view.VariableEntry;
@@ -35,7 +33,7 @@ public enum ValueRetriever
             if (patient.getBmi() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getBmi().getValue()));
-                final String retrievalString = makeRetrievalString(
+                final String retrievalString = VariableEntry.makeRetrievalString(
                         patient.getBmi().getValue(),
                         patient.getBmi().getMeasureDate(),
                         patient.getBmi().getUnits());
@@ -52,7 +50,7 @@ public enum ValueRetriever
             if (patient.getWeight() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getWeight().getValue()));
-                final String retrievalString = makeRetrievalString(
+                final String retrievalString = VariableEntry.makeRetrievalString(
                         patient.getWeight().getValue(),
                         patient.getWeight().getMeasureDate(),
                         patient.getWeight().getUnits());
@@ -69,7 +67,7 @@ public enum ValueRetriever
             if (patient.getWeight6MonthsAgo() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getWeight6MonthsAgo().getValue()));
-                final String retrievalString = makeRetrievalString(
+                final String retrievalString = VariableEntry.makeRetrievalString(
                         patient.getWeight6MonthsAgo().getValue(),
                         patient.getWeight6MonthsAgo().getMeasureDate(),
                         patient.getWeight6MonthsAgo().getUnits());
@@ -86,7 +84,7 @@ public enum ValueRetriever
             if (patient.getHeight() != null)
             {
                 variableEntry.getDynamicValues().put(key, String.valueOf(patient.getHeight().getValue()));
-                final String retrievalString = makeRetrievalString(
+                final String retrievalString = VariableEntry.makeRetrievalString(
                         patient.getHeight().getValue(),
                         patient.getHeight().getMeasureDate(),
                         patient.getHeight().getUnits());
@@ -215,14 +213,6 @@ public enum ValueRetriever
             final String key);
     
     /**
-     * {@see VariableEntry#makeRetrievalString(double, Date, String)}
-     */
-    protected static String makeRetrievalString(final double value, final Date measureDate, final String units)
-    {
-        return VariableEntry.makeRetrievalString(value, measureDate, units);
-    }
-    
-    /**
      * If there was a retrieved value for the specified lab, it will be added to the variable entry.
      * If there was no value then nothing needs to be done.
      * @param labName the well-known name of the lab
@@ -237,7 +227,7 @@ public enum ValueRetriever
         if(labValue != null)
         {
             variableEntry.getDynamicValues().put(key, String.valueOf(labValue.getValue()));
-            final String retrievalString = makeRetrievalString(
+            final String retrievalString = VariableEntry.makeRetrievalString(
                     labValue.getValue(),
                     labValue.getMeasureDate(),
                     labValue.getUnits());

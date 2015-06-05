@@ -8,20 +8,10 @@ import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
 import gov.va.med.srcalc.domain.*;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
-import gov.va.med.srcalc.domain.calculation.SampleCalculations;
-import gov.va.med.srcalc.domain.calculation.ValueRetriever;
-import gov.va.med.srcalc.domain.model.AbstractVariable;
-import gov.va.med.srcalc.domain.model.NumericalRange;
-import gov.va.med.srcalc.domain.model.NumericalVariable;
-import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
-import gov.va.med.srcalc.web.view.VariableEntry;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -146,29 +136,5 @@ public class RpcVistaPatientDaoTest
         // Insure other information was still added.
         assertEquals(patient.getAge(), 50);
         assertEquals(patient.getName(), "TESTPATIENT");
-    }
-    
-    @Test
-    public final void testBlankUnits()
-    {
-        final NumericalVariable var = new NumericalVariable(
-                "INR", SampleModels.labVariableGroup(), "inr");
-        var.setValidRange(new NumericalRange(0.0f, true, 7.0f, true));
-        var.setRetriever(ValueRetriever.INR);
-        final List<AbstractVariable> vars = new ArrayList<AbstractVariable>();
-        vars.add(var);
-        final Patient patient = SampleCalculations.dummyPatientWithLabs(1);
-        final VariableEntry entry = VariableEntry.withRetrievedValues(vars, patient);
-        final RetrievedValue labValue = patient.getLabs().get("INR");
-        final String retrievalString = VariableEntry.makeRetrievalString(
-                labValue.getValue(),
-                labValue.getMeasureDate(),
-                labValue.getUnits());
-        
-        final HashMap<String, String> expected = new HashMap<>();
-        expected.put(var.getKey(), String.valueOf(1.0f));
-        expected.put(var.getKey() + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING, retrievalString);
-        
-        assertEquals(expected, entry.getDynamicValues());
     }
 }
