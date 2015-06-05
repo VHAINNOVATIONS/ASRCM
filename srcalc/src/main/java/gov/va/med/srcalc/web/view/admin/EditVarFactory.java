@@ -63,10 +63,9 @@ public class EditVarFactory
         }
 
         @Override
-        public void visitDiscreteNumerical(DiscreteNumericalVariable variable)
+        public void visitDiscreteNumerical(final DiscreteNumericalVariable variable)
         {
-            throw new UnsupportedOperationException(
-                    "Editing discrete numerical variables is not yet supported.");
+            fInstance = new EditExistingDiscreteNumericalVar(variable, fModelService);
         }
         
         /**

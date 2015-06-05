@@ -60,6 +60,7 @@ public class EditExistingMultiSelectVarTest
         final String displayName = "msDisplayName";
         final VariableGroup group = fModelService.getAllVariableGroups().iterator().next();
         final String helpText = "msHelpText";
+        final ValueRetriever retriever = null;
         final MultiSelectVariable.DisplayType displayType =
                 MultiSelectVariable.DisplayType.Dropdown;
         final ImmutableList<String> options =
@@ -68,15 +69,13 @@ public class EditExistingMultiSelectVarTest
                 new MultiSelectOption(options.get(0)),
                 new MultiSelectOption(options.get(1)),
                 new MultiSelectOption(options.get(2)));
-        final ValueRetriever retriever = null;
         
         // Behavior
         final EditExistingMultiSelectVar ev = new EditExistingMultiSelectVar(
                 var, fModelService);
-        ev.setDisplayName(displayName);
-        ev.setGroupId(group.getId());
-        ev.setHelpText(helpText);
-        ev.setRetriever(retriever);
+        // Set the basic properties and test the getters.
+        EditBaseVarTest.testSetProperties(
+                ev, displayName, group.getId(), helpText, retriever);
         ev.setDisplayType(displayType);
         ev.getOptions().clear();
         ev.getOptions().addAll(options);

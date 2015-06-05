@@ -72,10 +72,12 @@ public final class NumericalRangeBuilder
 
     /**
      * Sets the lower bound to use.
+     * @return this builder for convenience
      */
-    public void setLowerBound(final float lowerBound)
+    public NumericalRangeBuilder setLowerBound(final float lowerBound)
     {
         fLowerBound = lowerBound;
+        return this;
     }
 
     /**
@@ -88,10 +90,12 @@ public final class NumericalRangeBuilder
 
     /**
      * Sets the inclusive flag to use for the lower bound.
+     * @return this builder for convenience
      */
-    public void setLowerInclusive(final boolean lowerInclusive)
+    public NumericalRangeBuilder setLowerInclusive(final boolean lowerInclusive)
     {
         fLowerInclusive = lowerInclusive;
+        return this;
     }
 
     /**
@@ -104,10 +108,12 @@ public final class NumericalRangeBuilder
 
     /**
      * Sets the upper bound to use.
+     * @return this builder for convenience
      */
-    public void setUpperBound(final float upperBound)
+    public NumericalRangeBuilder setUpperBound(final float upperBound)
     {
         fUpperBound = upperBound;
+        return this;
     }
 
     /**
@@ -120,10 +126,12 @@ public final class NumericalRangeBuilder
 
     /**
      * Sets the inclusive flag to use for the upper bound.
+     * @return this builder for convenience
      */
-    public void setUpperInclusive(final boolean upperInclusive)
+    public NumericalRangeBuilder setUpperInclusive(final boolean upperInclusive)
     {
         fUpperInclusive = upperInclusive;
+        return this;
     }
     
     /**

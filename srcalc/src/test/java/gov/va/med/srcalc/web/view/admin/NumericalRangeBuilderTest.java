@@ -26,13 +26,13 @@ public class NumericalRangeBuilderTest
         final boolean upperInclusive = false;
         
         // Test all setters and getters
-        builder.setLowerBound(lowerBound);
+        assertSame(builder, builder.setLowerBound(lowerBound));
         assertEquals(lowerBound, builder.getLowerBound(), 0.0f);
-        builder.setLowerInclusive(lowerInclusive);
+        assertSame(builder, builder.setLowerInclusive(lowerInclusive));
         assertEquals(lowerInclusive, builder.getLowerInclusive());
-        builder.setUpperBound(upperBound);
+        assertSame(builder, builder.setUpperBound(upperBound));
         assertEquals(upperBound, builder.getUpperBound(), 0.0f);
-        builder.setUpperInclusive(upperInclusive);
+        assertSame(builder, builder.setUpperInclusive(upperInclusive));
         assertEquals(upperInclusive, builder.getUpperInclusive());
         
         // And test construction

@@ -28,4 +28,5 @@ public class Views
     public static final String NEW_MULTI_SELECT_VARIABLE = "newMultiSelectVariable.jsp";
     public static final String EDIT_MULTI_SELECT_VARIABLE = "editMultiSelectVariable.jsp";
     public static final String NEW_DISCRETE_NUMERICAL_VARIABLE = "newDiscreteNumericalVariable.jsp";
+    public static final String EDIT_DISCRETE_NUMERICAL_VARIABLE = "editDiscreteNumericalVariable.jsp";
 }

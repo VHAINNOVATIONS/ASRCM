@@ -41,6 +41,23 @@ public abstract class EditAbstractNumericalVar extends EditBaseVar
         fValidRange = new NumericalRangeBuilder();
     }
     
+    /**
+     * Constructs an instance with the properties initialized to the given prototype
+     * variable.
+     * @param prototype the existing variable containing the initial properties.
+     * The properties are copied but this object is not stored.
+     * @param modelService to provide reference data (e.g., available
+     * VariableGroups) to the user
+     */
+    public EditAbstractNumericalVar(
+            final AbstractNumericalVariable prototype,
+            final ModelInspectionService modelService)
+    {
+        super(prototype, modelService);
+        fUnits = prototype.getUnits();
+        fValidRange = NumericalRangeBuilder.fromPrototype(prototype.getValidRange());
+    }
+    
     @Override
     public ImmutableSortedSet<ValueRetriever> getAllRetrievers()
     {
@@ -82,6 +99,27 @@ public abstract class EditAbstractNumericalVar extends EditBaseVar
     public NumericalRangeBuilder getValidRange()
     {
         return fValidRange;
+    }
+    
+    /**
+     * <p>Applies the base numerical properties that we store here to an existing
+     * variable.</p>
+     * 
+     * <ul>
+     * <li>Units</li>
+     * <li>Valid Range</li>
+     * <li>All other properties specified in {@link #applyBaseProperties(AbstractVariable)}</li>
+     * </ul>
+     * 
+     * @param var the existing variable to modify
+     * @throws IllegalStateException if the key to set doesn't already match
+     * the variable's key or if the set retriever is not valid
+     */
+    protected final void applyNumericalProperties(final AbstractNumericalVariable var)
+    {
+        applyBaseProperties(var);
+        var.setUnits(getUnits());
+        var.setValidRange(getValidRange().build());
     }
     
 }

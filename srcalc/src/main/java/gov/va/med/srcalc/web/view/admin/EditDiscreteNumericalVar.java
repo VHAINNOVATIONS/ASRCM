@@ -1,7 +1,6 @@
 package gov.va.med.srcalc.web.view.admin;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -16,11 +15,8 @@ import gov.va.med.srcalc.web.view.Views;
  * {@link DiscreteNumericalVariable}.</p>
  * 
  * <p>This code is tightly coupled with newDiscreteNumericalVariable.jsp.</p>
- * 
- * <p>Per Effective Java Item 17, this class is marked final because it was not
- * designed for inheritance.</p>
  */
-public final class EditDiscreteNumericalVar extends EditAbstractNumericalVar
+public class EditDiscreteNumericalVar extends EditAbstractNumericalVar
 {
     private static final int MIN_CATEGORIES = 2;
     
@@ -43,8 +39,30 @@ public final class EditDiscreteNumericalVar extends EditAbstractNumericalVar
                 new CategoryBuilder());
     }
     
+    /**
+     * Constructs an instance with the properties initialized to the given prototype
+     * variable.
+     * @param prototype the existing variable containing the initial properties.
+     * The properties are copied but this object is not stored.
+     * @param modelService to provide reference data (e.g., available
+     * VariableGroups) to the user
+     */
+    public EditDiscreteNumericalVar(
+            final DiscreteNumericalVariable prototype,
+            final ModelInspectionService modelService)
+    {
+        super(prototype, modelService);
+        
+        // Copy the categories.
+        fCategories = new ArrayList<>(prototype.getCategories().size());
+        for (final DiscreteNumericalVariable.Category cat : prototype.getCategories())
+        {
+            fCategories.add(CategoryBuilder.fromPrototype(cat));
+        }
+    }
+    
     @Override
-    public String getTypeName()
+    public final String getTypeName()
     {
         return "Discrete Numerical";
     }
@@ -58,7 +76,7 @@ public final class EditDiscreteNumericalVar extends EditAbstractNumericalVar
     /**
      * Returns the modifiable list of CategoryBuilders.
      */
-    public List<CategoryBuilder> getCategories()
+    public final List<CategoryBuilder> getCategories()
     {
         return fCategories;
     }
@@ -73,7 +91,7 @@ public final class EditDiscreteNumericalVar extends EditAbstractNumericalVar
      * 
      * @return an ImmutableList
      */
-    public ImmutableList<CategoryBuilder> getTrimmedCategories()
+    public final ImmutableList<CategoryBuilder> getTrimmedCategories()
     {
         // Start with a copy of all the categories.
         final ArrayList<CategoryBuilder> trimmed = new ArrayList<>(fCategories);
@@ -96,9 +114,26 @@ public final class EditDiscreteNumericalVar extends EditAbstractNumericalVar
     }
     
     /**
+     * Returns the categories as a Set of {@link DiscreteNumericalVariable.Category},
+     * the type needed to actually create the variable. Internally uses
+     * @return an ImmutableSet
+     */
+    protected final ImmutableSet<DiscreteNumericalVariable.Category> buildCategories()
+    {
+        final ImmutableList<CategoryBuilder> trimmed = getTrimmedCategories();
+        final HashSet<DiscreteNumericalVariable.Category> categories =
+                new HashSet<>(trimmed.size());
+        for (final CategoryBuilder cat : trimmed)
+        {
+            categories.add(cat.build());
+        }
+        return ImmutableSet.copyOf(categories);
+    }
+    
+    /**
      * Returns the minimum supported number of categories, {@value #MIN_CATEGORIES}.
      */
-    public int getMinCategories()
+    public final int getMinCategories()
     {
         return MIN_CATEGORIES;
     }
@@ -106,37 +141,28 @@ public final class EditDiscreteNumericalVar extends EditAbstractNumericalVar
     /**
      * Returns the maximum supported number of categories, {@value #MAX_CATEGORIES}.
      */
-    public int getMaxCategories()
+    public final int getMaxCategories()
     {
         return MAX_CATEGORIES;
     }
     
     @Override
-    public String getNewViewName()
+    public final String getNewViewName()
     {
         return Views.NEW_DISCRETE_NUMERICAL_VARIABLE;
     }
 
     @Override
-    public DiscreteNumericalVariable buildNew()
+    public final DiscreteNumericalVariable buildNew()
     {
         Preconditions.checkState(
                 fCategories.size() >= MIN_CATEGORIES,
                 "at least %s categories are required, but only %s provided",
                 MIN_CATEGORIES, fCategories.size());
 
-        final ImmutableSet.Builder<DiscreteNumericalVariable.Category> categories =
-                ImmutableSet.builder();
-        for (final CategoryBuilder catBuilder : getTrimmedCategories())
-        {
-            categories.add(catBuilder.build());
-        }
-
         final DiscreteNumericalVariable var = new DiscreteNumericalVariable(
-                getDisplayName(), getGroup().get(), categories.build(), getKey());
-        applyBaseProperties(var);
-        var.setUnits(getUnits());
-        var.setValidRange(getValidRange().build());
+                getDisplayName(), getGroup().get(), buildCategories(), getKey());
+        applyNumericalProperties(var);
         return var;
     }
 }

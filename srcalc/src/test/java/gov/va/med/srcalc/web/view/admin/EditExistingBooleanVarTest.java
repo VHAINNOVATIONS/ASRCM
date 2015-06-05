@@ -33,9 +33,8 @@ public class EditExistingBooleanVarTest
         // Operation
         final EditExistingBooleanVar ev =
                 new EditExistingBooleanVar(var, fModelService);
-        ev.setDisplayName(newDisplayName);
-        ev.setHelpText(newHelpText);
-        ev.setGroupId(newGroup.getId());
+        EditBaseVarTest.testSetProperties(
+                ev, newDisplayName, newGroup.getId(), newHelpText, null);
         ev.applyToVariable();
         
         // Verification

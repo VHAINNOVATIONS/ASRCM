@@ -12,8 +12,7 @@ import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.web.controller.AdminHomeController;
 import gov.va.med.srcalc.web.view.Views;
-import gov.va.med.srcalc.web.view.admin.EditExistingBooleanVar;
-import gov.va.med.srcalc.web.view.admin.EditExistingMultiSelectVar;
+import gov.va.med.srcalc.web.view.admin.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -116,5 +115,46 @@ public class EditVariableControllerIT extends IntegrationTest
             andExpect(view().name(Views.EDIT_MULTI_SELECT_VARIABLE)).
             andExpect(model().errorCount(1)).
             andExpect(model().attributeHasFieldErrors("variable", "options[1]"));
+    }
+    
+    @Test
+    public void testEditDiscreteNumericalVariable() throws Exception
+    {
+        final String url = "/admin/variables/bun";
+        final String thirdCatName = "third category";
+        
+        fMockMvc.perform(get(url)).
+            andExpect(status().isOk()).
+            andExpect(model().attribute(
+                    "variable", isA(EditExistingDiscreteNumericalVar.class)));
+        
+        fMockMvc.perform(post(url)
+                .param("categories[0].value", "first category")
+                .param("categories[0].upperBound", "10")
+                .param("categories[1].value", "second category")
+                .param("categories[1].upperBound", "50")
+                .param("categories[2].value", thirdCatName)
+                .param("categories[2].upperBound", "90"))
+            .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+        
+        // Perform some basic validation that the edit was saved.
+        final DiscreteNumericalVariable var =
+                (DiscreteNumericalVariable)fAdminService.getVariable("bun");
+        assertEquals(3, var.getCategories().size());
+        assertEquals(thirdCatName, var.getCategories().last().getOption().getValue());
+    }
+    
+    @Test
+    public final void testEditDiscreteValueTooLong() throws Exception
+    {
+        fMockMvc.perform(post("/admin/variables/bun")
+                .param("categories[0].value", "first category")
+                .param("categories[0].upperBound", "10")
+                .param("categories[1].value",
+                        TestHelpers.stringOfLength(MultiSelectOption.VALUE_MAX + 1))
+                .param("categories[1].upperBound", "50"))
+            .andExpect(view().name(Views.EDIT_DISCRETE_NUMERICAL_VARIABLE))
+            .andExpect(model().errorCount(1))
+            .andExpect(model().attributeHasFieldErrors("variable", "categories[1].value"));
     }
 }
