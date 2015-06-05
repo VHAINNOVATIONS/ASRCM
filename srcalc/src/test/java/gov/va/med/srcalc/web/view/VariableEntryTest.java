@@ -97,29 +97,4 @@ public class VariableEntryTest
                 retrievalString);
         assertEquals(expected, entry.getDynamicValues());
     }
-    
-
-    @Test
-    public final void testBlankUnits()
-    {
-        final NumericalVariable var = new NumericalVariable(
-                "INR", SampleModels.labVariableGroup(), "inr");
-        var.setValidRange(new NumericalRange(0.0f, true, 7.0f, true));
-        var.setRetriever(ValueRetriever.INR);
-        final List<AbstractVariable> vars = new ArrayList<AbstractVariable>();
-        vars.add(var);
-        final Patient patient = SampleCalculations.dummyPatientWithLabs(1);
-        final VariableEntry entry = VariableEntry.withRetrievedValues(vars, patient);
-        final RetrievedValue labValue = patient.getLabs().get("INR");
-        final String retrievalString = VariableEntry.makeRetrievalString(
-                labValue.getValue(),
-                labValue.getMeasureDate(),
-                labValue.getUnits());
-        
-        final HashMap<String, String> expected = new HashMap<>();
-        expected.put(var.getKey(), String.valueOf(1.0f));
-        expected.put(VariableEntry.makeRetrievalString(var.getKey()), retrievalString);
-        
-        assertEquals(expected, entry.getDynamicValues());
-    }
 }

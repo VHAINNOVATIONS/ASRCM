@@ -24,6 +24,7 @@ public class RpcVistaPatientDaoTest
     private final static String DUMMY_BODY = "Note Body";
     private final static String ALBUMIN_SUCCESS = "ALBUMIN^3.0^02/02/2015@14:35:12^g/dl";
     private final static String INVALID_LAB = "This is invalid. ~@!#$";
+    private final static String VALID_LAB_NO_UNITS = "ALBUMIN^3.0^02/02/2015@14:35:12^";
     
     private final static int PATIENT_DFN = 500;
 
@@ -136,5 +137,21 @@ public class RpcVistaPatientDaoTest
         // Insure other information was still added.
         assertEquals(patient.getAge(), 50);
         assertEquals(patient.getName(), "TESTPATIENT");
+    }
+    
+    @Test
+    public final void testLabResponseNoUnits()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRetrieveLabs(
+                RADIOLOGIST_DUZ, 
+                String.valueOf(PATIENT_DFN),
+                VistaLabs.ALBUMIN.getPossibleLabNames()))
+            .thenReturn(VALID_LAB_NO_UNITS);
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        // Behavior verification
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        // Insure the lab was not added and no exceptions occurred.
+        assertEquals(1, patient.getLabs().size());
     }
 }
