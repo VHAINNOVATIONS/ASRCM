@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.web.view.admin;
 
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.MockModelService;
 
@@ -74,5 +75,31 @@ public class EditBaseVarTest
         assertEquals(
                 ImmutableSet.of(fModelService.getThoracicModel()),
                 ev.getDependentModels());
+    }
+    
+    /**
+     * A test component (not an independent test) to set the given properties onto the
+     * given instance. Verifies that getXXX() returns the values after setting.
+     * @param editVar the EditBaseVar instance to test
+     * @param displayName the display name to set
+     * @param groupId the group ID to set
+     * @param helpText the help text to set
+     * @param retriever the retriever to set
+     */
+    public static void testSetProperties(
+            final EditBaseVar editVar,
+            final String displayName,
+            final int groupId,
+            final String helpText,
+            final ValueRetriever retriever)
+    {
+        editVar.setDisplayName(displayName);
+        assertEquals(displayName, editVar.getDisplayName());
+        editVar.setGroupId(groupId);
+        assertEquals(groupId, editVar.getGroupId());
+        editVar.setHelpText(helpText);
+        assertEquals(helpText, editVar.getHelpText());
+        editVar.setRetriever(retriever);
+        assertEquals(retriever, editVar.getRetriever());
     }
 }
