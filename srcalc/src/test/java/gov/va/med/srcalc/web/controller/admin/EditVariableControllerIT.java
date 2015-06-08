@@ -121,6 +121,8 @@ public class EditVariableControllerIT extends IntegrationTest
     public void testEditDiscreteNumericalVariable() throws Exception
     {
         final String url = "/admin/variables/bun";
+        final String firstCatName = "first category";
+        final String secondCatName = "second category";
         final String thirdCatName = "third category";
         
         fMockMvc.perform(get(url)).
@@ -129,9 +131,9 @@ public class EditVariableControllerIT extends IntegrationTest
                     "variable", isA(EditExistingDiscreteNumericalVar.class)));
         
         fMockMvc.perform(post(url)
-                .param("categories[0].value", "first category")
+                .param("categories[0].value", firstCatName)
                 .param("categories[0].upperBound", "10")
-                .param("categories[1].value", "second category")
+                .param("categories[1].value", secondCatName)
                 .param("categories[1].upperBound", "50")
                 .param("categories[2].value", thirdCatName)
                 .param("categories[2].upperBound", "90"))
@@ -141,6 +143,7 @@ public class EditVariableControllerIT extends IntegrationTest
         final DiscreteNumericalVariable var =
                 (DiscreteNumericalVariable)fAdminService.getVariable("bun");
         assertEquals(3, var.getCategories().size());
+        assertEquals(firstCatName, var.getCategories().first().getOption().getValue());
         assertEquals(thirdCatName, var.getCategories().last().getOption().getValue());
     }
     
