@@ -236,6 +236,7 @@ div.searchToolbar {
 }
 
 #procedureAnyWords, #procedureAllWords {
+	/* padding is added so the box is of equal size to the CPT Search box */
 	padding: 1px;
 }
 

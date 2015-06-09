@@ -86,7 +86,7 @@ var ENTERVARIABLES = function() {
 	function initProcedureTable(procedures) {
             // Set up the properties for the procedures DataTable
             procedureTable = $("#procedureTable").dataTable({
-            dom: '<"searchToolbar">f rltip',
+            dom: '<"searchToolbar"> rlftip',
             data: procedures,
             ordering: false, // ordering is not a requirement, disable for performance
             deferRender: true,
@@ -129,6 +129,7 @@ var ENTERVARIABLES = function() {
             });
 	    
             // Set up the custom toolbar for searching procedure descriptions
+            // Setting size to 20 allows the text boxes to be the same size as the CPT Search box
             $('div.searchToolbar').html('All of these words: <input id="procedureAllWords" size="20"><br>'
             		+'Any of these words: <input id="procedureAnyWords" size="20">');
             
