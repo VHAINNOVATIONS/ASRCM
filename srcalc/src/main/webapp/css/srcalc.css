@@ -230,6 +230,16 @@ table.srcalcTable th:first-child, table.srcalcTable td:first-child {
 	padding-left: 0;
 }
 
+/* Datatables styling */
+div.searchToolbar {
+	text-align: right;
+}
+
+#procedureAnyWords, #procedureAllWords {
+	/* padding is added so the box is of equal size to the CPT Search box */
+	padding: 1px;
+}
+
 /* A .attributeEditForm is a form for editing attributes of some object. We
    display it in a 2-column format with the attribute name in the left column
    and the value controls in the right column.
