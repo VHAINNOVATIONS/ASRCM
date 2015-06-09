@@ -130,8 +130,8 @@ var ENTERVARIABLES = function() {
 	    
             // Set up the custom toolbar for searching procedure descriptions
             // Setting size to 20 allows the text boxes to be the same size as the CPT Search box
-            $('div.searchToolbar').html('All of these words: <input id="procedureAllWords" size="20"><br>'
-            		+'Any of these words: <input id="procedureAnyWords" size="20">');
+            $('div.searchToolbar').html('All of these words:<input id="procedureAllWords" size="20"><br>'
+            		+'Any of these words:<input id="procedureAnyWords" size="20">');
             
             $('#procedureAnyWords').on('keyup paste cut', function() {
             	// Cache the value for quick filtering.
