@@ -21,6 +21,11 @@ var ENTERVARIABLES = function() {
     // variable is null, then it has not been initialized yet.
     var procedureTable = null;
     
+    // These are strings representing the user input from the search boxes for
+    // "Any of these words" and "All of these words".
+    var procedureAllWords = "";
+    var procedureAnyWords = "";
+    
     /**
      * Returns the shorter display string for a procedure.
      */
@@ -39,15 +44,58 @@ var ENTERVARIABLES = function() {
 	    procedureSelectDialog.dialog("close");
 	}
 	
+	function procedureSearch(rowData) {
+		var description = rowData[1];
+		var allWords = procedureAllWords;
+		// Skip if none specified.
+		if(allWords) {
+			var words = allWords.split(/\s+/);
+			for(var index in words) {
+				// Escape any regular expression characters since this is
+				// from user input.
+				var escapedWord = $.fn.dataTable.util.escapeRegex(words[index]);
+				// If the description does not contain the word, just return
+				// false (short-circuiting any other tests).
+				if(description.search(new RegExp(escapedWord, "i")) < 0) {
+					return false;
+				}
+			}
+		}
+		
+		var anyWords = procedureAnyWords;
+		// Also skip if none specified
+		if(anyWords) {
+			var words = anyWords.split(/\s+/);
+			for(var index in words) {
+				// Escape any regular expression characters since this is
+				// from user input.
+				var escapedWord = $.fn.dataTable.util.escapeRegex(words[index]);
+				// If the description contains the word, just return true,
+				// since it only needs to contain one of these.
+				if(description.search(new RegExp(escapedWord, "i")) >= 0) {
+					return true;
+				}
+			}
+			// Didn't contain any anyWords. Return false.
+			return false;
+		}
+		
+		return true;
+	}
+		
 	function initProcedureTable(procedures) {
             // Set up the properties for the procedures DataTable
             procedureTable = $("#procedureTable").dataTable({
+            dom: '<"searchToolbar">f rltip',
             data: procedures,
             ordering: false, // ordering is not a requirement, disable for performance
             deferRender: true,
+            oLanguage: {
+            	sSearch: "CPT Search:" // Override the default search text of "Search"
+            },
             columns: [
                       { data: 'cptCode' },
-                      { data: 'longDescription', searchable: false },
+                      { data: 'longDescription'},
                       { data: 'rvu', searchable: false },
                       {
                           data: 'cptCode',
@@ -80,6 +128,22 @@ var ENTERVARIABLES = function() {
                     apiTable.column(0).search('^' + this.value, true, false).draw();
             });
 	    
+            // Set up the custom toolbar for searching procedure descriptions
+            $('div.searchToolbar').html('All of these words: <input id="procedureAllWords" size="20"><br>'
+            		+'Any of these words: <input id="procedureAnyWords" size="20">');
+            
+            $('#procedureAnyWords').on('keyup paste cut', function() {
+            	// Cache the value for quick filtering.
+            	procedureAnyWords = $(this).val();
+            	apiTable.draw();
+            });
+            
+            $('#procedureAllWords').on('keyup paste cut', function() {
+            	// Cache the value for quick filtering.
+            	procedureAllWords = $(this).val();
+            	apiTable.draw();
+            });
+            
             // The table is done rendering.
             procedureSelectDialog.removeClass('uninitialized');
 	}
@@ -164,6 +228,11 @@ var ENTERVARIABLES = function() {
                 // Success callback.
                 initProcedureSelect(procedures);
             });
+            
+            $.fn.dataTable.ext.search.push(
+	    		function(settings, rowData, dataIndex) {
+	    			return procedureSearch(rowData);
+	    	});
             
             // Tie the numerical text box state to the state of the numerical radio.
             var numericalValueContainers =
