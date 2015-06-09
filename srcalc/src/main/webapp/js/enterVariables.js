@@ -133,16 +133,23 @@ var ENTERVARIABLES = function() {
             $('div.searchToolbar').html('All of these words:<input id="procedureAllWords" size="20"><br>'
             		+'Any of these words:<input id="procedureAnyWords" size="20">');
             
+            var cptFilter = $('#procedureTable_filter input');
             $('#procedureAnyWords').on('keyup paste cut', function() {
             	// Cache the value for quick filtering.
             	procedureAnyWords = $(this).val();
+            	// The draw method clears the search filter, so we need to preserve it.
+            	var cptFilterText = cptFilter.val();
             	apiTable.draw();
+            	cptFilter.val(cptFilterText);
             });
             
             $('#procedureAllWords').on('keyup paste cut', function() {
             	// Cache the value for quick filtering.
             	procedureAllWords = $(this).val();
+            	// The draw method clears the search filter, so we need to preserve it.
+            	var cptFilterText = cptFilter.val();
             	apiTable.draw();
+            	cptFilter.val(cptFilterText);
             });
             
             // The table is done rendering.
