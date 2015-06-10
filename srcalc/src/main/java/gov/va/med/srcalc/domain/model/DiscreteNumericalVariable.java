@@ -7,6 +7,7 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 import org.slf4j.Logger;
@@ -64,6 +65,9 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
     @CollectionTable(
             name = "discrete_numerical_var_category",
             joinColumns = @JoinColumn(name = "variable_id"))
+    @Cascade(value = {org.hibernate.annotations.CascadeType.MERGE,
+            org.hibernate.annotations.CascadeType.DELETE})
+    //The merge does not automatically cascade for ElementCollection
     public SortedSet<Category> getCategories()
     {
         return fCategories;
