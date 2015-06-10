@@ -65,8 +65,7 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
     @CollectionTable(
             name = "discrete_numerical_var_category",
             joinColumns = @JoinColumn(name = "variable_id"))
-    @Cascade(value = {org.hibernate.annotations.CascadeType.MERGE,
-            org.hibernate.annotations.CascadeType.DELETE})
+    @Cascade(value = {org.hibernate.annotations.CascadeType.MERGE})
     //The merge does not automatically cascade for ElementCollection
     public SortedSet<Category> getCategories()
     {
