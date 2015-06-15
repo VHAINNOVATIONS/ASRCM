@@ -13,7 +13,7 @@ function initEditVariablePage() {
         // Calculate the index of the new input (0-based).
         var index = ol.find('li').length;
         var newElement = $(
-                '<li><input id="options' + index + '" name="options[' + index + ']"></li>');
+                '<li><input id="options' + index + '" name="options[' + index + ']"  size="40" ></li>');
         ol.append(newElement);
         // If we just added the last permitted option, replace the Add link
         // with a message stating so.
@@ -41,6 +41,7 @@ function initEditVariablePage() {
         // Just iterate through the controls and update the category index.
         newInputs.find('input').each(function() {
             var input = $(this);
+            input.attr('size', '40');
             // Spring controls put the path in the 'name' attribute and sometimes the 'id'
             // attribute. Update them both.
 
