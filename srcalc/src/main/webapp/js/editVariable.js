@@ -41,7 +41,6 @@ function initEditVariablePage() {
         // Just iterate through the controls and update the category index.
         newInputs.find('input').each(function() {
             var input = $(this);
-            input.attr('size', '40');
             // Spring controls put the path in the 'name' attribute and sometimes the 'id'
             // attribute. Update them both.
 
