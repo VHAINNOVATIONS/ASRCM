@@ -13,7 +13,7 @@ function initEditVariablePage() {
         // Calculate the index of the new input (0-based).
         var index = ol.find('li').length;
         var newElement = $(
-                '<li><input id="options' + index + '" name="options[' + index + ']"></li>');
+                '<li><input id="options' + index + '" name="options[' + index + ']"  size="40" ></li>');
         ol.append(newElement);
         // If we just added the last permitted option, replace the Add link
         // with a message stating so.
