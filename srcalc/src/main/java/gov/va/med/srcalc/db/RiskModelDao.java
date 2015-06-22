@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.db;
 
+import gov.va.med.srcalc.domain.model.AbstractVariable;
 import gov.va.med.srcalc.domain.model.RiskModel;
 
 import java.util.List;
@@ -8,6 +9,8 @@ import javax.inject.Inject;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.ImmutableCollection;
@@ -18,6 +21,8 @@ public class RiskModelDao
 {
     private final SessionFactory fSessionFactory;
     
+    private static final Logger fLogger = LoggerFactory.getLogger(RiskModelDao.class);
+
     @Inject // Allow arguments to be autowired.
     public RiskModelDao(final SessionFactory sessionFactory)
     {
@@ -41,4 +46,10 @@ public class RiskModelDao
         return ImmutableList.copyOf(list);
     }
     
+    public RiskModel saveRiskModel( final RiskModel rm )
+    {
+        fLogger.debug("Merging {} into persistence context.", rm.getDisplayName() );
+
+        return (RiskModel)getCurrentSession().merge( rm );
+    }
 }

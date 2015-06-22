@@ -40,4 +40,15 @@ public class MockModelService implements ModelInspectionService
     {
         return fThoracicModel;
     }
+
+	@Override
+	public RiskModel getRiskModelForId(int modelId)  {
+		return fThoracicModel;
+	}
+
+	@Override
+	public void saveRiskModel(RiskModel model) {
+		// TODO Auto-generated method stub
+		
+	}
 }

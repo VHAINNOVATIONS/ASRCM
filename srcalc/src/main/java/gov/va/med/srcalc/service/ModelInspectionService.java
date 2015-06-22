@@ -24,4 +24,18 @@ public interface ModelInspectionService
      * @return an ImmutableCollection, in arbitrary order
      */
     public ImmutableCollection<RiskModel> getAllRiskModels();
+
+    
+    /**
+     * Returns the {@link RiskModel} with the given ID.
+     * @return RiskModelS
+     */
+    public RiskModel getRiskModelForId(int modelId);    
+    
+    /**
+     * Saves the name of the {@link RiskModel} 
+     * @return RiskModel
+     */
+    public void saveRiskModel( final RiskModel model );    
+
 }
