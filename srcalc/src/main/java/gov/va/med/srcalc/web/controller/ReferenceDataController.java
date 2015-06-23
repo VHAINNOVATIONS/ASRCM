@@ -10,6 +10,8 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import com.google.common.collect.ImmutableList;
+
 /**
  * A Web MVC Controller to simply return reference data to users, typically
  * as JSON.
@@ -38,7 +40,7 @@ public class ReferenceDataController
     @ResponseBody  // don't use a view, use the return value as the content
     public List<Object> getProcedures()
     {
-        final List<Procedure> procedures = fService.getActiveProcedures();
+        final ImmutableList<Procedure> procedures = fService.getAllProcedures();
         
         // Transform each procedure into just what we want in the JSON.
         final List<Object> returnList = new ArrayList<>(procedures.size());

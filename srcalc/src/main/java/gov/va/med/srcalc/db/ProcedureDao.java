@@ -1,13 +1,14 @@
 package gov.va.med.srcalc.db;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import org.hibernate.*;
+import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+
+import com.google.common.collect.ImmutableList;
 
 import gov.va.med.srcalc.domain.model.Procedure;
 
@@ -32,13 +33,20 @@ public class ProcedureDao
         return fSessionFactory.getCurrentSession();
     }
     
-    public List<Procedure> getActiveProcedures()
+    /**
+     * Loads and returns all procedures defined in the database, in ascending CPT code
+     * order.
+     * @return an ImmutableList
+     */
+    public ImmutableList<Procedure> getAllProcedures()
     {
-        final Query query = getCurrentSession().createQuery(
-                "from Procedure p where p.active = true order by p.cptCode");
+        final Criteria criteria = getCurrentSession().createCriteria(Procedure.class);
+        // This ordering may be case-sensitive, but CPT codes are normalized to upper-case
+        // so that's not an issue.
+        criteria.addOrder(Order.asc("cptCode"));
 
         @SuppressWarnings("unchecked") // trust hibernate
-        final List<Procedure> procedures = query.list();
+        final ImmutableList<Procedure> procedures = ImmutableList.copyOf(criteria.list());
         fLogger.debug("Loaded all {} procedures.", procedures.size());
         return procedures;
     }

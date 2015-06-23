@@ -203,7 +203,9 @@ public class CalculationControllerIT extends IntegrationTest
         fMockMvc.perform(get("/refdata/procedures").accept("application/json"))
             .andExpect(status().is(200))
             .andExpect(content().contentType("application/json"))
-            .andExpect(content().string(startsWith("["))); // a JSON array
+            .andExpect(jsonPath("$", hasSize(3)))
+            // Check the first CPT code to ensure correct order.
+            .andExpect(jsonPath("$[0].cptCode").value("10001"));
     }
     
     @Test

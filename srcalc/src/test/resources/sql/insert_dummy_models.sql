@@ -1,4 +1,4 @@
--- This script inserts the base static data for srcalc.
+-- This script inserts dummy risk model configuration into the database for testing.
 
 -- SPECIALTY table
 INSERT INTO SPECIALTY (id, vista_id, name) VALUES (1, 50, 'General Surgery');
@@ -132,3 +132,8 @@ INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coe
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (4, 10, 1, 10.4);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (5, 10, 1, 10.5);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (6, 10, 1, 10.6);
+
+-- Dummy set of procedures because CPT Codes are copyrighted.
+INSERT INTO cpt (id, cpt_code, long_description, rvu, short_description, complexity, eligible) VALUES ( 1, '26545', 'Repair right hand - you know, the thing with fingers', 5.05, 'Repair right hand', 'Standard', 1);
+INSERT INTO cpt (id, cpt_code, long_description, rvu, short_description, complexity, eligible) VALUES ( 2, '26546', 'Repair left hand - you know, the thing with fingers', 10.06, 'Repair left hand', 'Standard', 1);
+INSERT INTO cpt (id, cpt_code, long_description, rvu, short_description, complexity, eligible) VALUES ( 3, '10001', 'Repair right pinky phalanx', 2.45, 'Repair right finger', 'Complex', 0);
