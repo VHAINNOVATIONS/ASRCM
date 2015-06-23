@@ -18,8 +18,6 @@ public final class Procedure
     
     private String fCptCode;
     
-    private boolean fActive = true;
-    
     private float fRvu;
     
     private String fShortDescription;
@@ -27,6 +25,8 @@ public final class Procedure
     private String fLongDescription;
     
     private String fComplexity;
+    
+    private boolean fEligible;
 
     /**
      * Package-private default constructor mainly for Hibernate use. Be careful
@@ -38,6 +38,9 @@ public final class Procedure
         fCptCode = "NOT SET";
     }
     
+    /**
+     * Constructs an instance with the given attributes.
+     */
     public Procedure(
             final String cptCode,
             final float rvu,
@@ -45,12 +48,12 @@ public final class Procedure
             final String longDescription,
             final String complexity)
     {
-        this.fActive = true;
-        this.fCptCode = cptCode;
-        this.fRvu = rvu;
-        this.fShortDescription = shortDescription;
-        this.fLongDescription = longDescription;
-        this.fComplexity = complexity;
+        fCptCode = cptCode;
+        fRvu = rvu;
+        fShortDescription = shortDescription;
+        fLongDescription = longDescription;
+        fComplexity = complexity;
+        fEligible = true;
     }
 
     @Id // We use method-based property detection throughout the app.
@@ -83,22 +86,6 @@ public final class Procedure
     void setCptCode(final String cptCode)
     {
         this.fCptCode = cptCode;
-    }
-    
-    /**
-     * Returns whether this Procedure is still used for new calculations. Inactive
-     * Procedures may once have been used for calculations, but are no longer
-     * used.
-     */
-    @Basic
-    public boolean getActive()
-    {
-        return fActive;
-    }
-    
-    void setActive(final boolean active)
-    {
-        fActive = active;
     }
 
     /**
@@ -146,6 +133,23 @@ public final class Procedure
     public void setComplexity(final String complexity)
     {
     	fComplexity = complexity;
+    }
+
+    /**
+     * Returns whether this procedure is eligible for a risk calculation.
+     */
+    @Basic
+    public boolean isEligible()
+    {
+        return fEligible;
+    }
+
+    /**
+     * Sets whether this procedure is eligible for a risk calculation.
+     */
+    public void setEligible(final boolean eligible)
+    {
+        fEligible = eligible;
     }
 
     @Override
