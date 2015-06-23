@@ -26,7 +26,7 @@
         <tr>
         <td class="attributeName">Display Text</td>
         <td>
-            <form:input path="modelName" size="${srcalc:min( riskModel.maxDisplayNameLength,60) }" />
+            <form:input autocomplete="false" path="modelName" size="${srcalc:min( riskModel.maxDisplayNameLength,60) }" />
             <form:errors path="modelName" cssClass="error" />
         </td>
         </tr>

@@ -3,54 +3,66 @@ package gov.va.med.srcalc.web.view.admin;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.validation.Validator;
-
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.model.Specialty;
 
+/**
+ * A form backing object for editing a target (link @RiskModel) object.
+ */
 public class EditRiskModel implements Comparable<EditRiskModel>{
 
-	private final RiskModel riskModel;
-    private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModel.class);
+	private final RiskModel fRiskModel;
 
     private String modelName;
-    // can't change the id so just reference the id from the RiskModel
-    //private final int id;
     
-//    private RiskModel importedModel;
+//    private RiskModel importedModel; TBD
     
 	protected EditRiskModel( final RiskModel rm ) 
 	{
-		riskModel = rm;
+		fRiskModel = rm;
 		modelName = rm.getDisplayName();
 		//id = rm.getId();
 	}
 	
+    /**
+     * Returns an {@link EditRiskModel} instance for editing the given RiskModel.
+     * @param rm the target RiskModel
+     */
 	public static EditRiskModel fromRiskModel( final RiskModel rm ) 
 	{
 		return new EditRiskModel( rm );
 	}
 	
+	/**
+	 * Return the target (link @RiskModel)
+	 */
 	public RiskModel getRiskModel() 
 	{
-		return riskModel;
+		return fRiskModel;
 	}
 	
+	/* 
+	 * Return the modelName
+	 */
 	public String getModelName( ) 
 	{
 		return modelName;
 	}
 
+	/*
+	 * Set the modelName
+	 */
 	public void setModelName( String mn ) 
 	{
 		modelName = mn;
 	}
 
+	/**
+	 * Return the Id of the target RiskModel. 
+	 */
 	public String getId( ) 
 	{
-		return Integer.toString( riskModel.getId() );
+		return Integer.toString( fRiskModel.getId() );
 	}
 	
 	public List<Specialty> getSpecialties() 
@@ -63,42 +75,31 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
 		return RiskModel.DISPLAY_NAME_MAX;
 	}
 	
+	/**
+	 * Update the target RiskModel with the current edits.
+	 */
 	public RiskModel applyChanges() 
 	{
 		// can't change the model ID
 
-		riskModel.setDisplayName( modelName );
+		fRiskModel.setDisplayName( modelName );
 		
 //		riskModel = importedModel;
 		
-		return riskModel;
+		return fRiskModel;
 	}
 	
     @Override
     public int compareTo(final EditRiskModel other )
     {
-    	// Order according to id instead of display name ???
+    	// Order alphabetically by modelName. Second option would be to order by id if we 
+    	// wanted a consistent ordering
     	// 
-//        return this.riskModel.compareTo(other.riskModel);
-    	return Integer.compare( this.riskModel.getId(), other.riskModel.getId() );
-    }
-
-    /**
-     * <p>Returns an appropriate Validator instance for validating this object.
-     * </p>
-     * 
-     * <p>Implementations do not perform their own validation so that the web
-     * code can directly bind user input to these beans without fear of
-     * Exceptions. We instead provide a Spring Validator via this method to
-     * safely ensure that user input meets  class's requirements.</p>
-     */
-    public /*abstract*/ Validator getValidator()
-    {
-    	return new EditRiskModelValidator();
+        return this.modelName.compareTo( other.modelName );
     }
 
 	public String toString() 
 	{
-		return riskModel.toString();
+		return "EditRiskModel: name="+ modelName+",ID="+ getId();
 	}	
 }

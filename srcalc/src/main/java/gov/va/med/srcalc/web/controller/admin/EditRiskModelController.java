@@ -5,6 +5,7 @@ import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.EditRiskModel;
+import gov.va.med.srcalc.web.view.admin.EditRiskModelValidator;
 
 import javax.inject.Inject;
 
@@ -24,7 +25,7 @@ public class EditRiskModelController {
 
     private static final String ATTRIBUTE_RISK_MODEL = "riskModel";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(EditVariableController.class);
+    private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModelController.class);
     
     private final AdminService fAdminService;
     
@@ -40,19 +41,17 @@ public class EditRiskModelController {
     
     @ModelAttribute(ATTRIBUTE_RISK_MODEL)
     public EditRiskModel createEditRiskModel(
-            @PathVariable final String riskModelId )
+            @PathVariable final int riskModelId )
             throws InvalidIdentifierException
     {    	
     	try {
-        	int modId = Integer.parseInt( riskModelId );
-        	RiskModel rm = fAdminService.getRiskModelForId( modId ); 
+        	RiskModel rm = fAdminService.getRiskModelForId( riskModelId ); 
 
         	if( rm == null ) {
         		throw new InvalidIdentifierException( "Unable to find RiskModel with ID "+riskModelId );        		
         	}
         	EditRiskModel editModel = EditRiskModel.fromRiskModel( rm );
 	
-	    	fLogger.debug("In EditRiskController.createEditRiskModel : found model {} for id.", editModel.getModelName() );
 	        return editModel;    		
     	}
     	catch ( NumberFormatException nfe ) {
@@ -61,8 +60,7 @@ public class EditRiskModelController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView displayForm(
-            @ModelAttribute(ATTRIBUTE_RISK_MODEL) final EditRiskModel editModel )
+    public ModelAndView displayForm( )
             throws InvalidIdentifierException
     {
         final ModelAndView mv = new ModelAndView( Views.EDIT_RISK_MODEL );        
@@ -76,14 +74,14 @@ public class EditRiskModelController {
                     throws InvalidIdentifierException
     {
         // Spring has already bound the user input to saveModel; now validate
-        // the input using the appropriate validator.
         //
-    	saveModel.getValidator().validate( saveModel, bindingResult);
+    	EditRiskModelValidator validator = new EditRiskModelValidator();
+    	validator.validate( saveModel, bindingResult);
 
         if( bindingResult.hasErrors() )
         {
-            fLogger.error( "EditRiskModel has errors: {}", bindingResult);
-            return displayForm(saveModel);
+            fLogger.debug( "EditRiskModel has errors: {}", bindingResult);
+            return displayForm( );
         }
         
         // Apply the changes to the persistent model.

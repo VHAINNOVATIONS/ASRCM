@@ -104,41 +104,28 @@ public class DefaultAdminService implements AdminService
     @Transactional(readOnly = true)
     public ImmutableCollection<RiskModel> getAllRiskModels()
     {
-//        fLogger.debug("Getting all RiskModels.");
+        fLogger.debug("Getting all RiskModels.");
         return fRiskModelDao.getAllRiskModels();
     }
     
     @Override
     @Transactional(readOnly = true)
     public RiskModel getRiskModelForId(final int modelId)
-    {
-//        fLogger.debug("Getting RiskModel {}.", modelId);
-        
-        final ImmutableCollection<RiskModel> models = getAllRiskModels();
-        for( RiskModel rm : models ) 
-        {
-        	if( rm.getId() == modelId ) {
-        		return rm;
-        	}
-        }
-        
-        fLogger.warn("Unable to find RiskModel for ID {}.", modelId);
-
-        return null;
+    {        
+        fLogger.debug("Getting RiskModel for {}.", modelId);
+        return fRiskModelDao.getRiskModelForId( modelId );
     }
 
     /**
-     * Saves the name of the {@link RiskModel} 
+     * Saves the {@link RiskModel} 
      * @return RiskModel
      */
     @Override
     @Transactional
     public void saveRiskModel( final RiskModel model ) 
     {    	
-        fLogger.debug("Saving {}.", model);
-
         if( getRiskModelForId( model.getId() ) == null ) 
-        {
+        {  // TODO : remove this when possible to create new RiskModels
         	fLogger.warn( "Warning: Saving RiskModel {}. ID {} doesn't exist in the DB ", 
         			model.getDisplayName(), model.getId() );
         }

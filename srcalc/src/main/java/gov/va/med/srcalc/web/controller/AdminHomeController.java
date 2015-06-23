@@ -56,7 +56,7 @@ public class AdminHomeController
         //
         Set<EditRiskModel> editRMs = new TreeSet<EditRiskModel>(  );
 
-//        fLogger.debug( "There are {} Risk Models.", riskModels.size());
+        fLogger.debug( "There are {} Risk Models in the DB.", riskModels.size());
 
         for( final RiskModel rm : riskModels ) 
         {
