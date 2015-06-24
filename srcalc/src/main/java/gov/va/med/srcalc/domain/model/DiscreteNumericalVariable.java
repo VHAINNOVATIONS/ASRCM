@@ -7,7 +7,6 @@ import java.util.*;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 import org.slf4j.Logger;
@@ -65,8 +64,6 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
     @CollectionTable(
             name = "discrete_numerical_var_category",
             joinColumns = @JoinColumn(name = "variable_id"))
-    @Cascade(value = {org.hibernate.annotations.CascadeType.MERGE})
-    //The merge does not automatically cascade for ElementCollection
     public SortedSet<Category> getCategories()
     {
         return fCategories;
@@ -307,9 +304,22 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
         }
         
         /**
-         * Orders categories in ascending upper bound order. If two categories have the
+         * <p>Orders categories in ascending upper bound order. If two categories have the
          * same upper bound, one with an inclusive upper bound will be considered greater
          * than one with an exclusive upper bound since it does contain higher numbers.
+         * 
+         * <p>If the upper bounds and inclusivity flags are equal, we then compare against
+         * the category value in order to make this comparison consistent with equals.
+         * Otherwise strange things can happen in the SortedSet.</p> 
+         * 
+         * <p>To summarize, the following attributes are compared, from highest precendence
+         * to lowest:</p>
+         * 
+         * <ol>
+         * <li>The upper bound number</li>
+         * <li>Inclusivity: inclusive is considered greater than exclusive</li>
+         * <li>The value</li>
+         * </ol>
          */
         @Override
         public int compareTo(final Category other)
@@ -320,7 +330,13 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
                 return boundDelta;
             }
             
-            return Boolean.compare(this.fUpperInclusive, other.fUpperInclusive);
+            int inclusiveDelta = Boolean.compare(this.fUpperInclusive, other.fUpperInclusive);
+            if (inclusiveDelta != 0)
+            {
+                return inclusiveDelta;
+            }
+            
+            return this.getOption().getValue().compareTo(other.getOption().getValue());
         }
     }
 
