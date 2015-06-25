@@ -31,16 +31,20 @@ import com.google.common.collect.ImmutableSet;
 @Table(name = "rule")
 public final class Rule
 {
-	private int fId;
+    private int fId;
     private List<ValueMatcher> fMatchers;
     private Expression fSummandExpression;
     private boolean fRequired;
+    private String fDisplayName;
     
 	/**
 	 * Mainly intended for reflection-based construction.
 	 */
     Rule()
     {
+        // Set the summand expression to avoid a NullPointerException from Hibernate.
+        fSummandExpression = parseSummandExpression("unset");
+        fDisplayName = "unset";
     }
     
     /**
@@ -51,11 +55,13 @@ public final class Rule
      * @throws IllegalArgumentException if the given expression is not parsable
      */
     public Rule(
-            final List<ValueMatcher> matchers, final String summandExpression, final boolean required)
+            final List<ValueMatcher> matchers, final String summandExpression,
+            final boolean required, final String displayName)
     {
         fMatchers = Objects.requireNonNull(matchers);
         fSummandExpression = parseSummandExpression(summandExpression);
         fRequired = required;
+        fDisplayName = displayName;
     }
     
     /**
@@ -116,16 +122,30 @@ public final class Rule
      * Should we bypass this rule if values are missing.
      */
     @Basic
-    private boolean isRequired()
-	{
-		return fRequired;
-	}
-	
-	void setRequired(final boolean required)
-	{
-		fRequired = required;
-	}
-
+    public boolean isRequired()
+    {
+        return fRequired;
+    }
+    
+    void setRequired(final boolean required)
+    {
+        fRequired = required;
+    }
+    
+    /**
+     * The rule's name to display to the user
+     * @return
+     */
+    @Basic
+    public String getDisplayName()
+    {
+        return fDisplayName;
+    }
+    
+    void setDisplayName(final String displayName)
+    {
+        fDisplayName = displayName;
+    }
     
     /**
      * Parse the designated expression into a SPEL Expression.
@@ -204,18 +224,14 @@ public final class Rule
         final HashMap<String, Object> matchedValues = new HashMap<>();
         for (final ValueMatcher condition : fMatchers)
         {
-        	final Value matchedValue = context.getValues().get(condition.getVariable());
-        	if (condition.evaluate(ec, matchedValue))
-            {
-                matchedValues.put(matchedValue.getVariable().getKey(), matchedValue);
-            }
-            else
-            {
-            	return 0.0;
-            }
-            
+            final Value matchedValue = context.getValues().get(condition.getVariable());
+            matchedValues.put(matchedValue.getVariable().getKey(), matchedValue.getValue());
             // Update the SpEL evaluation context with the matched values so far.
             ec.setVariables(matchedValues);
+            if (!condition.evaluate(ec, matchedValue))
+            {
+                return 0.0;
+            }
         }
         
         /* We matched them all: now just calculate the summand. */

@@ -34,7 +34,7 @@ public class AdminServiceIT extends IntegrationTest
     public final void testGetAllVariables()
     {
         final List<AbstractVariable> actualVars = fAdminService.getAllVariables();
-        assertEquals(9, actualVars.size());
+        assertEquals(10, actualVars.size());
         assertEquals("Age", actualVars.get(0).getDisplayName());
     }
     
@@ -113,4 +113,17 @@ public class AdminServiceIT extends IntegrationTest
         }
     }
     
+    @Test(expected = DuplicateRuleNameException.class)
+    public final void testSaveDuplicateRuleName() throws Exception
+    {
+        final Rule rule = SampleModels.ageAndFsRule();
+        try
+        {
+            fAdminService.saveRule(rule);
+        }
+        finally
+        {
+            getHibernateSession().clear();
+        }
+    }
 }

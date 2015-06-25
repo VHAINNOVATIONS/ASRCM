@@ -103,7 +103,6 @@ INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_value, option_inde
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 8, 3, 8.1);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (4, 8, 3, 8.4);
 
-
 -- Preop Pneumonia
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (7, 'Preop Pneumonia', 'preopPneumonia', 6);
 INSERT INTO BOOLEAN_VARIABLE (id) VALUES (7);
@@ -132,3 +131,21 @@ INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coe
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (4, 10, 1, 10.4);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (5, 10, 1, 10.5);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (6, 10, 1, 10.6);
+
+-- Shared Functional Status
+INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (11, 'Functional Status', 'functionalStatus', 6);
+INSERT INTO MULTI_SELECT_VARIABLE (id, display_type) VALUES (11, 'Radio');
+INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_value, option_index) VALUES (11, 'Independent', 0);
+INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_value, option_index) VALUES (11, 'Partially dependent', 1);
+INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_value, option_index) VALUES (11, 'Totally dependent', 2);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 11, 1, 1);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (2, 11, 2, 2);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (3, 11, 1, 3);
+
+-- Age and functional status rule
+INSERT INTO RULE (id, display_name, required, summand_expression) VALUES (1, 'Age multiplier for functional status', TRUE, '#coefficient * #age');
+-- Functional Status matcher
+INSERT INTO RULE_VALUE_MATCHER (rule_id, boolean_expression, enabled, variable) VALUES (1, '#functionalStatus == "Totally dependent"', TRUE, 11);
+-- Age matcher
+INSERT INTO RULE_VALUE_MATCHER (rule_id, boolean_expression, enabled, variable) VALUES (1, '', FALSE, 2);
+INSERT INTO RISK_MODEL_DERIVED_TERM (risk_model_id, rule, coefficient) VALUES (1, 1, 1.5);

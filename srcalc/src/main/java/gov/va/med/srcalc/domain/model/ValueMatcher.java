@@ -21,12 +21,15 @@ public class ValueMatcher
 {
     private Variable fVariable;
     private Expression fBooleanExpression;
+    private boolean fEnabled;
     
     /**
 	 * Mainly intended for reflection-based construction.
 	 */
     ValueMatcher()
-    {    	
+    {
+        // Set the summand expression to avoid a NullPointerException from Hibernate.
+        fBooleanExpression = new SpelExpressionParser().parseExpression("unset");
     }
     
     /**
@@ -36,10 +39,11 @@ public class ValueMatcher
      * @throws NullPointerException if any argument is null
      * @throws IllegalArgumentException if the given expression is not parsable
      */
-    public ValueMatcher(final Variable variable, final String booleanExpression)
+    public ValueMatcher(final Variable variable, final String booleanExpression, final boolean applyMatcher)
     {
         fVariable = Objects.requireNonNull(variable);
         fBooleanExpression = parseBooleanExpression(booleanExpression);
+        fEnabled = applyMatcher;
     }
 
     /**
@@ -96,9 +100,37 @@ public class ValueMatcher
         return fBooleanExpression;
     }
     
+    /**
+     * Returns true if this matcher should be evaluated and false if it should not
+     * be evaluated.
+     */
+    @Basic
+    public boolean isEnabled()
+    {
+        return fEnabled;
+    }
+    
+    void setEnabled(final boolean enabled)
+    {
+        fEnabled = enabled;
+    }
+    
+    /**
+     * Evaluate this ValueMatcher's boolean expression based on the given context and value.
+     * @param context the EvaluationContext used to evaluate this matcher against
+     * @param value the value for this matcher's variable
+     * @return the boolean value to which the expression evaluates
+     */
     public boolean evaluate(final EvaluationContext context, final Value value)
     {
-        return fBooleanExpression.getValue(context, value, Boolean.class);
+        if(fEnabled && !fBooleanExpression.getExpressionString().isEmpty())
+        {
+            return fBooleanExpression.getValue(context, value, Boolean.class);
+        }
+        else
+        {
+            return true;
+        }
     }
     
     @Override

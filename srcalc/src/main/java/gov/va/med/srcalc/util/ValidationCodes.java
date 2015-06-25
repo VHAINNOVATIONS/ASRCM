@@ -36,6 +36,17 @@ public class ValidationCodes
     public static final String DUPLICATE_VALUE = "duplicateValue";
 
     /**
+     * Error code used when a rule's summand expression is not a valid Spring Expression.
+     */
+    public static final String INVALID_SUMMAND_EXPRESSION = "invalidSummandExperession";
+    
+    /**
+     * Error code used when a boolean expression of one of a rule's value matchers is not a
+     * valid Spring Expression.
+     */
+    public static final String INVALID_MATCHER_EXPRESSION = "invalidMatcherExpression";
+    
+    /**
      * No construction.
      */
     private ValidationCodes()

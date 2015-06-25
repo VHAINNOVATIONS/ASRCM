@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 
 import gov.va.med.srcalc.db.RiskModelDao;
+import gov.va.med.srcalc.db.RuleDao;
 import gov.va.med.srcalc.db.VariableDao;
 import gov.va.med.srcalc.domain.model.*;
 
@@ -47,12 +48,20 @@ public class DefaultAdminServiceTest
         return dao;
     }
     
+    private RuleDao mockRuleDao()
+    {
+        final RuleDao dao = mock(RuleDao.class);
+        when(dao.getAllRules()).thenReturn(
+                ImmutableList.of(SampleModels.ageAndFsRule()));
+        return dao;
+    }
+    
     @Test
     public final void testGetAllVariables()
     {
         // Create the class under test.
         final DefaultAdminService s = new DefaultAdminService(
-                mockVariableDao(), mockRiskModelDao());
+                mockVariableDao(), mockRiskModelDao(), mockRuleDao());
         
         // Behavior verification.
         // Variables do not override equals() but this works because we use
@@ -65,7 +74,7 @@ public class DefaultAdminServiceTest
     {
         // Create the class under test.
         final DefaultAdminService s = new DefaultAdminService(
-                mockVariableDao(), mockRiskModelDao());
+                mockVariableDao(), mockRiskModelDao(), mockRuleDao());
         
         // Behavior verification.
         assertEquals(fSampleGroups, s.getAllVariableGroups());
@@ -78,7 +87,7 @@ public class DefaultAdminServiceTest
         
         // Create the class under test.
         final DefaultAdminService s = new DefaultAdminService(
-                mockVariableDao(), mockRiskModelDao());
+                mockVariableDao(), mockRiskModelDao(), mockRuleDao());
         
         // Behavior verification.
         final BooleanVariable actualVar = (BooleanVariable)s.getVariable(key);
@@ -90,7 +99,7 @@ public class DefaultAdminServiceTest
     {
         // Create the class under test.
         final DefaultAdminService s = new DefaultAdminService(
-                mockVariableDao(), mockRiskModelDao());
+                mockVariableDao(), mockRiskModelDao(), mockRuleDao());
         
         // Behavior verification.
         s.getVariable("Does not exist");
@@ -107,7 +116,7 @@ public class DefaultAdminServiceTest
         // Create the class under test.
         final VariableDao mockDao = mockVariableDao();
         final DefaultAdminService s = new DefaultAdminService(
-                mockDao, mockRiskModelDao());
+                mockDao, mockRiskModelDao(), mockRuleDao());
         
         // Setup
         final AbstractVariable var = s.getVariable(key);

@@ -132,11 +132,11 @@ public class SampleModels
         final NumericalVariable ageVar = SampleModels.ageVariable();
         final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
         final ValueMatcher totallyDependentMatcher = new ValueMatcher(
-                fsVar, "value == 'Totally dependent'");
-        final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
+                fsVar, "value == 'Totally dependent'", true);
+        final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "", false);
         return new Rule(
                 Arrays.asList(totallyDependentMatcher, ageMatcher),
-                "#Age.value * #coefficient", true);
+                "#Age.value * #coefficient", true, "Age multiplier for functional status");
     }
     
     public static List<AbstractVariable> sampleVariableList()

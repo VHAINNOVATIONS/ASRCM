@@ -37,4 +37,26 @@ public interface AdminService extends ModelInspectionService
      * the variable to the persistent store
      */
     public void saveVariable(final AbstractVariable variable);
+    
+    /**
+     * Returns all Rules defined in the database.
+     * @return a list, in display name order
+     */
+    public List<Rule> getAllRules();
+    
+    /**
+     * Returns the {@link Rule} with the given display name for editing. Note that
+     * the returned object must be given back to {@link #saveRule(Rule)}
+     * to persist any changes.
+     * @throws InvalidIdentifierException if no such Rule exists
+     */
+    public Rule getRule(final String key) throws InvalidIdentifierException;
+    
+    /**
+     * Saves the given rule to the persistent store. The given rule may be
+     * brand-new or one previously loaded by {@link #getRule(String)}.
+     * @param rule the rule to save
+     * @throws DuplicateRuleNameException if the provided rule key is non-unique
+     */
+    public void saveRule(final Rule rule);
 }
