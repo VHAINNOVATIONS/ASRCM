@@ -75,6 +75,7 @@ dependencies {
 	compile 'joda-time:joda-time:2.3'
 	compile 'org.apache.commons:commons-lang3:3.3.2'
 	compile 'com.google.guava:guava:18.0'
+	compile 'org.apache.commons:commons-csv:1.1'
 
     // Spring-Security XML namespace
 	runtime group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion

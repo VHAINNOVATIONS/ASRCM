@@ -50,6 +50,9 @@ public class DefaultAdminServiceTest
     {
         final ProcedureDao dao = mock(ProcedureDao.class);
         when(dao.getAllProcedures()).thenReturn(SampleModels.procedureList());
+        // We don't actually simulate any database interaction, but at least return a fake
+        // number of procedures deleted.
+        when(dao.replaceAllProcedures(anySetOf(Procedure.class))).thenReturn(2);
         return dao;
     }
     

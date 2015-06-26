@@ -31,6 +31,8 @@
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/views/"/>
+        <!-- Expose Spring's useful RequestContext object to views. -->
+        <property name="requestContextAttribute" value="springRequestContext" />
     </bean>
     
     <!-- Support CSS and JS via Spring (because we make Spring the default serlvet. -->
@@ -41,4 +43,8 @@
     <mvc:resources mapping="/css/**" location="/css/" cache-period="1" />
     <mvc:resources mapping="/js/**" location="/js/" cache-period="1" />
 
+    <!-- Support multipart form submissions for file uploads. -->
+    <bean id="multipartResolver"
+        class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+    </bean> 
 </beans>

@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 
-import java.util.List;
+import java.util.*;
 
 import javax.inject.Inject;
 
@@ -16,8 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.*;
 
 /**
  * Integration Test for {@link AdminService}.
@@ -111,6 +110,33 @@ public class AdminServiceIT extends IntegrationTest
             // due to the Exception that occurred in the DAO.
             getHibernateSession().clear();
         }
+    }
+    
+    @Test
+    public final void testReplaceAllProcedures() throws Exception
+    {
+        // At time of writing, there are ~10,000 procedures in the real world.
+        final int numProcedures = 10000;
+        
+        final ArrayList<Procedure> newProcedures = new ArrayList<>(numProcedures);
+        for (int i = 1; i <= numProcedures; ++i)
+        {
+            newProcedures.add(new Procedure(
+                    String.format("%05d", i),
+                    1.0f,
+                    "short desc",
+                    "long long description",
+                    "Complex",
+                    true));
+        }
+        
+        fAdminService.replaceAllProcedures(ImmutableSet.copyOf(newProcedures));
+        
+        // Simulate a new transaction.
+        getHibernateSession().flush();
+        getHibernateSession().clear();
+        
+        assertEquals(newProcedures, fAdminService.getAllProcedures());
     }
     
 }

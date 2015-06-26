@@ -1,6 +1,8 @@
 package gov.va.med.srcalc.service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import gov.va.med.srcalc.db.*;
 import gov.va.med.srcalc.domain.model.*;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 
@@ -110,6 +113,21 @@ public class DefaultAdminService implements AdminService
     {
         fLogger.debug("Getting all RiskModels.");
         return fRiskModelDao.getAllRiskModels();
+    }
+    
+    @Override
+    @Transactional
+    public void replaceAllProcedures(final Set<Procedure> newProcedures)
+    {
+        final Stopwatch stopwatch = Stopwatch.createStarted();
+        final int deleteCount = fProcedureDao.replaceAllProcedures(newProcedures);
+        stopwatch.stop();
+        
+        fLogger.info(
+                "Replaced all {} Procedures in the DB with a new set of {} in {}ms.",
+                deleteCount,
+                newProcedures.size(),
+                stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
     @Override
