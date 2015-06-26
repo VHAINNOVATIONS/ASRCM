@@ -41,10 +41,6 @@
 	   <name>editVariablePage</name>
 	   <path>/WEB-INF/tags/editVariablePage.tag</path>
 	</tag-file>
-	<tag-file >
-	   <name>editModelPage</name>
-	   <path>/WEB-INF/tags/editModelPage.tag</path>
-	</tag-file>
 
 	<tag>
 	   <name>variableSpecific</name>

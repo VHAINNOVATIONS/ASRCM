@@ -2,7 +2,9 @@ package gov.va.med.srcalc.web.view.admin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import gov.va.med.srcalc.domain.model.ConstantTerm;
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.model.Specialty;
 
@@ -15,13 +17,23 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
 
     private String modelName;
     
-//    private RiskModel importedModel; TBD
+    private Set<Specialty> applicableSpecialties;
+    
+    // Store the Edit Changes (an 'Import') in a new RiskModel object.
+	// If this were a normal editing situation where the user could change individual values through 
+	// the gui, this would be separate copy, but since this is an import process, we will just 
+	// init this to null until when/if the user imports a new model. 
+	// The name may be edited separately and so the edit copy is stored separately.
+	// the getter methods will first check will return the importModel values if it has been set and the target model 
+	// if not.
+    private RiskModel importedModel=null;
     
 	protected EditRiskModel( final RiskModel rm ) 
 	{
 		fRiskModel = rm;
 		modelName = rm.getDisplayName();
-		//id = rm.getId();
+		
+		importedModel = null;		
 	}
 	
     /**
@@ -40,6 +52,18 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
 	{
 		return fRiskModel;
 	}
+	
+	/**
+	 * 
+	 * Note: this will take the place of most of the setter methods for individual fields.
+	 * @param impModel
+	 */
+//	public void setImportedModel( RiskModel impModel ) 
+//	{
+//		/// ??? should this also overwrite the possibly edited display name?		
+//		importedModel = impModel;
+//		importedModel.setDisplayName( modelName );
+//	}
 	
 	/* 
 	 * Return the modelName
@@ -65,10 +89,21 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
 		return Integer.toString( fRiskModel.getId() );
 	}
 	
+	/**
+	 * Return a list of Specialties. 
+	 */
 	public List<Specialty> getSpecialties() 
 	{
 		return new ArrayList<Specialty>( );
 	}
+	
+
+	
+	public ConstantTerm getConstantTerm() 
+	{
+		return ( importedModel == null ? fRiskModel.getConstantTerm() : importedModel.getConstantTerm() );
+	}
+
 	
 	public int getMaxDisplayNameLength() 
 	{
