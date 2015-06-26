@@ -38,6 +38,9 @@ public class AdminHomeControllerIT extends IntegrationTest
     {
         fMockMvc.perform(get("/admin")).
             andExpect(model().attributeExists("variables"));
+
+        fMockMvc.perform(get("/admin")).
+        	andExpect(model().attributeExists("riskModels"));
     }
     
 }
