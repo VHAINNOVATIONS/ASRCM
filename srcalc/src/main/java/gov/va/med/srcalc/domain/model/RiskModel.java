@@ -18,6 +18,7 @@ import com.google.common.collect.ImmutableSet;
  * A risk model definition.
  */
 @Entity
+@Table(name = "risk_model")
 public class RiskModel implements Comparable<RiskModel>
 {
     public static final int DISPLAY_NAME_MAX = 80;

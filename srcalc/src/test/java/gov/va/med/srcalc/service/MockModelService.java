@@ -11,7 +11,7 @@ import com.google.common.collect.ImmutableList;
 public class MockModelService implements ModelInspectionService
 {
     private final RiskModel fThoracicModel;
-    
+
     public MockModelService()
     {
         fThoracicModel = SampleModels.thoracicRiskModel();
@@ -43,12 +43,19 @@ public class MockModelService implements ModelInspectionService
 
 	@Override
 	public RiskModel getRiskModelForId(int modelId)  {
-		return fThoracicModel;
+		
+		if( fThoracicModel.getId() == modelId ) 
+		{
+			return fThoracicModel;
+		}
+		else 
+		{
+			return null;
+		}
 	}
 
 	@Override
 	public void saveRiskModel(RiskModel model) {
-		// TODO Auto-generated method stub
 		
 	}
 }
