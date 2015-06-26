@@ -1,28 +1,25 @@
-package gov.va.med.srcalc.web.controller;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.inject.Inject;
+package gov.va.med.srcalc.web.controller.admin;
 
 import gov.va.med.srcalc.domain.model.AbstractVariable;
 import gov.va.med.srcalc.domain.model.RiskModel;
-import gov.va.med.srcalc.domain.model.VariableGroup;
-import gov.va.med.srcalc.service.*;
+import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.web.view.VariableSummary;
 import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.EditRiskModel;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.common.collect.ImmutableCollection;
 

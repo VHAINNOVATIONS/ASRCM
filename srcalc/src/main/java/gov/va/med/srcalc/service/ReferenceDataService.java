@@ -2,13 +2,17 @@ package gov.va.med.srcalc.service;
 
 import gov.va.med.srcalc.domain.model.Procedure;
 
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 /**
- * A Service that simply exposes reference data (e.g., Procedure lists) to
- * callers.
+ * A service that exposes reference data (e.g., Procedure lists) necessary for completing
+ * a calculation.
  */
 public interface ReferenceDataService
 {
-    public List<Procedure> getActiveProcedures();
+    /**
+     * Returns all available Procedures, ordered by CPT code for convenience.
+     * @return an immutable list
+     */
+    public ImmutableList<Procedure> getAllProcedures();
 }

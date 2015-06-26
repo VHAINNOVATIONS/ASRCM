@@ -36,7 +36,7 @@ public class ProcedureLoaderVisitor implements VariableVisitor
     @Override
     public void visitProcedure(ProcedureVariable variable) throws Exception
     {
-        variable.setProcedures(fDao.getActiveProcedures());
+        variable.setProcedures(fDao.getAllProcedures());
     }
     
     @Override

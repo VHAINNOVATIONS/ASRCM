@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.web.controller;
+package gov.va.med.srcalc.web.controller.admin;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -38,9 +38,10 @@ public class AdminHomeControllerIT extends IntegrationTest
     {
         fMockMvc.perform(get("/admin")).
             andExpect(model().attributeExists("variables"));
-
+        
         fMockMvc.perform(get("/admin")).
-        	andExpect(model().attributeExists("riskModels"));
+    	andExpect(model().attributeExists("riskModels"));
+
     }
     
 }
