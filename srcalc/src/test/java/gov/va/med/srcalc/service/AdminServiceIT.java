@@ -118,27 +118,8 @@ public class AdminServiceIT extends IntegrationTest
     public final void testGetAllRiskModels() 
     {
     	ImmutableCollection<RiskModel> allRiskModels = fAdminService.getAllRiskModels();
-//    	assertEquals( 7, allRiskModels.size() );
-    	System.out.println("RiskModels Size = "+allRiskModels.size() );
-    	int prevId = 0;
-    	int dupCnt = 0;
     	
-    	for( RiskModel rm : allRiskModels ) {
-    		if( rm.getId() == prevId ) {
-    			dupCnt++;
-    			continue;
-    		}
-    		prevId = rm.getId();
-    		System.out.println("+"+dupCnt+" duplicates");
-    		dupCnt = 0;
-    	
-//    		System.out.println("Model= "+rm.getDisplayName() );
-    		System.out.println("  "+rm.toString() );
-    		ImmutableSet<ModelTerm> terms = rm.getTerms();
-    		for( ModelTerm t : terms ) {
-    			System.out.println("   "+t.toString() );
-    		}
-    	}
+    	assertEquals( 7, allRiskModels.size() );
     	
     	List<RiskModel> rmList = allRiskModels.asList();
     	assertEquals( "General Surgery 30-Day Mortality Risk", rmList.get(0).getDisplayName() );

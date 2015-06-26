@@ -36,7 +36,7 @@ public class EditRiskModelValidatorTest {
         
         assertEquals(1, errors.getErrorCount());
         assertEquals(
-                ValidationCodes.TOO_SHORT,
+                ValidationCodes.NO_VALUE,
                 errors.getFieldError("modelName").getCode());
     }
     

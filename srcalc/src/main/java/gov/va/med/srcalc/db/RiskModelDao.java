@@ -38,11 +38,11 @@ public class RiskModelDao
      * Returns all RiskModels in the database, in arbitrary order.
      * @return an ImmutableCollection
      */
-    public ImmutableCollection<RiskModel> getAllRiskModels()
+    @SuppressWarnings("unchecked")
+	public ImmutableCollection<RiskModel> getAllRiskModels()
     {
-        @SuppressWarnings("unchecked") // trust Hibernate
-        final List<RiskModel> list =
-                getCurrentSession().createCriteria(RiskModel.class).list();
+        Query q = getCurrentSession().createQuery("from RiskModel");
+        final List<RiskModel> list = q.list();
         return ImmutableList.copyOf(list);
     }
     
