@@ -2,8 +2,7 @@ package gov.va.med.srcalc.service;
 
 import java.util.List;
 
-import gov.va.med.srcalc.db.RiskModelDao;
-import gov.va.med.srcalc.db.VariableDao;
+import gov.va.med.srcalc.db.*;
 import gov.va.med.srcalc.domain.model.*;
 
 import javax.inject.Inject;
@@ -13,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 
 public class DefaultAdminService implements AdminService
 {
@@ -20,13 +20,17 @@ public class DefaultAdminService implements AdminService
     
     private final VariableDao fVariableDao;
     private final RiskModelDao fRiskModelDao;
+    private final ProcedureDao fProcedureDao;
     
     @Inject
     public DefaultAdminService(
-            final VariableDao variableDao, final RiskModelDao riskModelDao)
+            final VariableDao variableDao,
+            final RiskModelDao riskModelDao,
+            final ProcedureDao procedureDao)
     {
         fVariableDao = variableDao;
         fRiskModelDao = riskModelDao;
+        fProcedureDao = procedureDao;
     }
     
     @Override
@@ -106,5 +110,12 @@ public class DefaultAdminService implements AdminService
     {
         fLogger.debug("Getting all RiskModels.");
         return fRiskModelDao.getAllRiskModels();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ImmutableList<Procedure> getAllProcedures()
+    {
+        return fProcedureDao.getAllProcedures();
     }
 }

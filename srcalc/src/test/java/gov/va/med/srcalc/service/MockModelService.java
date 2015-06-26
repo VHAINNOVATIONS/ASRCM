@@ -40,4 +40,10 @@ public class MockModelService implements ModelInspectionService
     {
         return fThoracicModel;
     }
+    
+    @Override
+    public ImmutableList<Procedure> getAllProcedures()
+    {
+        return SampleModels.procedureList();
+    }
 }
