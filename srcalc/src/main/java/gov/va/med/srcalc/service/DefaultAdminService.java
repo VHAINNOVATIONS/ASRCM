@@ -118,7 +118,6 @@ public class DefaultAdminService implements AdminService
 
     /**
      * Saves the {@link RiskModel} 
-     * @return RiskModel
      */
     @Override
     @Transactional

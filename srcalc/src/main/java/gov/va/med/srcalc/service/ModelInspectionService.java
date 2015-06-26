@@ -33,9 +33,7 @@ public interface ModelInspectionService
     public RiskModel getRiskModelForId(int modelId);    
     
     /**
-     * Saves the name of the {@link RiskModel} 
-     * @return RiskModel
+     * Saves the {@link RiskModel} 
      */
     public void saveRiskModel( final RiskModel model );    
-
 }
