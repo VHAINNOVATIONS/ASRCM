@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
-public class EditRiskModelValidatorTest {
-
+public class EditRiskModelValidatorTest 
+{
     /**
      * Validates the given object and returns the binding result.
      */
@@ -17,7 +17,7 @@ public class EditRiskModelValidatorTest {
     {
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(erm, "riskModel");
-    	EditRiskModelValidator validator = new EditRiskModelValidator();
+        EditRiskModelValidator validator = new EditRiskModelValidator();
 
         assertTrue(validator.supports(erm.getClass()));
         
@@ -47,5 +47,4 @@ public class EditRiskModelValidatorTest {
         
         assertEquals("error count", 0, errors.getErrorCount());
     }
-
 }

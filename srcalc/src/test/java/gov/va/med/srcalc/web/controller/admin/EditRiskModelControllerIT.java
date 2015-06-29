@@ -2,6 +2,7 @@ package gov.va.med.srcalc.web.controller.admin;
 
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.Matchers.hasProperty;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -28,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
- * Integration Test for {@link EditVariableController}. Only tests some basic
+ * Integration Test for {@link EditRiskModelController}. Only tests some basic
  * happy-path and error-path cases: unit tests should cover the details.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -54,14 +55,18 @@ public class EditRiskModelControllerIT extends IntegrationTest
     @Test
     public void testEditModel() throws Exception
     {
+    	final String newName = "Bogus Model Name";
         fMockMvc.perform(get("/admin/models/2")).
             andExpect(status().isOk()).
             andExpect(model().attribute("riskModel", isA(EditRiskModel.class)));
         
         fMockMvc.perform(
                 post("/admin/models/2").
-                param("modelName", "Bogus Model Name")).
+                param("modelName", newName )).
             andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+        
+        final RiskModel rm2 = fAdminService.getRiskModelForId( 2 );
+        assertEquals( newName, rm2.getDisplayName() );
     }
         
     @Test
