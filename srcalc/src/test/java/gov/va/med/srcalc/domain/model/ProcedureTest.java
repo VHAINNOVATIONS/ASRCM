@@ -39,6 +39,25 @@ public class ProcedureTest
     }
     
     @Test(expected = IllegalArgumentException.class)
+    public final void testCptTooLong()
+    {
+        new Procedure(
+                "123456", 1.0f, "short desc", "long description", "Standard", true);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public final void testLongDescEmpty()
+    {
+        new Procedure(
+                "1234",
+                1.0f,
+                "short desc",
+                "",
+                "Standard",
+                true);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
     public final void testLongDescTooLong()
     {
         new Procedure(
@@ -46,6 +65,18 @@ public class ProcedureTest
                 1.0f,
                 "short desc",
                 TestHelpers.stringOfLength(Procedure.DESCRIPTION_MAX + 1),
+                "Standard",
+                true);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public final void testShortDescEmpty()
+    {
+        new Procedure(
+                "1234",
+                1.0f,
+                "",
+                "long description",
                 "Standard",
                 true);
     }
@@ -59,6 +90,18 @@ public class ProcedureTest
                 TestHelpers.stringOfLength(Procedure.DESCRIPTION_MAX + 1),
                 "long description",
                 "Standard",
+                true);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public final void testComplexityEmpty()
+    {
+        new Procedure(
+                "1234",
+                1.0f,
+                "short desc",
+                "long description",
+                "",
                 true);
     }
     
