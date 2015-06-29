@@ -135,6 +135,6 @@ public final class DiscreteTerm extends SingleVariableTerm
     public String toString()
     {
         return String.format(
-                "%s=%s->%s", getVariable(), getOption(), getCoefficient());
+                "%s=%s?->%s", getVariable(), getOption(), getCoefficient());
     }
 }
