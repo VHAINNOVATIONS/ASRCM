@@ -9,6 +9,7 @@ import java.util.*;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedSet;
 
 /**
@@ -23,7 +24,8 @@ public class SampleModels
                 10.06f,
                 "Repair left hand",
                 "Repair left hand - you know, the thing with fingers",
-                "Standard");  
+                "Standard",
+                true);  
     }
 
     public static Procedure repairRightProcedure()
@@ -33,12 +35,16 @@ public class SampleModels
                 5.05f,
                 "Repair right hand",
                 "Repair right hand - you know, the thing with fingers",
-                "Standard");  
+                "Standard",
+                true);  
     }
     
-    public static List<Procedure> procedureList()
+    /**
+     * Returns a List of two dummy procedures, ordered by CPT code.
+     */
+    public static ImmutableList<Procedure> procedureList()
     {
-        return Arrays.asList(repairRightProcedure(), repairLeftProcedure());
+        return ImmutableList.of(repairRightProcedure(), repairLeftProcedure());
     }
     
     /**

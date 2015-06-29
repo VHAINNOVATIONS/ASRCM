@@ -1,19 +1,42 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.util.Preconditions;
+
 import java.util.Objects;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Immutable;
+
 /**
- * <p>Represents a medical procedure, particuarly a CPT code.</p>
+ * <p>Represents a medical procedure, particuarly a CPT code. Presents an immutable public
+ * interface.</p>
  * 
  * <p>Per Effective Java Item 17, this class is marked final because it was not
  * designed for inheritance.</p>
  */
 @Entity
 @Table(name="CPT")   // call it CPT because "PROCEDURE" is a SQL reserved word
+@Immutable
 public final class Procedure
 {
+    /**
+     * The length of all CPT codes, {@value}.
+     */
+    public static final int CPT_CODE_LENGTH = 5;
+    
+    /**
+     * The maximum length of both the long and short description, {@value}. See
+     * {@link #getShortDescription() the short description comment} for why this is the
+     * same for both short and long.
+     */
+    public static final int DESCRIPTION_MAX = 256;
+    
+    /**
+     * The maximum length of the complexity string, {@value}.
+     */
+    public static final int COMPLEXITY_MAX = 40;
+    
     private int fId;
     
     private String fCptCode;
@@ -29,13 +52,18 @@ public final class Procedure
     private boolean fEligible;
 
     /**
-     * Package-private default constructor mainly for Hibernate use. Be careful
-     * about using this constructor as the CPT Code must be set for the object
-     * to be in a valid state.
+     * Package-private default constructor intended only for reflection-based
+     * construction.
      */
     Procedure()
     {
+        // Set sentinel values.
         fCptCode = "NOT SET";
+        fRvu = Float.NaN;
+        fShortDescription = "NOT SET";
+        fLongDescription = "NOT SET";
+        fComplexity = "NOT SET";
+        fEligible = false;
     }
     
     /**
@@ -46,14 +74,16 @@ public final class Procedure
             final float rvu,
             final String shortDescription,
             final String longDescription,
-            final String complexity)
+            final String complexity,
+            final boolean eligible)
     {
-        fCptCode = cptCode;
-        fRvu = rvu;
-        fShortDescription = shortDescription;
-        fLongDescription = longDescription;
-        fComplexity = complexity;
-        fEligible = true;
+        // Use setters to verify constraints.
+        setCptCode(cptCode);
+        setRvu(rvu);
+        setShortDescription(shortDescription);
+        setLongDescription(longDescription);
+        setComplexity(complexity);
+        setEligible(eligible);
     }
 
     @Id // We use method-based property detection throughout the app.
@@ -71,21 +101,25 @@ public final class Procedure
         this.fId = id;
     }
 
+    /**
+     * Returns the Procedure's CPT code.
+     * @return a 5-character String
+     */
     @Basic
+    @Column(nullable = false, length = CPT_CODE_LENGTH)
     public String getCptCode()
     {
         return fCptCode;
     }
 
     /**
-     * For reflection-based construction only. The CPT code is this object's
-     * natural identifier and should not be changed. If a Procedure needs a new
-     * CPT code, the existing Procedure should be deactivated and a new one
-     * created.
+     * Sets the CPT code. For reflection-based construction only.
+     * @throws IllegalArgumentException if the given code is not 5 characters long
      */
     void setCptCode(final String cptCode)
     {
-        this.fCptCode = cptCode;
+        this.fCptCode = Preconditions.requireWithin(
+                cptCode, CPT_CODE_LENGTH, CPT_CODE_LENGTH);
     }
 
     /**
@@ -97,42 +131,78 @@ public final class Procedure
         return fRvu;
     }
 
-    public void setRvu(final float rvu)
+    /**
+     * Sets the Relative Value Unit (RVU). For reflection-based construction only.
+     */
+    void setRvu(final float rvu)
     {
         this.fRvu = rvu;
     }
-
-    @Basic
-    public String getShortDescription()
-    {
-    	return fShortDescription;
-    }
-
-    public void setShortDescription(final String description)
-    {
-    	fShortDescription = description;
-    }
     
+    /**
+     * Returns the full procedure description.
+     * @return a String no longer than {@link #DESCRIPTION_MAX} characters
+     */
     @Basic
+    @Column(nullable = false, length = DESCRIPTION_MAX)
     public String getLongDescription()
     {
         return fLongDescription;
     }
 
-    public void setLongDescription(final String longDescription)
+    /**
+     * Sets the full procedure description. For reflection-based construction only.
+     * @throws IllegalArgumentException if the given string is empty or greater than
+     * {@value #DESCRIPTION_MAX} characters
+     */
+    void setLongDescription(final String description)
     {
-        fLongDescription = longDescription;
+        fLongDescription = Preconditions.requireWithin(description, 1, DESCRIPTION_MAX);
+    }
+
+    /**
+     * Returns a shortened version of the procedure description. Some procedures do not
+     * have a shortened description, so the returned String may be equal to {@link
+     * #getLongDescription()}.
+     * @return a String no longer than {@link #DESCRIPTION_MAX} characters
+     */
+    @Basic
+    @Column(nullable = false, length = DESCRIPTION_MAX)
+    public String getShortDescription()
+    {
+    	return fShortDescription;
+    }
+
+    /**
+     * Sets the shortened procedure description. For reflection-based construction only.
+     * @throws IllegalArgumentException if the given string is empty or greater than
+     * {@value #DESCRIPTION_MAX} characters
+     */
+    void setShortDescription(final String description)
+    {
+    	fShortDescription = Preconditions.requireWithin(description, 1, DESCRIPTION_MAX);
     }
     
+    /**
+     * Returns a String describing the procedure's surgical complexity. (This may only
+     * be relevant for the VA.)
+     * @return a String no longer than {@link #COMPLEXITY_MAX} characters
+     */
     @Basic
+    @Column(nullable = false, length = COMPLEXITY_MAX)
     public String getComplexity()
     {
     	return fComplexity;
     }
     
-    public void setComplexity(final String complexity)
+    /**
+     * Sets the surgical complexity string. For reflection-based construction only.
+     * @throws IllegalArgumentException if the given string is empty or greater than
+     * {@value #COMPLEXITY_MAX} characters
+     */
+    void setComplexity(final String complexity)
     {
-    	fComplexity = complexity;
+    	fComplexity = Preconditions.requireWithin(complexity, 1, COMPLEXITY_MAX);
     }
 
     /**
@@ -145,9 +215,10 @@ public final class Procedure
     }
 
     /**
-     * Sets whether this procedure is eligible for a risk calculation.
+     * Sets whether this procedure is eligible for a risk calculation. For
+     * reflection-based construction only.
      */
-    public void setEligible(final boolean eligible)
+    void setEligible(final boolean eligible)
     {
         fEligible = eligible;
     }
