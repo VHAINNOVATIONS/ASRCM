@@ -16,7 +16,7 @@
     <c:url var="editModel" value="/admin/models/${model.id}" />
 
     <tr>
-        <td><c:out value="${model.modelName}"/></td>
+        <td><c:out value="${model.displayName}"/></td>
         <td><a href="${editModel}" class="editObjectLink">Edit</a></td>
     </tr>
     </c:forEach>

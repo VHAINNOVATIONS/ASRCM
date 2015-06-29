@@ -30,10 +30,5 @@ public interface ModelInspectionService
      * Returns the {@link RiskModel} with the given ID.
      * @return RiskModelS
      */
-    public RiskModel getRiskModelForId(int modelId);    
-    
-    /**
-     * Saves the {@link RiskModel} 
-     */
-    public void saveRiskModel( final RiskModel model );    
+    public RiskModel getRiskModelForId(int modelId);        
 }

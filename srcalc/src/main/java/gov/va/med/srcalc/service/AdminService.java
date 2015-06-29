@@ -37,4 +37,9 @@ public interface AdminService extends ModelInspectionService
      * the variable to the persistent store
      */
     public void saveVariable(final AbstractVariable variable);
+    
+    /**
+     * Saves the {@link RiskModel} 
+     */
+    public void saveRiskModel( final RiskModel model );    
 }

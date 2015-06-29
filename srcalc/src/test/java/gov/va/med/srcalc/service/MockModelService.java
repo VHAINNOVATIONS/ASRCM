@@ -53,9 +53,4 @@ public class MockModelService implements ModelInspectionService
 			return null;
 		}
 	}
-
-	@Override
-	public void saveRiskModel(RiskModel model) {
-		
-	}
 }

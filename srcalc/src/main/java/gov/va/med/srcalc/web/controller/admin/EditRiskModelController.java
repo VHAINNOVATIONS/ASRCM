@@ -44,19 +44,14 @@ public class EditRiskModelController {
             @PathVariable final int riskModelId )
             throws InvalidIdentifierException
     {    	
-    	try {
-        	RiskModel rm = fAdminService.getRiskModelForId( riskModelId ); 
+    	RiskModel rm = fAdminService.getRiskModelForId( riskModelId ); 
 
-        	if( rm == null ) {
-        		throw new InvalidIdentifierException( "Unable to find RiskModel with ID "+riskModelId );        		
-        	}
-        	EditRiskModel editModel = EditRiskModel.fromRiskModel( rm );
-	
-	        return editModel;    		
+    	if( rm == null ) {
+    		throw new InvalidIdentifierException( "Unable to find RiskModel with ID "+riskModelId );        		
     	}
-    	catch ( NumberFormatException nfe ) {
-    		throw new InvalidIdentifierException( "", nfe );
-    	}
+    	EditRiskModel editModel = EditRiskModel.fromRiskModel( rm );
+
+        return editModel;    		
     }
 
     @RequestMapping(method = RequestMethod.GET)

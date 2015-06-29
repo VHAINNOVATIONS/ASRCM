@@ -49,16 +49,7 @@ public class AdminHomeController
     {
         final ImmutableCollection<RiskModel>  riskModels = fAdminService.getAllRiskModels();
 
-        // Use a set since there are multiple entries in the risk models list for each model.
-        //
-        Set<EditRiskModel> editRMs = new TreeSet<EditRiskModel>(  );
-
         fLogger.debug( "There are {} Risk Models in the DB.", riskModels.size());
-
-        for( final RiskModel rm : riskModels ) 
-        {
-        	editRMs.add( EditRiskModel.fromRiskModel( rm ) );
-        }
 
         // Transform the List of all Variables into a List of VariableSummaries.
         final List<AbstractVariable> variables = fAdminService.getAllVariables();
@@ -68,7 +59,7 @@ public class AdminHomeController
             summaries.add(VariableSummary.fromVariable(var));
         }
 
-        model.addAttribute("riskModels", editRMs );
+        model.addAttribute("riskModels", riskModels );
         model.addAttribute("variables", summaries);
         
         return Views.MODEL_ADMIN_HOME;
