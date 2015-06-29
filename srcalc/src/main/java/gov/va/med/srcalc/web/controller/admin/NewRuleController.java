@@ -40,7 +40,7 @@ public class NewRuleController
     /**
      * The model attribute key of the {@link Rule} object.
      */
-    private static final String ATTRIBUTE_RULE = "rule";
+    protected static final String ATTRIBUTE_RULE = "rule";
     
     private final AdminService fAdminService;
     
@@ -126,7 +126,7 @@ public class NewRuleController
         // validation error.
         catch (final DuplicateRuleNameException ex)
         {
-            bindingResult.rejectValue("key", ValidationCodes.DUPLICATE_VALUE, "duplicate key");
+            bindingResult.rejectValue("displayName", ValidationCodes.DUPLICATE_VALUE, "duplicate rule name");
             return displayForm(editRule);
         }
         

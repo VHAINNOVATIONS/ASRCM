@@ -17,7 +17,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
  * Expression Language (SPeL) expression.
  */
 @Embeddable
-public class ValueMatcher
+public final class ValueMatcher
 {
     private Variable fVariable;
     private Expression fBooleanExpression;
@@ -48,22 +48,23 @@ public class ValueMatcher
 
     /**
      * Parse the designated expression into a SPEL Expression.
-     * @param summandExpression The expression to be parsed into a boolean expression.
+     * 
+     * @param summandExpression
+     *            The expression to be parsed into a boolean expression.
      * @return A valid, parsed SPEL Expression
      */
-	private Expression parseBooleanExpression(final String booleanExpression)
-	{
-		final SpelExpressionParser parser = new SpelExpressionParser();
+    private Expression parseBooleanExpression(final String booleanExpression)
+    {
+        final SpelExpressionParser parser = new SpelExpressionParser();
         try
         {
-            return parser.parseExpression(
-                    Objects.requireNonNull(booleanExpression));
+            return parser.parseExpression(Objects.requireNonNull(booleanExpression));
         }
         catch (final ParseException ex)
         {
             throw new IllegalArgumentException("Could not parse given expression.", ex);
         }
-	}
+    }
 
     /**
      * Returns the {@link Variable} whose {@link Value} this object matches.
@@ -131,6 +132,31 @@ public class ValueMatcher
         {
             return true;
         }
+    }
+    
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof ValueMatcher)
+        {
+            final ValueMatcher other = (ValueMatcher)obj;
+            return
+                    // Note that getBooleanExpression() returns the String, not
+                    // the Expression object itself.
+                    Objects.equals(this.getVariable(), other.getVariable()) &&
+                    Objects.equals(this.getBooleanExpression(), other.getBooleanExpression()) &&
+                    this.isEnabled() == other.isEnabled();
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getVariable(), getBooleanExpression(), isEnabled());
     }
     
     @Override

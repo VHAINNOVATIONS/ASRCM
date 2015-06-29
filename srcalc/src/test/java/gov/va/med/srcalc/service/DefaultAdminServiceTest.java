@@ -21,12 +21,14 @@ public class DefaultAdminServiceTest
 {
     private List<AbstractVariable> fSampleVariables;
     private ImmutableSortedSet<VariableGroup> fSampleGroups;
+    private ImmutableList<Rule> fSampleRules;
     
     @Before
     public final void setup()
     {
         fSampleVariables = SampleModels.sampleVariableList();
         fSampleGroups = SampleModels.variableGroups();
+        fSampleRules = ImmutableList.of(SampleModels.ageAndFsRule());
     }
     
     private VariableDao mockVariableDao()
@@ -53,6 +55,8 @@ public class DefaultAdminServiceTest
         final RuleDao dao = mock(RuleDao.class);
         when(dao.getAllRules()).thenReturn(
                 ImmutableList.of(SampleModels.ageAndFsRule()));
+        final Rule rule = fSampleRules.get(0);
+        when(dao.getByDisplayName(rule.getDisplayName())).thenReturn(rule);
         return dao;
     }
     
@@ -133,4 +137,38 @@ public class DefaultAdminServiceTest
         verify(mockDao).mergeVariable(var);
     }
     
+    @Test
+    public final void getAllRules()
+    {
+        // Create the class under test.
+        final DefaultAdminService s = new DefaultAdminService(
+                mockVariableDao(), mockRiskModelDao(), mockRuleDao());
+        // Behavior verification.
+        assertEquals(fSampleRules, s.getAllRules());
+    }
+    
+    @Test
+    public final void getRule() throws Exception
+    {
+        final String ruleDisplayName = "Age multiplier for functional status";
+        
+        // Create the class under test.
+        final DefaultAdminService s = new DefaultAdminService(mockVariableDao(),
+                mockRiskModelDao(), mockRuleDao());
+        
+        // Behavior verification.
+        final Rule actualRule = (Rule) s.getRule(ruleDisplayName);
+        assertEquals(ruleDisplayName, actualRule.getDisplayName());
+    }
+    
+    @Test(expected = InvalidIdentifierException.class)
+    public final void getInvalidRule() throws Exception
+    {
+        // Create the class under test.
+        final DefaultAdminService s = new DefaultAdminService(
+                mockVariableDao(), mockRiskModelDao(), mockRuleDao());
+        
+        // Behavior verification.
+        s.getRule("Does not exist");
+    }
 }

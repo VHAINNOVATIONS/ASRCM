@@ -16,7 +16,7 @@ import gov.va.med.srcalc.service.InvalidIdentifierException;
 public class EditRule
 {
     private AdminService fAdminService;
-    private ArrayList<ValueMatcherBuilder> fMatchers;
+    private List<ValueMatcherBuilder> fMatchers;
     private String fSummandExpression;
     private boolean fRequired;
     private String fDisplayName;
@@ -54,7 +54,7 @@ public class EditRule
         return fMatchers;
     }
 
-    public void setMatchers(final ArrayList<ValueMatcherBuilder> matchers)
+    public void setMatchers(final List<ValueMatcherBuilder> matchers)
     {
         this.fMatchers = matchers;
     }

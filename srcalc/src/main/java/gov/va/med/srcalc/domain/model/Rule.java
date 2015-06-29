@@ -264,6 +264,7 @@ public final class Rule
             return
                     // Note that getSummandExpression() returns the String, not
                     // the Expression object itself.
+                    this.getDisplayName().equals(other.getDisplayName()) &&
                     this.getMatchers().equals(other.getMatchers()) &&
                     this.getSummandExpression().equals(other.getSummandExpression());
         }
@@ -276,7 +277,7 @@ public final class Rule
     @Override
     public int hashCode()
     {
-        return Objects.hash(getMatchers(), getSummandExpression());
+        return Objects.hash(getDisplayName(), getMatchers(), getSummandExpression());
     }
     
     /**

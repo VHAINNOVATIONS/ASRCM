@@ -1,9 +1,14 @@
 package gov.va.med.srcalc.domain.model;
 
+import static gov.va.med.srcalc.domain.model.SampleModels.expression1;
+import static gov.va.med.srcalc.domain.model.SampleModels.expression2;
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.calculation.BooleanValue;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
+import org.springframework.expression.Expression;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 public class ValueMatcherTest
@@ -41,5 +46,19 @@ public class ValueMatcherTest
         final StandardEvaluationContext ec = new StandardEvaluationContext();
         final BooleanValue value = new BooleanValue(SampleModels.dnrVariable(), false);
         assertTrue(vm.evaluate(ec, value));
+    }
+    
+    @Test
+    public final void testEquals()
+    {
+        EqualsVerifier.forClass(ValueMatcher.class)
+            .withPrefabValues(
+                    Variable.class,
+                    SampleModels.ageVariable(),
+                    SampleModels.dnrVariable())
+            .withPrefabValues(Expression.class, expression1(), expression2())
+            .suppress(Warning.NULL_FIELDS)
+            .suppress(Warning.NONFINAL_FIELDS)
+            .verify();
     }
 }

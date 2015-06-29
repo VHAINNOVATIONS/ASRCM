@@ -34,6 +34,7 @@ public class EditRuleValidator implements Validator
         ValidationUtils2.rejectIfDoesntMatch(
                 errors, "displayName", AbstractVariable.VALID_DISPLAY_NAME_PATTERN,
                 new Object[] {AbstractVariable.VALID_DISPLAY_NAME_CHARACTERS});
+        ValidationUtils.rejectIfEmpty(errors, "summandExpression", ValidationCodes.NO_VALUE);
         //Validate the rule's summand expression
         final SpelExpressionParser parser = new SpelExpressionParser();
         try
