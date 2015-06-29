@@ -27,15 +27,9 @@ import com.google.common.collect.ImmutableSet;
 public class EditProceduresController
 {
     /**
-     * Upon success, this controller will add the success message code as a
-     * flash attribute with this key.
+     * Upon success, this controller will add a flash attribute with this name.
      */
-    public static final String FLASH_SUCCESS_CODE = "successMessageCode";
-    
-    /**
-     * The message code used for successful upload and processing.
-     */
-    public static final String MESSAGE_CODE_SUCCESS = "success.procedureUpload";
+    public static final String FLASH_ATTR_SUCCESS = "uploadSuccess";
     
     /**
      * The model attribute containing the current procedure list.
@@ -87,7 +81,7 @@ public class EditProceduresController
 
             // Return to the procedures page so that the user can inspect and verify the
             // new procedure set.
-            redirectAttributes.addFlashAttribute(FLASH_SUCCESS_CODE, MESSAGE_CODE_SUCCESS);
+            redirectAttributes.addFlashAttribute(FLASH_ATTR_SUCCESS, true);
             return new ModelAndView("redirect:" + BASE_URL);
         }
         // Otherwise, display the errors to the user.

@@ -8,8 +8,8 @@
     <p>There are currently ${fn:length(procedures)} procedures in the database.</p>
     
     <h3>Upload a New Procedure Set</h3>
-    <c:if test="${!empty successMessageCode}">
-    <p class="successMessage"><spring:message code="${successMessageCode}"/></p>
+    <c:if test="${uploadSuccess}">
+    <p class="successMessage">The new procedure set has been saved to the database.</p>
     </c:if>
     <c:if test="${!empty validationErrors}">
     <div class="error">
@@ -17,7 +17,7 @@
     <p>Errors were:</p>
     <ul>
         <c:forEach var="error" items="${validationErrors}">
-        <li>${error.locationPrefix}<spring:message message="${error}" />
+        <li>${error.locationPrefix}<spring:message message="${error}" /></li>
         </c:forEach>
     </ul>
     </div>

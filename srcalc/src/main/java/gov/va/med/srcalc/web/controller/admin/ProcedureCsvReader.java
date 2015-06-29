@@ -5,12 +5,16 @@ import gov.va.med.srcalc.util.*;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Collections;
 
 import org.apache.commons.csv.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 
@@ -65,10 +69,9 @@ public class ProcedureCsvReader
      * @param record the CSVRecord to translate
      * @param errors to record validation errors
      * @param rowNumber the row number for any validation errors (1-based)
-     * @return the translated Procedure, or null if a validation error prevented its
-     * construction
+     * @return the translated Procedure, if there were no validation errors
      */
-    private Procedure translateRecord(
+    private Optional<Procedure> translateRecord(
             final CSVRecord record,
             final Collection<TabularUploadError> errors,
             final int rowNumber)
@@ -142,13 +145,13 @@ public class ProcedureCsvReader
         // the Procedure.
         if (ourErrors.isEmpty())
         {
-            return new Procedure(
-                    cptCode, rvu, shortDesc, longDesc, complexity, eligible);
+            return Optional.of(new Procedure(
+                    cptCode, rvu, shortDesc, longDesc, complexity, eligible));
         }
 
         errors.addAll(ourErrors);
 
-        return null;
+        return Optional.absent();
     }
 
     /**
@@ -175,10 +178,8 @@ public class ProcedureCsvReader
         final ArrayList<Procedure> procedures = new ArrayList<>(records.size());
         for (int i = firstRow; i < records.size(); ++i)
         {
-            procedures.add(translateRecord(
-                    records.get(i),
-                    errors,
-                    i + 1));
+            procedures.add(
+                    translateRecord(records.get(i), errors, i + 1).orNull());
         }
 
         return new ParseResult(procedures, errors);
@@ -250,9 +251,16 @@ public class ProcedureCsvReader
         }
 
         /**
-         * The parsed list of Procedures. These are only guaranteed to be complete if
-         * there are no validation errors.
-         * @return an unmodifiable list of Procedures, in CSV order
+         * <p>The parsed list of Procedures.</p>
+         * 
+         * <p>
+         * If there were no validation errors, this completely represents the CSV content.
+         * Otherwise, any invalid rows will be represented by a null Procedure. We use
+         * nulls here because a List&lt;Optional&lt;Procedure&gt;&gt; would be too
+         * awkward.
+         * </p>
+         * 
+         * @return an unmodifiable list of Procedures, in CSV order. May contain nulls.
          */
         public List<Procedure> getProcedures()
         {

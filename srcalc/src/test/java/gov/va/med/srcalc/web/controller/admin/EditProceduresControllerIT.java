@@ -60,9 +60,8 @@ public class EditProceduresControllerIT
         fMockMvc.perform(fileUpload(EditProceduresController.BASE_URL)
                 .file("newProceduresFile", sampleUpload.read()))
             .andExpect(redirectedUrl(EditProceduresController.BASE_URL))
-            .andExpect(flash().attribute(
-                    EditProceduresController.FLASH_SUCCESS_CODE,
-                    EditProceduresController.MESSAGE_CODE_SUCCESS));
+            .andExpect(flash().attributeExists(
+                    EditProceduresController.FLASH_ATTR_SUCCESS));
         
         // Verify that the procedures were actually updated.
         assertEquals(

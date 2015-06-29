@@ -2,10 +2,12 @@ package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.test.util.IntegrationTest;
-
-import java.util.*;
 
 import javax.inject.Inject;
 
