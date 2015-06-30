@@ -1,4 +1,4 @@
--- This script inserts the base static data for srcalc.
+-- This script inserts dummy risk model configuration into the database for testing.
 
 -- SPECIALTY table
 INSERT INTO SPECIALTY (id, vista_id, name) VALUES (1, 50, 'General Surgery');
@@ -103,6 +103,7 @@ INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_value, option_inde
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 8, 3, 8.1);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (4, 8, 3, 8.4);
 
+
 -- Preop Pneumonia
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (7, 'Preop Pneumonia', 'preopPneumonia', 6);
 INSERT INTO BOOLEAN_VARIABLE (id) VALUES (7);
@@ -149,3 +150,8 @@ INSERT INTO RULE_VALUE_MATCHER (rule_id, boolean_expression, enabled, variable) 
 -- Age matcher
 INSERT INTO RULE_VALUE_MATCHER (rule_id, boolean_expression, enabled, variable) VALUES (1, '', FALSE, 2);
 INSERT INTO RISK_MODEL_DERIVED_TERM (risk_model_id, rule, coefficient) VALUES (1, 1, 1.5);
+
+-- Dummy set of procedures because CPT Codes are copyrighted.
+INSERT INTO cpt (id, cpt_code, long_description, rvu, short_description, complexity, eligible) VALUES ( 1, '26545', 'Repair right hand - you know, the thing with fingers', 5.05, 'Repair right hand', 'Standard', 1);
+INSERT INTO cpt (id, cpt_code, long_description, rvu, short_description, complexity, eligible) VALUES ( 2, '26546', 'Repair left hand - you know, the thing with fingers', 10.06, 'Repair left hand', 'Standard', 1);
+INSERT INTO cpt (id, cpt_code, long_description, rvu, short_description, complexity, eligible) VALUES ( 3, '10001', 'Repair right pinky phalanx', 2.45, 'Repair right finger', 'Complex', 0);

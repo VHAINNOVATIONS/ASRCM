@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.web.controller;
+package gov.va.med.srcalc.web.controller.admin;
 
 import java.util.ArrayList;
 import java.util.List;
