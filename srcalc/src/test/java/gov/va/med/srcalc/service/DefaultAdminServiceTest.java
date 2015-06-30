@@ -38,7 +38,7 @@ public class DefaultAdminServiceTest
         when(dao.getAllVariableGroups()).thenReturn(fSampleGroups);
         return dao;
     }
-    
+ 
     private RiskModelDao mockRiskModelDao()
     {
         final RiskModelDao dao = mock(RiskModelDao.class);
