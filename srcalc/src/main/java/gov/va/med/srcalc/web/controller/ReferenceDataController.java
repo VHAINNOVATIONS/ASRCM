@@ -50,13 +50,13 @@ public class ReferenceDataController
             jsonProcedure.put("shortDescription", p.getShortDescription());
             // Use Float.toString() to send RVU as a string.
             jsonProcedure.put("rvu", Float.toString(p.getRvu()));
-            if(p.getComplexity().equalsIgnoreCase("NotinSurgCM"))
+            if(p.isEligible())
             {
-                jsonProcedure.put("excluded", "true");
+                jsonProcedure.put("excluded", "false");
             }
             else
             {
-                jsonProcedure.put("excluded", "false");
+                jsonProcedure.put("excluded", "true");
             }
             returnList.add(jsonProcedure);
         }
