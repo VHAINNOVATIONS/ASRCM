@@ -42,22 +42,6 @@
 			   <th align="left" class="main">Term</th>
 			   <th class="main">Coefficient</th>		   
 			</tr>
-			<!-- 
-			<tr>
-				<td class="attributeName">Constant</td>
-				<td class="attributeName">$ {riskModel.constantTermCoefficient}</td>
-			</tr>
-			<tr>
-				<td class="attributeName">Procedure (RVU Multiplier)</td>
-				<td class="attributeName">$ {riskModel.procedureTermCoefficient}</td>
-			</tr>
-			<c:forEach var="term" items="$ {riskModel.numericalTerms}">
-			<tr>
-			    <td class="attributeNmae">Numerical: $ {term.displayName}</td>
-			    <td class="attributeNmae">$ {term.coefficient}</td>
-			</tr>
-			</c:forEach>
-			 -->
 			<c:forEach var="term" items="${riskModel.sortedTerms}">
 			<tr>
 			    <td class="attributeNmae">${term.displayName}</td>
@@ -71,6 +55,7 @@
         </tr>
    	</tbody>
   	</table>
+	<span><a id="importRiskModel" class="btn-link" href="#">Import New Coefficients</a></span>
    
     <div class="actionButtons">
     <ol>
