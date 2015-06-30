@@ -42,7 +42,9 @@ public class EditRiskModelTest {
                 derivedTerms,
                 procedureVar, dnrVar, ageVar, wbcVar, fsVar);
 
-        return EditRiskModel.fromRiskModel( model );        
+        
+        
+        return EditRiskModel.fromRiskModel( model,  );        
     }
     
     @Test

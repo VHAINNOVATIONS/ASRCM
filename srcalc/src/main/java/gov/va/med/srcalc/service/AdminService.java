@@ -3,6 +3,7 @@ package gov.va.med.srcalc.service;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 import gov.va.med.srcalc.domain.model.*;
 
@@ -42,4 +43,6 @@ public interface AdminService extends ModelInspectionService
      * Saves the {@link RiskModel} 
      */
     public void saveRiskModel( final RiskModel model );    
+    
+    public List<Specialty> getAllSpecialties();
 }

@@ -287,8 +287,9 @@ public class RiskModel implements Comparable<RiskModel>
     public String toString()
     {
         return String.format(
-                "RiskModel \"%s\" with %d terms",
+                "RiskModel \"%s\" with ID=%d, and %d terms",
                 getDisplayName(),
+                getId(),
                 // -1 to subtract out the constant term
                 getTerms().size() - 1);
     }
@@ -347,7 +348,29 @@ public class RiskModel implements Comparable<RiskModel>
     }
     
     // TODO: implement equals() and hashCode()
-    
+    @Override
+    public boolean equals(final Object o)
+    {
+        if (o instanceof RiskModel)  // false if o == null
+        {
+            final RiskModel other = (RiskModel)o;
+            return (this.getId() == other.getId());
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+	/**
+	 * Returns a hash code based on the displayName that uses the String.hashCode() implementation.
+	 */
+	@Override
+	public int hashCode()
+	{
+		return this.getDisplayName().hashCode();
+	}
+
     /**
      * Compares RiskModels based on their display name. Not consistent with
      * equals!

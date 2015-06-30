@@ -1,12 +1,27 @@
 package gov.va.med.srcalc.web.view.admin;
 
 import java.util.ArrayList;
+//import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ImmutableList;
+
+import gov.va.med.srcalc.domain.model.BooleanTerm;
 import gov.va.med.srcalc.domain.model.ConstantTerm;
+import gov.va.med.srcalc.domain.model.DerivedTerm;
+import gov.va.med.srcalc.domain.model.DiscreteTerm;
+import gov.va.med.srcalc.domain.model.ModelTerm;
+import gov.va.med.srcalc.domain.model.NumericalTerm;
+import gov.va.med.srcalc.domain.model.ProcedureTerm;
 import gov.va.med.srcalc.domain.model.RiskModel;
+import gov.va.med.srcalc.domain.model.SingleVariableTerm;
 import gov.va.med.srcalc.domain.model.Specialty;
+import gov.va.med.srcalc.service.AdminService;
 
 /**
  * A form backing object for editing a target (link @RiskModel) object.
@@ -17,7 +32,10 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
 
     private String modelName;
     
-    private Set<Specialty> applicableSpecialties;
+    private List<Specialty> applicableSpecialties;
+    
+    private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModel.class);
+
     
     // Store the Edit Changes (an 'Import') in a new RiskModel object.
 	// If this were a normal editing situation where the user could change individual values through 
@@ -28,21 +46,35 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
 	// if not.
     private RiskModel importedModel=null;
     
-	protected EditRiskModel( final RiskModel rm ) 
+	protected EditRiskModel( final RiskModel rm, final List<Specialty> applSpecialty ) 
 	{
 		fRiskModel = rm;
 		modelName = rm.getDisplayName();
 		
-		importedModel = null;		
+		applicableSpecialties = ImmutableList.copyOf( applSpecialty );
+		importedModel = null;				
 	}
 	
     /**
      * Returns an {@link EditRiskModel} instance for editing the given RiskModel.
-     * @param rm the target RiskModel
+     * @param riskModel the target RiskModel
      */
-	public static EditRiskModel fromRiskModel( final RiskModel rm ) 
+	public static EditRiskModel fromRiskModel( final RiskModel riskModel,
+			final AdminService fAdminService )
 	{
-		return new EditRiskModel( rm );
+		List<Specialty> applSpecialties = new ArrayList<Specialty>();
+		fLogger.debug("creating RM {}", riskModel.getDisplayName() );
+		
+		for( Specialty spec : fAdminService.getAllSpecialties() ) 
+		{
+			if( spec.getRiskModels().contains( riskModel ) ) 
+			{
+				fLogger.debug(" adding {} to specialties list", spec.getName() );
+				applSpecialties.add( spec );
+			}
+		}
+		
+		return new EditRiskModel( riskModel, applSpecialties );
 	}
 	
 	/**
@@ -94,22 +126,67 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
 	 */
 	public List<Specialty> getSpecialties() 
 	{
-		return new ArrayList<Specialty>( );
+		return applicableSpecialties;
 	}
-	
-
 	
 	public ConstantTerm getConstantTerm() 
 	{
 		return ( importedModel == null ? fRiskModel.getConstantTerm() : importedModel.getConstantTerm() );
 	}
 
-	
 	public int getMaxDisplayNameLength() 
 	{
 		return RiskModel.DISPLAY_NAME_MAX;
 	}
 	
+//	public float getConstantTermCoefficient() 
+//	{
+//		return ( importedModel == null ? fRiskModel.getConstantTerm().getCoefficient() : importedModel.getConstantTerm().getCoefficient() );
+//	}
+//
+//	public float getProcedureTermCoefficient() 
+//	{
+//		Set<ProcedureTerm> procTerms = ( importedModel != null ? 
+//										 importedModel.getProcedureTerms() : fRiskModel.getProcedureTerms() );
+//		//
+//		// Note: The code is assuming that there is at most one ProcedureTerm.
+//		//
+//		return ( procTerms.isEmpty() ? 0.0f : procTerms.iterator().next().getCoefficient() );
+//	}
+
+//	public List<EditTerm> getNumericalTerms() 
+//	{
+//		Set<NumericalTerm> numTerms = ( importedModel != null ? 
+//				 						importedModel.getNumericalTerms() : fRiskModel.getNumericalTerms() );
+//
+//		List<EditTerm> editTermsList = new ArrayList<EditTerm>();
+//
+//		for( NumericalTerm nTerm : numTerms )
+//		{
+//			editTermsList.add( new EditTerm( nTerm.getVariable().getDisplayName(), nTerm.getCoefficient() ) );
+//		}
+//		
+//		return editTermsList;
+//	}
+	
+	public List<ModelTermElement> getSortedTerms() 
+	{
+		Set<ModelTerm> numTerms = ( importedModel != null ? 
+				 					importedModel.getTerms(): fRiskModel.getTerms() );
+
+		ModelTermElementList termsElemsList = new ModelTermElementList();
+
+		for( ModelTerm modTerm : numTerms )
+		{
+			// change this
+			termsElemsList.addTermElements( modTerm );
+		}
+		
+		termsElemsList.sort( );
+		
+		return termsElemsList;
+	}
+
 	/**
 	 * Update the target RiskModel with the current edits.
 	 */

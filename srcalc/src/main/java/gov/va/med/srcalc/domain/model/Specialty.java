@@ -140,7 +140,7 @@ public final class Specialty implements Serializable
      * Returns all {@link RiskModel}s associated with the Specialty. Caution:
      * lazy-loaded.
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     // Override strange defaults. See
     // <https://forum.hibernate.org/viewtopic.php?f=1&t=1037190>.
     @JoinTable(
@@ -165,7 +165,7 @@ public final class Specialty implements Serializable
     @Override
     public String toString()
     {
-        return fName;
+        return "Specialty: Name=" + fName+", ID="+Integer.toString( fId );
     }
     
     @Override

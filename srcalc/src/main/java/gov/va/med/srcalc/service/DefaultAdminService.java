@@ -3,6 +3,7 @@ package gov.va.med.srcalc.service;
 import java.util.List;
 
 import gov.va.med.srcalc.db.RiskModelDao;
+import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.db.VariableDao;
 import gov.va.med.srcalc.domain.model.*;
 
@@ -20,13 +21,15 @@ public class DefaultAdminService implements AdminService
     
     private final VariableDao fVariableDao;
     private final RiskModelDao fRiskModelDao;
+    private final SpecialtyDao fSpecialtyDao;
     
     @Inject
     public DefaultAdminService(
-            final VariableDao variableDao, final RiskModelDao riskModelDao)
+            final VariableDao variableDao, final RiskModelDao riskModelDao, SpecialtyDao specialtyDao)
     {
         fVariableDao = variableDao;
         fRiskModelDao = riskModelDao;
+        fSpecialtyDao = specialtyDao;
     }
     
     @Override
@@ -99,6 +102,15 @@ public class DefaultAdminService implements AdminService
         // level.
         fLogger.info("Saved variable {}.", variable.getKey());
     }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<Specialty> getAllSpecialties()
+    {
+        fLogger.debug("Getting all Specialties.");
+        return fSpecialtyDao.getAllSpecialties();
+    }
+
     
     @Override
     @Transactional(readOnly = true)

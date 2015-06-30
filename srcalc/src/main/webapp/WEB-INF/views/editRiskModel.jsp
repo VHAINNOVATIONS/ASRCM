@@ -33,9 +33,45 @@
         </ul>
         </td>
         </tr>
-    </tbody>
-    </table>
-    
+        <tr>
+        <td class="attributeName" valign="middle">Summation Terms</td>
+        <td>
+			<table>
+			<tbody>
+			<tr>
+			   <th align="left" class="main">Term</th>
+			   <th class="main">Coefficient</th>		   
+			</tr>
+			<!-- 
+			<tr>
+				<td class="attributeName">Constant</td>
+				<td class="attributeName">$ {riskModel.constantTermCoefficient}</td>
+			</tr>
+			<tr>
+				<td class="attributeName">Procedure (RVU Multiplier)</td>
+				<td class="attributeName">$ {riskModel.procedureTermCoefficient}</td>
+			</tr>
+			<c:forEach var="term" items="$ {riskModel.numericalTerms}">
+			<tr>
+			    <td class="attributeNmae">Numerical: $ {term.displayName}</td>
+			    <td class="attributeNmae">$ {term.coefficient}</td>
+			</tr>
+			</c:forEach>
+			 -->
+			<c:forEach var="term" items="${riskModel.sortedTerms}">
+			<tr>
+			    <td class="attributeNmae">${term.displayName}</td>
+			    <td class="attributeNmae">${term.coefficient}</td>
+			</tr>
+			</c:forEach>
+			 
+			</tbody>
+			</table>
+		</td>        
+        </tr>
+   	</tbody>
+  	</table>
+   
     <div class="actionButtons">
     <ol>
     <li><c:url var="cancelUrl" value="/admin" />
