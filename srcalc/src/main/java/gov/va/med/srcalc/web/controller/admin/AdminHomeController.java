@@ -8,6 +8,7 @@ import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.EditRiskModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -47,8 +48,8 @@ public class AdminHomeController
     @RequestMapping(method = RequestMethod.GET)
     public String defaultPage(final Model model)
     {
-        final ImmutableCollection<RiskModel>  riskModels = fAdminService.getAllRiskModels();
-
+        List<RiskModel> riskModels = new ArrayList<RiskModel>( fAdminService.getAllRiskModels() );
+        Collections.sort( riskModels );
         fLogger.debug( "There are {} Risk Models in the DB.", riskModels.size());
 
         // Transform the List of all Variables into a List of VariableSummaries.

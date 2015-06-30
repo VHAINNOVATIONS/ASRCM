@@ -2,7 +2,6 @@ package gov.va.med.srcalc.db;
 
 import gov.va.med.srcalc.domain.model.RiskModel;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,8 +43,6 @@ public class RiskModelDao
         Query q = getCurrentSession().createQuery("from RiskModel");
         @SuppressWarnings("unchecked")
         final List<RiskModel> list = q.list();
-        // sort alphabetically by name
-        Collections.sort( list );
         return ImmutableList.copyOf(list);
     }
     
