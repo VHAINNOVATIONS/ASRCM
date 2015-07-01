@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.service;
 
 import gov.va.med.srcalc.domain.model.RiskModel;
+import gov.va.med.srcalc.domain.model.Rule;
 import gov.va.med.srcalc.domain.model.VariableGroup;
 
 import com.google.common.collect.ImmutableCollection;
@@ -24,4 +25,11 @@ public interface ModelInspectionService
      * @return an ImmutableCollection, in arbitrary order
      */
     public ImmutableCollection<RiskModel> getAllRiskModels();
+    
+    
+    /**
+     * Returns all Rules defined in the database.
+     * @return a list, in display name order
+     */
+    public ImmutableCollection<Rule> getAllRules();
 }

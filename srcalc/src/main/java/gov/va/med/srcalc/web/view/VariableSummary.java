@@ -116,7 +116,7 @@ public class VariableSummary
         public void visitProcedure(final ProcedureVariable variable)
         {
             fTypeName = "Procedure Selection";
-            fOptionString = variable.getDisplayName();
+            fOptionString = "";
         }
     }
 }

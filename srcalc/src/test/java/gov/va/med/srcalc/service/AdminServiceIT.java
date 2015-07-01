@@ -123,6 +123,9 @@ public class AdminServiceIT extends IntegrationTest
         }
         finally
         {
+            // Normally the Session would be dead and gone by now, but in these
+            // ITs the Transaction is still open, so manually clear the Session
+            // due to the Exception that occurred in the DAO.
             getHibernateSession().clear();
         }
     }

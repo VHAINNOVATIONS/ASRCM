@@ -25,7 +25,7 @@ public class EditRuleTest
         final EditRule editRule = new EditRule(fAdminService);
         assertEquals(editRule.getDisplayName(), "");
         assertEquals(editRule.getSummandExpression(), "");
-        assertFalse(editRule.getRequired());
+        assertFalse(editRule.isBypassEnabled());
         assertEquals(0, editRule.getMatchers().size());
     }
     
@@ -40,14 +40,14 @@ public class EditRuleTest
         final EditRule editRule = new EditRule(fAdminService);
         editRule.setMatchers(matchers);
         editRule.setSummandExpression(summandExpression);
-        editRule.setRequired(required);
+        editRule.setBypassEnabled(required);
         editRule.setDisplayName(displayName);
         final Rule createdRule = editRule.buildNew();
         
         // Verification
         assertEquals(summandExpression, createdRule.getSummandExpression());
         assertEquals(displayName, createdRule.getDisplayName());
-        assertEquals(required, createdRule.isRequired());
+        assertEquals(required, !createdRule.isRequired());
         assertEquals(matchers, createdRule.getMatchers());
     }
 }

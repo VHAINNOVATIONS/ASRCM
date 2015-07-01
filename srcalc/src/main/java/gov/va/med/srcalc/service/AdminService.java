@@ -7,7 +7,7 @@ import org.springframework.dao.DataAccessException;
 import gov.va.med.srcalc.domain.model.*;
 
 /**
- * Service Layer facade for administrative functionalty.
+ * Service Layer facade for administrative functionality.
  * @see gov.va.med.srcalc.service
  */
 public interface AdminService extends ModelInspectionService
@@ -39,18 +39,12 @@ public interface AdminService extends ModelInspectionService
     public void saveVariable(final AbstractVariable variable);
     
     /**
-     * Returns all Rules defined in the database.
-     * @return a list, in display name order
-     */
-    public List<Rule> getAllRules();
-    
-    /**
      * Returns the {@link Rule} with the given display name for editing. Note that
      * the returned object must be given back to {@link #saveRule(Rule)}
      * to persist any changes.
      * @throws InvalidIdentifierException if no such Rule exists
      */
-    public Rule getRule(final String key) throws InvalidIdentifierException;
+    public Rule getRule(final String displayName) throws InvalidIdentifierException;
     
     /**
      * Saves the given rule to the persistent store. The given rule may be

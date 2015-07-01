@@ -3,6 +3,8 @@ package gov.va.med.srcalc.web.controller.admin;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -26,17 +28,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.common.primitives.Ints;
-
 /**
  * <p>Web MVC controller for creating a new rule.</p>
  */
 @Controller
 public class NewRuleController
 {
-    public static final String NEW_RULE_URL = "/admin/newRule";
+    public static final String BASE_URL = "/admin/newRule";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(NewDiscreteNumericalVarController.class);
+    private static final Logger fLogger = LoggerFactory.getLogger(NewRuleController.class);
     /**
      * The model attribute key of the {@link Rule} object.
      */
@@ -62,13 +62,13 @@ public class NewRuleController
         return new EditRule(fAdminService);
     }
     
-    @RequestMapping(value = NEW_RULE_URL, method = RequestMethod.GET)
+    @RequestMapping(value = BASE_URL, method = RequestMethod.GET)
     public ModelAndView displayForm(
             @ModelAttribute(ATTRIBUTE_RULE) final EditRule editRule) throws InvalidIdentifierException
     {
         final ModelAndView mav = new ModelAndView(Views.EDIT_RULE);
         // Provide the URL to save the rule to the view.
-        mav.addObject("SAVE_URL", NEW_RULE_URL);
+        mav.addObject("SAVE_URL", BASE_URL);
         // Note: "rule" is already in the model via createEditRule().
         mav.addObject("isNewRule", true);
         // A map of the variable's key to its respective summary
@@ -79,31 +79,56 @@ public class NewRuleController
             variableSummaries.put(matcher.getVariableKey(), VariableSummary.fromVariable(var));
         }
         mav.addObject("variableSummaries", variableSummaries);
-        mav.addObject("allVariables", fAdminService.getAllVariables());
+        final SortedSet<String> allVariableKeys = new TreeSet<String>();
+        for(final Variable var: fAdminService.getAllVariables())
+        {
+            allVariableKeys.add(var.getKey());
+        }
+        mav.addObject("allVariableKeys", allVariableKeys);
         return mav;
     }
     
-    @RequestMapping(value = NEW_RULE_URL, method = RequestMethod.POST)
-    public ModelAndView saveRule(
+    @RequestMapping(value = BASE_URL, method = RequestMethod.POST)
+    public ModelAndView handlePost(
             @ModelAttribute(ATTRIBUTE_RULE) final EditRule editRule,
             final BindingResult bindingResult,
             @RequestParam(value = "submitButton") final String submitString) throws InvalidIdentifierException
     {
-        if(submitString.equals("newMatcher"))
+        // Test if a remove button was clicked, and remove the proper ValueMatcherBuilder if needed
+        if(submitString.startsWith("remove"))
+        {
+            // Parse the integer that is after the "remove" prefix
+            return removeMatcher(editRule, Integer.parseInt(submitString.substring(6)));
+        }
+        else if(submitString.equals("newMatcher"))
         {
             // Reload the page with the new matcher builder inside of the edit rule
-            editRule.getMatchers().add(
-                    new ValueMatcherBuilder().setVariableKey(editRule.getNewVariableKey()));
-            
-            return displayForm(editRule);
+            return addNewMatcher(editRule);
         }
-        // Test if a remove button was clicked, and remove the proper ValueMatcherBuilder if needed
-        final Integer removeIndex = Ints.tryParse(submitString);
-        if(removeIndex != null)
+        else
         {
-            editRule.getMatchers().remove(removeIndex.intValue());
-            return displayForm(editRule);
+            return saveRule(editRule, bindingResult, submitString);
         }
+    }
+    
+    private ModelAndView addNewMatcher(final EditRule editRule) throws InvalidIdentifierException
+    {
+        editRule.getMatchers().add(
+                new ValueMatcherBuilder(editRule.getNewVariableKey()));
+        
+        return displayForm(editRule);
+    }
+    
+    private ModelAndView removeMatcher(final EditRule editRule,
+            final int removeIndex) throws InvalidIdentifierException
+    {
+        editRule.getMatchers().remove(removeIndex);
+        return displayForm(editRule);
+    }
+    
+    private ModelAndView saveRule(final EditRule editRule, final BindingResult bindingResult,
+            final String submitString) throws InvalidIdentifierException
+    {
         // Call the validator for an EditRule here so that we can access the editRule
         // variable to display 
         editRule.getValidator().validate(editRule, bindingResult);

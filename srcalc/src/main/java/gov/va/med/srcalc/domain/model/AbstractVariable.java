@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.calculation.ValueRetriever;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.Preconditions;
 
 import java.util.Objects;
@@ -37,13 +38,6 @@ public abstract class AbstractVariable implements Variable
      */
     public static final Pattern VALID_KEY_PATTERN  =
             Pattern.compile(VALID_KEY_REGEX);
-    
-    /**
-     * Precompiled version of {@link Variable#VALID_DISPLAY_NAME_REGEX} for
-     * efficiency.
-     */
-    public static final Pattern VALID_DISPLAY_NAME_PATTERN =
-            Pattern.compile(Variable.VALID_DISPLAY_NAME_REGEX);
 
     private int fId;
     private String fDisplayName;
@@ -131,7 +125,7 @@ public abstract class AbstractVariable implements Variable
     
     @Basic
     @Column(
-            length = DISPLAY_NAME_MAX,
+            length = DisplayNameConditions.DISPLAY_NAME_MAX,
             nullable = false)
     public final String getDisplayName()
     {
@@ -147,8 +141,8 @@ public abstract class AbstractVariable implements Variable
     public final void setDisplayName(final String displayName)
     {
         // require at least 1 character
-        Preconditions.requireWithin(displayName, 1, DISPLAY_NAME_MAX);
-        Preconditions.requireMatches(displayName, "displayName", VALID_DISPLAY_NAME_PATTERN);
+        Preconditions.requireWithin(displayName, 1, DisplayNameConditions.DISPLAY_NAME_MAX);
+        Preconditions.requireMatches(displayName, "displayName", DisplayNameConditions.VALID_DISPLAY_NAME_PATTERN);
         fDisplayName = displayName;
     }
 

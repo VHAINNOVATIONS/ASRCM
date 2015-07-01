@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.web.view.admin;
 
-import gov.va.med.srcalc.domain.model.AbstractVariable;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.ValidationCodes;
 import gov.va.med.srcalc.util.ValidationUtils2;
 
@@ -10,17 +10,27 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+/**
+ * Validates an {@link EditRule} object.
+ */
 public class EditRuleValidator implements Validator
 {
 
+    /**
+     * Returns true if (and only if) the given class is {@link
+     * EditRule} or a subclass.
+     */
     @Override
     public boolean supports(Class<?> clazz)
     {
-        // TODO: Investigate if this should be changed to equals since we 
-        // most likely will not have any subclasses of EditRule
         return clazz.isAssignableFrom(EditRule.class);
     }
 
+    /**
+     * Validates the given EditRule object, using error codes from {@link ValidationCodes}.
+     * @param obj the object to validate. Must be an instance of {@link EditRule}.
+     * @throws ClassCastException if the given object is not an EditRule
+     */
     @Override
     public void validate(final Object target, final Errors errors)
     {
@@ -30,10 +40,10 @@ public class EditRuleValidator implements Validator
         // AbstractVariable.setDisplayName() because this display name obeys the
         // same constraints.
         ValidationUtils.rejectIfEmpty(errors, "displayName", ValidationCodes.NO_VALUE);
-        ValidationUtils2.rejectIfTooLong(errors, "displayName", AbstractVariable.DISPLAY_NAME_MAX);
+        ValidationUtils2.rejectIfTooLong(errors, "displayName", DisplayNameConditions.DISPLAY_NAME_MAX);
         ValidationUtils2.rejectIfDoesntMatch(
-                errors, "displayName", AbstractVariable.VALID_DISPLAY_NAME_PATTERN,
-                new Object[] {AbstractVariable.VALID_DISPLAY_NAME_CHARACTERS});
+                errors, "displayName", DisplayNameConditions.VALID_DISPLAY_NAME_PATTERN,
+                new Object[] {DisplayNameConditions.VALID_DISPLAY_NAME_CHARACTERS});
         ValidationUtils.rejectIfEmpty(errors, "summandExpression", ValidationCodes.NO_VALUE);
         //Validate the rule's summand expression
         final SpelExpressionParser parser = new SpelExpressionParser();
@@ -43,7 +53,7 @@ public class EditRuleValidator implements Validator
         }
         catch(final ParseException e)
         {
-            errors.rejectValue("summandExpression", ValidationCodes.INVALID_SUMMAND_EXPRESSION);
+            errors.rejectValue("summandExpression", ValidationCodes.INVALID_EXPRESSION);
         }
         
         //Validate each value matcher expression
@@ -55,8 +65,8 @@ public class EditRuleValidator implements Validator
             }
             catch(final ParseException e)
             {
-                errors.rejectValue(String.format("matchers[%d]", i),
-                        ValidationCodes.INVALID_MATCHER_EXPRESSION);
+                errors.rejectValue(String.format("matchers[%d].booleanExpression", i),
+                        ValidationCodes.INVALID_EXPRESSION);
             }
         }
     }

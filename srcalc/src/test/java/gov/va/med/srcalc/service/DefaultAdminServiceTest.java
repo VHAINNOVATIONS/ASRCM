@@ -53,8 +53,7 @@ public class DefaultAdminServiceTest
     private RuleDao mockRuleDao()
     {
         final RuleDao dao = mock(RuleDao.class);
-        when(dao.getAllRules()).thenReturn(
-                ImmutableList.of(SampleModels.ageAndFsRule()));
+        when(dao.getAllRules()).thenReturn(fSampleRules);
         final Rule rule = fSampleRules.get(0);
         when(dao.getByDisplayName(rule.getDisplayName())).thenReturn(rule);
         return dao;
@@ -138,7 +137,7 @@ public class DefaultAdminServiceTest
     }
     
     @Test
-    public final void getAllRules()
+    public final void testGetAllRules()
     {
         // Create the class under test.
         final DefaultAdminService s = new DefaultAdminService(
@@ -148,7 +147,7 @@ public class DefaultAdminServiceTest
     }
     
     @Test
-    public final void getRule() throws Exception
+    public final void testGetRule() throws Exception
     {
         final String ruleDisplayName = "Age multiplier for functional status";
         
@@ -162,7 +161,7 @@ public class DefaultAdminServiceTest
     }
     
     @Test(expected = InvalidIdentifierException.class)
-    public final void getInvalidRule() throws Exception
+    public final void testGetInvalidRule() throws Exception
     {
         // Create the class under test.
         final DefaultAdminService s = new DefaultAdminService(

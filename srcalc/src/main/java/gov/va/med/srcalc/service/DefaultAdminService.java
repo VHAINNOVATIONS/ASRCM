@@ -113,7 +113,7 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
-    public List<Rule> getAllRules()
+    public ImmutableCollection<Rule> getAllRules()
     {
         fLogger.debug("Getting all Rules.");
         return fRuleDao.getAllRules();
@@ -165,6 +165,6 @@ public class DefaultAdminService implements AdminService
         fRuleDao.mergeRule(rule);
         // This is a significant (and infrequent) transaction: log it at INFO
         // level.
-        fLogger.info("Saved variable {}.", rule.getDisplayName());
+        fLogger.info("Saved rule {}.", rule.getDisplayName());
     }
 }

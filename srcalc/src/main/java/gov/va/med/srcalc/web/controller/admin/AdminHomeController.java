@@ -6,7 +6,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import gov.va.med.srcalc.domain.model.AbstractVariable;
-import gov.va.med.srcalc.domain.model.Rule;
 import gov.va.med.srcalc.service.*;
 import gov.va.med.srcalc.web.view.VariableSummary;
 import gov.va.med.srcalc.web.view.Views;
@@ -46,8 +45,7 @@ public class AdminHomeController
             summaries.add(VariableSummary.fromVariable(var));
         }
         model.addAttribute("variables", summaries);
-        final ArrayList<Rule> ruleSummaries = new ArrayList<>(fAdminService.getAllRules());
-        model.addAttribute("rules", ruleSummaries);
+        model.addAttribute("rules", fAdminService.getAllRules());
         return Views.MODEL_ADMIN_HOME;
     }
 

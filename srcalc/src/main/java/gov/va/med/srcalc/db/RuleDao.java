@@ -15,6 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
+
 /**
  * DAO for {@link Rule}s.
  */
@@ -40,8 +43,7 @@ public class RuleDao
      * Returns all of the Rules defined in the database, sorted by display
      * name (case insensitive).
      */
-    @SuppressWarnings("unchecked") // trust Hibernate
-    public List<Rule> getAllRules()
+    public ImmutableCollection<Rule> getAllRules()
     {
         fLogger.debug("Retrieving all Rules from the database.");
         // As far as I can tell, HQL "order by" simply translates to a SQL
@@ -50,10 +52,11 @@ public class RuleDao
         // Java to ensure portability.
         final Query q = getCurrentSession().createQuery(
                 "from Rule v order by v.displayName");
+        @SuppressWarnings("unchecked") // trust Hibernate
         final List<Rule> rules = q.list();
         Collections.sort(rules, new RuleDisplayNameComparator());
         
-        return rules;
+        return ImmutableList.copyOf(rules);
     }
     
     /**

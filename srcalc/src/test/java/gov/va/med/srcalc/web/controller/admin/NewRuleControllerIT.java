@@ -52,12 +52,12 @@ public class NewRuleControllerIT extends IntegrationTest
     @Test
     public final void testNewRuleValid() throws Exception
     {
-        fMockMvc.perform(get(NewRuleController.NEW_RULE_URL))
+        fMockMvc.perform(get(NewRuleController.BASE_URL))
             .andExpect(status().isOk())
             .andExpect(model().attribute(
                     NewRuleController.ATTRIBUTE_RULE, isA(EditRule.class)));
         
-        fMockMvc.perform(post(NewRuleController.NEW_RULE_URL)
+        fMockMvc.perform(post(NewRuleController.BASE_URL)
                 .param("displayName", DISPLAY_NAME)
                 .param("required", "true")
                 .param("summandExpression", "#coefficient")
@@ -68,12 +68,13 @@ public class NewRuleControllerIT extends IntegrationTest
                 .param("submitButton", "submit"))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl(AdminHomeController.BASE_URL)).andReturn();
+        fAdminService.getRule(DISPLAY_NAME);
     }
     
     @Test
     public final void testNewRuleNoSummand() throws Exception
     {
-        fMockMvc.perform(post(NewRuleController.NEW_RULE_URL)
+        fMockMvc.perform(post(NewRuleController.BASE_URL)
                 .param("displayName", DISPLAY_NAME)
                 .param("required", "true")
                 .param("newVariableKey", "")
@@ -84,7 +85,7 @@ public class NewRuleControllerIT extends IntegrationTest
     @Test
     public final void testNewRuleInvalidSummand() throws Exception
     {
-        fMockMvc.perform(post(NewRuleController.NEW_RULE_URL)
+        fMockMvc.perform(post(NewRuleController.BASE_URL)
                 .param("displayName", DISPLAY_NAME)
                 .param("required", "true")
                 .param("summandExpression", INVALID_EXPRESSION)
@@ -99,7 +100,7 @@ public class NewRuleControllerIT extends IntegrationTest
     @Test
     public final void testNewRuleInvalidMatcher() throws Exception
     {
-        fMockMvc.perform(post(NewRuleController.NEW_RULE_URL)
+        fMockMvc.perform(post(NewRuleController.BASE_URL)
                 .param("displayName", DISPLAY_NAME)
                 .param("required", "true")
                 .param("summandExpression", "#coefficient")

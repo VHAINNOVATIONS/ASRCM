@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.MockModelService;
 import gov.va.med.srcalc.test.util.TestHelpers;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.ValidationCodes;
 
 import org.junit.Test;
@@ -99,7 +100,7 @@ public final class EditBaseVarValidatorTest
     public final void testDisplayNameTooLong()
     {
         final EditBaseVar ev = makeEditVar();
-        ev.setDisplayName(TestHelpers.stringOfLength(Variable.DISPLAY_NAME_MAX + 1));
+        ev.setDisplayName(TestHelpers.stringOfLength(DisplayNameConditions.DISPLAY_NAME_MAX + 1));
         final BindingResult errors = validate(ev);
         
         assertEquals("error count", 1, errors.getErrorCount());

@@ -21,15 +21,16 @@ public final class ValueMatcher
 {
     private Variable fVariable;
     private Expression fBooleanExpression;
-    private boolean fEnabled;
+    private boolean fExpressionEnabled;
     
     /**
 	 * Mainly intended for reflection-based construction.
 	 */
     ValueMatcher()
     {
-        // Set the summand expression to avoid a NullPointerException from Hibernate.
-        fBooleanExpression = new SpelExpressionParser().parseExpression("unset");
+        // Set the summand expression to avoid a NullPointerException from Hibernate
+        // if getBooleanExpression() is called before setBooleanExpression().
+        fBooleanExpression = parseBooleanExpression("unset");
     }
     
     /**
@@ -39,11 +40,11 @@ public final class ValueMatcher
      * @throws NullPointerException if any argument is null
      * @throws IllegalArgumentException if the given expression is not parsable
      */
-    public ValueMatcher(final Variable variable, final String booleanExpression, final boolean applyMatcher)
+    public ValueMatcher(final Variable variable, final String booleanExpression, final boolean applyCondition)
     {
         fVariable = Objects.requireNonNull(variable);
         fBooleanExpression = parseBooleanExpression(booleanExpression);
-        fEnabled = applyMatcher;
+        fExpressionEnabled = applyCondition;
     }
 
     /**
@@ -90,7 +91,7 @@ public final class ValueMatcher
         return fBooleanExpression.getExpressionString();
     }
     
-    void setBooleanExpression(final String booleanExpression)
+    public void setBooleanExpression(final String booleanExpression)
     {
     	fBooleanExpression = parseBooleanExpression(booleanExpression);
     }
@@ -106,25 +107,26 @@ public final class ValueMatcher
      * be evaluated.
      */
     @Basic
-    public boolean isEnabled()
+    public boolean isExpressionEnabled()
     {
-        return fEnabled;
+        return fExpressionEnabled;
     }
     
-    void setEnabled(final boolean enabled)
+    public void setExpressionEnabled(final boolean expressionEnabled)
     {
-        fEnabled = enabled;
+        fExpressionEnabled = expressionEnabled;
     }
     
     /**
      * Evaluate this ValueMatcher's boolean expression based on the given context and value.
+     * If the apply condition flag is false, this method will always return true.
      * @param context the EvaluationContext used to evaluate this matcher against
      * @param value the value for this matcher's variable
      * @return the boolean value to which the expression evaluates
      */
     public boolean evaluate(final EvaluationContext context, final Value value)
     {
-        if(fEnabled && !fBooleanExpression.getExpressionString().isEmpty())
+        if(fExpressionEnabled && !fBooleanExpression.getExpressionString().isEmpty())
         {
             return fBooleanExpression.getValue(context, value, Boolean.class);
         }
@@ -145,7 +147,7 @@ public final class ValueMatcher
                     // the Expression object itself.
                     Objects.equals(this.getVariable(), other.getVariable()) &&
                     Objects.equals(this.getBooleanExpression(), other.getBooleanExpression()) &&
-                    this.isEnabled() == other.isEnabled();
+                    this.isExpressionEnabled() == other.isExpressionEnabled();
         }
         else
         {
@@ -156,7 +158,7 @@ public final class ValueMatcher
     @Override
     public int hashCode()
     {
-        return Objects.hash(getVariable(), getBooleanExpression(), isEnabled());
+        return Objects.hash(getVariable(), getBooleanExpression(), isExpressionEnabled());
     }
     
     @Override

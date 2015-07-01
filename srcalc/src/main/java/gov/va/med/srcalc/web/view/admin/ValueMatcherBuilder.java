@@ -1,16 +1,39 @@
 package gov.va.med.srcalc.web.view.admin;
 
 import gov.va.med.srcalc.domain.model.ValueMatcher;
+import gov.va.med.srcalc.service.AdminService;
+import gov.va.med.srcalc.service.InvalidIdentifierException;
 
-public class ValueMatcherBuilder
+/**
+ * <p>Builds a {@link ValueMatcher} from incrementally-
+ * specified component parts.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
+ */
+public final class ValueMatcherBuilder
 {
     private String fVariableKey;
     private String fBooleanExpression;
     private boolean fEnabled;
     
+    /**
+     * Constructs an instance with empty strings for the variable key and
+     * the boolean expression.
+     */
     public ValueMatcherBuilder()
     {
         fVariableKey = "";
+        fBooleanExpression = "";
+    }
+    
+    /**
+     * Constructs an instance using the specified variable key.
+     * @param variableKey the variable key that this ValueMatcherBuilder is tied to.
+     */
+    public ValueMatcherBuilder(final String variableKey)
+    {
+        fVariableKey = variableKey;
         fBooleanExpression = "";
     }
     
@@ -21,10 +44,9 @@ public class ValueMatcherBuilder
      */
     public static ValueMatcherBuilder fromPrototype(final ValueMatcher prototype)
     {
-        return new ValueMatcherBuilder()
-            .setVariableKey(prototype.getVariable().getKey())
+        return new ValueMatcherBuilder(prototype.getVariable().getKey())
             .setBooleanExpression(prototype.getBooleanExpression())
-            .setEnabled(prototype.isEnabled());
+            .setEnabled(prototype.isExpressionEnabled());
     }
 
     /**
@@ -81,5 +103,18 @@ public class ValueMatcherBuilder
         {
             return false;
         }
+    }
+    
+    /**
+     * Returns a {@link ValueMatcher} that is built from the calling object.
+     * @param adminService the admin service used to retrieve the necessary variable
+     * @throws InvalidIdentifierException
+     */
+    public ValueMatcher buildNew(final AdminService adminService) throws InvalidIdentifierException
+    {
+        return new ValueMatcher(
+                adminService.getVariable(fVariableKey),
+                fBooleanExpression,
+                fEnabled);
     }
 }

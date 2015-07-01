@@ -40,4 +40,10 @@ public class MockModelService implements ModelInspectionService
     {
         return fThoracicModel;
     }
+
+    @Override
+    public ImmutableCollection<Rule> getAllRules()
+    {
+        return ImmutableList.of(SampleModels.ageAndFsRule());
+    }
 }

@@ -1,17 +1,21 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.calculation.Value;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.MissingValuesException;
+import gov.va.med.srcalc.util.Preconditions;
 
 import java.util.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.expression.Expression;
 import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableSet;
 
@@ -108,6 +112,7 @@ public final class Rule
      * references to the values matched in ValueMatchers.
      */
     @Basic
+    @NotNull
     public String getSummandExpression()
     {
         return fSummandExpression.getExpressionString();
@@ -137,13 +142,22 @@ public final class Rule
      * @return
      */
     @Basic
+    @NotNull
     public String getDisplayName()
     {
         return fDisplayName;
     }
     
+    /**
+     * Sets the name of the rule for display to the user.
+     * @throws IllegalArgumentException if the given name is empty, over
+     * {@link Rule#DISPLAY_NAME_MAX} characters, or does not match
+     * {@link Variable#VALID_DISPLAY_NAME_REGEX}
+     */
     void setDisplayName(final String displayName)
     {
+        Preconditions.requireWithin(displayName, 1, DisplayNameConditions.DISPLAY_NAME_MAX);
+        Preconditions.requireMatches(displayName, "displayName", DisplayNameConditions.VALID_DISPLAY_NAME_PATTERN);
         fDisplayName = displayName;
     }
     
@@ -181,6 +195,31 @@ public final class Rule
         return ImmutableSet.copyOf(variables);
     }
 
+    /**
+     * Returns the sorted keys for all required variables from {@link #getRequiredVariables()}.
+     * @return an ImmutableSet
+     */
+    @Transient
+    public ImmutableSet<String> getRequiredVariableKeys()
+    {
+        final ImmutableSet<Variable> variables = getRequiredVariables();
+        final SortedSet<String> sortedKeys = new TreeSet<String>();
+        for(final Variable var: variables)
+        {
+            sortedKeys.add(var.getKey());
+        }
+        return ImmutableSet.copyOf(sortedKeys);
+    }
+    
+    /**
+     * Returns a String in the form of "#a, #b, #c" that will 
+     */
+    @Transient
+    public String getExpressionVariablesString()
+    {
+        return String.format("#%s", Joiner.on(", #"));
+    }
+    
     /**
      * Applies the Rule to the given context.
      * @param context determines the context in which to evaluate the rule,

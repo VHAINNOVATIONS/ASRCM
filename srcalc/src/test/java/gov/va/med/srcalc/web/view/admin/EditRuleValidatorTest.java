@@ -12,10 +12,10 @@ import org.springframework.validation.Validator;
 import gov.va.med.srcalc.db.RiskModelDao;
 import gov.va.med.srcalc.db.RuleDao;
 import gov.va.med.srcalc.db.VariableDao;
-import gov.va.med.srcalc.domain.model.AbstractVariable;
 import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.service.DefaultAdminService;
 import gov.va.med.srcalc.test.util.TestHelpers;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.ValidationCodes;
 
 public class EditRuleValidatorTest
@@ -24,6 +24,8 @@ public class EditRuleValidatorTest
             mock(VariableDao.class), mock(RiskModelDao.class), mock(RuleDao.class));
     
     private static final String INVALID_EXPRESSION = "Invalid asdfjasidfj@#@#%";
+    
+    private static final String DUMMY_VAR_KEY = "dummyKey";
     
     /**
      * Instantiates a basic {@link EditRule} instance.
@@ -41,7 +43,6 @@ public class EditRuleValidatorTest
     {
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(editRule, "rule");
-        // Use EditRule.getValidator()
         final Validator validator = editRule.getValidator();
         assertTrue(validator.supports(editRule.getClass()));
         validator.validate(editRule, errors);
@@ -71,7 +72,7 @@ public class EditRuleValidatorTest
     public final void testDisplayNameTooLong()
     {
         final EditRule editRule = makeEditRule();
-        editRule.setDisplayName(TestHelpers.stringOfLength(AbstractVariable.DISPLAY_NAME_MAX + 1));
+        editRule.setDisplayName(TestHelpers.stringOfLength(DisplayNameConditions.DISPLAY_NAME_MAX + 1));
         final BindingResult errors = validate(editRule);
         
         assertEquals(1, errors.getErrorCount());
@@ -87,7 +88,7 @@ public class EditRuleValidatorTest
         final BindingResult errors = validate(editRule);
         
         assertEquals(1, errors.getErrorCount());
-        assertEquals(ValidationCodes.INVALID_SUMMAND_EXPRESSION,
+        assertEquals(ValidationCodes.INVALID_EXPRESSION,
                 errors.getFieldError("summandExpression").getCode());
     }
     
@@ -96,15 +97,15 @@ public class EditRuleValidatorTest
     {
         final EditRule editRule = makeEditRule();
         editRule.setDisplayName("Display this");
-        editRule.getMatchers().add(new ValueMatcherBuilder()
+        editRule.getMatchers().add(new ValueMatcherBuilder(DUMMY_VAR_KEY)
             .setBooleanExpression(INVALID_EXPRESSION));
-        editRule.getMatchers().add(new ValueMatcherBuilder()
+        editRule.getMatchers().add(new ValueMatcherBuilder(DUMMY_VAR_KEY)
                 .setBooleanExpression("true 1234"));
         final BindingResult errors = validate(editRule);
         
         assertEquals(2, errors.getErrorCount());
         // There are already two matchers for the age and functional status rule
-        assertEquals(ValidationCodes.INVALID_MATCHER_EXPRESSION,
-                errors.getFieldError("matchers[2]").getCode());
+        assertEquals(ValidationCodes.INVALID_EXPRESSION,
+                errors.getFieldError("matchers[2].booleanExpression").getCode());
     }
 }

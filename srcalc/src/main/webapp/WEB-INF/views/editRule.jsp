@@ -13,20 +13,26 @@
 
 <srcalc:adminPage title="${pageTitle}">
 <section>
-    <h3>Required Values</h3>
+    <h3>${pageTitle} </h3>
     <form:form id="ruleEditForm" cssClass="srcalcForm attributeEditForm"
         method="post" action="${fullSaveUrl}" commandName="rule">
     Display name: <form:input path="displayName" size="80"/>
     <form:errors path="displayName" cssClass="error"/><br>
-    <form:checkbox path="required"/> Require all value(s) in this rule.
+    <form:checkbox path="bypassEnabled"/> Bypass rule if missing values.
     <h4>Summand Expression</h4>
     The expression will be added to the risk model's sum.<br>
     <form:input path="summandExpression" size="80"/>
     <form:errors path="summandExpression" cssClass="error"/><br>
-    Available variables: ${rule.requiredVariables}<br>
+    Available variables: 
+    <c:forEach var="currentKey" items="${rule.requiredVariableKeys}">
+        \#${currentKey} 
+    </c:forEach><br>
     <%-- For each variable, give the type of variable, and a short description of the 
     options available. (i.e. range or categories)--%>
+    <h3>Required Values</h3>
     <ul id="matchersList">
+    <%--Start building a list of available variables. --%>
+    <c:set var="availableVariables" value="Available variables:"/>
     <c:set var="i" value="0" />
     <c:forEach items="${rule.matchers}">
         <li>
@@ -35,14 +41,17 @@
             <div class="matcherInputs">
             <h4>${summary.displayName}</h4>
             <p><c:out value="${summary.typeName} ${summary.optionString}"/></p>
-            <p><label>Apply condition to variable: <form:checkbox class="applyCheckbox" path="${matcherPath}.enabled"/></label></p>
+            <p><label>Apply condition to variable: <form:checkbox class="applyCheckbox" 
+                path="${matcherPath}.enabled"/></label></p>
             <label>Expression: <form:input class="booleanExpression" path="${matcherPath}.booleanExpression" size="80"/></label>
             <form:errors path="${matcherPath}" cssClass="error"/>
             <form:hidden path="${matcherPath}.variableKey"/>
+            <c:set var="availableVariables" value="${availableVariables} \#${rule.matchers[i].variableKey}"/>
             </div>
-            <form:errors cssClass="error" path="${matcherPath}.*" /><br>
+            <form:errors cssClass="error" path="${matcherPath}.*" />
+            <p>${availableVariables}</p>
             <button class="btn-link" type="submit"
-                name="submitButton" value="${i}">Remove Variable</button>
+                name="submitButton" value="remove${i}">Remove Variable</button>
         </li>
         <c:set var="i" value="${i+1}" />
     </c:forEach>
@@ -50,7 +59,7 @@
     <%-- Use a drop down to add a new matcher on the specified variable.--%>
     <br>
     <form:select path="newVariableKey">
-        <form:options items="${allVariables}" itemLabel="key" itemValue="key"/>
+        <form:options items="${allVariableKeys}"/>
     </form:select>
     <button class="btn-link" type="submit"
         name="submitButton" value="newMatcher">Add New Variable</button>

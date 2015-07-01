@@ -3,7 +3,7 @@ package gov.va.med.srcalc.domain.model;
 import java.util.Comparator;
 
 /**
- * Compares {@link Rule}s by their display names.
+ * Compares {@link Rule}s by their display names. Comparing is case-insensitive.
  */
 public final class RuleDisplayNameComparator implements Comparator<Rule>
 {
