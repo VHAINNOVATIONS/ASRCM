@@ -398,6 +398,11 @@ div#newVariableLinks {
 	display: block;
 }
 
+/* Hide the definition rows if Javascript is enabled */
+.js #riskVarForm .variableDef {
+	display: none;
+}
+
 
 /* ==========================================================================
    Media Queries

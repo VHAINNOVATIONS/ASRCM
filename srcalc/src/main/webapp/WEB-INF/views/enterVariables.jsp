@@ -17,7 +17,10 @@
     <c:forEach var="variable" items="${variableGroup.variables}">
     <tr>
         <c:set var="varPath" value="${srcalc:dynamicValuePath(variable.key)}" />
-        <td class="attributeName"><c:out value="${variable.displayName}"/>:</td>
+        <c:url var="qMarkImageUrl" value="/css/images/qmark.png"/>
+        <td class="attributeName"><c:out value="${variable.displayName}"/>:
+            <c:if test="${variable.helpTextAsHtml != ''}"><a class="helpTextToggler"><img src="${qMarkImageUrl}" alt="?"/></a></c:if>
+        </td>
         <%--
         Use our variableSpecific custom tag to write the corresponding form
         control for each variable type.
@@ -74,6 +77,7 @@
         </srcalc:variableSpecific>
         <%-- Display any errors immediately following the input control. --%>
         <form:errors path="${varPath}" cssClass="error" />
+		<div class="variableDef">${variable.helpTextAsHtml}</div>
         </td>
     </tr>
     </c:forEach>
