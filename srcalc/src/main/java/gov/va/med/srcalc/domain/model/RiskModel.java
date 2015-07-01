@@ -350,13 +350,16 @@ public class RiskModel implements Comparable<RiskModel>
     // This may not be sufficient for future use.
     // Currently (July'15) this was added for the contains() method 
     // for a list of RiskModels.
+    // 
     @Override
     public boolean equals(final Object o)
     {
         if (o instanceof RiskModel)  // false if o == null
         {
             final RiskModel other = (RiskModel)o;
-            return (this.getId() == other.getId());
+            // include the displayName since the hashCode is based on it.
+            return (this.getId() == other.getId() && 
+            	   this.getDisplayName().compareTo( ((RiskModel) o).getDisplayName() ) == 0 );
         }
         else
         {
