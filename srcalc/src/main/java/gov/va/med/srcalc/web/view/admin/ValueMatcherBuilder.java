@@ -91,20 +91,6 @@ public final class ValueMatcherBuilder
         return this;
     }
     
-    @Override
-    public boolean equals(final Object other)
-    {
-        if(other instanceof ValueMatcherBuilder)
-        {
-            final ValueMatcherBuilder otherBuilder = (ValueMatcherBuilder) other;
-            return this.fVariableKey.equals(otherBuilder.fVariableKey);
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
     /**
      * Returns a {@link ValueMatcher} that is built from the calling object.
      * @param adminService the admin service used to retrieve the necessary variable
