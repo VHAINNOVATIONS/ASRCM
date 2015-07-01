@@ -77,14 +77,14 @@ public class ProcedureCsvReader
             final int rowNumber)
     {
         // Construct our own error list to detect if we added any errors.
-        final ArrayList<TabularUploadError> ourErrors = new ArrayList<>();
+        final ArrayList<TabularUploadError> rowErrors = new ArrayList<>();
 
         /* Get all the string values first since they don't involve exceptions */
         
         final String cptCode = tryGetValue(record, 0);
         if (cptCode.length() != Procedure.CPT_CODE_LENGTH)
         {
-            ourErrors.add(TabularUploadError.forField(
+            rowErrors.add(TabularUploadError.forField(
                     rowNumber,
                     "cptCode",
                     String.class,
@@ -95,15 +95,15 @@ public class ProcedureCsvReader
         
         final String complexity = tryGetValue(record, 3);
         ValidationUtils2.validateRequiredString(
-                complexity, rowNumber, "complexity", Procedure.COMPLEXITY_MAX, ourErrors);
+                complexity, rowNumber, "complexity", Procedure.COMPLEXITY_MAX, rowErrors);
         
         final String longDesc = tryGetValue(record, 4);
         ValidationUtils2.validateRequiredString(
-                longDesc, rowNumber, "longDescription", Procedure.DESCRIPTION_MAX, ourErrors);
+                longDesc, rowNumber, "longDescription", Procedure.DESCRIPTION_MAX, rowErrors);
         
         final String shortDesc = tryGetValue(record, 5);
         ValidationUtils2.validateRequiredString(
-                shortDesc, rowNumber, "shortDescription", Procedure.DESCRIPTION_MAX, ourErrors);
+                shortDesc, rowNumber, "shortDescription", Procedure.DESCRIPTION_MAX, rowErrors);
         
         final String rvuString = tryGetValue(record, 1);
         float rvu = Float.NaN;
@@ -113,7 +113,7 @@ public class ProcedureCsvReader
         }
         catch (final NumberFormatException ex)
         {
-            ourErrors.add(TabularUploadError.forField(
+            rowErrors.add(TabularUploadError.forField(
                     rowNumber,
                     "rvu",
                     float.class,
@@ -131,7 +131,7 @@ public class ProcedureCsvReader
         catch (final IllegalArgumentException ex)
         {
             // Error on parseCsvBoolean()
-            ourErrors.add(TabularUploadError.forField(
+            rowErrors.add(TabularUploadError.forField(
                     rowNumber,
                     "eligible",
                     boolean.class,
@@ -140,16 +140,16 @@ public class ProcedureCsvReader
                     ex.getMessage()));
         }
             
-        // Only create the procedure if we did not record any validation ourErrors for
-        // this record--otherwise we would get an Exception when trying to construct
+        // Only create the procedure if we did not record any validation errors for
+        // this row--otherwise we would get an Exception when trying to construct
         // the Procedure.
-        if (ourErrors.isEmpty())
+        if (rowErrors.isEmpty())
         {
             return Optional.of(new Procedure(
                     cptCode, rvu, shortDesc, longDesc, complexity, eligible));
         }
 
-        errors.addAll(ourErrors);
+        errors.addAll(rowErrors);
 
         return Optional.absent();
     }
@@ -229,7 +229,7 @@ public class ProcedureCsvReader
             }
             catch (final IOException ex)
             {
-                fLogger.warn("Filed to close the CSV reader.", ex);
+                fLogger.warn("Failed to close the CSV reader.", ex);
             }
         }
 

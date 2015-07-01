@@ -69,4 +69,11 @@ public class EditProceduresControllerIT
                 fModelService.getAllProcedures());
     }
     
+    @Test
+    public final void testSampleUploadResource() throws Exception
+    {
+        fMockMvc.perform(get("/admin/resources/sample_procedures_upload.csv"))
+            .andExpect(status().isOk());
+    }
+    
 }

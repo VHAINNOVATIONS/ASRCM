@@ -1,11 +1,14 @@
 package gov.va.med.srcalc.util;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.util.TabularUploadError;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 import org.springframework.validation.DefaultMessageCodesResolver;
+
+import com.google.common.collect.ImmutableList;
 
 public class TabularUploadErrorTest
 {
@@ -36,10 +39,8 @@ public class TabularUploadErrorTest
         
         assertEquals("", error.getLocationPrefix());
         
-        
-        // The class provides no documentation on what toString() will contain, but at
-        // least make sure it is non-empty (and doesn't throw an Exception).
-        assertNotEquals("", error.toString());
+        // Verify the minimal contract of toString().
+        assertThat(error.toString(), stringContainsInOrder(ImmutableList.of(code)));
     }
     
     @Test
@@ -65,9 +66,8 @@ public class TabularUploadErrorTest
         
         assertEquals("Row 1, column: ", error.getLocationPrefix());
         
-        // The class provides no documentation on what toString() will contain, but at
-        // least make sure it is non-empty (and doesn't throw an Exception).
-        assertNotEquals("", error.toString());
+        // Verify the minimal contract of toString().
+        assertThat(error.toString(), stringContainsInOrder(ImmutableList.of(code)));
     }
     
     @Test(expected = IllegalArgumentException.class)

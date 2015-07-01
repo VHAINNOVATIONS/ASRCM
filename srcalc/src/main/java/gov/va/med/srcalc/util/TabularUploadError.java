@@ -8,8 +8,10 @@ import org.springframework.validation.DefaultMessageCodesResolver;
 import com.google.common.base.MoreObjects;
 
 /**
- * Similar to Spring's {@link org.springframework.validation.FieldError} class,
- * but specifically represents an error in a tabular file upload.
+ * <p>Similar to Spring's {@link org.springframework.validation.FieldError} class,
+ * but specifically represents an error in a tabular file upload.</p>
+ * 
+ * <p>Immutable.</p>
  */
 public final class TabularUploadError implements MessageSourceResolvable
 {
@@ -33,16 +35,18 @@ public final class TabularUploadError implements MessageSourceResolvable
     private final Object[] fArguments;
     private final String fDefaultMessage;
     
+    // Package-private to facilitate testing.
     /**
      * Constructs an instance.
-     * @param rowNumber the associated row's number (1-based). May also be {@link #ROW_NUMBER_GLOBAL}
+     * @param rowNumber the associated row's number (1-based). May also be {@link
+     * #ROW_NUMBER_GLOBAL}
      * @param columnName the associated field name of the target object. Must not be null.
      * @param codes the error codes. Must be a non-empty array.
      * @param arguments any necessary message arguments. May be null.
      * @param defaultMessage the default message to use if no codes could be resolved
      * @throws IllegalArgumentException if codes is empty
      */
-    public TabularUploadError(
+    TabularUploadError(
             final int rowNumber,
             final String columnName,
             final String[] codes,
@@ -56,12 +60,14 @@ public final class TabularUploadError implements MessageSourceResolvable
         {
             throw new IllegalArgumentException("codes must be non-empty");
         }
-        fArguments = arguments;
+        // Create a shallow copy. This permits calling code to break immutability by
+        // changing the contained Objects, but hopefully that is unlikely.
+        fArguments = (arguments != null) ? arguments.clone() : null;
         fDefaultMessage = defaultMessage;
     }
     
     /**
-     * Creates an error for the whole upload.
+     * Creates an error for the whole upload. (For example, a corrupt uploaded file.)
      * @param code the error code. Must be non-null.
      * @param arguments any necessary message arguments. May be null.
      * @param defaultMessage the default message to use if no codes could be resolved
@@ -78,6 +84,19 @@ public final class TabularUploadError implements MessageSourceResolvable
                 defaultMessage);
     }
     
+    /**
+     * <p>Creates an error for a particular cell.</p>
+     * 
+     * <p>Row numbers are 1-based to correspond to Excel.</p>
+     * 
+     * @param rowNumber the associated row's number (1-based)
+     * @param columnName the associated column's name. Must not be null.
+     * @param fieldType the expected type of the target field
+     * @param code the primary error code
+     * @param arguments any necessary message arguments. May be null.
+     * @param defaultMessage the default message to use if no codes could be resolved
+     * @return a new instance
+     */
     public static TabularUploadError forField(
             final int rowNumber,
             final String columnName,
@@ -178,6 +197,10 @@ public final class TabularUploadError implements MessageSourceResolvable
                 Arrays.hashCode(fArguments));
     }
     
+    /**
+     * Returns a String representation of this error. The exact format is unspecified,
+     * but it will at minimum contain the error codes.
+     */
     @Override
     public String toString()
     {

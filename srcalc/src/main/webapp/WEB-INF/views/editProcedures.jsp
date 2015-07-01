@@ -24,6 +24,8 @@
     </c:if>
     <p>You may upload a new procedure set from a CSV file. As long as the CSV file is valid,
     it will immediately replace the above procedures in the database.</p>
+    <c:url var="sampleUploadUrl" value="/admin/resources/sample_procedures_upload.csv" />
+    <p><a href="${sampleUploadUrl}">Here</a> is a sample CSV file.</p>
     <form id="procedureUploadForm" method="post" enctype="multipart/form-data">
     <input type="file" name="newProceduresFile" accept=".csv">
     <button id="replaceProceduresButton" type="submit">Replace all Procedures</button>

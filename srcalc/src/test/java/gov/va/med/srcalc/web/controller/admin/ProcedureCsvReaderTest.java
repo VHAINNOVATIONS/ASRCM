@@ -22,7 +22,20 @@ public class ProcedureCsvReaderTest
      * Points to a CSV file on the classpath which represents a valid procedures upload.
      */
     public static final URL VALID_PROCEDURES_RESOURCE = Resources.getResource(
-            ProcedureCsvReaderTest.class, "valid_procedures_upload.csv");
+            "admin_resources/sample_procedures_upload.csv");
+    
+    /**
+     * Points to a totally invalid CSV file. (The file cannot be interpreted as a CSV.)
+     */
+    public static final URL INVALID_CSV_FILE =
+            Resources.getResource(ProcedureCsvReaderTest.class, "invalid.csv");
+    
+    /**
+     * Points to a CSV file which contains invalid procedure content. (The file
+     * <em>can</em> be interpreted as a CSV.)
+     */
+    public static final URL INVALID_PROCEDURES_RESOURCE = Resources.getResource(
+            ProcedureCsvReaderTest.class, "invalid_procedures_upload.csv");
     
     /**
      * These are the procedures in {@link #VALID_PROCEDURES_RESOURCE}.
@@ -50,7 +63,7 @@ public class ProcedureCsvReaderTest
     public final void testReadCorruptCsv() throws IOException
     {
         final CharSource corruptCsv = Resources.asCharSource(
-                Resources.getResource(getClass(), "invalid.csv"), Charsets.US_ASCII);
+                INVALID_CSV_FILE, Charsets.US_ASCII);
         
         final ProcedureCsvReader procedureReader = new ProcedureCsvReader();
         final ParseResult result =
@@ -95,8 +108,7 @@ public class ProcedureCsvReaderTest
                 
         /* Behavior */
         final CharSource invalidCsv = Resources.asCharSource(
-                Resources.getResource(getClass(), "invalid_procedures_upload.csv"),
-                Charsets.US_ASCII);
+                INVALID_PROCEDURES_RESOURCE, Charsets.US_ASCII);
         final ProcedureCsvReader procedureReader = new ProcedureCsvReader();
         final ParseResult result =
                 procedureReader.readProcedures(invalidCsv.openStream());
