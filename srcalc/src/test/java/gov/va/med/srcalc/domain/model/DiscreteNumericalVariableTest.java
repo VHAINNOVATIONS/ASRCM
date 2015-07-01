@@ -52,6 +52,13 @@ public class DiscreteNumericalVariableTest
         assertEquals(
                 ImmutableList.of(catWnl, cat1, cat3, cat4),
                 var.getCategoriesWnlFirst().asList());
+
+        // Real-world categories should never have the same upper bound and inclusivity,
+        // but make sure we handle this case anyway.
+        final Category cat5 = new Category(new MultiSelectOption("five"), 6.0f, true);
+        assertNotEquals(cat4, cat5);
+        // The string "four" is greater than "five"
+        assertTrue(cat4.compareTo(cat5) > 0);
     }
     
     @Test
