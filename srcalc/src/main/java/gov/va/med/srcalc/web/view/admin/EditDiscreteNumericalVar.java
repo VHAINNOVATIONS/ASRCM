@@ -7,6 +7,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.*;
 
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable;
+import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 import gov.va.med.srcalc.service.ModelInspectionService;
 import gov.va.med.srcalc.web.view.Views;
 
@@ -18,9 +19,9 @@ import gov.va.med.srcalc.web.view.Views;
  */
 public class EditDiscreteNumericalVar extends EditAbstractNumericalVar
 {
-    private static final int MIN_CATEGORIES = 2;
+    protected static final int MIN_CATEGORIES = 2;
     
-    private static final int MAX_CATEGORIES = 10;
+    protected static final int MAX_CATEGORIES = 10;
     
     private final ArrayList<CategoryBuilder> fCategories;
     
@@ -55,7 +56,7 @@ public class EditDiscreteNumericalVar extends EditAbstractNumericalVar
         
         // Copy the categories.
         fCategories = new ArrayList<>(prototype.getCategories().size());
-        for (final DiscreteNumericalVariable.Category cat : prototype.getCategories())
+        for (final Category cat : prototype.getCategories())
         {
             fCategories.add(CategoryBuilder.fromPrototype(cat));
         }
@@ -114,15 +115,14 @@ public class EditDiscreteNumericalVar extends EditAbstractNumericalVar
     }
     
     /**
-     * Returns the categories as a Set of {@link DiscreteNumericalVariable.Category},
-     * the type needed to actually create the variable. Internally uses
+     * Returns the categories as a Set of {@link Category}, the type needed to actually
+     * create the variable. Internally uses {@link #getTrimmedCategories()}.
      * @return an ImmutableSet
      */
-    protected final ImmutableSet<DiscreteNumericalVariable.Category> buildCategories()
+    protected final ImmutableSet<Category> buildCategories()
     {
         final ImmutableList<CategoryBuilder> trimmed = getTrimmedCategories();
-        final HashSet<DiscreteNumericalVariable.Category> categories =
-                new HashSet<>(trimmed.size());
+        final HashSet<Category> categories = new HashSet<>(trimmed.size());
         for (final CategoryBuilder cat : trimmed)
         {
             categories.add(cat.build());

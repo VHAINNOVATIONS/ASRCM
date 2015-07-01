@@ -71,9 +71,9 @@ public class DefaultAdminService implements AdminService
     }
     
     /**
-     * Returns true if there is already a different variable with the same key.
-     * @param variable
-     * @return
+     * Returns true if there is already a different variable with the same key as the
+     * given variable, false otherwise.
+     * @param variable the variable to check
      */
     private boolean keyAlreadyExists(final AbstractVariable variable)
     {
