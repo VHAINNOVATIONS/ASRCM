@@ -8,7 +8,6 @@ import gov.va.med.srcalc.util.Preconditions;
 import java.util.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.expression.Expression;
 import org.springframework.expression.ParseException;
@@ -112,7 +111,7 @@ public final class Rule
      * references to the values matched in ValueMatchers.
      */
     @Basic
-    @NotNull
+    @Column(nullable = false)
     public String getSummandExpression()
     {
         return fSummandExpression.getExpressionString();
@@ -142,7 +141,9 @@ public final class Rule
      * @return
      */
     @Basic
-    @NotNull
+    @Column(
+            length = DisplayNameConditions.DISPLAY_NAME_MAX,
+            nullable = false)
     public String getDisplayName()
     {
         return fDisplayName;

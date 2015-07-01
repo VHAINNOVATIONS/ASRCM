@@ -17,7 +17,7 @@ create table risk_model_derived_term (risk_model_id integer not null, rule integ
 create table risk_model_discrete_term (risk_model_id integer not null, option_index integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, option_index, variable, coefficient));
 create table risk_model_numerical_term (risk_model_id integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, variable, coefficient));
 create table risk_model_procedure_term (risk_model_id integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, variable, coefficient));
-create table rule (id integer not null auto_increment, display_name varchar(255), required boolean not null, summand_expression varchar(255), primary key (id));
+create table rule (id integer not null auto_increment, display_name varchar(80) not null, required boolean not null, summand_expression varchar(255) not null, primary key (id));
 create table rule_value_matcher (rule_id integer not null, boolean_expression varchar(255), expression_enabled boolean not null, variable integer);
 create table specialty (id integer not null auto_increment, name varchar(100) not null, vista_id integer not null, primary key (id));
 create table specialty_risk_model (specialty_id integer not null, risk_model_id integer not null, primary key (specialty_id, risk_model_id));
@@ -47,7 +47,5 @@ alter table rule_value_matcher add index FK_rnatr4b2fmd3kx6ff0ka1g4le (rule_id),
 alter table specialty_risk_model add index FK_g44r1aagpmd130bpvefwj08ve (risk_model_id), add constraint FK_g44r1aagpmd130bpvefwj08ve foreign key (risk_model_id) references risk_model (id);
 alter table specialty_risk_model add index FK_rrt5htbg4mmbygm2qieptls2q (specialty_id), add constraint FK_rrt5htbg4mmbygm2qieptls2q foreign key (specialty_id) references specialty (id);
 alter table variable add index FK_thvnglkbf1ynftxe54elpdfd7 (variable_group), add constraint FK_thvnglkbf1ynftxe54elpdfd7 foreign key (variable_group) references variable_group (id);
-
-
 
 GRANT ALL PRIVILEGES ON srcalc.* TO 'srcalc'@'localhost';
