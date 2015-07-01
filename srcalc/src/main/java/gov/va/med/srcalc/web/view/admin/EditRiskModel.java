@@ -1,7 +1,21 @@
 package gov.va.med.srcalc.web.view.admin;
 
+import gov.va.med.srcalc.domain.model.BooleanTerm;
+import gov.va.med.srcalc.domain.model.ConstantTerm;
+import gov.va.med.srcalc.domain.model.DerivedTerm;
+import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable;
+import gov.va.med.srcalc.domain.model.DiscreteTerm;
+import gov.va.med.srcalc.domain.model.DiscreteVariable;
+import gov.va.med.srcalc.domain.model.ModelTerm;
+import gov.va.med.srcalc.domain.model.MultiSelectOption;
+import gov.va.med.srcalc.domain.model.MultiSelectVariable;
+import gov.va.med.srcalc.domain.model.NumericalTerm;
+import gov.va.med.srcalc.domain.model.ProcedureTerm;
+import gov.va.med.srcalc.domain.model.RiskModel;
+import gov.va.med.srcalc.domain.model.Specialty;
+import gov.va.med.srcalc.service.AdminService;
+
 import java.util.ArrayList;
-//import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -11,23 +25,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 
-import gov.va.med.srcalc.domain.model.BooleanTerm;
-import gov.va.med.srcalc.domain.model.ConstantTerm;
-import gov.va.med.srcalc.domain.model.DerivedTerm;
-import gov.va.med.srcalc.domain.model.DiscreteTerm;
-import gov.va.med.srcalc.domain.model.ModelTerm;
-import gov.va.med.srcalc.domain.model.NumericalTerm;
-import gov.va.med.srcalc.domain.model.ProcedureTerm;
-import gov.va.med.srcalc.domain.model.RiskModel;
-import gov.va.med.srcalc.domain.model.SingleVariableTerm;
-import gov.va.med.srcalc.domain.model.Specialty;
-import gov.va.med.srcalc.service.AdminService;
-
 /**
  * A form backing object for editing a target (link @RiskModel) object.
  */
-public class EditRiskModel implements Comparable<EditRiskModel>{
-
+public class EditRiskModel implements Comparable<EditRiskModel>
+{
 	private final RiskModel fRiskModel;
 
     private String modelName;
@@ -36,6 +38,141 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
     
     private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModel.class);
 
+    /**
+     * Class to hold the label, type and coefficient for a (link @ModelTerm) 
+     * and its coefficient on the Admin's Edit Model page. 
+     * 
+     * @author owner
+     *
+     */
+    public static class ModelTermSummary  implements Comparable<ModelTermSummary>
+    {
+    	private final ModelTerm targetTerm;
+    	
+    	private String displayName;   // the name presented on the Edit Model page
+    	private String termType;      // the variable type
+    	
+    	private ModelTermSummary( ModelTerm mt, String name, String type ) 
+    	{
+    		displayName = name;
+    		targetTerm = mt;
+    		termType = type;
+    	}
+     	
+    	public String getDisplayName()  
+    	{
+    		return displayName;
+    	}
+    	
+    	public String getTermType() 
+    	{
+    		return termType;
+    	}
+    	
+    	public float getCoefficient()
+    	{
+    		return targetTerm.getCoefficient();
+    	}
+
+    	public static ModelTermSummary createTermSummary( ModelTerm modelTerm ) 
+    	{
+    		String dispName="";
+    		String type="";
+    		
+    		if( modelTerm instanceof ConstantTerm ) 
+    		{
+    			dispName = "Constant"; 
+    			type = "Constant"; // or N/A or blank
+    		}
+    		else if( modelTerm instanceof ProcedureTerm )
+    		{
+    			type = "Multiplier"; // ???
+    			dispName = "Procedure (RVU Multiplier)"; 
+    		}
+    		else if( modelTerm instanceof BooleanTerm )
+    		{
+    			type = "Boolean";
+    			BooleanTerm boolTerm = (BooleanTerm)modelTerm;    			
+    			dispName = boolTerm.getVariable().getDisplayName();
+    		}			
+    		else if( modelTerm instanceof NumericalTerm )
+    		{
+    			type = "Numerical";
+    			NumericalTerm numTerm = (NumericalTerm)modelTerm;
+    			dispName = numTerm.getVariable().getDisplayName();    				     			
+    		}
+    		else if( modelTerm instanceof DiscreteTerm )
+    		{
+    			DiscreteTerm discreteTerm = (DiscreteTerm)modelTerm;				    			
+    			MultiSelectOption opt = discreteTerm.getOption();
+    			DiscreteVariable var = discreteTerm.getVariable();
+    			
+    			if( var instanceof DiscreteNumericalVariable ) 
+    			{
+        			type = "Discrete Numeric";
+        			dispName = var.getDisplayName()+ " = " + opt.getValue();
+    			}
+    			else if( var instanceof MultiSelectVariable ) 
+    			{
+        			type = "Discrete";
+
+    				MultiSelectVariable msv = (MultiSelectVariable)var;
+    				msv.getOptions();
+    				dispName = var.getDisplayName()+ " = " + opt.getValue() ;
+    			}
+    		}			
+    		else if( modelTerm instanceof DerivedTerm )
+    		{
+    			type = "Rule";
+    			dispName = "Rule: "+((DerivedTerm)modelTerm).getRule().getId();
+    		}
+    		else
+    		{
+    			// or throw an error?
+    			dispName = "Unrecognized Term: "+modelTerm.getClass().getName();	
+    			type = "";
+    		}
+    		
+    		// Use new Type column to display the Type.
+    		// Can still do this if that's what they want.
+    		// dispName = dispName + " ("+type+")";
+    		
+    		return new ModelTermSummary( modelTerm, dispName, type );
+    	}
+
+    	// a string used to make sorting the terms easier. 
+    	// ConstantTerms first, then Rules and then by display name 
+    	// with discrete options ordered by index 
+    	private String getSortString() 
+    	{
+    		if( targetTerm instanceof ConstantTerm ) 
+    		{
+    			return "AAAA";
+    		}
+    		else if( targetTerm instanceof DerivedTerm )
+    		{
+    			return "AAAAA"+Float.toString( ((DerivedTerm)targetTerm).getRule().getId()*1f/1000f ); // 7 before 11
+    		}
+    		// order DiscreteTerms according to their options
+    		//
+    		else if( targetTerm instanceof DiscreteTerm )
+    		{
+    			DiscreteTerm dTerm = (DiscreteTerm)targetTerm;
+    			return dTerm.getVariable().getDisplayName().toUpperCase() + dTerm.getOptionIndex();
+    		}
+    		else
+    		{
+    			return displayName.toUpperCase();
+    		}
+    	}
+    	
+    	// sort by the sortString
+    	@Override
+    	public int compareTo( ModelTermSummary o ) 
+    	{
+    		return getSortString().compareTo( o.getSortString() );
+    	}    	
+    }    
     
     // Store the Edit Changes (an 'Import') in a new RiskModel object.
 	// If this were a normal editing situation where the user could change individual values through 
@@ -63,13 +200,12 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
 			final AdminService fAdminService )
 	{
 		List<Specialty> applSpecialties = new ArrayList<Specialty>();
-		fLogger.debug("creating RM {}", riskModel.getDisplayName() );
+		fLogger.debug("creating RiskModel {}", riskModel.toString() );
 		
 		for( Specialty spec : fAdminService.getAllSpecialties() ) 
 		{
 			if( spec.getRiskModels().contains( riskModel ) ) 
 			{
-				fLogger.debug(" adding {} to specialties list", spec.getName() );
 				applSpecialties.add( spec );
 			}
 		}
@@ -139,52 +275,22 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
 		return RiskModel.DISPLAY_NAME_MAX;
 	}
 	
-//	public float getConstantTermCoefficient() 
-//	{
-//		return ( importedModel == null ? fRiskModel.getConstantTerm().getCoefficient() : importedModel.getConstantTerm().getCoefficient() );
-//	}
-//
-//	public float getProcedureTermCoefficient() 
-//	{
-//		Set<ProcedureTerm> procTerms = ( importedModel != null ? 
-//										 importedModel.getProcedureTerms() : fRiskModel.getProcedureTerms() );
-//		//
-//		// Note: The code is assuming that there is at most one ProcedureTerm.
-//		//
-//		return ( procTerms.isEmpty() ? 0.0f : procTerms.iterator().next().getCoefficient() );
-//	}
-
-//	public List<EditTerm> getNumericalTerms() 
-//	{
-//		Set<NumericalTerm> numTerms = ( importedModel != null ? 
-//				 						importedModel.getNumericalTerms() : fRiskModel.getNumericalTerms() );
-//
-//		List<EditTerm> editTermsList = new ArrayList<EditTerm>();
-//
-//		for( NumericalTerm nTerm : numTerms )
-//		{
-//			editTermsList.add( new EditTerm( nTerm.getVariable().getDisplayName(), nTerm.getCoefficient() ) );
-//		}
-//		
-//		return editTermsList;
-//	}
-	
-	public List<ModelTermElement> getSortedTerms() 
+	public List<ModelTermSummary> getTermSummaries() 
 	{
 		Set<ModelTerm> numTerms = ( importedModel != null ? 
 				 					importedModel.getTerms(): fRiskModel.getTerms() );
 
-		ModelTermElementList termsElemsList = new ModelTermElementList();
+		List<ModelTermSummary> termSummariesList = new ArrayList<ModelTermSummary>();
 
 		for( ModelTerm modTerm : numTerms )
 		{
 			// change this
-			termsElemsList.addTermElements( modTerm );
+			termSummariesList.add( ModelTermSummary.createTermSummary( modTerm ) );
 		}
 		
-		termsElemsList.sort( );
+		Collections.sort( termSummariesList );
 		
-		return termsElemsList;
+		return termSummariesList;
 	}
 
 	/**
@@ -194,9 +300,13 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
 	{
 		// can't change the model ID
 
+		// if the imported model has an associated name then
+		// should we override the current one if it had been edited?
+		
+		
 		fRiskModel.setDisplayName( modelName );
 		
-//		riskModel = importedModel;
+//		fRiskModel = importedModel; // save/backup the old model?
 		
 		return fRiskModel;
 	}
@@ -204,8 +314,7 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
     @Override
     public int compareTo(final EditRiskModel other )
     {
-    	// Order alphabetically by modelName. Second option would be to order by id if we 
-    	// wanted a consistent ordering
+    	// Order alphabetically by modelName.
     	// 
         return this.modelName.compareTo( other.modelName );
     }

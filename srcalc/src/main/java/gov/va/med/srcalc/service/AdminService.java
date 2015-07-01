@@ -44,5 +44,9 @@ public interface AdminService extends ModelInspectionService
      */
     public void saveRiskModel( final RiskModel model );    
     
+    /**
+     * Get a list of all (@link Specialty) objects in the database.
+     * @return a list ordered by name. 
+     */
     public List<Specialty> getAllSpecialties();
 }

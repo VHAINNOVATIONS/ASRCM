@@ -138,5 +138,20 @@ public class AdminServiceIT extends IntegrationTest
     	RiskModel vascRM = fAdminService.getRiskModelForId( mid );
     	assertEquals( vascRM.getDisplayName(), "Vascular 30-Day Mortality Risk");
     }
+    
+    @Test
+    public final void testGetAllSpecialties() 
+    {
+    	List<Specialty> specList = fAdminService.getAllSpecialties();
+
+    	assertEquals( 7, specList.size() );
+    	assertEquals( "Cardiac", specList.get(0).getName() );
+    	assertEquals( "General Surgery", specList.get(1).getName() );
+    	assertEquals( "Neurosurgery", specList.get(2).getName() );
+    	assertEquals( "Orthopedic", specList.get(3).getName() );
+    	assertEquals( "Thoracic", specList.get(4).getName() );
+    	assertEquals( "Urology", specList.get(5).getName() );
+    	assertEquals( "Vascular", specList.get(6).getName() );
+    }
 
 }

@@ -137,8 +137,7 @@ public final class Specialty implements Serializable
     }
     
     /**
-     * Returns all {@link RiskModel}s associated with the Specialty. Caution:
-     * lazy-loaded.
+     * Returns all {@link RiskModel}s associated with the Specialty. 
      */
     @OneToMany(fetch = FetchType.EAGER)
     // Override strange defaults. See

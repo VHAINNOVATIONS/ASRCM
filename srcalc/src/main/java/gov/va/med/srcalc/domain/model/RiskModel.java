@@ -347,7 +347,9 @@ public class RiskModel implements Comparable<RiskModel>
         return expSum / (1 + expSum);
     }
     
-    // TODO: implement equals() and hashCode()
+    // This may not be sufficient for future use.
+    // Currently (July'15) this was added for the contains() method 
+    // for a list of RiskModels.
     @Override
     public boolean equals(final Object o)
     {

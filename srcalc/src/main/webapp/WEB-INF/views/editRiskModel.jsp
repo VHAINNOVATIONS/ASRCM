@@ -10,6 +10,7 @@
     <h2>${pageTitle} ${riskModel.modelName}</h2>
     <%-- Calculate the full URL for form submission. --%>
     <c:url var="fullSaveUrl" value="/admin/models/${riskModel.id}"/>
+    <!-- TODO : Change this to appropriate or new class -->
     <form:form id="editModelForm" cssClass="srcalcForm attributeEditForm"
         method="post" action="${fullSaveUrl}" commandName="riskModel">
     <%-- Display any object-wide errors --%><form:errors cssClass="error"/>
@@ -34,18 +35,20 @@
         </td>
         </tr>
         <tr>
-        <td class="attributeName" valign="middle">Summation Terms</td>
+        <td class="attributeName">Summation Terms</td>
         <td>
 			<table>
 			<tbody>
 			<tr>
-			   <th align="left" class="main">Term</th>
-			   <th class="main">Coefficient</th>		   
+			   <th align="left" >Term</th>
+			   <th align="left" class="main">Type</th>
+			   <th align="left" class="main">Coefficient</th>		   
 			</tr>
-			<c:forEach var="term" items="${riskModel.sortedTerms}">
+			<c:forEach var="term" items="${riskModel.termSummaries}">
 			<tr>
-			    <td class="attributeNmae">${term.displayName}</td>
-			    <td class="attributeNmae">${term.coefficient}</td>
+			    <td>${term.displayName}</td>
+			    <td class="attributeName">${term.termType}</td>
+			    <td class="attributeName">${term.coefficient}</td>
 			</tr>
 			</c:forEach>
 			 
@@ -55,7 +58,8 @@
         </tr>
    	</tbody>
   	</table>
-	<span><a id="importRiskModel" class="btn-link" href="#">Import New Coefficients</a></span>
+	<span>
+	<a id="importRiskModel" class="btn-link" href="#">Import New Model</a>  (Note this will overwrite the displayed terms.)</span>
    
     <div class="actionButtons">
     <ol>

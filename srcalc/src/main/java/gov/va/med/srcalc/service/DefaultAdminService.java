@@ -110,7 +110,6 @@ public class DefaultAdminService implements AdminService
         fLogger.debug("Getting all Specialties.");
         return fSpecialtyDao.getAllSpecialties();
     }
-
     
     @Override
     @Transactional(readOnly = true)
