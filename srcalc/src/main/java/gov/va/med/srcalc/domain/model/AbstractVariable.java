@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 
 import javax.persistence.*;
 
-import com.github.rjeschke.txtmark.*;
 import org.hibernate.annotations.Proxy;
 
+import com.github.rjeschke.txtmark.Processor;
 import com.google.common.base.Optional;
 
 /**
