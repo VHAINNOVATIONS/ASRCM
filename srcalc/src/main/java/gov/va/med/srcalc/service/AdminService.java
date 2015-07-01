@@ -53,4 +53,9 @@ public interface AdminService extends ModelInspectionService
      * @throws DuplicateRuleNameException if the provided rule key is non-unique
      */
     public void saveRule(final Rule rule);
+
+    /**
+     * Saves the {@link RiskModel} 
+     */
+    public void saveRiskModel( final RiskModel model );
 }

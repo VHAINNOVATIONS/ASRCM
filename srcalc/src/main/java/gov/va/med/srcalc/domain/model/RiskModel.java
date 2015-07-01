@@ -1,10 +1,12 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.calculation.Value;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.Preconditions;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 import javax.persistence.*;
 
@@ -32,6 +34,23 @@ public class RiskModel implements Comparable<RiskModel>
     private Set<ProcedureTerm> fProcedureTerms = new HashSet<>();
     private Set<DerivedTerm> fDerivedTerms = new HashSet<>();
     
+	// Use the same Char set and Reg Expr as for the Variable names.
+    /**
+     * English description of the valid display name characters for readable
+     * error messages.
+     * @see #VALID_DISPLAY_NAME_REGEX
+     */
+    public static final String VALID_MODEL_NAME_CHARACTERS = DisplayNameConditions.VALID_DISPLAY_NAME_CHARACTERS;
+    
+    public static final String VALID_MODEL_NAME_REGEX = DisplayNameConditions.VALID_DISPLAY_NAME_REGEX;
+
+    /**
+     * Precompiled version of {@link RiskModel#VALID_DISPLAY_NAME_REGEX} for
+     * efficiency.
+     */
+    public static final Pattern VALID_MODEL_NAME_PATTERN =
+            Pattern.compile(RiskModel.VALID_MODEL_NAME_REGEX);
+
     /**
      * Mainly intended for reflection-based construction. Business code should
      * use {@link #RiskModel(String)}.
@@ -339,4 +358,5 @@ public class RiskModel implements Comparable<RiskModel>
     {
         return this.fDisplayName.compareTo(other.fDisplayName);
     }
+    
 }

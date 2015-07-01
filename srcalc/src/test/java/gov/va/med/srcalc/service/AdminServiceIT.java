@@ -129,4 +129,29 @@ public class AdminServiceIT extends IntegrationTest
             getHibernateSession().clear();
         }
     }
+
+    @Test
+    public final void testGetAllRiskModels() 
+    {
+    	ImmutableCollection<RiskModel> allRiskModels = fAdminService.getAllRiskModels();
+    	
+    	assertEquals( 7, allRiskModels.size() );
+    	
+    	List<RiskModel> rmList = allRiskModels.asList();
+    	assertEquals( "General Surgery 30-Day Mortality Risk", rmList.get(0).getDisplayName() );
+    	assertEquals( "Neurosurgery 30-Day Mortality Risk", rmList.get(1).getDisplayName() );
+    	assertEquals( "Orthopedic 30-Day Mortality Risk", rmList.get(2).getDisplayName() );
+    	assertEquals( "Thoracic 30-Day Mortality Risk", rmList.get(3).getDisplayName() );
+    	assertEquals( "Urology 30-Day Mortality Risk", rmList.get(4).getDisplayName() );
+    	assertEquals( "Vascular 30-Day Mortality Risk", rmList.get(5).getDisplayName() );
+    	assertEquals( "Cardiac 30-Day Mortality Risk", rmList.get(6).getDisplayName() );
+    }
+    
+    @Test
+    public final void testGetRiskModelsById( ) 
+    {
+    	int mid = 6;
+    	RiskModel vascRM = fAdminService.getRiskModelForId( mid );
+    	assertEquals( vascRM.getDisplayName(), "Vascular 30-Day Mortality Risk");
+    }
 }
