@@ -25,9 +25,16 @@ public interface ModelInspectionService
      * @return an ImmutableCollection, in arbitrary order
      */
     public ImmutableCollection<RiskModel> getAllRiskModels();
+
     /**
      * Returns all available Procedures, ordered by CPT code for convenience.
      * @return an immutable list
      */
     public ImmutableList<Procedure> getAllProcedures();
+    
+    /**
+     * Returns the {@link RiskModel} with the given ID.
+     * @return RiskModelS
+     */
+    public RiskModel getRiskModelForId(int modelId);        
 }

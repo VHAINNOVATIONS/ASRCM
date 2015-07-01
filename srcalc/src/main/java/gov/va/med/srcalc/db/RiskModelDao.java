@@ -6,8 +6,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.ImmutableCollection;
@@ -18,6 +21,8 @@ public class RiskModelDao
 {
     private final SessionFactory fSessionFactory;
     
+    private static final Logger fLogger = LoggerFactory.getLogger(RiskModelDao.class);
+
     @Inject // Allow arguments to be autowired.
     public RiskModelDao(final SessionFactory sessionFactory)
     {
@@ -33,12 +38,27 @@ public class RiskModelDao
      * Returns all RiskModels in the database, in arbitrary order.
      * @return an ImmutableCollection
      */
-    public ImmutableCollection<RiskModel> getAllRiskModels()
+	public ImmutableCollection<RiskModel> getAllRiskModels()
     {
-        @SuppressWarnings("unchecked") // trust Hibernate
-        final List<RiskModel> list =
-                getCurrentSession().createCriteria(RiskModel.class).list();
+        Query q = getCurrentSession().createQuery("from RiskModel");
+        @SuppressWarnings("unchecked")
+        final List<RiskModel> list = q.list();
         return ImmutableList.copyOf(list);
     }
     
+    /**
+     * Returns the RiskModel in the database for the given Id
+     * @return an RiskModel
+     */
+    public RiskModel getRiskModelForId( final int mid ) 
+    {
+    	return (RiskModel)getCurrentSession().get(RiskModel.class, mid);
+    }
+    
+    public RiskModel saveRiskModel( final RiskModel rm )
+    {
+        fLogger.debug("Merging RiskModel {} into persistence context.", rm.getDisplayName() );
+
+        return (RiskModel)getCurrentSession().merge( rm );
+    }
 }

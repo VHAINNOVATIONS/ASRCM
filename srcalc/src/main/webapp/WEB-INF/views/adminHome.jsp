@@ -4,6 +4,27 @@
 <srcalc:adminPage title="Model Administration">
 <section>
     <h2>Model Administration</h2>
+    <h3>Model Definitions</h3>    
+
+    <table class="srcalcTable" id="riskModelsTable">
+    <tr>
+        <th class="main">Name</th>
+        <th></th>
+    </tr>
+    
+    <c:forEach var="model" items="${riskModels}">
+    <c:url var="editModel" value="/admin/models/${model.id}" />
+
+    <tr>
+        <td><c:out value="${model.displayName}"/></td>
+        <td><a href="${editModel}" class="editObjectLink">Edit</a></td>
+    </tr>
+    </c:forEach>
+    <tr>
+    </tr>
+        
+    </table>
+    
     <h3>Variable Definitions</h3>
     <table class="srcalcTable" id="variableSummaryTable">
     <tr>

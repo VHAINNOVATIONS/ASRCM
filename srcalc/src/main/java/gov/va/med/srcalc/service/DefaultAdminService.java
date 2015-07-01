@@ -136,4 +136,29 @@ public class DefaultAdminService implements AdminService
     {
         return fProcedureDao.getAllProcedures();
     }
+    
+    @Transactional(readOnly = true)
+    public RiskModel getRiskModelForId(final int modelId)
+    {        
+        fLogger.debug("Getting RiskModel for {}.", modelId);
+        return fRiskModelDao.getRiskModelForId( modelId );
+    }
+
+    /**
+     * Saves the {@link RiskModel} 
+     */
+    @Override
+    @Transactional
+    public void saveRiskModel( final RiskModel model ) 
+    {    	
+        if( getRiskModelForId( model.getId() ) == null ) 
+        {  // TODO : remove this when possible to create new RiskModels
+        	fLogger.warn( "Warning: Saving RiskModel {}. ID {} doesn't exist in the DB ", 
+        			model.getDisplayName(), model.getId() );
+        }
+        
+        fRiskModelDao.saveRiskModel( model );
+        fLogger.info("Saved Risk Model {}.", model.getDisplayName() );
+    }
+
 }

@@ -44,4 +44,9 @@ public interface AdminService extends ModelInspectionService
      * @param newProcedures the new procedure set
      */
     public void replaceAllProcedures(final Set<Procedure> newProcedures);
+
+    /**
+     * Saves the {@link RiskModel} 
+     */
+    public void saveRiskModel( final RiskModel model );    
 }
