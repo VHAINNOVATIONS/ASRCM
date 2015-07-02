@@ -7,6 +7,8 @@ apply plugin: 'war'
 apply plugin: 'eclipse-wtp'
 // Generates code coverage report. Run task 'jacocoTestReport' to do so.
 apply plugin: 'jacoco'
+// Warn about violated code standards
+apply plugin: 'checkstyle'
 
 // Basic build properties
 sourceCompatibility = '1.7'
