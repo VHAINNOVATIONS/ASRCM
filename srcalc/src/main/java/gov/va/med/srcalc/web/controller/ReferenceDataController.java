@@ -54,11 +54,11 @@ public class ReferenceDataController
             jsonProcedure.put("rvu", Float.toString(p.getRvu()));
             if(p.isEligible())
             {
-                jsonProcedure.put("excluded", "false");
+                jsonProcedure.put("eligible", "true");
             }
             else
             {
-                jsonProcedure.put("excluded", "true");
+                jsonProcedure.put("eligible", "false");
             }
             returnList.add(jsonProcedure);
         }

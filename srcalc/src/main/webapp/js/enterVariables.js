@@ -103,7 +103,7 @@ var ENTERVARIABLES = function() {
                               return '<a href="#" class="btn-link"' +
                                   '" data-cpt-code="' + row.cptCode +
                                   '" data-display-string="' + makeDisplayString(row) +
-                                  '"data-excluded="'+ row.excluded + '">Select</a>';
+                                  '"data-eligible="'+ row.eligible + '">Select</a>';
                                   },
                           width: '10%', searchable: false, sortable: false }
                   ]
@@ -114,7 +114,7 @@ var ENTERVARIABLES = function() {
 
                 var elem = event.target || event.srcElement;
                 selectProcedure($(elem).data('cpt-code'), $(elem).data('display-string'));
-                if(String($(elem).data('excluded')) == "true")
+                if(String($(elem).data('eligible')) == "false")
                 {
                 	// Give the user a warning message that the procedure is excluded from
                 	// risk calculations and disable the "Run Calculation" button
