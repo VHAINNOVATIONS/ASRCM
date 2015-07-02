@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.web.view.admin;
 
 import gov.va.med.srcalc.domain.model.RiskModel;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.ValidationCodes;
 import gov.va.med.srcalc.util.ValidationUtils2;
 
@@ -30,7 +31,7 @@ public class EditRiskModelValidator implements Validator
         // Note: the editRiskModel object is accessible from the e Error object.
         //
         ValidationUtils.rejectIfEmpty(e, "modelName", ValidationCodes.NO_VALUE);
-        ValidationUtils2.rejectIfTooLong(e, "modelName", RiskModel.DISPLAY_NAME_MAX );
+        ValidationUtils2.rejectIfTooLong(e, "modelName", DisplayNameConditions.DISPLAY_NAME_MAX );
         
         ValidationUtils2.rejectIfDoesntMatch(
                 e, "modelName", RiskModel.VALID_MODEL_NAME_PATTERN,

@@ -4,7 +4,7 @@ package gov.va.med.srcalc.web.view;
  * <p>Defines available views. See /WEB-INF/views.</p>
  * 
  * <p>All references in code to View names should be through this class to
- * enhance code clarity and facilitiate refactoring.</p>
+ * enhance code clarity and facilitate refactoring.</p>
  */
 public class Views
 {
@@ -30,5 +30,6 @@ public class Views
     public static final String EDIT_MULTI_SELECT_VARIABLE = "editMultiSelectVariable.jsp";
     public static final String NEW_DISCRETE_NUMERICAL_VARIABLE = "newDiscreteNumericalVariable.jsp";
     public static final String EDIT_DISCRETE_NUMERICAL_VARIABLE = "editDiscreteNumericalVariable.jsp";
+    public static final String EDIT_RULE = "editRule.jsp";
     public static final String EDIT_PROCEDURES = "editProcedures.jsp";
 }

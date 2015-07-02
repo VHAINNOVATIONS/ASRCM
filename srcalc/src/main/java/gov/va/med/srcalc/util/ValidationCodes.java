@@ -47,6 +47,11 @@ public class ValidationCodes
     public static final String BAD_FIXED_LENGTH = "badFixedLength";
 
     /**
+     * Error code used when a rule's summand expression is not a valid Spring Expression.
+     */
+    public static final String INVALID_EXPRESSION = "invalidExperession";
+    
+    /**
      * No construction.
      */
     private ValidationCodes()

@@ -24,7 +24,13 @@ public interface ModelInspectionService
      * Returns all {@link RiskModel}s in the database.
      * @return an ImmutableCollection, in arbitrary order
      */
-    public ImmutableCollection<RiskModel> getAllRiskModels();
+    public ImmutableCollection<RiskModel> getAllRiskModels(); 
+    
+    /**
+     * Returns all Rules defined in the database.
+     * @return a list, in display name order
+     */
+    public ImmutableCollection<Rule> getAllRules();
 
     /**
      * Returns all available Procedures, ordered by CPT code for convenience.
@@ -36,5 +42,5 @@ public interface ModelInspectionService
      * Returns the {@link RiskModel} with the given ID.
      * @return RiskModelS
      */
-    public RiskModel getRiskModelForId(int modelId);        
+    public RiskModel getRiskModelForId(int modelId);
 }

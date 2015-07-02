@@ -43,6 +43,7 @@
     <bean id="variableDao" class="gov.va.med.srcalc.db.VariableDao" />
     <bean id="riskModelDao" class="gov.va.med.srcalc.db.RiskModelDao" />
     <bean id="procedureDao" class="gov.va.med.srcalc.db.ProcedureDao" />
+    <bean id="ruleDao" class="gov.va.med.srcalc.db.RuleDao" />
     <!-- Automatically translate any exceptions from the DAOs to Spring's
          DataAccessException hierarchy. -->
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />

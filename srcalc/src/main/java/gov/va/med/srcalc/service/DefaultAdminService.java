@@ -23,16 +23,19 @@ public class DefaultAdminService implements AdminService
     
     private final VariableDao fVariableDao;
     private final RiskModelDao fRiskModelDao;
+    private final RuleDao fRuleDao;
     private final ProcedureDao fProcedureDao;
     
     @Inject
     public DefaultAdminService(
             final VariableDao variableDao,
             final RiskModelDao riskModelDao,
+            final RuleDao ruleDao,
             final ProcedureDao procedureDao)
     {
         fVariableDao = variableDao;
         fRiskModelDao = riskModelDao;
+        fRuleDao = ruleDao;
         fProcedureDao = procedureDao;
     }
     
@@ -117,6 +120,61 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
+    public ImmutableCollection<Rule> getAllRules()
+    {
+        fLogger.debug("Getting all Rules.");
+        return fRuleDao.getAllRules();
+    }
+    
+    @Override
+    @Transactional
+    public Rule getRule(final String displayName) throws InvalidIdentifierException
+    {
+        fLogger.debug("Getting Rule by key {}.", displayName);
+        final Rule rule = fRuleDao.getByDisplayName(displayName);
+        if (rule == null)
+        {
+            throw new InvalidIdentifierException("There is no Rule called " + displayName);
+        }
+        return rule;
+    }
+    
+    /**
+     * Returns true if there is already a different rule with the same display name.
+     * @param rule
+     */
+    private boolean ruleNameAlreadyExists(final Rule rule)
+    {
+        final Rule existingRule = fRuleDao.getByDisplayName(rule.getDisplayName());
+        fLogger.debug("Existing rule with name {}: {}", rule.getDisplayName(), existingRule);
+        // If there is an existing rule with the same name and it is not actually
+        // the same rule, then we have a conflict.
+        return (existingRule != null && rule.getId() != existingRule.getId());
+    }
+
+    @Override
+    @Transactional
+    public void saveRule(final Rule rule)
+    {
+        fLogger.debug("Saving Rule {}.", rule);
+
+        // Per method Javadoc, throw a DuplicateRuleNameException if a
+        // different rule with the same display name already exists.
+        // (mergeRule() below would throw a DataAccessException in this
+        // case, but we cannot robustly determine the cause of the Exception so
+        // we explicitly check here.)
+        if (ruleNameAlreadyExists(rule))
+        {
+            throw new DuplicateRuleNameException(
+                    "Duplicate rule name " + rule.getDisplayName());
+        }
+
+        fRuleDao.mergeRule(rule);
+        // This is a significant (and infrequent) transaction: log it at INFO
+        // level.
+        fLogger.info("Saved rule {}.", rule.getDisplayName());
+    }
+    
     public void replaceAllProcedures(final Set<Procedure> newProcedures)
     {
         final Stopwatch stopwatch = Stopwatch.createStarted();
@@ -136,7 +194,7 @@ public class DefaultAdminService implements AdminService
     {
         return fProcedureDao.getAllProcedures();
     }
-    
+
     @Transactional(readOnly = true)
     public RiskModel getRiskModelForId(final int modelId)
     {        
@@ -160,5 +218,4 @@ public class DefaultAdminService implements AdminService
         fRiskModelDao.saveRiskModel( model );
         fLogger.info("Saved Risk Model {}.", model.getDisplayName() );
     }
-
 }

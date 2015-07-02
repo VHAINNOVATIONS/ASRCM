@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableSortedSet;
 import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.ModelInspectionService;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 
 /**
  * <p>Stores basic {@link AbstractVariable} properties for creating a new or
@@ -152,11 +153,11 @@ public abstract class EditBaseVar implements EditVar
     
     /**
      * <p>Returns the maximum valid length of the display name to set,
-     * {@link Variable#DISPLAY_NAME_MAX}, for easy access from views.</p>
+     * {@link DisplayNameConditions#DISPLAY_NAME_MAX}, for easy access from views.</p>
      */
     public final int getDisplayNameMax()
     {
-        return Variable.DISPLAY_NAME_MAX;
+        return DisplayNameConditions.DISPLAY_NAME_MAX;
     }
     
     /**

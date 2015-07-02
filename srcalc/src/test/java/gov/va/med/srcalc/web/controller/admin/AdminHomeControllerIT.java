@@ -36,12 +36,10 @@ public class AdminHomeControllerIT extends IntegrationTest
     @Test
     public final void testDefaultPage() throws Exception
     {
-        fMockMvc.perform(get("/admin")).
-            andExpect(model().attributeExists("variables"));
-        
-        fMockMvc.perform(get("/admin")).
-    	andExpect(model().attributeExists("riskModels"));
-
+        fMockMvc.perform(get("/admin"))
+            .andExpect(model().attributeExists("variables"))
+            .andExpect(model().attributeExists("rules"))
+            .andExpect(model().attributeExists("riskModels"));
     }
     
 }

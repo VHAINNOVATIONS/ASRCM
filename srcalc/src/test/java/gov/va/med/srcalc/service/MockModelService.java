@@ -47,16 +47,23 @@ public class MockModelService implements ModelInspectionService
         return SampleModels.procedureList();
     }
 
-	@Override
-	public RiskModel getRiskModelForId(int modelId)  {
-		
-		if( fThoracicModel.getId() == modelId ) 
-		{
-			return fThoracicModel;
-		}
-		else 
-		{
-			return null;
-		}
-	}
+    @Override
+    public ImmutableCollection<Rule> getAllRules()
+    {
+        return ImmutableList.of(SampleModels.ageAndFsRule());
+    }
+    
+    @Override
+    public RiskModel getRiskModelForId(int modelId)
+    {
+        
+        if (fThoracicModel.getId() == modelId)
+        {
+            return fThoracicModel;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

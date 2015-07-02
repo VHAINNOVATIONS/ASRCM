@@ -2,11 +2,11 @@ package gov.va.med.srcalc.web.view.admin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import gov.va.med.srcalc.domain.model.ConstantTerm;
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.model.Specialty;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 
 /**
  * A form backing object for editing a target (link @RiskModel) object.
@@ -16,8 +16,6 @@ public class EditRiskModel implements Comparable<EditRiskModel>
     private final RiskModel fRiskModel;
     
     private String modelName;
-    
-    private Set<Specialty> applicableSpecialties;
     
     // Store the Edit Changes (an 'Import') in a new RiskModel object.
     // If this were a normal editing situation where the user could change individual values through
@@ -57,18 +55,6 @@ public class EditRiskModel implements Comparable<EditRiskModel>
     }
     
     /**
-     * Note: this will take the place of most of the setter methods for individual fields.
-     * 
-     * @param impModel
-     */
-    // public void setImportedModel( RiskModel impModel )
-    // {
-    // /// ??? should this also overwrite the possibly edited display name?
-    // importedModel = impModel;
-    // importedModel.setDisplayName( modelName );
-    // }
-    
-    /*
      * Return the modelName
      */
     public String getModelName()
@@ -76,7 +62,7 @@ public class EditRiskModel implements Comparable<EditRiskModel>
         return modelName;
     }
     
-    /*
+    /**
      * Set the modelName
      */
     public void setModelName(String mn)
@@ -108,7 +94,7 @@ public class EditRiskModel implements Comparable<EditRiskModel>
     
     public int getMaxDisplayNameLength()
     {
-        return RiskModel.DISPLAY_NAME_MAX;
+        return DisplayNameConditions.DISPLAY_NAME_MAX;
     }
     
     /**

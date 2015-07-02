@@ -37,7 +37,7 @@ public class AdminServiceIT extends IntegrationTest
     public final void testGetAllVariables()
     {
         final List<AbstractVariable> actualVars = fAdminService.getAllVariables();
-        assertEquals(9, actualVars.size());
+        assertEquals(10, actualVars.size());
         assertEquals("Age", actualVars.get(0).getDisplayName());
     }
     
@@ -116,6 +116,23 @@ public class AdminServiceIT extends IntegrationTest
         }
     }
     
+    @Test(expected = DuplicateRuleNameException.class)
+    public final void testSaveDuplicateRuleName() throws Exception
+    {
+        final Rule rule = SampleModels.ageAndFsRule();
+        try
+        {
+            fAdminService.saveRule(rule);
+        }
+        finally
+        {
+            // Normally the Session would be dead and gone by now, but in these
+            // ITs the Transaction is still open, so manually clear the Session
+            // due to the Exception that occurred in the DAO.
+            getHibernateSession().clear();
+        }
+    }
+
     @Test
     public final void testReplaceAllProcedures() throws Exception
     {
@@ -166,5 +183,4 @@ public class AdminServiceIT extends IntegrationTest
     	RiskModel vascRM = fAdminService.getRiskModelForId( mid );
     	assertEquals( vascRM.getDisplayName(), "Vascular 30-Day Mortality Risk");
     }
-
 }

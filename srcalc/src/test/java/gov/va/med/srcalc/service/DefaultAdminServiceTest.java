@@ -19,12 +19,14 @@ public class DefaultAdminServiceTest
 {
     private List<AbstractVariable> fSampleVariables;
     private ImmutableSortedSet<VariableGroup> fSampleGroups;
+    private ImmutableList<Rule> fSampleRules;
     
     @Before
     public final void setup()
     {
         fSampleVariables = SampleModels.sampleVariableList();
         fSampleGroups = SampleModels.variableGroups();
+        fSampleRules = ImmutableList.of(SampleModels.ageAndFsRule());
     }
     
     private VariableDao mockVariableDao()
@@ -46,6 +48,15 @@ public class DefaultAdminServiceTest
         return dao;
     }
     
+    private RuleDao mockRuleDao()
+    {
+        final RuleDao dao = mock(RuleDao.class);
+        when(dao.getAllRules()).thenReturn(fSampleRules);
+        final Rule rule = fSampleRules.get(0);
+        when(dao.getByDisplayName(rule.getDisplayName())).thenReturn(rule);
+        return dao;
+    }
+
     private ProcedureDao mockProcedureDao()
     {
         final ProcedureDao dao = mock(ProcedureDao.class);
@@ -63,7 +74,7 @@ public class DefaultAdminServiceTest
     private DefaultAdminService createWithMocks()
     {
         return new DefaultAdminService(
-                mockVariableDao(), mockRiskModelDao(), mockProcedureDao());
+                mockVariableDao(), mockRiskModelDao(), mockRuleDao(), mockProcedureDao());
     }
     
     @Test
@@ -122,7 +133,7 @@ public class DefaultAdminServiceTest
         // Create the class under test.
         final VariableDao mockDao = mockVariableDao();
         final DefaultAdminService s = new DefaultAdminService(
-                mockDao, mockRiskModelDao(), mockProcedureDao());
+                mockDao, mockRiskModelDao(), mockRuleDao(), mockProcedureDao());
         
         // Setup
         final AbstractVariable var = s.getVariable(key);
@@ -139,4 +150,35 @@ public class DefaultAdminServiceTest
         verify(mockDao).mergeVariable(var);
     }
     
+    @Test
+    public final void testGetAllRules()
+    {
+        // Create the class under test.
+        final DefaultAdminService s = createWithMocks();
+        // Behavior verification.
+        assertEquals(fSampleRules, s.getAllRules());
+    }
+    
+    @Test
+    public final void testGetRule() throws Exception
+    {
+        final String ruleDisplayName = "Age multiplier for functional status";
+        
+        // Create the class under test.
+        final DefaultAdminService s = createWithMocks();
+        
+        // Behavior verification.
+        final Rule actualRule = (Rule) s.getRule(ruleDisplayName);
+        assertEquals(ruleDisplayName, actualRule.getDisplayName());
+    }
+    
+    @Test(expected = InvalidIdentifierException.class)
+    public final void testGetInvalidRule() throws Exception
+    {
+        // Create the class under test.
+        final DefaultAdminService s = createWithMocks();
+        
+        // Behavior verification.
+        s.getRule("Does not exist");
+    }
 }
