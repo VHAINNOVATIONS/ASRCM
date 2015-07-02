@@ -8,8 +8,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-public class EditRiskModelValidator implements Validator {
-    
+public class EditRiskModelValidator implements Validator
+{
     /**
      * Returns true if, and only if, the given class is {@link EditRiskModel} or a subclass.
      */
