@@ -351,7 +351,7 @@ public class RiskModel implements Comparable<RiskModel>
 	 * Returns a true if a RiskModel and if displayname and all Terms are equal.
 	 */
     @Override
-    public boolean equals(final Object o)
+    public final boolean equals(final Object o)
     {
     	if( this == o )
     	{
@@ -366,7 +366,7 @@ public class RiskModel implements Comparable<RiskModel>
             // don't include the Id (Hibernate best practices)
             final RiskModel other = (RiskModel)o;
             
-            if( !Objects.equals( this.fDisplayName, other.fDisplayName ) ) 
+            if( !Objects.equals( this.getDisplayName(), other.getDisplayName() ) ) 
             {
             	return false;
             }
@@ -385,7 +385,7 @@ public class RiskModel implements Comparable<RiskModel>
 	 * Returns a hash code based on the displayName that uses the String.hashCode() implementation.
 	 */
 	@Override
-	public int hashCode()
+	public final int hashCode()
 	{
 		return Objects.hash( fDisplayName, getTerms() ); 
 	}
