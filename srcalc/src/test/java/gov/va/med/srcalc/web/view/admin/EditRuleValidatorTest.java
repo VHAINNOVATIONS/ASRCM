@@ -9,6 +9,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
+import gov.va.med.srcalc.db.ProcedureDao;
 import gov.va.med.srcalc.db.RiskModelDao;
 import gov.va.med.srcalc.db.RuleDao;
 import gov.va.med.srcalc.db.VariableDao;
@@ -21,7 +22,10 @@ import gov.va.med.srcalc.util.ValidationCodes;
 public class EditRuleValidatorTest
 {
     private final DefaultAdminService fAdminService = new DefaultAdminService(
-            mock(VariableDao.class), mock(RiskModelDao.class), mock(RuleDao.class));
+            mock(VariableDao.class), 
+            mock(RiskModelDao.class),
+            mock(RuleDao.class),
+            mock(ProcedureDao.class));
     
     private static final String INVALID_EXPRESSION = "Invalid asdfjasidfj@#@#%";
     

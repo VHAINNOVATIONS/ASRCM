@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import gov.va.med.srcalc.db.ProcedureDao;
 import gov.va.med.srcalc.db.RiskModelDao;
 import gov.va.med.srcalc.db.RuleDao;
 import gov.va.med.srcalc.db.VariableDao;
@@ -20,7 +21,10 @@ import org.junit.Test;
 public class EditRuleTest
 {
     private final DefaultAdminService fAdminService = new DefaultAdminService(
-            mockVariableDao(), mock(RiskModelDao.class), mock(RuleDao.class));
+            mockVariableDao(), 
+            mock(RiskModelDao.class),
+            mock(RuleDao.class),
+            mock(ProcedureDao.class));
     
     private VariableDao mockVariableDao()
     {

@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.dao.DataAccessException;
 
@@ -53,6 +54,12 @@ public interface AdminService extends ModelInspectionService
      * @throws DuplicateRuleNameException if the provided rule key is non-unique
      */
     public void saveRule(final Rule rule);
+    
+    /**
+     * Completely replaces all Procedures in the persistent store with the given set.
+     * @param newProcedures the new procedure set
+     */
+    public void replaceAllProcedures(final Set<Procedure> newProcedures);
 
     /**
      * Saves the {@link RiskModel} 

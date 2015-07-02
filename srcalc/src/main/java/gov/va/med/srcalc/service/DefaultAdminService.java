@@ -1,10 +1,10 @@
 package gov.va.med.srcalc.service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
-import gov.va.med.srcalc.db.RiskModelDao;
-import gov.va.med.srcalc.db.RuleDao;
-import gov.va.med.srcalc.db.VariableDao;
+import gov.va.med.srcalc.db.*;
 import gov.va.med.srcalc.domain.model.*;
 
 import javax.inject.Inject;
@@ -13,7 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 
 public class DefaultAdminService implements AdminService
 {
@@ -22,14 +24,19 @@ public class DefaultAdminService implements AdminService
     private final VariableDao fVariableDao;
     private final RiskModelDao fRiskModelDao;
     private final RuleDao fRuleDao;
+    private final ProcedureDao fProcedureDao;
     
     @Inject
     public DefaultAdminService(
-            final VariableDao variableDao, final RiskModelDao riskModelDao, final RuleDao ruleDao)
+            final VariableDao variableDao,
+            final RiskModelDao riskModelDao,
+            final RuleDao ruleDao,
+            final ProcedureDao procedureDao)
     {
         fVariableDao = variableDao;
         fRiskModelDao = riskModelDao;
         fRuleDao = ruleDao;
+        fProcedureDao = procedureDao;
     }
     
     @Override
@@ -67,9 +74,9 @@ public class DefaultAdminService implements AdminService
     }
     
     /**
-     * Returns true if there is already a different variable with the same key.
-     * @param variable
-     * @return
+     * Returns true if there is already a different variable with the same key as the
+     * given variable, false otherwise.
+     * @param variable the variable to check
      */
     private boolean keyAlreadyExists(final AbstractVariable variable)
     {
@@ -166,6 +173,26 @@ public class DefaultAdminService implements AdminService
         // This is a significant (and infrequent) transaction: log it at INFO
         // level.
         fLogger.info("Saved rule {}.", rule.getDisplayName());
+    }
+    
+    public void replaceAllProcedures(final Set<Procedure> newProcedures)
+    {
+        final Stopwatch stopwatch = Stopwatch.createStarted();
+        final int deleteCount = fProcedureDao.replaceAllProcedures(newProcedures);
+        stopwatch.stop();
+        
+        fLogger.info(
+                "Replaced all {} Procedures in the DB with a new set of {} in {}ms.",
+                deleteCount,
+                newProcedures.size(),
+                stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ImmutableList<Procedure> getAllProcedures()
+    {
+        return fProcedureDao.getAllProcedures();
     }
 
     @Transactional(readOnly = true)

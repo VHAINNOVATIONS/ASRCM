@@ -82,9 +82,8 @@ public abstract class EditBaseVar implements EditVar
     }
     
     /**
-     * <p>If {@link #calculateDependentModels(Collection)} has been called,
-     * returns the set of RiskModels that depend on this variable for the
-     * user's reference. Otherwise, returns an empty set.</p>
+     * Returns the set of RiskModels that depend on this variable for the user's
+     * reference. Otherwise, returns an empty set.
      * @return a set sorted by the RiskModels' natural order
      */
     public final SortedSet<RiskModel> getDependentModels()
@@ -135,7 +134,8 @@ public abstract class EditBaseVar implements EditVar
     }
 
     /**
-     * Returns the display name which {@link #applyToVariable()} will set.
+     * Returns the display name which {@link #applyBaseProperties(AbstractVariable)} will
+     * set.
      */
     public final String getDisplayName()
     {
@@ -143,7 +143,8 @@ public abstract class EditBaseVar implements EditVar
     }
 
     /**
-     * Sets the display name which {@link #applyToVariable()} will set.
+     * Sets the display name which {@link #applyBaseProperties(AbstractVariable)} will
+     * set.
      */
     public final void setDisplayName(String displayName)
     {
@@ -169,7 +170,7 @@ public abstract class EditBaseVar implements EditVar
     }
 
     /**
-     * Sets the help text which {@link #applyToVariable()} will set.
+     * Sets the help text which {@link #applyBaseProperties(AbstractVariable)} will set.
      * @param helpText may be null or empty, which will be translated to an
      * absent value
      */
@@ -187,9 +188,9 @@ public abstract class EditBaseVar implements EditVar
     }
     
     /**
-     * Sets the database ID of the variable's group. Accepts an invalid group,
-     * though {@link #applyToVariable()} will throw an exception if an invalid
-     * group is set.
+     * Sets the database ID of the variable's group. Accepts an invalid group, though
+     * {@link #applyBaseProperties(AbstractVariable)} will throw an exception if an
+     * invalid group is set.
      */
     public final void setGroupId(final int groupId)
     {

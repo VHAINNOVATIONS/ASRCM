@@ -1,12 +1,12 @@
 package gov.va.med.srcalc.web.view.admin;
 
-import gov.va.med.srcalc.domain.model.*;
+import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
+import gov.va.med.srcalc.domain.model.MultiSelectOption;
 
 /**
- * <p>Builds a {@link DiscreteNumericalVariable.Category} from incrementally-
- * specified component parts. This class is useful because Category is
- * immutable: you must specify all properties in its constructor and you can't
- * use it as a Java bean.</p>
+ * <p>Builds a {@link Category} from incrementally- specified component parts. This class
+ * is useful because Category is immutable: you must specify all properties in its
+ * constructor and you can't use it as a Java bean.</p>
  * 
  * <p>Per Effective Java Item 17, this class is marked final because it was not
  * designed for inheritance.</p>
@@ -33,7 +33,7 @@ public final class CategoryBuilder
      * prototype
      */
     public static CategoryBuilder fromPrototype(
-            final DiscreteNumericalVariable.Category prototype)
+            final Category prototype)
     {
         return new CategoryBuilder()
             .setValue(prototype.getOption().getValue())
@@ -43,7 +43,7 @@ public final class CategoryBuilder
 
     /**
      * Returns the value of this Category.
-     * @see DiscreteNumericalVariable.Category#getOption()
+     * @see Category#getOption()
      */
     public String getValue()
     {
@@ -52,7 +52,7 @@ public final class CategoryBuilder
 
     /**
      * Sets the value of the Category.
-     * @see DiscreteNumericalVariable.Category#getOption()
+     * @see Category#getOption()
      * @return this builder for convenience
      */
     public CategoryBuilder setValue(String value)
@@ -63,7 +63,7 @@ public final class CategoryBuilder
     
     /**
      * Returns the upper bound for the Category.
-     * @see DiscreteNumericalVariable.Category#getUpperBound()
+     * @see Category#getUpperBound()
      */
     public float getUpperBound()
     {
@@ -72,7 +72,7 @@ public final class CategoryBuilder
 
     /**
      * Sets the upper bound for the Category
-     * @see DiscreteNumericalVariable.Category#getUpperBound()
+     * @see Category#getUpperBound()
      * @return this builder for convenience
      */
     public CategoryBuilder setUpperBound(float upperBound)
@@ -83,7 +83,7 @@ public final class CategoryBuilder
 
     /**
      * Returns the upper bound inclusive flag for the Category.
-     * @see DiscreteNumericalVariable.Category#isUpperInclusive()
+     * @see Category#isUpperInclusive()
      */
     public boolean getUpperInclusive()
     {
@@ -92,7 +92,7 @@ public final class CategoryBuilder
 
     /**
      * Sets the upper bound inclusive flag for the Category.
-     * @see DiscreteNumericalVariable.Category#isUpperInclusive()
+     * @see Category#isUpperInclusive()
      * @return this builder for convenience
      */
     public CategoryBuilder setUpperInclusive(boolean upperInclusive)
@@ -104,9 +104,9 @@ public final class CategoryBuilder
     /**
      * Builds the Category with the configured range and value.
      */
-    public DiscreteNumericalVariable.Category build()
+    public Category build()
     {
-        return new DiscreteNumericalVariable.Category(
+        return new Category(
                 new MultiSelectOption(fValue), fUpperBound, fUpperInclusive);
         
     }
