@@ -9,8 +9,6 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 import org.springframework.expression.Expression;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 public class ValueMatcherTest
@@ -29,15 +27,15 @@ public class ValueMatcherTest
         new ValueMatcher(SampleModels.dnrVariable(), "value asdfjasdf true", true);
     }
     
-    @Test
+    @Test(expected = NullPointerException.class)
     public final void testEmptyExpression()
     {
-        // Empty expressions are allowed, and default to true
+        // Empty expressions are only allowed if the value matcher is disabled.
         final ValueMatcher vm = new ValueMatcher(
                 SampleModels.dnrVariable(), "", true);
         final StandardEvaluationContext ec = new StandardEvaluationContext();
         final BooleanValue value = new BooleanValue(SampleModels.dnrVariable(), false);
-        assertTrue(vm.evaluate(ec, value));
+        vm.evaluate(ec, value);
     }
     
     @Test
@@ -62,13 +60,5 @@ public class ValueMatcherTest
             .suppress(Warning.NULL_FIELDS)
             .suppress(Warning.NONFINAL_FIELDS)
             .verify();
-    }
-    
-    @Test
-    public final void testSpel()
-    {
-        ExpressionParser parser = new SpelExpressionParser();
-        Expression exp = parser.parseExpression("");
-        String s = (String) exp.getValue();
     }
 }
