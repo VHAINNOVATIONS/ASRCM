@@ -347,23 +347,37 @@ public class RiskModel implements Comparable<RiskModel>
         return expSum / (1 + expSum);
     }
     
-    // This may not be sufficient for future use.
-    // Currently (July'15) this was added for the contains() method 
-    // for a list of RiskModels.
-    // 
+	/**
+	 * Returns a true if a RiskModel and if displayname and all Terms are equal.
+	 */
     @Override
     public boolean equals(final Object o)
     {
-        if (o instanceof RiskModel)  // false if o == null
+    	if( this == o )
+    	{
+    		return true;
+    	}
+    	else if( o == null || !(o instanceof RiskModel) ) 
+    	{
+    		return false;
+    	}
+    	else 
         {
+            // don't include the Id (Hibernate best practices)
             final RiskModel other = (RiskModel)o;
-            // include the displayName since the hashCode is based on it.
-            return (this.getId() == other.getId() && 
-            	   this.getDisplayName().compareTo( ((RiskModel) o).getDisplayName() ) == 0 );
-        }
-        else
-        {
-            return false;
+            
+            if( !Objects.equals( this.fDisplayName, other.fDisplayName ) ) 
+            {
+            	return false;
+            }
+            else if( Objects.equals( this.getTerms(), other.getTerms() ) ) {
+            	return true;
+            }
+            else 
+            {
+            	fLogger.debug( "RiskModel equals() returning false for 2 RiskModels with name={}", fDisplayName );
+            	return false;
+            }
         }
     }
 
@@ -373,7 +387,7 @@ public class RiskModel implements Comparable<RiskModel>
 	@Override
 	public int hashCode()
 	{
-		return this.getDisplayName().hashCode();
+		return Objects.hash( fDisplayName, getTerms() ); 
 	}
 
     /**
