@@ -50,7 +50,7 @@ public class RiskModelTest
         final RiskModel model = SampleModels.thoracicRiskModel();
         
         assertEquals(
-                "RiskModel \"Thoracic 30-day mortality estimate\" with 4 terms",
+                "RiskModel \"Thoracic 30-day mortality estimate\" with ID=0, and 4 terms",
                 model.toString());
     }
     
