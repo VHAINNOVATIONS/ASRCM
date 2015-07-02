@@ -28,7 +28,8 @@ public class EditDiscreteNumericalVarValidator implements Validator
     
     /**
      * Validates the given object, using error codes from {@link ValidationCodes}.
-     * @param obj the object to validate. Must be an instance of {@link EditDiscreteNumericalVar}.
+     * @param target the object to validate. Must be an instance of {@link
+     * EditDiscreteNumericalVar}.
      * @throws ClassCastException if the given object is not an EditDiscreteNumericalVar
      */
     @Override

@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.view.admin;
 import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.MockModelService;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 
 import org.junit.Test;
 
@@ -26,7 +27,7 @@ public class EditBaseVarTest
         final EditBaseVar ev = new EditBooleanVar(fModelService);
         
         assertEquals(Variable.KEY_MAX, ev.getKeyMax());
-        assertEquals(Variable.DISPLAY_NAME_MAX, ev.getDisplayNameMax());
+        assertEquals(DisplayNameConditions.DISPLAY_NAME_MAX, ev.getDisplayNameMax());
         assertEquals(fModelService.getAllVariableGroups(), ev.getAllGroups());
     }
 

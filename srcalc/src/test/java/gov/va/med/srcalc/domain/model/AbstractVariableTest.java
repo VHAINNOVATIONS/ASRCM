@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain.model;
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.test.util.TestHelpers;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 
 import org.junit.Test;
 
@@ -36,7 +37,7 @@ public class AbstractVariableTest
     public final void testSetDisplayNameTooLong()
     {
         final AbstractVariable var = SampleModels.ageVariable();
-        var.setDisplayName(TestHelpers.stringOfLength(Variable.DISPLAY_NAME_MAX + 1));
+        var.setDisplayName(TestHelpers.stringOfLength(DisplayNameConditions.DISPLAY_NAME_MAX + 1));
     }
     
     @Test(expected = IllegalArgumentException.class)

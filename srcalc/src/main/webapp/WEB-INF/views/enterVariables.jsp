@@ -86,7 +86,7 @@
     </table>
     <div class="actionButtons">
     <ol>
-    <li><button class="button-em" type="submit">Run Calculation</button></li>
+    <li><button id="runCalcButton" class="button-em" type="submit">Run Calculation</button></li>
     </ol>
     <%-- Add the required patientDfn parameter, preserving the patient from the current calculation. --%>
     <c:url var="newCalcUrl" value="/newCalc">

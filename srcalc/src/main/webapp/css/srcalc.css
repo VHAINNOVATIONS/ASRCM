@@ -84,6 +84,10 @@ footer {
 	font-size: 80%;
 }
 
+.successMessage {
+	color: #2FAE10;
+}
+
 /* If Javascript is enabled, pre-hide all dialogs to avoid them flashing on the
    screen before jQuery UI initializes. */
 .js .dialog {
@@ -181,7 +185,7 @@ input[type="radio"].springFormGenerated {
 	margin-right: 2px;
 }
 
-form.srcalcForm .error {
+.error {
 	color: red;
 }
 
@@ -368,20 +372,20 @@ a.openProcedureSelect {
 	text-decoration: none;
 }
 
-div#newVariableLinks {
-	margin-top: 1em;
+div#newVariableLinks, div#newRuleLink {
+    margin-top: 1em;
 }
 
-#newVariableLinks ul {
-	/* Put a small margin between the label and the list itself. */
-	margin-top: 0.5em;
-	/* Display these in a row, not as a bullet list. */
-	list-style-type: none;
-	padding: 0;
+#newVariableLinks ul, #newRuleLink ul {
+    /* Put a small margin between the label and the list itself. */
+    margin-top: 0.5em;
+    /* Display these in a row, not as a bullet list. */
+    list-style-type: none;
+    padding: 0;
 }
 
-#newVariableLinks li {
-	display: inline-block;
+#newVariableLinks li, #newRuleLink li {
+    display: inline-block;
 }
 
 /* The edit variable pages */
@@ -401,6 +405,12 @@ div#newVariableLinks {
 /* Hide the definition rows if Javascript is enabled */
 .js #riskVarForm .variableDef {
 	display: none;
+}
+
+/* Procedure Upload */
+
+#procedureUploadForm {
+	margin-bottom: 1em;
 }
 
 

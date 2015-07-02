@@ -1,8 +1,6 @@
 package gov.va.med.srcalc.web.view.admin;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,13 +17,12 @@ import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.model.Rule;
 import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.domain.model.ValueMatcher;
-import gov.va.med.srcalc.service.MockModelService;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 
 import org.junit.Test;
 
 public class EditRiskModelTest {
-    private final MockModelService fModelService = new MockModelService();
-    
+
     public static EditRiskModel createEditRiskModel( String name) 
     {
         final ProcedureVariable procedureVar = SampleModels.procedureVariable();
@@ -35,8 +32,8 @@ public class EditRiskModelTest {
         final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
         final Set<DerivedTerm> derivedTerms = new HashSet<DerivedTerm>();
         final List<ValueMatcher> valueMatchers = new ArrayList<ValueMatcher>();
-        valueMatchers.add( new ValueMatcher(procedureVar, "#this.value.complexity == \"Standard\"" ) );
-        derivedTerms.add(new DerivedTerm(6.0f, new Rule(valueMatchers, "#coefficient", true)));
+        valueMatchers.add(new ValueMatcher(procedureVar, "#this.value.complexity == \"Standard\"", true) );
+        derivedTerms.add(new DerivedTerm(6.0f, new Rule(valueMatchers, "#coefficient", true, "Test Rule")));
         RiskModel model = SampleModels.makeSampleRiskModel(
                 name,
                 derivedTerms,
@@ -53,7 +50,7 @@ public class EditRiskModelTest {
     	editRiskModel.setModelName( "NewModelName" );
     	
         assertEquals( editRiskModel.getModelName(), "NewModelName" );
-        assertEquals( editRiskModel.getMaxDisplayNameLength(), RiskModel.DISPLAY_NAME_MAX );
+        assertEquals( editRiskModel.getMaxDisplayNameLength(), DisplayNameConditions.DISPLAY_NAME_MAX );
         
         editRiskModel.applyChanges();
         

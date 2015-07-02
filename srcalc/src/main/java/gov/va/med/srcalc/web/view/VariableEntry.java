@@ -116,7 +116,6 @@ public class VariableEntry
 
     /**
      * Returns the name of the numerical input for the given key
-     * @param variable
      */
     public static String makeNumericalInputName(final String key)
     {

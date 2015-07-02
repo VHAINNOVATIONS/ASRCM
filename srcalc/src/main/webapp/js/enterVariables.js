@@ -102,9 +102,10 @@ var ENTERVARIABLES = function() {
                           render: function (data, type, row) {
                               return '<a href="#" class="btn-link"' +
                                   '" data-cpt-code="' + row.cptCode +
-                                  '" data-display-string="' + makeDisplayString(row) + '">Select</a>';
+                                  '" data-display-string="' + makeDisplayString(row) +
+                                  '"data-eligible="'+ row.eligible + '">Select</a>';
                                   },
-                                  width: '10%', searchable: false, sortable: false }
+                          width: '10%', searchable: false, sortable: false }
                   ]
             });
             
@@ -113,6 +114,17 @@ var ENTERVARIABLES = function() {
 
                 var elem = event.target || event.srcElement;
                 selectProcedure($(elem).data('cpt-code'), $(elem).data('display-string'));
+                if(String($(elem).data('eligible')) == "false")
+                {
+                	// Give the user a warning message that the procedure is excluded from
+                	// risk calculations and disable the "Run Calculation" button
+                	$("#runCalcButton").prop("disabled", true);
+                	alert("The procedure (CPT Code) you have selected does not meet eligibility criteria for the Automated Surgical Risk Calculator (ASRC).");
+                }
+                else
+            	{
+                	$("#runCalcButton").prop("disabled", false);
+            	}
             });
             
             // Get a DataTables API instance
