@@ -5,8 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 
-import gov.va.med.srcalc.db.RiskModelDao;
-import gov.va.med.srcalc.db.VariableDao;
+import gov.va.med.srcalc.db.*;
 import gov.va.med.srcalc.domain.model.*;
 
 import org.junit.Before;
@@ -47,12 +46,31 @@ public class DefaultAdminServiceTest
         return dao;
     }
     
+    private ProcedureDao mockProcedureDao()
+    {
+        final ProcedureDao dao = mock(ProcedureDao.class);
+        when(dao.getAllProcedures()).thenReturn(SampleModels.procedureList());
+        // We don't actually simulate any database interaction, but at least return a fake
+        // number of procedures deleted.
+        when(dao.replaceAllProcedures(anySetOf(Procedure.class))).thenReturn(2);
+        return dao;
+    }
+    
+    /**
+     * Creates a DefaultAdminService with basic mocks. This convenience method does not
+     * provide any means to access the mocks for customization.
+     */
+    private DefaultAdminService createWithMocks()
+    {
+        return new DefaultAdminService(
+                mockVariableDao(), mockRiskModelDao(), mockProcedureDao());
+    }
+    
     @Test
     public final void testGetAllVariables()
     {
         // Create the class under test.
-        final DefaultAdminService s = new DefaultAdminService(
-                mockVariableDao(), mockRiskModelDao());
+        final DefaultAdminService s = createWithMocks();
         
         // Behavior verification.
         // Variables do not override equals() but this works because we use
@@ -64,8 +82,7 @@ public class DefaultAdminServiceTest
     public final void testGetAllVariableGroups()
     {
         // Create the class under test.
-        final DefaultAdminService s = new DefaultAdminService(
-                mockVariableDao(), mockRiskModelDao());
+        final DefaultAdminService s = createWithMocks();
         
         // Behavior verification.
         assertEquals(fSampleGroups, s.getAllVariableGroups());
@@ -77,8 +94,7 @@ public class DefaultAdminServiceTest
         final String key = "dnr";
         
         // Create the class under test.
-        final DefaultAdminService s = new DefaultAdminService(
-                mockVariableDao(), mockRiskModelDao());
+        final DefaultAdminService s = createWithMocks();
         
         // Behavior verification.
         final BooleanVariable actualVar = (BooleanVariable)s.getVariable(key);
@@ -89,8 +105,7 @@ public class DefaultAdminServiceTest
     public final void testGetInvalidVariable() throws Exception
     {
         // Create the class under test.
-        final DefaultAdminService s = new DefaultAdminService(
-                mockVariableDao(), mockRiskModelDao());
+        final DefaultAdminService s = createWithMocks();
         
         // Behavior verification.
         s.getVariable("Does not exist");
@@ -107,7 +122,7 @@ public class DefaultAdminServiceTest
         // Create the class under test.
         final VariableDao mockDao = mockVariableDao();
         final DefaultAdminService s = new DefaultAdminService(
-                mockDao, mockRiskModelDao());
+                mockDao, mockRiskModelDao(), mockProcedureDao());
         
         // Setup
         final AbstractVariable var = s.getVariable(key);

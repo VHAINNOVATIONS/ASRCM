@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.util;
 
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
@@ -82,6 +83,53 @@ public final class ValidationUtils2
         {
             return false;
         }
+    }
+
+    /**
+     * <p>Validates a required String, ensuring that it is non-empty and within the given
+     * length.</p>
+     * 
+     * <p>Unlike the above, this method operates on TabularUploadErrors, not Spring's
+     * {@link Errors}.</p>
+     * 
+     * @param value the string to validate
+     * @param rowNumber the associated row's number
+     * @param fieldName the field name for recording validation errors
+     * @param maxLength the maximum valid length of the field
+     * @param errors to record validation errors
+     * @return true if the string was valid, false otherwise
+     */
+    public static boolean validateRequiredString(
+            final String value,
+            final int rowNumber,
+            final String fieldName,
+            final int maxLength,
+            final Collection<TabularUploadError> errors)
+    {
+        if (value.isEmpty())
+        {
+            errors.add(TabularUploadError.forField(
+                    rowNumber,
+                    fieldName,
+                    String.class,
+                    ValidationCodes.NO_VALUE,
+                    null,
+                    "no value"));
+            return false;
+        }
+        else if (value.length() > maxLength)
+        {
+            errors.add(TabularUploadError.forField(
+                    rowNumber,
+                    fieldName,
+                    String.class,
+                    ValidationCodes.TOO_LONG,
+                    new Object[] { maxLength },
+                    "too long"));
+            return false;
+        }
+        
+        return true;
     }
     
 }

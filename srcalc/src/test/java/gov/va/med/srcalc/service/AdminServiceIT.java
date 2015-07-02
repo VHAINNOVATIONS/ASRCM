@@ -2,10 +2,12 @@ package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.test.util.IntegrationTest;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -115,6 +117,32 @@ public class AdminServiceIT extends IntegrationTest
     }
     
     @Test
+    public final void testReplaceAllProcedures() throws Exception
+    {
+        // At time of writing, there are ~10,000 procedures in the real world.
+        final int numProcedures = 10000;
+        
+        final ArrayList<Procedure> newProcedures = new ArrayList<>(numProcedures);
+        for (int i = 1; i <= numProcedures; ++i)
+        {
+            newProcedures.add(new Procedure(
+                    String.format("%05d", i),
+                    1.0f,
+                    "short desc",
+                    "long long description",
+                    "Complex",
+                    true));
+        }
+        
+        fAdminService.replaceAllProcedures(ImmutableSet.copyOf(newProcedures));
+        
+        // Simulate a new transaction.
+        getHibernateSession().flush();
+        getHibernateSession().clear();
+        
+        assertEquals(newProcedures, fAdminService.getAllProcedures());
+    }
+    
     public final void testGetAllRiskModels() 
     {
     	ImmutableCollection<RiskModel> allRiskModels = fAdminService.getAllRiskModels();

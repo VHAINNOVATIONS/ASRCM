@@ -84,6 +84,10 @@ footer {
 	font-size: 80%;
 }
 
+.successMessage {
+	color: #2FAE10;
+}
+
 /* If Javascript is enabled, pre-hide all dialogs to avoid them flashing on the
    screen before jQuery UI initializes. */
 .js .dialog {
@@ -181,7 +185,7 @@ input[type="radio"].springFormGenerated {
 	margin-right: 2px;
 }
 
-form.srcalcForm .error {
+.error {
 	color: red;
 }
 
@@ -396,6 +400,12 @@ div#newVariableLinks {
 	/* The helpText text area is wide. Don't try to put anything else on the
 	   same line. */
 	display: block;
+}
+
+/* Procedure Upload */
+
+#procedureUploadForm {
+	margin-bottom: 1em;
 }
 
 

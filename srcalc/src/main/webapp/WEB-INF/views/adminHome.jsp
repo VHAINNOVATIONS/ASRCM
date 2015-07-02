@@ -54,5 +54,9 @@
         <a href="${newDiscreteVar}" class="btn-default">Discrete Numerical</a></li>
     </ul>
     </div>
+    
+    <h3>Procedures</h3>
+    <c:url var="editProcedures" value="/admin/procedures" />
+    <p><a href="${editProcedures}" class="btn-link">Manage Procedures</a></p>
 </section>
 </srcalc:adminPage>
