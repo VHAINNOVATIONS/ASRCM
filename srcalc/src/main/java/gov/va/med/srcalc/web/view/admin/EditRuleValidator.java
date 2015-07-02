@@ -59,6 +59,14 @@ public class EditRuleValidator implements Validator
         //Validate each value matcher expression
         for(int i = 0; i < editRule.getMatchers().size(); i++)
         {
+            final ValueMatcherBuilder currentMatcher = editRule.getMatchers().get(i);
+            // If an expression is enabled, it must have a non-empty expression.
+            if(currentMatcher.isEnabled() && currentMatcher.getBooleanExpression().isEmpty())
+            {
+                errors.rejectValue(String.format("matchers[%d].booleanExpression", i),
+                        ValidationCodes.INVALID_EXPRESSION);
+                continue;
+            }
             try
             {
                 parser.parseExpression(editRule.getMatchers().get(i).getBooleanExpression());

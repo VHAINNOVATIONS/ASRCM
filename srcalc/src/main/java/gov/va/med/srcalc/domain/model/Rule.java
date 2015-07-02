@@ -266,7 +266,7 @@ public final class Rule
         {
             final Value matchedValue = context.getValues().get(condition.getVariable());
             matchedValues.put(matchedValue.getVariable().getKey(), matchedValue.getValue());
-            // Update the SpEL evaluation context with the matched values so far.
+            // Update the Spel evaluation context with the previous and current values
             ec.setVariables(matchedValues);
             if (!condition.evaluate(ec, matchedValue))
             {

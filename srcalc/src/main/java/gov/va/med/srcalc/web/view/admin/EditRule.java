@@ -20,7 +20,7 @@ import gov.va.med.srcalc.service.InvalidIdentifierException;
 public class EditRule
 {
     private AdminService fAdminService;
-    private List<ValueMatcherBuilder> fMatchers;
+    private final List<ValueMatcherBuilder> fMatchers;
     private String fSummandExpression;
     private boolean fBypassEnabled;
     private String fDisplayName;
@@ -69,11 +69,6 @@ public class EditRule
     public List<ValueMatcherBuilder> getMatchers()
     {
         return fMatchers;
-    }
-
-    public void setMatchers(final List<ValueMatcherBuilder> matchers)
-    {
-        this.fMatchers = matchers;
     }
 
     /**
