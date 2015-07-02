@@ -13,6 +13,7 @@ import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.test.util.TestHelpers;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.EditRiskModel;
 
@@ -79,7 +80,7 @@ public class EditRiskModelControllerIT extends IntegrationTest
         fMockMvc.perform(
                 post("/admin/models/1").
                 param("modelName",
-                        TestHelpers.stringOfLength(RiskModel.DISPLAY_NAME_MAX + 1))).
+                        TestHelpers.stringOfLength(DisplayNameConditions.DISPLAY_NAME_MAX + 1))).
             andExpect(model().attributeHasErrors("riskModel")).
             andExpect(view().name(Views.EDIT_RISK_MODEL));
     }

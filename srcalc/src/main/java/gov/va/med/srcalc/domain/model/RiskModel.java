@@ -21,8 +21,6 @@ import com.google.common.collect.ImmutableSet;
 @Entity
 public class RiskModel implements Comparable<RiskModel>
 {
-    public static final int DISPLAY_NAME_MAX = 80;
-    
     private static final Logger fLogger = LoggerFactory.getLogger(RiskModel.class);
     
     private int fId;
@@ -84,7 +82,7 @@ public class RiskModel implements Comparable<RiskModel>
     }
 
     @Basic(optional = false)
-    @Column(length = DISPLAY_NAME_MAX)
+    @Column(length = DisplayNameConditions.DISPLAY_NAME_MAX)
     public String getDisplayName()
     {
         return fDisplayName;
@@ -95,12 +93,12 @@ public class RiskModel implements Comparable<RiskModel>
      * @param displayName must not be null
      * @throws NullPointerException if displayName is null
      * @throws IllegalArgumentException if displayName is empty or longer than
-     * {@link #DISPLAY_NAME_MAX}
+     * {@link DisplayNameConditions#DISPLAY_NAME_MAX}
      */
     public void setDisplayName(final String displayName)
     {
         fDisplayName = Preconditions.requireWithin(
-                displayName, 1, DISPLAY_NAME_MAX);
+                displayName, 1, DisplayNameConditions.DISPLAY_NAME_MAX);
     }
     
     /**

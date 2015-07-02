@@ -152,8 +152,8 @@ public final class Rule
     /**
      * Sets the name of the rule for display to the user.
      * @throws IllegalArgumentException if the given name is empty, over
-     * {@link Rule#DISPLAY_NAME_MAX} characters, or does not match
-     * {@link Variable#VALID_DISPLAY_NAME_REGEX}
+     * {@link DisplayNameConditions#DISPLAY_NAME_MAX} characters, or does not match
+     * {@link DisplayNameConditions#VALID_DISPLAY_NAME_REGEX}
      */
     void setDisplayName(final String displayName)
     {

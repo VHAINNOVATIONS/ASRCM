@@ -126,7 +126,7 @@ public final class ValueMatcher
      */
     public boolean evaluate(final EvaluationContext context, final Value value)
     {
-        if(fExpressionEnabled && !fBooleanExpression.getExpressionString().isEmpty())
+        if(fExpressionEnabled)
         {
             return fBooleanExpression.getValue(context, value, Boolean.class);
         }

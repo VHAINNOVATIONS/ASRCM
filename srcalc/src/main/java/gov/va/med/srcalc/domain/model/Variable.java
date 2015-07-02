@@ -51,8 +51,8 @@ public interface Variable
     
     /**
      * Returns a String suitable for display to humans. Will be no longer than
-     * {@link #DISPLAY_NAME_MAX} and will only contain {@link
-     * #VALID_DISPLAY_NAME_CHARACTERS valid characters}.
+     * {@link DisplayNameConditions#DISPLAY_NAME_MAX} and will only contain {@link
+     * DisplayNameConditions#VALID_DISPLAY_NAME_CHARACTERS valid characters}.
      */
     public String getDisplayName();
 

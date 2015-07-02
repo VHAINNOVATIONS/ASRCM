@@ -17,6 +17,7 @@ import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.model.Rule;
 import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.domain.model.ValueMatcher;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 
 import org.junit.Test;
 
@@ -49,7 +50,7 @@ public class EditRiskModelTest {
     	editRiskModel.setModelName( "NewModelName" );
     	
         assertEquals( editRiskModel.getModelName(), "NewModelName" );
-        assertEquals( editRiskModel.getMaxDisplayNameLength(), RiskModel.DISPLAY_NAME_MAX );
+        assertEquals( editRiskModel.getMaxDisplayNameLength(), DisplayNameConditions.DISPLAY_NAME_MAX );
         
         editRiskModel.applyChanges();
         

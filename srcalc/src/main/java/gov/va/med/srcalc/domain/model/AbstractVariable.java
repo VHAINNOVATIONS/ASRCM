@@ -135,8 +135,8 @@ public abstract class AbstractVariable implements Variable
     /**
      * Sets the name of the variable for display to the user.
      * @throws IllegalArgumentException if the given name is empty, over
-     * {@link Variable#DISPLAY_NAME_MAX} characters, or does not match
-     * {@link Variable#VALID_DISPLAY_NAME_REGEX}
+     * {@link DisplayNameConditions#DISPLAY_NAME_MAX} characters, or does not match
+     * {@link DisplayNameConditions#VALID_DISPLAY_NAME_REGEX}
      */
     public final void setDisplayName(final String displayName)
     {

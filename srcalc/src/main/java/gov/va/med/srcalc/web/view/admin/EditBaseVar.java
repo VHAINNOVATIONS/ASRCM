@@ -152,7 +152,7 @@ public abstract class EditBaseVar implements EditVar
     
     /**
      * <p>Returns the maximum valid length of the display name to set,
-     * {@link Variable#DISPLAY_NAME_MAX}, for easy access from views.</p>
+     * {@link DisplayNameConditions#DISPLAY_NAME_MAX}, for easy access from views.</p>
      */
     public final int getDisplayNameMax()
     {

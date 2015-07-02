@@ -9,6 +9,8 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 public class ValueMatcherTest
@@ -60,5 +62,13 @@ public class ValueMatcherTest
             .suppress(Warning.NULL_FIELDS)
             .suppress(Warning.NONFINAL_FIELDS)
             .verify();
+    }
+    
+    @Test
+    public final void testSpel()
+    {
+        ExpressionParser parser = new SpelExpressionParser();
+        Expression exp = parser.parseExpression("");
+        String s = (String) exp.getValue();
     }
 }

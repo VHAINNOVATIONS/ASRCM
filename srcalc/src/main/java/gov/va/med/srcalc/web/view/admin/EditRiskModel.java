@@ -6,6 +6,7 @@ import java.util.List;
 import gov.va.med.srcalc.domain.model.ConstantTerm;
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.model.Specialty;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 
 /**
  * A form backing object for editing a target (link @RiskModel) object.
@@ -104,7 +105,7 @@ public class EditRiskModel implements Comparable<EditRiskModel>{
 	
 	public int getMaxDisplayNameLength() 
 	{
-		return RiskModel.DISPLAY_NAME_MAX;
+		return DisplayNameConditions.DISPLAY_NAME_MAX;
 	}
 	
 	/**

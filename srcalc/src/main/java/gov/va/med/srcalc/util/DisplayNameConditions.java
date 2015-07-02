@@ -2,6 +2,10 @@ package gov.va.med.srcalc.util;
 
 import java.util.regex.Pattern;
 
+/**
+ * A class for storing conditions that pertain to display names and their constraints.
+ * Display names have been standardized across the application.
+ */
 public class DisplayNameConditions
 {
     /**
