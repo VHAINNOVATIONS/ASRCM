@@ -16,7 +16,9 @@
       <property name="maxLineLength" value="90"/>
     </module>
     <module name="JavadocType">
+      <property name="severity" value="ignore"/>
       <property name="scope" value="package"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
   </module>
   <module name="FileTabCharacter"/>
