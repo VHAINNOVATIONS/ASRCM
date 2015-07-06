@@ -264,6 +264,13 @@ var ENTERVARIABLES = function() {
             radios.each(function(){
                     toggleNumerical(this);
             });
+            	
+        	// Click handler for question mark
+	        $('.attributeName').find('.helpTextToggler').on('click', function(){
+	        	// slide toggle the definition associated with this variable
+	        	$(this).closest('tr').find('.variableDef').slideToggle(200);
+	        });
+    	        
         }
     }
 }();

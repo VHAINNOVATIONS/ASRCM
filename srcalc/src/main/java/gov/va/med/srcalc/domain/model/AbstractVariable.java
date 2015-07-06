@@ -11,6 +11,7 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.Proxy;
 
+import com.github.rjeschke.txtmark.Processor;
 import com.google.common.base.Optional;
 
 /**
@@ -256,4 +257,13 @@ public abstract class AbstractVariable implements Variable
 	{
 		return this.fKey.hashCode();
 	}
+	
+    /**
+     * Calls the txtmark processor to convert the help text from Markdown to Html and returns the result
+     */
+    @Transient
+    public String getHelpTextAsHtml()
+    {
+        return Processor.process(fHelpText.or(""));
+    }
 }
