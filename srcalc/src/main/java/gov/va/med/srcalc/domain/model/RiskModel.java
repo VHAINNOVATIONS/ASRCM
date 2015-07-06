@@ -366,18 +366,32 @@ public class RiskModel implements Comparable<RiskModel>
             // don't include the Id (Hibernate best practices)
             final RiskModel other = (RiskModel)o;
             
-            if( !Objects.equals( this.getDisplayName(), other.getDisplayName() ) ) 
+            if( this.getDisplayName().compareTo( other.getDisplayName() ) != 0 ) 
             {
             	return false;
-            }
-            else if( Objects.equals( this.getTerms(), other.getTerms() ) ) {
+            }        
+            // save sets so we don't have to keep rebuilding them in getTerms()
+            ImmutableSet<ModelTerm> terms = getTerms();
+            ImmutableSet<ModelTerm> otherTerms = other.getTerms();
+            
+            if( terms == null && otherTerms == null ) 
+            {
             	return true;
             }
-            else 
+            if( terms == null || otherTerms == null ) 
             {
-            	fLogger.debug( "RiskModel equals() returning false for 2 RiskModels with name={}", fDisplayName );
             	return false;
             }
+    		
+            for( ModelTerm mt : otherTerms ) 
+            {
+            	if( !terms.contains( mt ) ) 
+            	{
+                	fLogger.debug( "RiskModel equals() returning false for 2 RiskModels with name={}", fDisplayName );
+            		return false;
+            	}
+    		}
+            return true;
         }
     }
 
@@ -387,7 +401,16 @@ public class RiskModel implements Comparable<RiskModel>
 	@Override
 	public final int hashCode()
 	{
-		return Objects.hash( fDisplayName, getTerms() ); 
+		int h = (fDisplayName == null ? 0 : fDisplayName.hashCode() );
+		if( getTerms() != null ) 
+		{		
+			for( ModelTerm mt : getTerms() ) 
+			{
+				h += mt.hashCode();
+			}
+		}
+		
+		return h; 
 	}
 
     /**
