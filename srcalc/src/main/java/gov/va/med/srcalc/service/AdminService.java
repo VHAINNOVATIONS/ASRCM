@@ -15,17 +15,11 @@ import gov.va.med.srcalc.domain.model.*;
 public interface AdminService extends ModelInspectionService
 {
     /**
-     * Returns all Variables in the database.
-     * @return a list, in display name order
-     */
-    public List<AbstractVariable> getAllVariables();
-    
-    /**
      * Returns the Variable with the given display name for editing. Note that
      * the returned object must be given back to {@link
      * #saveVariable(AbstractVariable)} to persist any changes.
-     * @throws InvalidIdentifierException if no such Variable exists
      */
+    @Override
     public AbstractVariable getVariable(final String key)
         throws InvalidIdentifierException;
     

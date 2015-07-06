@@ -44,11 +44,11 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
-    public List<AbstractVariable> getAllVariables()
+    public ImmutableList<AbstractVariable> getAllVariables()
     {
         fLogger.debug("Getting all Variables.");
 
-        return fVariableDao.getAllVariables();
+        return ImmutableList.copyOf(fVariableDao.getAllVariables());
     }
     
     @Override

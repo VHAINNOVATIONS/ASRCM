@@ -10,8 +10,8 @@ import com.google.common.collect.ImmutableSet;
 
 import gov.va.med.srcalc.domain.model.Rule;
 import gov.va.med.srcalc.domain.model.ValueMatcher;
-import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
+import gov.va.med.srcalc.service.ModelInspectionService;
 
 /**
  * <p>A form backing object for creating a new or editing an existing
@@ -19,7 +19,7 @@ import gov.va.med.srcalc.service.InvalidIdentifierException;
  */
 public class EditRule
 {
-    private AdminService fAdminService;
+    private ModelInspectionService fModelService;
     private final List<ValueMatcherBuilder> fMatchers;
     private String fSummandExpression;
     private boolean fBypassEnabled;
@@ -29,12 +29,12 @@ public class EditRule
     /**
      * Constructs an instance with default values and an empty list of 
      * ValueMatcherBuilder objects.
-     * @param adminService to provide reference data (e.g., getting a variable
+     * @param modelService to provide reference data (e.g., getting a variable
      * that is tied to a ValueMatcher) to the user
      */
-    public EditRule(final AdminService adminService) 
+    public EditRule(final ModelInspectionService modelService) 
     {
-        fAdminService = adminService;
+        fModelService = modelService;
         fMatchers = new ArrayList<ValueMatcherBuilder>();
         fSummandExpression = "";
         fBypassEnabled = false;
@@ -45,11 +45,11 @@ public class EditRule
     /**
      * Constructs an instance that is filled with the same information that the rule
      * 
-     * @param adminService to provide reference data (e.g., getting a variable
+     * @param modelService to provide reference data (e.g., getting a variable
      * that is tied to a ValueMatcher) to the user
      * @param rule the rule to copy into this EditRule
      */
-    public EditRule(final AdminService adminService, final Rule rule)
+    public EditRule(final ModelInspectionService modelService, final Rule rule)
     {
         // Copy the value matchers
         fMatchers = new ArrayList<ValueMatcherBuilder>(rule.getMatchers().size());
@@ -156,7 +156,7 @@ public class EditRule
         final List<ValueMatcher> matchers = new ArrayList<ValueMatcher>(fMatchers.size());
         for(final ValueMatcherBuilder builder: fMatchers)
         {
-            matchers.add(builder.buildNew(fAdminService));
+            matchers.add(builder.buildNew(fModelService));
         }
         // Negate fBypassEnabled because our internal Rule stores a required field, but
         // the user sees references to bypassing the rule if it is missing values.

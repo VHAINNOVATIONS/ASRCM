@@ -9,11 +9,26 @@ import com.google.common.collect.ImmutableList;
  * <p>Retrieves various Risk Model objects for inspection. This service is useful for
  * both administration and running calculations (e.g., for selecting a Procedure).</p>
  * 
- * <p>All returned objects are intended for inspection only. This interface
- * does not provide a means to persist any changes.</p>
+ * <p>This interface does not provide a means to persist any changes, and returned objects
+ * are not guaranteed to support mutation.</p>
  */
 public interface ModelInspectionService
 {
+    /**
+     * Returns all Variables in the database.
+     * @return an ImmutableList, in display name order
+     */
+    public ImmutableList<AbstractVariable> getAllVariables();
+
+    /**
+     * Returns the Variable with the given key.
+     * @param key the unique key of the variable to retrieve
+     * @return the Variable instance. Never null.
+     * @throws InvalidIdentifierException if no such Variable exists
+     */
+    public AbstractVariable getVariable(final String key)
+        throws InvalidIdentifierException;
+    
     /**
      * Returns all VariableGroups in the database..
      * @return an ImmutableCollection, in arbitrary order

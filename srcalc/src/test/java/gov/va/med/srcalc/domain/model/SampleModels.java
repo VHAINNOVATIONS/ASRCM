@@ -151,9 +151,9 @@ public class SampleModels
                 "#Age.value * #coefficient", true, "Age multiplier for functional status");
     }
     
-    public static List<AbstractVariable> sampleVariableList()
+    public static ImmutableList<AbstractVariable> sampleVariableList()
     {
-        return Arrays.asList(
+        return ImmutableList.of(
                 procedureVariable(),
                 ageVariable(),
                 genderVariable(),

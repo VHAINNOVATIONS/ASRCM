@@ -15,23 +15,6 @@ public class MockAdminService extends MockModelService implements AdminService  
     public MockAdminService() 
     {        
     }
-    
-    /**
-     * Not Implemented.
-     */
-    @Override
-    public List<AbstractVariable> getAllVariables() {
-        return null;
-    }
-
-    /**
-     * Not Implemented.
-     */
-    @Override
-    public AbstractVariable getVariable(String key)
-            throws InvalidIdentifierException {
-        return null;
-    }
 
     /**
      * Not Implemented.
