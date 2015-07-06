@@ -2,9 +2,10 @@ package gov.va.med.srcalc.web.controller.admin;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.model.Procedure;
-import gov.va.med.srcalc.util.TabularUploadError;
-import gov.va.med.srcalc.util.ValidationCodes;
-import gov.va.med.srcalc.web.controller.admin.ProcedureCsvReader.ParseResult;
+import gov.va.med.srcalc.util.*;
+import gov.va.med.srcalc.util.csv.CsvReader;
+import gov.va.med.srcalc.util.csv.TabularParseResult;
+import gov.va.med.srcalc.util.csv.TabularUploadError;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,7 +17,10 @@ import com.google.common.collect.*;
 import com.google.common.io.CharSource;
 import com.google.common.io.Resources;
 
-public class ProcedureCsvReaderTest
+/**
+ * Tests {@link ProcedureRowTranslator} and, consequentially, {@link CsvReader}.
+ */
+public class ProcedureRowTranslatorTest
 {
     /**
      * Points to a CSV file on the classpath which represents a valid procedures upload.
@@ -28,14 +32,14 @@ public class ProcedureCsvReaderTest
      * Points to a totally invalid CSV file. (The file cannot be interpreted as a CSV.)
      */
     public static final URL INVALID_CSV_FILE =
-            Resources.getResource(ProcedureCsvReaderTest.class, "invalid.csv");
+            Resources.getResource(ProcedureRowTranslatorTest.class, "invalid.csv");
     
     /**
      * Points to a CSV file which contains invalid procedure content. (The file
      * <em>can</em> be interpreted as a CSV.)
      */
     public static final URL INVALID_PROCEDURES_RESOURCE = Resources.getResource(
-            ProcedureCsvReaderTest.class, "invalid_procedures_upload.csv");
+            ProcedureRowTranslatorTest.class, "invalid_procedures_upload.csv");
     
     /**
      * These are the procedures in {@link #VALID_PROCEDURES_RESOURCE}.
@@ -50,13 +54,14 @@ public class ProcedureCsvReaderTest
         final CharSource validCsv =
                 Resources.asCharSource(VALID_PROCEDURES_RESOURCE, Charsets.US_ASCII);
         
-        final ProcedureCsvReader procedureReader = new ProcedureCsvReader();
-        final ParseResult result =
-                procedureReader.readProcedures(validCsv.openStream());
+        final CsvReader<Procedure> procedureReader =
+                new CsvReader<>(new ProcedureRowTranslator());
+        final TabularParseResult<Procedure> result =
+                procedureReader.readObjects(validCsv.openStream());
         
         /* Verification */
         assertEquals(0, result.getErrors().size());
-        assertEquals(VALID_PROCEDURES, result.getProcedures());
+        assertEquals(VALID_PROCEDURES, result.getRowObjects());
     }
     
     @Test
@@ -65,20 +70,24 @@ public class ProcedureCsvReaderTest
         final CharSource corruptCsv = Resources.asCharSource(
                 INVALID_CSV_FILE, Charsets.US_ASCII);
         
-        final ProcedureCsvReader procedureReader = new ProcedureCsvReader();
-        final ParseResult result =
-                procedureReader.readProcedures(corruptCsv.openStream());
+        final CsvReader<Procedure> procedureReader =
+                new CsvReader<>(new ProcedureRowTranslator());
+        final TabularParseResult<Procedure> result =
+                procedureReader.readObjects(corruptCsv.openStream());
         
         /* Verification */
         assertEquals(1, result.getErrors().size());
         final TabularUploadError error = result.getErrors().asList().get(0);
-        assertEquals(ProcedureCsvReader.ERROR_CORRUPT_CSV, error.getCode());
-        assertEquals(ImmutableList.of(), result.getProcedures());
+        assertEquals(ValidationCodes.INVALID_CONTENTS, error.getCode());
+        assertEquals(ImmutableList.of(), result.getRowObjects());
     }
     
     @Test
     public final void testReadProceduresInvalid() throws IOException
     {
+        final CharSource invalidCsv = Resources.asCharSource(
+                INVALID_PROCEDURES_RESOURCE, Charsets.US_ASCII);
+
         // The expected errors for each field. (We use a Set because order doesn't matter.)
         final ImmutableSet<TabularUploadError> expectedErrors = ImmutableSet.of(
                 TabularUploadError.forField(
@@ -107,11 +116,10 @@ public class ProcedureCsvReaderTest
                         3, "shortDescription", String.class, ValidationCodes.TOO_LONG, new Object[] { Procedure.DESCRIPTION_MAX }, ""));
                 
         /* Behavior */
-        final CharSource invalidCsv = Resources.asCharSource(
-                INVALID_PROCEDURES_RESOURCE, Charsets.US_ASCII);
-        final ProcedureCsvReader procedureReader = new ProcedureCsvReader();
-        final ParseResult result =
-                procedureReader.readProcedures(invalidCsv.openStream());
+        final CsvReader<Procedure> procedureReader =
+                new CsvReader<>(new ProcedureRowTranslator());
+        final TabularParseResult<Procedure> result =
+                procedureReader.readObjects(invalidCsv.openStream());
         
         /* Verification */
         assertEquals(expectedErrors, ImmutableSet.copyOf(result.getErrors()));

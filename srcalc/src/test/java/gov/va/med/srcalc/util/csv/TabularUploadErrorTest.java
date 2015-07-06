@@ -1,8 +1,8 @@
-package gov.va.med.srcalc.util;
+package gov.va.med.srcalc.util.csv;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.util.TabularUploadError;
+import gov.va.med.srcalc.util.ValidationCodes;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
@@ -10,6 +10,9 @@ import org.springframework.validation.DefaultMessageCodesResolver;
 
 import com.google.common.collect.ImmutableList;
 
+/**
+ * Tests {@link TabularUploadError}.
+ */
 public class TabularUploadErrorTest
 {
     @Test

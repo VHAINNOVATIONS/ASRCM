@@ -55,7 +55,7 @@ public class EditProceduresControllerIT
     public final void testProcedureUploadValid() throws Exception
     {
         final ByteSource sampleUpload = Resources.asByteSource(
-                ProcedureCsvReaderTest.VALID_PROCEDURES_RESOURCE);
+                ProcedureRowTranslatorTest.VALID_PROCEDURES_RESOURCE);
 
         fMockMvc.perform(fileUpload(EditProceduresController.BASE_URL)
                 .file("newProceduresFile", sampleUpload.read()))
@@ -65,7 +65,7 @@ public class EditProceduresControllerIT
         
         // Verify that the procedures were actually updated.
         assertEquals(
-                ProcedureCsvReaderTest.VALID_PROCEDURES,
+                ProcedureRowTranslatorTest.VALID_PROCEDURES,
                 fModelService.getAllProcedures());
     }
     

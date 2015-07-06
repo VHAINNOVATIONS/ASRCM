@@ -5,8 +5,10 @@ import java.io.InputStreamReader;
 
 import javax.inject.Inject;
 
+import gov.va.med.srcalc.domain.model.Procedure;
 import gov.va.med.srcalc.service.AdminService;
-import gov.va.med.srcalc.web.controller.admin.ProcedureCsvReader.ParseResult;
+import gov.va.med.srcalc.util.csv.CsvReader;
+import gov.va.med.srcalc.util.csv.TabularParseResult;
 import gov.va.med.srcalc.web.view.Views;
 
 import org.slf4j.Logger;
@@ -69,30 +71,31 @@ public class EditProceduresController
                 "Processing a {}-byte procedure set upload.",
                 newProceduresFile.getSize());
 
-        final InputStreamReader reader = new InputStreamReader(
+        final InputStreamReader input = new InputStreamReader(
                 newProceduresFile.getInputStream());
-        final ParseResult result = new ProcedureCsvReader().readProcedures(reader);
+        final CsvReader<Procedure> csvReader = new CsvReader<>(
+                new ProcedureRowTranslator());
+        final TabularParseResult<Procedure> result = csvReader.readObjects(input);
         
-        // If all lines were valid, update the persistent store.
-        if (result.getErrors().isEmpty())
-        {
-            fAdminService.replaceAllProcedures(
-                    ImmutableSet.copyOf(result.getProcedures()));
-
-            // Return to the procedures page so that the user can inspect and verify the
-            // new procedure set.
-            redirectAttributes.addFlashAttribute(FLASH_ATTR_SUCCESS, true);
-            return new ModelAndView("redirect:" + BASE_URL);
-        }
-        // Otherwise, display the errors to the user.
-        else
+        // If there were errors, display them to the user.
+        if (result.hasErrors())
         {
             fLogger.debug("There were errors: {}", result.getErrors());
             final ModelAndView mav = displayCurrentProcedures();
             mav.addObject("validationErrors", result.getErrors());
             return mav;
         }
+        // Otherwise, it's valid: update the persistent store.
+        else
+        {
+            fAdminService.replaceAllProcedures(
+                    ImmutableSet.copyOf(result.getRowObjects()));
 
+            // Return to the procedures page so that the user can inspect and verify the
+            // new procedure set.
+            redirectAttributes.addFlashAttribute(FLASH_ATTR_SUCCESS, true);
+            return new ModelAndView("redirect:" + BASE_URL);
+        }
     }
     
 }
