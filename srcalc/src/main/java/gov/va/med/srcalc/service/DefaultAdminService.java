@@ -175,6 +175,8 @@ public class DefaultAdminService implements AdminService
         fLogger.info("Saved rule {}.", rule.getDisplayName());
     }
     
+    @Override
+    @Transactional
     public void replaceAllProcedures(final Set<Procedure> newProcedures)
     {
         final Stopwatch stopwatch = Stopwatch.createStarted();
