@@ -54,10 +54,9 @@ public class AdminHomeController
         {
             summaries.add(VariableSummary.fromVariable(var));
         }
-
-        model.addAttribute("riskModels", riskModels );
         model.addAttribute("variables", summaries);
-        
+        model.addAttribute("rules", fAdminService.getAllRules());
+        model.addAttribute("riskModels", riskModels );
         return Views.MODEL_ADMIN_HOME;
     }
 

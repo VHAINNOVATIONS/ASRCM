@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 import gov.va.med.srcalc.domain.calculation.SampleCalculations;
-import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 
 import java.util.*;

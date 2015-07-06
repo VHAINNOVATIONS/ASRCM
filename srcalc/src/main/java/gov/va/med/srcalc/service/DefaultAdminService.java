@@ -1,10 +1,10 @@
 package gov.va.med.srcalc.service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
-import gov.va.med.srcalc.db.RiskModelDao;
-import gov.va.med.srcalc.db.SpecialtyDao;
-import gov.va.med.srcalc.db.VariableDao;
+import gov.va.med.srcalc.db.*;
 import gov.va.med.srcalc.domain.model.*;
 
 import javax.inject.Inject;
@@ -13,7 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 
 public class DefaultAdminService implements AdminService
 {
@@ -22,14 +24,22 @@ public class DefaultAdminService implements AdminService
     private final VariableDao fVariableDao;
     private final RiskModelDao fRiskModelDao;
     private final SpecialtyDao fSpecialtyDao;
+    private final RuleDao fRuleDao;
+    private final ProcedureDao fProcedureDao;
     
     @Inject
     public DefaultAdminService(
-            final VariableDao variableDao, final RiskModelDao riskModelDao, SpecialtyDao specialtyDao)
+            final VariableDao variableDao,
+            final RiskModelDao riskModelDao,
+            SpecialtyDao specialtyDao,
+            final RuleDao ruleDao,
+            final ProcedureDao procedureDao)
     {
         fVariableDao = variableDao;
         fRiskModelDao = riskModelDao;
         fSpecialtyDao = specialtyDao;
+        fRuleDao = ruleDao;
+        fProcedureDao = procedureDao;
     }
     
     @Override
@@ -67,9 +77,9 @@ public class DefaultAdminService implements AdminService
     }
     
     /**
-     * Returns true if there is already a different variable with the same key.
-     * @param variable
-     * @return
+     * Returns true if there is already a different variable with the same key as the
+     * given variable, false otherwise.
+     * @param variable the variable to check
      */
     private boolean keyAlreadyExists(final AbstractVariable variable)
     {
@@ -120,6 +130,84 @@ public class DefaultAdminService implements AdminService
     }
     
     @Override
+    @Transactional
+    public ImmutableCollection<Rule> getAllRules()
+    {
+        fLogger.debug("Getting all Rules.");
+        return fRuleDao.getAllRules();
+    }
+    
+    @Override
+    @Transactional
+    public Rule getRule(final String displayName) throws InvalidIdentifierException
+    {
+        fLogger.debug("Getting Rule by key {}.", displayName);
+        final Rule rule = fRuleDao.getByDisplayName(displayName);
+        if (rule == null)
+        {
+            throw new InvalidIdentifierException("There is no Rule called " + displayName);
+        }
+        return rule;
+    }
+    
+    /**
+     * Returns true if there is already a different rule with the same display name.
+     * @param rule
+     */
+    private boolean ruleNameAlreadyExists(final Rule rule)
+    {
+        final Rule existingRule = fRuleDao.getByDisplayName(rule.getDisplayName());
+        fLogger.debug("Existing rule with name {}: {}", rule.getDisplayName(), existingRule);
+        // If there is an existing rule with the same name and it is not actually
+        // the same rule, then we have a conflict.
+        return (existingRule != null && rule.getId() != existingRule.getId());
+    }
+
+    @Override
+    @Transactional
+    public void saveRule(final Rule rule)
+    {
+        fLogger.debug("Saving Rule {}.", rule);
+
+        // Per method Javadoc, throw a DuplicateRuleNameException if a
+        // different rule with the same display name already exists.
+        // (mergeRule() below would throw a DataAccessException in this
+        // case, but we cannot robustly determine the cause of the Exception so
+        // we explicitly check here.)
+        if (ruleNameAlreadyExists(rule))
+        {
+            throw new DuplicateRuleNameException(
+                    "Duplicate rule name " + rule.getDisplayName());
+        }
+
+        fRuleDao.mergeRule(rule);
+        // This is a significant (and infrequent) transaction: log it at INFO
+        // level.
+        fLogger.info("Saved rule {}.", rule.getDisplayName());
+    }
+    
+    @Override
+    @Transactional
+    public void replaceAllProcedures(final Set<Procedure> newProcedures)
+    {
+        final Stopwatch stopwatch = Stopwatch.createStarted();
+        final int deleteCount = fProcedureDao.replaceAllProcedures(newProcedures);
+        stopwatch.stop();
+        
+        fLogger.info(
+                "Replaced all {} Procedures in the DB with a new set of {} in {}ms.",
+                deleteCount,
+                newProcedures.size(),
+                stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ImmutableList<Procedure> getAllProcedures()
+    {
+        return fProcedureDao.getAllProcedures();
+    }
+
     @Transactional(readOnly = true)
     public RiskModel getRiskModelForId(final int modelId)
     {        
@@ -143,5 +231,4 @@ public class DefaultAdminService implements AdminService
         fRiskModelDao.saveRiskModel( model );
         fLogger.info("Saved Risk Model {}.", model.getDisplayName() );
     }
-
 }

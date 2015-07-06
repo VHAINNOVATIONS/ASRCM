@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.web.controller;
 
 import gov.va.med.srcalc.domain.model.Procedure;
-import gov.va.med.srcalc.service.ReferenceDataService;
+import gov.va.med.srcalc.service.ModelInspectionService;
 
 import java.util.*;
 
@@ -21,12 +21,12 @@ import com.google.common.collect.ImmutableList;
 @RequestMapping("/refdata")
 public class ReferenceDataController
 {
-    private final ReferenceDataService fService;
+    private final ModelInspectionService fService;
     
     @Inject
-    public ReferenceDataController(final ReferenceDataService procedureDao)
+    public ReferenceDataController(final ModelInspectionService modelService)
     {
-        fService = procedureDao;
+        fService = modelService;
     }
 
     /**
@@ -52,6 +52,7 @@ public class ReferenceDataController
             jsonProcedure.put("shortDescription", p.getShortDescription());
             // Use Float.toString() to send RVU as a string.
             jsonProcedure.put("rvu", Float.toString(p.getRvu()));
+            jsonProcedure.put("eligible", Boolean.toString(p.isEligible()));
             returnList.add(jsonProcedure);
         }
         

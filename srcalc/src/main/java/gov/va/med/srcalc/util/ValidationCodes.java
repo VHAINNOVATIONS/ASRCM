@@ -34,7 +34,23 @@ public class ValidationCodes
      * Error code used when a value must be unique but is not.
      */
     public static final String DUPLICATE_VALUE = "duplicateValue";
+    
+    /**
+     * Error code used when a value cannot be converted from a one type (typically a
+     * String) to the needed type.
+     */
+    public static final String TYPE_MISMATCH = "typeMismatch";
+    
+    /**
+     * Error code used when a value must be a specific length but is not.
+     */
+    public static final String BAD_FIXED_LENGTH = "badFixedLength";
 
+    /**
+     * Error code used when a rule's summand expression is not a valid Spring Expression.
+     */
+    public static final String INVALID_EXPRESSION = "invalidExperession";
+    
     /**
      * No construction.
      */

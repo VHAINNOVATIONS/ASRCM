@@ -15,23 +15,22 @@ import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.service.AdminService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 
+import gov.va.med.srcalc.util.DisplayNameConditions;
+
 /**
  * A form backing object for editing a target (link @RiskModel) object.
  */
 public class EditRiskModel implements Comparable<EditRiskModel>
 {
-	private final RiskModel fRiskModel;
-
+    private final RiskModel fRiskModel;
+    
     private String modelName;
     
     private List<Specialty> applicableSpecialties;
@@ -175,23 +174,24 @@ public class EditRiskModel implements Comparable<EditRiskModel>
     }    
     
     // Store the Edit Changes (an 'Import') in a new RiskModel object.
-	// If this were a normal editing situation where the user could change individual values through 
-	// the gui, this would be separate copy, but since this is an import process, we will just 
-	// init this to null until when/if the user imports a new model. 
-	// The name may be edited separately and so the edit copy is stored separately.
-	// the getter methods will first check will return the importModel values if it has been set and the target model 
-	// if not.
-    private RiskModel importedModel=null;
+    // If this were a normal editing situation where the user could change individual values through
+    // the gui, this would be separate copy, but since this is an import process, we will just
+    // init this to null until when/if the user imports a new model.
+    // The name may be edited separately and so the edit copy is stored separately.
+    // the getter methods will first check will return the importModel values if it has been set and
+    // the target model
+    // if not.
+    private RiskModel importedModel = null;
     
-	protected EditRiskModel( final RiskModel rm, final List<Specialty> applSpecialty ) 
-	{
-		fRiskModel = rm;
-		modelName = rm.getDisplayName();
-		
-		applicableSpecialties = ImmutableList.copyOf( applSpecialty );
-		importedModel = null;				
-	}
-	
+    protected EditRiskModel(final RiskModel rm, final List<Specialty> applSpecialty)
+    {
+        fRiskModel = rm;
+        modelName = rm.getDisplayName();
+        
+        applicableSpecialties = ImmutableList.copyOf(applSpecialty);
+        importedModel = null;
+    }
+
     /**
      * Returns an {@link EditRiskModel} instance for editing the given RiskModel.
      * @param riskModel the target RiskModel
@@ -212,15 +212,15 @@ public class EditRiskModel implements Comparable<EditRiskModel>
 		
 		return new EditRiskModel( riskModel, applSpecialties );
 	}
-	
-	/**
-	 * Return the target (link @RiskModel)
-	 */
-	public RiskModel getRiskModel() 
-	{
-		return fRiskModel;
-	}
-	
+    
+    /**
+     * Return the target (link @RiskModel)
+     */
+    public RiskModel getRiskModel()
+    {
+        return fRiskModel;
+    }
+
 	/**
 	 * 
 	 * Note: this will take the place of most of the setter methods for individual fields.
@@ -232,48 +232,49 @@ public class EditRiskModel implements Comparable<EditRiskModel>
 //		importedModel = impModel;
 //		importedModel.setDisplayName( modelName );
 //	}
-	
-	/* 
-	 * Return the modelName
-	 */
-	public String getModelName( ) 
-	{
-		return modelName;
-	}
-
-	/*
-	 * Set the modelName
-	 */
-	public void setModelName( String mn ) 
-	{
-		modelName = mn;
-	}
-
-	/**
-	 * Return the Id of the target RiskModel. 
-	 */
-	public String getId( ) 
-	{
-		return Integer.toString( fRiskModel.getId() );
-	}
-	
-	/**
-	 * Return a list of Specialties. 
-	 */
-	public List<Specialty> getSpecialties() 
-	{
-		return applicableSpecialties;
-	}
-	
-	public ConstantTerm getConstantTerm() 
-	{
-		return ( importedModel == null ? fRiskModel.getConstantTerm() : importedModel.getConstantTerm() );
-	}
-
-	public int getMaxDisplayNameLength() 
-	{
-		return RiskModel.DISPLAY_NAME_MAX;
-	}
+    
+    /**
+     * Return the modelName
+     */
+    public String getModelName()
+    {
+        return modelName;
+    }
+    
+    /**
+     * Set the modelName
+     */
+    public void setModelName(String mn)
+    {
+        modelName = mn;
+    }
+    
+    /**
+     * Return the Id of the target RiskModel.
+     */
+    public String getId()
+    {
+        return Integer.toString(fRiskModel.getId());
+    }
+    
+    /**
+     * Return a list of Specialties.
+     */
+    public List<Specialty> getSpecialties()
+    {
+        return applicableSpecialties;
+    }
+    
+    public ConstantTerm getConstantTerm()
+    {
+        return (importedModel == null ? fRiskModel.getConstantTerm() : importedModel
+                .getConstantTerm());
+    }
+    
+    public int getMaxDisplayNameLength()
+    {
+        return DisplayNameConditions.DISPLAY_NAME_MAX;
+    }
 	
 	public List<ModelTermSummary> getTermSummaries() 
 	{
@@ -310,17 +311,17 @@ public class EditRiskModel implements Comparable<EditRiskModel>
 		
 		return fRiskModel;
 	}
-	
-    @Override
-    public int compareTo(final EditRiskModel other )
-    {
-    	// Order alphabetically by modelName.
-    	// 
-        return this.modelName.compareTo( other.modelName );
-    }
 
-	public String toString() 
-	{
-		return "EditRiskModel: name="+ modelName+",ID="+ getId();
-	}	
+    @Override
+    public int compareTo(final EditRiskModel other)
+    {
+        // Order alphabetically by modelName.
+        //
+        return this.modelName.compareTo(other.modelName);
+    }
+    
+    public String toString()
+    {
+        return "EditRiskModel: name=" + modelName + ",ID=" + getId();
+    }
 }

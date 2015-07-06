@@ -1,11 +1,9 @@
 package gov.va.med.srcalc.service;
 
-import gov.va.med.srcalc.domain.model.AbstractVariable;
-import gov.va.med.srcalc.domain.model.RiskModel;
-import gov.va.med.srcalc.domain.model.SampleModels;
-import gov.va.med.srcalc.domain.model.Specialty;
+import gov.va.med.srcalc.domain.model.*;
 
 import java.util.List;
+import java.util.Set;
 
 /*
  * Created to support the EditRiskModel which needs to call getAllSpecialties()
@@ -43,4 +41,23 @@ public class MockAdminService extends MockModelService implements AdminService  
 	public List<Specialty> getAllSpecialties() {
 		return SampleModels.specialtyList();
 	}
+
+    @Override
+    public Rule getRule(String displayName) throws InvalidIdentifierException
+    {
+        return null;
+    }
+
+    @Override
+    public void saveRule(Rule rule)
+    {
+        // not implemented
+    }
+
+    @Override
+    public void replaceAllProcedures(final Set<Procedure> newProcedures)
+    {
+        // TODO Auto-generated method stub
+        
+    }
 }
