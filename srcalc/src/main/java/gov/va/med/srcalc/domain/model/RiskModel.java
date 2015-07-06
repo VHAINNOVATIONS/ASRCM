@@ -369,28 +369,8 @@ public class RiskModel implements Comparable<RiskModel>
             {
                 return false;
             }        
-            // save sets so we don't have to keep rebuilding them in getTerms()
-            ImmutableSet<ModelTerm> terms = getTerms();
-            ImmutableSet<ModelTerm> otherTerms = other.getTerms();
             
-            if( terms == null && otherTerms == null ) 
-            {
-                return true;
-            }
-            if( terms == null || otherTerms == null ) 
-            {
-                return false;
-            }
-            
-            for( ModelTerm mt : otherTerms ) 
-            {
-                if( !terms.contains( mt ) ) 
-                {
-                    fLogger.debug( "RiskModel equals() returning false for 2 RiskModels with name={}", fDisplayName );
-                    return false;
-                }
-            }
-            return true;
+            return Objects.equals( getTerms(), other.getTerms() );
         }
     }
 
