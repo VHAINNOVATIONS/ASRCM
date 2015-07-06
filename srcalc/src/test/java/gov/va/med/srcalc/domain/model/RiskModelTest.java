@@ -150,6 +150,14 @@ public class RiskModelTest
         rm2 = SampleModels.makeSampleRiskModel(
                 "sameModel", new HashSet<DerivedTerm>(), ageVar, dnrVar );
         assertEquals( rm1, rm2 );
+
+        // and equals. but size does
+        rm1 = SampleModels.makeSampleRiskModel(
+                "sameModel", new HashSet<DerivedTerm>(), dnrVar, ageVar);
+        rm2 = SampleModels.makeSampleRiskModel(
+                "sameModel", new HashSet<DerivedTerm>(), dnrVar, ageVar, procVar );
+        assertNotEquals( rm1, rm2 );
+
     }
 
     @Test
