@@ -46,131 +46,131 @@ public class EditRiskModel implements Comparable<EditRiskModel>
      */
     public static class ModelTermSummary  implements Comparable<ModelTermSummary>
     {
-    	private final ModelTerm targetTerm;
-    	
-    	private String displayName;   // the name presented on the Edit Model page
-    	private String termType;      // the variable type
-    	
-    	private ModelTermSummary( ModelTerm mt, String name, String type ) 
-    	{
-    		displayName = name;
-    		targetTerm = mt;
-    		termType = type;
-    	}
-     	
-    	public String getDisplayName()  
-    	{
-    		return displayName;
-    	}
-    	
-    	public String getTermType() 
-    	{
-    		return termType;
-    	}
-    	
-    	public float getCoefficient()
-    	{
-    		return targetTerm.getCoefficient();
-    	}
+        private final ModelTerm targetTerm;
+        
+        private String displayName;   // the name presented on the Edit Model page
+        private String termType;      // the variable type
+        
+        private ModelTermSummary( ModelTerm mt, String name, String type ) 
+        {
+            displayName = name;
+            targetTerm = mt;
+            termType = type;
+        }
+         
+        public String getDisplayName()  
+        {
+            return displayName;
+        }
+        
+        public String getTermType() 
+        {
+            return termType;
+        }
+        
+        public float getCoefficient()
+        {
+            return targetTerm.getCoefficient();
+        }
 
-    	public static ModelTermSummary createTermSummary( ModelTerm modelTerm ) 
-    	{
-    		String dispName="";
-    		String type="";
-    		
-    		if( modelTerm instanceof ConstantTerm ) 
-    		{
-    			dispName = "Constant"; 
-    			type = "Constant"; // or N/A or blank
-    		}
-    		else if( modelTerm instanceof ProcedureTerm )
-    		{
-    			type = "Multiplier"; // ???
-    			dispName = "Procedure (RVU Multiplier)"; 
-    		}
-    		else if( modelTerm instanceof BooleanTerm )
-    		{
-    			type = "Boolean";
-    			BooleanTerm boolTerm = (BooleanTerm)modelTerm;    			
-    			dispName = boolTerm.getVariable().getDisplayName();
-    		}			
-    		else if( modelTerm instanceof NumericalTerm )
-    		{
-    			type = "Numerical";
-    			NumericalTerm numTerm = (NumericalTerm)modelTerm;
-    			dispName = numTerm.getVariable().getDisplayName();    				     			
-    		}
-    		else if( modelTerm instanceof DiscreteTerm )
-    		{
-    			DiscreteTerm discreteTerm = (DiscreteTerm)modelTerm;				    			
-    			MultiSelectOption opt = discreteTerm.getOption();
-    			DiscreteVariable var = discreteTerm.getVariable();
-    			
-    			if( var instanceof DiscreteNumericalVariable ) 
-    			{
-        			type = "Discrete Numeric";
-        			dispName = var.getDisplayName()+ " = " + opt.getValue();
-    			}
-    			else if( var instanceof MultiSelectVariable ) 
-    			{
-        			type = "Discrete";
+        public static ModelTermSummary createTermSummary( ModelTerm modelTerm ) 
+        {
+            String dispName="";
+            String type="";
+            
+            if( modelTerm instanceof ConstantTerm ) 
+            {
+                dispName = "Constant"; 
+                type = "Constant"; // or N/A or blank
+            }
+            else if( modelTerm instanceof ProcedureTerm )
+            {
+                type = "Multiplier"; // ???
+                dispName = "Procedure (RVU Multiplier)"; 
+            }
+            else if( modelTerm instanceof BooleanTerm )
+            {
+                type = "Boolean";
+                BooleanTerm boolTerm = (BooleanTerm)modelTerm;                
+                dispName = boolTerm.getVariable().getDisplayName();
+            }            
+            else if( modelTerm instanceof NumericalTerm )
+            {
+                type = "Numerical";
+                NumericalTerm numTerm = (NumericalTerm)modelTerm;
+                dispName = numTerm.getVariable().getDisplayName();                                     
+            }
+            else if( modelTerm instanceof DiscreteTerm )
+            {
+                DiscreteTerm discreteTerm = (DiscreteTerm)modelTerm;                                
+                MultiSelectOption opt = discreteTerm.getOption();
+                DiscreteVariable var = discreteTerm.getVariable();
+                
+                if( var instanceof DiscreteNumericalVariable ) 
+                {
+                    type = "Discrete Numeric";
+                    dispName = var.getDisplayName()+ " = " + opt.getValue();
+                }
+                else if( var instanceof MultiSelectVariable ) 
+                {
+                    type = "Discrete";
 
-    				MultiSelectVariable msv = (MultiSelectVariable)var;
-    				msv.getOptions();
-    				dispName = var.getDisplayName()+ " = " + opt.getValue() ;
-    			}
-    		}			
-    		else if( modelTerm instanceof DerivedTerm )
-    		{
-    			type = "Rule";
-    			dispName = "Rule: "+((DerivedTerm)modelTerm).getRule().getId();
-    		}
-    		else
-    		{
-    			// or throw an error?
-    			dispName = "Unrecognized Term: "+modelTerm.getClass().getName();	
-    			type = "";
-    		}
-    		
-    		// Use new Type column to display the Type.
-    		// Can still do this if that's what they want.
-    		// dispName = dispName + " ("+type+")";
-    		
-    		return new ModelTermSummary( modelTerm, dispName, type );
-    	}
+                    MultiSelectVariable msv = (MultiSelectVariable)var;
+                    msv.getOptions();
+                    dispName = var.getDisplayName()+ " = " + opt.getValue() ;
+                }
+            }            
+            else if( modelTerm instanceof DerivedTerm )
+            {
+                type = "Rule";
+                dispName = "Rule: "+((DerivedTerm)modelTerm).getRule().getId();
+            }
+            else
+            {
+                // or throw an error?
+                dispName = "Unrecognized Term: "+modelTerm.getClass().getName();    
+                type = "";
+            }
+            
+            // Use new Type column to display the Type.
+            // Can still do this if that's what they want.
+            // dispName = dispName + " ("+type+")";
+            
+            return new ModelTermSummary( modelTerm, dispName, type );
+        }
 
-    	// a string used to make sorting the terms easier. 
-    	// ConstantTerms first, then Rules and then by display name 
-    	// with discrete options ordered by index 
-    	private String getSortString() 
-    	{
-    		if( targetTerm instanceof ConstantTerm ) 
-    		{
-    			return "AAAA";
-    		}
-    		else if( targetTerm instanceof DerivedTerm )
-    		{
-    			return "AAAAA"+Float.toString( ((DerivedTerm)targetTerm).getRule().getId()*1f/1000f ); // 7 before 11
-    		}
-    		// order DiscreteTerms according to their options
-    		//
-    		else if( targetTerm instanceof DiscreteTerm )
-    		{
-    			DiscreteTerm dTerm = (DiscreteTerm)targetTerm;
-    			return dTerm.getVariable().getDisplayName().toUpperCase() + dTerm.getOptionIndex();
-    		}
-    		else
-    		{
-    			return displayName.toUpperCase();
-    		}
-    	}
-    	
-    	// sort by the sortString
-    	@Override
-    	public int compareTo( ModelTermSummary o ) 
-    	{
-    		return getSortString().compareTo( o.getSortString() );
-    	}    	
+        // a string used to make sorting the terms easier. 
+        // ConstantTerms first, then Rules and then by display name 
+        // with discrete options ordered by index 
+        private String getSortString() 
+        {
+            if( targetTerm instanceof ConstantTerm ) 
+            {
+                return "AAAA";
+            }
+            else if( targetTerm instanceof DerivedTerm )
+            {
+                return "AAAAA"+Float.toString( ((DerivedTerm)targetTerm).getRule().getId()*1f/1000f ); // 7 before 11
+            }
+            // order DiscreteTerms according to their options
+            //
+            else if( targetTerm instanceof DiscreteTerm )
+            {
+                DiscreteTerm dTerm = (DiscreteTerm)targetTerm;
+                return dTerm.getVariable().getDisplayName().toUpperCase() + dTerm.getOptionIndex();
+            }
+            else
+            {
+                return displayName.toUpperCase();
+            }
+        }
+        
+        // sort by the sortString
+        @Override
+        public int compareTo( ModelTermSummary o ) 
+        {
+            return getSortString().compareTo( o.getSortString() );
+        }        
     }    
     
     // Store the Edit Changes (an 'Import') in a new RiskModel object.
@@ -196,22 +196,22 @@ public class EditRiskModel implements Comparable<EditRiskModel>
      * Returns an {@link EditRiskModel} instance for editing the given RiskModel.
      * @param riskModel the target RiskModel
      */
-	public static EditRiskModel fromRiskModel( final RiskModel riskModel,
-			final AdminService fAdminService )
-	{
-		List<Specialty> applSpecialties = new ArrayList<Specialty>();
-		fLogger.debug("creating RiskModel {}", riskModel.toString() );
-		
-		for( Specialty spec : fAdminService.getAllSpecialties() ) 
-		{
-			if( spec.getRiskModels().contains( riskModel ) ) 
-			{
-				applSpecialties.add( spec );
-			}
-		}
-		
-		return new EditRiskModel( riskModel, applSpecialties );
-	}
+    public static EditRiskModel fromRiskModel( final RiskModel riskModel,
+            final AdminService fAdminService )
+    {
+        List<Specialty> applSpecialties = new ArrayList<Specialty>();
+        fLogger.debug("creating RiskModel {}", riskModel.toString() );
+        
+        for( Specialty spec : fAdminService.getAllSpecialties() ) 
+        {
+            if( spec.getRiskModels().contains( riskModel ) ) 
+            {
+                applSpecialties.add( spec );
+            }
+    }
+        
+        return new EditRiskModel( riskModel, applSpecialties );
+    }
     
     /**
      * Return the target (link @RiskModel)
@@ -221,17 +221,17 @@ public class EditRiskModel implements Comparable<EditRiskModel>
         return fRiskModel;
     }
 
-	/**
-	 * 
-	 * Note: this will take the place of most of the setter methods for individual fields.
-	 * @param impModel
-	 */
-//	public void setImportedModel( RiskModel impModel ) 
-//	{
-//		/// ??? should this also overwrite the possibly edited display name?		
-//		importedModel = impModel;
-//		importedModel.setDisplayName( modelName );
-//	}
+    /**
+     * 
+     * Note: this will take the place of most of the setter methods for individual fields.
+     * @param impModel
+     */
+//    public void setImportedModel( RiskModel impModel ) 
+//    {
+//        /// ??? should this also overwrite the possibly edited display name?        
+//        importedModel = impModel;
+//        importedModel.setDisplayName( modelName );
+//    }
     
     /**
      * Return the modelName
@@ -275,42 +275,42 @@ public class EditRiskModel implements Comparable<EditRiskModel>
     {
         return DisplayNameConditions.DISPLAY_NAME_MAX;
     }
-	
-	public List<ModelTermSummary> getTermSummaries() 
-	{
-		Set<ModelTerm> numTerms = ( importedModel != null ? 
-				 					importedModel.getTerms(): fRiskModel.getTerms() );
+    
+    public List<ModelTermSummary> getTermSummaries() 
+    {
+        Set<ModelTerm> numTerms = ( importedModel != null ? 
+                                     importedModel.getTerms(): fRiskModel.getTerms() );
 
-		List<ModelTermSummary> termSummariesList = new ArrayList<ModelTermSummary>();
+        List<ModelTermSummary> termSummariesList = new ArrayList<ModelTermSummary>();
 
-		for( ModelTerm modTerm : numTerms )
-		{
-			// change this
-			termSummariesList.add( ModelTermSummary.createTermSummary( modTerm ) );
-		}
-		
-		Collections.sort( termSummariesList );
-		
-		return termSummariesList;
-	}
+        for( ModelTerm modTerm : numTerms )
+        {
+            // change this
+            termSummariesList.add( ModelTermSummary.createTermSummary( modTerm ) );
+        }
+        
+        Collections.sort( termSummariesList );
+        
+        return termSummariesList;
+    }
 
-	/**
-	 * Update the target RiskModel with the current edits.
-	 */
-	public RiskModel applyChanges() 
-	{
-		// can't change the model ID
+    /**
+     * Update the target RiskModel with the current edits.
+     */
+    public RiskModel applyChanges() 
+    {
+        // can't change the model ID
 
-		// if the imported model has an associated name then
-		// should we override the current one if it had been edited?
-		
-		
-		fRiskModel.setDisplayName( modelName );
-		
-//		fRiskModel = importedModel; // save/backup the old model?
-		
-		return fRiskModel;
-	}
+        // if the imported model has an associated name then
+        // should we override the current one if it had been edited?
+        
+        
+        fRiskModel.setDisplayName( modelName );
+        
+//        fRiskModel = importedModel; // save/backup the old model?
+        
+        return fRiskModel;
+    }
 
     @Override
     public int compareTo(final EditRiskModel other)

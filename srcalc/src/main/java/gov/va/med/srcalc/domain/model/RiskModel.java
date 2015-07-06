@@ -32,7 +32,7 @@ public class RiskModel implements Comparable<RiskModel>
     private Set<ProcedureTerm> fProcedureTerms = new HashSet<>();
     private Set<DerivedTerm> fDerivedTerms = new HashSet<>();
     
-	// Use the same Char set and Reg Expr as for the Variable names.
+    // Use the same Char set and Reg Expr as for the Variable names.
     /**
      * English description of the valid display name characters for readable
      * error messages.
@@ -325,49 +325,49 @@ public class RiskModel implements Comparable<RiskModel>
         final List<MissingValueException> missingList = new ArrayList<MissingValueException>();
         for (final ModelTerm term : getTerms())
         {
-        	try
-        	{
-        		final double termSummand = term.getSummand(valueMap);
+            try
+            {
+                final double termSummand = term.getSummand(valueMap);
                 fLogger.debug("Adding {} for {}", termSummand, term);
                 sum += termSummand;
-        	}
+            }
             catch(final MissingValuesException e)
             {
-            	missingList.addAll(e.getMissingValues());
+                missingList.addAll(e.getMissingValues());
             }
         }
         
         if(missingList.size() > 0)
         {
-        	throw new MissingValuesException("The calculation is missing values.", missingList);
+            throw new MissingValuesException("The calculation is missing values.", missingList);
         }
         final double expSum = Math.exp(sum);
         
         return expSum / (1 + expSum);
     }
     
-	/**
-	 * Returns a true if a RiskModel and if displayname and all Terms are equal.
-	 */
+    /**
+     * Returns a true if a RiskModel and if displayname and all Terms are equal.
+     */
     @Override
     public final boolean equals(final Object o)
     {
-    	if( this == o )
-    	{
-    		return true;
-    	}
-    	else if( o == null || !(o instanceof RiskModel) ) 
-    	{
-    		return false;
-    	}
-    	else 
+        if( this == o )
+        {
+            return true;
+        }
+        else if( o == null || !(o instanceof RiskModel) ) 
+        {
+            return false;
+        }
+        else 
         {
             // don't include the Id (Hibernate best practices)
             final RiskModel other = (RiskModel)o;
             
             if( this.getDisplayName().compareTo( other.getDisplayName() ) != 0 ) 
             {
-            	return false;
+                return false;
             }        
             // save sets so we don't have to keep rebuilding them in getTerms()
             ImmutableSet<ModelTerm> terms = getTerms();
@@ -375,42 +375,42 @@ public class RiskModel implements Comparable<RiskModel>
             
             if( terms == null && otherTerms == null ) 
             {
-            	return true;
+                return true;
             }
             if( terms == null || otherTerms == null ) 
             {
-            	return false;
+                return false;
             }
-    		
+            
             for( ModelTerm mt : otherTerms ) 
             {
-            	if( !terms.contains( mt ) ) 
-            	{
-                	fLogger.debug( "RiskModel equals() returning false for 2 RiskModels with name={}", fDisplayName );
-            		return false;
-            	}
-    		}
+                if( !terms.contains( mt ) ) 
+                {
+                    fLogger.debug( "RiskModel equals() returning false for 2 RiskModels with name={}", fDisplayName );
+                    return false;
+                }
+            }
             return true;
         }
     }
 
-	/**
-	 * Returns a hash code based on the displayName that uses the String.hashCode() implementation.
-	 */
-	@Override
-	public final int hashCode()
-	{
-		int h = (fDisplayName == null ? 0 : fDisplayName.hashCode() );
-		if( getTerms() != null ) 
-		{		
-			for( ModelTerm mt : getTerms() ) 
-			{
-				h += mt.hashCode();
-			}
-		}
-		
-		return h; 
-	}
+    /**
+     * Returns a hash code based on the displayName that uses the String.hashCode() implementation.
+     */
+    @Override
+    public final int hashCode()
+    {
+        int h = (fDisplayName == null ? 0 : fDisplayName.hashCode() );
+        if( getTerms() != null ) 
+        {        
+            for( ModelTerm mt : getTerms() ) 
+            {
+                h += mt.hashCode();
+            }
+        }
+        
+        return h; 
+    }
 
     /**
      * Compares RiskModels based on their display name. Not consistent with

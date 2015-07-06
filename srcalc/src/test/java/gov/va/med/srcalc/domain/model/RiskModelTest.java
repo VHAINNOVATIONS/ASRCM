@@ -123,11 +123,11 @@ public class RiskModelTest
     @Test
     public final void testEquals()
     {
-    	// This isn't helpfull when its test cases include impossible cases. One example sets a string ("red") as 
-    	// one of the terms even though our getTerms() method returns ModelTerms.
+        // This isn't helpfull when its test cases include impossible cases. One example sets a string ("red") as 
+        // one of the terms even though our getTerms() method returns ModelTerms.
 //        EqualsVerifier.forClass(RiskModel.class).
-//         	suppress(Warning.NULL_FIELDS,Warning.NONFINAL_FIELDS).verify();
-    	
+//             suppress(Warning.NULL_FIELDS,Warning.NONFINAL_FIELDS).verify();
+        
         BooleanVariable dnrVar = SampleModels.dnrVariable();
         ProcedureVariable procVar = SampleModels.procedureVariable();
         NumericalVariable ageVar = SampleModels.ageVariable();

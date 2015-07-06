@@ -221,11 +221,11 @@ public class DefaultAdminService implements AdminService
     @Override
     @Transactional
     public void saveRiskModel( final RiskModel model ) 
-    {    	
+    {        
         if( getRiskModelForId( model.getId() ) == null ) 
         {  // TODO : remove this when possible to create new RiskModels
-        	fLogger.warn( "Warning: Saving RiskModel {}. ID {} doesn't exist in the DB ", 
-        			model.getDisplayName(), model.getId() );
+            fLogger.warn( "Warning: Saving RiskModel {}. ID {} doesn't exist in the DB ", 
+                    model.getDisplayName(), model.getId() );
         }
         
         fRiskModelDao.saveRiskModel( model );

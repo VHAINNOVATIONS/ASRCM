@@ -12,35 +12,35 @@ import java.util.Set;
  */
 public class MockAdminService extends MockModelService implements AdminService  {
 
-	public MockAdminService() 
-	{		
-	}
-	
-	@Override
-	public List<AbstractVariable> getAllVariables() {
-		return null;
-	}
+    public MockAdminService() 
+    {        
+    }
+    
+    @Override
+    public List<AbstractVariable> getAllVariables() {
+        return null;
+    }
 
-	@Override
-	public AbstractVariable getVariable(String key)
-			throws InvalidIdentifierException {
-		return null;
-	}
+    @Override
+    public AbstractVariable getVariable(String key)
+            throws InvalidIdentifierException {
+        return null;
+    }
 
-	@Override
-	public void saveVariable(AbstractVariable variable) {
-		// not implemented		
-	}
+    @Override
+    public void saveVariable(AbstractVariable variable) {
+        // not implemented        
+    }
 
-	@Override
-	public void saveRiskModel(RiskModel model) {
-		// not implemented
-	}
+    @Override
+    public void saveRiskModel(RiskModel model) {
+        // not implemented
+    }
 
-	@Override
-	public List<Specialty> getAllSpecialties() {
-		return SampleModels.specialtyList();
-	}
+    @Override
+    public List<Specialty> getAllSpecialties() {
+        return SampleModels.specialtyList();
+    }
 
     @Override
     public Rule getRule(String displayName) throws InvalidIdentifierException

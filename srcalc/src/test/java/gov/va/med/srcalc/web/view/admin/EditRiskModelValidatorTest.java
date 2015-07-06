@@ -25,11 +25,11 @@ public class EditRiskModelValidatorTest
         
         return errors;
     }
-	
+    
     @Test
     public final void testEmptyName()
     {
-    	final EditRiskModel erm = EditRiskModelTest.createEditRiskModel( "Thoracic 30-day Mortality" );
+        final EditRiskModel erm = EditRiskModelTest.createEditRiskModel( "Thoracic 30-day Mortality" );
         erm.setModelName("");
         
         final BindingResult errors = validate(erm);

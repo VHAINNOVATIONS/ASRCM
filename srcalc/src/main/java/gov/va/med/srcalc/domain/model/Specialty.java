@@ -106,7 +106,7 @@ public final class Specialty implements Serializable
             length = SPECIALTY_NAME_MAX)
     public final String getName()
     {
-	return fName;
+        return fName;
     }
 
     /**
@@ -117,7 +117,7 @@ public final class Specialty implements Serializable
      */
     public final void setName(final String name)
     {
-	fName = Preconditions.requireWithin(name, 1, SPECIALTY_NAME_MAX);
+        fName = Preconditions.requireWithin(name, 1, SPECIALTY_NAME_MAX);
     }
     
     /**

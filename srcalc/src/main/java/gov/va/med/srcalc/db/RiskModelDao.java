@@ -38,7 +38,7 @@ public class RiskModelDao
      * Returns all RiskModels in the database, in arbitrary order.
      * @return an ImmutableCollection
      */
-	public ImmutableCollection<RiskModel> getAllRiskModels()
+    public ImmutableCollection<RiskModel> getAllRiskModels()
     {
         Query q = getCurrentSession().createQuery("from RiskModel");
         @SuppressWarnings("unchecked")
@@ -52,7 +52,7 @@ public class RiskModelDao
      */
     public RiskModel getRiskModelForId( final int mid ) 
     {
-    	return (RiskModel)getCurrentSession().get(RiskModel.class, mid);
+        return (RiskModel)getCurrentSession().get(RiskModel.class, mid);
     }
     
     public RiskModel saveRiskModel( final RiskModel rm )

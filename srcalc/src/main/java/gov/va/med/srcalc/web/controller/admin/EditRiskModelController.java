@@ -50,7 +50,7 @@ public class EditRiskModelController
         {
             throw new InvalidIdentifierException("Unable to find RiskModel with ID " + riskModelId);
         }
-    	EditRiskModel editModel = EditRiskModel.fromRiskModel( rm, fAdminService );
+        EditRiskModel editModel = EditRiskModel.fromRiskModel( rm, fAdminService );
 
         return editModel;
     }
