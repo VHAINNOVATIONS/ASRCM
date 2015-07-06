@@ -101,7 +101,7 @@ public class VariableDao
      */
     public AbstractVariable mergeVariable(final AbstractVariable variable)
     {
-        fLogger.debug("Merging {} intto persistence context.", variable);
+        fLogger.debug("Merging {} into persistence context.", variable);
         // Trust Hibernate with this cast here. (I wish it was generic.)
         return (AbstractVariable)getCurrentSession().merge(variable);
     }

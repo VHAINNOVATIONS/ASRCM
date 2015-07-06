@@ -12,7 +12,7 @@
  * many methods accept persistent object identifiers instead of objects
  * themselves in order to encapsulate database interaction within the
  * transaction. For example, {@link
- * gov.va.med.srcalc.service.CalculationService#setSpecialty(gov.va.med.srcalc.domain.Calculation,
+ * gov.va.med.srcalc.service.CalculationService#setSpecialty(gov.va.med.srcalc.domain.calculation.Calculation,
  * String) CalculationService.setSpecialty} accepts a String identifying a
  * specialty instead of the specialty object itself. Other methods, such as
  * {@link

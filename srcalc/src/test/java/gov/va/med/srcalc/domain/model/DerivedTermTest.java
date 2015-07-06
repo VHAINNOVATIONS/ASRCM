@@ -25,7 +25,11 @@ public class DerivedTermTest
         final HashMap<Variable, Value> values = new HashMap<>();
         // We actually exercise the Rule in RuleTest, so just test simple
         // math here.
-        final Rule rule = new Rule(Collections.<ValueMatcher>emptyList(), "#coefficient * 2", true);
+        final Rule rule = new Rule(
+                Collections.<ValueMatcher>emptyList(),
+                "#coefficient * 2",
+                true,
+                "Multiply Coefficient by 2");
         
         // behavior verification
         final float coeff1 = 56.1f;

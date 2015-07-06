@@ -1,7 +1,9 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.calculation.Value;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.MissingValuesException;
+import gov.va.med.srcalc.util.Preconditions;
 
 import java.util.*;
 
@@ -12,6 +14,7 @@ import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableSet;
 
@@ -31,16 +34,20 @@ import com.google.common.collect.ImmutableSet;
 @Table(name = "rule")
 public final class Rule
 {
-	private int fId;
+    private int fId;
     private List<ValueMatcher> fMatchers;
     private Expression fSummandExpression;
     private boolean fRequired;
+    private String fDisplayName;
     
 	/**
 	 * Mainly intended for reflection-based construction.
 	 */
     Rule()
     {
+        // Set the summand expression to avoid a NullPointerException from Hibernate.
+        fSummandExpression = parseSummandExpression("unset");
+        fDisplayName = "unset";
     }
     
     /**
@@ -51,11 +58,13 @@ public final class Rule
      * @throws IllegalArgumentException if the given expression is not parsable
      */
     public Rule(
-            final List<ValueMatcher> matchers, final String summandExpression, final boolean required)
+            final List<ValueMatcher> matchers, final String summandExpression,
+            final boolean required, final String displayName)
     {
         fMatchers = Objects.requireNonNull(matchers);
         fSummandExpression = parseSummandExpression(summandExpression);
         fRequired = required;
+        fDisplayName = displayName;
     }
     
     /**
@@ -102,6 +111,7 @@ public final class Rule
      * references to the values matched in ValueMatchers.
      */
     @Basic
+    @Column(nullable = false)
     public String getSummandExpression()
     {
         return fSummandExpression.getExpressionString();
@@ -116,16 +126,41 @@ public final class Rule
      * Should we bypass this rule if values are missing.
      */
     @Basic
-    private boolean isRequired()
-	{
-		return fRequired;
-	}
-	
-	void setRequired(final boolean required)
-	{
-		fRequired = required;
-	}
-
+    public boolean isRequired()
+    {
+        return fRequired;
+    }
+    
+    void setRequired(final boolean required)
+    {
+        fRequired = required;
+    }
+    
+    /**
+     * The rule's name to display to the user
+     * @return
+     */
+    @Basic
+    @Column(
+            length = DisplayNameConditions.DISPLAY_NAME_MAX,
+            nullable = false)
+    public String getDisplayName()
+    {
+        return fDisplayName;
+    }
+    
+    /**
+     * Sets the name of the rule for display to the user.
+     * @throws IllegalArgumentException if the given name is empty, over
+     * {@link DisplayNameConditions#DISPLAY_NAME_MAX} characters, or does not match
+     * {@link DisplayNameConditions#VALID_DISPLAY_NAME_REGEX}
+     */
+    void setDisplayName(final String displayName)
+    {
+        Preconditions.requireWithin(displayName, 1, DisplayNameConditions.DISPLAY_NAME_MAX);
+        Preconditions.requireMatches(displayName, "displayName", DisplayNameConditions.VALID_DISPLAY_NAME_PATTERN);
+        fDisplayName = displayName;
+    }
     
     /**
      * Parse the designated expression into a SPEL Expression.
@@ -161,6 +196,31 @@ public final class Rule
         return ImmutableSet.copyOf(variables);
     }
 
+    /**
+     * Returns the sorted keys for all required variables from {@link #getRequiredVariables()}.
+     * @return an ImmutableSet
+     */
+    @Transient
+    public ImmutableSet<String> getRequiredVariableKeys()
+    {
+        final ImmutableSet<Variable> variables = getRequiredVariables();
+        final SortedSet<String> sortedKeys = new TreeSet<String>();
+        for(final Variable var: variables)
+        {
+            sortedKeys.add(var.getKey());
+        }
+        return ImmutableSet.copyOf(sortedKeys);
+    }
+    
+    /**
+     * Returns a String in the form of "#a, #b, #c" that will 
+     */
+    @Transient
+    public String getExpressionVariablesString()
+    {
+        return String.format("#%s", Joiner.on(", #"));
+    }
+    
     /**
      * Applies the Rule to the given context.
      * @param context determines the context in which to evaluate the rule,
@@ -204,18 +264,14 @@ public final class Rule
         final HashMap<String, Object> matchedValues = new HashMap<>();
         for (final ValueMatcher condition : fMatchers)
         {
-        	final Value matchedValue = context.getValues().get(condition.getVariable());
-        	if (condition.evaluate(ec, matchedValue))
-            {
-                matchedValues.put(matchedValue.getVariable().getKey(), matchedValue);
-            }
-            else
-            {
-            	return 0.0;
-            }
-            
-            // Update the SpEL evaluation context with the matched values so far.
+            final Value matchedValue = context.getValues().get(condition.getVariable());
+            matchedValues.put(matchedValue.getVariable().getKey(), matchedValue.getValue());
+            // Update the Spel evaluation context with the previous and current values
             ec.setVariables(matchedValues);
+            if (!condition.evaluate(ec, matchedValue))
+            {
+                return 0.0;
+            }
         }
         
         /* We matched them all: now just calculate the summand. */
@@ -248,6 +304,7 @@ public final class Rule
             return
                     // Note that getSummandExpression() returns the String, not
                     // the Expression object itself.
+                    this.getDisplayName().equals(other.getDisplayName()) &&
                     this.getMatchers().equals(other.getMatchers()) &&
                     this.getSummandExpression().equals(other.getSummandExpression());
         }
@@ -260,7 +317,7 @@ public final class Rule
     @Override
     public int hashCode()
     {
-        return Objects.hash(getMatchers(), getSummandExpression());
+        return Objects.hash(getDisplayName(), getMatchers(), getSummandExpression());
     }
     
     /**

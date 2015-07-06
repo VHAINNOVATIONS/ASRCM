@@ -21,8 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/admin/models/{riskModelId}")
-public class EditRiskModelController {
-
+public class EditRiskModelController
+{
     private static final String ATTRIBUTE_RISK_MODEL = "riskModel";
     
     private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModelController.class);
@@ -43,15 +43,16 @@ public class EditRiskModelController {
     public EditRiskModel createEditRiskModel(
             @PathVariable final int riskModelId )
             throws InvalidIdentifierException
-    {    	
-    	RiskModel rm = fAdminService.getRiskModelForId( riskModelId ); 
-
-    	if( rm == null ) {
-    		throw new InvalidIdentifierException( "Unable to find RiskModel with ID "+riskModelId );        		
-    	}
+    {
+        RiskModel rm = fAdminService.getRiskModelForId(riskModelId);
+        
+        if (rm == null)
+        {
+            throw new InvalidIdentifierException("Unable to find RiskModel with ID " + riskModelId);
+        }
     	EditRiskModel editModel = EditRiskModel.fromRiskModel( rm, fAdminService );
 
-        return editModel;    		
+        return editModel;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -70,8 +71,8 @@ public class EditRiskModelController {
     {
         // Spring has already bound the user input to saveModel; now validate
         //
-    	EditRiskModelValidator validator = new EditRiskModelValidator();
-    	validator.validate( saveModel, bindingResult);
+        EditRiskModelValidator validator = new EditRiskModelValidator();
+        validator.validate(saveModel, bindingResult);
 
         if( bindingResult.hasErrors() )
         {

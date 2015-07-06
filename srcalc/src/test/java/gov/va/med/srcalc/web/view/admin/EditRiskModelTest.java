@@ -1,16 +1,12 @@
 package gov.va.med.srcalc.web.view.admin;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.validation.constraints.AssertTrue;
 
 import gov.va.med.srcalc.domain.model.BooleanVariable;
 import gov.va.med.srcalc.domain.model.DerivedTerm;
@@ -24,6 +20,7 @@ import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.domain.model.ValueMatcher;
 import gov.va.med.srcalc.service.MockAdminService;
 import gov.va.med.srcalc.web.view.admin.EditRiskModel.ModelTermSummary;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 
 import org.junit.Test;
 
@@ -39,8 +36,8 @@ public class EditRiskModelTest {
         final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
         final Set<DerivedTerm> derivedTerms = new HashSet<DerivedTerm>();
         final List<ValueMatcher> valueMatchers = new ArrayList<ValueMatcher>();
-        valueMatchers.add( new ValueMatcher(procedureVar, "#this.value.complexity == \"Standard\"" ) );
-        derivedTerms.add(new DerivedTerm(6.0f, new Rule(valueMatchers, "#coefficient", true)));
+        valueMatchers.add(new ValueMatcher(procedureVar, "#this.value.complexity == \"Standard\"", true) );
+        derivedTerms.add(new DerivedTerm(6.0f, new Rule(valueMatchers, "#coefficient", true, "Test Rule")));
         RiskModel model = SampleModels.makeSampleRiskModel(
                 name,
                 derivedTerms,
@@ -59,7 +56,7 @@ public class EditRiskModelTest {
     	editRiskModel.setModelName( "NewModelName" );
     	
         assertEquals( "NewModelName", editRiskModel.getModelName() );
-        assertEquals(  RiskModel.DISPLAY_NAME_MAX, editRiskModel.getMaxDisplayNameLength() );
+        assertEquals(  DisplayNameConditions.DISPLAY_NAME_MAX, editRiskModel.getMaxDisplayNameLength() );
         
         editRiskModel.applyChanges();
         

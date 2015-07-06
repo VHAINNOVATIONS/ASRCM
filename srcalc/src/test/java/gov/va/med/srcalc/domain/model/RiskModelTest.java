@@ -66,10 +66,12 @@ public class RiskModelTest
         final DiscreteNumericalVariable wbcVar = SampleModels.wbcVariable();
         final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
         final Set<DerivedTerm> derivedTerms = new HashSet<DerivedTerm>();
-        final ValueMatcher matcher = new ValueMatcher(procedureVar, "#this.value.complexity == \"Standard\"");
+        final ValueMatcher matcher = new ValueMatcher(
+                procedureVar, "#this.value.complexity == \"Standard\"", true);
         final List<ValueMatcher> valueMatchers = new ArrayList<ValueMatcher>();
         valueMatchers.add(matcher);
-        derivedTerms.add(new DerivedTerm(6.0f, new Rule(valueMatchers, "#coefficient", true)));
+        derivedTerms.add(new DerivedTerm(6.0f, new Rule(
+                valueMatchers, "#coefficient", true, "Procedure Complexity is Standard")));
         final RiskModel model = SampleModels.makeSampleRiskModel(
                 "Thoracic 30-day Mortality Estimate (FY2013)",
                 derivedTerms,

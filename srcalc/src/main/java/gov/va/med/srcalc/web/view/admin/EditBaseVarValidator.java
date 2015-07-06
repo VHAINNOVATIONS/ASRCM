@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.web.view.admin;
 
 import gov.va.med.srcalc.domain.model.AbstractVariable;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.ValidationCodes;
 import gov.va.med.srcalc.util.ValidationUtils2;
 
@@ -43,10 +44,10 @@ public class EditBaseVarValidator implements Validator
         // Validate displayName constraints. See
         // AbstractVariable.setDisplayName().
         ValidationUtils.rejectIfEmpty(e, "displayName", ValidationCodes.NO_VALUE);
-        ValidationUtils2.rejectIfTooLong(e, "displayName", AbstractVariable.DISPLAY_NAME_MAX);
+        ValidationUtils2.rejectIfTooLong(e, "displayName", DisplayNameConditions.DISPLAY_NAME_MAX);
         ValidationUtils2.rejectIfDoesntMatch(
-                e, "displayName", AbstractVariable.VALID_DISPLAY_NAME_PATTERN,
-                new Object[] {AbstractVariable.VALID_DISPLAY_NAME_CHARACTERS});
+                e, "displayName", DisplayNameConditions.VALID_DISPLAY_NAME_PATTERN,
+                new Object[] {DisplayNameConditions.VALID_DISPLAY_NAME_CHARACTERS});
         
         // Ensure we have a valid VariableGroup ID.
         if (!editVar.getGroup().isPresent())
