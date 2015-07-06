@@ -35,8 +35,8 @@
     <p><a href="${adminHomeUrl}" class="btn-link">Return Home</a></p>
     <script>
     $(document).ready(function() {
-        $('#replaceProceduresButton').on('click', function (event) {
-            var button = $(this)
+        $('#procedureUploadForm').on('submit', function (event) {
+            var button = $('#replaceProceduresButton');
             button.html('This may take a moment...');
             button.attr('disabled', 'disabled');
         });
