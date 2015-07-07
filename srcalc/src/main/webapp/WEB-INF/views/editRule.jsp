@@ -14,6 +14,7 @@
 <srcalc:adminPage title="${pageTitle}">
 <section>
     <h3>${pageTitle} </h3>
+    <c:url var="fullSaveUrl" value="${saveUrl}"/>
     <form:form id="ruleEditForm" cssClass="srcalcForm attributeEditForm"
         method="post" action="${fullSaveUrl}" commandName="rule">
     Display name: <form:input path="displayName" size="80"/>

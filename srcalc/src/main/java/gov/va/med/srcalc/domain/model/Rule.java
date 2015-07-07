@@ -34,6 +34,8 @@ import com.google.common.collect.ImmutableSet;
 @Table(name = "rule")
 public final class Rule
 {
+    public static final int MAX_MATCHERS = 10;
+    
     private int fId;
     private List<ValueMatcher> fMatchers;
     private Expression fSummandExpression;
@@ -101,7 +103,7 @@ public final class Rule
         return fMatchers;
     }
     
-    void setMatchers(final List<ValueMatcher> matchers)
+    public void setMatchers(final List<ValueMatcher> matchers)
     {
     	this.fMatchers = matchers;
     }
@@ -117,7 +119,7 @@ public final class Rule
         return fSummandExpression.getExpressionString();
     }
     
-    void setSummandExpression(final String summandExpression)
+    public void setSummandExpression(final String summandExpression)
     {
     	this.fSummandExpression = parseSummandExpression(summandExpression);
     }
@@ -131,7 +133,7 @@ public final class Rule
         return fRequired;
     }
     
-    void setRequired(final boolean required)
+    public void setRequired(final boolean required)
     {
         fRequired = required;
     }
@@ -155,7 +157,7 @@ public final class Rule
      * {@link DisplayNameConditions#DISPLAY_NAME_MAX} characters, or does not match
      * {@link DisplayNameConditions#VALID_DISPLAY_NAME_REGEX}
      */
-    void setDisplayName(final String displayName)
+    public void setDisplayName(final String displayName)
     {
         Preconditions.requireWithin(displayName, 1, DisplayNameConditions.DISPLAY_NAME_MAX);
         Preconditions.requireMatches(displayName, "displayName", DisplayNameConditions.VALID_DISPLAY_NAME_PATTERN);
@@ -164,22 +166,23 @@ public final class Rule
     
     /**
      * Parse the designated expression into a SPEL Expression.
-     * @param summandExpression The expression to be parsed into a summand expression.
+     * 
+     * @param summandExpression
+     *            The expression to be parsed into a summand expression.
      * @return A valid, parsed SPEL Expression
      */
-	private Expression parseSummandExpression(final String summandExpression)
-	{
-		final SpelExpressionParser parser = new SpelExpressionParser();
+    private Expression parseSummandExpression(final String summandExpression)
+    {
+        final SpelExpressionParser parser = new SpelExpressionParser();
         try
         {
-            return parser.parseExpression(
-                    Objects.requireNonNull(summandExpression));
+            return parser.parseExpression(Objects.requireNonNull(summandExpression));
         }
         catch (final ParseException ex)
         {
             throw new IllegalArgumentException("Could not parse given expression.", ex);
         }
-	}
+    }
 	
     /**
      * Returns all {@link Variable}s required for evaluating the Rule.

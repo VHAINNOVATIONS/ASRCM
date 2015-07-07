@@ -64,8 +64,7 @@
         <c:url var="editRule" value="/admin/rules/${rule.id}" />
 	    <tr>
 	        <td><c:out value="${rule.displayName}"/></td>
-	        <td><a href="#" class="editObjectLink">Edit</a></td>
-	        <%-- TODO: Change the href to the proper edit link --%>
+	        <td><a href="${editRule}" class="editObjectLink">Edit</a></td>
 	    </tr>
     </c:forEach>
     </table>

@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import javax.inject.Inject;
 
+import gov.va.med.srcalc.domain.model.Rule;
 import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.DuplicateRuleNameException;
@@ -58,7 +59,7 @@ public class NewRuleController
     @ModelAttribute(ATTRIBUTE_RULE)
     private EditRule createEditRule()
     {
-        fLogger.trace("Creating EditDiscreteNumericalVar.");
+        fLogger.trace("Creating EditRule.");
         return new EditRule(fAdminService);
     }
     
@@ -71,20 +72,7 @@ public class NewRuleController
         mav.addObject("SAVE_URL", BASE_URL);
         // Note: "rule" is already in the model via createEditRule().
         mav.addObject("isNewRule", true);
-        // A map of the variable's key to its respective summary
-        final Map<String, VariableSummary> variableSummaries = new HashMap<String, VariableSummary>();
-        for(final ValueMatcherBuilder matcher: editRule.getMatchers())
-        {
-            final Variable var = fAdminService.getVariable(matcher.getVariableKey());
-            variableSummaries.put(matcher.getVariableKey(), VariableSummary.fromVariable(var));
-        }
-        mav.addObject("variableSummaries", variableSummaries);
-        final SortedSet<String> allVariableKeys = new TreeSet<String>();
-        for(final Variable var: fAdminService.getAllVariables())
-        {
-            allVariableKeys.add(var.getKey());
-        }
-        mav.addObject("allVariableKeys", allVariableKeys);
+        addVariablesToModel(mav, editRule, fAdminService);
         return mav;
     }
     
@@ -102,6 +90,16 @@ public class NewRuleController
         }
         else if(submitString.equals("newMatcher"))
         {
+         // If we have reached the matcher limit, do not allow any more matchers to be added.
+            if(editRule.getMatchers().size() >= Rule.MAX_MATCHERS)
+            {
+                bindingResult.rejectValue(
+                        "matchers",
+                        ValidationCodes.TOO_LONG,
+                        new Object[] {Rule.MAX_MATCHERS},
+                        "too many matchers specified");
+                return displayForm(editRule);
+            }
             // Reload the page with the new matcher builder inside of the edit rule
             return addNewMatcher(editRule);
         }
@@ -130,7 +128,7 @@ public class NewRuleController
             final String submitString) throws InvalidIdentifierException
     {
         // Call the validator for an EditRule here so that we can access the editRule
-        // variable to display 
+        // to display 
         editRule.getValidator().validate(editRule, bindingResult);
 
         if (bindingResult.hasErrors())
@@ -157,5 +155,25 @@ public class NewRuleController
         
         // Using the POST-redirect-GET pattern.
         return new ModelAndView("redirect:/admin");
+    }
+    
+    protected static void addVariablesToModel(final ModelAndView mav,
+            final EditRule editRule,
+            final AdminService adminService) throws InvalidIdentifierException
+    {
+        // A map of the variable's key to its respective summary
+        final Map<String, VariableSummary> variableSummaries = new HashMap<String, VariableSummary>();
+        for(final ValueMatcherBuilder matcher: editRule.getMatchers())
+        {
+            final Variable var = adminService.getVariable(matcher.getVariableKey());
+            variableSummaries.put(matcher.getVariableKey(), VariableSummary.fromVariable(var));
+        }
+        mav.addObject("variableSummaries", variableSummaries);
+        final SortedSet<String> allVariableKeys = new TreeSet<String>();
+        for(final Variable var: adminService.getAllVariables())
+        {
+            allVariableKeys.add(var.getKey());
+        }
+        mav.addObject("allVariableKeys", allVariableKeys);
     }
 }

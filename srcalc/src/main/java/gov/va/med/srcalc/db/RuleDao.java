@@ -75,6 +75,21 @@ public class RuleDao
     }
     
     /**
+     * Returns the persistent Rule with the given ID, or null
+     * if no such Rule exists.
+     * 
+     * @return a <i>persistent</i> object: any changes made during the current
+     * transaction will automatically be persisted
+     */
+    public Rule getById(final int ruleId)
+    {
+        final Query q = getCurrentSession().createQuery(
+                "from Rule v where v.id = :ruleId");
+        q.setInteger("ruleId", ruleId);
+        return (Rule)q.uniqueResult();
+    }
+    
+    /**
      * <p>Persists the given variable to the database using <a
      * href="http://en.wikibooks.org/wiki/Java_Persistence/Persisting#Merge">JPA
      * merge semantics</a>.</p>

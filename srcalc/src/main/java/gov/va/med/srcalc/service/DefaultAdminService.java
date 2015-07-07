@@ -130,11 +130,24 @@ public class DefaultAdminService implements AdminService
     @Transactional
     public Rule getRule(final String displayName) throws InvalidIdentifierException
     {
-        fLogger.debug("Getting Rule by key {}.", displayName);
+        fLogger.debug("Getting Rule by name {}.", displayName);
         final Rule rule = fRuleDao.getByDisplayName(displayName);
         if (rule == null)
         {
             throw new InvalidIdentifierException("There is no Rule called " + displayName);
+        }
+        return rule;
+    }
+    
+    @Override
+    @Transactional
+    public Rule getRuleById(final int ruleId) throws InvalidIdentifierException
+    {
+        fLogger.debug("Getting Rule by ID {}", ruleId);
+        final Rule rule = fRuleDao.getById(ruleId);
+        if(rule == null)
+        {
+            throw new InvalidIdentifierException("There is no Rule with ID " + ruleId);
         }
         return rule;
     }
