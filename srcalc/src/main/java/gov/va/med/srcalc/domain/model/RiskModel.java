@@ -375,7 +375,7 @@ public class RiskModel implements Comparable<RiskModel>
     }
 
     /**
-     * Returns a hash code based on the displayName that uses the String.hashCode() implementation.
+     * Returns a hash code based on the displayName and the model terms.
      */
     @Override
     public final int hashCode()

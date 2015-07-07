@@ -27,6 +27,11 @@ import org.junit.Test;
 public class EditRiskModelTest {
     private final static MockAdminService fAdminService = new MockAdminService();
     
+    /**
+     * Create an EditRiskModel.
+     * @param name
+     * @return EditRiskModel
+     */
     public static EditRiskModel createEditRiskModel( String name) 
     {
         final ProcedureVariable procedureVar = SampleModels.procedureVariable();
@@ -42,8 +47,6 @@ public class EditRiskModelTest {
                 name,
                 derivedTerms,
                 procedureVar, dnrVar, ageVar, wbcVar, fsVar);
-
-        
         
         return EditRiskModel.fromRiskModel( model, fAdminService );        
     }

@@ -160,6 +160,7 @@ public class AdminServiceIT extends IntegrationTest
         assertEquals(newProcedures, fAdminService.getAllProcedures());
     }
     
+    @Test
     public final void testGetAllRiskModels() 
     {
         ImmutableCollection<RiskModel> allRiskModels = fAdminService.getAllRiskModels();

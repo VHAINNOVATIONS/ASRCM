@@ -123,8 +123,9 @@ public class RiskModelTest
     @Test
     public final void testEquals()
     {
-        // This isn't helpfull when its test cases include impossible cases. One example sets a string ("red") as 
-        // one of the terms even though our getTerms() method returns ModelTerms.
+// The following EqualsVerifier code was tried to test equals() But for some reason it was generating test cases
+// with a string object ("red") as one of the terms. Rathere than write the code to check for such unlikely
+// (close to impossible) cases I am creating the equals cases here instead.
 //        EqualsVerifier.forClass(RiskModel.class).
 //             suppress(Warning.NULL_FIELDS,Warning.NONFINAL_FIELDS).verify();
         

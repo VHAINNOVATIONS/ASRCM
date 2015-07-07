@@ -16,22 +16,34 @@ public class MockAdminService extends MockModelService implements AdminService  
     {        
     }
     
+    /**
+     * Not Implemented.
+     */
     @Override
     public List<AbstractVariable> getAllVariables() {
         return null;
     }
 
+    /**
+     * Not Implemented.
+     */
     @Override
     public AbstractVariable getVariable(String key)
             throws InvalidIdentifierException {
         return null;
     }
 
+    /**
+     * Not Implemented.
+     */
     @Override
     public void saveVariable(AbstractVariable variable) {
         // not implemented        
     }
 
+    /**
+     * Not Implemented.
+     */
     @Override
     public void saveRiskModel(RiskModel model) {
         // not implemented
@@ -42,22 +54,30 @@ public class MockAdminService extends MockModelService implements AdminService  
         return SampleModels.specialtyList();
     }
 
+    /**
+     * Not Implemented.
+     */
     @Override
     public Rule getRule(String displayName) throws InvalidIdentifierException
     {
         return null;
     }
 
+    /**
+     * Not Implemented.
+     */
     @Override
     public void saveRule(Rule rule)
     {
         // not implemented
     }
 
+    /**
+     * Not Implemented.
+     */
     @Override
     public void replaceAllProcedures(final Set<Procedure> newProcedures)
     {
         // TODO Auto-generated method stub
-        
     }
 }

@@ -10,7 +10,6 @@
     <h2>${pageTitle} ${riskModel.modelName}</h2>
     <%-- Calculate the full URL for form submission. --%>
     <c:url var="fullSaveUrl" value="/admin/models/${riskModel.id}"/>
-    <!-- TODO : Change this to appropriate or new class -->
     <form:form id="editModelForm" cssClass="srcalcForm attributeEditForm"
         method="post" action="${fullSaveUrl}" commandName="riskModel">
     <%-- Display any object-wide errors --%><form:errors cssClass="error"/>

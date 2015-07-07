@@ -138,6 +138,10 @@ public final class Specialty implements Serializable
     
     /**
      * Returns all {@link RiskModel}s associated with the Specialty. 
+     * Note that these are fetched eagerly. If not then there is an
+     * issue when this method is called outside of a valid transaction.
+     *    This is the easiest solution since this table is small. If 
+     * it were large then this could be a performance issue. 
      */
     @OneToMany(fetch = FetchType.EAGER)
     // Override strange defaults. See
@@ -164,7 +168,7 @@ public final class Specialty implements Serializable
     @Override
     public String toString()
     {
-        return "Specialty: Name=" + fName+", ID="+Integer.toString( fId );
+        return String.format("Specialty: Name=%s, ID=%d", fName, fId );
     }
     
     @Override

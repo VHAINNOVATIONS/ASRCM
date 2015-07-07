@@ -31,10 +31,20 @@ public class EditRiskModel implements Comparable<EditRiskModel>
 {
     private final RiskModel fRiskModel;
     
-    private String modelName;
+    private String fModelName;
     
-    private List<Specialty> applicableSpecialties;
+    private List<Specialty> fApplicableSpecialties;
     
+    // Store the Edit Changes (an 'Import') in a new RiskModel object.
+    // If this were a normal editing situation where the user could change individual values through
+    // the gui, this would be separate copy, but since this is an import process, we will just
+    // init this to null until when/if the user imports a new model.
+    // The name may be edited separately and so the edit copy is stored separately.
+    // the getter methods will first check will return the fImportModel values if it has been set and
+    // the target model
+    // if not.
+    private RiskModel fImportedModel = null;
+
     private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModel.class);
 
     /**
@@ -58,21 +68,37 @@ public class EditRiskModel implements Comparable<EditRiskModel>
             termType = type;
         }
          
+        /**
+         * The name of the ModelTerm to be shown to the user.
+         * @return
+         */
         public String getDisplayName()  
         {
             return displayName;
         }
-        
+
+        /**
+         *  The term's type is the type of the term's Variable or, for term's w/o a Variable, it is the 
+         *  type of the term such as "Constant" or "Rule".
+         */
         public String getTermType() 
         {
             return termType;
         }
         
+        /**
+         * The target term's coefficient
+         * @return
+         */
         public float getCoefficient()
         {
             return targetTerm.getCoefficient();
         }
 
+        /*
+         * Create and instance of a ModelTermSummary for the given ModelTerm. Determine and set the
+         * displayName and the termType.
+         */
         public static ModelTermSummary createTermSummary( ModelTerm modelTerm ) 
         {
             String dispName="";
@@ -81,11 +107,11 @@ public class EditRiskModel implements Comparable<EditRiskModel>
             if( modelTerm instanceof ConstantTerm ) 
             {
                 dispName = "Constant"; 
-                type = "Constant"; // or N/A or blank
+                type = "Constant";
             }
             else if( modelTerm instanceof ProcedureTerm )
             {
-                type = "Multiplier"; // ???
+                type = "Multiplier";
                 dispName = "Procedure (RVU Multiplier)"; 
             }
             else if( modelTerm instanceof BooleanTerm )
@@ -113,10 +139,7 @@ public class EditRiskModel implements Comparable<EditRiskModel>
                 }
                 else if( var instanceof MultiSelectVariable ) 
                 {
-                    type = "Discrete";
-
-                    MultiSelectVariable msv = (MultiSelectVariable)var;
-                    msv.getOptions();
+                    type = "Multi-Select";
                     dispName = var.getDisplayName()+ " = " + opt.getValue() ;
                 }
             }            
@@ -127,21 +150,20 @@ public class EditRiskModel implements Comparable<EditRiskModel>
             }
             else
             {
-                // or throw an error?
                 dispName = "Unrecognized Term: "+modelTerm.getClass().getName();    
                 type = "";
             }
             
-            // Use new Type column to display the Type.
-            // Can still do this if that's what they want.
-            // dispName = dispName + " ("+type+")";
-            
             return new ModelTermSummary( modelTerm, dispName, type );
         }
 
-        // a string used to make sorting the terms easier. 
-        // ConstantTerms first, then Rules and then by display name 
-        // with discrete options ordered by index 
+        /**
+         * a string used to make sorting the terms easier. 
+         * ConstantTerms first, then Rules and then by display name 
+         * with discrete options ordered by index 
+         * 
+         * @return
+         */
         private String getSortString() 
         {
             if( targetTerm instanceof ConstantTerm ) 
@@ -172,24 +194,14 @@ public class EditRiskModel implements Comparable<EditRiskModel>
             return getSortString().compareTo( o.getSortString() );
         }        
     }    
-    
-    // Store the Edit Changes (an 'Import') in a new RiskModel object.
-    // If this were a normal editing situation where the user could change individual values through
-    // the gui, this would be separate copy, but since this is an import process, we will just
-    // init this to null until when/if the user imports a new model.
-    // The name may be edited separately and so the edit copy is stored separately.
-    // the getter methods will first check will return the importModel values if it has been set and
-    // the target model
-    // if not.
-    private RiskModel importedModel = null;
-    
+        
     protected EditRiskModel(final RiskModel rm, final List<Specialty> applSpecialty)
     {
         fRiskModel = rm;
-        modelName = rm.getDisplayName();
+        fModelName = rm.getDisplayName();
         
-        applicableSpecialties = ImmutableList.copyOf(applSpecialty);
-        importedModel = null;
+        fApplicableSpecialties = ImmutableList.copyOf(applSpecialty);
+        fImportedModel = null;
     }
 
     /**
@@ -226,19 +238,18 @@ public class EditRiskModel implements Comparable<EditRiskModel>
      * Note: this will take the place of most of the setter methods for individual fields.
      * @param impModel
      */
-//    public void setImportedModel( RiskModel impModel ) 
-//    {
-//        /// ??? should this also overwrite the possibly edited display name?        
-//        importedModel = impModel;
-//        importedModel.setDisplayName( modelName );
-//    }
+        public void setImportedModel( RiskModel impModel ) 
+        {
+            fImportedModel = impModel;
+            fImportedModel.setDisplayName( fModelName );
+        }
     
     /**
      * Return the modelName
      */
     public String getModelName()
     {
-        return modelName;
+        return fModelName;
     }
     
     /**
@@ -246,7 +257,7 @@ public class EditRiskModel implements Comparable<EditRiskModel>
      */
     public void setModelName(String mn)
     {
-        modelName = mn;
+        fModelName = mn;
     }
     
     /**
@@ -262,30 +273,34 @@ public class EditRiskModel implements Comparable<EditRiskModel>
      */
     public List<Specialty> getSpecialties()
     {
-        return applicableSpecialties;
+        return fApplicableSpecialties;
     }
     
-    public ConstantTerm getConstantTerm()
-    {
-        return (importedModel == null ? fRiskModel.getConstantTerm() : importedModel
-                .getConstantTerm());
-    }
-    
+    /**
+     * the maximum length for a displayName
+     * 
+     * @return DisplayNameConditions.DISPLAY_NAME_MAX
+     */
     public int getMaxDisplayNameLength()
     {
         return DisplayNameConditions.DISPLAY_NAME_MAX;
     }
     
+    /**
+     * Return a list of {@link ModelTermSummary} objects for the terms in the 
+     * target RiskModel.
+     *  
+     * @return
+     */
     public List<ModelTermSummary> getTermSummaries() 
     {
-        Set<ModelTerm> numTerms = ( importedModel != null ? 
-                                     importedModel.getTerms(): fRiskModel.getTerms() );
+        Set<ModelTerm> numTerms = ( fImportedModel != null ? 
+                                    fImportedModel.getTerms(): fRiskModel.getTerms() );
 
         List<ModelTermSummary> termSummariesList = new ArrayList<ModelTermSummary>();
 
         for( ModelTerm modTerm : numTerms )
         {
-            // change this
             termSummariesList.add( ModelTermSummary.createTermSummary( modTerm ) );
         }
         
@@ -304,10 +319,9 @@ public class EditRiskModel implements Comparable<EditRiskModel>
         // if the imported model has an associated name then
         // should we override the current one if it had been edited?
         
+        fRiskModel.setDisplayName( fModelName );
         
-        fRiskModel.setDisplayName( modelName );
-        
-//        fRiskModel = importedModel; // save/backup the old model?
+        //  save the imported model to the fRiskModel 
         
         return fRiskModel;
     }
@@ -317,11 +331,11 @@ public class EditRiskModel implements Comparable<EditRiskModel>
     {
         // Order alphabetically by modelName.
         //
-        return this.modelName.compareTo(other.modelName);
+        return this.fModelName.compareTo(other.fModelName);
     }
     
     public String toString()
     {
-        return "EditRiskModel: name=" + modelName + ",ID=" + getId();
+        return String.format( "EditRiskModel: name=%s,ID=", fModelName, getId() );
     }
 }
