@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.service;
 
+import java.util.List;
+
 import gov.va.med.srcalc.domain.model.*;
 
 import com.google.common.collect.*;
@@ -78,6 +80,21 @@ public class MockModelService implements ModelInspectionService
     }
     
     @Override
+    public Rule getRule(final String displayName) throws InvalidIdentifierException
+    {
+        // As getVariable() above, just brute-force it.
+        for (final Rule rule : getAllRules())
+        {
+            if (rule.getDisplayName().equals(displayName))
+            {
+                return rule;
+            }
+        }
+        
+        throw new InvalidIdentifierException("MockModelService doesn't have that rule");
+    }
+    
+    @Override
     public RiskModel getRiskModelForId(int modelId)
     {
         
@@ -89,5 +106,11 @@ public class MockModelService implements ModelInspectionService
         {
             return null;
         }
+    }
+
+    @Override
+    public List<Specialty> getAllSpecialties()
+    {
+        return SampleModels.specialtyList();
     }
 }

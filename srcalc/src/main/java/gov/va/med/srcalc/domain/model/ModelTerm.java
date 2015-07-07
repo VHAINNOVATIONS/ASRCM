@@ -80,4 +80,9 @@ public abstract class ModelTerm
     // A reminder to subclasses to implement hashCode().
     @Override
     public abstract int hashCode();
+    
+    /**
+     * Accepts the given Visitor.
+     */
+    public abstract void accept(final ModelTermVisitor visitor);
 }

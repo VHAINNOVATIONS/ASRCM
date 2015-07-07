@@ -228,7 +228,8 @@ public class DefaultAdminService implements AdminService
                     model.getDisplayName(), model.getId() );
         }
         
-        fRiskModelDao.saveRiskModel( model );
+        final RiskModel persistentModel = fRiskModelDao.saveRiskModel( model );
         fLogger.info("Saved Risk Model {}.", model.getDisplayName() );
+        fLogger.debug("Persistent state is now: {}", persistentModel);
     }
 }

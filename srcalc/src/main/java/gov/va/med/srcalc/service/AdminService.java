@@ -1,10 +1,8 @@
 package gov.va.med.srcalc.service;
 
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.transaction.annotation.Transactional;
 
 import gov.va.med.srcalc.domain.model.*;
 
@@ -38,8 +36,8 @@ public interface AdminService extends ModelInspectionService
      * Returns the {@link Rule} with the given display name for editing. Note that
      * the returned object must be given back to {@link #saveRule(Rule)}
      * to persist any changes.
-     * @throws InvalidIdentifierException if no such Rule exists
      */
+    @Override
     public Rule getRule(final String displayName) throws InvalidIdentifierException;
     
     /**
@@ -60,10 +58,4 @@ public interface AdminService extends ModelInspectionService
      * Saves the {@link RiskModel} 
      */
     public void saveRiskModel( final RiskModel model );
-    
-    /**
-     * Get a list of all (@link Specialty) objects in the database.
-     * @return a list ordered by name. 
-     */
-    public List<Specialty> getAllSpecialties();
 }

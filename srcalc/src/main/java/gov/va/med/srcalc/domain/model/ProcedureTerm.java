@@ -92,4 +92,10 @@ public final class ProcedureTerm extends SingleVariableTerm
     {
         return String.format("%s.rvu*%s", getVariable(), getCoefficient());
     }
+    
+    @Override
+    public void accept(final ModelTermVisitor visitor)
+    {
+        visitor.visitProcedureTerm(this);
+    }
 }

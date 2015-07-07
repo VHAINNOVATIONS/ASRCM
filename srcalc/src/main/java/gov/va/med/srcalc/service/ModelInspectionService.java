@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.service;
 
+import java.util.List;
+
 import gov.va.med.srcalc.domain.model.*;
 
 import com.google.common.collect.ImmutableCollection;
@@ -48,6 +50,14 @@ public interface ModelInspectionService
     public ImmutableCollection<Rule> getAllRules();
 
     /**
+     * Returns the Rule with the given display name.
+     * @param displayName the unique display name of the Rule to retrieve
+     * @return the Rule instance. Never null.
+     * @throws InvalidIdentifierException if no such Rule exists
+     */
+    public Rule getRule(final String displayName) throws InvalidIdentifierException;
+
+    /**
      * Returns all available Procedures, ordered by CPT code for convenience.
      * @return an immutable list
      */
@@ -58,4 +68,10 @@ public interface ModelInspectionService
      * @return RiskModelS
      */
     public RiskModel getRiskModelForId(int modelId);
+    
+    /**
+     * Get a list of all (@link Specialty) objects in the database.
+     * @return a list ordered by name. 
+     */
+    public List<Specialty> getAllSpecialties();
 }

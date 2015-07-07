@@ -83,4 +83,10 @@ public final class BooleanTerm extends SingleVariableTerm
         // The question mark indicates the boolean nature of the variable.
         return String.format("%s?=>%s", getVariable(), getCoefficient());
     }
+    
+    @Override
+    public void accept(final ModelTermVisitor visitor)
+    {
+        visitor.visitBooleanTerm(this);
+    }
 }

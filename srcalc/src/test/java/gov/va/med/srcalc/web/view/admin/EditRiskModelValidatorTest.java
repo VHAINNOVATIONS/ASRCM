@@ -2,6 +2,8 @@ package gov.va.med.srcalc.web.view.admin;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import gov.va.med.srcalc.domain.model.SampleModels;
+import gov.va.med.srcalc.service.MockModelService;
 import gov.va.med.srcalc.util.ValidationCodes;
 
 import org.junit.Test;
@@ -10,6 +12,8 @@ import org.springframework.validation.BindingResult;
 
 public class EditRiskModelValidatorTest 
 {
+    private final MockModelService fModelService = new MockModelService();
+    
     /**
      * Validates the given object and returns the binding result.
      */
@@ -17,7 +21,7 @@ public class EditRiskModelValidatorTest
     {
         final BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(erm, "riskModel");
-        EditRiskModelValidator validator = new EditRiskModelValidator();
+        EditRiskModelValidator validator = new EditRiskModelValidator(fModelService);
 
         assertTrue(validator.supports(erm.getClass()));
         
@@ -29,7 +33,7 @@ public class EditRiskModelValidatorTest
     @Test
     public final void testEmptyName()
     {
-        final EditRiskModel erm = EditRiskModelTest.createEditRiskModel( "Thoracic 30-day Mortality" );
+        final EditRiskModel erm = EditRiskModel.fromRiskModel(SampleModels.thoracicRiskModel(), fModelService);
         erm.setModelName("");
         
         final BindingResult errors = validate(erm);
@@ -43,7 +47,8 @@ public class EditRiskModelValidatorTest
     @Test
     public final void testValid()
     {
-        final BindingResult errors = validate(EditRiskModelTest.createEditRiskModel( "Thoracic 30-day Mortality" ) );
+        final EditRiskModel erm = EditRiskModel.fromRiskModel(SampleModels.thoracicRiskModel(), fModelService);
+        final BindingResult errors = validate(erm);
         
         assertEquals("error count", 0, errors.getErrorCount());
     }

@@ -33,7 +33,7 @@ public final class DerivedTerm extends ModelTerm
     public DerivedTerm(final float coefficient, final Rule rule)
     {
         super(coefficient);
-        fRule = rule;
+        setRule(rule);
     }
 
     /**
@@ -51,7 +51,7 @@ public final class DerivedTerm extends ModelTerm
      */
     void setRule(final Rule rule)
     {
-        this.fRule = rule;
+        this.fRule = Objects.requireNonNull(rule);
     }
 
     @Transient
@@ -95,7 +95,7 @@ public final class DerivedTerm extends ModelTerm
     {
         // Normally we put condition->coefficient, but here put coefficient->
         // rule because the coefficient is just an input to the rule.
-        return String.format("%f->[%s]", getCoefficient(), fRule);
+        return String.format("%s->[%s]", getCoefficient(), fRule.getDisplayName());
     }
     
     @Override
@@ -104,4 +104,9 @@ public final class DerivedTerm extends ModelTerm
         return Objects.hash(getCoefficient(), getRule());
     }
     
+    @Override
+    public void accept(final ModelTermVisitor visitor)
+    {
+        visitor.visitDerivedTerm(this);
+    }
 }

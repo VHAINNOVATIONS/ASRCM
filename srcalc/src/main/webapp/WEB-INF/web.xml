@@ -31,6 +31,12 @@
 		<servlet-name>srcalc</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+    
+    <!-- Treat .csv files as text/csv to make IE download instead of displaying them. -->
+    <mime-mapping>
+        <extension>csv</extension>
+        <mime-type>text/csv</mime-type>
+    </mime-mapping>
 
 	<!-- Creates the root WebApplicationContext from applicationContext.xml. -->
 	<listener>

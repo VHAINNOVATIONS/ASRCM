@@ -137,4 +137,10 @@ public final class DiscreteTerm extends SingleVariableTerm
         return String.format(
                 "%s=%s?->%s", getVariable(), getOption(), getCoefficient());
     }
+    
+    @Override
+    public void accept(final ModelTermVisitor visitor)
+    {
+        visitor.visitDiscreteTerm(this);
+    }
 }

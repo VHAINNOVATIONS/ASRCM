@@ -1,246 +1,55 @@
 package gov.va.med.srcalc.web.view.admin;
 
-import gov.va.med.srcalc.domain.model.BooleanTerm;
-import gov.va.med.srcalc.domain.model.ConstantTerm;
-import gov.va.med.srcalc.domain.model.DerivedTerm;
-import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable;
-import gov.va.med.srcalc.domain.model.DiscreteTerm;
-import gov.va.med.srcalc.domain.model.DiscreteVariable;
 import gov.va.med.srcalc.domain.model.ModelTerm;
-import gov.va.med.srcalc.domain.model.MultiSelectOption;
-import gov.va.med.srcalc.domain.model.MultiSelectVariable;
-import gov.va.med.srcalc.domain.model.NumericalTerm;
-import gov.va.med.srcalc.domain.model.ProcedureTerm;
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.model.Specialty;
-import gov.va.med.srcalc.service.AdminService;
+import gov.va.med.srcalc.service.InvalidIdentifierException;
+import gov.va.med.srcalc.service.ModelInspectionService;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
-
-import gov.va.med.srcalc.util.DisplayNameConditions;
+import com.google.common.collect.Ordering;
 
 /**
  * A form backing object for editing a target (link @RiskModel) object.
  */
-public class EditRiskModel implements Comparable<EditRiskModel>
+public final class EditRiskModel implements Comparable<EditRiskModel>
 {
-    private final RiskModel fRiskModel;
+    private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModel.class);
     
     private String fModelName;
     
     private List<Specialty> fApplicableSpecialties;
     
-    // Store the Edit Changes (an 'Import') in a new RiskModel object.
-    // If this were a normal editing situation where the user could change individual values through
-    // the gui, this would be separate copy, but since this is an import process, we will just
-    // init this to null until when/if the user imports a new model.
-    // The name may be edited separately and so the edit copy is stored separately.
-    // the getter methods will first check will return the fImportModel values if it has been set and
-    // the target model
-    // if not.
-    private RiskModel fImportedModel = null;
+    private final ArrayList<EditModelTerm> fTerms;
     
-    private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModel.class);
-
-    /**
-     * Class to hold the label, type and coefficient for a (link @ModelTerm) 
-     * and its coefficient on the Admin's Edit Model page. 
-     */
-    public static class ModelTermSummary  implements Comparable<ModelTermSummary>
+    public EditRiskModel()
     {
-        private final ModelTerm fTargetTerm;
+        fModelName = "";
+        fTerms = new ArrayList<>();
+    }
         
-        private String fDisplayName;   // the name presented on the Edit Model page
-        private String fTermType;      // the variable type
-        
-        private ModelTermSummary( ModelTerm mt, String name, String type ) 
-        {
-            fDisplayName = name;
-            fTargetTerm = mt;
-            fTermType = type;
-        }
-         
-        /**
-         * get the ModelTerm for this ModelTermSummary
-         */
-        public ModelTerm getModelTerm()
-        {
-            return fTargetTerm;
-        }
-        
-        /**
-         * The name of the ModelTerm to be shown to the user.
-         * @return
-         */
-        public String getDisplayName()  
-        {
-            return fDisplayName;
-        }
-
-        /**
-         *  The term's type is the type of the term's Variable or, for term's w/o a Variable, it is the 
-         *  type of the term such as "Constant" or "Rule".
-         */
-        public String getTermType() 
-        {
-            return fTermType;
-        }
-        
-        /**
-         * The target term's coefficient
-         * @return
-         */
-        public float getCoefficient()
-        {
-            return fTargetTerm.getCoefficient();
-        }
-
-        /**
-         * Create and instance of a ModelTermSummary for the given ModelTerm. Determine and set the
-         * displayName and the termType.
-         */
-        public static ModelTermSummary createTermSummary( ModelTerm modelTerm ) 
-        {
-            String dispName="";
-            String type="";
-            
-            if( modelTerm instanceof ConstantTerm ) 
-            {
-                dispName = "Constant"; 
-                type = "Constant";
-            }
-            else if( modelTerm instanceof ProcedureTerm )
-            {
-                type = "Multiplier";
-                dispName = "Procedure (RVU Multiplier)"; 
-            }
-            else if( modelTerm instanceof BooleanTerm )
-            {
-                type = "Boolean";
-                BooleanTerm boolTerm = (BooleanTerm)modelTerm;                
-                dispName = boolTerm.getVariable().getDisplayName();
-            }            
-            else if( modelTerm instanceof NumericalTerm )
-            {
-                type = "Numerical";
-                NumericalTerm numTerm = (NumericalTerm)modelTerm;
-                dispName = numTerm.getVariable().getDisplayName();                                     
-            }
-            else if( modelTerm instanceof DiscreteTerm )
-            {
-                DiscreteTerm discreteTerm = (DiscreteTerm)modelTerm;                                
-                MultiSelectOption opt = discreteTerm.getOption();
-                DiscreteVariable var = discreteTerm.getVariable();
-                
-                if( var instanceof DiscreteNumericalVariable ) 
-                {
-                    type = "Discrete Numeric";
-                    dispName = var.getDisplayName()+ " = " + opt.getValue();
-                }
-                else if( var instanceof MultiSelectVariable ) 
-                {
-                    type = "Multi-Select";
-                    dispName = var.getDisplayName()+ " = " + opt.getValue() ;
-                }
-            }            
-            else if( modelTerm instanceof DerivedTerm )
-            {
-                type = "Rule";
-                dispName = "Rule: "+((DerivedTerm)modelTerm).getRule().getDisplayName();
-            }
-            else
-            {
-                dispName = "Unrecognized Term: "+modelTerm.getClass().getName();    
-                type = "";
-            }
-            
-            return new ModelTermSummary( modelTerm, dispName, type );
-        }
-
-        /**
-         * an int used to make sorting the terms easier. 
-         * ConstantTerms first, then Rules and then everything else (which is handled in compartTo()
-         */
-        private int getPrimarySortOrder() 
-        {
-            if( fTargetTerm instanceof ConstantTerm ) 
-            {
-                return 1;
-            }
-            else if( fTargetTerm instanceof DerivedTerm )
-            {
-                return 2;
-            }
-            else 
-            {
-                return 3;
-            }
-        }
-        
-        /** 
-         * sort first by the PrimaryOrdering. The secondary ordering is alphabetically by the displayName
-         * except for the case of similar Discrete Terms in which case the ordering is by option index.
-         */        
-        @Override
-        public int compareTo( ModelTermSummary o ) 
-        {
-            if( getPrimarySortOrder() != o.getPrimarySortOrder() )
-            {
-                return getPrimarySortOrder() - o.getPrimarySortOrder();
-            }
-
-            //
-            // If the first level sort order is the same then check for a secondary ordering
-            // The secondary ordering is based on the displayName for all terms except For DiscreteTerms 
-            // in which case it is the varible name. A third level of ordering is imposed for DiscreteTerms 
-            // having the same variable. They are ordered according to their option indices.
-            //
-            // Note that this needs to handle potential cases where one non-discrete term's displayName may be a substring
-            // of a discrete term's displayName. In this case the non-discrete term must come before/after ALL of the
-            // discrete term's for a variable. FoSr example: an "Age = 60 or Older" boolean term should not come in between
-            // any Discrete terms for the "Age" variable.
-            //
-            String thisCompareName = getDisplayName();
-            String otherCompareName = o.getDisplayName();
-            ModelTerm thisTerm = getModelTerm();
-            ModelTerm otherTerm = o.getModelTerm();
-
-            if( thisTerm instanceof DiscreteTerm ) 
-            {
-                thisCompareName = ((DiscreteTerm)thisTerm).getVariable().getDisplayName();
-            }
-            if( otherTerm instanceof DiscreteTerm ) 
-            {
-                otherCompareName = ((DiscreteTerm)otherTerm).getVariable().getDisplayName();
-            }
-
-            // 3 level order for discrete terms of the same variable.
-            //
-            if( thisTerm instanceof DiscreteTerm &&
-                otherTerm instanceof DiscreteTerm &&            
-                thisCompareName.equals( otherCompareName ) )
-            {              
-                return ((DiscreteTerm)thisTerm).getOptionIndex() - ((DiscreteTerm)otherTerm).getOptionIndex();              
-            }
-            else 
-            {                
-                return thisCompareName.compareTo( otherCompareName );
-            }
-        }        
-    }    
-        
-    protected EditRiskModel(final RiskModel rm, final List<Specialty> applSpecialty)
+    private EditRiskModel(final RiskModel rm, final List<Specialty> applSpecialty)
     {
-        fRiskModel = rm;
         fModelName = rm.getDisplayName();
         
+        // Create the EditModelTerms list, in TermComparator order per getTerms().
+        final ImmutableList<ModelTerm> sortedTerms =
+                Ordering.from(new TermComparator()).immutableSortedCopy(rm.getTerms());
+        fTerms = new ArrayList<>(sortedTerms.size());
+        for (final ModelTerm term : sortedTerms)
+        {
+            fTerms.add(EditModelTerm.fromExistingTerm(term));
+        }
+
         fApplicableSpecialties = ImmutableList.copyOf(applSpecialty);
-        fImportedModel = null;
     }
 
     /**
@@ -248,12 +57,12 @@ public class EditRiskModel implements Comparable<EditRiskModel>
      * @param riskModel the target RiskModel
      */
     public static EditRiskModel fromRiskModel( final RiskModel riskModel,
-            final AdminService fAdminService )
+            final ModelInspectionService modelService )
     {
         List<Specialty> applSpecialties = new ArrayList<Specialty>();
         fLogger.debug("creating RiskModel {}", riskModel.toString() );
         
-        for( Specialty spec : fAdminService.getAllSpecialties() ) 
+        for( Specialty spec : modelService.getAllSpecialties() ) 
         {
             if( spec.getRiskModels().contains( riskModel ) ) 
             {
@@ -262,14 +71,6 @@ public class EditRiskModel implements Comparable<EditRiskModel>
         }
         
         return new EditRiskModel( riskModel, applSpecialties );
-    }
-    
-    /**
-     * Return the target (link @RiskModel)
-     */
-    public RiskModel getRiskModel()
-    {
-        return fRiskModel;
     }
     
     /**
@@ -289,11 +90,14 @@ public class EditRiskModel implements Comparable<EditRiskModel>
     }
     
     /**
-     * Return the Id of the target RiskModel.
+     * Returns the List of EditModelTerm objects allowing modification of the model's
+     * terms. Upon construction, this list will be in {@link TermComparator} order. Since
+     * the list is mutable, order cannot be guaranteed thereafter.
+     * @return a mutable list
      */
-    public String getId()
+    public List<EditModelTerm> getTerms()
     {
-        return Integer.toString(fRiskModel.getId());
+        return fTerms;
     }
     
     /**
@@ -315,43 +119,47 @@ public class EditRiskModel implements Comparable<EditRiskModel>
     }
     
     /**
-     * Return a list of {@link ModelTermSummary} objects for the terms in the 
-     * target RiskModel.
-     *  
-     * @return 
+     * Return a list of {@link ModelTermSummary} objects for the terms.
+     * @return a ImmutableList in the same order as {@link #getTerms()}
      */
-    public List<ModelTermSummary> getTermSummaries() 
+    public ImmutableList<ModelTermSummary> makeTermSummaries(
+            final ModelInspectionService modelService)
     {
-        Set<ModelTerm> numTerms = ( fImportedModel != null ? 
-                                    fImportedModel.getTerms(): fRiskModel.getTerms() );
-
-        List<ModelTermSummary> termSummariesList = new ArrayList<ModelTermSummary>();
-
-        for( ModelTerm modTerm : numTerms )
+        final ArrayList<ModelTermSummary> termSummaries = new ArrayList<>(fTerms.size());
+        
+        for (final EditModelTerm modTerm : fTerms)
         {
-            termSummariesList.add( ModelTermSummary.createTermSummary( modTerm ) );
+            termSummaries.add(modTerm.makeSummary(modelService));
         }
         
-        Collections.sort( termSummariesList );
-        
-        return termSummariesList;
+        return ImmutableList.copyOf(termSummaries);
     }
 
     /**
      * Update the target RiskModel with the current edits.
+     * @throws InvalidIdentifierException if any of the terms references a non-existent
+     * Variable or Rule
      */
-    public RiskModel applyChanges() 
+    public void applyChanges(
+            final RiskModel targetModel,
+            final ModelInspectionService modelService)
+            throws InvalidIdentifierException
     {
         // can't change the model ID
-
-        // if the imported model has an associated name then
-        // should we override the current one if it had been edited?
         
-        fRiskModel.setDisplayName( fModelName );
+        targetModel.setDisplayName( fModelName );
         
-        //  save the imported model to the fRiskModel 
-        
-        return fRiskModel;
+        // Build the new terms.
+        final HashSet<ModelTerm> newTerms = new HashSet<>(fTerms.size());
+        for (final EditModelTerm term : fTerms)
+        {
+            final ModelTerm newTerm = term.build(modelService);
+            if (!newTerms.add(newTerm))
+            {
+                fLogger.warn("Discarding duplicate new term {}", newTerm);
+            }
+        }
+        targetModel.replaceAllTerms(newTerms);
     }
 
     @Override
@@ -364,6 +172,6 @@ public class EditRiskModel implements Comparable<EditRiskModel>
     
     public String toString()
     {
-        return String.format( "EditRiskModel: name=%s,ID=", fModelName, getId() );
+        return String.format("EditRiskModel for %s", fModelName);
     }
 }

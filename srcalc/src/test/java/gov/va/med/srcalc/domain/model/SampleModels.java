@@ -151,6 +151,9 @@ public class SampleModels
                 "#Age.value * #coefficient", true, "Age multiplier for functional status");
     }
     
+    /**
+     * Returns a sample list of Variables. This list may grow: don't rely on its size.
+     */
     public static ImmutableList<AbstractVariable> sampleVariableList()
     {
         return ImmutableList.of(
@@ -159,7 +162,8 @@ public class SampleModels
                 genderVariable(),
                 dnrVariable(),
                 functionalStatusVariable(),
-                wbcVariable());
+                wbcVariable(),
+                wbcIsNormalVariable());
     }
 
     public static List<AbstractVariable> sampleCardiacCABGVariableList()
@@ -307,6 +311,18 @@ public class SampleModels
         var.setUnits("x1000/mm^3");
         var.setRetriever(ValueRetriever.WBC);
         return var;
+    }
+    
+    /**
+     * An edge-case variable whose display name is an augmentation of {@link
+     * #wbcVariable()}.
+     */
+    public static BooleanVariable wbcIsNormalVariable()
+    {
+        return new BooleanVariable(
+                wbcVariable().getDisplayName() + " is Normal",
+                labVariableGroup(),
+                "wbcIsNormal");
     }
     
     public static DiscreteNumericalVariable cardiacAgeVariable()

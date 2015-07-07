@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * Utility class offering more convenient methods in the spirit of Spring's
  * {@link ValidationUtils}.
@@ -17,6 +19,35 @@ import org.springframework.validation.ValidationUtils;
 public final class ValidationUtils2
 {
     private static final Logger fLogger = LoggerFactory.getLogger(ValidationUtils2.class);
+    
+    /**
+     * Like {@link ValidationUtils#rejectIfEmpty(Errors, String, String)}, but returns
+     * true if the field was rejected. Rejects with the error code {@link
+     * ValidationCodes#NO_VALUE}.
+     * @param errors the Errors instance to register errors on
+     * @param field identifies the field. The identified field must be a CharSequence.
+     * @return true if the field was rejected, false otherwise
+     * @throws ClassCastException if the identified field is not a CharSequence
+     */
+    public static boolean rejectIfEmpty(
+            final Errors errors, final String field)
+    {
+        fLogger.trace("Validating that {} is non-empty.", field);
+        
+        // See method contract: the field must be a CharSequence.
+        final CharSequence value = (CharSequence)errors.getFieldValue(field);
+        
+        // We can't use Strings.isNullOrEmpty() since it requires a String.
+        if (MoreObjects.firstNonNull(value, "").length() == 0)
+        {
+            errors.rejectValue(field, ValidationCodes.NO_VALUE, "no value");
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     
     /**
      * Rejects the identified {@link CharSequence} field if it is longer than

@@ -90,4 +90,10 @@ public final class NumericalTerm extends SingleVariableTerm
     {
         return String.format("%s*%s", getVariable(), getCoefficient());
     }
+    
+    @Override
+    public void accept(final ModelTermVisitor visitor)
+    {
+        visitor.visitNumericalTerm(this);
+    }
 }

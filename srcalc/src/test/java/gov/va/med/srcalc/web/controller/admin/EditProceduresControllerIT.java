@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import gov.va.med.srcalc.service.ModelInspectionService;
+import gov.va.med.srcalc.test.util.IntegrationTest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,7 @@ import com.google.common.io.Resources;
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.
 @ContextConfiguration({"/srcalc-context.xml", "/srcalc-controller.xml", "/test-context.xml"})
 @Transactional // run each test in its own (rolled-back) transaction
-public class EditProceduresControllerIT
+public class EditProceduresControllerIT extends IntegrationTest
 {
     @Autowired
     WebApplicationContext fWac;

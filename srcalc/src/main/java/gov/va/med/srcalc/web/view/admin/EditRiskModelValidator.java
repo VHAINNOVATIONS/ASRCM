@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.web.view.admin;
 
 import gov.va.med.srcalc.domain.model.RiskModel;
+import gov.va.med.srcalc.service.ModelInspectionService;
 import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.ValidationCodes;
 import gov.va.med.srcalc.util.ValidationUtils2;
@@ -11,6 +12,13 @@ import org.springframework.validation.Validator;
 
 public class EditRiskModelValidator implements Validator
 {
+    private final ModelInspectionService fModelService;
+    
+    public EditRiskModelValidator(final ModelInspectionService modelService)
+    {
+        fModelService = modelService;
+    }
+    
     /**
      * Returns true if, and only if, the given class is {@link EditRiskModel} or a subclass.
      */
@@ -36,5 +44,15 @@ public class EditRiskModelValidator implements Validator
         ValidationUtils2.rejectIfDoesntMatch(
                 e, "modelName", RiskModel.VALID_MODEL_NAME_PATTERN,
                 new Object[] {RiskModel.VALID_MODEL_NAME_CHARACTERS});        
+        
+        // Validate each EditModelTerm.
+        final EditRiskModel target = (EditRiskModel)obj;
+        for (int i = 0; i < target.getTerms().size(); ++i)
+        {
+            final EditModelTerm term = target.getTerms().get(i);
+            e.pushNestedPath(String.format("terms[%d]", i));
+            term.getValidator(fModelService).validate(term, e);
+            e.popNestedPath();
+        }
     }
 }

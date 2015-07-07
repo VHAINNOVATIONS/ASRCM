@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.db;
 
+import gov.va.med.srcalc.domain.model.ModelTerm;
 import gov.va.med.srcalc.domain.model.RiskModel;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 @Repository
 public class RiskModelDao
@@ -58,7 +60,28 @@ public class RiskModelDao
     public RiskModel saveRiskModel( final RiskModel rm )
     {
         fLogger.debug("Merging RiskModel {} into persistence context.", rm.getDisplayName() );
+        
+        final Session session = getCurrentSession();
+        
+        // Major kludge here: force Hibernate to clear all of the term tables first
+        // because it has trouble deleting individual terms due to the floating-point
+        // column.
+        
+        // 1. Save off the desired terms.
+        final ImmutableSet<ModelTerm> desiredTerms = rm.getTerms();
+        
+        // 2. Clear the terms from the risk model.
+        rm.replaceAllTerms(ImmutableSet.<ModelTerm>of());
+        
+        // 3. Do the merge.
+        final RiskModel persistentModel = (RiskModel)session.merge( rm );
+        
+        // 4. Flush to ensure Hibernate actually sends the DELETE statements.
+        session.flush();
+        
+        // 5. Add back the desired terms.
+        persistentModel.replaceAllTerms(desiredTerms);
 
-        return (RiskModel)getCurrentSession().merge( rm );
+        return persistentModel;
     }
 }
