@@ -196,7 +196,7 @@ public class EditRiskModel implements Comparable<EditRiskModel>
 
             //
             // If the first level sort order is the same then check for a secondary ordering
-            // The secondary ordering is based on the diaplsyName for all terms except For DiscreteTerms 
+            // The secondary ordering is based on the displayName for all terms except For DiscreteTerms 
             // in which case it is the varible name. A third level of ordering is imposed for DiscreteTerms 
             // having the same variable. They are ordered according to their option indices.
             //
@@ -254,12 +254,12 @@ public class EditRiskModel implements Comparable<EditRiskModel>
         fLogger.debug("creating RiskModel {}", riskModel.toString() );
         
         for( Specialty spec : fAdminService.getAllSpecialties() ) 
-        {            
+        {
             if( spec.getRiskModels().contains( riskModel ) ) 
             {
                 applSpecialties.add( spec );
             }
-    }
+        }
         
         return new EditRiskModel( riskModel, applSpecialties );
     }
