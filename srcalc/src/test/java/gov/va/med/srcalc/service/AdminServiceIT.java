@@ -68,7 +68,7 @@ public class AdminServiceIT extends IntegrationTest
     @Test
     public final void testUpdateVariable() throws Exception
     {
-    	final String key = "preopPneumonia";
+        final String key = "preopPneumonia";
         final String origName = "Preop Pneumonia";
         final String newName = "Preoperative Issues";
         final String newHelpText = "helpppppppp";
@@ -160,27 +160,44 @@ public class AdminServiceIT extends IntegrationTest
         assertEquals(newProcedures, fAdminService.getAllProcedures());
     }
     
+    @Test
     public final void testGetAllRiskModels() 
     {
-    	ImmutableCollection<RiskModel> allRiskModels = fAdminService.getAllRiskModels();
-    	
-    	assertEquals( 7, allRiskModels.size() );
-    	
-    	List<RiskModel> rmList = allRiskModels.asList();
-    	assertEquals( "General Surgery 30-Day Mortality Risk", rmList.get(0).getDisplayName() );
-    	assertEquals( "Neurosurgery 30-Day Mortality Risk", rmList.get(1).getDisplayName() );
-    	assertEquals( "Orthopedic 30-Day Mortality Risk", rmList.get(2).getDisplayName() );
-    	assertEquals( "Thoracic 30-Day Mortality Risk", rmList.get(3).getDisplayName() );
-    	assertEquals( "Urology 30-Day Mortality Risk", rmList.get(4).getDisplayName() );
-    	assertEquals( "Vascular 30-Day Mortality Risk", rmList.get(5).getDisplayName() );
-    	assertEquals( "Cardiac 30-Day Mortality Risk", rmList.get(6).getDisplayName() );
+        ImmutableCollection<RiskModel> allRiskModels = fAdminService.getAllRiskModels();
+        
+        assertEquals( 7, allRiskModels.size() );
+        
+        List<RiskModel> rmList = allRiskModels.asList();
+        assertEquals( "General Surgery 30-Day Mortality Risk", rmList.get(0).getDisplayName() );
+        assertEquals( "Neurosurgery 30-Day Mortality Risk", rmList.get(1).getDisplayName() );
+        assertEquals( "Orthopedic 30-Day Mortality Risk", rmList.get(2).getDisplayName() );
+        assertEquals( "Thoracic 30-Day Mortality Risk", rmList.get(3).getDisplayName() );
+        assertEquals( "Urology 30-Day Mortality Risk", rmList.get(4).getDisplayName() );
+        assertEquals( "Vascular 30-Day Mortality Risk", rmList.get(5).getDisplayName() );
+        assertEquals( "Cardiac 30-Day Mortality Risk", rmList.get(6).getDisplayName() );
     }
     
     @Test
     public final void testGetRiskModelsById( ) 
     {
-    	int mid = 6;
-    	RiskModel vascRM = fAdminService.getRiskModelForId( mid );
-    	assertEquals( vascRM.getDisplayName(), "Vascular 30-Day Mortality Risk");
+        int mid = 6;
+        RiskModel vascRM = fAdminService.getRiskModelForId( mid );
+        assertEquals( vascRM.getDisplayName(), "Vascular 30-Day Mortality Risk");
     }
+    
+    @Test
+    public final void testGetAllSpecialties() 
+    {
+        List<Specialty> specList = fAdminService.getAllSpecialties();
+
+        assertEquals( 7, specList.size() );
+        assertEquals( "Cardiac", specList.get(0).getName() );
+        assertEquals( "General Surgery", specList.get(1).getName() );
+        assertEquals( "Neurosurgery", specList.get(2).getName() );
+        assertEquals( "Orthopedic", specList.get(3).getName() );
+        assertEquals( "Thoracic", specList.get(4).getName() );
+        assertEquals( "Urology", specList.get(5).getName() );
+        assertEquals( "Vascular", specList.get(6).getName() );
+    }
+
 }

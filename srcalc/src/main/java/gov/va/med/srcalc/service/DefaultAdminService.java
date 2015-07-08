@@ -23,6 +23,7 @@ public class DefaultAdminService implements AdminService
     
     private final VariableDao fVariableDao;
     private final RiskModelDao fRiskModelDao;
+    private final SpecialtyDao fSpecialtyDao;
     private final RuleDao fRuleDao;
     private final ProcedureDao fProcedureDao;
     
@@ -30,11 +31,13 @@ public class DefaultAdminService implements AdminService
     public DefaultAdminService(
             final VariableDao variableDao,
             final RiskModelDao riskModelDao,
+            SpecialtyDao specialtyDao,
             final RuleDao ruleDao,
             final ProcedureDao procedureDao)
     {
         fVariableDao = variableDao;
         fRiskModelDao = riskModelDao;
+        fSpecialtyDao = specialtyDao;
         fRuleDao = ruleDao;
         fProcedureDao = procedureDao;
     }
@@ -108,6 +111,14 @@ public class DefaultAdminService implements AdminService
         // This is a significant (and infrequent) transaction: log it at INFO
         // level.
         fLogger.info("Saved variable {}.", variable.getKey());
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<Specialty> getAllSpecialties()
+    {
+        fLogger.debug("Getting all Specialties.");
+        return fSpecialtyDao.getAllSpecialties();
     }
     
     @Override
@@ -210,11 +221,11 @@ public class DefaultAdminService implements AdminService
     @Override
     @Transactional
     public void saveRiskModel( final RiskModel model ) 
-    {    	
+    {        
         if( getRiskModelForId( model.getId() ) == null ) 
         {  // TODO : remove this when possible to create new RiskModels
-        	fLogger.warn( "Warning: Saving RiskModel {}. ID {} doesn't exist in the DB ", 
-        			model.getDisplayName(), model.getId() );
+            fLogger.warn( "Warning: Saving RiskModel {}. ID {} doesn't exist in the DB ", 
+                    model.getDisplayName(), model.getId() );
         }
         
         fRiskModelDao.saveRiskModel( model );

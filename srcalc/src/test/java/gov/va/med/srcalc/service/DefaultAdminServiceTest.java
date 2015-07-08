@@ -47,7 +47,14 @@ public class DefaultAdminServiceTest
                 ImmutableList.of(SampleModels.thoracicRiskModel()));
         return dao;
     }
-    
+
+    private SpecialtyDao mockSpecialtyDao()
+    {
+        final SpecialtyDao dao = mock(SpecialtyDao.class);
+        when(dao.getAllSpecialties()).thenReturn( SampleModels.specialtyList() );
+        return dao;
+    }
+
     private RuleDao mockRuleDao()
     {
         final RuleDao dao = mock(RuleDao.class);
@@ -74,7 +81,11 @@ public class DefaultAdminServiceTest
     private DefaultAdminService createWithMocks()
     {
         return new DefaultAdminService(
-                mockVariableDao(), mockRiskModelDao(), mockRuleDao(), mockProcedureDao());
+                mockVariableDao(),
+                mockRiskModelDao(),
+                mockSpecialtyDao(),
+                mockRuleDao(),
+                mockProcedureDao());
     }
     
     @Test
@@ -133,7 +144,7 @@ public class DefaultAdminServiceTest
         // Create the class under test.
         final VariableDao mockDao = mockVariableDao();
         final DefaultAdminService s = new DefaultAdminService(
-                mockDao, mockRiskModelDao(), mockRuleDao(), mockProcedureDao());
+                mockDao, mockRiskModelDao(), mockSpecialtyDao(), mockRuleDao(), mockProcedureDao());
         
         // Setup
         final AbstractVariable var = s.getVariable(key);

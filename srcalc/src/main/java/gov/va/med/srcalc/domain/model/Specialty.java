@@ -106,7 +106,7 @@ public final class Specialty implements Serializable
             length = SPECIALTY_NAME_MAX)
     public final String getName()
     {
-	return fName;
+        return fName;
     }
 
     /**
@@ -117,7 +117,7 @@ public final class Specialty implements Serializable
      */
     public final void setName(final String name)
     {
-	fName = Preconditions.requireWithin(name, 1, SPECIALTY_NAME_MAX);
+        fName = Preconditions.requireWithin(name, 1, SPECIALTY_NAME_MAX);
     }
     
     /**
@@ -137,10 +137,13 @@ public final class Specialty implements Serializable
     }
     
     /**
-     * Returns all {@link RiskModel}s associated with the Specialty. Caution:
-     * lazy-loaded.
+     * Returns all {@link RiskModel}s associated with the Specialty. 
+     * Note that these are fetched eagerly. If not then there is an
+     * issue when this method is called outside of a valid transaction.
+     *    This is the easiest solution since this table is small. If 
+     * it were large then this could be a performance issue. 
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     // Override strange defaults. See
     // <https://forum.hibernate.org/viewtopic.php?f=1&t=1037190>.
     @JoinTable(
@@ -165,7 +168,7 @@ public final class Specialty implements Serializable
     @Override
     public String toString()
     {
-        return fName;
+        return String.format("Specialty: Name=%s, ID=%d", fName, fId );
     }
     
     @Override
