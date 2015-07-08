@@ -1,10 +1,6 @@
 package gov.va.med.srcalc.web.view.admin;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.va.med.srcalc.domain.model.Rule;
-import gov.va.med.srcalc.domain.model.ValueMatcher;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 
@@ -48,12 +44,11 @@ public class EditExistingRule extends EditRule
     {
         // Set the necessary fields on fTarget
         fTarget.setDisplayName(this.getDisplayName());
-        final List<ValueMatcher> matchers = new ArrayList<ValueMatcher>(getMatchers().size());
+        fTarget.getMatchers().clear();
         for(final ValueMatcherBuilder builder: getMatchers())
         {
-            matchers.add(builder.buildNew(fAdminService));
+            fTarget.getMatchers().add(builder.buildNew(fAdminService));
         }
-        fTarget.setMatchers(matchers);
         fTarget.setRequired(this.isBypassEnabled());
         fTarget.setSummandExpression(getSummandExpression());
         return fTarget;

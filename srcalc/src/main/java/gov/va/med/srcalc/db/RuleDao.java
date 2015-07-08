@@ -83,10 +83,7 @@ public class RuleDao
      */
     public Rule getById(final int ruleId)
     {
-        final Query q = getCurrentSession().createQuery(
-                "from Rule v where v.id = :ruleId");
-        q.setInteger("ruleId", ruleId);
-        return (Rule)q.uniqueResult();
+        return (Rule) getCurrentSession().get(Rule.class, ruleId);
     }
     
     /**

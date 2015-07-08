@@ -1,6 +1,5 @@
 package gov.va.med.srcalc.web.view.admin;
 
-import gov.va.med.srcalc.domain.model.Rule;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 
@@ -18,9 +17,9 @@ public class EditRuleFactory
      * @throws InvalidIdentifierException if there is no Rule with the specified ID.
      */
     public static EditExistingRule getInstance(
-            final Rule rule,
+            final int ruleId,
             final AdminService adminService) throws InvalidIdentifierException
     {
-        return new EditExistingRule(adminService, adminService.getRuleById(rule.getId()));
+        return new EditExistingRule(adminService, adminService.getRuleById(ruleId));
     }
 }

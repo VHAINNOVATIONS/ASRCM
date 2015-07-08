@@ -91,12 +91,12 @@ public class NewRuleController
         else if(submitString.equals("newMatcher"))
         {
          // If we have reached the matcher limit, do not allow any more matchers to be added.
-            if(editRule.getMatchers().size() >= Rule.MAX_MATCHERS)
+            if(editRule.getMatchers().size() >= EditRule.MAX_MATCHERS)
             {
                 bindingResult.rejectValue(
                         "matchers",
                         ValidationCodes.TOO_LONG,
-                        new Object[] {Rule.MAX_MATCHERS},
+                        new Object[] {EditRule.MAX_MATCHERS},
                         "too many matchers specified");
                 return displayForm(editRule);
             }

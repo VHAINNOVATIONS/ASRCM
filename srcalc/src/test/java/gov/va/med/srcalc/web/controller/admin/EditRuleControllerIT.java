@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import gov.va.med.srcalc.service.AdminService;
+import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.web.view.admin.EditExistingRule;
 
 import org.junit.Before;
@@ -28,7 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.
 @ContextConfiguration({"/srcalc-context.xml", "/srcalc-controller.xml", "/test-context.xml"})
 @Transactional // run each test in its own (rolled-back) transaction
-public class EditRuleControllerIT
+public class EditRuleControllerIT extends IntegrationTest
 {
     @Autowired
     WebApplicationContext fWac;
@@ -49,11 +50,11 @@ public class EditRuleControllerIT
     @Test
     public final void testEditRuleValid() throws Exception
     {
-        fMockMvc.perform(get("/admin/rules/1"))
+        fMockMvc.perform(get(EditRuleController.BASE_URL, 1))
             .andExpect(status().isOk())
             .andExpect(model().attribute("rule", isA(EditExistingRule.class)));
 
-        fMockMvc.perform(post("/admin/rules/1")
+        fMockMvc.perform(post(EditRuleController.BASE_URL, 1)
                 .param("displayName", "Test Rule")
                 .param("summandExpression", "#coefficient")
                 .param("submitButton", "")
@@ -63,22 +64,23 @@ public class EditRuleControllerIT
                 .param("submitButton", ""))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+        fAdminService.getRuleById(1);
     }
     
     @Test
     public final void testEditRuleInvalidSummand() throws Exception
     {
-        fMockMvc.perform(post("/admin/rules/1")
+        fMockMvc.perform(post(EditRuleController.BASE_URL, 1)
                 .param("displayName", "TestRule")
                 .param("summandExpression", INVALID_EXPRESSION)
                 .param("submitButton", "submit"))
-            .andExpect(model().attributeHasErrors(NewRuleController.ATTRIBUTE_RULE));
+            .andExpect(model().attributeErrorCount(NewRuleController.ATTRIBUTE_RULE, 1));
     }
     
     @Test
     public final void testEditRuleInvalidMatcher() throws Exception
     {
-        fMockMvc.perform(post("/admin/rules/1")
+        fMockMvc.perform(post(EditRuleController.BASE_URL, 1)
                 .param("displayName", "TestRule")
                 .param("summandExpression", INVALID_EXPRESSION)
                 .param("required", "true")
@@ -86,6 +88,6 @@ public class EditRuleControllerIT
                 .param("matchers[0].variableKey", "age")
                 .param("matchers[0].booleanExpression", INVALID_EXPRESSION)
                 .param("submitButton", "submit"))
-            .andExpect(model().attributeHasErrors(NewRuleController.ATTRIBUTE_RULE));
+            .andExpect(model().attributeErrorCount(NewRuleController.ATTRIBUTE_RULE, 2));
     }
 }

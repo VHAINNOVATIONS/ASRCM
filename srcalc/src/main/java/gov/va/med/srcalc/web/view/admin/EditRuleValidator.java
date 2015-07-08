@@ -1,6 +1,5 @@
 package gov.va.med.srcalc.web.view.admin;
 
-import gov.va.med.srcalc.domain.model.Rule;
 import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.ValidationCodes;
 import gov.va.med.srcalc.util.ValidationUtils2;
@@ -58,12 +57,12 @@ public class EditRuleValidator implements Validator
         }
         
         // Reject if too many categories have been added.
-        if (editRule.getMatchers().size() > Rule.MAX_MATCHERS)
+        if (editRule.getMatchers().size() > EditRule.MAX_MATCHERS)
         {
             errors.rejectValue(
                     "matchers",
                     ValidationCodes.TOO_LONG,
-                    new Object[] {Rule.MAX_MATCHERS},
+                    new Object[] {EditRule.MAX_MATCHERS},
                     "too many matchers specified");
         }
         

@@ -34,8 +34,6 @@ import com.google.common.collect.ImmutableSet;
 @Table(name = "rule")
 public final class Rule
 {
-    public static final int MAX_MATCHERS = 10;
-    
     private int fId;
     private List<ValueMatcher> fMatchers;
     private Expression fSummandExpression;
@@ -103,7 +101,7 @@ public final class Rule
         return fMatchers;
     }
     
-    public void setMatchers(final List<ValueMatcher> matchers)
+    void setMatchers(final List<ValueMatcher> matchers)
     {
     	this.fMatchers = matchers;
     }

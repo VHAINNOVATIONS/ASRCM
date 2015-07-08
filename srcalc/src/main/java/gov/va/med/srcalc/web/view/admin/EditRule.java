@@ -19,6 +19,8 @@ import gov.va.med.srcalc.service.InvalidIdentifierException;
  */
 public class EditRule
 {
+    public static final int MAX_MATCHERS = 10;
+    
     private AdminService fAdminService;
     private final List<ValueMatcherBuilder> fMatchers;
     private String fSummandExpression;

@@ -4,13 +4,13 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-import gov.va.med.srcalc.domain.model.Rule;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.DuplicateRuleNameException;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.util.ValidationCodes;
 import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.EditExistingRule;
+import gov.va.med.srcalc.web.view.admin.EditRule;
 import gov.va.med.srcalc.web.view.admin.EditRuleFactory;
 import gov.va.med.srcalc.web.view.admin.ValueMatcherBuilder;
 
@@ -29,9 +29,11 @@ import org.springframework.web.servlet.ModelAndView;
  * Web MVC controller for editing existing rules.
  */
 @Controller
-@RequestMapping("/admin/rules/{ruleId}")
+@RequestMapping(EditRuleController.BASE_URL)
 public class EditRuleController
 {
+    public static final String BASE_URL = "/admin/rules/{ruleId}";
+    
     private static final Logger fLogger = LoggerFactory.getLogger(EditRuleController.class);
     
     private final AdminService fAdminService;
@@ -58,9 +60,8 @@ public class EditRuleController
     private EditExistingRule createEditRuleFromRule(
             @PathVariable("ruleId") final int ruleId) throws InvalidIdentifierException
     {
-        fLogger.trace("Creating EditRule from previous Rule with ID: {}.", ruleId);
-        final Rule rule = fAdminService.getRuleById(ruleId);
-        return EditRuleFactory.getInstance(rule, fAdminService);
+        fLogger.trace("Creating EditRule from existing Rule with ID: {}.", ruleId);
+        return EditRuleFactory.getInstance(ruleId, fAdminService);
     }
     
     @RequestMapping(method = RequestMethod.GET)
@@ -76,71 +77,54 @@ public class EditRuleController
         return mav;
     }
     
-    @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView handlePost(
+    @RequestMapping(method = RequestMethod.POST, params = "submitButton=remove")
+    public ModelAndView requestRemoveMatcher(
             @ModelAttribute(NewRuleController.ATTRIBUTE_RULE) final EditExistingRule editRule,
             final BindingResult bindingResult,
             @PathVariable("ruleId") final int ruleId,
             @RequestParam(value = "submitButton") final String submitString) throws InvalidIdentifierException
     {
-        
-        // Test if a remove button was clicked, and remove the proper ValueMatcherBuilder if needed
-        if(submitString.startsWith("remove"))
-        {
-            // Parse the integer that is after the "remove" prefix
-            return removeMatcher(editRule, ruleId, Integer.parseInt(submitString.substring(6)));
-        }
-        else if(submitString.equals("newMatcher"))
-        {
-            // If we have reached the matcher limit, do not allow any more matchers to be added.
-            if(editRule.getMatchers().size() >= Rule.MAX_MATCHERS)
-            {
-                bindingResult.rejectValue(
-                        "matchers",
-                        ValidationCodes.TOO_LONG,
-                        new Object[] {Rule.MAX_MATCHERS},
-                        "too many matchers specified");
-                return displayEditRuleForm(editRule, ruleId);
-            }
-            // Reload the page with the new matcher builder inside of the edit rule
-            return addNewMatcher(editRule, ruleId);
-        }
-        else
-        {
-            return saveRule(editRule, bindingResult, ruleId, submitString);
-        }
+        // Parse the integer that is after the "remove" prefix
+        editRule.getMatchers().remove(Integer.parseInt(submitString.substring(6)));
+        return displayEditRuleForm(editRule, ruleId);
     }
-    
-    private ModelAndView addNewMatcher(final EditExistingRule editRule,
-            final int ruleId) throws InvalidIdentifierException
+     
+    @RequestMapping(method = RequestMethod.POST, params = "submitButton=newMatcher")
+    public ModelAndView requestNewMatcher(
+            @ModelAttribute(NewRuleController.ATTRIBUTE_RULE) final EditExistingRule editRule,
+            final BindingResult bindingResult, @PathVariable("ruleId") final int ruleId,
+            @RequestParam(value = "submitButton") final String submitString)
+            throws InvalidIdentifierException
     {
-        editRule.getMatchers().add(
-                new ValueMatcherBuilder(editRule.getNewVariableKey()));
+        // If we have reached the matcher limit, do not allow any more matchers to be added.
+        if (editRule.getMatchers().size() >= EditRule.MAX_MATCHERS)
+        {
+            bindingResult.rejectValue("matchers", ValidationCodes.TOO_LONG,
+                    new Object[] { EditRule.MAX_MATCHERS }, "too many matchers specified");
+            return displayEditRuleForm(editRule, ruleId);
+        }
+        // Reload the page with the new matcher builder inside of the edit rule
+        editRule.getMatchers().add(new ValueMatcherBuilder(editRule.getNewVariableKey()));
         return displayEditRuleForm(editRule, ruleId);
     }
     
-    private ModelAndView removeMatcher(final EditExistingRule editRule, final int ruleId,
-            final int removeIndex) throws InvalidIdentifierException
-    {
-        editRule.getMatchers().remove(removeIndex);
-        return displayEditRuleForm(editRule, ruleId);
-    }
-    
-    private ModelAndView saveRule(final EditExistingRule editRule,
-            final BindingResult bindingResult,
-            final int ruleId,
-            final String submitString) throws InvalidIdentifierException
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView saveRule(
+            @ModelAttribute(NewRuleController.ATTRIBUTE_RULE) final EditExistingRule editRule,
+            final BindingResult bindingResult, @PathVariable("ruleId") final int ruleId,
+            @RequestParam(value = "submitButton") final String submitString)
+            throws InvalidIdentifierException
     {
         // Call the validator for an EditRule here so that we can access the editRule
-        // to display 
+        // to display
         editRule.getValidator().validate(editRule, bindingResult);
-
+        
         if (bindingResult.hasErrors())
         {
             fLogger.debug("EditRule has errors: {}", bindingResult);
             return displayEditRuleForm(editRule, ruleId);
         }
-
+        
         // Note that the validators do not check for uniqueness of the rule
         // display name, so we may get here with a duplicate rule display name and the below
         // call to saveRule() may fail. Thus we handle that exception below.
@@ -153,7 +137,8 @@ public class EditRuleController
         // validation error.
         catch (final DuplicateRuleNameException ex)
         {
-            bindingResult.rejectValue("displayName", ValidationCodes.DUPLICATE_VALUE, "duplicate rule name");
+            bindingResult.rejectValue("displayName", ValidationCodes.DUPLICATE_VALUE,
+                    "duplicate rule name");
             return displayEditRuleForm(editRule, ruleId);
         }
         
