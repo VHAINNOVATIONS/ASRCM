@@ -8,23 +8,23 @@ package gov.va.med.srcalc.domain.calculation;
  */
 public abstract class ExceptionlessValueVisitor implements ValueVisitor
 {
-	@Override
-	public abstract void visitNumerical(NumericalValue value);
+    @Override
+    public abstract void visitNumerical(NumericalValue value);
 
-	@Override
-	public abstract void visitBoolean(BooleanValue value);
+    @Override
+    public abstract void visitBoolean(BooleanValue value);
 
-	@Override
-	public abstract void visitMultiSelect(MultiSelectValue value);
+    @Override
+    public abstract void visitMultiSelect(MultiSelectValue value);
 
-	@Override
-	public abstract void visitProcedure(ProcedureValue value);
+    @Override
+    public abstract void visitProcedure(ProcedureValue value);
 
-	@Override
-	public abstract void visitDiscreteNumerical(DiscreteNumericalValue value);
-	
-	public void visit(final Value visitor)
+    @Override
+    public abstract void visitDiscreteNumerical(DiscreteNumericalValue value);
+    
+    public void visit(final Value visitor)
     {
-    	visitor.accept(this);
+        visitor.accept(this);
     }
 }

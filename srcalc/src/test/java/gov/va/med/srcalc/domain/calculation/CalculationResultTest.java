@@ -35,11 +35,11 @@ public class CalculationResultTest
     @Test
     public final void testWithProcedure() throws Exception
     {
-    	final CalculationResult result = SampleCalculations.thoracicResult();
+        final CalculationResult result = SampleCalculations.thoracicResult();
         
-    	assertTrue(result.getProcedureValue().isPresent());
-    	assertEquals(3, result.getNonProcedureValues().size());
-    	assertEquals(result.buildNoteBody(), NOTE_BODY);
+        assertTrue(result.getProcedureValue().isPresent());
+        assertEquals(3, result.getNonProcedureValues().size());
+        assertEquals(result.buildNoteBody(), NOTE_BODY);
     }
     
     @Test

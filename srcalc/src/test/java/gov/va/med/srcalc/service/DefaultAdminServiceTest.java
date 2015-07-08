@@ -136,7 +136,7 @@ public class DefaultAdminServiceTest
     @Test
     public final void testUpdateVariable() throws Exception
     {
-    	final String key = "dnr";
+        final String key = "dnr";
         final String origName = "DNR";
         final String newName = "Do Not R";
         final String newHelpText = "Help me!";

@@ -40,14 +40,14 @@ public class SampleCalculations
      */
     public static CalculationResult thoracicResult() throws Exception
     {
-    	final Calculation calc = Calculation.forPatient(dummyPatient(1));
-    	calc.setSpecialty(SampleModels.thoracicSpecialty());
-    	final List<Value> values = new ArrayList<Value>();
-    	values.add(new BooleanValue(SampleModels.dnrVariable(), false));
-    	values.add(new NumericalValue(SampleModels.ageVariable(), 45.0f));
-    	values.add(new MultiSelectValue(SampleModels.functionalStatusVariable(), new MultiSelectOption("Independent")));
-    	values.add(new ProcedureValue(SampleModels.procedureVariable(), SampleModels.repairLeftProcedure()));
-    	return calc.calculate(values);
+        final Calculation calc = Calculation.forPatient(dummyPatient(1));
+        calc.setSpecialty(SampleModels.thoracicSpecialty());
+        final List<Value> values = new ArrayList<Value>();
+        values.add(new BooleanValue(SampleModels.dnrVariable(), false));
+        values.add(new NumericalValue(SampleModels.ageVariable(), 45.0f));
+        values.add(new MultiSelectValue(SampleModels.functionalStatusVariable(), new MultiSelectOption("Independent")));
+        values.add(new ProcedureValue(SampleModels.procedureVariable(), SampleModels.repairLeftProcedure()));
+        return calc.calculate(values);
     }
     
 }

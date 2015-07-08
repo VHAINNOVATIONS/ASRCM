@@ -104,8 +104,8 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         final String value = getVariableValue(variable);
         if (StringUtils.isEmpty(value))
         {
-        	// Variables are not necessarily required.
-        	// The calculation is checked for missing values later.
+            // Variables are not necessarily required.
+            // The calculation is checked for missing values later.
             return;
         }
         // Find the selected option.
@@ -139,8 +139,8 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         final String stringValue = getVariableValue(variable);
         if (StringUtils.isEmpty(stringValue))
         {
-        	// Variables are not necessarily required.
-        	// The calculation is checked for missing values later.
+            // Variables are not necessarily required.
+            // The calculation is checked for missing values later.
             return;
         }
         try
@@ -192,8 +192,8 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         final String categoryName = getVariableValue(variable);
         if (StringUtils.isEmpty(categoryName))
         {
-        	// Variables are not necessarily required.
-        	// The calculation is checked for missing values later.
+            // Variables are not necessarily required.
+            // The calculation is checked for missing values later.
             return;
         }
         // Special case: numerical

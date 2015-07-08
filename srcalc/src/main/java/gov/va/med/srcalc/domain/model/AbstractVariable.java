@@ -53,7 +53,7 @@ public abstract class AbstractVariable implements Variable
      */
     protected AbstractVariable()
     {
-    	fKey = "unset";
+        fKey = "unset";
         fDisplayName = "unset";
         fGroup = new VariableGroup("unset group", 0);
         fHelpText = Optional.absent();
@@ -98,11 +98,11 @@ public abstract class AbstractVariable implements Variable
     
     @Basic
     @Column(
-                // override the default name "KEY" which is a reserved word
-    		name = "VARIABLE_KEY",
-    		length = KEY_MAX,
-    		nullable = false,
-    		unique = true)
+            // override the default name "KEY" which is a reserved word
+            name = "VARIABLE_KEY",
+            length = KEY_MAX,
+            nullable = false,
+            unique = true)
     public final String getKey()
     {
         return fKey;
@@ -219,12 +219,12 @@ public abstract class AbstractVariable implements Variable
     @Column(name = "retrieval_key", nullable = true)
     public final ValueRetriever getRetriever()
     {
-    	return fRetrievalKey;
+        return fRetrievalKey;
     }
     
     public final void setRetriever(final ValueRetriever retrievalKey)
     {
-    	this.fRetrievalKey = retrievalKey;
+        this.fRetrievalKey = retrievalKey;
     }
     
     @Override
@@ -232,32 +232,32 @@ public abstract class AbstractVariable implements Variable
     {
         return getDisplayName();
     }
-	
-	/**
-	 * Considers two {@link AbstractVariable} are equal if, and only if their keys are equal.
-	 */
-	@Override
-	public boolean equals(Object other)
-	{
-		if(other instanceof AbstractVariable)
-		{
-			return Objects.equals(this.fKey, ((AbstractVariable) other).getKey());
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
-	/**
-	 * Returns a hash code based on the variable key that uses the String.hashCode() implementation.
-	 */
-	@Override
-	public int hashCode()
-	{
-		return this.fKey.hashCode();
-	}
-	
+    
+    /**
+     * Considers two {@link AbstractVariable} are equal if, and only if their keys are equal.
+     */
+    @Override
+    public boolean equals(Object other)
+    {
+        if(other instanceof AbstractVariable)
+        {
+            return Objects.equals(this.fKey, ((AbstractVariable) other).getKey());
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    /**
+     * Returns a hash code based on the variable key that uses the String.hashCode() implementation.
+     */
+    @Override
+    public int hashCode()
+    {
+        return this.fKey.hashCode();
+    }
+    
     /**
      * Calls the txtmark processor to convert the help text from Markdown to Html and returns the result
      */

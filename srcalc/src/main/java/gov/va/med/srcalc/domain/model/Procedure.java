@@ -170,7 +170,7 @@ public final class Procedure
     @Column(nullable = false, length = DESCRIPTION_MAX)
     public String getShortDescription()
     {
-    	return fShortDescription;
+        return fShortDescription;
     }
 
     /**
@@ -180,7 +180,7 @@ public final class Procedure
      */
     void setShortDescription(final String description)
     {
-    	fShortDescription = Preconditions.requireWithin(description, 1, DESCRIPTION_MAX);
+        fShortDescription = Preconditions.requireWithin(description, 1, DESCRIPTION_MAX);
     }
     
     /**
@@ -192,7 +192,7 @@ public final class Procedure
     @Column(nullable = false, length = COMPLEXITY_MAX)
     public String getComplexity()
     {
-    	return fComplexity;
+        return fComplexity;
     }
     
     /**
@@ -202,7 +202,7 @@ public final class Procedure
      */
     void setComplexity(final String complexity)
     {
-    	fComplexity = Preconditions.requireWithin(complexity, 1, COMPLEXITY_MAX);
+        fComplexity = Preconditions.requireWithin(complexity, 1, COMPLEXITY_MAX);
     }
 
     /**

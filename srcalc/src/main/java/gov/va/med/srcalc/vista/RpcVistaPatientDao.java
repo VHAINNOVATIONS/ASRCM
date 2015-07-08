@@ -42,12 +42,12 @@ public class RpcVistaPatientDao implements VistaPatientDao
     /**
      * Static class initializer to fill the translation map with the proper values.
      */
-	static {
-		final Map<String, String> tempMap = new HashMap<String, String>();
-		tempMap.put("M", "Male");
-		tempMap.put("F", "Female");
-		TRANSLATION_MAP = Collections.unmodifiableMap(tempMap);
-	}
+    static {
+        final Map<String, String> tempMap = new HashMap<String, String>();
+        tempMap.put("M", "Male");
+        tempMap.put("F", "Female");
+        TRANSLATION_MAP = Collections.unmodifiableMap(tempMap);
+    }
     private final VistaProcedureCaller fProcedureCaller;
     
     private final String fDuz;
@@ -130,29 +130,29 @@ public class RpcVistaPatientDao implements VistaPatientDao
 
     private static String translateFromVista(final String vistaField)
     {
-    	if(TRANSLATION_MAP.containsKey(vistaField))
-    	{
-    		return TRANSLATION_MAP.get(vistaField);
-    	}
-    	return "Unknown";
+        if(TRANSLATION_MAP.containsKey(vistaField))
+        {
+            return TRANSLATION_MAP.get(vistaField);
+        }
+        return "Unknown";
     }
     
     private List<String> retrieveWeight6MonthsAgo(final Patient patient)
     {
-    	// Our range for weight 6 months ago is 3-12 months prior to the
+        // Our range for weight 6 months ago is 3-12 months prior to the
         // most recent weight.
         final Calendar cal = Calendar.getInstance();
         cal.setTime(patient.getWeight().getMeasureDate());
         cal.add(Calendar.MONTH, -6);
         final String endDateString = String.format("%03d%02d%02d", (cal.get(Calendar.YEAR) - 1700),
-        		cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
+                cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
         cal.setTime(patient.getWeight().getMeasureDate());
         cal.add(Calendar.YEAR, -1);
         final String startDateString = String.format("%03d%02d%02d", (cal.get(Calendar.YEAR) - 1700),
-        		cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
+                cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
         final String rpcParameter = String.valueOf(patient.getDfn()) + "^" + endDateString + "^WT^" + startDateString;
         fLogger.debug("Weight 6 Months Ago Parameter: {}", rpcParameter);
-    	return fProcedureCaller.doRpc(fDuz, RemoteProcedure.GET_VITAL, rpcParameter);
+        return fProcedureCaller.doRpc(fDuz, RemoteProcedure.GET_VITAL, rpcParameter);
     }
     
     private void parseWeightResults(final Patient patient, final List<String> weightResults) throws ParseException
@@ -171,37 +171,37 @@ public class RpcVistaPatientDao implements VistaPatientDao
          */
         final List<String> weightLineTokens = Splitter.on(Pattern.compile("[\\s\\^]+"))
                 .splitToList(weightResults.get(weightResults.size()-2));
-    	// Get the date of the measurement
-    	final SimpleDateFormat dateFormat = new SimpleDateFormat(VISTA_DATE_OUTPUT_FORMAT);
-    	fLogger.debug("weight line tokens: {}", weightResults);
-    	final Date measurementDate = dateFormat.parse(weightLineTokens.get(1));
-    	patient.setWeight6MonthsAgo(new RetrievedValue(
-    	        Double.parseDouble(weightLineTokens.get(3)), measurementDate, WEIGHT_UNITS));
-    	fLogger.debug("Weight 6 months ago: {}", patient.getWeight6MonthsAgo());
+        // Get the date of the measurement
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(VISTA_DATE_OUTPUT_FORMAT);
+        fLogger.debug("weight line tokens: {}", weightResults);
+        final Date measurementDate = dateFormat.parse(weightLineTokens.get(1));
+        patient.setWeight6MonthsAgo(new RetrievedValue(
+                Double.parseDouble(weightLineTokens.get(3)), measurementDate, WEIGHT_UNITS));
+        fLogger.debug("Weight 6 months ago: {}", patient.getWeight6MonthsAgo());
     }
     
     private void parseRecentVitalResults(final Patient patient, final List<String> vitalResults) throws ParseException
     {
-    	final SimpleDateFormat dateFormat = new SimpleDateFormat("(" + VISTA_DATE_OUTPUT_FORMAT + ")");
-    	final Pattern compliedPattern = Pattern.compile(VITALS_SPLIT_REGEX);
-    	// Each entry comes with an accompanying date and time.
-    	final List<String> heightLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(5));
-    	final int feet = Integer.parseInt(heightLineTokens.get(2));
-    	patient.setHeight(new RetrievedValue(
-    	        (feet * 12.0) + Double.parseDouble(heightLineTokens.get(4)),
-    	        dateFormat.parse(heightLineTokens.get(1)),
-    	        HEIGHT_UNITS));
-    	final List<String> weightLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(6));
-    	patient.setWeight(new RetrievedValue(
-    	        Double.parseDouble(weightLineTokens.get(2)),
-    	        dateFormat.parse(weightLineTokens.get(1)),
-    	        WEIGHT_UNITS));
-    	final List<String> bmiLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(7));
-    	// The BMI value is the second to last token on its line
-    	patient.setBmi(new RetrievedValue(
-    	    Double.parseDouble(bmiLineTokens.get(bmiLineTokens.size()-2)),
-    	    patient.getWeight().getMeasureDate(),
-    	    ""));
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("(" + VISTA_DATE_OUTPUT_FORMAT + ")");
+        final Pattern compliedPattern = Pattern.compile(VITALS_SPLIT_REGEX);
+        // Each entry comes with an accompanying date and time.
+        final List<String> heightLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(5));
+        final int feet = Integer.parseInt(heightLineTokens.get(2));
+        patient.setHeight(new RetrievedValue(
+                (feet * 12.0) + Double.parseDouble(heightLineTokens.get(4)),
+                dateFormat.parse(heightLineTokens.get(1)),
+                HEIGHT_UNITS));
+        final List<String> weightLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(6));
+        patient.setWeight(new RetrievedValue(
+                Double.parseDouble(weightLineTokens.get(2)),
+                dateFormat.parse(weightLineTokens.get(1)),
+                WEIGHT_UNITS));
+        final List<String> bmiLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(7));
+        // The BMI value is the second to last token on its line
+        patient.setBmi(new RetrievedValue(
+            Double.parseDouble(bmiLineTokens.get(bmiLineTokens.size()-2)),
+            patient.getWeight().getMeasureDate(),
+            ""));
     }
     
     private void retrieveLabs(final int dfn, final Patient patient) throws ParseException

@@ -268,7 +268,7 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
         @Transient
         public boolean isWnl()
         {
-        	return this.getOption().getValue().equalsIgnoreCase("WNL");
+            return this.getOption().getValue().equalsIgnoreCase("WNL");
         }
         
         @Override

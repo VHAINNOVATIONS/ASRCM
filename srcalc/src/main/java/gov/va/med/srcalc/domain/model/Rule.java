@@ -40,9 +40,9 @@ public final class Rule
     private boolean fRequired;
     private String fDisplayName;
     
-	/**
-	 * Mainly intended for reflection-based construction.
-	 */
+    /**
+     * Mainly intended for reflection-based construction.
+     */
     Rule()
     {
         // Set the summand expression to avoid a NullPointerException from Hibernate.
@@ -103,7 +103,7 @@ public final class Rule
     
     void setMatchers(final List<ValueMatcher> matchers)
     {
-    	this.fMatchers = matchers;
+        this.fMatchers = matchers;
     }
 
     /**
@@ -119,7 +119,7 @@ public final class Rule
     
     void setSummandExpression(final String summandExpression)
     {
-    	this.fSummandExpression = parseSummandExpression(summandExpression);
+        this.fSummandExpression = parseSummandExpression(summandExpression);
     }
 
     /**
@@ -167,9 +167,9 @@ public final class Rule
      * @param summandExpression The expression to be parsed into a summand expression.
      * @return A valid, parsed SPEL Expression
      */
-	private Expression parseSummandExpression(final String summandExpression)
-	{
-		final SpelExpressionParser parser = new SpelExpressionParser();
+    private Expression parseSummandExpression(final String summandExpression)
+    {
+        final SpelExpressionParser parser = new SpelExpressionParser();
         try
         {
             return parser.parseExpression(
@@ -179,8 +179,8 @@ public final class Rule
         {
             throw new IllegalArgumentException("Could not parse given expression.", ex);
         }
-	}
-	
+    }
+    
     /**
      * Returns all {@link Variable}s required for evaluating the Rule.
      * @return an ImmutableSet
@@ -232,7 +232,7 @@ public final class Rule
         /* Match all the values */
         final StandardEvaluationContext ec = new StandardEvaluationContext();
         final MissingValuesException missingValues = new MissingValuesException(
-        		"The calculation is missing values.", new ArrayList<MissingValueException>());
+                "The calculation is missing values.", new ArrayList<MissingValueException>());
         // Pass over the matcher list twice. Once to ensure all values are present.
         // Twice to actually evaluate the value matchers.
         for (final ValueMatcher condition : fMatchers)
@@ -244,22 +244,22 @@ public final class Rule
             final Value matchedValue = context.getValues().get(condition.getVariable());
             if(matchedValue == null)
             {
-            	if(isRequired())
-            	{
-            		missingValues.getMissingValues().add(new MissingValueException(
-            				"Missing value for " + condition.getVariable().getKey(),
-                    		condition.getVariable()));
-            		continue;
-            	}
-            	// If the variable is not required, there is no coefficient added to the calculation.
-            	// This essentially makes the rule evaluate to false;
-            	return 0.0;
+                if(isRequired())
+                {
+                    missingValues.getMissingValues().add(new MissingValueException(
+                            "Missing value for " + condition.getVariable().getKey(),
+                            condition.getVariable()));
+                    continue;
+                }
+                // If the variable is not required, there is no coefficient added to the calculation.
+                // This essentially makes the rule evaluate to false;
+                return 0.0;
             }
-        	
+            
         }
         if(missingValues.getMissingValues().size() > 0)
         {
-        	throw missingValues;
+            throw missingValues;
         }
         final HashMap<String, Object> matchedValues = new HashMap<>();
         for (final ValueMatcher condition : fMatchers)

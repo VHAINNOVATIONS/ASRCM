@@ -58,10 +58,10 @@ public class EditRiskModelTest {
     @Test
     public final void testEditRiskModel()
     {
-    	final EditRiskModel editRiskModel = createEditRiskModel( "Thoracic 30-day Mortality" );
+        final EditRiskModel editRiskModel = createEditRiskModel( "Thoracic 30-day Mortality" );
         
-    	editRiskModel.setModelName( "NewModelName" );
-    	
+        editRiskModel.setModelName( "NewModelName" );
+        
         assertEquals( "NewModelName", editRiskModel.getModelName() );
         assertEquals(  DisplayNameConditions.DISPLAY_NAME_MAX, editRiskModel.getMaxDisplayNameLength() );
         
@@ -74,10 +74,10 @@ public class EditRiskModelTest {
     @Test
     public final void testGetTermSummaries()
     {
-    	final EditRiskModel editRiskModel = createEditRiskModel( "Thoracic 30-day Mortality" );
+        final EditRiskModel editRiskModel = createEditRiskModel( "Thoracic 30-day Mortality" );
         
-    	List<ModelTermSummary> termSummaries = editRiskModel.getTermSummaries();
-    	
+        List<ModelTermSummary> termSummaries = editRiskModel.getTermSummaries();
+        
         assertEquals( 10, termSummaries.size() );
         // Constant first, then the Rules and then the rest  
         assertEquals( "Constant", termSummaries.get(0).getDisplayName() );           

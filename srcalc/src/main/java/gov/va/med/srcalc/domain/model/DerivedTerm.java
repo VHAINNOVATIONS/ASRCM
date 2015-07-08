@@ -51,7 +51,7 @@ public final class DerivedTerm extends ModelTerm
      */
     void setRule(final Rule rule)
     {
-    	this.fRule = rule;
+        this.fRule = rule;
     }
 
     @Transient

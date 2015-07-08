@@ -31,6 +31,6 @@ public class ValueTooLowException extends InvalidValueException
      */
     public ValueTooLowException(final String code, final String message)
     {
-    	super(code, message);
+        super(code, message);
     }
 }

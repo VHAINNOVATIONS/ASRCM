@@ -24,8 +24,8 @@ public final class ValueMatcher
     private boolean fExpressionEnabled;
     
     /**
-	 * Mainly intended for reflection-based construction.
-	 */
+     * Mainly intended for reflection-based construction.
+     */
     ValueMatcher()
     {
         // Set the summand expression to avoid a NullPointerException from Hibernate
@@ -79,7 +79,7 @@ public final class ValueMatcher
 
     void setVariable(final Variable variable)
     {
-    	this.fVariable = variable;
+        this.fVariable = variable;
     }
     
     /**
@@ -93,7 +93,7 @@ public final class ValueMatcher
     
     public void setBooleanExpression(final String booleanExpression)
     {
-    	fBooleanExpression = parseBooleanExpression(booleanExpression);
+        fBooleanExpression = parseBooleanExpression(booleanExpression);
     }
     
     @Transient

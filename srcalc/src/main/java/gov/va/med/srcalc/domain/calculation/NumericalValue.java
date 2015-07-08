@@ -46,7 +46,7 @@ public class NumericalValue implements Value
     @Override
     public void accept(final ValueVisitor visitor)
     {
-    	visitor.visitNumerical(this);
+        visitor.visitNumerical(this);
     }
     
     @Override
