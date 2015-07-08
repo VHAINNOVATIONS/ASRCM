@@ -1,18 +1,13 @@
 package gov.va.med.srcalc.web.controller.admin;
 
-import java.util.Objects;
-
 import javax.inject.Inject;
 
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.DuplicateRuleNameException;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.util.ValidationCodes;
-import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.EditExistingRule;
-import gov.va.med.srcalc.web.view.admin.EditRule;
 import gov.va.med.srcalc.web.view.admin.EditRuleFactory;
-import gov.va.med.srcalc.web.view.admin.ValueMatcherBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -30,13 +24,11 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping(EditRuleController.BASE_URL)
-public class EditRuleController
+public class EditRuleController extends BaseRuleController
 {
     public static final String BASE_URL = "/admin/rules/{ruleId}";
     
     private static final Logger fLogger = LoggerFactory.getLogger(EditRuleController.class);
-    
-    private final AdminService fAdminService;
     
     /**
      * Constructs an instance.
@@ -46,7 +38,7 @@ public class EditRuleController
     @Inject
     public EditRuleController(final AdminService adminService)
     {
-        fAdminService = Objects.requireNonNull(adminService);
+        super(adminService);
     }
     
     /**
@@ -56,63 +48,19 @@ public class EditRuleController
      * @return the EditExistingRule instance
      * @throws InvalidIdentifierException if no such rule exists
      */
-    @ModelAttribute(NewRuleController.ATTRIBUTE_RULE)
-    private EditExistingRule createEditRuleFromRule(
-            @PathVariable("ruleId") final int ruleId) throws InvalidIdentifierException
+    @Override
+    @ModelAttribute(ATTRIBUTE_RULE)
+    protected EditExistingRule createEditRule(
+            @PathVariable("ruleId") final Integer ruleId) throws InvalidIdentifierException
     {
         fLogger.trace("Creating EditRule from existing Rule with ID: {}.", ruleId);
-        return EditRuleFactory.getInstance(ruleId, fAdminService);
-    }
-    
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView displayEditRuleForm(
-            @ModelAttribute(NewRuleController.ATTRIBUTE_RULE) final EditExistingRule editRule,
-            @PathVariable("ruleId") final int ruleId)
-                    throws InvalidIdentifierException
-    {
-        final ModelAndView mav = new ModelAndView(Views.EDIT_RULE);
-        mav.addObject("SAVE_URL", ruleId);
-        mav.addObject("isNewRule", false);
-        NewRuleController.addVariablesToModel(mav, editRule, fAdminService);
-        return mav;
-    }
-    
-    @RequestMapping(method = RequestMethod.POST, params = "submitButton=remove")
-    public ModelAndView requestRemoveMatcher(
-            @ModelAttribute(NewRuleController.ATTRIBUTE_RULE) final EditExistingRule editRule,
-            final BindingResult bindingResult,
-            @PathVariable("ruleId") final int ruleId,
-            @RequestParam(value = "submitButton") final String submitString) throws InvalidIdentifierException
-    {
-        // Parse the integer that is after the "remove" prefix
-        editRule.getMatchers().remove(Integer.parseInt(submitString.substring(6)));
-        return displayEditRuleForm(editRule, ruleId);
-    }
-     
-    @RequestMapping(method = RequestMethod.POST, params = "submitButton=newMatcher")
-    public ModelAndView requestNewMatcher(
-            @ModelAttribute(NewRuleController.ATTRIBUTE_RULE) final EditExistingRule editRule,
-            final BindingResult bindingResult, @PathVariable("ruleId") final int ruleId,
-            @RequestParam(value = "submitButton") final String submitString)
-            throws InvalidIdentifierException
-    {
-        // If we have reached the matcher limit, do not allow any more matchers to be added.
-        if (editRule.getMatchers().size() >= EditRule.MAX_MATCHERS)
-        {
-            bindingResult.rejectValue("matchers", ValidationCodes.TOO_LONG,
-                    new Object[] { EditRule.MAX_MATCHERS }, "too many matchers specified");
-            return displayEditRuleForm(editRule, ruleId);
-        }
-        // Reload the page with the new matcher builder inside of the edit rule
-        editRule.getMatchers().add(new ValueMatcherBuilder(editRule.getNewVariableKey()));
-        return displayEditRuleForm(editRule, ruleId);
+        return EditRuleFactory.getInstance(ruleId, getAdminService());
     }
     
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveRule(
-            @ModelAttribute(NewRuleController.ATTRIBUTE_RULE) final EditExistingRule editRule,
-            final BindingResult bindingResult, @PathVariable("ruleId") final int ruleId,
-            @RequestParam(value = "submitButton") final String submitString)
+            @ModelAttribute(ATTRIBUTE_RULE) final EditExistingRule editRule,
+            final BindingResult bindingResult, @PathVariable("ruleId") final int ruleId)
             throws InvalidIdentifierException
     {
         // Call the validator for an EditRule here so that we can access the editRule
@@ -122,16 +70,16 @@ public class EditRuleController
         if (bindingResult.hasErrors())
         {
             fLogger.debug("EditRule has errors: {}", bindingResult);
-            return displayEditRuleForm(editRule, ruleId);
+            return displayForm(editRule);
         }
         
-        // Note that the validators do not check for uniqueness of the rule
+        // Note that the validator does not check for uniqueness of the rule
         // display name, so we may get here with a duplicate rule display name and the below
         // call to saveRule() may fail. Thus we handle that exception below.
         
         try
         {
-            fAdminService.saveRule(editRule.applyToRule());
+            getAdminService().saveRule(editRule.applyToRule());
         }
         // Translate the possible DuplicateRuleNameException into a
         // validation error.
@@ -139,7 +87,7 @@ public class EditRuleController
         {
             bindingResult.rejectValue("displayName", ValidationCodes.DUPLICATE_VALUE,
                     "duplicate rule name");
-            return displayEditRuleForm(editRule, ruleId);
+            return displayForm(editRule);
         }
         
         // Using the POST-redirect-GET pattern.

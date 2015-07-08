@@ -3,11 +3,11 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
 <c:choose>
-    <c:when test="${isNewRule}">
-        <c:set var="pageTitle" value="New Rule"/>
+    <c:when test="${rule.editingRule}">
+        <c:set var="pageTitle" value="Edit Rule"/>
     </c:when>
     <c:otherwise>
-        <c:set var="pageTitle" value="Edit Rule"/>
+        <c:set var="pageTitle" value="New Rule"/>
     </c:otherwise>
 </c:choose>
 
@@ -52,7 +52,7 @@
             <form:errors cssClass="error" path="${matcherPath}.*" />
             <p>${availableVariables}</p>
             <button class="btn-link" type="submit"
-                name="submitButton" value="remove${i}">Remove Variable</button>
+                name="removeButton" value="${i}">Remove Variable</button>
         </li>
         <c:set var="i" value="${i+1}" />
     </c:forEach>
@@ -63,7 +63,7 @@
         <form:options items="${allVariableKeys}"/>
     </form:select>
     <button class="btn-link" type="submit"
-        name="submitButton" value="newMatcher">Add New Variable</button>
+        name="newMatcherButton" value="newMatcher">Add New Variable</button>
     <div class="actionButtons">
     <ol>
     <li><c:url var="cancelUrl" value="/admin" />

@@ -63,6 +63,12 @@ public class EditExistingRule extends EditRule
     }
     
     @Override
+    public boolean isEditingRule()
+    {
+        return true;
+    }
+    
+    @Override
     public String toString()
     {
         return String.format("Name: %s Summand Expression: %s Matchers: %s Target Rule: %s", 

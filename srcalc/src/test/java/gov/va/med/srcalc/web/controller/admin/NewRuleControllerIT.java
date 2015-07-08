@@ -55,7 +55,7 @@ public class NewRuleControllerIT extends IntegrationTest
         fMockMvc.perform(get(NewRuleController.BASE_URL))
             .andExpect(status().isOk())
             .andExpect(model().attribute(
-                    NewRuleController.ATTRIBUTE_RULE, isA(EditRule.class)));
+                    BaseRuleController.ATTRIBUTE_RULE, isA(EditRule.class)));
         
         fMockMvc.perform(post(NewRuleController.BASE_URL)
                 .param("displayName", DISPLAY_NAME)
@@ -79,7 +79,7 @@ public class NewRuleControllerIT extends IntegrationTest
                 .param("required", "true")
                 .param("newVariableKey", "")
                 .param("submitButton", "submit"))
-            .andExpect(model().attributeHasErrors(NewRuleController.ATTRIBUTE_RULE));
+            .andExpect(model().attributeHasErrors(BaseRuleController.ATTRIBUTE_RULE));
     }
     
     @Test
@@ -94,7 +94,7 @@ public class NewRuleControllerIT extends IntegrationTest
                 .param("matchers[0].variableKey", "age")
                 .param("matchers[0].booleanExpression", "true")
                 .param("submitButton", "submit"))
-            .andExpect(model().attributeHasErrors(NewRuleController.ATTRIBUTE_RULE));
+            .andExpect(model().attributeHasErrors(BaseRuleController.ATTRIBUTE_RULE));
     }
     
     @Test
@@ -109,6 +109,6 @@ public class NewRuleControllerIT extends IntegrationTest
                 .param("matchers[0].variableKey", "age")
                 .param("matchers[0].booleanExpression", INVALID_EXPRESSION)
                 .param("submitButton", "submit"))
-            .andExpect(model().attributeHasErrors(NewRuleController.ATTRIBUTE_RULE));
+            .andExpect(model().attributeHasErrors(BaseRuleController.ATTRIBUTE_RULE));
     }
 }

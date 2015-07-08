@@ -125,6 +125,14 @@ public class EditRule
     {
         fNewVariableKey = newVariableKey;
     }
+    
+    /**
+     * Returns true if this object is editing an existing rule.
+     */
+    public boolean isEditingRule()
+    {
+        return false;
+    }
 
     /**
      * Returns a validator for an EditRule
