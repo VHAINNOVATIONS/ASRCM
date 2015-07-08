@@ -43,6 +43,10 @@ public class EditRiskModelTest {
         final List<ValueMatcher> valueMatchers = new ArrayList<ValueMatcher>();
         valueMatchers.add(new ValueMatcher(procedureVar, "#this.value.complexity == \"Standard\"", true) );
         derivedTerms.add(new DerivedTerm(6.0f, new Rule(valueMatchers, "#coefficient", true, "Test Rule")));
+
+        // a bit contrived but this will test the sorting of the term summaries
+        dnrVar.setDisplayName( wbcVar.getDisplayName()+" is Normal" );
+        
         RiskModel model = SampleModels.makeSampleRiskModel(
                 name,
                 derivedTerms,
@@ -74,15 +78,18 @@ public class EditRiskModelTest {
         
     	List<ModelTermSummary> termSummaries = editRiskModel.getTermSummaries();
     	
-        assertEquals( 7, termSummaries.size() );
+        assertEquals( 10, termSummaries.size() );
         // Constant first, then the Rules and then the rest  
         assertEquals( "Constant", termSummaries.get(0).getDisplayName() );           
-        assertTrue( termSummaries.get(1).getTermType().indexOf("Rule") >= 0 );        
+        assertEquals( "Rule: Test Rule", termSummaries.get(1).getDisplayName() );        
         assertEquals( "Age", termSummaries.get(2).getDisplayName() );
-        assertEquals( "DNR", termSummaries.get(3).getDisplayName() );
+        assertEquals( "Functional Status = Independent", termSummaries.get(3).getDisplayName() );
         assertEquals( "Functional Status = Partially dependent", termSummaries.get(4).getDisplayName() );
-        assertEquals( "Procedure (RVU Multiplier)", termSummaries.get(5).getDisplayName() );        
-        assertEquals( "White Blood Count = WNL", termSummaries.get(6).getDisplayName() );
+        assertEquals( "Functional Status = Totally dependent", termSummaries.get(5).getDisplayName() );
+        assertEquals( "Procedure (RVU Multiplier)", termSummaries.get(6).getDisplayName() );        
+        assertEquals( "White Blood Count = WNL", termSummaries.get(7).getDisplayName() );
+        assertEquals( "White Blood Count = >11.0", termSummaries.get(8).getDisplayName() );
+        assertEquals( "White Blood Count is Normal", termSummaries.get(9).getDisplayName() );
     }
 
 }

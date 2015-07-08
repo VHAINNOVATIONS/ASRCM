@@ -380,16 +380,7 @@ public class RiskModel implements Comparable<RiskModel>
     @Override
     public final int hashCode()
     {
-        int h = (fDisplayName == null ? 0 : fDisplayName.hashCode() );
-        if( getTerms() != null ) 
-        {        
-            for( ModelTerm mt : getTerms() ) 
-            {
-                h += mt.hashCode();
-            }
-        }
-        
-        return h; 
+        return Objects.hash( getDisplayName(), getTerms() );
     }
 
     /**

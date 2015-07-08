@@ -84,13 +84,19 @@ public class SampleModels
             @Override
             public void visitMultiSelect(MultiSelectVariable variable)
             {
-                m.getDiscreteTerms().add(new DiscreteTerm(variable, 1, 3.0f));
+                for( int i=0 ; i< variable.getOptions().size() ; i++ ) 
+                {
+                    m.getDiscreteTerms().add(new DiscreteTerm(variable, i, 3.0f));
+                }
             }
             
             @Override
             public void visitDiscreteNumerical(DiscreteNumericalVariable variable)
             {
-                m.getDiscreteTerms().add(new DiscreteTerm(variable, 0, 4.0f));
+                for( int i=0 ; i< variable.getOptions().size() ; i++ ) 
+                {
+                    m.getDiscreteTerms().add(new DiscreteTerm(variable, i, 4.0f));
+                }
             }
             
             @Override

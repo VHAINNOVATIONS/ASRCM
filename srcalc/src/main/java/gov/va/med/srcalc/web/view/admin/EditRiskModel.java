@@ -44,37 +44,42 @@ public class EditRiskModel implements Comparable<EditRiskModel>
     // the target model
     // if not.
     private RiskModel fImportedModel = null;
-
+    
     private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModel.class);
 
     /**
      * Class to hold the label, type and coefficient for a (link @ModelTerm) 
      * and its coefficient on the Admin's Edit Model page. 
-     * 
-     * @author owner
-     *
      */
     public static class ModelTermSummary  implements Comparable<ModelTermSummary>
     {
-        private final ModelTerm targetTerm;
+        private final ModelTerm fTargetTerm;
         
-        private String displayName;   // the name presented on the Edit Model page
-        private String termType;      // the variable type
+        private String fDisplayName;   // the name presented on the Edit Model page
+        private String fTermType;      // the variable type
         
         private ModelTermSummary( ModelTerm mt, String name, String type ) 
         {
-            displayName = name;
-            targetTerm = mt;
-            termType = type;
+            fDisplayName = name;
+            fTargetTerm = mt;
+            fTermType = type;
         }
          
+        /**
+         * get the ModelTerm for this ModelTermSummary
+         */
+        public ModelTerm getModelTerm()
+        {
+            return fTargetTerm;
+        }
+        
         /**
          * The name of the ModelTerm to be shown to the user.
          * @return
          */
         public String getDisplayName()  
         {
-            return displayName;
+            return fDisplayName;
         }
 
         /**
@@ -83,7 +88,7 @@ public class EditRiskModel implements Comparable<EditRiskModel>
          */
         public String getTermType() 
         {
-            return termType;
+            return fTermType;
         }
         
         /**
@@ -92,10 +97,10 @@ public class EditRiskModel implements Comparable<EditRiskModel>
          */
         public float getCoefficient()
         {
-            return targetTerm.getCoefficient();
+            return fTargetTerm.getCoefficient();
         }
 
-        /*
+        /**
          * Create and instance of a ModelTermSummary for the given ModelTerm. Determine and set the
          * displayName and the termType.
          */
@@ -146,7 +151,7 @@ public class EditRiskModel implements Comparable<EditRiskModel>
             else if( modelTerm instanceof DerivedTerm )
             {
                 type = "Rule";
-                dispName = "Rule: "+((DerivedTerm)modelTerm).getRule().getId();
+                dispName = "Rule: "+((DerivedTerm)modelTerm).getRule().getDisplayName();
             }
             else
             {
@@ -158,40 +163,74 @@ public class EditRiskModel implements Comparable<EditRiskModel>
         }
 
         /**
-         * a string used to make sorting the terms easier. 
-         * ConstantTerms first, then Rules and then by display name 
-         * with discrete options ordered by index 
-         * 
-         * @return
+         * an int used to make sorting the terms easier. 
+         * ConstantTerms first, then Rules and then everything else (which is handled in compartTo()
          */
-        private String getSortString() 
+        private int getPrimarySortOrder() 
         {
-            if( targetTerm instanceof ConstantTerm ) 
+            if( fTargetTerm instanceof ConstantTerm ) 
             {
-                return "AAAA";
+                return 1;
             }
-            else if( targetTerm instanceof DerivedTerm )
+            else if( fTargetTerm instanceof DerivedTerm )
             {
-                return "AAAAA"+Float.toString( ((DerivedTerm)targetTerm).getRule().getId()*1f/1000f ); // 7 before 11
+                return 2;
             }
-            // order DiscreteTerms according to their options
-            //
-            else if( targetTerm instanceof DiscreteTerm )
+            else 
             {
-                DiscreteTerm dTerm = (DiscreteTerm)targetTerm;
-                return dTerm.getVariable().getDisplayName().toUpperCase() + dTerm.getOptionIndex();
-            }
-            else
-            {
-                return displayName.toUpperCase();
+                return 3;
             }
         }
         
-        // sort by the sortString
+        /** 
+         * sort first by the PrimaryOrdering. The secondary ordering is alphabetically by the displayName
+         * except for the case of similar Discrete Terms in which case the ordering is by option index.
+         */        
         @Override
         public int compareTo( ModelTermSummary o ) 
         {
-            return getSortString().compareTo( o.getSortString() );
+            if( getPrimarySortOrder() != o.getPrimarySortOrder() )
+            {
+                return getPrimarySortOrder() - o.getPrimarySortOrder();
+            }
+
+            //
+            // If the first level sort order is the same then check for a secondary ordering
+            // The secondary ordering is based on the diaplsyName for all terms except For DiscreteTerms 
+            // in which case it is the varible name. A third level of ordering is imposed for DiscreteTerms 
+            // having the same variable. They are ordered according to their option indices.
+            //
+            // Note that this needs to handle potential cases where one non-discrete term's displayName may be a substring
+            // of a discrete term's displayName. In this case the non-discrete term must come before/after ALL of the
+            // discrete term's for a variable. FoSr example: an "Age = 60 or Older" boolean term should not come in between
+            // any Discrete terms for the "Age" variable.
+            //
+            String thisCompareName = getDisplayName();
+            String otherCompareName = o.getDisplayName();
+            ModelTerm thisTerm = getModelTerm();
+            ModelTerm otherTerm = o.getModelTerm();
+
+            if( thisTerm instanceof DiscreteTerm ) 
+            {
+                thisCompareName = ((DiscreteTerm)thisTerm).getVariable().getDisplayName();
+            }
+            if( otherTerm instanceof DiscreteTerm ) 
+            {
+                otherCompareName = ((DiscreteTerm)otherTerm).getVariable().getDisplayName();
+            }
+
+            // 3 level order for discrete terms of the same variable.
+            //
+            if( thisTerm instanceof DiscreteTerm &&
+                otherTerm instanceof DiscreteTerm &&            
+                thisCompareName.equals( otherCompareName ) )
+            {              
+                return ((DiscreteTerm)thisTerm).getOptionIndex() - ((DiscreteTerm)otherTerm).getOptionIndex();              
+            }
+            else 
+            {                
+                return thisCompareName.compareTo( otherCompareName );
+            }
         }        
     }    
         
@@ -215,7 +254,7 @@ public class EditRiskModel implements Comparable<EditRiskModel>
         fLogger.debug("creating RiskModel {}", riskModel.toString() );
         
         for( Specialty spec : fAdminService.getAllSpecialties() ) 
-        {
+        {            
             if( spec.getRiskModels().contains( riskModel ) ) 
             {
                 applSpecialties.add( spec );
@@ -232,17 +271,6 @@ public class EditRiskModel implements Comparable<EditRiskModel>
     {
         return fRiskModel;
     }
-
-    /**
-     * 
-     * Note: this will take the place of most of the setter methods for individual fields.
-     * @param impModel
-     */
-        public void setImportedModel( RiskModel impModel ) 
-        {
-            fImportedModel = impModel;
-            fImportedModel.setDisplayName( fModelName );
-        }
     
     /**
      * Return the modelName
@@ -290,7 +318,7 @@ public class EditRiskModel implements Comparable<EditRiskModel>
      * Return a list of {@link ModelTermSummary} objects for the terms in the 
      * target RiskModel.
      *  
-     * @return
+     * @return 
      */
     public List<ModelTermSummary> getTermSummaries() 
     {
