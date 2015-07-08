@@ -11,7 +11,7 @@ public class EditRuleFactory
 {
     /**
      * Returns an {@link EditExistingRule} instance for editing the given rule.
-     * @param rule the target rule
+     * @param ruleId the unique identifier of the rule to edit
      * @param adminService for EditExistingRule implementations to retrieve any
      * necessary reference data from the required Variables
      * @throws InvalidIdentifierException if there is no Rule with the specified ID.

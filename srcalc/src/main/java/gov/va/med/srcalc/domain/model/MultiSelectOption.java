@@ -26,7 +26,7 @@ public final class MultiSelectOption
     
     /**
      * A regular expression that defines a valid value. Same as {@link
-     * Variable#VALID_DISPLAY_NAME_REGEX}.
+     * DisplayNameConditions#VALID_DISPLAY_NAME_REGEX}.
      */
     public static final String VALID_VALUE_REGEX = DisplayNameConditions.VALID_DISPLAY_NAME_REGEX;
     

@@ -28,7 +28,7 @@ public class EditRuleValidator implements Validator
 
     /**
      * Validates the given EditRule object, using error codes from {@link ValidationCodes}.
-     * @param obj the object to validate. Must be an instance of {@link EditRule}.
+     * @param target the object to validate. Must be an instance of {@link EditRule}.
      * @throws ClassCastException if the given object is not an EditRule
      */
     @Override
