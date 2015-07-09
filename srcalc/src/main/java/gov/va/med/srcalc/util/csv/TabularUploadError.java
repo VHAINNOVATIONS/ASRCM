@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.util;
+package gov.va.med.srcalc.util.csv;
 
 import java.util.*;
 

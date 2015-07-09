@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.util;
 
+import gov.va.med.srcalc.util.csv.TabularUploadError;
+
 import java.util.Collection;
 import java.util.regex.Pattern;
 
