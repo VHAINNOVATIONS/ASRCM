@@ -26,6 +26,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+* <p>Base Web MVC controller for creating or editing rules. Contains common
+* behavior for creating and editing rules.</p>
+*/ 
 @Controller
 public abstract class BaseRuleController
 {
@@ -50,7 +54,7 @@ public abstract class BaseRuleController
     protected ModelAndView displayForm(final EditRule editRule) throws InvalidIdentifierException
     {
         final ModelAndView mav = new ModelAndView(Views.EDIT_RULE);
-        mav.addObject("rule", editRule);
+        mav.addObject(ATTRIBUTE_RULE, editRule);
         addVariablesToModel(mav, editRule, getAdminService());
         return mav;
     }

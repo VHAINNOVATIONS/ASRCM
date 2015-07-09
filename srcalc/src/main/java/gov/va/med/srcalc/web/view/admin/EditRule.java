@@ -21,7 +21,6 @@ public class EditRule
 {
     public static final int MAX_MATCHERS = 10;
     
-    private AdminService fAdminService;
     private final List<ValueMatcherBuilder> fMatchers;
     private String fSummandExpression;
     private boolean fBypassEnabled;
@@ -29,28 +28,11 @@ public class EditRule
     private String fNewVariableKey;
     
     /**
-     * Because we are not using the ModelAttribute annotation to create default information
-     * anymore, Spring needs to have a default constructor to initialize the bean.
-     */
-    EditRule()
-    {
-        fAdminService = null;
-        fMatchers = new ArrayList<ValueMatcherBuilder>();
-        fSummandExpression = "";
-        fBypassEnabled = false;
-        fDisplayName = "";
-        fNewVariableKey = "";
-    }
-    
-    /**
      * Constructs an instance with default values and an empty list of 
      * ValueMatcherBuilder objects.
-     * @param adminService to provide reference data (e.g., getting a variable
-     * that is tied to a ValueMatcher) to the user
      */
-    public EditRule(final AdminService adminService) 
+    public EditRule() 
     {
-        fAdminService = adminService;
         fMatchers = new ArrayList<ValueMatcherBuilder>();
         fSummandExpression = "";
         fBypassEnabled = false;
@@ -61,11 +43,9 @@ public class EditRule
     /**
      * Constructs an instance that is filled with the same information that the rule
      * 
-     * @param adminService to provide reference data (e.g., getting a variable
-     * that is tied to a ValueMatcher) to the user
      * @param rule the rule to copy into this EditRule
      */
-    public EditRule(final AdminService adminService, final Rule rule)
+    public EditRule(final Rule rule)
     {
         // Copy the value matchers
         fMatchers = new ArrayList<ValueMatcherBuilder>(rule.getMatchers().size());
@@ -77,11 +57,6 @@ public class EditRule
         fBypassEnabled = rule.isBypassEnabled();
         fDisplayName = rule.getDisplayName();
         fNewVariableKey = null;
-    }
-    
-    public void setAdminService(final AdminService adminService)
-    {
-        fAdminService = adminService;
     }
     
     /**
@@ -180,12 +155,12 @@ public class EditRule
      * @throws InvalidIdentifierException if one of the variable keys present in the builder
      * does not exist in the database.
      */
-    public Rule buildNew() throws InvalidIdentifierException
+    public Rule buildNew(final AdminService adminService) throws InvalidIdentifierException
     {
         final List<ValueMatcher> matchers = new ArrayList<ValueMatcher>(fMatchers.size());
         for(final ValueMatcherBuilder builder: fMatchers)
         {
-            matchers.add(builder.buildNew(fAdminService));
+            matchers.add(builder.buildNew(adminService));
         }
         // Negate fBypassEnabled because our internal Rule stores a required field, but
         // the user sees references to bypassing the rule if it is missing values.

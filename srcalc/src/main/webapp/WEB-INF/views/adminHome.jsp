@@ -61,10 +61,10 @@
         <th>Edit</th>
     </tr>
     <c:forEach var="rule" items="${rules}">
-        <c:url var="ruleId" value="/admin/rules/${rule.id}" />
+        <c:url var="ruleUrl" value="/admin/rules/${rule.id}" />
 	    <tr>
 	        <td><c:out value="${rule.displayName}"/></td>
-	        <td><a href="${ruleId}" class="editObjectLink">Edit</a></td>
+	        <td><a href="${ruleUrl}" class="editObjectLink">Edit</a></td>
 	    </tr>
     </c:forEach>
     </table>

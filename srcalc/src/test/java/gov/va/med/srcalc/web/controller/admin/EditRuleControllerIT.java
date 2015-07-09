@@ -1,11 +1,15 @@
 package gov.va.med.srcalc.web.controller.admin;
 
 import static org.hamcrest.CoreMatchers.isA;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import gov.va.med.srcalc.domain.model.Rule;
+import gov.va.med.srcalc.domain.model.SampleModels;
+import gov.va.med.srcalc.domain.model.ValueMatcher;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.web.view.admin.EditExistingRule;
@@ -54,17 +58,22 @@ public class EditRuleControllerIT extends IntegrationTest
             .andExpect(status().isOk())
             .andExpect(model().attribute("rule", isA(EditExistingRule.class)));
 
+        final String displayName = "Test Rule";
+        final String summand = "#coefficient";
         fMockMvc.perform(post(EditRuleController.BASE_URL, 1)
-                .param("displayName", "Test Rule")
-                .param("summandExpression", "#coefficient")
-                .param("submitButton", "")
+                .param("displayName", displayName)
+                .param("summandExpression", summand)
                 .param("matchers[0].enabled", "true")
                 .param("matchers[0].variableKey", "age")
                 .param("matchers[0].booleanExpression", "true")
                 .param("submitButton", ""))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
-        fAdminService.getRuleById(1);
+        final Rule rule = fAdminService.getRuleById(1);
+        assertEquals(displayName, rule.getDisplayName());
+        assertEquals(summand, rule.getSummandExpression());
+        final ValueMatcher matcher = new ValueMatcher(SampleModels.ageVariable(), "true", true);
+        assertEquals(matcher, rule.getMatchers().get(0));
     }
     
     @Test

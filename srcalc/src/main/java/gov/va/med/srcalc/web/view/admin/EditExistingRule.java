@@ -21,7 +21,6 @@ import gov.va.med.srcalc.service.InvalidIdentifierException;
 public class EditExistingRule extends EditRule
 {
     private Rule fTarget;
-    private AdminService fAdminService;
 
     /**
      * Because we are not using the ModelAttribute annotation to create default information
@@ -31,7 +30,6 @@ public class EditExistingRule extends EditRule
     {
         super();
         fTarget = null;
-        fAdminService = null;
     }
     
     /**
@@ -39,10 +37,9 @@ public class EditExistingRule extends EditRule
      * @param target the rule to edit
      * @param adminService to provide reference data (e.g.  to the user
      */
-    public EditExistingRule(final AdminService adminService, final Rule target)
+    public EditExistingRule(final Rule target)
     {
-        super(adminService, target);
-        fAdminService = adminService;
+        super(target);
         fTarget = target;
     }
     
@@ -51,23 +48,18 @@ public class EditExistingRule extends EditRule
      * @return the target rule for convenience
      * @throws IllegalStateException if any changes are invalid
      */
-    public Rule applyToRule() throws InvalidIdentifierException
+    public Rule applyToRule(final AdminService adminService) throws InvalidIdentifierException
     {
         // Set the necessary fields on fTarget
         fTarget.setDisplayName(this.getDisplayName());
         fTarget.getMatchers().clear();
         for(final ValueMatcherBuilder builder: getMatchers())
         {
-            fTarget.getMatchers().add(builder.buildNew(fAdminService));
+            fTarget.getMatchers().add(builder.buildNew(adminService));
         }
         fTarget.setBypassEnabled(this.isBypassEnabled());
         fTarget.setSummandExpression(getSummandExpression());
         return fTarget;
-    }
-    
-    public void setAdminService(final AdminService adminService)
-    {
-        fAdminService = adminService;
     }
     
     /**
