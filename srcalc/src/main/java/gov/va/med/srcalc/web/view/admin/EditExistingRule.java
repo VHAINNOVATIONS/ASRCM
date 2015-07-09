@@ -20,9 +20,20 @@ import gov.va.med.srcalc.service.InvalidIdentifierException;
  */
 public class EditExistingRule extends EditRule
 {
-    private final Rule fTarget;
-    private final AdminService fAdminService;
+    private Rule fTarget;
+    private AdminService fAdminService;
 
+    /**
+     * Because we are not using the ModelAttribute annotation to create default information
+     * anymore, Spring needs to have a default constructor to initialize the bean.
+     */
+    public EditExistingRule()
+    {
+        super();
+        fTarget = null;
+        fAdminService = null;
+    }
+    
     /**
      * Constructs an instance to edit the given rule.
      * @param target the rule to edit
@@ -49,9 +60,14 @@ public class EditExistingRule extends EditRule
         {
             fTarget.getMatchers().add(builder.buildNew(fAdminService));
         }
-        fTarget.setRequired(this.isBypassEnabled());
+        fTarget.setBypassEnabled(this.isBypassEnabled());
         fTarget.setSummandExpression(getSummandExpression());
         return fTarget;
+    }
+    
+    public void setAdminService(final AdminService adminService)
+    {
+        fAdminService = adminService;
     }
     
     /**
@@ -60,6 +76,11 @@ public class EditExistingRule extends EditRule
     public Rule getTargetRule()
     {
         return fTarget;
+    }
+    
+    public void setTarget(final Rule rule)
+    {
+        fTarget = rule;
     }
     
     @Override

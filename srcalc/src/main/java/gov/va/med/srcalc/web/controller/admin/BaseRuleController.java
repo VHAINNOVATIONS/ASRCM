@@ -47,25 +47,14 @@ public abstract class BaseRuleController
         fAdminService = Objects.requireNonNull(adminService);
     }
     
-    /**
-     * Creates an {@link EditRule} instance for the identified
-     * rule.
-     * @param ruleId the id of the rule to edit, if there is an existing rule
-     * @return the EditExistingRule instance
-     * @throws InvalidIdentifierException if no such rule exists
-     */
-    protected abstract EditRule createEditRule(final Integer ruleId) throws InvalidIdentifierException;
-    
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView displayForm(
-            @ModelAttribute(ATTRIBUTE_RULE) final EditRule editRule) throws InvalidIdentifierException
+    protected ModelAndView displayForm(final EditRule editRule) throws InvalidIdentifierException
     {
         final ModelAndView mav = new ModelAndView(Views.EDIT_RULE);
-        // Note: "rule" is already in the model via createEditRule().
-        addVariablesToModel(mav, editRule, fAdminService);
+        mav.addObject("rule", editRule);
+        addVariablesToModel(mav, editRule, getAdminService());
         return mav;
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, params = "removeButton")
     public ModelAndView requestRemoveMatcher(
             @ModelAttribute(NewRuleController.ATTRIBUTE_RULE) final EditRule editRule,

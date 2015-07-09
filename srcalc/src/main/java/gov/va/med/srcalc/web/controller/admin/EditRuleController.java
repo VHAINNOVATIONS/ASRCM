@@ -6,6 +6,7 @@ import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.DuplicateRuleNameException;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.util.ValidationCodes;
+import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.EditExistingRule;
 import gov.va.med.srcalc.web.view.admin.EditRuleFactory;
 
@@ -41,20 +42,15 @@ public class EditRuleController extends BaseRuleController
         super(adminService);
     }
     
-    /**
-     * Creates an {@link EditExistingRule} instance for the identified
-     * rule.
-     * @param ruleId the id of the rule to edit
-     * @return the EditExistingRule instance
-     * @throws InvalidIdentifierException if no such rule exists
-     */
-    @Override
-    @ModelAttribute(ATTRIBUTE_RULE)
-    protected EditExistingRule createEditRule(
-            @PathVariable("ruleId") final Integer ruleId) throws InvalidIdentifierException
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView displayForm(@PathVariable("ruleId") final int ruleId)
+            throws InvalidIdentifierException
     {
-        fLogger.trace("Creating EditRule from existing Rule with ID: {}.", ruleId);
-        return EditRuleFactory.getInstance(ruleId, getAdminService());
+        final ModelAndView mav = new ModelAndView(Views.EDIT_RULE);
+        final EditExistingRule editRule = EditRuleFactory.getInstance(ruleId, getAdminService());
+        mav.addObject("rule", editRule);
+        addVariablesToModel(mav, editRule, getAdminService());
+        return mav;
     }
     
     @RequestMapping(method = RequestMethod.POST)
@@ -76,7 +72,8 @@ public class EditRuleController extends BaseRuleController
         // Note that the validator does not check for uniqueness of the rule
         // display name, so we may get here with a duplicate rule display name and the below
         // call to saveRule() may fail. Thus we handle that exception below.
-        
+        editRule.setAdminService(getAdminService());
+        editRule.setTarget(getAdminService().getRuleById(ruleId));
         try
         {
             getAdminService().saveRule(editRule.applyToRule());

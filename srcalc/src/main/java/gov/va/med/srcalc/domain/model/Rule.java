@@ -37,7 +37,7 @@ public final class Rule
     private int fId;
     private List<ValueMatcher> fMatchers;
     private Expression fSummandExpression;
-    private boolean fRequired;
+    private boolean fBypassEnabled;
     private String fDisplayName;
     
 	/**
@@ -59,11 +59,11 @@ public final class Rule
      */
     public Rule(
             final List<ValueMatcher> matchers, final String summandExpression,
-            final boolean required, final String displayName)
+            final boolean bypassEnabled, final String displayName)
     {
         fMatchers = Objects.requireNonNull(matchers);
         fSummandExpression = parseSummandExpression(summandExpression);
-        fRequired = required;
+        fBypassEnabled = bypassEnabled;
         fDisplayName = displayName;
     }
     
@@ -126,14 +126,14 @@ public final class Rule
      * Should we bypass this rule if values are missing.
      */
     @Basic
-    public boolean isRequired()
+    public boolean isBypassEnabled()
     {
-        return fRequired;
+        return fBypassEnabled;
     }
     
-    public void setRequired(final boolean required)
+    public void setBypassEnabled(final boolean bypassEnabled)
     {
-        fRequired = required;
+        fBypassEnabled = bypassEnabled;
     }
     
     /**
@@ -245,7 +245,7 @@ public final class Rule
             final Value matchedValue = context.getValues().get(condition.getVariable());
             if(matchedValue == null)
             {
-            	if(isRequired())
+            	if(!isBypassEnabled())
             	{
             		missingValues.getMissingValues().add(new MissingValueException(
             				"Missing value for " + condition.getVariable().getKey(),
@@ -291,7 +291,7 @@ public final class Rule
                 .add("id", fId)
                 // fSummandExpression has a bad toString(), use getSummandExpression()
                 .add("summandExpression", getSummandExpression())
-                .add("required", fRequired)
+                .add("required", fBypassEnabled)
                 .add("matchers", fMatchers)
                 .toString();
     }

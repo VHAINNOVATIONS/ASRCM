@@ -6,6 +6,7 @@ import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.DuplicateRuleNameException;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.util.ValidationCodes;
+import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.EditRule;
 
 import org.slf4j.Logger;
@@ -39,17 +40,19 @@ public class NewRuleController extends BaseRuleController
         super(adminService);
     }
     
-    @Override
-    @ModelAttribute(ATTRIBUTE_RULE)
-    protected EditRule createEditRule(final Integer ruleId)
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView displayForm() throws InvalidIdentifierException
     {
-        fLogger.trace("Creating EditRule.");
-        return new EditRule(getAdminService());
+        final ModelAndView mav = new ModelAndView(Views.EDIT_RULE);
+        final EditRule editRule = new EditRule(getAdminService());
+        mav.addObject("rule", editRule);
+        addVariablesToModel(mav, editRule, getAdminService());
+        return mav;
     }
     
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveRule(
-            @ModelAttribute(ATTRIBUTE_RULE) final EditRule editRule,
+            @ModelAttribute(NewRuleController.ATTRIBUTE_RULE) final EditRule editRule,
             final BindingResult bindingResult) throws InvalidIdentifierException
     {
         // Call the validator for an EditRule here so that we can access the editRule
@@ -65,7 +68,7 @@ public class NewRuleController extends BaseRuleController
         // Note that the validator does not check for uniqueness of the rule
         // display name, so we may get here with a duplicate rule display name and the below
         // call to saveRule() may fail. Thus we handle that exception below.
-        
+        editRule.setAdminService(getAdminService());
         try
         {
             getAdminService().saveRule(editRule.buildNew());

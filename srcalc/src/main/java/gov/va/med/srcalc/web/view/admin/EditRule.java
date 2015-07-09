@@ -29,6 +29,20 @@ public class EditRule
     private String fNewVariableKey;
     
     /**
+     * Because we are not using the ModelAttribute annotation to create default information
+     * anymore, Spring needs to have a default constructor to initialize the bean.
+     */
+    EditRule()
+    {
+        fAdminService = null;
+        fMatchers = new ArrayList<ValueMatcherBuilder>();
+        fSummandExpression = "";
+        fBypassEnabled = false;
+        fDisplayName = "";
+        fNewVariableKey = "";
+    }
+    
+    /**
      * Constructs an instance with default values and an empty list of 
      * ValueMatcherBuilder objects.
      * @param adminService to provide reference data (e.g., getting a variable
@@ -60,9 +74,14 @@ public class EditRule
             fMatchers.add(ValueMatcherBuilder.fromPrototype(matcher));
         }
         fSummandExpression = rule.getSummandExpression();
-        fBypassEnabled = rule.isRequired();
+        fBypassEnabled = rule.isBypassEnabled();
         fDisplayName = rule.getDisplayName();
         fNewVariableKey = null;
+    }
+    
+    public void setAdminService(final AdminService adminService)
+    {
+        fAdminService = adminService;
     }
     
     /**

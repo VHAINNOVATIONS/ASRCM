@@ -144,7 +144,7 @@ INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coe
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (3, 11, 1, 3);
 
 -- Age and functional status rule
-INSERT INTO RULE (id, display_name, required, summand_expression) VALUES (1, 'Age multiplier for functional status', TRUE, '#coefficient * #age');
+INSERT INTO RULE (id, display_name, bypass_enabled, summand_expression) VALUES (1, 'Age multiplier for functional status', FALSE, '#coefficient * #age');
 -- Functional Status matcher
 INSERT INTO RULE_VALUE_MATCHER (rule_id, boolean_expression, enabled, variable) VALUES (1, '#functionalStatus == "Totally dependent"', TRUE, 11);
 -- Age matcher

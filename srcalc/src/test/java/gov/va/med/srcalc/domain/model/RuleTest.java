@@ -83,7 +83,7 @@ public class RuleTest
         final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "#weight < #weight6MonthsAgo * 0.9", true);
         final Rule rule =
                 new Rule(Arrays.asList(weight6MoAgoMatcher, weightLossMatcher),
-                        "#coefficient", false, "Weight loss in past 6 months > 10%");
+                        "#coefficient", true, "Weight loss in past 6 months > 10%");
         
         // Behavior verification
         final HashMap<Variable, Value> values = new HashMap<>();
@@ -117,8 +117,8 @@ public class RuleTest
         final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "value < #weight6MonthsAgo.value * 0.9", true);
         final Rule rule =
                 new Rule(Arrays.asList(weight6MoAgoMatcher, weightLossMatcher),
-                        "#coefficient", false, "Weight loss in past 6 months > 10%");
-        rule.setRequired(false);
+                        "#coefficient", true, "Weight loss in past 6 months > 10%");
+        rule.setBypassEnabled(true);
         // Behavior verification
         final HashMap<Variable, Value> values = new HashMap<>();
         values.put(currWeight, currWeight.makeValue(100));
@@ -126,7 +126,7 @@ public class RuleTest
                 0.0f,
                 rule.apply(new Rule.EvaluationContext(3.0f, values)),
                 0.0);
-        rule.setRequired(true);
+        rule.setBypassEnabled(false);
         rule.apply(new Rule.EvaluationContext(3.0f, values));
     }
     
