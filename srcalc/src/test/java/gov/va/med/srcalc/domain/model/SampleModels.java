@@ -62,7 +62,7 @@ public class SampleModels
      * @return a RiskModel with a term for each given variable
      */
     public static RiskModel makeSampleRiskModel(final String name, final Set<DerivedTerm> derivedTerms, 
-    		final Variable... variables)
+            final Variable... variables)
     {
         final RiskModel m = new RiskModel(name);
         m.getDerivedTerms().addAll(derivedTerms);
@@ -84,13 +84,19 @@ public class SampleModels
             @Override
             public void visitMultiSelect(MultiSelectVariable variable)
             {
-                m.getDiscreteTerms().add(new DiscreteTerm(variable, 1, 3.0f));
+                for( int i=0 ; i< variable.getOptions().size() ; i++ ) 
+                {
+                    m.getDiscreteTerms().add(new DiscreteTerm(variable, i, 3.0f));
+                }
             }
             
             @Override
             public void visitDiscreteNumerical(DiscreteNumericalVariable variable)
             {
-                m.getDiscreteTerms().add(new DiscreteTerm(variable, 0, 4.0f));
+                for( int i=0 ; i< variable.getOptions().size() ; i++ ) 
+                {
+                    m.getDiscreteTerms().add(new DiscreteTerm(variable, i, 4.0f));
+                }
             }
             
             @Override
@@ -158,10 +164,10 @@ public class SampleModels
 
     public static List<AbstractVariable> sampleCardiacCABGVariableList()
     {
-    	return Arrays.asList(
-    			cardiacAgeVariable(),
-    			genderVariable(),
-    			dnrVariable());
+        return Arrays.asList(
+                cardiacAgeVariable(),
+                genderVariable(),
+                dnrVariable());
     }
     
     /**
@@ -170,13 +176,13 @@ public class SampleModels
     public static List<Specialty> specialtyList()
     {
         return Arrays.asList(
-        	    new Specialty(48, "Cardiac"),
-        	    new Specialty(50, "General Surgery"),
-        	    new Specialty(52, "Neurosurgery"),
-        	    new Specialty(54, "Orthopedic"),
-        	    SampleModels.thoracicSpecialty(),
-        	    new Specialty(59, "Urology"),
-        	    new Specialty(62, "Vascular")
+                new Specialty(48, "Cardiac"),
+                new Specialty(50, "General Surgery"),
+                new Specialty(52, "Neurosurgery"),
+                new Specialty(54, "Orthopedic"),
+                SampleModels.thoracicSpecialty(),
+                new Specialty(59, "Urology"),
+                new Specialty(62, "Vascular")
                 );
     }
     
@@ -269,7 +275,7 @@ public class SampleModels
     
     public static BooleanVariable dnrVariable()
     {
-    	final BooleanVariable var= new BooleanVariable("DNR", demographicsVariableGroup(), "dnr");
+        final BooleanVariable var= new BooleanVariable("DNR", demographicsVariableGroup(), "dnr");
         return var;
     }
     
@@ -325,8 +331,8 @@ public class SampleModels
                 "cardiacAge");
         var.setValidRange(new NumericalRange(18.0f, true, 120.0f, true));
         var.setRetriever(ValueRetriever.AGE);
-    	
-    	return var;
+        
+        return var;
     }
     
     /**

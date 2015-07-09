@@ -74,7 +74,7 @@ public class EnterVariablesController
      * Presents that variable entry form.
      * @param session the current HTTP session (required)
      * @param response needed to alter the response header to expire the page
-     * 		after a completed calculation
+     *         after a completed calculation
      * @param initialValues the initial values to set
      * @return a ModelAndView for view rendering
      */
@@ -83,12 +83,12 @@ public class EnterVariablesController
             final HttpSession session, final HttpServletResponse response,
             @ModelAttribute(ATTR_VARIABLE_ENTRY) final VariableEntry initialValues)
     {
-    	// Expire the page to warn the user that a back button is not viable
-    	// after completing a calculation. The page will require a reload if the back button
-    	// is used to go back to the enter variables page.
-    	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    	response.setHeader("Pragma", "no-cache");
-    	response.setDateHeader("Expires", 0);
+        // Expire the page to warn the user that a back button is not viable
+        // after completing a calculation. The page will require a reload if the back button
+        // is used to go back to the enter variables page.
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
         // Get the Calculation from the session.
         final Calculation calculation =
                 SrcalcSession.getCalculationSession(session).getCalculation();
@@ -128,21 +128,21 @@ public class EnterVariablesController
         }
         catch(final MissingValuesException e)
         {
-        	// Add all of the missing values to the binding errors
-        	for(final MissingValueException missingValue : e.getMissingValues())
-        	{
-        		// If the variable had invalid input, rather than missing input,
-        		// it would never be included in the values.
-        		final String dynamicKey = VariableEntry.makeDynamicValuePath(missingValue.getVariable().getKey());
-        		fLogger.debug("Field Error: {}", dynamicKey);
-        		// Account for field errors on special fields like discrete numerical
-        		// variables.
-        		if(bindingResultAlreadyContainsError(dynamicKey, valuesBindingResult, missingValue))
-        		{
+            // Add all of the missing values to the binding errors
+            for(final MissingValueException missingValue : e.getMissingValues())
+            {
+                // If the variable had invalid input, rather than missing input,
+                // it would never be included in the values.
+                final String dynamicKey = VariableEntry.makeDynamicValuePath(missingValue.getVariable().getKey());
+                fLogger.debug("Field Error: {}", dynamicKey);
+                // Account for field errors on special fields like discrete numerical
+                // variables.
+                if(bindingResultAlreadyContainsError(dynamicKey, valuesBindingResult, missingValue))
+                {
                             valuesBindingResult.rejectValue(
                                     dynamicKey, ERROR_NO_VALUE, missingValue.getMessage());
-        		}
-        	}
+                }
+            }
         }
         
         // If we have any binding errors, return to the Enter Variables screen.
@@ -159,7 +159,7 @@ public class EnterVariablesController
     }
     
     private boolean bindingResultAlreadyContainsError(final String dynamicKey,
-    		final BindingResult valuesBindingResult, final MissingValueException missingValue)
+            final BindingResult valuesBindingResult, final MissingValueException missingValue)
     {
         final String numericalKey = VariableEntry.makeDynamicValuePath(
                 VariableEntry.makeNumericalInputName(missingValue.getVariable().getKey()));

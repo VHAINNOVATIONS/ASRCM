@@ -101,7 +101,7 @@ public class RuleTest
         values.clear();
         values.put(currWeight, currWeight.makeValue(140));
         assertEquals(
-        		0.0f,
+                0.0f,
                 rule.apply(new Rule.EvaluationContext(3.0f, values)),
                 0.0f);
     }
@@ -109,7 +109,7 @@ public class RuleTest
     @Test(expected=MissingValuesException.class)
     public final void testRequired() throws Exception
     {
-    	// Setup
+        // Setup
         final VariableGroup group = SampleModels.demographicsVariableGroup();
         final NumericalVariable currWeight = new NumericalVariable("Weight", group, "weight");
         final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group, "weight6MonthsAgo");

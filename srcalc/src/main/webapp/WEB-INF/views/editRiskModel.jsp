@@ -24,6 +24,7 @@
         </td>
         </tr>
         <tr>
+        <!-- 
         <td class="attributeName">Specialties</td>
         <td>
         <ul>       
@@ -32,10 +33,35 @@
         </c:forEach>
         </ul>
         </td>
+         -->
         </tr>
-    </tbody>
-    </table>
-    
+        <tr>
+        <td class="attributeName">Summation Terms</td>
+        <td>
+            <table>
+            <tbody>
+            <tr>
+               <th align="left" >Term</th>
+               <th align="left" class="main">Type</th>
+               <th align="left" class="main">Coefficient</th>           
+            </tr>
+            <c:forEach var="term" items="${riskModel.termSummaries}">
+            <tr>
+                <td>${term.displayName}</td>
+                <td class="attributeName">${term.termType}</td>
+                <td class="attributeName">${term.coefficient}</td>
+            </tr>
+            </c:forEach>
+             
+            </tbody>
+            </table>
+        </td>        
+        </tr>
+       </tbody>
+      </table>
+    <span>
+    <a id="importRiskModel" class="btn-link" href="#">Import New Model</a>  (Note this will overwrite the displayed terms.)</span>
+   
     <div class="actionButtons">
     <ol>
     <li><c:url var="cancelUrl" value="/admin" />

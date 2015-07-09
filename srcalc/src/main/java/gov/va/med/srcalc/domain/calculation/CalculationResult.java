@@ -172,7 +172,7 @@ public final class CalculationResult implements Serializable
     {
         // Note: this is actually a SortedSet, but don't specify the sort order
         // in the contract to reduce coupling.
-    	return fNonProcedureValues;
+        return fNonProcedureValues;
     }
     
     /**

@@ -69,10 +69,10 @@ public class DiscreteNumericalValueTest
     @Test
     public final void testNumericalLowBoundInclusivePass() throws Exception
     {
-    	// There is an accompanying test for Upper Bound in {@link NumericalValueTest}
-    	final DiscreteNumericalVariable var = SampleModels.wbcVariable();
-    	// Should not throw an exception
-    	DiscreteNumericalValue.fromNumerical(var, 2.0f);
+        // There is an accompanying test for Upper Bound in {@link NumericalValueTest}
+        final DiscreteNumericalVariable var = SampleModels.wbcVariable();
+        // Should not throw an exception
+        DiscreteNumericalValue.fromNumerical(var, 2.0f);
     }
     
     @Test(expected = ConfigurationException.class)

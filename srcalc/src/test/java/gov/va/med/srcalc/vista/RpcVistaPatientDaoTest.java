@@ -64,30 +64,30 @@ public class RpcVistaPatientDaoTest
     @Test
     public final void testSaveNoteInvalidSignature() throws Exception
     {
-    	final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doSaveProgressNoteCall(anyString(), anyString(), anyString(), anyListOf(String.class)))
             .thenReturn(INVALID_SIGNATURE_RETURN);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
-    	
-    	// The note body being used here should not matter since the doRpc() call is being
-    	// mocked and is told what to return.
-    	assertEquals(SaveNoteCode.INVALID_SIGNATURE,
-    			dao.saveRiskCalculationNote(PATIENT_DFN, "BadSig", DUMMY_BODY));
-    	assertEquals(SaveNoteCode.INVALID_SIGNATURE,
-    			dao.saveRiskCalculationNote(PATIENT_DFN, "AlsoBad", DUMMY_BODY));
+        
+        // The note body being used here should not matter since the doRpc() call is being
+        // mocked and is told what to return.
+        assertEquals(SaveNoteCode.INVALID_SIGNATURE,
+                dao.saveRiskCalculationNote(PATIENT_DFN, "BadSig", DUMMY_BODY));
+        assertEquals(SaveNoteCode.INVALID_SIGNATURE,
+                dao.saveRiskCalculationNote(PATIENT_DFN, "AlsoBad", DUMMY_BODY));
     }
     
     @Test
     public final void testSaveNoteSuccess() throws Exception
     {
-    	final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doSaveProgressNoteCall(anyString(), anyString(), anyString(), anyListOf(String.class)))
             .thenReturn(RemoteProcedure.VALID_SIGNATURE_RETURN);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
-    	
-    	assertEquals(
-    	        SaveNoteCode.SUCCESS,
-    	        dao.saveRiskCalculationNote(PATIENT_DFN, ELECTRONIC_SIGNATURE, DUMMY_BODY));
+        
+        assertEquals(
+                SaveNoteCode.SUCCESS,
+                dao.saveRiskCalculationNote(PATIENT_DFN, ELECTRONIC_SIGNATURE, DUMMY_BODY));
     }
     
     @Test

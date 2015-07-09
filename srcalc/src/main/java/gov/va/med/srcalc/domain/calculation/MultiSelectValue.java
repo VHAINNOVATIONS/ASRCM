@@ -44,7 +44,7 @@ public class MultiSelectValue implements DiscreteValue
     @Override
     public void accept(final ValueVisitor visitor)
     {
-    	visitor.visitMultiSelect(this);
+        visitor.visitMultiSelect(this);
     }
     
     @Override

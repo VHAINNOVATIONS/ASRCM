@@ -51,10 +51,10 @@ public abstract class SingleVariableTerm extends ModelTerm
         final Value value = inputValues.get(getVariable());
         if (value == null)
         {
-    		final List<MissingValueException> missingValues = new ArrayList<MissingValueException>();
-    		missingValues.add(new MissingValueException("Missing value for " + getVariable().getKey(),
-    				getVariable()));
-    		throw new MissingValuesException("The calculation is missing values.", missingValues);
+            final List<MissingValueException> missingValues = new ArrayList<MissingValueException>();
+            missingValues.add(new MissingValueException("Missing value for " + getVariable().getKey(),
+                    getVariable()));
+            throw new MissingValuesException("The calculation is missing values.", missingValues);
         }
         return getSummand(value);
     }

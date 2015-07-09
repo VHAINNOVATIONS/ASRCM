@@ -18,7 +18,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
  */
 public class InputParserVisitorTest
 {
-	@Test
+    @Test
     public final void testUnspecifiedMultiselect() throws Exception
     {
         // Setup variable
@@ -38,7 +38,7 @@ public class InputParserVisitorTest
                 null,
                 variableEntry.getDynamicValues().get(VariableEntry.makeDynamicValuePath(var.getKey())));
     }
-	
+    
     @Test
     public final void testInvalidMultiselect() throws Exception
     {
@@ -322,7 +322,7 @@ public class InputParserVisitorTest
         v.visitDiscreteNumerical(var);
         
         assertEquals(
-        		null,
+                null,
                 variableEntry.getDynamicValues().get(VariableEntry.makeDynamicValuePath(var.getKey())));
     }
     @Test

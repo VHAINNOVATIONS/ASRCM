@@ -56,7 +56,7 @@ public class EditRiskModelControllerIT extends IntegrationTest
     @Test
     public void testEditModel() throws Exception
     {
-    	final String newName = "Bogus Model Name";
+        final String newName = "Bogus Model Name";
         fMockMvc.perform(get("/admin/models/2")).
             andExpect(status().isOk()).
             andExpect(model().attribute("riskModel", isA(EditRiskModel.class)));

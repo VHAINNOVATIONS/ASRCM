@@ -61,18 +61,18 @@
         <th>Edit</th>
     </tr>
     <c:forEach var="rule" items="${rules}">
-        <c:url var="editRule" value="/admin/rules/${rule.id}" />
+        <c:url var="ruleId" value="/admin/rules/${rule.id}" />
 	    <tr>
 	        <td><c:out value="${rule.displayName}"/></td>
-	        <td><a href="${editRule}" class="editObjectLink">Edit</a></td>
+	        <td><a href="${ruleId}" class="editObjectLink">Edit</a></td>
 	    </tr>
     </c:forEach>
     </table>
     <div id="newRuleLink">
     Add New:
     <ul>
-	    <li><c:url var="newRule" value="/admin/newRule" />
-	        <a href="${newRule}" class="btn-default">Rule</a></li>
+        <li><c:url var="newRule" value="/admin/newRule" />
+            <a href="${newRule}" class="btn-default">Rule</a></li>
     </ul>
     </div>
     <h3>Procedures</h3>

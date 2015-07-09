@@ -41,7 +41,7 @@ public class VariableEntryTest
     @Test
     public final void testWithRetrievedValues()
     {
-    	// Contains multiple variables, but only one DiscreteNumericalVariable.
+        // Contains multiple variables, but only one DiscreteNumericalVariable.
         final List<AbstractVariable> vars = SampleModels.sampleVariableList();
         
         // Behavior verification.
@@ -57,16 +57,16 @@ public class VariableEntryTest
     @Test
     public final void testRetrievedCardiacAge()
     {
-    	final List<AbstractVariable> vars = SampleModels.sampleCardiacCABGVariableList();
-    	final Patient patient = SampleCalculations.dummyPatient(1);
-    	final VariableEntry entry = VariableEntry.withRetrievedValues(vars, patient);
-    	final HashMap<String, String> expected = new HashMap<>();
-    	expected.put(VariableEntry.makeNumericalInputName(vars.get(0).getKey()),
-    			String.valueOf(patient.getAge()));
-    	expected.put(vars.get(0).getKey(), VariableEntry.SPECIAL_NUMERICAL);
-    	expected.put(vars.get(1).getKey(), patient.getGender());
-    	
-    	assertEquals(expected, entry.getDynamicValues());
+        final List<AbstractVariable> vars = SampleModels.sampleCardiacCABGVariableList();
+        final Patient patient = SampleCalculations.dummyPatient(1);
+        final VariableEntry entry = VariableEntry.withRetrievedValues(vars, patient);
+        final HashMap<String, String> expected = new HashMap<>();
+        expected.put(VariableEntry.makeNumericalInputName(vars.get(0).getKey()),
+                String.valueOf(patient.getAge()));
+        expected.put(vars.get(0).getKey(), VariableEntry.SPECIAL_NUMERICAL);
+        expected.put(vars.get(1).getKey(), patient.getGender());
+        
+        assertEquals(expected, entry.getDynamicValues());
     }
     
     @Test

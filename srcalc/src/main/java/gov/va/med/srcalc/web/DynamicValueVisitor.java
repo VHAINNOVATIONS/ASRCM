@@ -10,56 +10,56 @@ import gov.va.med.srcalc.web.view.VariableEntry;
  */
 public class DynamicValueVisitor extends ExceptionlessValueVisitor
 {
-	private VariableEntry fVariableEntry;
-	
-	public DynamicValueVisitor(final VariableEntry variableEntry)
-	{
-		fVariableEntry = variableEntry;
-	}
-	
-	@Override
-	public void visitNumerical(final NumericalValue value)
-	{
-		fVariableEntry.getDynamicValues().put(value.getVariable().getKey(), value.getValue().toString());
-	}
+    private VariableEntry fVariableEntry;
+    
+    public DynamicValueVisitor(final VariableEntry variableEntry)
+    {
+        fVariableEntry = variableEntry;
+    }
+    
+    @Override
+    public void visitNumerical(final NumericalValue value)
+    {
+        fVariableEntry.getDynamicValues().put(value.getVariable().getKey(), value.getValue().toString());
+    }
 
-	@Override
-	public void visitBoolean(final BooleanValue value)
-	{
-		fVariableEntry.getDynamicValues().put(value.getVariable().getKey(), value.getValue().toString());
-	}
+    @Override
+    public void visitBoolean(final BooleanValue value)
+    {
+        fVariableEntry.getDynamicValues().put(value.getVariable().getKey(), value.getValue().toString());
+    }
 
-	@Override
-	public void visitMultiSelect(final MultiSelectValue value)
-	{
-		fVariableEntry.getDynamicValues().put(value.getVariable().getKey(), value.getValue().toString());
-	}
+    @Override
+    public void visitMultiSelect(final MultiSelectValue value)
+    {
+        fVariableEntry.getDynamicValues().put(value.getVariable().getKey(), value.getValue().toString());
+    }
 
-	@Override
-	public void visitProcedure(final ProcedureValue value)
-	{
-		fVariableEntry.getDynamicValues().put(value.getVariable().getKey(), value.getValue().getCptCode());
-	}
+    @Override
+    public void visitProcedure(final ProcedureValue value)
+    {
+        fVariableEntry.getDynamicValues().put(value.getVariable().getKey(), value.getValue().getCptCode());
+    }
 
-	@Override
-	public void visitDiscreteNumerical(final DiscreteNumericalValue value)
-	{
-		String key = value.getVariable().getKey();
-		final String valueString;
-		if(Float.isNaN(value.getNumericalValue()))
-		{
-			valueString = value.getValue().getOption().getValue();
-		}
-		else
-		{
-			key = VariableEntry.makeNumericalInputName(key);
-			valueString = String.valueOf(value.getNumericalValue());
-		}
-		fVariableEntry.getDynamicValues().put(key, valueString);
-	}
-	
-	public VariableEntry getValues()
-	{
-		return fVariableEntry;
-	}
+    @Override
+    public void visitDiscreteNumerical(final DiscreteNumericalValue value)
+    {
+        String key = value.getVariable().getKey();
+        final String valueString;
+        if(Float.isNaN(value.getNumericalValue()))
+        {
+            valueString = value.getValue().getOption().getValue();
+        }
+        else
+        {
+            key = VariableEntry.makeNumericalInputName(key);
+            valueString = String.valueOf(value.getNumericalValue());
+        }
+        fVariableEntry.getDynamicValues().put(key, valueString);
+    }
+    
+    public VariableEntry getValues()
+    {
+        return fVariableEntry;
+    }
 }

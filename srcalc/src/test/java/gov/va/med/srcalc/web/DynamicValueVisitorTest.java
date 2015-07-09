@@ -17,25 +17,25 @@ import org.junit.Test;
  */
 public class DynamicValueVisitorTest
 {
-	private DynamicValueVisitor fVisitor;
-	
-	@Before
-	public void visitorSetup()
-	{
-		final VariableEntry variableEntry = new VariableEntry(new ArrayList<Variable>());
-		fVisitor = new DynamicValueVisitor(variableEntry);
-	}
-	
-	@Test
-	public final void testNumerical() throws Exception
-	{
-		final NumericalVariable var = SampleModels.ageVariable();
+    private DynamicValueVisitor fVisitor;
+    
+    @Before
+    public void visitorSetup()
+    {
+        final VariableEntry variableEntry = new VariableEntry(new ArrayList<Variable>());
+        fVisitor = new DynamicValueVisitor(variableEntry);
+    }
+    
+    @Test
+    public final void testNumerical() throws Exception
+    {
+        final NumericalVariable var = SampleModels.ageVariable();
         final NumericalValue val = new NumericalValue(var, 1.2f);
 
         fVisitor.visitNumerical(val);
         assertEquals(String.valueOf(1.2f), fVisitor.getValues().getDynamicValues().get("age"));
-	}
-	
+    }
+    
     @Test
     public final void testDiscreteNumerical() throws Exception
     {
@@ -48,31 +48,31 @@ public class DynamicValueVisitorTest
         fVisitor.visitDiscreteNumerical(val);
         assertNotNull("should have a value", fVisitor.getValues().getDynamicValues().get("wbc"));
     }
-	
-	@Test
-	public final void testBoolean()
-	{
-		final BooleanVariable var = SampleModels.dnrVariable();
-		final BooleanValue val = new BooleanValue(var, true);
-		fVisitor.visitBoolean(val);
-		assertEquals("true", fVisitor.getValues().getDynamicValues().get("dnr"));
-	}
-	
-	@Test
-	public final void testMultiSelect()
-	{
-		final MultiSelectVariable var = SampleModels.genderVariable();
-		final MultiSelectValue val = new MultiSelectValue(var, new MultiSelectOption("Male"));
-		fVisitor.visitMultiSelect(val);
-		assertEquals("Male", fVisitor.getValues().getDynamicValues().get("gender"));
-	}
-	
-	@Test
-	public final void testProcedure()
-	{
-		final ProcedureVariable var = SampleModels.procedureVariable();
-		final ProcedureValue val = new ProcedureValue(var, SampleModels.repairLeftProcedure());
-		fVisitor.visitProcedure(val);
-		assertEquals("26546", fVisitor.getValues().getDynamicValues().get("procedure"));
-	}
+    
+    @Test
+    public final void testBoolean()
+    {
+        final BooleanVariable var = SampleModels.dnrVariable();
+        final BooleanValue val = new BooleanValue(var, true);
+        fVisitor.visitBoolean(val);
+        assertEquals("true", fVisitor.getValues().getDynamicValues().get("dnr"));
+    }
+    
+    @Test
+    public final void testMultiSelect()
+    {
+        final MultiSelectVariable var = SampleModels.genderVariable();
+        final MultiSelectValue val = new MultiSelectValue(var, new MultiSelectOption("Male"));
+        fVisitor.visitMultiSelect(val);
+        assertEquals("Male", fVisitor.getValues().getDynamicValues().get("gender"));
+    }
+    
+    @Test
+    public final void testProcedure()
+    {
+        final ProcedureVariable var = SampleModels.procedureVariable();
+        final ProcedureValue val = new ProcedureValue(var, SampleModels.repairLeftProcedure());
+        fVisitor.visitProcedure(val);
+        assertEquals("26546", fVisitor.getValues().getDynamicValues().get("procedure"));
+    }
 }

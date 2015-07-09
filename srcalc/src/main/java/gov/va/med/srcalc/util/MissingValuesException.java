@@ -9,18 +9,18 @@ import gov.va.med.srcalc.domain.model.MissingValueException;
  */
 public class MissingValuesException extends Exception
 {
-	private static final long serialVersionUID = 1L;
-	
-	private final List<MissingValueException> fMissingValues;
-	
-	public MissingValuesException(final String message, final List<MissingValueException> missingValues)
-	{
-		super(message);
-		fMissingValues = missingValues;
-	}
-	
-	public List<MissingValueException> getMissingValues()
-	{
-		return fMissingValues;
-	}
+    private static final long serialVersionUID = 1L;
+    
+    private final List<MissingValueException> fMissingValues;
+    
+    public MissingValuesException(final String message, final List<MissingValueException> missingValues)
+    {
+        super(message);
+        fMissingValues = missingValues;
+    }
+    
+    public List<MissingValueException> getMissingValues()
+    {
+        return fMissingValues;
+    }
 }

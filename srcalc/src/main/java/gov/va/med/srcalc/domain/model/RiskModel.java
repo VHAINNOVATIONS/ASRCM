@@ -32,7 +32,7 @@ public class RiskModel implements Comparable<RiskModel>
     private Set<ProcedureTerm> fProcedureTerms = new HashSet<>();
     private Set<DerivedTerm> fDerivedTerms = new HashSet<>();
     
-	// Use the same Char set and Reg Expr as for the Variable names.
+    // Use the same Char set and Reg Expr as for the Variable names.
     /**
      * English description of the valid display name characters for readable
      * error messages.
@@ -286,8 +286,9 @@ public class RiskModel implements Comparable<RiskModel>
     public String toString()
     {
         return String.format(
-                "RiskModel \"%s\" with %d terms",
+                "RiskModel \"%s\" with ID=%d, and %d terms",
                 getDisplayName(),
+                getId(),
                 // -1 to subtract out the constant term
                 getTerms().size() - 1);
     }
@@ -324,29 +325,64 @@ public class RiskModel implements Comparable<RiskModel>
         final List<MissingValueException> missingList = new ArrayList<MissingValueException>();
         for (final ModelTerm term : getTerms())
         {
-        	try
-        	{
-        		final double termSummand = term.getSummand(valueMap);
+            try
+            {
+                final double termSummand = term.getSummand(valueMap);
                 fLogger.debug("Adding {} for {}", termSummand, term);
                 sum += termSummand;
-        	}
+            }
             catch(final MissingValuesException e)
             {
-            	missingList.addAll(e.getMissingValues());
+                missingList.addAll(e.getMissingValues());
             }
         }
         
         if(missingList.size() > 0)
         {
-        	throw new MissingValuesException("The calculation is missing values.", missingList);
+            throw new MissingValuesException("The calculation is missing values.", missingList);
         }
         final double expSum = Math.exp(sum);
         
         return expSum / (1 + expSum);
     }
     
-    // TODO: implement equals() and hashCode()
-    
+    /**
+     * Returns a true if a RiskModel and if displayname and all Terms are equal.
+     */
+    @Override
+    public final boolean equals(final Object o)
+    {
+        if( this == o )
+        {
+            return true;
+        }
+        else if( o == null || !(o instanceof RiskModel) ) 
+        {
+            return false;
+        }
+        else 
+        {
+            // don't include the Id (Hibernate best practices)
+            final RiskModel other = (RiskModel)o;
+            
+            if( this.getDisplayName().compareTo( other.getDisplayName() ) != 0 ) 
+            {
+                return false;
+            }        
+            
+            return Objects.equals( getTerms(), other.getTerms() );
+        }
+    }
+
+    /**
+     * Returns a hash code based on the displayName and the model terms.
+     */
+    @Override
+    public final int hashCode()
+    {
+        return Objects.hash( getDisplayName(), getTerms() );
+    }
+
     /**
      * Compares RiskModels based on their display name. Not consistent with
      * equals!
