@@ -48,8 +48,10 @@ public class EditExistingRule extends EditRule
      * @return the target rule for convenience
      * @throws IllegalStateException if any changes are invalid
      */
-    public Rule applyToRule(final AdminService adminService) throws InvalidIdentifierException
+    public Rule applyToRule(final AdminService adminService, final Rule targetRule)
+            throws InvalidIdentifierException
     {
+        fTarget = targetRule;
         // Set the necessary fields on fTarget
         fTarget.setDisplayName(this.getDisplayName());
         fTarget.getMatchers().clear();

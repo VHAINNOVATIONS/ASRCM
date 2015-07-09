@@ -68,10 +68,11 @@ public class EditRuleController extends BaseRuleController
         // Note that the validator does not check for uniqueness of the rule
         // display name, so we may get here with a duplicate rule display name and the below
         // call to saveRule() may fail. Thus we handle that exception below.
-        editRule.setTarget(getAdminService().getRuleById(ruleId));
         try
         {
-            getAdminService().saveRule(editRule.applyToRule(getAdminService()));
+            getAdminService().saveRule(
+                    editRule.applyToRule(getAdminService(),
+                    getAdminService().getRuleById(ruleId)));
         }
         // Translate the possible DuplicateRuleNameException into a
         // validation error.
