@@ -48,10 +48,11 @@ public class CsvReader<T>
             firstRow = 1;
         }
 
-        // Parse each line and record errors.
         fLogger.trace(
                 "About to translate {} records from CSV into Procedure objects.",
-                records.size());
+                records.size() - firstRow);
+
+        // Parse each line and record errors.
         final ArrayList<T> procedures = new ArrayList<>(records.size());
         for (int i = firstRow; i < records.size(); ++i)
         {
