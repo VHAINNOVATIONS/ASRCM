@@ -10,8 +10,8 @@ import java.util.Set;
  * Implement other methods as needed.
  * 
  */
-public class MockAdminService extends MockModelService implements AdminService  {
-
+public class MockAdminService extends MockModelService implements AdminService
+{
     public MockAdminService() 
     {        
     }
@@ -20,7 +20,8 @@ public class MockAdminService extends MockModelService implements AdminService  
      * Not Implemented.
      */
     @Override
-    public List<AbstractVariable> getAllVariables() {
+    public List<AbstractVariable> getAllVariables()
+    {
         return null;
     }
 
@@ -29,7 +30,8 @@ public class MockAdminService extends MockModelService implements AdminService  
      */
     @Override
     public AbstractVariable getVariable(String key)
-            throws InvalidIdentifierException {
+            throws InvalidIdentifierException
+    {
         return null;
     }
 
@@ -37,7 +39,8 @@ public class MockAdminService extends MockModelService implements AdminService  
      * Not Implemented.
      */
     @Override
-    public void saveVariable(AbstractVariable variable) {
+    public void saveVariable(AbstractVariable variable)
+    {
         // not implemented        
     }
 
@@ -45,12 +48,14 @@ public class MockAdminService extends MockModelService implements AdminService  
      * Not Implemented.
      */
     @Override
-    public void saveRiskModel(RiskModel model) {
+    public void saveRiskModel(RiskModel model)
+    {
         // not implemented
     }
 
     @Override
-    public List<Specialty> getAllSpecialties() {
+    public List<Specialty> getAllSpecialties()
+    {
         return SampleModels.specialtyList();
     }
 
@@ -79,5 +84,11 @@ public class MockAdminService extends MockModelService implements AdminService  
     public void replaceAllProcedures(final Set<Procedure> newProcedures)
     {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    public Rule getRuleById(int id) throws InvalidIdentifierException
+    {
+        return null;
     }
 }

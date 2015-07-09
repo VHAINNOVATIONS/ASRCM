@@ -35,7 +35,7 @@ public class EditRuleTest
     @Test
     public final void testBasic()
     {
-        final EditRule editRule = new EditRule(fAdminService);
+        final EditRule editRule = new EditRule();
         assertEquals(editRule.getDisplayName(), "");
         assertEquals(editRule.getSummandExpression(), "");
         assertFalse(editRule.isBypassEnabled());
@@ -50,20 +50,20 @@ public class EditRuleTest
         builtMatcher.setBooleanExpression("true");
         matchers.add(builtMatcher);
         final String summandExpression = "summandExpression";
-        final boolean required = true;
+        final boolean bypassEnabled = true;
         final String displayName = "Test Name";
                 
-        final EditRule editRule = new EditRule(fAdminService);
+        final EditRule editRule = new EditRule();
         editRule.setSummandExpression(summandExpression);
         editRule.getMatchers().add(builtMatcher);
-        editRule.setBypassEnabled(required);
+        editRule.setBypassEnabled(bypassEnabled);
         editRule.setDisplayName(displayName);
-        final Rule createdRule = editRule.buildNew();
+        final Rule createdRule = editRule.buildNew(fAdminService);
         
         // Verification
         assertEquals(summandExpression, createdRule.getSummandExpression());
         assertEquals(displayName, createdRule.getDisplayName());
-        assertEquals(required, !createdRule.isRequired());
+        assertEquals(bypassEnabled, !createdRule.isBypassEnabled());
         assertEquals(matchers.get(0).buildNew(fAdminService), createdRule.getMatchers().get(0));
     }
 }

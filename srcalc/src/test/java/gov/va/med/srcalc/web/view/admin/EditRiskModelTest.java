@@ -1,7 +1,6 @@
 package gov.va.med.srcalc.web.view.admin;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,7 +23,8 @@ import gov.va.med.srcalc.util.DisplayNameConditions;
 
 import org.junit.Test;
 
-public class EditRiskModelTest {
+public class EditRiskModelTest
+{
     private final static MockAdminService fAdminService = new MockAdminService();
     
     /**

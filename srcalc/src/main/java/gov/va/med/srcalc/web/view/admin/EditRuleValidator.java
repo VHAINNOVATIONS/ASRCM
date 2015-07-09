@@ -28,7 +28,7 @@ public class EditRuleValidator implements Validator
 
     /**
      * Validates the given EditRule object, using error codes from {@link ValidationCodes}.
-     * @param obj the object to validate. Must be an instance of {@link EditRule}.
+     * @param target the object to validate. Must be an instance of {@link EditRule}.
      * @throws ClassCastException if the given object is not an EditRule
      */
     @Override
@@ -54,6 +54,16 @@ public class EditRuleValidator implements Validator
         catch(final ParseException e)
         {
             errors.rejectValue("summandExpression", ValidationCodes.INVALID_EXPRESSION);
+        }
+        
+        // Reject if too many categories have been added.
+        if (editRule.getMatchers().size() > EditRule.MAX_MATCHERS)
+        {
+            errors.rejectValue(
+                    "matchers",
+                    ValidationCodes.TOO_LONG,
+                    new Object[] {EditRule.MAX_MATCHERS},
+                    "too many matchers specified");
         }
         
         //Validate each value matcher expression

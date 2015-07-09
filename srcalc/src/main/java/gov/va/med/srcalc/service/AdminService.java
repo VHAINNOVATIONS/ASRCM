@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.transaction.annotation.Transactional;
 
 import gov.va.med.srcalc.domain.model.*;
 
@@ -47,6 +46,15 @@ public interface AdminService extends ModelInspectionService
      * @throws InvalidIdentifierException if no such Rule exists
      */
     public Rule getRule(final String displayName) throws InvalidIdentifierException;
+    
+    /**
+     * Returns the {@link Rule} with the given unique id for editing. Note that
+     * the returned object must be given back to {@link #saveRule(Rule)}
+     * to persist any changes.
+     * @throws InvalidIdentifierException if no such Rule exists
+     */
+    public Rule getRuleById(final int id) throws InvalidIdentifierException;
+    
     
     /**
      * Saves the given rule to the persistent store. The given rule may be

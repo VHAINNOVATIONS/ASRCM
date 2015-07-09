@@ -2,29 +2,19 @@ package gov.va.med.srcalc.web.view.admin;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
-import gov.va.med.srcalc.db.*;
 import gov.va.med.srcalc.domain.model.SampleModels;
-import gov.va.med.srcalc.service.DefaultAdminService;
 import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.ValidationCodes;
 
 public class EditRuleValidatorTest
 {
-    private final DefaultAdminService fAdminService = new DefaultAdminService(
-            mock(VariableDao.class), 
-            mock(RiskModelDao.class),
-            mock(SpecialtyDao.class),
-            mock(RuleDao.class),
-            mock(ProcedureDao.class));
-    
     private static final String INVALID_EXPRESSION = "Invalid asdfjasidfj@#@#%";
     
     private static final String DUMMY_VAR_KEY = "dummyKey";
@@ -35,7 +25,7 @@ public class EditRuleValidatorTest
     private EditRule makeEditRule()
     {
         // Use the predefined sample rule
-        return new EditRule(fAdminService, SampleModels.ageAndFsRule());
+        return new EditRule(SampleModels.ageAndFsRule());
     }
     
     /**

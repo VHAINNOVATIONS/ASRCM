@@ -18,7 +18,7 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
     
     /**
      * A regular expression that defines a valid units string. Same as
-     * {@link Variable#VALID_DISPLAY_NAME_REGEX}.
+     * {@link DisplayNameConditions#VALID_DISPLAY_NAME_REGEX}.
      */
     public static final String VALID_UNITS_REGEX = DisplayNameConditions.VALID_DISPLAY_NAME_REGEX;
     

@@ -1,14 +1,18 @@
 package gov.va.med.srcalc.web.controller.admin;
 
 import static org.hamcrest.CoreMatchers.isA;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import gov.va.med.srcalc.domain.model.Rule;
+import gov.va.med.srcalc.domain.model.SampleModels;
+import gov.va.med.srcalc.domain.model.ValueMatcher;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.test.util.IntegrationTest;
-import gov.va.med.srcalc.web.view.admin.EditRule;
+import gov.va.med.srcalc.web.view.admin.EditExistingRule;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,15 +26,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-
 /**
- * Tests the NewRuleController
+ * Tests the EditRuleController
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.
 @ContextConfiguration({"/srcalc-context.xml", "/srcalc-controller.xml", "/test-context.xml"})
 @Transactional // run each test in its own (rolled-back) transaction
-public class NewRuleControllerIT extends IntegrationTest
+public class EditRuleControllerIT extends IntegrationTest
 {
     @Autowired
     WebApplicationContext fWac;
@@ -39,10 +42,9 @@ public class NewRuleControllerIT extends IntegrationTest
     AdminService fAdminService;
     
     private MockMvc fMockMvc;
-    
-    private static final String DISPLAY_NAME = "Test Rule";
+
     private static final String INVALID_EXPRESSION = "true asdf 1234 %^^#%";
-    
+
     @Before
     public void setup()
     {
@@ -50,65 +52,51 @@ public class NewRuleControllerIT extends IntegrationTest
     }
     
     @Test
-    public final void testNewRuleValid() throws Exception
+    public final void testEditRuleValid() throws Exception
     {
-        fMockMvc.perform(get(NewRuleController.BASE_URL))
+        fMockMvc.perform(get(EditRuleController.BASE_URL, 1))
             .andExpect(status().isOk())
-            .andExpect(model().attribute(
-                    BaseRuleController.ATTRIBUTE_RULE, isA(EditRule.class)));
-        
-        fMockMvc.perform(post(NewRuleController.BASE_URL)
-                .param("displayName", DISPLAY_NAME)
-                .param("required", "true")
-                .param("summandExpression", "#coefficient")
-                .param("newVariableKey", "")
+            .andExpect(model().attribute("rule", isA(EditExistingRule.class)));
+
+        final String displayName = "Test Rule";
+        final String summand = "#coefficient";
+        fMockMvc.perform(post(EditRuleController.BASE_URL, 1)
+                .param("displayName", displayName)
+                .param("summandExpression", summand)
                 .param("matchers[0].enabled", "true")
                 .param("matchers[0].variableKey", "age")
                 .param("matchers[0].booleanExpression", "true")
-                .param("submitButton", "submit"))
+                .param("submitButton", ""))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl(AdminHomeController.BASE_URL)).andReturn();
-        fAdminService.getRule(DISPLAY_NAME);
+            .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+        final Rule rule = fAdminService.getRuleById(1);
+        assertEquals(displayName, rule.getDisplayName());
+        assertEquals(summand, rule.getSummandExpression());
+        final ValueMatcher matcher = new ValueMatcher(SampleModels.ageVariable(), "true", true);
+        assertEquals(matcher, rule.getMatchers().get(0));
     }
     
     @Test
-    public final void testNewRuleNoSummand() throws Exception
+    public final void testEditRuleInvalidSummand() throws Exception
     {
-        fMockMvc.perform(post(NewRuleController.BASE_URL)
-                .param("displayName", DISPLAY_NAME)
-                .param("required", "true")
-                .param("newVariableKey", "")
-                .param("submitButton", "submit"))
-            .andExpect(model().attributeHasErrors(BaseRuleController.ATTRIBUTE_RULE));
-    }
-    
-    @Test
-    public final void testNewRuleInvalidSummand() throws Exception
-    {
-        fMockMvc.perform(post(NewRuleController.BASE_URL)
-                .param("displayName", DISPLAY_NAME)
-                .param("required", "true")
+        fMockMvc.perform(post(EditRuleController.BASE_URL, 1)
+                .param("displayName", "TestRule")
                 .param("summandExpression", INVALID_EXPRESSION)
-                .param("newVariableKey", "")
-                .param("matchers[0].enabled", "true")
-                .param("matchers[0].variableKey", "age")
-                .param("matchers[0].booleanExpression", "true")
                 .param("submitButton", "submit"))
-            .andExpect(model().attributeHasErrors(BaseRuleController.ATTRIBUTE_RULE));
+            .andExpect(model().attributeErrorCount(NewRuleController.ATTRIBUTE_RULE, 1));
     }
     
     @Test
-    public final void testNewRuleInvalidMatcher() throws Exception
+    public final void testEditRuleInvalidMatcher() throws Exception
     {
-        fMockMvc.perform(post(NewRuleController.BASE_URL)
-                .param("displayName", DISPLAY_NAME)
+        fMockMvc.perform(post(EditRuleController.BASE_URL, 1)
+                .param("displayName", "TestRule")
+                .param("summandExpression", INVALID_EXPRESSION)
                 .param("required", "true")
-                .param("summandExpression", "#coefficient")
-                .param("newVariableKey", "")
                 .param("matchers[0].enabled", "true")
                 .param("matchers[0].variableKey", "age")
                 .param("matchers[0].booleanExpression", INVALID_EXPRESSION)
                 .param("submitButton", "submit"))
-            .andExpect(model().attributeHasErrors(BaseRuleController.ATTRIBUTE_RULE));
+            .andExpect(model().attributeErrorCount(NewRuleController.ATTRIBUTE_RULE, 2));
     }
 }
