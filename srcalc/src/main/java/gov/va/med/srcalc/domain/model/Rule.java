@@ -37,7 +37,7 @@ public final class Rule
     private int fId;
     private List<ValueMatcher> fMatchers;
     private Expression fSummandExpression;
-    private boolean fRequired;
+    private boolean fBypassEnabled;
     private String fDisplayName;
     
     /**
@@ -59,11 +59,11 @@ public final class Rule
      */
     public Rule(
             final List<ValueMatcher> matchers, final String summandExpression,
-            final boolean required, final String displayName)
+            final boolean bypassEnabled, final String displayName)
     {
         fMatchers = Objects.requireNonNull(matchers);
         fSummandExpression = parseSummandExpression(summandExpression);
-        fRequired = required;
+        fBypassEnabled = bypassEnabled;
         fDisplayName = displayName;
     }
     
@@ -117,7 +117,7 @@ public final class Rule
         return fSummandExpression.getExpressionString();
     }
     
-    void setSummandExpression(final String summandExpression)
+    public void setSummandExpression(final String summandExpression)
     {
         this.fSummandExpression = parseSummandExpression(summandExpression);
     }
@@ -126,14 +126,14 @@ public final class Rule
      * Should we bypass this rule if values are missing.
      */
     @Basic
-    public boolean isRequired()
+    public boolean isBypassEnabled()
     {
-        return fRequired;
+        return fBypassEnabled;
     }
     
-    void setRequired(final boolean required)
+    public void setBypassEnabled(final boolean bypassEnabled)
     {
-        fRequired = required;
+        fBypassEnabled = bypassEnabled;
     }
     
     /**
@@ -155,7 +155,7 @@ public final class Rule
      * {@link DisplayNameConditions#DISPLAY_NAME_MAX} characters, or does not match
      * {@link DisplayNameConditions#VALID_DISPLAY_NAME_REGEX}
      */
-    void setDisplayName(final String displayName)
+    public void setDisplayName(final String displayName)
     {
         Preconditions.requireWithin(displayName, 1, DisplayNameConditions.DISPLAY_NAME_MAX);
         Preconditions.requireMatches(displayName, "displayName", DisplayNameConditions.VALID_DISPLAY_NAME_PATTERN);
@@ -164,7 +164,9 @@ public final class Rule
     
     /**
      * Parse the designated expression into a SPEL Expression.
-     * @param summandExpression The expression to be parsed into a summand expression.
+     * 
+     * @param summandExpression
+     *            The expression to be parsed into a summand expression.
      * @return A valid, parsed SPEL Expression
      */
     private Expression parseSummandExpression(final String summandExpression)
@@ -172,8 +174,7 @@ public final class Rule
         final SpelExpressionParser parser = new SpelExpressionParser();
         try
         {
-            return parser.parseExpression(
-                    Objects.requireNonNull(summandExpression));
+            return parser.parseExpression(Objects.requireNonNull(summandExpression));
         }
         catch (final ParseException ex)
         {
@@ -242,20 +243,20 @@ public final class Rule
             
             // Will return null if there is no value for the given variable.
             final Value matchedValue = context.getValues().get(condition.getVariable());
-            if(matchedValue == null)
+            if (matchedValue == null)
             {
-                if(isRequired())
+                if (!isBypassEnabled())
                 {
-                    missingValues.getMissingValues().add(new MissingValueException(
-                            "Missing value for " + condition.getVariable().getKey(),
-                            condition.getVariable()));
+                    missingValues.getMissingValues().add(
+                            new MissingValueException("Missing value for "
+                                    + condition.getVariable().getKey(), condition.getVariable()));
                     continue;
                 }
-                // If the variable is not required, there is no coefficient added to the calculation.
+                // If the variable is not required, there is no coefficient added to the
+                // calculation.
                 // This essentially makes the rule evaluate to false;
                 return 0.0;
             }
-            
         }
         if(missingValues.getMissingValues().size() > 0)
         {
@@ -290,7 +291,7 @@ public final class Rule
                 .add("id", fId)
                 // fSummandExpression has a bad toString(), use getSummandExpression()
                 .add("summandExpression", getSummandExpression())
-                .add("required", fRequired)
+                .add("required", fBypassEnabled)
                 .add("matchers", fMatchers)
                 .toString();
     }

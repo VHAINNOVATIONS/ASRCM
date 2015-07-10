@@ -19,7 +19,8 @@ import gov.va.med.srcalc.service.ModelInspectionService;
  */
 public class EditRule
 {
-    private ModelInspectionService fModelService;
+    public static final int MAX_MATCHERS = 10;
+    
     private final List<ValueMatcherBuilder> fMatchers;
     private String fSummandExpression;
     private boolean fBypassEnabled;
@@ -29,12 +30,9 @@ public class EditRule
     /**
      * Constructs an instance with default values and an empty list of 
      * ValueMatcherBuilder objects.
-     * @param modelService to provide reference data (e.g., getting a variable
-     * that is tied to a ValueMatcher) to the user
      */
-    public EditRule(final ModelInspectionService modelService) 
+    public EditRule() 
     {
-        fModelService = modelService;
         fMatchers = new ArrayList<ValueMatcherBuilder>();
         fSummandExpression = "";
         fBypassEnabled = false;
@@ -45,11 +43,9 @@ public class EditRule
     /**
      * Constructs an instance that is filled with the same information that the rule
      * 
-     * @param modelService to provide reference data (e.g., getting a variable
-     * that is tied to a ValueMatcher) to the user
      * @param rule the rule to copy into this EditRule
      */
-    public EditRule(final ModelInspectionService modelService, final Rule rule)
+    public EditRule(final Rule rule)
     {
         // Copy the value matchers
         fMatchers = new ArrayList<ValueMatcherBuilder>(rule.getMatchers().size());
@@ -58,7 +54,7 @@ public class EditRule
             fMatchers.add(ValueMatcherBuilder.fromPrototype(matcher));
         }
         fSummandExpression = rule.getSummandExpression();
-        fBypassEnabled = rule.isRequired();
+        fBypassEnabled = rule.isBypassEnabled();
         fDisplayName = rule.getDisplayName();
         fNewVariableKey = null;
     }
@@ -123,6 +119,14 @@ public class EditRule
     {
         fNewVariableKey = newVariableKey;
     }
+    
+    /**
+     * Returns true if this object is editing an existing rule.
+     */
+    public boolean isEditingRule()
+    {
+        return false;
+    }
 
     /**
      * Returns a validator for an EditRule
@@ -151,12 +155,13 @@ public class EditRule
      * @throws InvalidIdentifierException if one of the variable keys present in the builder
      * does not exist in the database.
      */
-    public Rule buildNew() throws InvalidIdentifierException
+    public Rule buildNew(final ModelInspectionService adminService)
+            throws InvalidIdentifierException
     {
         final List<ValueMatcher> matchers = new ArrayList<ValueMatcher>(fMatchers.size());
         for(final ValueMatcherBuilder builder: fMatchers)
         {
-            matchers.add(builder.buildNew(fModelService));
+            matchers.add(builder.buildNew(adminService));
         }
         // Negate fBypassEnabled because our internal Rule stores a required field, but
         // the user sees references to bypassing the rule if it is missing values.

@@ -41,6 +41,15 @@ public interface AdminService extends ModelInspectionService
     public Rule getRule(final String displayName) throws InvalidIdentifierException;
     
     /**
+     * Returns the {@link Rule} with the given unique id for editing. Note that
+     * the returned object must be given back to {@link #saveRule(Rule)}
+     * to persist any changes.
+     * @throws InvalidIdentifierException if no such Rule exists
+     */
+    public Rule getRuleById(final int id) throws InvalidIdentifierException;
+    
+    
+    /**
      * Saves the given rule to the persistent store. The given rule may be
      * brand-new or one previously loaded by {@link #getRule(String)}.
      * @param rule the rule to save

@@ -9,16 +9,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import gov.va.med.srcalc.domain.model.SampleModels;
-import gov.va.med.srcalc.service.MockModelService;
-import gov.va.med.srcalc.service.ModelInspectionService;
 import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.ValidationCodes;
 
 public class EditRuleValidatorTest
 {
-    private final ModelInspectionService fAdminService = new MockModelService();
-    
     private static final String INVALID_EXPRESSION = "Invalid asdfjasidfj@#@#%";
     
     private static final String DUMMY_VAR_KEY = "dummyKey";
@@ -29,7 +25,7 @@ public class EditRuleValidatorTest
     private EditRule makeEditRule()
     {
         // Use the predefined sample rule
-        return new EditRule(fAdminService, SampleModels.ageAndFsRule());
+        return new EditRule(SampleModels.ageAndFsRule());
     }
     
     /**

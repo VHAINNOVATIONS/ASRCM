@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.calculation.ValueRetriever;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 
 import com.google.common.base.Optional;
 
@@ -52,7 +53,7 @@ public interface Variable
     /**
      * Returns a String suitable for display to humans. Will be no longer than
      * {@link DisplayNameConditions#DISPLAY_NAME_MAX} and will only contain {@link
-     * DisplayNameConditions#VALID_DISPLAY_NAME_CHARACTERS valid characters}.
+     * DisplayNameConditions#VALID_DISPLAY_NAME_CHARACTERS} valid characters.
      */
     public String getDisplayName();
 

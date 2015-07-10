@@ -3,17 +3,18 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
 <c:choose>
-    <c:when test="${isNewRule}">
-        <c:set var="pageTitle" value="New Rule"/>
+    <c:when test="${rule.editingRule}">
+        <c:set var="pageTitle" value="Edit Rule"/>
     </c:when>
     <c:otherwise>
-        <c:set var="pageTitle" value="Edit Rule"/>
+        <c:set var="pageTitle" value="New Rule"/>
     </c:otherwise>
 </c:choose>
 
 <srcalc:adminPage title="${pageTitle}">
 <section>
     <h3>${pageTitle} </h3>
+    <c:url var="fullSaveUrl" value="${saveUrl}"/>
     <form:form id="ruleEditForm" cssClass="srcalcForm attributeEditForm"
         method="post" action="${fullSaveUrl}" commandName="rule">
     Display name: <form:input path="displayName" size="80"/>
@@ -51,7 +52,7 @@
             <form:errors cssClass="error" path="${matcherPath}.*" />
             <p>${availableVariables}</p>
             <button class="btn-link" type="submit"
-                name="submitButton" value="remove${i}">Remove Variable</button>
+                name="removeButton" value="${i}">Remove Variable</button>
         </li>
         <c:set var="i" value="${i+1}" />
     </c:forEach>
@@ -62,7 +63,7 @@
         <form:options items="${allVariableKeys}"/>
     </form:select>
     <button class="btn-link" type="submit"
-        name="submitButton" value="newMatcher">Add New Variable</button>
+        name="newMatcherButton" value="newMatcher">Add New Variable</button>
     <div class="actionButtons">
     <ol>
     <li><c:url var="cancelUrl" value="/admin" />

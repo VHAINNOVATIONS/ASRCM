@@ -62,7 +62,7 @@ public interface VistaProcedureCaller
      * @param duz the calling user's DUZ
      * @param patientDfn the associated patient's DFN
      * @param labNames the list of potential lab names to retrieve results for
-     * @return
+     * @return the VistA response as a String.
      */
     public String doRetrieveLabs(
             final String duz,

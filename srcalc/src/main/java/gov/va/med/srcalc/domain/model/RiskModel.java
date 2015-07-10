@@ -36,14 +36,14 @@ public class RiskModel implements Comparable<RiskModel>
     /**
      * English description of the valid display name characters for readable
      * error messages.
-     * @see #VALID_DISPLAY_NAME_REGEX
+     * @see DisplayNameConditions#VALID_DISPLAY_NAME_REGEX
      */
     public static final String VALID_MODEL_NAME_CHARACTERS = DisplayNameConditions.VALID_DISPLAY_NAME_CHARACTERS;
     
     public static final String VALID_MODEL_NAME_REGEX = DisplayNameConditions.VALID_DISPLAY_NAME_REGEX;
 
     /**
-     * Precompiled version of {@link RiskModel#VALID_DISPLAY_NAME_REGEX} for
+     * Precompiled version of {@link DisplayNameConditions#VALID_DISPLAY_NAME_REGEX} for
      * efficiency.
      */
     public static final Pattern VALID_MODEL_NAME_PATTERN =
