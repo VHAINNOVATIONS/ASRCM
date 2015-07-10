@@ -12,9 +12,8 @@ public class SpecialtyTest
     @Test
     public final void testToString()
     {
-        final String toStr = "Specialty: Name=Jack-of-all-trades, ID=0";
-        Specialty s = new Specialty(59, "Jack-of-all-trades");
-        assertEquals(toStr, s.toString());
+        final String name = "Jack-of-all-trades";
+        assertEquals(name, new Specialty(59, name).toString());
     }
     
     @Test

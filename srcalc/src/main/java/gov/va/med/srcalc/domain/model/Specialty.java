@@ -168,7 +168,7 @@ public final class Specialty implements Serializable
     @Override
     public String toString()
     {
-        return String.format("Specialty: Name=%s, ID=%d", fName, fId );
+        return fName;
     }
     
     @Override
