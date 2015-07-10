@@ -63,7 +63,7 @@ public class EditRuleTest
         // Verification
         assertEquals(summandExpression, createdRule.getSummandExpression());
         assertEquals(displayName, createdRule.getDisplayName());
-        assertEquals(bypassEnabled, !createdRule.isBypassEnabled());
+        assertEquals(bypassEnabled, createdRule.isBypassEnabled());
         assertEquals(matchers.get(0).buildNew(fAdminService), createdRule.getMatchers().get(0));
     }
 }

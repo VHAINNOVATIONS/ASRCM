@@ -162,9 +162,7 @@ public class EditRule
         {
             matchers.add(builder.buildNew(adminService));
         }
-        // Negate fBypassEnabled because our internal Rule stores a required field, but
-        // the user sees references to bypassing the rule if it is missing values.
-        final Rule rule = new Rule(matchers, fSummandExpression, !fBypassEnabled, fDisplayName);
+        final Rule rule = new Rule(matchers, fSummandExpression, fBypassEnabled, fDisplayName);
         return rule;
     }
 }
