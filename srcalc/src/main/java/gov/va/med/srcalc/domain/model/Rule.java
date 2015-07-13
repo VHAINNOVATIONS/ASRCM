@@ -9,6 +9,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -34,6 +36,8 @@ import com.google.common.collect.ImmutableSet;
 @Table(name = "rule")
 public final class Rule
 {
+    private static final Logger fLogger = LoggerFactory.getLogger(Rule.class);
+
     private int fId;
     private List<ValueMatcher> fMatchers;
     private Expression fSummandExpression;
@@ -230,6 +234,8 @@ public final class Rule
      */
     public double apply(final EvaluationContext context) throws MissingValuesException
     {
+        fLogger.debug("Evaluating {}", this);
+
         /* Match all the values */
         final StandardEvaluationContext ec = new StandardEvaluationContext();
         final MissingValuesException missingValues = new MissingValuesException(
@@ -238,23 +244,21 @@ public final class Rule
         // Twice to actually evaluate the value matchers.
         for (final ValueMatcher condition : fMatchers)
         {
-            // TODO: replace each expression's "root object" with the actual
-            // value instead of the Value wrapper object.
-            
+            final Variable var = condition.getVariable();
             // Will return null if there is no value for the given variable.
-            final Value matchedValue = context.getValues().get(condition.getVariable());
+            final Value matchedValue = context.getValues().get(var);
             if (matchedValue == null)
             {
                 if (!isBypassEnabled())
                 {
-                    missingValues.getMissingValues().add(
-                            new MissingValueException("Missing value for "
-                                    + condition.getVariable().getKey(), condition.getVariable()));
+                    missingValues.getMissingValues().add(new MissingValueException(
+                            "Missing value for " + var.getKey(), var));
                     continue;
                 }
                 // If the variable is not required, there is no coefficient added to the
                 // calculation.
                 // This essentially makes the rule evaluate to false;
+                fLogger.debug("Bypassing rule due to missing value for {}", var);
                 return 0.0;
             }
         }
@@ -271,6 +275,7 @@ public final class Rule
             ec.setVariables(matchedValues);
             if (!condition.evaluate(ec, matchedValue))
             {
+                fLogger.debug("{} evaluated false. Rule not firing.", condition);
                 return 0.0;
             }
         }
