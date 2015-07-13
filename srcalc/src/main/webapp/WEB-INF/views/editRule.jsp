@@ -31,6 +31,7 @@
     <%-- For each variable, give the type of variable, and a short description of the 
     options available. (i.e. range or categories)--%>
     <h3>Required Values</h3>
+    <form:errors path ="matchers" cssClass="error"/>
     <ul id="matchersList">
     <%--Start building a list of available variables. --%>
     <c:set var="availableVariables" value="Available variables:"/>
