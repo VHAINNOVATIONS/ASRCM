@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 /**
- * Gang-of-Fource Visitor pattern for {@link ModelTerm}s. Lets other classes
+ * Gang-of-Four Visitor pattern for {@link ModelTerm}s. Lets other classes
  * define new operations on the ModelTerm class hierarchy without modifying it.
  */
 public interface ModelTermVisitor

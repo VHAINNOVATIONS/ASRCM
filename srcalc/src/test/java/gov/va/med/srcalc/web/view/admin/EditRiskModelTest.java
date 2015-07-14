@@ -11,7 +11,6 @@ import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.util.DisplayNameConditions;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 
 import org.junit.Test;
 
@@ -48,9 +47,19 @@ public class EditRiskModelTest
     {
         final RiskModel riskModel = createRiskModel("Thoracic 30-day Mortality");
         final EditRiskModel editRiskModel = EditRiskModel.fromRiskModel(riskModel, fModelService);
-        final ImmutableSet<ModelTerm> existingTerms = riskModel.getTerms();
+        final ImmutableList<EditModelTerm> newTerms = ImmutableList.of(
+                EditModelTerm.forConstant(0.23f),
+                EditModelTerm.forVariable("dnr", 12.3f),
+                EditModelTerm.forRule(SampleModels.ageAndFsRule().getDisplayName(), 0.5f));
+        final HashSet<ModelTerm> expectedTerms = new HashSet<>();
+        for (final EditModelTerm newTerm : newTerms)
+        {
+            expectedTerms.add(newTerm.build(fModelService));
+        }
         
         editRiskModel.setModelName("NewModelName");
+        editRiskModel.getTerms().clear();
+        editRiskModel.getTerms().addAll(newTerms);
         
         assertEquals("NewModelName", editRiskModel.getModelName());
         assertEquals(  DisplayNameConditions.DISPLAY_NAME_MAX, editRiskModel.getMaxDisplayNameLength() );
@@ -58,7 +67,7 @@ public class EditRiskModelTest
         editRiskModel.applyChanges(riskModel, fModelService);
         
         assertEquals("NewModelName", riskModel.getDisplayName());
-        assertEquals(existingTerms, riskModel.getTerms());
+        assertEquals(expectedTerms, riskModel.getTerms());
     }
 
     @Test
@@ -67,7 +76,7 @@ public class EditRiskModelTest
         /* Setup */
         final RiskModel riskModel = createRiskModel("Thoracic 30-day Mortality");
         final float constant = 0.34f;
-        riskModel.getConstantTerm().setCoefficient(constant);
+        riskModel.setConstantTerm(new ConstantTerm(constant));
         final EditRiskModel editRiskModel = EditRiskModel.fromRiskModel(riskModel, fModelService);
         // Constant first, then the Rules and then the rest
         final ImmutableList<ModelTermSummary> expectedSummaries = ImmutableList.of(

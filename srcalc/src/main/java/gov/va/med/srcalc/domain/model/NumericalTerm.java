@@ -40,7 +40,12 @@ public final class NumericalTerm extends SingleVariableTerm
         return fVariable;
     }
 
-    public void setVariable(NumericalVariable variable)
+    /**
+     * For reflection-based construction only.
+     * @deprecated because code should not explicitly call this method
+     */
+    @Deprecated
+    void setVariable(final NumericalVariable variable)
     {
         fVariable = Objects.requireNonNull(variable);
     }

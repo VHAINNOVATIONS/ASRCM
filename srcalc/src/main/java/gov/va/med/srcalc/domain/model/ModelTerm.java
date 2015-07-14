@@ -11,7 +11,9 @@ import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 /**
- * A single summation term in a risk model.
+ * <p>A single summation term in a risk model.</p>
+ * 
+ * <p>Presents an immutable public interface.</p>
  */
 @MappedSuperclass
 public abstract class ModelTerm
@@ -40,7 +42,12 @@ public abstract class ModelTerm
         return fCoefficient;
     }
 
-    public void setCoefficient(float coefficient)
+    /**
+     * For reflection-based construction only.
+     * @deprecated because code should not explicitly call this method
+     */
+    @Deprecated
+    void setCoefficient(float coefficient)
     {
         fCoefficient = coefficient;
     }

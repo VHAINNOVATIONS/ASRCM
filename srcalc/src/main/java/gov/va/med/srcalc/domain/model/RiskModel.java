@@ -272,6 +272,7 @@ public class RiskModel implements Comparable<RiskModel>
         fLogger.debug("Replacing all model terms with {}", newTerms);
         
         // First clear all existing terms.
+        setConstantTerm(new ConstantTerm(0.0f));
         fBooleanTerms.clear();
         fDerivedTerms.clear();
         fDiscreteTerms.clear();

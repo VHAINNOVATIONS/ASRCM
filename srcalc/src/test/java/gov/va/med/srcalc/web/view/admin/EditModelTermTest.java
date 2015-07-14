@@ -1,15 +1,11 @@
 package gov.va.med.srcalc.web.view.admin;
 
 import static org.junit.Assert.*;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.service.MockModelService;
-import gov.va.med.srcalc.util.SimpleFieldError;
+import gov.va.med.srcalc.test.util.SimpleFieldError;
+import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.util.ValidationCodes;
 import gov.va.med.srcalc.web.view.admin.EditModelTerm.TermType;
 
@@ -17,7 +13,6 @@ import org.junit.Test;
 import org.springframework.validation.*;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 
 /**
  * Tests {@link EditModelTerm}, including validation since the validators are not exposed
@@ -39,29 +34,6 @@ public class EditModelTermTest
                 new BeanPropertyBindingResult(editTerm, "editTerm");
         validator.validate(editTerm, errors);
         return errors;
-    }
-    
-    private static Set<SimpleFieldError> toSimpleErrors(final Collection<FieldError> errors)
-    {
-        final HashSet<SimpleFieldError> simpleErrors = new HashSet<>(errors.size());
-        for (final FieldError error: errors)
-        {
-            simpleErrors.add(SimpleFieldError.fromFieldError(error));
-        }
-        return simpleErrors;
-    }
-    
-    /**
-     * Asserts that the given Errors object has only given given errors.
-     */
-    private static void assertOnlyTheseErrors(
-            final Errors errorsObject,
-            final SimpleFieldError... simpleErrors)
-    {
-        assertEquals(ImmutableList.of(), errorsObject.getGlobalErrors());
-        assertEquals(
-                ImmutableSet.copyOf(simpleErrors),
-                toSimpleErrors(errorsObject.getFieldErrors()));
     }
     
     @Test
@@ -91,7 +63,7 @@ public class EditModelTermTest
         
         // Validation
         final Errors errors = validate(editTerm);
-        assertOnlyTheseErrors(
+        TestHelpers.assertOnlyTheseErrors(
                 errors,
                 new SimpleFieldError("key", ValidationCodes.NOT_APPLICABLE));
     }
@@ -104,7 +76,7 @@ public class EditModelTermTest
         
         // Validation
         final Errors errors = validate(editTerm);
-        assertOnlyTheseErrors(
+        TestHelpers.assertOnlyTheseErrors(
                 errors,
                 new SimpleFieldError("optionValue", ValidationCodes.NOT_APPLICABLE));
     }
@@ -145,7 +117,7 @@ public class EditModelTermTest
         
         // Validation
         final Errors errors = validate(editTerm);
-        assertOnlyTheseErrors(
+        TestHelpers.assertOnlyTheseErrors(
                 errors, new SimpleFieldError("key", ValidationCodes.NO_VALUE));
     }
     
@@ -157,7 +129,7 @@ public class EditModelTermTest
         
         // Validation
         final Errors errors = validate(editTerm);
-        assertOnlyTheseErrors(
+        TestHelpers.assertOnlyTheseErrors(
                 errors,
                 new SimpleFieldError("optionValue", ValidationCodes.NOT_APPLICABLE));
     }
@@ -169,7 +141,7 @@ public class EditModelTermTest
         
         // Validation
         final Errors errors = validate(editTerm);
-        assertOnlyTheseErrors(
+        TestHelpers.assertOnlyTheseErrors(
                 errors, new SimpleFieldError("optionValue", ValidationCodes.NO_VALUE));
     }
     
@@ -204,7 +176,7 @@ public class EditModelTermTest
         
         // Validation
         final Errors errors = validate(editTerm);
-        assertOnlyTheseErrors(
+        TestHelpers.assertOnlyTheseErrors(
                 errors, new SimpleFieldError("key", ValidationCodes.NO_VALUE));
     }
     
@@ -217,7 +189,7 @@ public class EditModelTermTest
         
         // Validation
         final Errors errors = validate(editTerm);
-        assertOnlyTheseErrors(
+        TestHelpers.assertOnlyTheseErrors(
                 errors, new SimpleFieldError("optionValue", ValidationCodes.NOT_APPLICABLE));
     }
     

@@ -12,8 +12,9 @@ import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 /**
- * <p>A {@link ModelTerm} derived via a {@link Rule}. A common use-case is
- * a summand added based on the values of two different variables.</p>
+ * <p>A {@link ModelTerm} derived via a {@link Rule}. A common use-case is a summand added
+ * based on the values of two different variables. Presents an immutable public
+ * interface.</p>
  * 
  * <p>Per Effective Java Item 17, this class is marked final because it was not
  * designed for inheritance.</p>
@@ -24,7 +25,8 @@ public final class DerivedTerm extends ModelTerm
     private Rule fRule;
     
     /**
-     * Mainly intended for reflection-based construction.
+     * Intended only for reflection-based construction. Business code should call
+     * {@link #DerivedTerm(float, Rule)}.
      */
     DerivedTerm()
     {
@@ -33,7 +35,7 @@ public final class DerivedTerm extends ModelTerm
     public DerivedTerm(final float coefficient, final Rule rule)
     {
         super(coefficient);
-        setRule(rule);
+        setRuleInternal(rule);
     }
 
     /**
@@ -46,12 +48,22 @@ public final class DerivedTerm extends ModelTerm
     }
     
     /**
-     * Set the current rule for this term.
-     * @param rule A {@link Rule}.
+     * Sets the rule, ensuring non-null.
      */
-    void setRule(final Rule rule)
+    private void setRuleInternal(final Rule rule)
     {
         this.fRule = Objects.requireNonNull(rule);
+    }
+    
+    /**
+     * Set the rule for this term. For reflection-based construction only.
+     * @param rule A {@link Rule}.
+     * @deprecated because code should not explicitly call this method
+     */
+    @Deprecated
+    void setRule(final Rule rule)
+    {
+        setRuleInternal(rule);
     }
 
     @Transient

@@ -147,6 +147,8 @@ public class EditRiskModelController
             final BindingResult bindingResult)
                     throws InvalidIdentifierException
     {
+        fLogger.debug("Handling request to save RiskModel: {}", saveModel);
+        
         // Spring has already bound the user input to saveModel; now validate
         //
         EditRiskModelValidator validator = new EditRiskModelValidator(fAdminService);

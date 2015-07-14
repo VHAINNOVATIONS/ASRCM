@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.util;
+package gov.va.med.srcalc.test.util;
 
 import java.util.Objects;
 

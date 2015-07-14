@@ -1,6 +1,10 @@
 package gov.va.med.srcalc.web.view.admin;
 
+import java.util.HashSet;
+
+import gov.va.med.srcalc.domain.model.ModelTerm;
 import gov.va.med.srcalc.domain.model.RiskModel;
+import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.service.ModelInspectionService;
 import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.ValidationCodes;
@@ -45,14 +49,40 @@ public class EditRiskModelValidator implements Validator
                 e, "modelName", RiskModel.VALID_MODEL_NAME_PATTERN,
                 new Object[] {RiskModel.VALID_MODEL_NAME_CHARACTERS});        
         
-        // Validate each EditModelTerm.
+        /* Validate each EditModelTerm. */
+        
         final EditRiskModel target = (EditRiskModel)obj;
+
+        // Record a temporary version of the built terms for duplicate checking.
+        final HashSet<ModelTerm> builtTerms = new HashSet<>(target.getTerms().size());
+
         for (int i = 0; i < target.getTerms().size(); ++i)
         {
             final EditModelTerm term = target.getTerms().get(i);
-            e.pushNestedPath(String.format("terms[%d]", i));
+            final String nestedPath = String.format("terms[%d]", i);
+            
+            // Call the term's validator
+            e.pushNestedPath(nestedPath);
             term.getValidator(fModelService).validate(term, e);
             e.popNestedPath();
+            
+            // If there are no validation errors, also check for duplicate terms.
+            if (!e.hasErrors())
+            {
+                try
+                {
+                    if (!builtTerms.add(term.build(fModelService)))
+                    {
+                        e.rejectValue(
+                                nestedPath, ValidationCodes.DUPLICATE_VALUE, "duplicate");
+                    }
+                }
+                catch (final InvalidIdentifierException ex)
+                {
+                    throw new RuntimeException(
+                            "Programming error: valid term threw Exception.", ex);
+                }
+            }
         }
     }
 }

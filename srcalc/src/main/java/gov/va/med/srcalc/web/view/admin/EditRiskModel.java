@@ -14,6 +14,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Ordering;
 
@@ -30,6 +31,9 @@ public final class EditRiskModel implements Comparable<EditRiskModel>
     
     private final ArrayList<EditModelTerm> fTerms;
     
+    /**
+     * Constructs an instance with default values: an empty model name and no terms.
+     */
     public EditRiskModel()
     {
         fModelName = "";
@@ -139,6 +143,8 @@ public final class EditRiskModel implements Comparable<EditRiskModel>
      * Update the target RiskModel with the current edits.
      * @throws InvalidIdentifierException if any of the terms references a non-existent
      * Variable or Rule
+     * @throws IllegalStateException if any of the built terms are duplicates. (They must
+     * be put into a Set, so duplicates are not supported.)
      */
     public void applyChanges(
             final RiskModel targetModel,
@@ -156,7 +162,7 @@ public final class EditRiskModel implements Comparable<EditRiskModel>
             final ModelTerm newTerm = term.build(modelService);
             if (!newTerms.add(newTerm))
             {
-                fLogger.warn("Discarding duplicate new term {}", newTerm);
+                throw new IllegalStateException("Duplicate new term " + newTerm);
             }
         }
         targetModel.replaceAllTerms(newTerms);
@@ -172,6 +178,9 @@ public final class EditRiskModel implements Comparable<EditRiskModel>
     
     public String toString()
     {
-        return String.format("EditRiskModel for %s", fModelName);
+        return MoreObjects.toStringHelper(this)
+                .add("modelName", fModelName)
+                .add("terms", fTerms)
+                .toString();
     }
 }

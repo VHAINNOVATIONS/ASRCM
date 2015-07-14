@@ -8,7 +8,8 @@ import java.util.Objects;
 import javax.persistence.*;
 
 /**
- * <p>A ModelTerm related to a particular option of a {@link DiscreteVariable}.</p>
+ * <p>A ModelTerm related to a particular option of a {@link DiscreteVariable}. Presents
+ * an immutable public interface.</p>
  * 
  * <p>Per Effective Java Item 17, this class is marked final because it was not
  * designed for inheritance.</p>
@@ -51,7 +52,9 @@ public final class DiscreteTerm extends SingleVariableTerm
     /**
      * For reflection-based construction only. The associated Variable should
      * not be changed.
+     * @deprecated because code should not explicitly call this method
      */
+    @Deprecated
     void setVariable(final DiscreteVariable variable)
     {
         fVariable = Objects.requireNonNull(variable);
@@ -66,7 +69,9 @@ public final class DiscreteTerm extends SingleVariableTerm
     /**
      * For reflection-based construction only. The associated option should not
      * be changed.
+     * @deprecated because code should not explicitly call this method
      */
+    @Deprecated
     void setOptionIndex(final int optionIndex)
     {
         fOptionIndex = optionIndex;

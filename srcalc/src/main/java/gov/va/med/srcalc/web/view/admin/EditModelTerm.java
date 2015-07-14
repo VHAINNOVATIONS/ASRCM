@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
@@ -300,6 +301,17 @@ public class EditModelTerm
         throws InvalidIdentifierException
     {
         return fTypeState.buildTerm(modelService);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return MoreObjects.toStringHelper(this)
+                .add("typeState", fTypeState)
+                .add("key", fKey)
+                .add("optionValue", fOptionValue)
+                .add("coefficient", fCoefficient)
+                .toString();
     }
     
     /**

@@ -15,7 +15,7 @@ import gov.va.med.srcalc.util.csv.TabularUploadError;
 import gov.va.med.srcalc.web.view.admin.EditModelTerm;
 
 /**
- * Translates rows form a Comma-Separated Value (CSV) file into EditModelTerm objects.
+ * Translates rows from a Comma-Separated Value (CSV) file into EditModelTerm objects.
  */
 class TermRowTranslator implements RowTranslator<EditModelTerm>
 {
@@ -78,8 +78,7 @@ class TermRowTranslator implements RowTranslator<EditModelTerm>
                     ex.getMessage()));
         }
         
-        // If we did not record any errors, created the EditModelTerm object and return
-        // it.
+        // If we did not record any errors, create the EditModelTerm object and return it.
         if (rowErrors.isEmpty())
         {
             return Optional.of(editTerm);
