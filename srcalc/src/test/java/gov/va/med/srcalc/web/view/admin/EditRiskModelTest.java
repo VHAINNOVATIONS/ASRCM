@@ -89,7 +89,7 @@ public class EditRiskModelTest
                 new ModelTermSummary("Procedure", "Procedure (RVU Multiplier)", 1.0f),
                 new ModelTermSummary("White Blood Count = WNL", "Discrete Numerical", 4.0f ),
                 new ModelTermSummary("White Blood Count = >11.0", "Discrete Numerical", 4.0f ),
-                new ModelTermSummary("White Blood Count is Normal", "Boolean", 5.0f ));
+                new ModelTermSummary("White Blood Count is Normal", "Checkbox", 5.0f ));
         
         /* Behavior */
         ImmutableList<ModelTermSummary> actualSummaries =

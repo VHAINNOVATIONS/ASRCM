@@ -436,7 +436,9 @@ public class EditModelTerm
             @Override
             public void visitBoolean(final BooleanVariable variable)
             {
-                fTypeString = "Boolean";
+                // "Checkbox" is not technically a term type, but the customer requested
+                // this.
+                fTypeString = "Checkbox";
             }
 
             @Override
