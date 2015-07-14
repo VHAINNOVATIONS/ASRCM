@@ -57,7 +57,7 @@ public class DerivedTermTest
         assertEquals(coeff, term.getCoefficient(), 0.0f);
         assertEquals(expectedVars, term.getRequiredVariables());
         // Ensure toString() contains some useful information.
-        assertThat(term.toString(), containsString(rule.toString()));
+        assertThat(term.toString(), containsString(rule.getDisplayName()));
     }
     
     @Test

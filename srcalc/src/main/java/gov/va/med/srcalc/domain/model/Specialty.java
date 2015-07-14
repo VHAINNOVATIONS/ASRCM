@@ -143,7 +143,7 @@ public final class Specialty implements Serializable
      *    This is the easiest solution since this table is small. If 
      * it were large then this could be a performance issue. 
      */
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     // Override strange defaults. See
     // <https://forum.hibernate.org/viewtopic.php?f=1&t=1037190>.
     @JoinTable(

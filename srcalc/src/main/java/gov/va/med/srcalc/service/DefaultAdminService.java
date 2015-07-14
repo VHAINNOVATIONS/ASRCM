@@ -44,11 +44,11 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional
-    public List<AbstractVariable> getAllVariables()
+    public ImmutableList<AbstractVariable> getAllVariables()
     {
         fLogger.debug("Getting all Variables.");
 
-        return fVariableDao.getAllVariables();
+        return ImmutableList.copyOf(fVariableDao.getAllVariables());
     }
     
     @Override
@@ -241,7 +241,8 @@ public class DefaultAdminService implements AdminService
                     model.getDisplayName(), model.getId() );
         }
         
-        fRiskModelDao.saveRiskModel( model );
+        final RiskModel persistentModel = fRiskModelDao.saveRiskModel( model );
         fLogger.info("Saved Risk Model {}.", model.getDisplayName() );
+        fLogger.debug("Persistent state is now: {}", persistentModel);
     }
 }

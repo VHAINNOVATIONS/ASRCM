@@ -1,0 +1,10 @@
+Term Type,Key,Option,Coefficient
+NotValid,,,foo
+Constant,key,option,bar
+Variable,age,option,
+Rule,Age multiplier for functional status,option,0.0023
+Variable,procedure,option,0.0139
+Variable,gender,,0.1509
+Variable,gender,,0.1409
+Variable,dnr,option,0.2143
+Variable,wbc,,1

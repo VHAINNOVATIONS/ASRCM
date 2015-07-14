@@ -8,7 +8,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
 /**
- * <p>A {@link ModelTerm} for a {@link BooleanVariable}.</p>
+ * <p>A {@link ModelTerm} for a {@link BooleanVariable}. Presents an immutable public
+ * interface.</p>
  * 
  * <p>Per Effective Java Item 17, this class is marked final because it was not
  * designed for inheritance.</p>
@@ -39,7 +40,12 @@ public final class BooleanTerm extends SingleVariableTerm
         return fVariable;
     }
 
-    public void setVariable(BooleanVariable variable)
+    /**
+     * For reflection-based construction only.
+     * @deprecated because code should not explicitly call this method
+     */
+    @Deprecated
+    void setVariable(BooleanVariable variable)
     {
         fVariable = Objects.requireNonNull(variable);
     }
@@ -82,5 +88,11 @@ public final class BooleanTerm extends SingleVariableTerm
     {
         // The question mark indicates the boolean nature of the variable.
         return String.format("%s?=>%s", getVariable(), getCoefficient());
+    }
+    
+    @Override
+    public void accept(final ModelTermVisitor visitor)
+    {
+        visitor.visitBooleanTerm(this);
     }
 }

@@ -1,0 +1,9 @@
+Term Type,Key,Option,Coefficient
+Constant,,,-2.3434
+Variable,age,,0.0512
+Rule,Age multiplier for functional status,,0.0023
+Variable,procedure,,0.0139
+Variable,gender,Male,0.1509
+Variable,gender,Female,0.1409
+Variable,dnr,,0.2143
+Variable,wbc,>11.0,1

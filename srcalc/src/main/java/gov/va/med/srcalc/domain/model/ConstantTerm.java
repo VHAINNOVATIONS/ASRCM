@@ -76,4 +76,10 @@ public final class ConstantTerm extends ModelTerm
     {
         return String.format("c=%s", getCoefficient());
     }
+    
+    @Override
+    public void accept(final ModelTermVisitor visitor)
+    {
+        visitor.visitConstantTerm(this);
+    }
 }

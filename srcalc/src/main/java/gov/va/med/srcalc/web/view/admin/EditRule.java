@@ -10,8 +10,8 @@ import com.google.common.collect.ImmutableSet;
 
 import gov.va.med.srcalc.domain.model.Rule;
 import gov.va.med.srcalc.domain.model.ValueMatcher;
-import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
+import gov.va.med.srcalc.service.ModelInspectionService;
 
 /**
  * <p>A form backing object for creating a new or editing an existing
@@ -155,7 +155,8 @@ public class EditRule
      * @throws InvalidIdentifierException if one of the variable keys present in the builder
      * does not exist in the database.
      */
-    public Rule buildNew(final AdminService adminService) throws InvalidIdentifierException
+    public Rule buildNew(final ModelInspectionService adminService)
+            throws InvalidIdentifierException
     {
         final List<ValueMatcher> matchers = new ArrayList<ValueMatcher>(fMatchers.size());
         for(final ValueMatcherBuilder builder: fMatchers)

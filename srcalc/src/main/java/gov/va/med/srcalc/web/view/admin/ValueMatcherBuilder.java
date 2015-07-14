@@ -1,8 +1,8 @@
 package gov.va.med.srcalc.web.view.admin;
 
 import gov.va.med.srcalc.domain.model.ValueMatcher;
-import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
+import gov.va.med.srcalc.service.ModelInspectionService;
 
 /**
  * <p>Builds a {@link ValueMatcher} from incrementally-
@@ -93,13 +93,13 @@ public final class ValueMatcherBuilder
     
     /**
      * Returns a {@link ValueMatcher} that is built from the calling object.
-     * @param adminService the admin service used to retrieve the necessary variable
+     * @param modelService the admin service used to retrieve the necessary variable
      * @throws InvalidIdentifierException
      */
-    public ValueMatcher buildNew(final AdminService adminService) throws InvalidIdentifierException
+    public ValueMatcher buildNew(final ModelInspectionService modelService) throws InvalidIdentifierException
     {
         return new ValueMatcher(
-                adminService.getVariable(fVariableKey),
+                modelService.getVariable(fVariableKey),
                 fBooleanExpression,
                 fEnabled);
     }

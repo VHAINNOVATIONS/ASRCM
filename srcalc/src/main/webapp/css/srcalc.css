@@ -324,6 +324,11 @@ form.attributeEditForm td .preInstructions {
 
 /* The variable input form #riskVarForm */
 
+/* Hide the definition rows if Javascript is enabled */
+.js #riskVarForm .variableDef {
+	display: none;
+}
+
 .procedureSelectGroup th, .procedureSelectGroup td {
 	/* Don't let the cells mash up against each other. */
 	padding-left: 3px;
@@ -402,17 +407,23 @@ div#newVariableLinks, div#newRuleLink {
 	display: block;
 }
 
-/* Hide the definition rows if Javascript is enabled */
-.js #riskVarForm .variableDef {
-	display: none;
-}
-
 /* Procedure Upload */
 
 #procedureUploadForm {
 	margin-bottom: 1em;
 }
 
+/* Edit Risk Model */
+
+/* We show this via JS. */
+.js #editModelForm #termsUploadControls {
+	display: none;
+}
+
+/* Eliminate the top margin on the explanatory paragraph. */
+#editModelForm #termsUploadControls p:first-child {
+	margin-top: 0;
+}
 
 /* ==========================================================================
    Media Queries

@@ -11,6 +11,11 @@ public class ValidationCodes
     public static final String NO_VALUE = "noInput";
     
     /**
+     * Error code used when a value must not be provided but was.
+     */
+    public static final String NOT_APPLICABLE = "notApplicable";
+    
+    /**
      * Error code used when a value is shorter than the minimum length.
      */
     public static final String TOO_SHORT = "tooShort";

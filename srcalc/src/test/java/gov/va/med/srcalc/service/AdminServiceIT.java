@@ -199,5 +199,4 @@ public class AdminServiceIT extends IntegrationTest
         assertEquals( "Urology", specList.get(5).getName() );
         assertEquals( "Vascular", specList.get(6).getName() );
     }
-
 }

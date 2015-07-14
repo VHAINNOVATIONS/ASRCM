@@ -2,14 +2,8 @@ package gov.va.med.srcalc.web.view.admin;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import gov.va.med.srcalc.db.*;
-import gov.va.med.srcalc.domain.model.AbstractVariable;
 import gov.va.med.srcalc.domain.model.Rule;
-import gov.va.med.srcalc.domain.model.SampleModels;
-import gov.va.med.srcalc.service.DefaultAdminService;
-import gov.va.med.srcalc.service.InvalidIdentifierException;
+import gov.va.med.srcalc.service.*;
 
 import java.util.ArrayList;
 
@@ -17,20 +11,7 @@ import org.junit.Test;
 
 public class EditRuleTest
 {
-    private final DefaultAdminService fAdminService = new DefaultAdminService(
-            mockVariableDao(), 
-            mock(RiskModelDao.class),
-            mock(SpecialtyDao.class),
-            mock(RuleDao.class),
-            mock(ProcedureDao.class));
-    
-    private VariableDao mockVariableDao()
-    {
-        final VariableDao dao = mock(VariableDao.class);
-        final AbstractVariable variable = SampleModels.ageVariable();
-        when(dao.getByKey(variable.getKey())).thenReturn(variable);
-        return dao;
-    }
+    private final ModelInspectionService fModelService = new MockModelService();
     
     @Test
     public final void testBasic()
@@ -58,12 +39,12 @@ public class EditRuleTest
         editRule.getMatchers().add(builtMatcher);
         editRule.setBypassEnabled(bypassEnabled);
         editRule.setDisplayName(displayName);
-        final Rule createdRule = editRule.buildNew(fAdminService);
+        final Rule createdRule = editRule.buildNew(fModelService);
         
         // Verification
         assertEquals(summandExpression, createdRule.getSummandExpression());
         assertEquals(displayName, createdRule.getDisplayName());
         assertEquals(bypassEnabled, createdRule.isBypassEnabled());
-        assertEquals(matchers.get(0).buildNew(fAdminService), createdRule.getMatchers().get(0));
+        assertEquals(matchers.get(0).buildNew(fModelService), createdRule.getMatchers().get(0));
     }
 }

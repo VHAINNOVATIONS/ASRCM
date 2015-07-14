@@ -115,7 +115,11 @@ public class RiskModel implements Comparable<RiskModel>
         return fConstantTerm;
     }
 
-    void setConstantTerm(final ConstantTerm constantTerm)
+    /**
+     * Sets the ConstantTerm for the model.
+     * @see #getConstantTerm()
+     */
+    public void setConstantTerm(final ConstantTerm constantTerm)
     {
         fConstantTerm = Objects.requireNonNull(constantTerm);
     }
@@ -261,6 +265,47 @@ public class RiskModel implements Comparable<RiskModel>
                 .addAll(getProcedureTerms())
                 .addAll(getDerivedTerms())
                 .build();
+    }
+    
+    public void replaceAllTerms(final Set<ModelTerm> newTerms)
+    {
+        fLogger.debug("Replacing all model terms with {}", newTerms);
+        
+        // First clear all existing terms.
+        setConstantTerm(new ConstantTerm(0.0f));
+        fBooleanTerms.clear();
+        fDerivedTerms.clear();
+        fDiscreteTerms.clear();
+        fNumericalTerms.clear();
+        fProcedureTerms.clear();
+        
+        for (final ModelTerm newTerm : newTerms)
+        {
+            if (newTerm instanceof ConstantTerm)
+            {
+                setConstantTerm((ConstantTerm)newTerm);
+            }
+            else if (newTerm instanceof BooleanTerm)
+            {
+                fBooleanTerms.add((BooleanTerm)newTerm);
+            }
+            else if (newTerm instanceof DerivedTerm)
+            {
+                fDerivedTerms.add((DerivedTerm)newTerm);
+            }
+            else if (newTerm instanceof DiscreteTerm)
+            {
+                fDiscreteTerms.add((DiscreteTerm)newTerm);
+            }
+            else if (newTerm instanceof NumericalTerm)
+            {
+                fNumericalTerms.add((NumericalTerm)newTerm);
+            }
+            else // assumption: the only other term type is ProcedureTerm
+            {
+                fProcedureTerms.add((ProcedureTerm)newTerm);
+            }
+        }
     }
 
     /**
