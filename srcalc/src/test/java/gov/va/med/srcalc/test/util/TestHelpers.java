@@ -99,15 +99,19 @@ public class TestHelpers
     }
 
     /**
-     * Asserts that the given Errors object has only given given errors.
+     * Asserts that the given Errors object has only a specific set of errors. Will throw
+     * an {@link AssertionError} if the Errors object does not contain the expected errors
+     * or contains other errors.
+     * @param errorsObject the Errors object to check
+     * @param expectedErrors the expected errors
      */
     public static void assertOnlyTheseErrors(
             final Errors errorsObject,
-            final SimpleFieldError... simpleErrors)
+            final SimpleFieldError... expectedErrors)
     {
         assertEquals(ImmutableList.of(), errorsObject.getGlobalErrors());
         assertEquals(
-                ImmutableSet.copyOf(simpleErrors),
+                ImmutableSet.copyOf(expectedErrors),
                 toSimpleErrors(errorsObject.getFieldErrors()));
     }
 }
