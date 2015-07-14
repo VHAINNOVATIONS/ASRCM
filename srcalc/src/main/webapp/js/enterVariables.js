@@ -119,7 +119,9 @@ var ENTERVARIABLES = function() {
                 	// Give the user a warning message that the procedure is excluded from
                 	// risk calculations and disable the "Run Calculation" button
                 	$("#runCalcButton").prop("disabled", true);
-                	alert("The procedure (CPT Code) you have selected does not meet eligibility criteria for the Automated Surgical Risk Calculator (ASRC).");
+                	alert("The procedure (CPT Code) you selected does not meet eligibility" +
+                			" requirements to perform a calculation by the Automated Surgical Risk Calculator." +
+                			" Please exit the calculator by closing your browser.");
                 }
                 else
             	{
