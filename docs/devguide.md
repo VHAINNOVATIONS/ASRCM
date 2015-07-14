@@ -74,8 +74,8 @@ Glassfish Server must be up and running in order to access the application and t
 As of right now the target browser versions for ASRC are Internet Explorer 8 and up.
 
 ### Enhancing the Application
-	
-**Coding**
+
+#### IDE
 
 Although the coding does not need to be done in Eclipse, the tool was initially
 developed using Eclipse and Eclipse provides standard IDE features such as
@@ -83,9 +83,26 @@ graphical debugging and integrated source control via EGit. The Eclipse project
 is not stored in this repository, but may be created automatically by running
 the command `gradlew eclipse` in the `srcalc` directory.
 
+#### Directory Organization
+
+The `srcalc` folder contains the following directory structure:
+
+* `config`: build configuration, such as the Checkstyle configuration file
+* `gradle`: Gradle binaries and supporting files
+* `src`: contains all source code, including Java source, resources, test scripts, etc.
+  * `src/main/java`: Java application source code
+  * `src/main/resources`: non-Java resources included on the application's classpath
+  * `src/main/webapp`: non-Java resources included in the Web Application Archive (WAR), such as the `web.xml`
+  * `src/test/java`: automated tests written in Java
+  * `src/test/resources`: non-Java resources included on the classpath while running the tests
+* Building the application will also produce a `build` directory containing build output. Nothing in this
+  directory is ever included in the Git repository.
+
+#### Publishing Code
+
 Committing and pushing code to the repository can be done either through an Eclipse plugin, command line, or other git method. However, pushing the branch to the master branch needs to be approved first. After pushing the branch and fixing any conflicts that may occur, a pull request needs to be created in GitHub so that another developer can review the code.
 
-**Code Standards**
+#### Code Standards
 
 Java code standards are primarily captured via a Checkstyle configuration [in this repository](../srcalc/config/checkstyle/checkstyle.xml). The build automatically performs these checks and warns of violations. Some notable features are:
 
@@ -118,21 +135,6 @@ Logging statements are spread throughout the code. To assist in keeping level se
         log.debug("Message with id '{}' processed", message.getJMSMessageID());
 
 * `TRACE` - Very detailed information, intended only for development. You might keep trace messages for a short period of time after deployment on production environment, but treat these log statements as temporary, that should or might be turned-off eventually. The distinction between DEBUG and TRACE is the most difficult, but if you put logging statement and remove it after the feature has been developed and tested, it should probably be on TRACE level.
-
-**Directory Organization**
-
-The `srcalc` folder contains the following directory structure:
-
-* `config`: build configuration, such as the Checkstyle configuration file
-* `gradle`: Gradle binaries and supporting files
-* `src`: contains all source code, including Java source, resources, test scripts, etc.
-  * `src/main/java`: Java application source code
-  * `src/main/resources`: non-Java resources included on the application's classpath
-  * `src/main/webapp`: non-Java resources included in the Web Application Archive (WAR), such as the `web.xml`
-  * `src/test/java`: automated tests written in Java
-  * `src/test/resources`: non-Java resources included on the classpath while running the tests
-* Building the application will also produce a `build` directory containing build output. Nothing in this
-  directory is ever included in the Git repository.
 
 VistA Patch Developer Guide
 ---------------------------
