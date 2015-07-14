@@ -62,7 +62,6 @@ public final class VistaOperationResult
 
     /**
      * Returns the human-readable status.
-     * @return
      */
     public String getMessage()
     {

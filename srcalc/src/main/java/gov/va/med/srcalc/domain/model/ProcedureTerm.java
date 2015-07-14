@@ -40,7 +40,12 @@ public final class ProcedureTerm extends SingleVariableTerm
         return fVariable;
     }
 
-    public void setVariable(ProcedureVariable variable)
+    /**
+     * For reflection-based construction only.
+     * @deprecated because code should not explicitly call this method
+     */
+    @Deprecated
+    void setVariable(final ProcedureVariable variable)
     {
         fVariable = Objects.requireNonNull(variable);
     }
@@ -48,8 +53,6 @@ public final class ProcedureTerm extends SingleVariableTerm
     @Override
     public double getSummand(final Value inputValue)
     {
-        // Note: I may handle this via rules later.
-
         try
         {
             final ProcedureValue value = (ProcedureValue)inputValue;
@@ -91,5 +94,11 @@ public final class ProcedureTerm extends SingleVariableTerm
     public String toString()
     {
         return String.format("%s.rvu*%s", getVariable(), getCoefficient());
+    }
+    
+    @Override
+    public void accept(final ModelTermVisitor visitor)
+    {
+        visitor.visitProcedureTerm(this);
     }
 }

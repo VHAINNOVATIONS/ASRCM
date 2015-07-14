@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.Preconditions;
 
 import java.util.Objects;
@@ -25,16 +26,16 @@ public final class MultiSelectOption
     
     /**
      * A regular expression that defines a valid value. Same as {@link
-     * Variable#VALID_DISPLAY_NAME_REGEX}.
+     * DisplayNameConditions#VALID_DISPLAY_NAME_REGEX}.
      */
-    public static final String VALID_VALUE_REGEX = Variable.VALID_DISPLAY_NAME_REGEX;
+    public static final String VALID_VALUE_REGEX = DisplayNameConditions.VALID_DISPLAY_NAME_REGEX;
     
     /**
      * English description of the valid value characters for readable error
      * messages.
      * @see #VALID_VALUE_REGEX
      */
-    public static final String VALID_VALUE_CHARACTERS = Variable.VALID_DISPLAY_NAME_CHARACTERS;
+    public static final String VALID_VALUE_CHARACTERS = DisplayNameConditions.VALID_DISPLAY_NAME_CHARACTERS;
     
     /**
      * Precompiled version of {@link #VALID_VALUE_REGEX} for efficiency.

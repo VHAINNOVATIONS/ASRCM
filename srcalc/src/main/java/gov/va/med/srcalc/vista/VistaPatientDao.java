@@ -28,12 +28,12 @@ public interface VistaPatientDao
         }
     }
 
-	/**
-	 * The maximum amount of characters allowed on a line before wrapping the line
-	 * onto a new line.
-	 */
-	public static final int MAX_LINE_LENGTH = 80;
-	
+    /**
+     * The maximum amount of characters allowed on a line before wrapping the line
+     * onto a new line.
+     */
+    public static final int MAX_LINE_LENGTH = 80;
+    
     /**
      * Loads a Patient from VistA given his/her DFN. This includes the patient's
      * vitals and available lab measurements.

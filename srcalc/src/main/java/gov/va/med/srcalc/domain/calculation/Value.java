@@ -24,5 +24,5 @@ public interface Value
     /**
      * Accepts the given {@link ValueVisitor}
      */
-	public void accept(ValueVisitor valueVisitor);
+    public void accept(ValueVisitor valueVisitor);
 }

@@ -210,18 +210,18 @@ public class Calculation implements Serializable
         {
             try
             {
-            	outcomes.put(model.getDisplayName(), model.calculate(values));
+                outcomes.put(model.getDisplayName(), model.calculate(values));
             }
             catch(MissingValuesException e)
             {
-            	missingValues.addAll(e.getMissingValues());
+                missingValues.addAll(e.getMissingValues());
             }
         }
 
         if(missingValues.size() > 0)
         {
-        	fLogger.debug("Could not run calculation due to missing values: {}", missingValues);
-        	throw new MissingValuesException("The calculation is missing values.", missingValues);
+            fLogger.debug("Could not run calculation due to missing values: {}", missingValues);
+            throw new MissingValuesException("The calculation is missing values.", missingValues);
         }
         
         return new CalculationResult(

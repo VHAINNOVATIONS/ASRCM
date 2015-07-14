@@ -37,17 +37,17 @@ public class RuleTest
     public final void testAgeMultiplier() throws Exception
     {
         // Setup
-        final String summandExpression = "#age.value * #coefficient";
+        final String summandExpression = "#age * #coefficient";
         final HashMap<Variable, Value> values = new HashMap<>();
         final NumericalVariable ageVar = SampleModels.ageVariable();
         values.put(ageVar, ageVar.makeValue(25));
         final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
         final ValueMatcher totallyDependentMatcher = new ValueMatcher(
-                fsVar, "value == 'Totally dependent'");
-        final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
+                fsVar, "#functionalStatus == 'Totally dependent'", true);
+        final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "", false);
         final Rule rule = new Rule(
                 Arrays.asList(totallyDependentMatcher, ageMatcher),
-                summandExpression, true);
+                summandExpression, true, "Age multiplier for Functional Status");
         
         // Behavior verification
         values.put(fsVar, fsVar.makeValue(fsVar.getOptions().get(2)));
@@ -79,10 +79,11 @@ public class RuleTest
         currWeight.setValidRange(new NumericalRange(0.0f, false, 1000f, false));
         final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group, "weight6MonthsAgo");
         weight6MoAgo.setValidRange(new NumericalRange(0.0f, false, 1000f, false));
-        final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "true");
-        final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "value < #weight6MonthsAgo.value * 0.9");
+        final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "", false);
+        final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "#weight < #weight6MonthsAgo * 0.9", true);
         final Rule rule =
-                new Rule(Arrays.asList(weight6MoAgoMatcher, weightLossMatcher), "#coefficient", false);
+                new Rule(Arrays.asList(weight6MoAgoMatcher, weightLossMatcher),
+                        "#coefficient", true, "Weight loss in past 6 months > 10%");
         
         // Behavior verification
         final HashMap<Variable, Value> values = new HashMap<>();
@@ -100,7 +101,7 @@ public class RuleTest
         values.clear();
         values.put(currWeight, currWeight.makeValue(140));
         assertEquals(
-        		0.0f,
+                0.0f,
                 rule.apply(new Rule.EvaluationContext(3.0f, values)),
                 0.0f);
     }
@@ -108,15 +109,16 @@ public class RuleTest
     @Test(expected=MissingValuesException.class)
     public final void testRequired() throws Exception
     {
-    	// Setup
+        // Setup
         final VariableGroup group = SampleModels.demographicsVariableGroup();
         final NumericalVariable currWeight = new NumericalVariable("Weight", group, "weight");
         final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group, "weight6MonthsAgo");
-        final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "true");
-        final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "value < #weight6MonthsAgo.value * 0.9");
+        final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "", false);
+        final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "value < #weight6MonthsAgo.value * 0.9", true);
         final Rule rule =
-                new Rule(Arrays.asList(weight6MoAgoMatcher, weightLossMatcher), "#coefficient", false);
-        rule.setRequired(false);
+                new Rule(Arrays.asList(weight6MoAgoMatcher, weightLossMatcher),
+                        "#coefficient", true, "Weight loss in past 6 months > 10%");
+        rule.setBypassEnabled(true);
         // Behavior verification
         final HashMap<Variable, Value> values = new HashMap<>();
         values.put(currWeight, currWeight.makeValue(100));
@@ -124,7 +126,7 @@ public class RuleTest
                 0.0f,
                 rule.apply(new Rule.EvaluationContext(3.0f, values)),
                 0.0);
-        rule.setRequired(true);
+        rule.setBypassEnabled(false);
         rule.apply(new Rule.EvaluationContext(3.0f, values));
     }
     

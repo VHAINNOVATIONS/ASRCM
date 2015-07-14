@@ -35,7 +35,7 @@ public class BooleanValue implements Value
     @Override
     public void accept(final ValueVisitor visitor)
     {
-    	visitor.visitBoolean(this);
+        visitor.visitBoolean(this);
     }
     
     @Override

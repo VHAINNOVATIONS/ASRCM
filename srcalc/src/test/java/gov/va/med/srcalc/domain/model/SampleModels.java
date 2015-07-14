@@ -62,7 +62,7 @@ public class SampleModels
      * @return a RiskModel with a term for each given variable
      */
     public static RiskModel makeSampleRiskModel(final String name, final Set<DerivedTerm> derivedTerms, 
-    		final Variable... variables)
+            final Variable... variables)
     {
         final RiskModel m = new RiskModel(name);
         m.getDerivedTerms().addAll(derivedTerms);
@@ -84,13 +84,19 @@ public class SampleModels
             @Override
             public void visitMultiSelect(MultiSelectVariable variable)
             {
-                m.getDiscreteTerms().add(new DiscreteTerm(variable, 1, 3.0f));
+                for( int i=0 ; i< variable.getOptions().size() ; i++ ) 
+                {
+                    m.getDiscreteTerms().add(new DiscreteTerm(variable, i, 3.0f));
+                }
             }
             
             @Override
             public void visitDiscreteNumerical(DiscreteNumericalVariable variable)
             {
-                m.getDiscreteTerms().add(new DiscreteTerm(variable, 0, 4.0f));
+                for( int i=0 ; i< variable.getOptions().size() ; i++ ) 
+                {
+                    m.getDiscreteTerms().add(new DiscreteTerm(variable, i, 4.0f));
+                }
             }
             
             @Override
@@ -138,30 +144,34 @@ public class SampleModels
         final NumericalVariable ageVar = SampleModels.ageVariable();
         final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
         final ValueMatcher totallyDependentMatcher = new ValueMatcher(
-                fsVar, "value == 'Totally dependent'");
-        final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "true");
+                fsVar, "value == 'Totally dependent'", true);
+        final ValueMatcher ageMatcher = new ValueMatcher(ageVar, "", false);
         return new Rule(
                 Arrays.asList(totallyDependentMatcher, ageMatcher),
-                "#Age.value * #coefficient", true);
+                "#Age.value * #coefficient", true, "Age multiplier for functional status");
     }
     
-    public static List<AbstractVariable> sampleVariableList()
+    /**
+     * Returns a sample list of Variables. This list may grow: don't rely on its size.
+     */
+    public static ImmutableList<AbstractVariable> sampleVariableList()
     {
-        return Arrays.asList(
+        return ImmutableList.of(
                 procedureVariable(),
                 ageVariable(),
                 genderVariable(),
                 dnrVariable(),
                 functionalStatusVariable(),
-                wbcVariable());
+                wbcVariable(),
+                wbcIsNormalVariable());
     }
 
     public static List<AbstractVariable> sampleCardiacCABGVariableList()
     {
-    	return Arrays.asList(
-    			cardiacAgeVariable(),
-    			genderVariable(),
-    			dnrVariable());
+        return Arrays.asList(
+                cardiacAgeVariable(),
+                genderVariable(),
+                dnrVariable());
     }
     
     /**
@@ -170,13 +180,13 @@ public class SampleModels
     public static List<Specialty> specialtyList()
     {
         return Arrays.asList(
-        	    new Specialty(48, "Cardiac"),
-        	    new Specialty(50, "General Surgery"),
-        	    new Specialty(52, "Neurosurgery"),
-        	    new Specialty(54, "Orthopedic"),
-        	    SampleModels.thoracicSpecialty(),
-        	    new Specialty(59, "Urology"),
-        	    new Specialty(62, "Vascular")
+                new Specialty(48, "Cardiac"),
+                new Specialty(50, "General Surgery"),
+                new Specialty(52, "Neurosurgery"),
+                new Specialty(54, "Orthopedic"),
+                SampleModels.thoracicSpecialty(),
+                new Specialty(59, "Urology"),
+                new Specialty(62, "Vascular")
                 );
     }
     
@@ -269,7 +279,7 @@ public class SampleModels
     
     public static BooleanVariable dnrVariable()
     {
-    	final BooleanVariable var= new BooleanVariable("DNR", demographicsVariableGroup(), "dnr");
+        final BooleanVariable var= new BooleanVariable("DNR", demographicsVariableGroup(), "dnr");
         return var;
     }
     
@@ -303,6 +313,18 @@ public class SampleModels
         return var;
     }
     
+    /**
+     * An edge-case variable whose display name is an augmentation of {@link
+     * #wbcVariable()}.
+     */
+    public static BooleanVariable wbcIsNormalVariable()
+    {
+        return new BooleanVariable(
+                wbcVariable().getDisplayName() + " is Normal",
+                labVariableGroup(),
+                "wbcIsNormal");
+    }
+    
     public static DiscreteNumericalVariable cardiacAgeVariable()
     {
         final Category ageLessThan50 = new Category(
@@ -325,8 +347,8 @@ public class SampleModels
                 "cardiacAge");
         var.setValidRange(new NumericalRange(18.0f, true, 120.0f, true));
         var.setRetriever(ValueRetriever.AGE);
-    	
-    	return var;
+        
+        return var;
     }
     
     /**

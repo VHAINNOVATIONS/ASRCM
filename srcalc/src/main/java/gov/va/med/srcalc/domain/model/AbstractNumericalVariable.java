@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.Preconditions;
 
 import java.util.Objects;
@@ -17,16 +18,16 @@ public abstract class AbstractNumericalVariable extends AbstractVariable
     
     /**
      * A regular expression that defines a valid units string. Same as
-     * {@link Variable#VALID_DISPLAY_NAME_REGEX}.
+     * {@link DisplayNameConditions#VALID_DISPLAY_NAME_REGEX}.
      */
-    public static final String VALID_UNITS_REGEX = Variable.VALID_DISPLAY_NAME_REGEX;
+    public static final String VALID_UNITS_REGEX = DisplayNameConditions.VALID_DISPLAY_NAME_REGEX;
     
     /**
      * English description of the valid units characters for readable error
      * messages.
      * @see #VALID_UNITS_REGEX
      */
-    public static final String VALID_UNITS_CHARACTERS = Variable.VALID_DISPLAY_NAME_CHARACTERS;
+    public static final String VALID_UNITS_CHARACTERS = DisplayNameConditions.VALID_DISPLAY_NAME_CHARACTERS;
     
     /**
      * Precompiled version of {@link #VALID_UNITS_REGEX} for efficiency.

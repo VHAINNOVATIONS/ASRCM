@@ -25,8 +25,8 @@ import com.google.common.collect.ImmutableSortedSet;
 @Controller
 public class DisplayResultsController
 {
-	private static final Logger fLogger = LoggerFactory.getLogger(DisplayResultsController.class);
-	private final CalculationService fCalculationService;
+    private static final Logger fLogger = LoggerFactory.getLogger(DisplayResultsController.class);
+    private final CalculationService fCalculationService;
     
     @Inject
     public DisplayResultsController(final CalculationService calculationService)
@@ -56,38 +56,38 @@ public class DisplayResultsController
     }
     
     @RequestMapping(
-    		value="/signCalculation",
-    		method = RequestMethod.POST,
+            value="/signCalculation",
+            method = RequestMethod.POST,
             produces = "application/json")
     @ResponseBody
     public HashMap<String, String> signCalculation(final HttpSession session, 
-    		@RequestParam(value = "eSig") final String electronicSignature,
-    		final Model model)
+            @RequestParam(value = "eSig") final String electronicSignature,
+            final Model model)
     {
-    	// Build the note body and submit the RPC
-    	String resultString;
-    	try
-    	{
-    	    final CalculationResult lastResult =
-    	            SrcalcSession.getCalculationSession(session).getRequiredLastResult();
+        // Build the note body and submit the RPC
+        String resultString;
+        try
+        {
+            final CalculationResult lastResult =
+                    SrcalcSession.getCalculationSession(session).getRequiredLastResult();
             resultString = fCalculationService.signRiskCalculation(
                     lastResult, electronicSignature).getDescription();
-    	}
-    	catch(final RecoverableDataAccessException e)
-    	{
-    		fLogger.warn("There was a problem connecting to VistA", e);
-    		resultString = "There was a problem connecting to VistA.";
-    	}
-    	// The json could be expanded to return more information/fields
+        }
+        catch(final RecoverableDataAccessException e)
+        {
+            fLogger.warn("There was a problem connecting to VistA", e);
+            resultString = "There was a problem connecting to VistA.";
+        }
+        // The json could be expanded to return more information/fields
         final HashMap<String, String> jsonStatus = new HashMap<>();
         jsonStatus.put("status", resultString);
-    	// Return the result that will be translated to a json response
-    	return jsonStatus;
+        // Return the result that will be translated to a json response
+        return jsonStatus;
     }
     
     @RequestMapping(value="/successfulSign", method = RequestMethod.GET)
     public String displaySuccess(final HttpSession session, final Model model)
     {
-    	return Views.SUCCESSFUL_SIGN;
+        return Views.SUCCESSFUL_SIGN;
     }
 }

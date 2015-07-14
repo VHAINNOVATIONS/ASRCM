@@ -50,7 +50,7 @@ public class RiskModelTest
         final RiskModel model = SampleModels.thoracicRiskModel();
         
         assertEquals(
-                "RiskModel \"Thoracic 30-day mortality estimate\" with 4 terms",
+                "RiskModel \"Thoracic 30-day mortality estimate\" with ID=0, and 4 terms",
                 model.toString());
     }
     
@@ -64,10 +64,12 @@ public class RiskModelTest
         final DiscreteNumericalVariable wbcVar = SampleModels.wbcVariable();
         final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
         final Set<DerivedTerm> derivedTerms = new HashSet<DerivedTerm>();
-        final ValueMatcher matcher = new ValueMatcher(procedureVar, "#this.value.complexity == \"Standard\"");
+        final ValueMatcher matcher = new ValueMatcher(
+                procedureVar, "#this.value.complexity == \"Standard\"", true);
         final List<ValueMatcher> valueMatchers = new ArrayList<ValueMatcher>();
         valueMatchers.add(matcher);
-        derivedTerms.add(new DerivedTerm(6.0f, new Rule(valueMatchers, "#coefficient", true)));
+        derivedTerms.add(new DerivedTerm(6.0f, new Rule(
+                valueMatchers, "#coefficient", true, "Procedure Complexity is Standard")));
         final RiskModel model = SampleModels.makeSampleRiskModel(
                 "Thoracic 30-day Mortality Estimate (FY2013)",
                 derivedTerms,
@@ -116,6 +118,49 @@ public class RiskModelTest
                 dnrVar.makeValue(true), dnrVar.makeValue(false)));
     }
     
+    @Test
+    public final void testEquals()
+    {
+// The following EqualsVerifier code was tried to test equals() But for some reason it was generating test cases
+// with a string object ("red") as one of the terms. Rathere than write the code to check for such unlikely
+// (close to impossible) cases I am creating the equals cases here instead.
+//        EqualsVerifier.forClass(RiskModel.class).
+//             suppress(Warning.NULL_FIELDS,Warning.NONFINAL_FIELDS).verify();
+        
+        BooleanVariable dnrVar = SampleModels.dnrVariable();
+        ProcedureVariable procVar = SampleModels.procedureVariable();
+        NumericalVariable ageVar = SampleModels.ageVariable();
+        
+        // same displayName, diff terms.
+        RiskModel rm1 = SampleModels.makeSampleRiskModel(
+                "model", new HashSet<DerivedTerm>(), dnrVar);
+        RiskModel rm2 = SampleModels.makeSampleRiskModel(
+                "model", new HashSet<DerivedTerm>(), ageVar);
+        assertNotEquals( rm1, rm2 );
+        
+        // diff displayNames, same terms.
+        rm1 = SampleModels.makeSampleRiskModel(
+                "modelAAA", new HashSet<DerivedTerm>(), dnrVar, ageVar);
+        rm2 = SampleModels.makeSampleRiskModel(
+                "modelBBB", new HashSet<DerivedTerm>(), dnrVar, ageVar);
+        assertNotEquals( rm1, rm2 );
+
+        // and equals. order doesn't matter
+        rm1 = SampleModels.makeSampleRiskModel(
+                "sameModel", new HashSet<DerivedTerm>(), dnrVar, ageVar);
+        rm2 = SampleModels.makeSampleRiskModel(
+                "sameModel", new HashSet<DerivedTerm>(), ageVar, dnrVar );
+        assertEquals( rm1, rm2 );
+
+        // and equals. but size does
+        rm1 = SampleModels.makeSampleRiskModel(
+                "sameModel", new HashSet<DerivedTerm>(), dnrVar, ageVar);
+        rm2 = SampleModels.makeSampleRiskModel(
+                "sameModel", new HashSet<DerivedTerm>(), dnrVar, ageVar, procVar );
+        assertNotEquals( rm1, rm2 );
+
+    }
+
     @Test
     public final void testCompareTo()
     {

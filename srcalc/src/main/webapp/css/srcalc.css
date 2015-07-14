@@ -84,6 +84,10 @@ footer {
 	font-size: 80%;
 }
 
+.successMessage {
+	color: #2FAE10;
+}
+
 /* If Javascript is enabled, pre-hide all dialogs to avoid them flashing on the
    screen before jQuery UI initializes. */
 .js .dialog {
@@ -97,6 +101,10 @@ footer {
 button {
     height: 26px;
     border: 1px solid #888;
+}
+
+button:disabled {
+	opacity: 0.65;
 }
 
 /* The total height of a link is intended to be the same as the total height
@@ -140,10 +148,6 @@ button.button-em:active {
     background-color: #CCC;
 }
 
-button.button-em:disabled {
-	opacity: 0.65;
-}
-
 /* srcalcForm is the standard form appearance in srcalc */
 
 /* Support fieldsets to group related attributes. */
@@ -181,7 +185,7 @@ input[type="radio"].springFormGenerated {
 	margin-right: 2px;
 }
 
-form.srcalcForm .error {
+.error {
 	color: red;
 }
 
@@ -320,6 +324,11 @@ form.attributeEditForm td .preInstructions {
 
 /* The variable input form #riskVarForm */
 
+/* Hide the definition rows if Javascript is enabled */
+.js #riskVarForm .variableDef {
+	display: none;
+}
+
 .procedureSelectGroup th, .procedureSelectGroup td {
 	/* Don't let the cells mash up against each other. */
 	padding-left: 3px;
@@ -368,20 +377,20 @@ a.openProcedureSelect {
 	text-decoration: none;
 }
 
-div#newVariableLinks {
-	margin-top: 1em;
+div#newVariableLinks, div#newRuleLink {
+    margin-top: 1em;
 }
 
-#newVariableLinks ul {
-	/* Put a small margin between the label and the list itself. */
-	margin-top: 0.5em;
-	/* Display these in a row, not as a bullet list. */
-	list-style-type: none;
-	padding: 0;
+#newVariableLinks ul, #newRuleLink ul {
+    /* Put a small margin between the label and the list itself. */
+    margin-top: 0.5em;
+    /* Display these in a row, not as a bullet list. */
+    list-style-type: none;
+    padding: 0;
 }
 
-#newVariableLinks li {
-	display: inline-block;
+#newVariableLinks li, #newRuleLink li {
+    display: inline-block;
 }
 
 /* The edit variable pages */
@@ -398,6 +407,23 @@ div#newVariableLinks {
 	display: block;
 }
 
+/* Procedure Upload */
+
+#procedureUploadForm {
+	margin-bottom: 1em;
+}
+
+/* Edit Risk Model */
+
+/* We show this via JS. */
+.js #editModelForm #termsUploadControls {
+	display: none;
+}
+
+/* Eliminate the top margin on the explanatory paragraph. */
+#editModelForm #termsUploadControls p:first-child {
+	margin-top: 0;
+}
 
 /* ==========================================================================
    Media Queries

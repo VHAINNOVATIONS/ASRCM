@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.calculation.ValueRetriever;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 
 import com.google.common.base.Optional;
 
@@ -13,29 +14,6 @@ import com.google.common.base.Optional;
  */
 public interface Variable
 {
-    /**
-     * The maximum length of a valid variable display name: {@value}
-     */
-    public static final int DISPLAY_NAME_MAX = 80;
-    
-    /**
-     * English description of the valid display name characters for readable
-     * error messages.
-     * @see #VALID_DISPLAY_NAME_REGEX
-     */
-    public static final String VALID_DISPLAY_NAME_CHARACTERS =
-            "letters, digits, spaces, and ~`!@#$%^&*()-_+=|\\.,<>/?'\":;";
-    
-    /**
-     * <p>A regular expression that defines a valid variable key: {@value}</p>
-     * 
-     * <p>Note that this expression permits a string of any length. Validation
-     * code should check the string length first with a length-specific error
-     * message.</p>
-     * @see #getDisplayName()
-     */
-    public static final String VALID_DISPLAY_NAME_REGEX = "[\\w ~`!@#$%^&*()-_+=|\\.,<>/?'\":;]*";
-    
     /**
      * English description of the valid key characters for readable error
      * messages.
@@ -74,8 +52,8 @@ public interface Variable
     
     /**
      * Returns a String suitable for display to humans. Will be no longer than
-     * {@link #DISPLAY_NAME_MAX} and will only contain {@link
-     * #VALID_DISPLAY_NAME_CHARACTERS valid characters}.
+     * {@link DisplayNameConditions#DISPLAY_NAME_MAX} and will only contain {@link
+     * DisplayNameConditions#VALID_DISPLAY_NAME_CHARACTERS} valid characters.
      */
     public String getDisplayName();
 

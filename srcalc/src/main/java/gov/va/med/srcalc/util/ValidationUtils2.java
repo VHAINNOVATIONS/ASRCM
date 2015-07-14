@@ -1,11 +1,16 @@
 package gov.va.med.srcalc.util;
 
+import gov.va.med.srcalc.util.csv.TabularUploadError;
+
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
+
+import com.google.common.base.MoreObjects;
 
 /**
  * Utility class offering more convenient methods in the spirit of Spring's
@@ -14,6 +19,35 @@ import org.springframework.validation.ValidationUtils;
 public final class ValidationUtils2
 {
     private static final Logger fLogger = LoggerFactory.getLogger(ValidationUtils2.class);
+    
+    /**
+     * Like {@link ValidationUtils#rejectIfEmpty(Errors, String, String)}, but returns
+     * true if the field was rejected. Rejects with the error code {@link
+     * ValidationCodes#NO_VALUE}.
+     * @param errors the Errors instance to register errors on
+     * @param field identifies the field. The identified field must be a CharSequence.
+     * @return true if the field was rejected, false otherwise
+     * @throws ClassCastException if the identified field is not a CharSequence
+     */
+    public static boolean rejectIfEmpty(
+            final Errors errors, final String field)
+    {
+        fLogger.trace("Validating that {} is non-empty.", field);
+        
+        // See method contract: the field must be a CharSequence.
+        final CharSequence value = (CharSequence)errors.getFieldValue(field);
+        
+        // We can't use Strings.isNullOrEmpty() since it requires a String.
+        if (MoreObjects.firstNonNull(value, "").length() == 0)
+        {
+            errors.rejectValue(field, ValidationCodes.NO_VALUE, "no value");
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     
     /**
      * Rejects the identified {@link CharSequence} field if it is longer than
@@ -82,6 +116,53 @@ public final class ValidationUtils2
         {
             return false;
         }
+    }
+
+    /**
+     * <p>Validates a required String, ensuring that it is non-empty and within the given
+     * length.</p>
+     * 
+     * <p>Unlike the above, this method operates on TabularUploadErrors, not Spring's
+     * {@link Errors}.</p>
+     * 
+     * @param value the string to validate
+     * @param rowNumber the associated row's number
+     * @param fieldName the field name for recording validation errors
+     * @param maxLength the maximum valid length of the field
+     * @param errors to record validation errors
+     * @return true if the string was valid, false otherwise
+     */
+    public static boolean validateRequiredString(
+            final String value,
+            final int rowNumber,
+            final String fieldName,
+            final int maxLength,
+            final Collection<TabularUploadError> errors)
+    {
+        if (value.isEmpty())
+        {
+            errors.add(TabularUploadError.forField(
+                    rowNumber,
+                    fieldName,
+                    String.class,
+                    ValidationCodes.NO_VALUE,
+                    null,
+                    "no value"));
+            return false;
+        }
+        else if (value.length() > maxLength)
+        {
+            errors.add(TabularUploadError.forField(
+                    rowNumber,
+                    fieldName,
+                    String.class,
+                    ValidationCodes.TOO_LONG,
+                    new Object[] { maxLength },
+                    "too long"));
+            return false;
+        }
+        
+        return true;
     }
     
 }

@@ -38,7 +38,7 @@ public class ProcedureValue implements Value
     
     public void accept(final ValueVisitor visitor)
     {
-    	visitor.visitProcedure(this);
+        visitor.visitProcedure(this);
     }
     
     @Override

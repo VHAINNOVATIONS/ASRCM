@@ -49,9 +49,9 @@ public class CalculationControllerIT extends IntegrationTest
     private final int MOCK_DFN = 456123;
     private final static String ELECTRONIC_SIGNATURE = "TESTSIG";
     public final static String NOTE_BODY = "Specialty = Thoracic\n\nCalculation Inputs\n"
-    		+ "Age = 45.0\nDNR = No\nFunctional Status = Independent\n"
-    		+ "Procedure = 26546 - Repair left hand - you know, the thing with fingers (10.06)\n\n"
-    		+ "Results\nThoracic 30-day mortality estimate = 100.0%\n";
+            + "Age = 45.0\nDNR = No\nFunctional Status = Independent\n"
+            + "Procedure = 26546 - Repair left hand - you know, the thing with fingers (10.06)\n\n"
+            + "Results\nThoracic 30-day mortality estimate = 100.0%\n";
    
     @Autowired
     WebApplicationContext fWac;
@@ -211,7 +211,7 @@ public class CalculationControllerIT extends IntegrationTest
     @Test
     public void populateDynamicValues() throws Exception
     {
-    	selectThoracicSpecialty();
+        selectThoracicSpecialty();
         
         final DynamicVarParams varParams = new DynamicVarParams();
         varParams.add("procedure", "26546");
@@ -236,7 +236,7 @@ public class CalculationControllerIT extends IntegrationTest
             .andExpect(status().is(200));
 
         final MvcResult result = fMockMvc.perform(get("/enterVars").session(fSession))
-        	.andReturn();
+            .andReturn();
         final VariableEntry variableEntry = (VariableEntry) result.getModelAndView().getModel().get("variableEntry");
         assertEquals(varParams.getPairs(), variableEntry.getDynamicValues());
     }
@@ -244,8 +244,8 @@ public class CalculationControllerIT extends IntegrationTest
     @Test
     public void checkHeaders() throws Exception
     {
-    	// Specialty does not matter here
-    	testStartNewCalculationWithDfn();
+        // Specialty does not matter here
+        testStartNewCalculationWithDfn();
 
         fMockMvc.perform(post("/selectSpecialty").session(fSession)
             .param("specialty", "Cardiac"))
@@ -260,14 +260,14 @@ public class CalculationControllerIT extends IntegrationTest
     @Test
     public void enterValidElectronicSignature() throws Exception
     {
-    	enterValidCardiacVariables();
+        enterValidCardiacVariables();
         
         fMockMvc.perform(post("/signCalculation").session(fSession)
-	        .param("eSig", ELECTRONIC_SIGNATURE))
-	        .andExpect(status().isOk())
-	        .andExpect(content().contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
-	        		MediaType.APPLICATION_JSON.getSubtype())))
-	        .andExpect(jsonPath("$.*", hasSize(1)))
-	        .andExpect(jsonPath("$.status", is(VistaPatientDao.SaveNoteCode.SUCCESS.getDescription())));
+            .param("eSig", ELECTRONIC_SIGNATURE))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
+                    MediaType.APPLICATION_JSON.getSubtype())))
+            .andExpect(jsonPath("$.*", hasSize(1)))
+            .andExpect(jsonPath("$.status", is(VistaPatientDao.SaveNoteCode.SUCCESS.getDescription())));
     }
 }

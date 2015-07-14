@@ -21,12 +21,22 @@
 			<param-value></param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+        <multipart-config>
+            <!-- 10 million bytes -->
+            <max-file-size>10000000</max-file-size>
+        </multipart-config>
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>srcalc</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+    
+    <!-- Treat .csv files as text/csv to make IE download instead of displaying them. -->
+    <mime-mapping>
+        <extension>csv</extension>
+        <mime-type>text/csv</mime-type>
+    </mime-mapping>
 
 	<!-- Creates the root WebApplicationContext from applicationContext.xml. -->
 	<listener>

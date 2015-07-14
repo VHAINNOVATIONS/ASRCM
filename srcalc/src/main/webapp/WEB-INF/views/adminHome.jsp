@@ -54,5 +54,29 @@
         <a href="${newDiscreteVar}" class="btn-default">Discrete Numerical</a></li>
     </ul>
     </div>
+    <h3>Rules</h3>
+    <table class="srcalcTable" id="rulesTable">
+    <tr>
+        <th class="main">Name</th>
+        <th>Edit</th>
+    </tr>
+    <c:forEach var="rule" items="${rules}">
+        <c:url var="ruleUrl" value="/admin/rules/${rule.id}" />
+	    <tr>
+	        <td><c:out value="${rule.displayName}"/></td>
+	        <td><a href="${ruleUrl}" class="editObjectLink">Edit</a></td>
+	    </tr>
+    </c:forEach>
+    </table>
+    <div id="newRuleLink">
+    Add New:
+    <ul>
+        <li><c:url var="newRule" value="/admin/newRule" />
+            <a href="${newRule}" class="btn-default">Rule</a></li>
+    </ul>
+    </div>
+    <h3>Procedures</h3>
+    <c:url var="editProcedures" value="/admin/procedures" />
+    <p><a href="${editProcedures}" class="btn-link">Manage Procedures</a></p>
 </section>
 </srcalc:adminPage>

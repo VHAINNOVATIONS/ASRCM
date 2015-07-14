@@ -7,6 +7,8 @@ apply plugin: 'war'
 apply plugin: 'eclipse-wtp'
 // Generates code coverage report. Run task 'jacocoTestReport' to do so.
 apply plugin: 'jacoco'
+// Warn about violated code standards
+apply plugin: 'checkstyle'
 
 // Basic build properties
 sourceCompatibility = '1.7'
@@ -75,6 +77,9 @@ dependencies {
 	compile 'joda-time:joda-time:2.3'
 	compile 'org.apache.commons:commons-lang3:3.3.2'
 	compile 'com.google.guava:guava:18.0'
+	compile 'org.apache.commons:commons-csv:1.1'
+	// Markdown Converter
+	compile 'com.github.rjeschke:txtmark:0.13'
 
     // Spring-Security XML namespace
 	runtime group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion

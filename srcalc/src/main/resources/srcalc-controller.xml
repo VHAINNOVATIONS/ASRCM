@@ -40,5 +40,11 @@
          0 completely prevents caching. -->
     <mvc:resources mapping="/css/**" location="/css/" cache-period="1" />
     <mvc:resources mapping="/js/**" location="/js/" cache-period="1" />
+    <mvc:resources mapping="/admin/resources/**" location="classpath:/admin_resources/"
+        cache-period="1"/>
 
+    <!-- Support multipart form submissions for file uploads. -->
+    <bean id="multipartResolver"
+        class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+    </bean> 
 </beans>

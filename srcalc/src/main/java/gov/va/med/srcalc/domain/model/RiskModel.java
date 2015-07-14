@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.calculation.Value;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.Preconditions;
 
@@ -20,8 +21,6 @@ import com.google.common.collect.ImmutableSet;
 @Entity
 public class RiskModel implements Comparable<RiskModel>
 {
-    public static final int DISPLAY_NAME_MAX = 80;
-    
     private static final Logger fLogger = LoggerFactory.getLogger(RiskModel.class);
     
     private int fId;
@@ -33,18 +32,18 @@ public class RiskModel implements Comparable<RiskModel>
     private Set<ProcedureTerm> fProcedureTerms = new HashSet<>();
     private Set<DerivedTerm> fDerivedTerms = new HashSet<>();
     
-	// Use the same Char set and Reg Expr as for the Variable names.
+    // Use the same Char set and Reg Expr as for the Variable names.
     /**
      * English description of the valid display name characters for readable
      * error messages.
-     * @see #VALID_DISPLAY_NAME_REGEX
+     * @see DisplayNameConditions#VALID_DISPLAY_NAME_REGEX
      */
-    public static final String VALID_MODEL_NAME_CHARACTERS = Variable.VALID_DISPLAY_NAME_CHARACTERS;
+    public static final String VALID_MODEL_NAME_CHARACTERS = DisplayNameConditions.VALID_DISPLAY_NAME_CHARACTERS;
     
-    public static final String VALID_MODEL_NAME_REGEX = Variable.VALID_DISPLAY_NAME_REGEX;
+    public static final String VALID_MODEL_NAME_REGEX = DisplayNameConditions.VALID_DISPLAY_NAME_REGEX;
 
     /**
-     * Precompiled version of {@link RiskModel#VALID_DISPLAY_NAME_REGEX} for
+     * Precompiled version of {@link DisplayNameConditions#VALID_DISPLAY_NAME_REGEX} for
      * efficiency.
      */
     public static final Pattern VALID_MODEL_NAME_PATTERN =
@@ -83,7 +82,7 @@ public class RiskModel implements Comparable<RiskModel>
     }
 
     @Basic(optional = false)
-    @Column(length = DISPLAY_NAME_MAX)
+    @Column(length = DisplayNameConditions.DISPLAY_NAME_MAX)
     public String getDisplayName()
     {
         return fDisplayName;
@@ -94,12 +93,12 @@ public class RiskModel implements Comparable<RiskModel>
      * @param displayName must not be null
      * @throws NullPointerException if displayName is null
      * @throws IllegalArgumentException if displayName is empty or longer than
-     * {@link #DISPLAY_NAME_MAX}
+     * {@link DisplayNameConditions#DISPLAY_NAME_MAX}
      */
     public void setDisplayName(final String displayName)
     {
         fDisplayName = Preconditions.requireWithin(
-                displayName, 1, DISPLAY_NAME_MAX);
+                displayName, 1, DisplayNameConditions.DISPLAY_NAME_MAX);
     }
     
     /**
@@ -116,7 +115,11 @@ public class RiskModel implements Comparable<RiskModel>
         return fConstantTerm;
     }
 
-    void setConstantTerm(final ConstantTerm constantTerm)
+    /**
+     * Sets the ConstantTerm for the model.
+     * @see #getConstantTerm()
+     */
+    public void setConstantTerm(final ConstantTerm constantTerm)
     {
         fConstantTerm = Objects.requireNonNull(constantTerm);
     }
@@ -263,6 +266,47 @@ public class RiskModel implements Comparable<RiskModel>
                 .addAll(getDerivedTerms())
                 .build();
     }
+    
+    public void replaceAllTerms(final Set<ModelTerm> newTerms)
+    {
+        fLogger.debug("Replacing all model terms with {}", newTerms);
+        
+        // First clear all existing terms.
+        setConstantTerm(new ConstantTerm(0.0f));
+        fBooleanTerms.clear();
+        fDerivedTerms.clear();
+        fDiscreteTerms.clear();
+        fNumericalTerms.clear();
+        fProcedureTerms.clear();
+        
+        for (final ModelTerm newTerm : newTerms)
+        {
+            if (newTerm instanceof ConstantTerm)
+            {
+                setConstantTerm((ConstantTerm)newTerm);
+            }
+            else if (newTerm instanceof BooleanTerm)
+            {
+                fBooleanTerms.add((BooleanTerm)newTerm);
+            }
+            else if (newTerm instanceof DerivedTerm)
+            {
+                fDerivedTerms.add((DerivedTerm)newTerm);
+            }
+            else if (newTerm instanceof DiscreteTerm)
+            {
+                fDiscreteTerms.add((DiscreteTerm)newTerm);
+            }
+            else if (newTerm instanceof NumericalTerm)
+            {
+                fNumericalTerms.add((NumericalTerm)newTerm);
+            }
+            else // assumption: the only other term type is ProcedureTerm
+            {
+                fProcedureTerms.add((ProcedureTerm)newTerm);
+            }
+        }
+    }
 
     /**
      * <p>Returns the set of all Variables required for the model.</p>
@@ -287,8 +331,9 @@ public class RiskModel implements Comparable<RiskModel>
     public String toString()
     {
         return String.format(
-                "RiskModel \"%s\" with %d terms",
+                "RiskModel \"%s\" with ID=%d, and %d terms",
                 getDisplayName(),
+                getId(),
                 // -1 to subtract out the constant term
                 getTerms().size() - 1);
     }
@@ -325,29 +370,64 @@ public class RiskModel implements Comparable<RiskModel>
         final List<MissingValueException> missingList = new ArrayList<MissingValueException>();
         for (final ModelTerm term : getTerms())
         {
-        	try
-        	{
-        		final double termSummand = term.getSummand(valueMap);
+            try
+            {
+                final double termSummand = term.getSummand(valueMap);
                 fLogger.debug("Adding {} for {}", termSummand, term);
                 sum += termSummand;
-        	}
+            }
             catch(final MissingValuesException e)
             {
-            	missingList.addAll(e.getMissingValues());
+                missingList.addAll(e.getMissingValues());
             }
         }
         
         if(missingList.size() > 0)
         {
-        	throw new MissingValuesException("The calculation is missing values.", missingList);
+            throw new MissingValuesException("The calculation is missing values.", missingList);
         }
         final double expSum = Math.exp(sum);
         
         return expSum / (1 + expSum);
     }
     
-    // TODO: implement equals() and hashCode()
-    
+    /**
+     * Returns a true if a RiskModel and if displayname and all Terms are equal.
+     */
+    @Override
+    public final boolean equals(final Object o)
+    {
+        if( this == o )
+        {
+            return true;
+        }
+        else if( o == null || !(o instanceof RiskModel) ) 
+        {
+            return false;
+        }
+        else 
+        {
+            // don't include the Id (Hibernate best practices)
+            final RiskModel other = (RiskModel)o;
+            
+            if( this.getDisplayName().compareTo( other.getDisplayName() ) != 0 ) 
+            {
+                return false;
+            }        
+            
+            return Objects.equals( getTerms(), other.getTerms() );
+        }
+    }
+
+    /**
+     * Returns a hash code based on the displayName and the model terms.
+     */
+    @Override
+    public final int hashCode()
+    {
+        return Objects.hash( getDisplayName(), getTerms() );
+    }
+
     /**
      * Compares RiskModels based on their display name. Not consistent with
      * equals!

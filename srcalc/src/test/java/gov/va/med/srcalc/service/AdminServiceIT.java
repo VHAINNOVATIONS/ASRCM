@@ -2,10 +2,12 @@ package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.test.util.IntegrationTest;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -35,7 +37,7 @@ public class AdminServiceIT extends IntegrationTest
     public final void testGetAllVariables()
     {
         final List<AbstractVariable> actualVars = fAdminService.getAllVariables();
-        assertEquals(9, actualVars.size());
+        assertEquals(10, actualVars.size());
         assertEquals("Age", actualVars.get(0).getDisplayName());
     }
     
@@ -66,7 +68,7 @@ public class AdminServiceIT extends IntegrationTest
     @Test
     public final void testUpdateVariable() throws Exception
     {
-    	final String key = "preopPneumonia";
+        final String key = "preopPneumonia";
         final String origName = "Preop Pneumonia";
         final String newName = "Preoperative Issues";
         final String newHelpText = "helpppppppp";
@@ -114,29 +116,87 @@ public class AdminServiceIT extends IntegrationTest
         }
     }
     
+    @Test(expected = DuplicateRuleNameException.class)
+    public final void testSaveDuplicateRuleName() throws Exception
+    {
+        final Rule rule = SampleModels.ageAndFsRule();
+        try
+        {
+            fAdminService.saveRule(rule);
+        }
+        finally
+        {
+            // Normally the Session would be dead and gone by now, but in these
+            // ITs the Transaction is still open, so manually clear the Session
+            // due to the Exception that occurred in the DAO.
+            getHibernateSession().clear();
+        }
+    }
+
+    @Test
+    public final void testReplaceAllProcedures() throws Exception
+    {
+        // At time of writing, there are ~10,000 procedures in the real world.
+        final int numProcedures = 10000;
+        
+        final ArrayList<Procedure> newProcedures = new ArrayList<>(numProcedures);
+        for (int i = 1; i <= numProcedures; ++i)
+        {
+            newProcedures.add(new Procedure(
+                    String.format("%05d", i),
+                    1.0f,
+                    "short desc",
+                    "long long description",
+                    "Complex",
+                    true));
+        }
+        
+        fAdminService.replaceAllProcedures(ImmutableSet.copyOf(newProcedures));
+        
+        // Simulate a new transaction.
+        getHibernateSession().flush();
+        getHibernateSession().clear();
+        
+        assertEquals(newProcedures, fAdminService.getAllProcedures());
+    }
+    
     @Test
     public final void testGetAllRiskModels() 
     {
-    	ImmutableCollection<RiskModel> allRiskModels = fAdminService.getAllRiskModels();
-    	
-    	assertEquals( 7, allRiskModels.size() );
-    	
-    	List<RiskModel> rmList = allRiskModels.asList();
-    	assertEquals( "General Surgery 30-Day Mortality Risk", rmList.get(0).getDisplayName() );
-    	assertEquals( "Neurosurgery 30-Day Mortality Risk", rmList.get(1).getDisplayName() );
-    	assertEquals( "Orthopedic 30-Day Mortality Risk", rmList.get(2).getDisplayName() );
-    	assertEquals( "Thoracic 30-Day Mortality Risk", rmList.get(3).getDisplayName() );
-    	assertEquals( "Urology 30-Day Mortality Risk", rmList.get(4).getDisplayName() );
-    	assertEquals( "Vascular 30-Day Mortality Risk", rmList.get(5).getDisplayName() );
-    	assertEquals( "Cardiac 30-Day Mortality Risk", rmList.get(6).getDisplayName() );
+        ImmutableCollection<RiskModel> allRiskModels = fAdminService.getAllRiskModels();
+        
+        assertEquals( 7, allRiskModels.size() );
+        
+        List<RiskModel> rmList = allRiskModels.asList();
+        assertEquals( "General Surgery 30-Day Mortality Risk", rmList.get(0).getDisplayName() );
+        assertEquals( "Neurosurgery 30-Day Mortality Risk", rmList.get(1).getDisplayName() );
+        assertEquals( "Orthopedic 30-Day Mortality Risk", rmList.get(2).getDisplayName() );
+        assertEquals( "Thoracic 30-Day Mortality Risk", rmList.get(3).getDisplayName() );
+        assertEquals( "Urology 30-Day Mortality Risk", rmList.get(4).getDisplayName() );
+        assertEquals( "Vascular 30-Day Mortality Risk", rmList.get(5).getDisplayName() );
+        assertEquals( "Cardiac 30-Day Mortality Risk", rmList.get(6).getDisplayName() );
     }
     
     @Test
     public final void testGetRiskModelsById( ) 
     {
-    	int mid = 6;
-    	RiskModel vascRM = fAdminService.getRiskModelForId( mid );
-    	assertEquals( vascRM.getDisplayName(), "Vascular 30-Day Mortality Risk");
+        int mid = 6;
+        RiskModel vascRM = fAdminService.getRiskModelForId( mid );
+        assertEquals( vascRM.getDisplayName(), "Vascular 30-Day Mortality Risk");
     }
+    
+    @Test
+    public final void testGetAllSpecialties() 
+    {
+        List<Specialty> specList = fAdminService.getAllSpecialties();
 
+        assertEquals( 7, specList.size() );
+        assertEquals( "Cardiac", specList.get(0).getName() );
+        assertEquals( "General Surgery", specList.get(1).getName() );
+        assertEquals( "Neurosurgery", specList.get(2).getName() );
+        assertEquals( "Orthopedic", specList.get(3).getName() );
+        assertEquals( "Thoracic", specList.get(4).getName() );
+        assertEquals( "Urology", specList.get(5).getName() );
+        assertEquals( "Vascular", specList.get(6).getName() );
+    }
 }

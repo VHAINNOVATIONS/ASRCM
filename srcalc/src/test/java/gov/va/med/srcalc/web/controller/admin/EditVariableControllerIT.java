@@ -10,6 +10,7 @@ import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.test.util.TestHelpers;
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.*;
 
@@ -99,7 +100,7 @@ public class EditVariableControllerIT extends IntegrationTest
         fMockMvc.perform(
                 post("/admin/variables/preopPneumonia").
                 param("displayName",
-                        TestHelpers.stringOfLength(Variable.DISPLAY_NAME_MAX + 1))).
+                        TestHelpers.stringOfLength(DisplayNameConditions.DISPLAY_NAME_MAX + 1))).
             andExpect(model().attributeHasErrors("variable")).
             andExpect(view().name(Views.EDIT_BOOLEAN_VARIABLE));
     }

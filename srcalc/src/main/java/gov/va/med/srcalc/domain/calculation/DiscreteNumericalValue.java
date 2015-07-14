@@ -96,10 +96,10 @@ public class DiscreteNumericalValue implements DiscreteValue
     }
     
     @Override
-	public void accept(final ValueVisitor valueVisitor)
+    public void accept(final ValueVisitor valueVisitor)
     {
-		valueVisitor.visitDiscreteNumerical(this);
-	}
+        valueVisitor.visitDiscreteNumerical(this);
+    }
     
     @Override
     public String toString()
