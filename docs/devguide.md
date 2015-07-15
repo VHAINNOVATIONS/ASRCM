@@ -109,7 +109,7 @@ Java code standards are primarily captured via a Checkstyle configuration [in th
 * Opening and closing braces have their own lines.
 * 4-space indents.
 * Use spaces instead of tabs.
-* All public types (classes and interfaces) must have a [doc comment](http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html).
+* All public types (classes and interfaces) and methods must have a [doc comment](http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html). (The customer requested this standard.)
 
 This repository includes [Eclipse Code Formatter Preferences](asrc_eclipse_format.xml) specifying the Java code format. Many of the formatting conventions are not checked with Checkstyle, but developers should still follow all the formatting conventions.
 
