@@ -109,14 +109,24 @@ Java code standards are primarily captured via a Checkstyle configuration [in th
 * Opening and closing braces have their own lines.
 * 4-space indents.
 * Use spaces instead of tabs.
-* All public types (classes and interfaces) must have a doc comment.
+* All public types (classes and interfaces) must have a [doc comment](http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html).
 
 This repository includes [Eclipse Code Formatter Preferences](asrc_eclipse_format.xml) specifying the Java code format. Many of the formatting conventions are not checked with Checkstyle, but developers should still follow all the formatting conventions.
 
-Compilation must not generate any errors or warnings. All tests must pass. Verify this with
-`gradle clean build` before publishing any changes.
+Additional code standards which Checkstyle does not capture are:
 
-Logging statements are spread throughout the code. To assist in keeping level selection consistent, we use the following rough guidelines (based on [this blog post ](http://www.nurkiewicz.com/2010/05/clean-code-clean-logs-logging-levels.html)):
+* Compilation must not generate any errors or warnings. All tests must pass. Verify this with
+`gradle clean build javadoc` before publishing any changes.
+  * Known issue: Gradle does not properly generate Javadocs and records spurious warnings for package links. See [this bug report](https://discuss.gradle.org/t/javadoc-task-doesnt-generate-package-links/10621). These warnings may be ignored.
+* The `master` branch does not contain commented-out code.
+* The `master` branch does not contain incomplete code.
+* Automated tests provide as close to 100% code coverage as practical, with 90% coverage as a minimum. (Use `gradle jacocoTestReport` to generate a code coverage report.)
+
+Although the above standards are important, any part of the standard may be waived with good justification.
+
+#### Logging Levels
+
+Every log statement has an associated level. In order to keep level selection consistent throughout the application, we use the following rough guidelines (based on [this blog post ](http://www.nurkiewicz.com/2010/05/clean-code-clean-logs-logging-levels.html)):
 
 * `ERROR` - something terribly wrong had happened, that must be investigated immediately. No system can tolerate items logged on this level.
 
