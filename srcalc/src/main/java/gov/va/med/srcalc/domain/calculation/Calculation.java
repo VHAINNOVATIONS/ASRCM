@@ -26,7 +26,7 @@ import com.google.common.collect.ImmutableSet;
  */
 public class Calculation implements Serializable
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(Calculation.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Calculation.class);
 
     /**
      * Change this when changing the class!
@@ -220,7 +220,7 @@ public class Calculation implements Serializable
 
         if(missingValues.size() > 0)
         {
-            fLogger.debug("Could not run calculation due to missing values: {}", missingValues);
+            LOGGER.debug("Could not run calculation due to missing values: {}", missingValues);
             throw new MissingValuesException("The calculation is missing values.", missingValues);
         }
         

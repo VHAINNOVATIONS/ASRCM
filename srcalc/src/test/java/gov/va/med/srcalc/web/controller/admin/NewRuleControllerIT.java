@@ -24,7 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 
 /**
- * Tests the NewRuleController
+ * Tests the NewRuleController.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.

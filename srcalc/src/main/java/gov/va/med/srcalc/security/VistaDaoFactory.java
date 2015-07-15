@@ -4,8 +4,10 @@ import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.vista.*;
 
 /**
- * Allows clients to construct new VistA DAOs without knowing the
- * implementation.
+ * <p>Allows clients to construct new VistA DAOs without knowing the implementation.</p>
+ * 
+ * <p>This technology-agnostic interface facilitates stubbing out the VistA interface
+ * in automated tests.</p>
  */
 public interface VistaDaoFactory
 {

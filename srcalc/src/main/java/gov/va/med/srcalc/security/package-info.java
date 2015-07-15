@@ -1,4 +1,4 @@
 /**
- * User Authentication and Authorization
+ * User Authentication and Authorization.
  */
 package gov.va.med.srcalc.security;

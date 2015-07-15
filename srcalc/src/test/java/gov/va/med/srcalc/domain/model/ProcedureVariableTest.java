@@ -4,6 +4,9 @@ import gov.va.med.srcalc.domain.model.ProcedureVariable;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link ProcedureVariable} class.
+ */
 public class ProcedureVariableTest
 {
     @Test(expected = IllegalStateException.class)

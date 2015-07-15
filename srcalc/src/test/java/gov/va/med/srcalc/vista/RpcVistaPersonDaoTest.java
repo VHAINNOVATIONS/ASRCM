@@ -10,6 +10,9 @@ import gov.va.med.srcalc.domain.VistaPerson;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link RpcVistaPersonDao} class.
+ */
 public class RpcVistaPersonDaoTest
 {
     private final static String RADIOLOGIST_DUZ = "11716";

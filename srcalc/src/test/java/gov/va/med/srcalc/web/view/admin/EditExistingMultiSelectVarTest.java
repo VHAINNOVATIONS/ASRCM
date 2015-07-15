@@ -14,6 +14,9 @@ import org.junit.Test;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
+/**
+ * Tests the {@link EditExistingMultiSelectVar} class.
+ */
 public class EditExistingMultiSelectVarTest
 {
     private final MockModelService fModelService = new MockModelService();

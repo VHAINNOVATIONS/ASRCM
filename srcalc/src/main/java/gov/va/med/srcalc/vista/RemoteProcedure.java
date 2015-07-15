@@ -1,5 +1,8 @@
 package gov.va.med.srcalc.vista;
 
+/**
+ * Enumerates all VistA Remote Procedures which this application uses.
+ */
 public enum RemoteProcedure
 {
     /**

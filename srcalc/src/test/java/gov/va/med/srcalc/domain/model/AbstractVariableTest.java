@@ -9,6 +9,10 @@ import org.junit.Test;
 
 import com.google.common.base.Optional;
 
+/**
+ * Tests the {@link AbstractVariable} class. Since the class is abstract, the implemented
+ * methods are tested via concrete subclasses.
+ */
 public class AbstractVariableTest
 {
     @Test

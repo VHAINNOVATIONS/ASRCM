@@ -5,6 +5,9 @@ import gov.va.med.srcalc.domain.model.InvalidValueException;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link InvalidValueException} class.
+ */
 public class InvalidValueExceptionTest
 {
     @Test

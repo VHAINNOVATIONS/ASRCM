@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link VistaOperationResult} class.
+ */
 public class VistaOperationResultTest
 {
     @Test

@@ -7,6 +7,9 @@ import gov.va.med.srcalc.domain.model.SampleModels;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link VariableSummary} class.
+ */
 public class VariableSummaryTest
 {
     @Test

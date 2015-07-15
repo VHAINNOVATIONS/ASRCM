@@ -12,7 +12,7 @@ import gov.va.med.srcalc.domain.VistaPerson;
  */
 public class RpcVistaPersonDao implements VistaPersonDao
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPersonDao.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcVistaPersonDao.class);
     
     private final VistaProcedureCaller fProcedureCaller;
     
@@ -23,7 +23,7 @@ public class RpcVistaPersonDao implements VistaPersonDao
 
     public VistaPerson loadVistaPerson(final String duz)
     {
-        fLogger.debug("Loading VistaPerson for duz {}.", duz);
+        LOGGER.debug("Loading VistaPerson for duz {}.", duz);
         
         final List<String> results = fProcedureCaller.doRpc(duz, RemoteProcedure.GET_USER);
         
@@ -31,7 +31,7 @@ public class RpcVistaPersonDao implements VistaPersonDao
         final String userString = results.get(0);
         final VistaPerson person = new VistaPerson(
                 fProcedureCaller.getDivision(), duz, userString, "user class not pulled");
-        fLogger.debug("Loaded {} from VistA.", person);
+        LOGGER.debug("Loaded {} from VistA.", person);
         return person;
     }
 }

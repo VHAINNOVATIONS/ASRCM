@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link EditRule} class.
+ */
 public class EditRuleTest
 {
     private final ModelInspectionService fModelService = new MockModelService();

@@ -16,10 +16,25 @@
       <property name="maxLineLength" value="90"/>
     </module>
     <module name="JavadocType">
-      <property name="severity" value="ignore"/>
       <property name="scope" value="package"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
+    <module name="OuterTypeFilename"/>
+    <module name="PackageDeclaration"/>
+    <module name="PackageName">
+      <property name="format" value="^[a-z]+(\.[a-z_][a-z0-9_]*)*$"/>
+    </module>
+    <module name="TypeName"/>
+    <module name="MemberName">
+      <property name="format" value="^f[a-zA-Z0-9]*$"/>
+    </module>
+    <module name="MethodName"/>
+    <module name="ConstantName"/>
+    <module name="ParameterName"/>
+    <module name="StaticVariableName">
+      <property name="format" value="^g[a-zA-Z0-9]*$"/>
+    </module>
+    <module name="JavadocStyle"/>
+    <module name="NeedBraces"/>
   </module>
   <module name="FileTabCharacter"/>
 </module>

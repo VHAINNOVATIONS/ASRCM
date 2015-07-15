@@ -9,6 +9,9 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;
 
+/**
+ * Tests the {@link NumericalTerm} class.
+ */
 public class NumericalTermTest
 {
     @Test

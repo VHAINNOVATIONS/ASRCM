@@ -13,6 +13,9 @@ import java.util.*;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+/**
+ * Tests the {@link Calculation} class.
+ */
 public class CalculationTest
 {
     @Test

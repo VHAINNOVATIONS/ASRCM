@@ -6,6 +6,9 @@ import gov.va.med.srcalc.test.util.TestHelpers;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link ValueDisplayOrder} class.
+ */
 public class ValueDisplayOrderTest
 {
     @Test

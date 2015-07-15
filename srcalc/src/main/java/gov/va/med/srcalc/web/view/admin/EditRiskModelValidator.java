@@ -14,6 +14,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+/**
+ * Validates {@link EditRiskModel} objects.
+ */
 public class EditRiskModelValidator implements Validator
 {
     private final ModelInspectionService fModelService;

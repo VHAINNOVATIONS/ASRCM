@@ -22,7 +22,7 @@ public class NewBooleanVarController extends NewVarController
      */
     public static final String BASE_URL = "/admin/newBooleanVar";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(NewBooleanVarController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NewBooleanVarController.class);
     
     /**
      * Constructs an instance.
@@ -44,7 +44,7 @@ public class NewBooleanVarController extends NewVarController
     @Override
     protected EditBooleanVar createEditBaseVar()
     {
-        fLogger.trace("Creating EditBooleanVar.");
+        LOGGER.trace("Creating EditBooleanVar.");
         return new EditBooleanVar(getAdminService());
     }
 }

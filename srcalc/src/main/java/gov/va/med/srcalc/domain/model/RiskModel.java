@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableSet;
 @Entity
 public class RiskModel implements Comparable<RiskModel>
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(RiskModel.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RiskModel.class);
     
     private int fId;
     private String fDisplayName;
@@ -269,7 +269,7 @@ public class RiskModel implements Comparable<RiskModel>
     
     public void replaceAllTerms(final Set<ModelTerm> newTerms)
     {
-        fLogger.debug("Replacing all model terms with {}", newTerms);
+        LOGGER.debug("Replacing all model terms with {}", newTerms);
         
         // First clear all existing terms.
         setConstantTerm(new ConstantTerm(0.0f));
@@ -349,7 +349,7 @@ public class RiskModel implements Comparable<RiskModel>
      */
     public double calculate(final Collection<Value> inputValues) throws MissingValuesException
     {
-        fLogger.debug("Calculating {}", this);
+        LOGGER.debug("Calculating {}", this);
         
         // Build a Map(Variable -> Value)
         final HashMap<Variable, Value> valueMap = new HashMap<>(inputValues.size());
@@ -373,7 +373,7 @@ public class RiskModel implements Comparable<RiskModel>
             try
             {
                 final double termSummand = term.getSummand(valueMap);
-                fLogger.debug("Adding {} for {}", termSummand, term);
+                LOGGER.debug("Adding {} for {}", termSummand, term);
                 sum += termSummand;
             }
             catch(final MissingValuesException e)

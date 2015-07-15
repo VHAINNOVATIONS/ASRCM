@@ -19,6 +19,9 @@ import org.springframework.expression.Expression;
 
 import com.google.common.collect.ImmutableSet;
 
+/**
+ * Tests the {@link Rule} class.
+ */
 public class RuleTest
 {
     @Test
