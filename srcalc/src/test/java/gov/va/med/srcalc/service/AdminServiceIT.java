@@ -199,4 +199,14 @@ public class AdminServiceIT extends IntegrationTest
         assertEquals( "Urology", specList.get(5).getName() );
         assertEquals( "Vascular", specList.get(6).getName() );
     }
+    
+    @Test
+    public final void testGetSpecialtyById( ) 
+    {
+        int sid = 6;
+        Specialty spec = fAdminService.getSpecialtyForId( sid );
+        spec.toString();
+        assertEquals( spec.getName(), "Vascular");
+    }
+
 }

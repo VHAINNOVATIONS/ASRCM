@@ -24,7 +24,6 @@
         </td>
         </tr>
         <tr>
-        <!-- 
         <td class="attributeName">Specialties</td>
         <td>
         <ul>       
@@ -33,7 +32,6 @@
         </c:forEach>
         </ul>
         </td>
-         -->
         </tr>
         <tr>
         <td class="attributeName">Summation Terms</td>

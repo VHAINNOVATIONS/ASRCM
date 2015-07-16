@@ -32,4 +32,5 @@ public class Views
     public static final String EDIT_DISCRETE_NUMERICAL_VARIABLE = "editDiscreteNumericalVariable.jsp";
     public static final String EDIT_RULE = "editRule.jsp";
     public static final String EDIT_PROCEDURES = "editProcedures.jsp";
+    public static final String EDIT_SPECIALTY  = "editSpecialty.jsp";
 }

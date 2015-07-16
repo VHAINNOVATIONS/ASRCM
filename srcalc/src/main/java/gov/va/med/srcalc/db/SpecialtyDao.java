@@ -58,10 +58,22 @@ public class SpecialtyDao
         }
         return s;
     }
+    
+    public Specialty getSpecialtyForId(int sid)
+    {
+        final Query q = getCurrentSession().createQuery(
+                "from Specialty s left join fetch s.riskModels where s.id = :id");
+        q.setInteger("id", sid);
+        final Specialty s = (Specialty)q.uniqueResult();
+        return s;
+        // throws a lazy initialization exception
+        //return (Specialty)getCurrentSession().get(Specialty.class, sid);
+    }
 
     @SuppressWarnings("unchecked") // trust Hibernate
     public List<Specialty> getAllSpecialties()
     {
         return getCurrentSession().createQuery("from Specialty s order by s.name").list();
     }
+
 }

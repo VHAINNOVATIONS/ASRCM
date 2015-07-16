@@ -307,12 +307,32 @@ public final class Rule
         if (obj instanceof Rule)
         {
             final Rule other = (Rule)obj;
-            return
-                    // Note that getSummandExpression() returns the String, not
-                    // the Expression object itself.
-                    this.getDisplayName().equals(other.getDisplayName()) &&
-                    this.getMatchers().equals(other.getMatchers()) &&
-                    this.getSummandExpression().equals(other.getSummandExpression());
+            
+            // Note that getSummandExpression() returns the String, not
+            // the Expression object itself.
+            if( !this.getDisplayName().equals(other.getDisplayName()) || 
+                !this.getSummandExpression().equals(other.getSummandExpression()) ||
+                this.getMatchers().size() != other.getMatchers().size() )
+            {
+                return false;
+            }           
+            else
+            {
+            // For some unknown reason this.getMatchers().equals(other.getMatchers()) 
+            // is not working. It returns false when all of the ValueMatcher elements are equal 
+            //            
+                Iterator<ValueMatcher> vmIter1 = this.getMatchers().iterator(); 
+                Iterator<ValueMatcher> vmIter2 = other.getMatchers().iterator(); 
+                
+                while( vmIter1.hasNext() )
+                {
+                    if( !vmIter1.next().equals( vmIter2.next() ) ) 
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
         else
         {
@@ -323,7 +343,18 @@ public final class Rule
     @Override
     public int hashCode()
     {
-        return Objects.hash(getDisplayName(), getMatchers(), getSummandExpression());
+        // For some unknown reason Objects.hash( getDisplayName(), getMatchers(), getSummandExpression());
+        // is not working. Instead use the hascodes from each ValueMatcher element in the array.
+        //
+        int hcode = Objects.hash( getDisplayName(), getSummandExpression());
+        
+        Iterator<ValueMatcher> vmIter = this.getMatchers().iterator(); 
+        
+        while( vmIter.hasNext() )
+        {
+            hcode += vmIter.next().hashCode();
+        }
+        return hcode;
     }
     
     /**

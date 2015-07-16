@@ -113,4 +113,11 @@ public class MockModelService implements ModelInspectionService
     {
         return SampleModels.specialtyList();
     }
+
+    @Override
+    public Specialty getSpecialtyForId(int id)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

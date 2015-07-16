@@ -123,6 +123,14 @@ public class DefaultAdminService implements AdminService
     
     @Override
     @Transactional(readOnly = true)
+    public Specialty getSpecialtyForId( int id) 
+    {
+        fLogger.debug("Getting Specialty for ID {}.", id);
+        return fSpecialtyDao.getSpecialtyForId(id);
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
     public ImmutableCollection<RiskModel> getAllRiskModels()
     {
         fLogger.debug("Getting all RiskModels.");

@@ -78,5 +78,21 @@
     <h3>Procedures</h3>
     <c:url var="editProcedures" value="/admin/procedures" />
     <p><a href="${editProcedures}" class="btn-link">Manage Procedures</a></p>
+
+    <h3>Specialties</h3>
+    <table class="srcalcTable" id="specialtyTable">
+    <tr>
+        <th class="main">Name</th>
+        <th>Edit</th>
+    </tr>
+    <c:forEach var="specialty" items="${specialties}">
+        <c:url var="specialtyUrl" value="/admin/specialties/${specialty.id}" />
+	    <tr>
+	        <td><c:out value="${specialty.name}"/></td>
+	        <td><a href="${specialtyUrl}" class="editObjectLink">Edit</a></td>
+	    </tr>
+    </c:forEach>
+    </table>
+
 </section>
 </srcalc:adminPage>

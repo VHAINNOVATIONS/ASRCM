@@ -65,7 +65,7 @@ public interface ModelInspectionService
     
     /**
      * Returns the {@link RiskModel} with the given ID.
-     * @return RiskModelS
+     * @return RiskModel
      */
     public RiskModel getRiskModelForId(int modelId);
     
@@ -74,4 +74,11 @@ public interface ModelInspectionService
      * @return a list ordered by name. 
      */
     public List<Specialty> getAllSpecialties();
+    
+    /**
+     * Return the (@link Specialty) object in the database with the given id
+     * @return Specialty. 
+     */
+    public Specialty getSpecialtyForId( int id);
+
 }
