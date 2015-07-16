@@ -35,6 +35,7 @@
     </module>
     <module name="JavadocStyle"/>
     <module name="NeedBraces"/>
+    <module name="OuterTypeNumber"/>
   </module>
   <module name="FileTabCharacter"/>
 </module>
