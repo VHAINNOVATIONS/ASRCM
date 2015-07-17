@@ -74,7 +74,7 @@ public final class DerivedTerm extends ModelTerm
     }
 
     @Override
-    public double getSummand(final Map<Variable, Value> inputValues) throws MissingValuesException
+    public float getSummand(final Map<Variable, Value> inputValues) throws MissingValuesException
     {
         return fRule.apply(
                 new Rule.EvaluationContext(getCoefficient(), inputValues));

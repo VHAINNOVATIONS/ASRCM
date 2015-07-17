@@ -49,49 +49,49 @@ INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coe
 -- Procedure
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group, help_text) VALUES (3, 'Procedure', 'procedure', 1, 'the procedure to perform');
 INSERT INTO PROCEDURE_VARIABLE (id) VALUES (3);
-INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (1, 3, 3.1);
-INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (2, 3, 3.2);
-INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (3, 3, 3.3);
-INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (4, 3, 3.4);
-INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (5, 3, 3.5);
-INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (6, 3, 3.6);
+INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (1, 3, .31);
+INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (2, 3, .32);
+INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (3, 3, .33);
+INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (4, 3, .34);
+INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (5, 3, .35);
+INSERT INTO RISK_MODEL_PROCEDURE_TERM (risk_model_id, variable, coefficient) VALUES (6, 3, .36);
 
 -- Age
 INSERT INTO VARIABLE (id, display_name, variable_key, retrieval_key, variable_group, help_text) VALUES (2, 'Age', 'age', 1, 2, 'The Patient Age');
 -- There is not really an upper limit on age, but specify an unrealistically high
 -- one to have some idea of significant digits.
 INSERT INTO NUMERICAL_VARIABLE (id, lower_bound, lower_inclusive, upper_bound, upper_inclusive, units) VALUES (2, 18, TRUE, 120, TRUE, 'years');
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (1, 2, 2.1);
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (2, 2, 2.2);
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (3, 2, 2.3);
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (4, 2, 2.4);
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (5, 2, 2.5);
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (6, 2, 2.6);
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (7, 2, 2.7);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (1, 2, 0.21);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (2, 2, 0.22);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (3, 2, 0.23);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (4, 2, 0.24);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (5, 2, 0.25);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (6, 2, 0.26);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (7, 2, 0.27);
 
 -- DNR
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group, help_text) VALUES (6, 'DNR', 'dnr', 2, 'Do Not Resuscitate');
 INSERT INTO BOOLEAN_VARIABLE (id) VALUES (6);
-INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (1, 6, 6.1);
-INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (2, 6, 6.2);
-INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (3, 6, 6.3);
-INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (4, 6, 6.4);
-INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (5, 6, 6.5);
-INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (6, 6, 6.6);
-INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (7, 6, 6.7);
+INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (1, 6, .61);
+INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (2, 6, .62);
+INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (3, 6, .63);
+INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (4, 6, .64);
+INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (5, 6, .65);
+INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (6, 6, .66);
+INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (7, 6, .67);
 
 -- BMI
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group, help_text) VALUES (5, 'BMI', 'bmi', 3, 'Body Mass Index, deduced by visually examining the patient');
 -- There is not really an upper limit on BMI, but specify an unrealistically high
 -- one to have some idea of significant digits.
 INSERT INTO NUMERICAL_VARIABLE (id, lower_bound, lower_inclusive, upper_bound, upper_inclusive, units) VALUES (5, 0, FALSE, 499, TRUE, '');
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (1, 5, 5.1);
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (2, 5, 5.2);
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (3, 5, 5.3);
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (4, 5, 5.4);
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (5, 5, 5.5);
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (6, 5, 5.6);
-INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (7, 5, 5.7);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (1, 5, .51);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (2, 5, .52);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (3, 5, .53);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (4, 5, .54);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (5, 5, .55);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (6, 5, .56);
+INSERT INTO RISK_MODEL_NUMERICAL_TERM (risk_model_id, variable, coefficient) VALUES (7, 5, .57);
 
 -- ASA Classification 1/2, 3, 4, 5
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (8, 'ASA Classification', 'asaClassification', 6);
@@ -100,38 +100,38 @@ INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_value, option_inde
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_value, option_index) VALUES (8, 'Class 3', 1);
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_value, option_index) VALUES (8, 'Class 4', 2);
 INSERT INTO MULTI_SELECT_VARIABLE_OPTION (variable_id, option_value, option_index) VALUES (8, 'Class 5', 3);
-INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 8, 3, 8.1);
-INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (4, 8, 3, 8.4);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 8, 3, .81);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (4, 8, 3, .84);
 
 
 -- Preop Pneumonia
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (7, 'Preop Pneumonia', 'preopPneumonia', 6);
 INSERT INTO BOOLEAN_VARIABLE (id) VALUES (7);
-INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (1, 7, 7.1);
-INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (2, 7, 7.2);
-INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (4, 7, 7.4);
-INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (6, 7, 7.6);
+INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (1, 7, .71);
+INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (2, 7, .72);
+INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (4, 7, .74);
+INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUES (6, 7, .76);
 
 -- Alkaline Phosphatase Lab
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (9, 'Alkaline Phosphatase', 'alkalinePhosphatase', 5);
 INSERT INTO DISCRETE_NUMERICAL_VAR (id, lower_bound, lower_inclusive, upper_bound, upper_inclusive, units) VALUES (9, 10, TRUE, 750, TRUE, 'mU/ml');
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, upper_bound, upper_inclusive) VALUES (9, 'WNL', 125.0, TRUE);
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, upper_bound, upper_inclusive) VALUES (9, '>125mU/ml', 1e12, TRUE);
-INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 9, 1, 9.1);
-INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (4, 9, 1, 9.4);
-INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (5, 9, 1, 9.5);
-INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (6, 9, 1, 9.6);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 9, 1, .91);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (4, 9, 1, .94);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (5, 9, 1, .95);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (6, 9, 1, .96);
 
 -- BUN Lab
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (10, 'BUN', 'bun', 5);
 INSERT INTO DISCRETE_NUMERICAL_VAR (id, lower_bound, lower_inclusive, upper_bound, upper_inclusive, units) VALUES (10, 2, TRUE, 90, TRUE, 'mg/dl');
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, upper_bound, upper_inclusive) VALUES (10, 'WNL', 25, TRUE);
 INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, upper_bound, upper_inclusive) VALUES (10, '>25mg/dl', 1e12, TRUE);
-INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 10, 1, 10.1);
-INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (2, 10, 1, 10.2);
-INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (4, 10, 1, 10.4);
-INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (5, 10, 1, 10.5);
-INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (6, 10, 1, 10.6);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 10, 1, 1.01);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (2, 10, 1, 1.02);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (4, 10, 1, 1.04);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (5, 10, 1, 1.05);
+INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (6, 10, 1, 1.06);
 
 -- Shared Functional Status
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (11, 'Functional Status', 'functionalStatus', 6);

@@ -78,7 +78,7 @@ public abstract class ModelTerm
      * not provide a value for each required variable
      * @throws MissingValuesException if there are any variables without assigned values
      */
-    public abstract double getSummand(Map<Variable, Value> inputValues) throws MissingValuesException;
+    public abstract float getSummand(Map<Variable, Value> inputValues) throws MissingValuesException;
     
     // A reminder to subclasses to implement equals().
     @Override
