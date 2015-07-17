@@ -1,9 +1,11 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.Preconditions;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import javax.persistence.*;
 
@@ -25,6 +27,23 @@ public final class Specialty implements Serializable
      */
     public static final int SPECIALTY_NAME_MAX = 100;
     
+    // Use the same Char set and Reg Expr as for the Variable and Model names.
+    /**
+     * English description of the valid display name characters for readable
+     * error messages.
+     * @see DisplayNameConditions#VALID_DISPLAY_NAME_REGEX
+     */
+    public static final String VALID_SPECIALTY_NAME_CHARACTERS = DisplayNameConditions.VALID_DISPLAY_NAME_CHARACTERS;
+    
+    public static final String VALID_SPECIALTY_NAME_REGEX = DisplayNameConditions.VALID_DISPLAY_NAME_REGEX;
+
+    /**
+     * Precompiled version of {@link DisplayNameConditions#VALID_DISPLAY_NAME_REGEX} for
+     * efficiency.
+     */
+    public static final Pattern VALID_SPECIALTY_NAME_PATTERN =
+            Pattern.compile(Specialty.VALID_SPECIALTY_NAME_REGEX);
+
     /**
      * Change this when changing the class!
      */
@@ -164,6 +183,17 @@ public final class Specialty implements Serializable
     {
         fRiskModels = riskModels;
     }
+    
+    @Transient
+    public ImmutableSet<String> getIncludedModelNames( )
+    {
+        Set<String> includedModelNames = new HashSet<String>();
+        for( RiskModel rm : getRiskModels() ) 
+        {
+            includedModelNames.add( rm.getDisplayName() );
+        }
+        return ImmutableSet.copyOf( includedModelNames );
+    }
 
     @Override
     public String toString()
@@ -174,25 +204,33 @@ public final class Specialty implements Serializable
     @Override
     public boolean equals(final Object o)
     {
-        if (o instanceof Specialty)  // false if o == null
-        {
-            final Specialty other = (Specialty)o;
-            
-            // Compare the VistA ID and name as this pair should always be
-            // unique.
-            return (this.getVistaId() == other.getVistaId()) &&
-                   Objects.equals(this.getName(), (other.getName()));
-        }
-        else
+        if( !(o instanceof Specialty) )  // false if o == null
         {
             return false;
         }
+
+        final Specialty other = (Specialty)o;
+        
+        // Compare the VistA ID and name as this pair should always be
+        // unique.
+        if( this.getVistaId() != other.getVistaId() ||
+            !Objects.equals( this.getName(), other.getName() ) )
+        {
+            return false;
+        }
+        
+        final ImmutableSet<String> incModelNames = getIncludedModelNames();
+        final ImmutableSet<String> otherIncModelNames = other.getIncludedModelNames();
+        
+        // Just test for the same number of models.
+        return incModelNames.size() == otherIncModelNames.size();/* &&
+               incModelNames.contains( otherIncModelNames );*/
     }
     
     @Override
     public int hashCode()
     {
-        return Objects.hash(getVistaId(), getName());
+        return Objects.hash( getVistaId(), getName()/*, getIncludedModelNames()*/ );
     }
 }
 

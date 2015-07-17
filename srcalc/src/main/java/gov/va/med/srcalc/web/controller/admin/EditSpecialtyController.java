@@ -71,7 +71,9 @@ public class EditSpecialtyController
         final ModelAndView mv = new ModelAndView( Views.EDIT_SPECIALTY );
         
         mv.addObject(ATTRIBUTE_SPECIALTY, editSpec );
-        mv.addObject(ATTRIBUTE_MAX_DISPLAY_NAME, DisplayNameConditions.DISPLAY_NAME_MAX );
+        
+        // Note this the name max is different than for Models and Variables. (DisplayNameConditions.DISPLAY_NAME_MAX );
+        mv.addObject(ATTRIBUTE_MAX_DISPLAY_NAME, Specialty.SPECIALTY_NAME_MAX ); 
 
         return mv;
     }
@@ -90,7 +92,7 @@ public class EditSpecialtyController
         {
             throw new InvalidIdentifierException("Unable to find Specialty for ID " + specialtyId);
         }
-        final EditSpecialty editSpec = EditSpecialty.fromSpecialty(spec, fAdminService);
+        EditSpecialty editSpec = EditSpecialty.fromSpecialty(spec, fAdminService);
         
         return displayForm(editSpec);
     }
@@ -106,29 +108,30 @@ public class EditSpecialtyController
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveSpecialty(
             @PathVariable final int specialtyId,
-            @ModelAttribute(ATTRIBUTE_SPECIALTY) final EditSpecialty saveModel,
+            @ModelAttribute(ATTRIBUTE_SPECIALTY) EditSpecialty saveSpecialty,
             final BindingResult bindingResult)
                     throws InvalidIdentifierException
     {
-        fLogger.debug("Handling request to save Specialty: {}", saveModel);
+        fLogger.debug("Handling request to save Specialty: {}", saveSpecialty.toString() );
         
         // Spring has already bound the user input to saveModel; now validate
         //
-//        EditSpecialtyValidator validator = new EditSpecialtyValidator(fAdminService);
-//        validator.validate(saveModel, bindingResult);
-//
-//        if( bindingResult.hasErrors() )
-//        {
-//            fLogger.debug( "EditSpecialty has errors: {}", bindingResult);
-//            return displayForm(saveModel);
-//        }
-//        
-//        // Apply the changes to the persistent model.
-//        final Specialty targetModel = fAdminService.getSpecialtyForId(specialtyId);
-//        save.applyChanges(targetModel, fAdminService);
-//        fAdminService.saveSpecialty(targetModel);
-//
+        EditSpecialtyValidator validator = new EditSpecialtyValidator(fAdminService);
+        validator.validate(saveSpecialty, bindingResult);
+
+        if( bindingResult.hasErrors() )
+        {
+            fLogger.debug( "EditSpecialty has errors: {}", bindingResult);
+            return displayForm( saveSpecialty );
+        }
+        
+        // Apply the changes to the target specialty and save it.
+        //
+        saveSpecialty.applyChanges();
+        fAdminService.saveSpecialty( saveSpecialty.getTargetSpecialty() );
+
         // Save successful: redirect to the admin home page.
+        //
         return new ModelAndView("redirect:/admin");
     }
 

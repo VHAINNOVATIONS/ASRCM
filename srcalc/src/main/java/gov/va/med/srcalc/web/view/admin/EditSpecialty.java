@@ -8,6 +8,7 @@ import gov.va.med.srcalc.util.DisplayNameConditions;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +20,8 @@ import com.google.common.collect.ImmutableList;
 public class EditSpecialty implements Comparable<EditSpecialty>
 {
     private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModel.class);
+    
+    private Specialty fTargetSpecialty;
     
     private String fName;
     
@@ -34,6 +37,12 @@ public class EditSpecialty implements Comparable<EditSpecialty>
         
         private RiskModel fModel;
         
+        public SelectableModel( )
+        {
+            fIncluded = false;
+            fModel = null;
+        }
+
         public SelectableModel( Boolean inc, RiskModel model )
         {
             fIncluded = inc;
@@ -54,28 +63,39 @@ public class EditSpecialty implements Comparable<EditSpecialty>
         {
             return fModel.getDisplayName();
         }        
+        
+        public RiskModel getModel()
+        {
+            return fModel;
+        }
     }
-    
     /**
      * Constructs an instance with default values: an empty model name and no terms.
      */
     public EditSpecialty()
     {
+        fLogger.debug("Calling Default constructor for EditSpecialty");
+        fTargetSpecialty = null;
         fName = "";
+        fSelectableModels = new ArrayList<SelectableModel>();
     }
-        
+
     private EditSpecialty(final Specialty sp, List<SelectableModel> selModels )
     {
-        fName = sp.getName();
+        fTargetSpecialty = sp;
+        fLogger.debug("Calling constructor for EditSpecialty. target is {}  ",
+                (fTargetSpecialty == null ? "NULL" : fTargetSpecialty.toString() ) );
+
+        fName = fTargetSpecialty.getName();
         
         fSelectableModels = ImmutableList.copyOf(selModels);
     }
 
     /**
-     * Returns an {@link EditSpecialty} instance for editing the given Specialty.
+     * Returns an {@link EditSpecialty} instance for editing the given target Specialty.
      * @param spec the target Specialty
      */
-    public static EditSpecialty fromSpecialty( final Specialty spec,
+    public static EditSpecialty fromSpecialty( Specialty spec,
             final ModelInspectionService modelService )
     {
         fLogger.debug("creating Specialty {}", spec.toString() );
@@ -85,14 +105,13 @@ public class EditSpecialty implements Comparable<EditSpecialty>
         
         List<RiskModel> allRiskModels = new ArrayList<RiskModel>( modelService.getAllRiskModels() );
         Collections.sort( allRiskModels );
-        
-        fLogger.debug( "There are {} Risk Models in the DB.", allRiskModels.size());
-        
-        // 
+                
         for( RiskModel rm : allRiskModels ) 
         {            
             selectableModels.add( 
                     new SelectableModel( includedModels.contains( rm ), rm ) );
+
+            fLogger.debug( "Including Risk Model {} in Specialty.", rm.toString() );
         }
         
         return new EditSpecialty( spec, selectableModels );
@@ -115,13 +134,21 @@ public class EditSpecialty implements Comparable<EditSpecialty>
     }
         
     /**
-     * Return a list of includedModels.
+     * Return a list of selectable models.
      */
     public List<SelectableModel> getSelectableModels()
     {
         return fSelectableModels;
     }
-    
+
+    /**
+     * Sets the list of selectable models.
+     */
+    public void getSelectableModels( List<SelectableModel> selModelsList )
+    {
+        fSelectableModels = selModelsList;
+    }
+
     /**
      * the maximum length for a displayName
      * 
@@ -132,28 +159,36 @@ public class EditSpecialty implements Comparable<EditSpecialty>
         return DisplayNameConditions.DISPLAY_NAME_MAX;
     }
     
-
+    /**
+     * Return the target Specialty
+     * 
+     */
+    public Specialty getTargetSpecialty()
+    {
+        return fTargetSpecialty;
+    }
     /**
      * Update the target Specialty with the current edits.
      */
-    public void applyChanges(
-            final Specialty targetSpec,
-            final ModelInspectionService modelService)
-            throws InvalidIdentifierException
+    public Specialty applyChanges( )
     {        
-        targetSpec.setName( fName );
+        fLogger.debug("ApplyChanges to name {} : Target {}",
+                (fName == null ? "NULL" : fName ), 
+                (fTargetSpecialty == null ? "NULL" : fTargetSpecialty.toString() ));
         
-        // Build the new terms.
-//        final HashSet<ModelTerm> newTerms = new HashSet<>(fTerms.size());
-//        for (final EditModelTerm term : fTerms)
-//        {
-//            final ModelTerm newTerm = term.build(modelService);
-//            if (!newTerms.add(newTerm))
-//            {
-//                throw new IllegalStateException("Duplicate new term " + newTerm);
-//            }
-//        }
-//        targetSpec.replaceAllTerms(newTerms);
+        fTargetSpecialty.setName( fName );
+        Set<RiskModel> includedRiskModels = new HashSet<RiskModel>();
+        
+        for( SelectableModel selMod : fSelectableModels )
+        {
+            if( selMod.getIncluded() ) 
+            {
+                includedRiskModels.add( selMod.getModel() );
+            }
+        }
+        fTargetSpecialty.setRiskModels( includedRiskModels );
+        
+        return fTargetSpecialty;
     }
 
     @Override

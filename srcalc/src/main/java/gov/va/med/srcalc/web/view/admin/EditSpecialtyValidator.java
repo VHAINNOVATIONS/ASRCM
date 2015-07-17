@@ -2,6 +2,7 @@ package gov.va.med.srcalc.web.view.admin;
 
 import gov.va.med.srcalc.domain.model.ModelTerm;
 import gov.va.med.srcalc.domain.model.RiskModel;
+import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.service.ModelInspectionService;
 import gov.va.med.srcalc.util.DisplayNameConditions;
@@ -42,16 +43,14 @@ public class EditSpecialtyValidator implements Validator
     {
         // Note: the editRiskModel object is accessible from the e Error object.
         //
-//        ValidationUtils.rejectIfEmpty(e, "modelName", ValidationCodes.NO_VALUE);
-//        ValidationUtils2.rejectIfTooLong(e, "modelName", DisplayNameConditions.DISPLAY_NAME_MAX );
-//        
-//        ValidationUtils2.rejectIfDoesntMatch(
-//                e, "modelName", RiskModel.VALID_MODEL_NAME_PATTERN,
-//                new Object[] {RiskModel.VALID_MODEL_NAME_CHARACTERS});        
-//        
-        /* Validate each EditModelTerm. */
+        ValidationUtils.rejectIfEmpty(e, "name", ValidationCodes.NO_VALUE);
+        ValidationUtils2.rejectIfTooLong(e, "name", DisplayNameConditions.DISPLAY_NAME_MAX );
         
-        final EditSpecialty target = (EditSpecialty)obj;
-
+        ValidationUtils2.rejectIfDoesntMatch(
+                e, "name", Specialty.VALID_SPECIALTY_NAME_PATTERN,
+                new Object[] {Specialty.VALID_SPECIALTY_NAME_CHARACTERS});        
+                
+        // Don't bother validating the included models since the user can't modify them here.
+        // 
     }
 }

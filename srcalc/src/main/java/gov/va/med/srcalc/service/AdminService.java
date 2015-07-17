@@ -67,4 +67,10 @@ public interface AdminService extends ModelInspectionService
      * Saves the {@link RiskModel} 
      */
     public void saveRiskModel( final RiskModel model );
+
+    /**
+     * Saves the {@link Specialty} 
+     */
+    public void saveSpecialty( final Specialty spec );
+
 }

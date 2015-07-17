@@ -76,4 +76,11 @@ public class SpecialtyDao
         return getCurrentSession().createQuery("from Specialty s order by s.name").list();
     }
 
+    public Specialty saveSpecialty( final Specialty spec ) 
+    {        
+        final Session session = getCurrentSession();
+        final Specialty persistentSpec = (Specialty)session.merge( spec );
+        return persistentSpec;
+
+    }
 }

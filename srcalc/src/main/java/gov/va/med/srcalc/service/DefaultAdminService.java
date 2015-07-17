@@ -253,4 +253,17 @@ public class DefaultAdminService implements AdminService
         fLogger.info("Saved Risk Model {}.", model.getDisplayName() );
         fLogger.debug("Persistent state is now: {}", persistentModel);
     }
+
+    /**
+     * Saves the {@link Specialty} 
+     */
+    @Override
+    @Transactional
+    public void saveSpecialty(Specialty spec)
+    {
+        fLogger.debug("Saving Specialty {}.", spec.getName());
+        
+        final Specialty persistSpec = fSpecialtyDao.saveSpecialty( spec );
+
+    }
 }
