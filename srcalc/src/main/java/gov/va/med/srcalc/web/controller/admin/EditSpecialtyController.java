@@ -87,7 +87,8 @@ public class EditSpecialtyController
     public ModelAndView displayForm(
             @PathVariable final int specialtyId ) throws InvalidIdentifierException
     {
-        final Specialty spec = fAdminService.getSpecialtyForId(specialtyId);
+        Specialty spec = fAdminService.getSpecialtyForId(specialtyId);
+        
         if (spec == null)
         {
             throw new InvalidIdentifierException("Unable to find Specialty for ID " + specialtyId);
@@ -108,7 +109,7 @@ public class EditSpecialtyController
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveSpecialty(
             @PathVariable final int specialtyId,
-            @ModelAttribute(ATTRIBUTE_SPECIALTY) EditSpecialty saveSpecialty,
+            @ModelAttribute(ATTRIBUTE_SPECIALTY) final EditSpecialty saveSpecialty,
             final BindingResult bindingResult)
                     throws InvalidIdentifierException
     {
@@ -124,11 +125,18 @@ public class EditSpecialtyController
             fLogger.debug( "EditSpecialty has errors: {}", bindingResult);
             return displayForm( saveSpecialty );
         }
+
+        Specialty existingSpec = fAdminService.getSpecialtyForId( specialtyId );
+        
+        if( existingSpec == null ) // sanity check ; shouldn't happen
+        {
+            fLogger.error( "Unable to fetch specialty id {}", specialtyId );
+            return displayForm( saveSpecialty );            
+        }
         
         // Apply the changes to the target specialty and save it.
         //
-        saveSpecialty.applyChanges();
-        fAdminService.saveSpecialty( saveSpecialty.getTargetSpecialty() );
+        fAdminService.saveSpecialty( saveSpecialty.applyChanges( existingSpec ) );
 
         // Save successful: redirect to the admin home page.
         //

@@ -21,7 +21,7 @@ public class EditSpecialty implements Comparable<EditSpecialty>
 {
     private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModel.class);
     
-    private Specialty fTargetSpecialty;
+//    private final Specialty fTargetSpecialty;
     
     private String fName;
     
@@ -69,24 +69,10 @@ public class EditSpecialty implements Comparable<EditSpecialty>
             return fModel;
         }
     }
-    /**
-     * Constructs an instance with default values: an empty model name and no terms.
-     */
-    public EditSpecialty()
-    {
-        fLogger.debug("Calling Default constructor for EditSpecialty");
-        fTargetSpecialty = null;
-        fName = "";
-        fSelectableModels = new ArrayList<SelectableModel>();
-    }
 
     private EditSpecialty(final Specialty sp, List<SelectableModel> selModels )
     {
-        fTargetSpecialty = sp;
-        fLogger.debug("Calling constructor for EditSpecialty. target is {}  ",
-                (fTargetSpecialty == null ? "NULL" : fTargetSpecialty.toString() ) );
-
-        fName = fTargetSpecialty.getName();
+        fName = sp.getName();
         
         fSelectableModels = ImmutableList.copyOf(selModels);
     }
@@ -95,7 +81,7 @@ public class EditSpecialty implements Comparable<EditSpecialty>
      * Returns an {@link EditSpecialty} instance for editing the given target Specialty.
      * @param spec the target Specialty
      */
-    public static EditSpecialty fromSpecialty( Specialty spec,
+    public static EditSpecialty fromSpecialty( final Specialty spec,
             final ModelInspectionService modelService )
     {
         fLogger.debug("creating Specialty {}", spec.toString() );
@@ -160,23 +146,15 @@ public class EditSpecialty implements Comparable<EditSpecialty>
     }
     
     /**
-     * Return the target Specialty
-     * 
-     */
-    public Specialty getTargetSpecialty()
-    {
-        return fTargetSpecialty;
-    }
-    /**
      * Update the target Specialty with the current edits.
      */
-    public Specialty applyChanges( )
+    public Specialty applyChanges( Specialty existingSpec )
     {        
         fLogger.debug("ApplyChanges to name {} : Target {}",
                 (fName == null ? "NULL" : fName ), 
-                (fTargetSpecialty == null ? "NULL" : fTargetSpecialty.toString() ));
+                (existingSpec == null ? "NULL" : existingSpec.toString() ));
         
-        fTargetSpecialty.setName( fName );
+        existingSpec.setName( fName );
         Set<RiskModel> includedRiskModels = new HashSet<RiskModel>();
         
         for( SelectableModel selMod : fSelectableModels )
@@ -186,9 +164,9 @@ public class EditSpecialty implements Comparable<EditSpecialty>
                 includedRiskModels.add( selMod.getModel() );
             }
         }
-        fTargetSpecialty.setRiskModels( includedRiskModels );
+        existingSpec.setRiskModels( includedRiskModels );
         
-        return fTargetSpecialty;
+        return existingSpec;
     }
 
     @Override

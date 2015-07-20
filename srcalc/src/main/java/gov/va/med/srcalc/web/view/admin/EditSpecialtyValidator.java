@@ -41,16 +41,13 @@ public class EditSpecialtyValidator implements Validator
     @Override
     public void validate(final Object obj, final Errors e)
     {
-        // Note: the editRiskModel object is accessible from the e Error object.
+        // Note: the editSpecialty object is accessible from the e Error object.
         //
         ValidationUtils.rejectIfEmpty(e, "name", ValidationCodes.NO_VALUE);
         ValidationUtils2.rejectIfTooLong(e, "name", DisplayNameConditions.DISPLAY_NAME_MAX );
         
         ValidationUtils2.rejectIfDoesntMatch(
                 e, "name", Specialty.VALID_SPECIALTY_NAME_PATTERN,
-                new Object[] {Specialty.VALID_SPECIALTY_NAME_CHARACTERS});        
-                
-        // Don't bother validating the included models since the user can't modify them here.
-        // 
+                new Object[] {Specialty.VALID_SPECIALTY_NAME_CHARACTERS});                        
     }
 }
