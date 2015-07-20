@@ -27,6 +27,7 @@ public class Patient implements Serializable
     private RetrievedValue fWeight6MonthsAgo;
     private RetrievedValue fHeight;
     private Map<String, RetrievedValue> fLabs;
+    private String fAdlNotes;
     
     public Patient()
     {
@@ -150,6 +151,9 @@ public class Patient implements Serializable
         this.fHeight = height;
     }
     
+    /**
+     * Returns all of the labs that were able to be retrieved.
+     */
     public Map<String,RetrievedValue> getLabs()
     {
         return fLabs;
@@ -158,6 +162,19 @@ public class Patient implements Serializable
     public void setLabs(final Map<String, RetrievedValue> labs)
     {
         fLabs = labs;
+    }
+    
+    /**
+     * Returns the nursing notes regarding the patient in String form.
+     */
+    public String getAdlNotes()
+    {
+        return fAdlNotes;
+    }
+    
+    public void setAdlNotes(final String adlNotes)
+    {
+        fAdlNotes = adlNotes;
     }
     
     @Override

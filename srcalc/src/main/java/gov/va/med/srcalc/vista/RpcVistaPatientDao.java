@@ -117,6 +117,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // Retrieve all labs from VistA
             retrieveLabs(dfn, patient);
             
+            // Retrieve the patient's nursing notes from VistA
+            retrieveAdlNotes(dfn, patient);
+            
             LOGGER.debug("Loaded {} from VistA.", patient);
             return patient;
         }
@@ -232,6 +235,28 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 // data as possible can still be retrieved.
                 LOGGER.warn("Unable to retrieve lab {}. {}", labRetrievalEnum.name(), e.toString());
             }
+        }
+    }
+    
+    private void retrieveAdlNotes(final int dfn, final Patient patient)
+    {
+        try
+        {
+            final String rpcResultString = fProcedureCaller.doRetrieveAdlNotes(
+                    fDuz,
+                    String.valueOf(dfn));
+            // If the resultString is a success, add it to the patient's lab data.
+            // Else, we don't need to do anything.
+            if(!rpcResultString.isEmpty())
+            {
+                // Parse the String as XML and format it into a 
+            }
+        }
+        catch(final Exception e)
+        {
+            // If an exception occurs for any reason, log a warning but allow the application
+            // to continue without failure.
+            LOGGER.warn("Unable to retrieve patient's ADL status. {}", e.toString());
         }
     }
     

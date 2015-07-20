@@ -38,7 +38,12 @@ public enum RemoteProcedure
     /**
      * Returns the most recent result for the given lab name possibilities.
      */
-    GET_LABS("SR ASRC LAB RESULTS");
+    GET_LABS("SR ASRC LAB RESULTS"),
+    
+    /**
+     * Returns all nursing notes with the "NURSING ADMISSION EVALUATION NOTE" title.
+     */
+    GET_ADL_STATUS("NURSING ADMISSION EVALUATION NOTE");
 
     /**
      * VistA returns this string if {@link #SAVE_PROGRESS_NOTE} succeeds.

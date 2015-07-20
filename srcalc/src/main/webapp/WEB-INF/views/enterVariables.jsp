@@ -18,8 +18,11 @@
     <tr>
         <c:set var="varPath" value="${srcalc:dynamicValuePath(variable.key)}" />
         <c:url var="qMarkImageUrl" value="/css/images/qmark.png"/>
-        <td class="attributeName"><c:out value="${variable.displayName}"/>:
-            <c:if test="${variable.helpTextAsHtml != ''}"><a class="helpTextToggler"><img src="${qMarkImageUrl}" alt="?"/></a></c:if>
+        <td class="attributeName">
+            <c:out value="${variable.displayName}"/>:
+            <c:if test="${variable.helpTextAsHtml != ''}">
+                <a class="helpTextToggler"><img src="${qMarkImageUrl}" alt="?"/></a>
+            </c:if>
         </td>
         <%--
         Use our variableSpecific custom tag to write the corresponding form

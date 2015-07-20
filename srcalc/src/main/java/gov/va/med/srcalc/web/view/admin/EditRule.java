@@ -42,6 +42,7 @@ public class EditRule
     
     /**
      * Constructs an instance that is filled with the same information that the rule
+     * contains.
      * 
      * @param rule the rule to copy into this EditRule
      */

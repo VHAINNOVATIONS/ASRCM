@@ -217,7 +217,8 @@ public final class Rule
     }
     
     /**
-     * Returns a String in the form of "#a, #b, #c" that will 
+     * Returns a String in the form of "#a, #b, #c" that will communicate to the
+     * user which variables are available for the summand expression.
      */
     @Transient
     public String getExpressionVariablesString()
