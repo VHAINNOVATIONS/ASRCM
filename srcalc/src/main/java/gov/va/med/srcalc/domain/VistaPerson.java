@@ -11,7 +11,7 @@ public class VistaPerson
     private final String fUserClass;
     
     /**
-     * Constructs an instance
+     * Constructs an instance.
      * @param division See {@link #getDivision()}.
      * @param duz See {@link #getDuz()}.
      * @param displayName

@@ -10,6 +10,9 @@ import gov.va.med.srcalc.util.ValidationCodes;
 import org.junit.Test;
 import org.springframework.validation.*;
 
+/**
+ * Tests the {@link EditBaseVarValidator} class.
+ */
 public final class EditBaseVarValidatorTest
 {
     /**

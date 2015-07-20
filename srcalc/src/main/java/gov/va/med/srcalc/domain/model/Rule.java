@@ -36,7 +36,7 @@ import com.google.common.collect.ImmutableSet;
 @Table(name = "rule")
 public final class Rule
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(Rule.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Rule.class);
 
     private int fId;
     private List<ValueMatcher> fMatchers;
@@ -141,8 +141,7 @@ public final class Rule
     }
     
     /**
-     * The rule's name to display to the user
-     * @return
+     * Returns the rule's name to display to the user.
      */
     @Basic
     @Column(
@@ -234,7 +233,7 @@ public final class Rule
      */
     public float apply(final EvaluationContext context) throws MissingValuesException
     {
-        fLogger.debug("Evaluating {}", this);
+        LOGGER.debug("Evaluating {}", this);
 
         /* Match all the values */
         final StandardEvaluationContext ec = new StandardEvaluationContext();
@@ -258,7 +257,7 @@ public final class Rule
                 // If the variable is not required, there is no coefficient added to the
                 // calculation.
                 // This essentially makes the rule evaluate to false;
-                fLogger.debug("Bypassing rule due to missing value for {}", var);
+                LOGGER.debug("Bypassing rule due to missing value for {}", var);
                 return 0.0f;
             }
         }
@@ -275,7 +274,7 @@ public final class Rule
             ec.setVariables(matchedValues);
             if (!condition.evaluate(ec, matchedValue))
             {
-                fLogger.debug("{} evaluated false. Rule not firing.", condition);
+                LOGGER.debug("{} evaluated false. Rule not firing.", condition);
                 return 0.0f;
             }
         }

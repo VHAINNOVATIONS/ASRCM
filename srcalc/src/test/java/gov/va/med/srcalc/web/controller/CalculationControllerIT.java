@@ -46,7 +46,7 @@ import static org.junit.Assert.*;
 @Transactional // run each test in its own (rolled-back) transaction
 public class CalculationControllerIT extends IntegrationTest
 {
-    private final int MOCK_DFN = 456123;
+    private final static int MOCK_DFN = 456123;
     private final static String ELECTRONIC_SIGNATURE = "TESTSIG";
     public final static String NOTE_BODY = "Specialty = Thoracic\n\nCalculation Inputs\n"
             + "Age = 45.0\nDNR = No\nFunctional Status = Independent\n"

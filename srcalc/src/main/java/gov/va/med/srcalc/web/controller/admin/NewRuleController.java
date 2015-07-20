@@ -26,7 +26,7 @@ public class NewRuleController extends BaseRuleController
 {
     public static final String BASE_URL = "/admin/newRule";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(NewRuleController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NewRuleController.class);
     
     /**
      * Constructs an instance.
@@ -57,7 +57,7 @@ public class NewRuleController extends BaseRuleController
 
         if (bindingResult.hasErrors())
         {
-            fLogger.debug("EditRule has errors: {}", bindingResult);
+            LOGGER.debug("EditRule has errors: {}", bindingResult);
             return displayForm(editRule);
         }
 

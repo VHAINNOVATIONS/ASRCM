@@ -22,6 +22,10 @@ import org.springframework.web.context.WebApplicationContext;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Resources;
 
+/**
+ * Integration Test for {@link EditProceduresController}. Note that we only define
+ * Integration Tests for controllers because unit tests are of little value.
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration  // need to tell Spring to instantiate a WebApplicationContext.
 @ContextConfiguration({"/srcalc-context.xml", "/srcalc-controller.xml", "/test-context.xml"})

@@ -7,6 +7,9 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link DiscreteTerm} class.
+ */
 public class DiscreteTermTest
 {
     @Test

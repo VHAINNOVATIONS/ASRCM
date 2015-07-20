@@ -18,7 +18,7 @@ import com.google.common.base.MoreObjects;
  */
 public final class ValidationUtils2
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(ValidationUtils2.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ValidationUtils2.class);
     
     /**
      * Like {@link ValidationUtils#rejectIfEmpty(Errors, String, String)}, but returns
@@ -32,7 +32,7 @@ public final class ValidationUtils2
     public static boolean rejectIfEmpty(
             final Errors errors, final String field)
     {
-        fLogger.trace("Validating that {} is non-empty.", field);
+        LOGGER.trace("Validating that {} is non-empty.", field);
         
         // See method contract: the field must be a CharSequence.
         final CharSequence value = (CharSequence)errors.getFieldValue(field);
@@ -63,7 +63,7 @@ public final class ValidationUtils2
     public static boolean rejectIfTooLong(
             final Errors e, final String field, final int maxLength)
     {
-        fLogger.trace("Validating that {} length is within {}.", field, maxLength);
+        LOGGER.trace("Validating that {} length is within {}.", field, maxLength);
 
         // See method contract: the field must be a CharSequence.
         final CharSequence value = (CharSequence)e.getFieldValue(field);
@@ -99,7 +99,7 @@ public final class ValidationUtils2
     public static boolean rejectIfDoesntMatch(
             final Errors  e, final String field, final Pattern regex, final Object[] errorArgs)
     {
-        fLogger.trace("Validating that {} matches {}.", field, regex);
+        LOGGER.trace("Validating that {} matches {}.", field, regex);
 
         // See method contract: the field must be a CharSequence.
         final CharSequence value = (CharSequence)e.getFieldValue(field);

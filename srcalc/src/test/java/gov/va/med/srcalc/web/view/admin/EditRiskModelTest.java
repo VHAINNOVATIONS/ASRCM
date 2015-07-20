@@ -14,11 +14,14 @@ import com.google.common.collect.ImmutableList;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link EditRiskModel} class.
+ */
 public class EditRiskModelTest
 {
     private final MockModelService fModelService = new MockModelService();
     
-    private final Rule testRule = SampleModels.ageAndFsRule();
+    private final Rule fTestRule = SampleModels.ageAndFsRule();
     
     /**
      * Constructs a sample RiskModel for our testing.
@@ -34,7 +37,7 @@ public class EditRiskModelTest
         // Note: intentionally including this edge-case variable to test ordering.
         final BooleanVariable wbcIsNormalVar = SampleModels.wbcIsNormalVariable();
         final Set<DerivedTerm> derivedTerms = new HashSet<DerivedTerm>();
-        derivedTerms.add(new DerivedTerm(6.0f, testRule));
+        derivedTerms.add(new DerivedTerm(6.0f, fTestRule));
         
         return SampleModels.makeSampleRiskModel(
                 name,
@@ -81,7 +84,7 @@ public class EditRiskModelTest
         // Constant first, then the Rules and then the rest
         final ImmutableList<ModelTermSummary> expectedSummaries = ImmutableList.of(
                 new ModelTermSummary("Constant", "", constant),
-                new ModelTermSummary(testRule.getDisplayName(), "Rule", 6.0f),
+                new ModelTermSummary(fTestRule.getDisplayName(), "Rule", 6.0f),
                 new ModelTermSummary("Age", "Numerical", 2.0f),
                 new ModelTermSummary("Functional Status = Independent", "Multi-Select", 3.0f),
                 new ModelTermSummary("Functional Status = Partially dependent", "Multi-Select", 3.0f ),

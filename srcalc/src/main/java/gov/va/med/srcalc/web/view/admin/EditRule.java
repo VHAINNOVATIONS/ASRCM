@@ -108,7 +108,7 @@ public class EditRule
     
     /**
      * Returns the variable key used to identify a new variable being added to
-     * this EditRule
+     * this EditRule.
      */
     public String getNewVariableKey()
     {
@@ -129,7 +129,7 @@ public class EditRule
     }
 
     /**
-     * Returns a validator for an EditRule
+     * Returns a validator for this class.
      */
     public EditRuleValidator getValidator()
     {

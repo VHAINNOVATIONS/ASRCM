@@ -12,6 +12,9 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableSortedSet;
 
+/**
+ * Tests the {@link EditDiscreteNumericalVar} class.
+ */
 public class EditDiscreteNumericalVarTest
 {
     private final MockModelService fModelService = new MockModelService();

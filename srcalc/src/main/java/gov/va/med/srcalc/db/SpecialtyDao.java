@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import gov.va.med.srcalc.domain.model.*;
 
+/**
+ * Data Access Object (DAO) for {@link Specialty} objects.
+ */
 @Repository
 public class SpecialtyDao
 {

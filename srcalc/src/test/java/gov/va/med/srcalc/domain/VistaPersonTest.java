@@ -6,6 +6,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link VistaPerson} class.
+ */
 public class VistaPersonTest
 {
     @Test

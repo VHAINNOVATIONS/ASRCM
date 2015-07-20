@@ -50,7 +50,7 @@ public final class ValueMatcherBuilder
     }
 
     /**
-     * Returns variable key that this ValueMatcherBuilder references
+     * Returns the variable key that this ValueMatcherBuilder references.
      */
     public String getVariableKey()
     {

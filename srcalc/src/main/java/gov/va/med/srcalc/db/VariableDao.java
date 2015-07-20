@@ -20,7 +20,7 @@ import gov.va.med.srcalc.domain.model.*;
 @Repository
 public class VariableDao
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(VariableDao.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VariableDao.class);
     
     private final SessionFactory fSessionFactory;
     
@@ -59,7 +59,7 @@ public class VariableDao
      */
     public ImmutableCollection<VariableGroup> getAllVariableGroups()
     {
-        fLogger.trace("Loading all VariableGroups.");
+        LOGGER.trace("Loading all VariableGroups.");
 
         @SuppressWarnings("unchecked") // trust Hibernate
         final List<VariableGroup> list =
@@ -101,7 +101,7 @@ public class VariableDao
      */
     public AbstractVariable mergeVariable(final AbstractVariable variable)
     {
-        fLogger.debug("Merging {} into persistence context.", variable);
+        LOGGER.debug("Merging {} into persistence context.", variable);
         // Trust Hibernate with this cast here. (I wish it was generic.)
         return (AbstractVariable)getCurrentSession().merge(variable);
     }

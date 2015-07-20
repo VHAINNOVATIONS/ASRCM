@@ -16,6 +16,9 @@ import org.springframework.expression.Expression;
 
 import com.google.common.collect.ImmutableSet;
 
+/**
+ * Tests the {@link DerivedTerm} class.
+ */
 public class DerivedTermTest
 {
     @Test

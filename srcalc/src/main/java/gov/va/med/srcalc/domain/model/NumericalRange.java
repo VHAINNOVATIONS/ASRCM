@@ -42,7 +42,7 @@ public final class NumericalRange implements Comparable<NumericalRange>
      */
     public static final float MIN = -MAX;
     
-    private static final Logger fLogger = LoggerFactory.getLogger(NumericalRange.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NumericalRange.class);
 
     private float fLowerBound;
     private boolean fLowerInclusive;
@@ -154,12 +154,12 @@ public final class NumericalRange implements Comparable<NumericalRange>
     {
         if (f > MAX)
         {
-            fLogger.debug("Limiting {} to max {}.", f, MAX);
+            LOGGER.debug("Limiting {} to max {}.", f, MAX);
             return MAX;
         }
         else if (f < MIN)
         {
-            fLogger.debug("Limiting {} to min {}.", f, MIN);
+            LOGGER.debug("Limiting {} to min {}.", f, MIN);
             return MIN;
         }
         else

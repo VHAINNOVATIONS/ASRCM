@@ -20,7 +20,7 @@ import com.google.common.collect.ImmutableList;
  */
 public class EditModelTerm
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(EditModelTerm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditModelTerm.class);
     
     /**
      * The overarching types of ModelTerms.
@@ -117,6 +117,9 @@ public class EditModelTerm
      */
     public static EditModelTerm fromExistingTerm(final ModelTerm existingTerm)
     {
+        /**
+         * Constructs an appropriate EditModelTerm for each type of EditModelTerm.
+         */
         class ConstructionVisitor implements ModelTermVisitor
         {
             private EditModelTerm fConstructedEditTerm;
@@ -486,7 +489,7 @@ public class EditModelTerm
             }
             catch (final InvalidIdentifierException ex)
             {
-                fLogger.debug(
+                LOGGER.debug(
                         "Using fallback values due to InvalidIdentifierException.", ex);
                 
                 displayName = fKey;

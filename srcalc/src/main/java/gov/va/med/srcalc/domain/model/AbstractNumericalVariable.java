@@ -8,6 +8,10 @@ import java.util.regex.Pattern;
 
 import javax.persistence.*;
 
+/**
+ * Implements base properties (valid range and units) for Variable that has a numerical
+ * value.
+ */
 @MappedSuperclass
 public abstract class AbstractNumericalVariable extends AbstractVariable
 {

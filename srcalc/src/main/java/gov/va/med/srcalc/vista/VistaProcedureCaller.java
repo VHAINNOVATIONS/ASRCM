@@ -4,6 +4,9 @@ import gov.va.med.srcalc.ConfigurationException;
 
 import java.util.List;
 
+/**
+ * An object that can call VistA Remote Procedures.
+ */
 public interface VistaProcedureCaller
 {
     /**

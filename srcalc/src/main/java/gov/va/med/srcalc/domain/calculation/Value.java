@@ -22,7 +22,7 @@ public interface Value
     public String getDisplayString();
 
     /**
-     * Accepts the given {@link ValueVisitor}
+     * Accepts the given {@link ValueVisitor}.
      */
     public void accept(ValueVisitor valueVisitor);
 }

@@ -8,6 +8,9 @@ import gov.va.med.srcalc.domain.model.*;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link NumericalValue} class.
+ */
 public class NumericalValueTest
 {
     @Test

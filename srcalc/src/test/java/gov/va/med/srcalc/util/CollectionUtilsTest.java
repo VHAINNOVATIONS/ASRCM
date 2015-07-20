@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link CollectionUtils} class.
+ */
 public class CollectionUtilsTest
 {
     // Experimenting with BDD-style test names here.

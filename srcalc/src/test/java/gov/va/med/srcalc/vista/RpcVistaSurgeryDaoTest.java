@@ -13,6 +13,9 @@ import org.springframework.dao.DataAccessException;
 import com.google.common.base.Optional;
 import com.google.common.collect.*;
 
+/**
+ * Tests the {@link RpcVistaSurgeryDao} class.
+ */
 public class RpcVistaSurgeryDaoTest
 {
     private final static String RADIOLOGIST_DUZ = "11716";

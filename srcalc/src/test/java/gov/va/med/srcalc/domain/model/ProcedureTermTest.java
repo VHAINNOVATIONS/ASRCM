@@ -7,6 +7,9 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link ProcedureTerm} class.
+ */
 public class ProcedureTermTest
 {
     @Test

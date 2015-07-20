@@ -43,7 +43,7 @@ public class EditRiskModelController
      */
     static final String ATTRIBUTE_SUMMARIES = "termSummaries";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModelController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditRiskModelController.class);
     
     private final AdminService fAdminService;
     
@@ -103,7 +103,7 @@ public class EditRiskModelController
             @RequestParam("termsFile") final MultipartFile termsFile)
             throws IOException
     {
-        fLogger.debug("Processing a {}-byte term upload.", termsFile.getSize());
+        LOGGER.debug("Processing a {}-byte term upload.", termsFile.getSize());
         
         final InputStreamReader input = new InputStreamReader(
                 termsFile.getInputStream());
@@ -114,7 +114,7 @@ public class EditRiskModelController
         // If there were errors, display them to the user.
         if (parseResult.hasErrors())
         {
-            fLogger.debug("There were errors: {}", parseResult.getErrors());
+            LOGGER.debug("There were errors: {}", parseResult.getErrors());
             // Note that we _do not_ modify the editModel object, so the form will show
             // the previous set of terms.
             return displayForm(editModel)
@@ -147,7 +147,7 @@ public class EditRiskModelController
             final BindingResult bindingResult)
                     throws InvalidIdentifierException
     {
-        fLogger.debug("Handling request to save RiskModel: {}", saveModel);
+        LOGGER.debug("Handling request to save RiskModel: {}", saveModel);
         
         // Spring has already bound the user input to saveModel; now validate
         //
@@ -156,7 +156,7 @@ public class EditRiskModelController
 
         if( bindingResult.hasErrors() )
         {
-            fLogger.debug( "EditRiskModel has errors: {}", bindingResult);
+            LOGGER.debug( "EditRiskModel has errors: {}", bindingResult);
             return displayForm(saveModel);
         }
         

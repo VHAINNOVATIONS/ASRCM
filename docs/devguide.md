@@ -22,14 +22,18 @@ Web Application Developer Guide
 -------------------------------
 
 ### Developer Workstation Setup
-If you have not yet followed the Installation Guide, ensure that everything is installed and working properly from that guide first before attempting to set up your workstation.
 
 **Running Programs**
 
 The following programs/services will need to be running:
+
 *   MySQL
 *   Glassfish
-*   Choice of browser (currently IE 7 and up are supported)
+*   Choice of browser (currently IE 8 and up are supported)
+
+See the Installation Guide for instructions on setting up these services. You need not
+follow the Installation Guide verbatim: some deviation may be necessary depending on your
+workstation setup.
 
 Git will need to be installed on the computer, if it is not already installed.
 
@@ -43,27 +47,19 @@ The source repository currently resides at https://github.com/VHAINNOVATIONS/ASR
 
 **Gradle**
 
-Adding dependencies in Gradle is done by opening the build.gradle file in the source code’s directory. There are multiple sections for dependencies in the build.gradle file and the new dependency should go in the appropriate section. The proper dependency path can be found by searching mvnrepository.com and then selecting the `Gradle` tab on the dependency’s page. 
+Adding dependencies in Gradle is done by opening the build.gradle file in the source code's directory. There are multiple sections for dependencies in the build.gradle file and the new dependency should go in the appropriate section. The proper dependency path can be found by searching mvnrepository.com and then selecting the `Gradle` tab on the dependency's page. 
 
 **Downloads**
 
 Dependencies listed in Gradle will be automatically downloaded and added to the project. If any new tools or technologies depend on javascript files in order to work, those javascript files should be placed into the `src\main\webapp\js\vendor` folder.
-	TODO: Are there any other dependencies/codes that need to be downloaded or might be needed in the future?
 
-**Filling Procedures in DB**
-
-If the Installation Guide was followed properly, the srcalc database should be created properly. For updating changes to the database: 
-
-1.  The proper files need to be in the `install/resources` folder starting at the top level of the repository. Currently procedures and models can be found on the ASRC sharepoint in the `Deliverables->Internal VA Files` folder. 
-2.  Drop the srcalc database. This can be done through MySQL Workbench to make the process easier.
-3.  Run `create_database.bat` in the `install` folder.
 
 ### Compiling and Testing the Application
 
 **Building with Gradle**
 
-The actual Eclipse project for the ASRC is located in the top level of the
-repository at the `srcalc` folder. The top level of the project folder contains
+The Java web application is located in the top level of the
+repository in the `srcalc` folder. This folder contains
 the gradlew.bat and build.gradle files that are required for building the
 project. To use them, execute the command `gradlew build` in command prompt from
 the same directory. After a successful build, a .war file will be built in the
@@ -71,15 +67,15 @@ path `srcalc\build\libs`.
 	
 **Glassfish**
 
-Glassfish Server must be up and running in order to access the application and the administration tools. The administration tools are located at localhost:4848 by default and deployed applications are located at local:8080 by default. To deploy an application, go to the `Applications` task on the left hand toolbar. Click the `Deploy` button and select the appropriate .war file to deploy. If redeploying, find the application you wish to redeploy and click the `Redeploy` link on the right hand side of the application’s row. Select the appropriate .war file to deploy and wait for the application to launch after clicking `OK`.
+Glassfish Server must be up and running in order to access the application and the administration tools. The administration tools are located at localhost:4848 by default and deployed applications are located at local:8080 by default. To deploy an application, go to the `Applications` task on the left hand toolbar. Click the `Deploy` button and select the appropriate .war file to deploy. If redeploying, find the application you wish to redeploy and click the `Redeploy` link on the right hand side of the application's row. Select the appropriate .war file to deploy and wait for the application to launch after clicking `OK`.
 
 **Testing/Compatibility**
 
-As of right now the target browser versions for ASRC are Internet Explorer 9 and up.
+As of right now the target browser versions for ASRC are Internet Explorer 8 and up.
 
 ### Enhancing the Application
-	
-**Coding**
+
+#### IDE
 
 Although the coding does not need to be done in Eclipse, the tool was initially
 developed using Eclipse and Eclipse provides standard IDE features such as
@@ -87,22 +83,51 @@ graphical debugging and integrated source control via EGit. The Eclipse project
 is not stored in this repository, but may be created automatically by running
 the command `gradlew eclipse` in the `srcalc` directory.
 
+#### Directory Organization
+
+The `srcalc` folder contains the following directory structure:
+
+* `config`: build configuration, such as the Checkstyle configuration file
+* `gradle`: Gradle binaries and supporting files
+* `src`: contains all source code, including Java source, resources, test scripts, etc.
+  * `src/main/java`: Java application source code
+  * `src/main/resources`: non-Java resources included on the application's classpath
+  * `src/main/webapp`: non-Java resources included in the Web Application Archive (WAR), such as the `web.xml`
+  * `src/test/java`: automated tests written in Java
+  * `src/test/resources`: non-Java resources included on the classpath while running the tests
+* Building the application will also produce a `build` directory containing build output. Nothing in this
+  directory is ever included in the Git repository.
+
+#### Publishing Code
+
 Committing and pushing code to the repository can be done either through an Eclipse plugin, command line, or other git method. However, pushing the branch to the master branch needs to be approved first. After pushing the branch and fixing any conflicts that may occur, a pull request needs to be created in GitHub so that another developer can review the code.
 
-**Code Standards**
+#### Code Standards
 
-An incomplete list of code standards follows:
-
-Consistent code formatting is important. This repository includes [Eclipse Code Formatter Preferences](asrc_eclipse_format.xml) specifying the Java code format. Some notable features are:
+Java code standards are primarily captured via a Checkstyle configuration [in this repository](../srcalc/config/checkstyle/checkstyle.xml). The build automatically performs these checks and warns of violations. Some notable features are:
 
 * Opening and closing braces have their own lines.
 * 4-space indents.
 * Use spaces instead of tabs.
+* All public types (classes and interfaces) and methods must have a [doc comment](http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html). (The customer requested this standard.)
+* Instance variables are prefixed with "f" (for "field").
 
-Compilation must not generate any errors or warnings. All tests must pass. Verify this with
-`gradle clean build` before publishing any changes.
+This repository includes [Eclipse Code Formatter Preferences](asrc_eclipse_format.xml) specifying the Java code format. Many of the formatting conventions are not checked with Checkstyle, but developers should still follow all the formatting conventions.
 
-Logging levels (based on [this blog post ](http://www.nurkiewicz.com/2010/05/clean-code-clean-logs-logging-levels.html)):
+Additional code standards which Checkstyle does not capture are:
+
+* Compilation must not generate any errors or warnings. All tests must pass. Verify this with
+`gradle clean build javadoc` before publishing any changes.
+  * Known issue: Gradle does not properly generate Javadocs and records spurious warnings for package links. See [this bug report](https://discuss.gradle.org/t/javadoc-task-doesnt-generate-package-links/10621). These warnings may be ignored.
+* The `master` branch does not contain commented-out code.
+* The `master` branch does not contain incomplete code.
+* Automated tests provide as close to 100% code coverage as practical, with 90% coverage as a minimum. (Use `gradle jacocoTestReport` to generate a code coverage report.)
+
+Although the above standards are important, any part of the standard may be waived with good justification.
+
+#### Logging Levels
+
+Every log statement has an associated level. In order to keep level selection consistent throughout the application, we use the following rough guidelines (based on [this blog post ](http://www.nurkiewicz.com/2010/05/clean-code-clean-logs-logging-levels.html)):
 
 * `ERROR` - something terribly wrong had happened, that must be investigated immediately. No system can tolerate items logged on this level.
 
@@ -121,10 +146,6 @@ Logging levels (based on [this blog post ](http://www.nurkiewicz.com/2010/05/cle
         log.debug("Message with id '{}' processed", message.getJMSMessageID());
 
 * `TRACE` - Very detailed information, intended only for development. You might keep trace messages for a short period of time after deployment on production environment, but treat these log statements as temporary, that should or might be turned-off eventually. The distinction between DEBUG and TRACE is the most difficult, but if you put logging statement and remove it after the feature has been developed and tested, it should probably be on TRACE level.
-
-**Directory Organization**
-
-
 
 VistA Patch Developer Guide
 ---------------------------

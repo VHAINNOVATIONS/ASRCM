@@ -20,7 +20,7 @@ import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
  */
 public class InputParserVisitor extends ExceptionlessVariableVisitor
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(InputParserVisitor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InputParserVisitor.class);
     
     private final VariableEntry fVariableEntry;
     private final Errors fErrors;
@@ -28,7 +28,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
     
     public InputParserVisitor(final VariableEntry variableEntry, final Errors errors)
     {
-        fLogger.debug(
+        LOGGER.debug(
                 "Creating InputParserVisitor for the given request values: {}",
                 variableEntry);
 
@@ -99,7 +99,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
     @Override
     public void visitMultiSelect(final MultiSelectVariable variable)
     {
-        fLogger.debug("Parsing MultiSelectVariable {}", variable);
+        LOGGER.debug("Parsing MultiSelectVariable {}", variable);
 
         final String value = getVariableValue(variable);
         if (StringUtils.isEmpty(value))
@@ -124,7 +124,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
     @Override
     public void visitBoolean(final BooleanVariable variable)
     {
-        fLogger.debug("Parsing BooleanVariable {}", variable);
+        LOGGER.debug("Parsing BooleanVariable {}", variable);
         
         final String stringValue = getVariableValue(variable);
         final boolean booleanValue = Objects.equals(stringValue, "true");
@@ -134,7 +134,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
     @Override
     public void visitNumerical(final NumericalVariable variable)
     {
-        fLogger.debug("Parsing NumericalVariable {}", variable);
+        LOGGER.debug("Parsing NumericalVariable {}", variable);
 
         final String stringValue = getVariableValue(variable);
         if (StringUtils.isEmpty(stringValue))
@@ -187,7 +187,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
     @Override
     public void visitDiscreteNumerical(final DiscreteNumericalVariable variable)
     {
-        fLogger.debug("Parsing DiscreteNumericalVariable {}", variable);
+        LOGGER.debug("Parsing DiscreteNumericalVariable {}", variable);
 
         final String categoryName = getVariableValue(variable);
         if (StringUtils.isEmpty(categoryName))
@@ -202,7 +202,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
             final String numericalName = VariableEntry.makeNumericalInputName(variable.getKey());
             final String stringValue = fVariableEntry.getDynamicValues().get(
                     numericalName);
-            fLogger.debug("User specified a numerical value: {}", stringValue);
+            LOGGER.debug("User specified a numerical value: {}", stringValue);
             if (StringUtils.isEmpty(stringValue))
             {
                 return;
@@ -246,7 +246,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
             }
             else
             {
-                fLogger.debug("User selected Category {}", selectedCategory);
+                LOGGER.debug("User selected Category {}", selectedCategory);
                 fValues.add(variable.makeValue(selectedCategory));
             }
         }
@@ -255,7 +255,7 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
     @Override
     public void visitProcedure(final ProcedureVariable variable)
     {
-        fLogger.debug("Parsing ProcedureVariable {}", variable);
+        LOGGER.debug("Parsing ProcedureVariable {}", variable);
 
         final String selectedCpt = getVariableValue(variable);
         if (StringUtils.isEmpty(selectedCpt))

@@ -30,7 +30,7 @@ public abstract class NewVarController
      */
     protected static final String ATTRIBUTE_VARIABLE = "variable";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(NewVarController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NewVarController.class);
     
     private final AdminService fAdminService;
     
@@ -90,7 +90,7 @@ public abstract class NewVarController
 
         if (bindingResult.hasErrors())
         {
-            fLogger.debug("EditVar has errors: {}", bindingResult);
+            LOGGER.debug("EditVar has errors: {}", bindingResult);
             return displayForm(editVar);
         }
 

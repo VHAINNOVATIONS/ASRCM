@@ -12,6 +12,10 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests the {@link DefaultCalculationService} class. Note that these are unit tests, not
+ * integration tests: tests are accomplished via mocks.
+ */
 public class DefaultCalculationServiceTest
 {
     protected static final int SAMPLE_PATIENT_DFN = 1;

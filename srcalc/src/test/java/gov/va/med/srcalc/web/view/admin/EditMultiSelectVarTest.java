@@ -12,6 +12,9 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
+/**
+ * Tests the {@link EditMultiSelectVar} class.
+ */
 public class EditMultiSelectVarTest
 {
     private final MockModelService fModelService = new MockModelService();

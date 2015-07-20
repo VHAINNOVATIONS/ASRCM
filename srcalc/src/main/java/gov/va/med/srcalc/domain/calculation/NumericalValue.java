@@ -2,7 +2,9 @@ package gov.va.med.srcalc.domain.calculation;
 
 import gov.va.med.srcalc.domain.model.*;
 
-
+/**
+ * A value of a {@link NumericalVariable}.
+ */
 public class NumericalValue implements Value
 {
     private final NumericalVariable fVariable;

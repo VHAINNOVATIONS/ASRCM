@@ -15,6 +15,10 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedSet;
 
+/**
+ * Tests the {@link DefaultAdminService} class. Note that this is a unit test, not an
+ * integration test: tests are accomplished via mocks.
+ */
 public class DefaultAdminServiceTest
 {
     private List<AbstractVariable> fSampleVariables;
