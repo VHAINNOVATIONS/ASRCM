@@ -118,7 +118,7 @@ public class SampleModels
     {
         final RiskModel m = new RiskModel("Thoracic 30-day mortality estimate");
         m.getProcedureTerms().add(new ProcedureTerm(procedureVariable(), 1.0f));
-        m.getNumericalTerms().add(new NumericalTerm(ageVariable(), 2.0f));
+        m.getNumericalTerms().add(new NumericalTerm(ageVariable(), 0.12f));
         m.getBooleanTerms().add(new BooleanTerm(dnrVariable(), 0.5f));
         m.getDiscreteTerms().add(new DiscreteTerm(functionalStatusVariable(), 1, 5.0f));
         return m;

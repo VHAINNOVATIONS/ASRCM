@@ -203,7 +203,7 @@ public class Calculation implements Serializable
     public CalculationResult calculate(final Collection<Value> values) throws MissingValuesException
     {
         // Run the calculation first to make sure we don't get any exceptions.
-        final TreeMap<String, Double> outcomes = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        final TreeMap<String, Float> outcomes = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         // TODO: Change into a Set.
         final List<MissingValueException> missingValues = new ArrayList<MissingValueException>();
         for (final RiskModel model : getSpecialty().getRiskModels())

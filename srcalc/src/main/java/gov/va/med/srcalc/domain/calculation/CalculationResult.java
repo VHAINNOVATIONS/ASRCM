@@ -40,7 +40,7 @@ public final class CalculationResult implements Serializable
      * need that order for {@link #buildNoteBody()}.
      */
     private final ImmutableSortedSet<Value> fNonProcedureValues;
-    private final ImmutableSortedMap<String, Double> fOutcomes;
+    private final ImmutableSortedMap<String, Float> fOutcomes;
     
     /**
      * <p>Constructs an instance with the given properties.</p>
@@ -66,7 +66,7 @@ public final class CalculationResult implements Serializable
             final int patientDfn,
             final String specialtyName,
             final Set<Value> values,
-            final Map<String, Double> outcomes)
+            final Map<String, Float> outcomes)
     {
         fStartDateTime = startDateTime;
         fPatientDfn = patientDfn;
@@ -149,7 +149,7 @@ public final class CalculationResult implements Serializable
      * Returns the risk outcomes as a Map from risk model name to calculated
      * risk.
      */
-    public ImmutableSortedMap<String, Double> getOutcomes()
+    public ImmutableSortedMap<String, Float> getOutcomes()
     {
         return fOutcomes;
     }

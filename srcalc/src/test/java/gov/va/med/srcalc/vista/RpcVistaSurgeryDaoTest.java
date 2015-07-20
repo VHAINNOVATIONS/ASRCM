@@ -49,10 +49,10 @@ public class RpcVistaSurgeryDaoTest
     public final void testSaveCalculationResultWithCpt()
     {
         // Create a test calculation.
-        final ImmutableMap<String, Double> outcomes = ImmutableMap.of(
-                "Thoracic 30-day", .301,
+        final ImmutableMap<String, Float> outcomes = ImmutableMap.of(
+                "Thoracic 30-day", .301f,
                 // test the 0-padding too
-                "Thoracic 60-day", .032);
+                "Thoracic 60-day", .032f);
         final Procedure procedure = SampleModels.repairLeftProcedure();
         // Calculate some arbitrary, but known, timestamps.
         final DateTime startDateTime = new DateTime().withDate(2015, 2, 4).withTime(10, 45, 0, 0);
@@ -89,10 +89,10 @@ public class RpcVistaSurgeryDaoTest
     public final void testSaveCalculationResultWithoutCpt()
     {
         // Create a test calculation.
-        final ImmutableMap<String, Double> outcomes = ImmutableMap.of(
-                "Cardiac 30-day", .900,
+        final ImmutableMap<String, Float> outcomes = ImmutableMap.of(
+                "Cardiac 30-day", .900f,
                 // test the 0-padding too
-                "Cardiac 60-day", .092);
+                "Cardiac 60-day", .092f);
         // Calculate some arbitrary, but known, timestamps.
         final DateTime startDateTime = new DateTime().withDate(2014, 3, 9).withTime(9, 17, 0, 0);
         final DateTime signatureDateTime = startDateTime.withTime(17, 10, 0, 0);
@@ -133,7 +133,7 @@ public class RpcVistaSurgeryDaoTest
                 Optional.<String>absent(),
                 new DateTime(),
                 new DateTime(),
-                ImmutableMap.<String, Double>of());
+                ImmutableMap.<String, Float>of());
         
         final RpcVistaSurgeryDao dao = new RpcVistaSurgeryDao(
                 fProcedureCaller, RADIOLOGIST_DUZ);

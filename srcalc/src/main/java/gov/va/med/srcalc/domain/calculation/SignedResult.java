@@ -25,7 +25,7 @@ public final class SignedResult
     private final Optional<String> fCptCode;
     private final DateTime fStartDateTime;
     private final DateTime fSignatureDateTime;
-    private final ImmutableMap<String, Double> fOutcomes;
+    private final ImmutableMap<String, Float> fOutcomes;
     
     public SignedResult(
             final int patientDfn,
@@ -33,7 +33,7 @@ public final class SignedResult
             final Optional<String> cptCode,
             final DateTime startDateTime,
             final DateTime signatureDateTime,
-            final Map<String, Double> outcomes)
+            final Map<String, Float> outcomes)
     {
         fPatientDfn = patientDfn;
         fSpecialtyName = specialtyName;
@@ -94,7 +94,7 @@ public final class SignedResult
      * Returns the risk outcomes as a Map from risk model name to calculated
      * risk.
      */
-    public ImmutableMap<String, Double> getOutcomes()
+    public ImmutableMap<String, Float> getOutcomes()
     {
         return fOutcomes;
     }

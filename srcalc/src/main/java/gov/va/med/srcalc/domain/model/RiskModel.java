@@ -347,7 +347,7 @@ public class RiskModel implements Comparable<RiskModel>
      * per required variable.
      * @throws MissingValuesException if there are any required variables without an assigned value
      */
-    public double calculate(final Collection<Value> inputValues) throws MissingValuesException
+    public float calculate(final Collection<Value> inputValues) throws MissingValuesException
     {
         LOGGER.debug("Calculating {}", this);
         
@@ -365,14 +365,14 @@ public class RiskModel implements Comparable<RiskModel>
             }
         }
         
-        double sum = 0.0;
+        float sum = 0.0f;
         // TODO: Change to a Set rather than List.
         final List<MissingValueException> missingList = new ArrayList<MissingValueException>();
         for (final ModelTerm term : getTerms())
         {
             try
             {
-                final double termSummand = term.getSummand(valueMap);
+                final float termSummand = term.getSummand(valueMap);
                 LOGGER.debug("Adding {} for {}", termSummand, term);
                 sum += termSummand;
             }
@@ -386,7 +386,8 @@ public class RiskModel implements Comparable<RiskModel>
         {
             throw new MissingValuesException("The calculation is missing values.", missingList);
         }
-        final double expSum = Math.exp(sum);
+        LOGGER.debug("Sum is {}", sum);
+        final float expSum = (float)Math.exp(sum);
         
         return expSum / (1 + expSum);
     }
