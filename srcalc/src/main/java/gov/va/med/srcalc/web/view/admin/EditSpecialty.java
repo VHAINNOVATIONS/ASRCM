@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 
 public class EditSpecialty implements Comparable<EditSpecialty>
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModel.class);
+    private static final Logger fLogger = LoggerFactory.getLogger(EditSpecialty.class);
     
 //    private final Specialty fTargetSpecialty;
     
@@ -35,18 +35,22 @@ public class EditSpecialty implements Comparable<EditSpecialty>
     {
         private Boolean fIncluded = false;
         
-        private RiskModel fModel;
+        private String fModelName;
+        
+        private Integer fModelId;
         
         public SelectableModel( )
         {
             fIncluded = false;
-            fModel = null;
+            fModelName = "";
+            fModelId = 0;
         }
 
         public SelectableModel( Boolean inc, RiskModel model )
         {
             fIncluded = inc;
-            fModel = model;
+            fModelId = model.getId();
+            fModelName = model.getDisplayName();
         }
         
         public Boolean getIncluded() 
@@ -59,15 +63,34 @@ public class EditSpecialty implements Comparable<EditSpecialty>
             fIncluded = inc;
         }
         
+        public Integer getModelId() 
+        {
+            return fModelId;
+        }
+        
+        public void setModelId( Integer modId ) 
+        {
+            fModelId = modId;
+        }
+        
         public String getModelName() 
         {
-            return fModel.getDisplayName();
+            return fModelName;
         }        
-        
-        public RiskModel getModel()
+
+        public void setModelName( String modName )
         {
-            return fModel;
+            fModelName = modName;
         }
+    }
+    
+    /**
+     * Constructs an instance with default values..
+     */
+    public EditSpecialty()
+    {
+        fName = "";
+        fSelectableModels = new ArrayList<SelectableModel>();
     }
 
     private EditSpecialty(final Specialty sp, List<SelectableModel> selModels )
@@ -96,8 +119,10 @@ public class EditSpecialty implements Comparable<EditSpecialty>
         {            
             selectableModels.add( 
                     new SelectableModel( includedModels.contains( rm ), rm ) );
-
-            fLogger.debug( "Including Risk Model {} in Specialty.", rm.toString() );
+            if (includedModels.contains( rm ) )
+            {           
+                fLogger.debug( "Including Risk Model {} in Specialty.", rm.toString() );
+            }
         }
         
         return new EditSpecialty( spec, selectableModels );
@@ -148,7 +173,9 @@ public class EditSpecialty implements Comparable<EditSpecialty>
     /**
      * Update the target Specialty with the current edits.
      */
-    public Specialty applyChanges( Specialty existingSpec )
+    public Specialty applyChanges( Specialty existingSpec,
+            final ModelInspectionService modelService)
+            throws InvalidIdentifierException
     {        
         fLogger.debug("ApplyChanges to name {} : Target {}",
                 (fName == null ? "NULL" : fName ), 
@@ -156,12 +183,25 @@ public class EditSpecialty implements Comparable<EditSpecialty>
         
         existingSpec.setName( fName );
         Set<RiskModel> includedRiskModels = new HashSet<RiskModel>();
-        
+      
+        fLogger.debug("ApplyChanges: There are {} selectableModels", fSelectableModels.size() );
+
         for( SelectableModel selMod : fSelectableModels )
         {
+            fLogger.debug("Model {} is {} included", selMod.getModelName(), (selMod.getIncluded() ? " " : "NOT" ) );
+
             if( selMod.getIncluded() ) 
             {
-                includedRiskModels.add( selMod.getModel() );
+                RiskModel rm = modelService.getRiskModelForId( selMod.getModelId() );
+                
+                if( rm == null ) 
+                {
+                    throw new InvalidIdentifierException( "Unable to find risk model id = "+selMod.getModelId()+" from the DB");
+                }
+                
+                fLogger.debug("Risk Model {} found and included", rm.toString() );
+
+                includedRiskModels.add( rm );
             }
         }
         existingSpec.setRiskModels( includedRiskModels );

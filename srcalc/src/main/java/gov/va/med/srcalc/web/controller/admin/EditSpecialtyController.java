@@ -25,6 +25,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -109,7 +110,7 @@ public class EditSpecialtyController
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveSpecialty(
             @PathVariable final int specialtyId,
-            @ModelAttribute(ATTRIBUTE_SPECIALTY) final EditSpecialty saveSpecialty,
+            @ModelAttribute(ATTRIBUTE_SPECIALTY) EditSpecialty saveSpecialty,
             final BindingResult bindingResult)
                     throws InvalidIdentifierException
     {
@@ -134,9 +135,12 @@ public class EditSpecialtyController
             return displayForm( saveSpecialty );            
         }
         
+        fLogger.debug("Existing Specialty for {} is {}", specialtyId, (existingSpec == null ? "null" : existingSpec.toString()) );
+        
+        
         // Apply the changes to the target specialty and save it.
         //
-        fAdminService.saveSpecialty( saveSpecialty.applyChanges( existingSpec ) );
+        fAdminService.saveSpecialty( saveSpecialty.applyChanges( existingSpec, fAdminService ) );
 
         // Save successful: redirect to the admin home page.
         //

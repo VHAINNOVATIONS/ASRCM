@@ -35,6 +35,7 @@
            
               <li>
                 <label><form:checkbox path="selectableModels[${m}].included" /> <c:out value="${selectableModel.modelName}"/></label>
+                <form:hidden path="selectableModels[${m}].modelId" />
                 <form:errors cssClass="error" path="${selectableModel}.*" />
               </li>
 
