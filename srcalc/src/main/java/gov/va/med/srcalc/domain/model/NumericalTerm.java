@@ -51,7 +51,7 @@ public final class NumericalTerm extends SingleVariableTerm
     }
     
     @Override
-    public double getSummand(final Value inputValue)
+    public float getSummand(final Value inputValue)
     {
         try
         {

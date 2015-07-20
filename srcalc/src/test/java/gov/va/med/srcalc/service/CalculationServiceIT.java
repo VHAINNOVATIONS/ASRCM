@@ -117,33 +117,20 @@ public class CalculationServiceIT extends IntegrationTest
                 (DiscreteNumericalVariable)thoracicVars.get("alkalinePhosphatase");
         final DiscreteNumericalVariable bunVar =
                 (DiscreteNumericalVariable)thoracicVars.get("bun");
-        final float age = 66;
-        final float bmi = 17.3f;
         final ImmutableSet<Value> expectedValues = ImmutableSet.of(
-                ((NumericalVariable)thoracicVars.get("age")).makeValue(age),
+                ((NumericalVariable)thoracicVars.get("age")).makeValue(66),
                 apVar.makeValue(11.0f),
                 asaVar.makeValue(asaVar.getOptions().get(3)),
-                ((NumericalVariable)thoracicVars.get("bmi")).makeValue(bmi),
+                ((NumericalVariable)thoracicVars.get("bmi")).makeValue(17.3f),
                 bunVar.makeValue(50.0f),
                 ((BooleanVariable)thoracicVars.get("dnr")).makeValue(true),
                 ((BooleanVariable)thoracicVars.get("preopPneumonia")).makeValue(false),
                 procedureVar.makeValue(selectedProcedure));
         
         // Calculate expected sum
-        final double expectedSum =
-                -4.0 + 
-                2.4 * age +
-                // 0 for Alkaline Phosphatase
-                8.4 + // ASA Classification = 5
-                5.4 * bmi +
-                10.4 + // BUN > 25
-                6.4 +  // DNR
-                // 0 for Preop Pneumonia
-                3.4 * selectedProcedure.getRvu();
-        final double expectedExp = Math.exp(expectedSum);
-        final double expectedResult = expectedExp / (1 + expectedExp);
-        final TreeMap<String, Double> expectedOutcomes = new TreeMap<>();
-        expectedOutcomes.put("Thoracic 30-Day Mortality Risk", expectedResult);
+        final TreeMap<String, Float> expectedOutcomes = new TreeMap<>();
+        // These values and the configured coefficients are high enough to get 100% risk.
+        expectedOutcomes.put("Thoracic 30-Day Mortality Risk", 1.0f);
         
         // Behavior verification
         final CalculationResult result =

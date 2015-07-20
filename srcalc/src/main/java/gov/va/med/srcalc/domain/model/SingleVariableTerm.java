@@ -46,7 +46,7 @@ public abstract class SingleVariableTerm extends ModelTerm
     }
     
     @Override
-    public double getSummand(final Map<Variable, Value> inputValues) throws MissingValuesException
+    public float getSummand(final Map<Variable, Value> inputValues) throws MissingValuesException
     {
         final Value value = inputValues.get(getVariable());
         if (value == null)
@@ -65,7 +65,7 @@ public abstract class SingleVariableTerm extends ModelTerm
      * @param inputValue must not be null
      * @throws IllegalArgumentException if the value is not of the required type
      */
-    protected abstract double getSummand(final Value inputValue);
+    protected abstract float getSummand(final Value inputValue);
     
     /**
      * Base equals() functionality that verifies equality of the coefficient

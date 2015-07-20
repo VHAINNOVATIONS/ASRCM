@@ -29,7 +29,7 @@ public class CalculationResultTest
                 100,
                 null,
                 ImmutableSet.<Value>of(),
-                ImmutableMap.of("model1", 45.1));
+                ImmutableMap.of("model1", 45.1f));
     }
     
     @Test
@@ -53,7 +53,7 @@ public class CalculationResultTest
                 100,
                 SampleModels.thoracicSpecialty().getName(),
                 values,
-                ImmutableMap.of("model1", 0.3));
+                ImmutableMap.of("model1", 0.3f));
         
         assertFalse(result.getProcedureValue().isPresent());
         assertEquals(values, result.getNonProcedureValues());
@@ -78,7 +78,7 @@ public class CalculationResultTest
                 100,
                 "Dummy Specialty",
                 values,
-                ImmutableMap.of("Dummy Model", 1.0));
+                ImmutableMap.of("Dummy Model", 1.0f));
         
         assertEquals(values, result.getNonProcedureValues());
         assertEquals(result.buildNoteBody(), NOTE_BODY_PROCEDURE_GROUP);

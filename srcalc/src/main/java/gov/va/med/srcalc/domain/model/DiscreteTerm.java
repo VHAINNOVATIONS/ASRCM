@@ -91,7 +91,7 @@ public final class DiscreteTerm extends SingleVariableTerm
     }
     
     @Override
-    public double getSummand(final Value inputValue)
+    public float getSummand(final Value inputValue)
     {
         try
         {
@@ -100,7 +100,7 @@ public final class DiscreteTerm extends SingleVariableTerm
             final boolean isSelected =
                     getOption().equals(discreteValue.getSelectedOption());
             
-            return isSelected ? getCoefficient() : 0.0;
+            return isSelected ? getCoefficient() : 0.0f;
         }
         catch (ClassCastException ex)
         {
