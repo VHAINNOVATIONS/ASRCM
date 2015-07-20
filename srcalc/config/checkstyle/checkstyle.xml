@@ -25,12 +25,16 @@
     </module>
     <module name="TypeName"/>
     <module name="MemberName">
+      <metadata name="net.sf.eclipsecs.core.comment" value="&quot;f&quot; prefix for &quot;field&quot;"/>
       <property name="format" value="^f[a-zA-Z0-9]*$"/>
     </module>
     <module name="MethodName"/>
-    <module name="ConstantName"/>
+    <module name="ConstantName">
+      <metadata name="net.sf.eclipsecs.core.comment" value="upper-case"/>
+    </module>
     <module name="ParameterName"/>
     <module name="StaticVariableName">
+      <metadata name="net.sf.eclipsecs.core.comment" value="&quot;g&quot; prefix for &quot;global&quot;. Discouraged."/>
       <property name="format" value="^g[a-zA-Z0-9]*$"/>
     </module>
     <module name="JavadocStyle"/>
