@@ -125,11 +125,11 @@ public class CalculationTest
         s.getRiskModels().clear();
         final RiskModel dummyModel1 = mock(RiskModel.class);
         when(dummyModel1.getDisplayName()).thenReturn("model1");
-        when(dummyModel1.calculate(values)).thenReturn(55.3);
+        when(dummyModel1.calculate(values)).thenReturn(55.3f);
         s.getRiskModels().add(dummyModel1);
         final RiskModel dummyModel2 = mock(RiskModel.class);
         when(dummyModel2.getDisplayName()).thenReturn("model2");
-        when(dummyModel2.calculate(values)).thenReturn(22.3);
+        when(dummyModel2.calculate(values)).thenReturn(22.3f);
         s.getRiskModels().add(dummyModel2);
         final Calculation c = Calculation.forPatient(SampleCalculations.dummyPatient(1));
         c.setSpecialty(s);
@@ -140,9 +140,9 @@ public class CalculationTest
         assertEquals(c.getPatient().getDfn(), result.getPatientDfn());
         assertEquals(s.getName(), result.getSpecialtyName());
         assertEquals(values, result.getValues());
-        final TreeMap<String, Double> expectedOutcomes = new TreeMap<>();
-        expectedOutcomes.put("model1", 55.3);
-        expectedOutcomes.put("model2", 22.3);
+        final TreeMap<String, Float> expectedOutcomes = new TreeMap<>();
+        expectedOutcomes.put("model1", 55.3f);
+        expectedOutcomes.put("model2", 22.3f);
         assertEquals(expectedOutcomes, result.getOutcomes());
     }
 

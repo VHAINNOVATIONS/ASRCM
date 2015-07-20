@@ -36,7 +36,7 @@ public class SignedResultTest
                 Optional.of(cptCode),
                 new DateTime(),
                 new DateTime(),
-                ImmutableMap.<String, Double>of());
+                ImmutableMap.<String, Float>of());
         
         assertThat(result.toString(), allOf(
                 containsString(specialty),

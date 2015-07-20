@@ -40,7 +40,7 @@ public final class ConstantTerm extends ModelTerm
     }
     
     @Override
-    public double getSummand(final Map<Variable, Value> inputValues)
+    public float getSummand(final Map<Variable, Value> inputValues)
     {
         return getCoefficient();
     }

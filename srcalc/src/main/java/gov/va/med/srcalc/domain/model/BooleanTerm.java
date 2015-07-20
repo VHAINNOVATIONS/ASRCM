@@ -51,11 +51,11 @@ public final class BooleanTerm extends SingleVariableTerm
     }
     
     @Override
-    public double getSummand(final Value inputValue)
+    public float getSummand(final Value inputValue)
     {
         final boolean isTrue = Boolean.TRUE.equals(inputValue.getValue());
         
-        return isTrue ? getCoefficient() : 0.0;
+        return isTrue ? getCoefficient() : 0.0f;
     }
     
     @Override

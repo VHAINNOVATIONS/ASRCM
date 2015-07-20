@@ -232,7 +232,7 @@ public final class Rule
      * including {@link Value}s and the coefficient
      * @return the summand
      */
-    public double apply(final EvaluationContext context) throws MissingValuesException
+    public float apply(final EvaluationContext context) throws MissingValuesException
     {
         fLogger.debug("Evaluating {}", this);
 
@@ -259,7 +259,7 @@ public final class Rule
                 // calculation.
                 // This essentially makes the rule evaluate to false;
                 fLogger.debug("Bypassing rule due to missing value for {}", var);
-                return 0.0;
+                return 0.0f;
             }
         }
         if(missingValues.getMissingValues().size() > 0)
@@ -276,13 +276,13 @@ public final class Rule
             if (!condition.evaluate(ec, matchedValue))
             {
                 fLogger.debug("{} evaluated false. Rule not firing.", condition);
-                return 0.0;
+                return 0.0f;
             }
         }
         
         /* We matched them all: now just calculate the summand. */
         ec.setVariable("coefficient", context.getCoefficient());
-        return fSummandExpression.getValue(ec, Double.class);
+        return fSummandExpression.getValue(ec, Float.class);
     }
     
     /**

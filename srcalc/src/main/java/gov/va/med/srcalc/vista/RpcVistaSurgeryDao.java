@@ -41,7 +41,7 @@ public class RpcVistaSurgeryDao implements VistaSurgeryDao
         
         // Translate the outcomes to Strings per specification.
         final ArrayList<String> outcomes = new ArrayList<>(result.getOutcomes().size());
-        for (final Map.Entry<String, Double> entry : result.getOutcomes().entrySet())
+        for (final Map.Entry<String, Float> entry : result.getOutcomes().entrySet())
         {
             outcomes.add(String.format(
                     // Minimum width 4 characters: "XX.X"

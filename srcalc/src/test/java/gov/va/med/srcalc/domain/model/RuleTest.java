@@ -52,13 +52,13 @@ public class RuleTest
         // Behavior verification
         values.put(fsVar, fsVar.makeValue(fsVar.getOptions().get(2)));
         assertEquals(
-                50.0, 
+                50.0f, 
                 rule.apply(new Rule.EvaluationContext(2.0f, values)),
                 0.0);
         
         values.put(fsVar, fsVar.makeValue(fsVar.getOptions().get(1)));
         assertEquals(
-                0.0,
+                0.0f,
                 rule.apply(new Rule.EvaluationContext(2.0f, values)),
                 0.0);
         
