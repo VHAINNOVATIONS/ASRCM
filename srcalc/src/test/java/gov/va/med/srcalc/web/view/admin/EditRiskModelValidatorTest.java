@@ -14,6 +14,9 @@ import org.junit.Test;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
+/**
+ * Tests the {@link EditRiskModelValidator} class.
+ */
 public class EditRiskModelValidatorTest 
 {
     private final MockModelService fModelService = new MockModelService();

@@ -24,7 +24,7 @@ import com.google.common.collect.ImmutableList;
 @Repository
 public class RuleDao
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(RuleDao.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RuleDao.class);
     
     private final SessionFactory fSessionFactory;
     
@@ -45,7 +45,7 @@ public class RuleDao
      */
     public ImmutableCollection<Rule> getAllRules()
     {
-        fLogger.debug("Retrieving all Rules from the database.");
+        LOGGER.debug("Retrieving all Rules from the database.");
         // As far as I can tell, HQL "order by" simply translates to a SQL
         // "ORDER BY", thus making the case-insensitivity up the database's
         // responsibility. So we do the sorting as a post-processing step in
@@ -104,7 +104,7 @@ public class RuleDao
      */
     public Rule mergeRule(final Rule rule)
     {
-        fLogger.debug("Merging {} into persistence context.", rule);
+        LOGGER.debug("Merging {} into persistence context.", rule);
         // Trust Hibernate with this cast here. (I wish it was generic.)
         return (Rule)getCurrentSession().merge(rule);
     }

@@ -10,6 +10,9 @@ import gov.va.med.srcalc.domain.Patient;
  */
 public interface VistaPatientDao
 {
+    /**
+     * Enumerates the possible responses from VistA for saving a risk calculation note.
+     */
     enum SaveNoteCode
     {
         SUCCESS("Success"),

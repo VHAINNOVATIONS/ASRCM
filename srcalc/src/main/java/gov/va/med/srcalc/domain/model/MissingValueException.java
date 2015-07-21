@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.domain.model;
 
 /**
- * Indicates that there is a required variable that has no assigned value
+ * Indicates that there is a required variable that has no assigned value.
  */
 public class MissingValueException extends Exception
 {

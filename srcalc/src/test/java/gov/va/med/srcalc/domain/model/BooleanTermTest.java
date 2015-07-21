@@ -9,6 +9,9 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;
 
+/**
+ * Tests the {@link BooleanTerm} class.
+ */
 public class BooleanTermTest
 {
     @Test

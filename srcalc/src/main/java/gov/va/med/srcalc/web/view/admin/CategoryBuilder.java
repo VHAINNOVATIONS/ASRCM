@@ -71,7 +71,7 @@ public final class CategoryBuilder
     }
 
     /**
-     * Sets the upper bound for the Category
+     * Sets the upper bound for the Category.
      * @see Category#getUpperBound()
      * @return this builder for convenience
      */

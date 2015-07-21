@@ -6,6 +6,9 @@ import gov.va.med.srcalc.domain.model.*;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link ProcedureValue} class.
+ */
 public class ProcedureValueTest
 {
     @Test

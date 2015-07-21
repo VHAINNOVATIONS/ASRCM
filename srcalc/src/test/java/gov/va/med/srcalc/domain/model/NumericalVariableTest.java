@@ -5,6 +5,9 @@ import gov.va.med.srcalc.test.util.TestHelpers;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link NumericalVariable} class.
+ */
 public class NumericalVariableTest
 {
     @Test(expected = NullPointerException.class)

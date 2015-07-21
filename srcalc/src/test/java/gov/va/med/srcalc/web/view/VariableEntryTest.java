@@ -11,6 +11,9 @@ import java.util.*;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link VariableEntry} class.
+ */
 public class VariableEntryTest
 {
     @Test

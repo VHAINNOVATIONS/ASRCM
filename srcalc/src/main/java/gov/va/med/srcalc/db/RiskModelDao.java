@@ -18,12 +18,15 @@ import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
+/**
+ * Data Access Object (DAO) for {@link RiskModel}s.
+ */
 @Repository
 public class RiskModelDao
 {
     private final SessionFactory fSessionFactory;
     
-    private static final Logger fLogger = LoggerFactory.getLogger(RiskModelDao.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RiskModelDao.class);
 
     @Inject // Allow arguments to be autowired.
     public RiskModelDao(final SessionFactory sessionFactory)
@@ -49,7 +52,7 @@ public class RiskModelDao
     }
     
     /**
-     * Returns the RiskModel in the database for the given Id
+     * Returns the RiskModel in the database for the given Id.
      * @return an RiskModel
      */
     public RiskModel getRiskModelForId( final int mid ) 
@@ -59,7 +62,7 @@ public class RiskModelDao
     
     public RiskModel saveRiskModel( final RiskModel rm )
     {
-        fLogger.debug("Merging RiskModel {} into persistence context.", rm.getDisplayName() );
+        LOGGER.debug("Merging RiskModel {} into persistence context.", rm.getDisplayName() );
         
         final Session session = getCurrentSession();
         

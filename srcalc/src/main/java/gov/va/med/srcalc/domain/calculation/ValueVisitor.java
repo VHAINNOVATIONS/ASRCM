@@ -1,5 +1,8 @@
 package gov.va.med.srcalc.domain.calculation;
 
+/**
+ * Gang-of-four Visitor pattern over the {@link Value} type hierarchy.
+ */
 public interface ValueVisitor
 {
     public void visitNumerical(NumericalValue value);

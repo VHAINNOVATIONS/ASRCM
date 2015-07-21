@@ -20,7 +20,7 @@ import gov.va.med.srcalc.domain.model.Procedure;
 @Repository
 public class ProcedureDao
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(ProcedureDao.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProcedureDao.class);
     
     /**
      * The number of Procedures that will be updated in a single batch before flushing
@@ -55,7 +55,7 @@ public class ProcedureDao
 
         @SuppressWarnings("unchecked") // trust hibernate
         final ImmutableList<Procedure> procedures = ImmutableList.copyOf(criteria.list());
-        fLogger.debug("Loaded all {} procedures.", procedures.size());
+        LOGGER.debug("Loaded all {} procedures.", procedures.size());
         return procedures;
     }
     
@@ -70,16 +70,16 @@ public class ProcedureDao
     public int replaceAllProcedures(final Set<Procedure> newProcedures)
     {
         final Session session = getCurrentSession();
-        fLogger.debug("Deleting all Procedures from the database.");
+        LOGGER.debug("Deleting all Procedures from the database.");
         final Query deleteQuery = session.createQuery("delete Procedure");
         final int deleteCount = deleteQuery.executeUpdate();
-        fLogger.debug("Deleted {} Procedures from the database.", deleteCount);
+        LOGGER.debug("Deleted {} Procedures from the database.", deleteCount);
 
-        fLogger.debug("About to save {} Procedures to the database.", newProcedures.size());
+        LOGGER.debug("About to save {} Procedures to the database.", newProcedures.size());
         int i = 1;
         for (final Procedure p : newProcedures)
         {
-            fLogger.trace("Saving {}", p);
+            LOGGER.trace("Saving {}", p);
             session.save(p);
             // Per Hibernate recommendation, divide the saves into batches and clear the
             // Session between them.
@@ -93,7 +93,7 @@ public class ProcedureDao
         // Do a final flush and clear for consistency.
         session.flush();
         session.clear();
-        fLogger.debug("Done saving procedures.");
+        LOGGER.debug("Done saving procedures.");
         
         return deleteCount;
     }

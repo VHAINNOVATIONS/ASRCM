@@ -24,7 +24,7 @@ public class MockVistaLinkConnection implements VistaLinkConnection
     public final static String RADIOLOGIST_NAME = "RADIOLOGIST,ONE";
     
     /**
-     * The DFN of the fake patient returned from {@link RemoteProcedure#GET_PATIENT}
+     * The DFN of the fake patient returned from {@link RemoteProcedure#GET_PATIENT}.
      */
     public final static String PATIENT_DFN = "18976";
     

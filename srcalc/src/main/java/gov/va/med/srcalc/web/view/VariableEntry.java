@@ -41,7 +41,7 @@ public class VariableEntry
      */
     private static final String RETRIEVAL_STRING = "retrievalDate";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(VariableEntry.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VariableEntry.class);
 
     private final HashMap<String, String> fDynamicValues = new HashMap<>();
     
@@ -79,7 +79,7 @@ public class VariableEntry
                 key += "$numerical";
             }
             
-            fLogger.debug("Executing retriever {} for key {}", v.getRetriever(), key);
+            LOGGER.debug("Executing retriever {} for key {}", v.getRetriever(), key);
             v.getRetriever().execute(patient, variableEntry, v, key);
         }
         return variableEntry;
@@ -115,7 +115,7 @@ public class VariableEntry
     }
 
     /**
-     * Returns the name of the numerical input for the given key
+     * Returns the name of the numerical input for the given key.
      */
     public static String makeNumericalInputName(final String key)
     {
@@ -147,7 +147,7 @@ public class VariableEntry
     
     /**
      * Returns a string indicating the retrieved date, value, and units
-     * of an {@link AbstractVariable}
+     * of an {@link AbstractVariable}.
      * @param key the name of the field to automatically fill
      */
     public String getMeasureDate(final String key)
@@ -206,7 +206,7 @@ public class VariableEntry
         return "dynamicValues=" + fDynamicValues;
     }
     
-    final class DefaultValueGenerator extends ExceptionlessVariableVisitor
+    private final class DefaultValueGenerator extends ExceptionlessVariableVisitor
     {
         
         @Override

@@ -23,7 +23,7 @@ public class CalculationSession implements Serializable
     private Optional<CalculationResult> fLastResult = Optional.absent();
     
     /**
-     * Constructs an instance
+     * Constructs an instance.
      * @param calculation the associated Calculation. Must not be null.
      * @throws NullPointerException if the given calculation is null.
      */

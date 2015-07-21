@@ -2,7 +2,9 @@ package gov.va.med.srcalc.domain.calculation;
 
 import gov.va.med.srcalc.domain.model.*;
 
-
+/**
+ * A value of a {@link MultiSelectVariable}.
+ */
 public class MultiSelectValue implements DiscreteValue
 {
     private final MultiSelectVariable fVariable;

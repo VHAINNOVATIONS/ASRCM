@@ -6,6 +6,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import gov.va.med.srcalc.vista.*;
 import gov.va.med.srcalc.vista.vistalink.VistaLinkProcedureCaller;
 
+/**
+ * A VistaDaoFactory that constructs VistALink-implemented DAOs.
+ */
 public class VistaLinkVistaDaoFactory implements VistaDaoFactory
 {
     @Override

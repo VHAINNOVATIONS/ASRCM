@@ -9,6 +9,9 @@ import gov.va.med.srcalc.web.view.Views;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link EditBooleanVar} class.
+ */
 public class EditBooleanVarTest
 {
     private final MockModelService fModelService = new MockModelService();

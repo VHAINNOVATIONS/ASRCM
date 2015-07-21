@@ -8,6 +8,9 @@ import javax.servlet.ServletContextEvent;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link AppAttributesInitializer} class.
+ */
 public class AppAttributesInitializerTest
 {
     /**

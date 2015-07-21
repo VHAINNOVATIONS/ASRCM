@@ -16,6 +16,9 @@ import javax.persistence.*;
 @Entity
 public final class MultiSelectVariable extends AbstractVariable implements DiscreteVariable
 {
+    /**
+     * Enumerates the possible ways a MultiSelectVariable may be displayed to a user.
+     */
     public enum DisplayType
     {
         Radio,
@@ -58,6 +61,10 @@ public final class MultiSelectVariable extends AbstractVariable implements Discr
         fOptions = new ArrayList<>(options);
     }
     
+    /**
+     * Returns the enumeration constant specifying how this variable should be displayed
+     * to a user.
+     */
     @Basic
     @Enumerated(EnumType.STRING)  // store as strings in the DB for user-friendliness
     public DisplayType getDisplayType()

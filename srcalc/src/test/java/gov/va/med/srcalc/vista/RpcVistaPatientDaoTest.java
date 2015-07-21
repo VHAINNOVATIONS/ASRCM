@@ -15,6 +15,9 @@ import java.util.HashMap;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+/**
+ * Tests the {@link RpcVistaPatientDao} class.
+ */
 public class RpcVistaPatientDaoTest
 {
     private final static String RADIOLOGIST_DUZ = "11716";
