@@ -95,6 +95,15 @@
     </c:url>
     <a href="${newCalcUrl}" class="btn-link">Start New Calculation</a>
     </div>
+    <div class="healthFactors">
+        <h2 id="healthFactors">Health Factors</h2>
+        <ul>
+            <%-- Put each health factor note as its own item for readability. --%>
+            <c:forEach items="${calculation.patient.healthFactors}" var="healthFactor">
+            <li class="patientNote">${healthFactor}</li>
+            </c:forEach>
+        </ul>
+    </div>
     <c:url var="enterVariablesJsUrl" value="/js/enterVariables.js"/>
     <script type="text/javascript" src="${enterVariablesJsUrl}"></script>
     <c:url var="dataTablesUrl" value="/js/vendor/DataTables-1.10.5/jquery.dataTables.min.js"/>

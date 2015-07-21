@@ -35,7 +35,12 @@ public enum RemoteProcedure
     /**
      * Returns the most recent result for the given lab name possibilities.
      */
-    GET_LABS("SR ASRC LAB RESULTS");
+    GET_LABS("SR ASRC LAB RESULTS"),
+    
+    /**
+     * Returns any of the patient's health factors in the last year.
+     */
+    GET_HEALTH_FACTORS("SR ASRC HEALTH FACTORS");
 
     /**
      * VistA returns this string if {@link #SAVE_PROGRESS_NOTE} succeeds.
