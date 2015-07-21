@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.test.util.TestHelpers;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
@@ -19,7 +20,9 @@ public class SpecialtyTest
     @Test
     public final void testEqualsObject()
     {
-        EqualsVerifier.forClass(Specialty.class).verify();
+        EqualsVerifier.forClass(Specialty.class)
+            .suppress(Warning.NULL_FIELDS)  // variables may not be null
+            .verify();
     }
     
     @Test(expected = IllegalArgumentException.class)

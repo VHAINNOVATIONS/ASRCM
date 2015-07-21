@@ -129,12 +129,26 @@ public class RuleTest
         rule.setBypassEnabled(false);
         rule.apply(new Rule.EvaluationContext(3.0f, values));
     }
+
+    final ValueMatcher getRedValueMatcher() 
+    {
+        final NumericalVariable ageVar = SampleModels.ageVariable();
+        return  new ValueMatcher(ageVar, "", false);        
+    }
+    
+    final ValueMatcher getBlackValueMatcher() 
+    {
+        final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
+        return new ValueMatcher( fsVar, "value == 'Totally dependent'", true);
+    }
     
     @Test
     public final void testEquals() throws Exception
     {
+
         EqualsVerifier.forClass(Rule.class)
             // Provide expression instances since Expression is an interface
+            .withPrefabValues(ValueMatcher.class, getRedValueMatcher(), getBlackValueMatcher() )
             .withPrefabValues(Expression.class, expression1(), expression2())
             // The interface does not permit null fields.
             .suppress(Warning.NULL_FIELDS)

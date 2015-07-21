@@ -219,12 +219,8 @@ public final class Specialty implements Serializable
             return false;
         }
         
-        final ImmutableSet<String> incModelNames = getIncludedModelNames();
-        final ImmutableSet<String> otherIncModelNames = other.getIncludedModelNames();
-        
-        // Just test for the same number of models.
-        return incModelNames.size() == otherIncModelNames.size();/* &&
-               incModelNames.contains( otherIncModelNames );*/
+        // 
+        return true;
     }
     
     @Override
