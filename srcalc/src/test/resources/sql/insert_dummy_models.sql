@@ -146,9 +146,9 @@ INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coe
 -- Age and functional status rule
 INSERT INTO RULE (id, display_name, bypass_enabled, summand_expression) VALUES (1, 'Age multiplier for functional status', FALSE, '#coefficient * #age');
 -- Functional Status matcher
-INSERT INTO RULE_VALUE_MATCHER (rule_id, boolean_expression, enabled, variable) VALUES (1, '#functionalStatus == "Totally dependent"', TRUE, 11);
+INSERT INTO RULE_VALUE_MATCHER (rule_id, boolean_expression, expression_enabled, variable) VALUES (1, '#functionalStatus == "Totally dependent"', TRUE, 11);
 -- Age matcher
-INSERT INTO RULE_VALUE_MATCHER (rule_id, boolean_expression, enabled, variable) VALUES (1, '', FALSE, 2);
+INSERT INTO RULE_VALUE_MATCHER (rule_id, boolean_expression, expression_enabled, variable) VALUES (1, '', FALSE, 2);
 INSERT INTO RISK_MODEL_DERIVED_TERM (risk_model_id, rule, coefficient) VALUES (1, 1, 1.5);
 
 -- Dummy set of procedures because CPT Codes are copyrighted.

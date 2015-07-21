@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.vista;
 
+import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,11 +11,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
 import org.springframework.dao.RecoverableDataAccessException;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import com.google.common.base.Splitter;
 
@@ -34,6 +43,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private static final String VITALS_SPLIT_REGEX = "[\\s]+";
     private static final String WEIGHT_UNITS = "lbs.";
     private static final String HEIGHT_UNITS = "inches";
+    private static final String ADL_ENTERPRISE_TITLE = "NURSING ADMISSION EVALUATION NOTE";
     
     public static final String VISTA_DATE_OUTPUT_FORMAT = "MM/dd/yy@HH:mm";
     
@@ -242,14 +252,35 @@ public class RpcVistaPatientDao implements VistaPatientDao
     {
         try
         {
-            final String rpcResultString = fProcedureCaller.doRetrieveAdlNotes(
+            final String rpcResultString = fProcedureCaller.doRpc(
                     fDuz,
-                    String.valueOf(dfn));
+                    RemoteProcedure.GET_ADL_STATUS,
+                    String.valueOf(dfn),
+                    ADL_ENTERPRISE_TITLE).get(0);
             // If the resultString is a success, add it to the patient's lab data.
             // Else, we don't need to do anything.
             if(!rpcResultString.isEmpty())
             {
-                // Parse the String as XML and format it into a 
+                // Parse the String as XML and format it into separate notes
+                final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                final DocumentBuilder builder = factory.newDocumentBuilder();
+                final InputSource input = new InputSource();
+                input.setCharacterStream(new StringReader(rpcResultString));
+                final Document document = builder.parse(input);
+                final NodeList noteList = document.getElementsByTagName("note");
+                
+                // For each "note" tag that we encounter, process it's contents.
+                for(int i = 0; i < noteList.getLength(); i++)
+                {
+                    final Node currentNote = noteList.item(i);
+                    final NamedNodeMap attributeMap = currentNote.getAttributes();
+                    // Process the note's attributes
+                    final String localNoteTitle = attributeMap.getNamedItem("localTitle").getNodeValue();
+                    final String noteSignDate = attributeMap.getNamedItem("signDate").getNodeValue();
+                    // Process the note's body
+                    final String noteBody = currentNote.getLastChild().getNodeValue();
+                    
+                }
             }
         }
         catch(final Exception e)

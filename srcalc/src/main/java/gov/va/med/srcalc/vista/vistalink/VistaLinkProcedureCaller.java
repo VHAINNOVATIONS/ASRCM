@@ -302,7 +302,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
         final RpcRequest req = makeRequestObject(RemoteProcedure.GET_ADL_STATUS);
         
         setStringParam(req.getParams(), 1, patientDfn);
-        setStringParam(req.getParams(), 2, patientDfn);
+        setStringParam(req.getParams(), 2, "");
         
         return doRpc(duz, req).get(0);
     }
