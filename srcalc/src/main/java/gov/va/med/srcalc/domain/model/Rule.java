@@ -321,8 +321,8 @@ public final class Rule
             // For some unknown reason this.getMatchers().equals(other.getMatchers()) 
             // is not working. It returns false when all of the ValueMatcher elements are equal 
             //            
-                Iterator<ValueMatcher> vmIter1 = this.getMatchers().iterator(); 
-                Iterator<ValueMatcher> vmIter2 = other.getMatchers().iterator(); 
+                Iterator<?> vmIter1 = this.getMatchers().iterator(); 
+                Iterator<?> vmIter2 = other.getMatchers().iterator(); 
                 
                 while( vmIter1.hasNext() )
                 {
@@ -348,7 +348,7 @@ public final class Rule
         //
         int hcode = Objects.hash( getDisplayName(), getSummandExpression());
         
-        Iterator<ValueMatcher> vmIter = this.getMatchers().iterator(); 
+        Iterator<?> vmIter = this.getMatchers().iterator(); 
         
         while( vmIter.hasNext() )
         {
