@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableSet;
+
 import gov.va.med.srcalc.domain.VistaPerson;
 
 /**
@@ -25,12 +27,20 @@ public class RpcVistaPersonDao implements VistaPersonDao
     {
         LOGGER.debug("Loading VistaPerson for duz {}.", duz);
         
-        final List<String> results = fProcedureCaller.doRpc(duz, RemoteProcedure.GET_USER);
+        final List<String> userResults = fProcedureCaller.doRpc(
+                duz, RemoteProcedure.GET_USER);
+        final List<String> personClassResults = fProcedureCaller.doRpc(
+                duz, RemoteProcedure.GET_USER_PERSON_CLASSES);
         
         // Get the first index in the array. We don't care about the rest.
-        final String userString = results.get(0);
+        final String userString = userResults.get(0);
         final VistaPerson person = new VistaPerson(
-                fProcedureCaller.getDivision(), duz, userString, "user class not pulled");
+                fProcedureCaller.getDivision(),
+                duz,
+                userString,
+                // Transform from a List to a Set, but the RPC result doesn't need any
+                // more than that.
+                ImmutableSet.copyOf(personClassResults));
         LOGGER.debug("Loaded {} from VistA.", person);
         return person;
     }

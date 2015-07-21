@@ -23,6 +23,34 @@ public class RpcVistaSurgeryDaoTest
     
     private VistaProcedureCaller fProcedureCaller;
     
+    /**
+     * Creates a {@link SignedResult} for testing, with dummy values for all of the
+     * fields we don't save to VistA.
+     */
+    private SignedResult makeResult(
+            final int patientDfn,
+            final Optional<String> cptCode,
+            final DateTime signatureDateTime,
+            final ImmutableMap<String, Float> outcomes)
+    {
+        // We don't actually save the startTimestamp to VistA, but at least generate a
+        // realistic one.
+        final DateTime startDateTime = signatureDateTime.minusMinutes(40);
+        final HistoricalCalculation historicalCalc = new HistoricalCalculation(
+                "Specialty Name",
+                "442",
+                startDateTime,
+                3,
+                ImmutableSet.<String>of());
+        return new SignedResult(
+                historicalCalc,
+                patientDfn,
+                cptCode,
+                signatureDateTime,
+                ImmutableMap.<String, String>of(),
+                outcomes);
+    }
+    
     @Before
     public void setup()
     {
@@ -55,13 +83,10 @@ public class RpcVistaSurgeryDaoTest
                 "Thoracic 60-day", .032f);
         final Procedure procedure = SampleModels.repairLeftProcedure();
         // Calculate some arbitrary, but known, timestamps.
-        final DateTime startDateTime = new DateTime().withDate(2015, 2, 4).withTime(10, 45, 0, 0);
-        final DateTime signatureDateTime = startDateTime.withTime(13, 2, 0, 0);
-        final SignedResult result = new SignedResult(
+        final DateTime signatureDateTime = new DateTime(2015, 2, 4, 13, 2);
+        final SignedResult result = makeResult(
                 PATIENT_DFN,
-                "Specialty Name",
                 Optional.of(procedure.getCptCode()),
-                startDateTime,
                 signatureDateTime,
                 outcomes);
         
@@ -94,15 +119,9 @@ public class RpcVistaSurgeryDaoTest
                 // test the 0-padding too
                 "Cardiac 60-day", .092f);
         // Calculate some arbitrary, but known, timestamps.
-        final DateTime startDateTime = new DateTime().withDate(2014, 3, 9).withTime(9, 17, 0, 0);
-        final DateTime signatureDateTime = startDateTime.withTime(17, 10, 0, 0);
-        final SignedResult result = new SignedResult(
-                PATIENT_DFN,
-                "Cardiac CABG",
-                Optional.<String>absent(),
-                startDateTime,
-                signatureDateTime,
-                outcomes);
+        final DateTime signatureDateTime = new DateTime(2014, 3, 9, 17, 10);
+        final SignedResult result = makeResult(
+                PATIENT_DFN, Optional.<String>absent(), signatureDateTime, outcomes);
         
         // Expected data
         final ImmutableList<String> outcomesStrings = ImmutableList.of(
@@ -127,12 +146,10 @@ public class RpcVistaSurgeryDaoTest
     @Test(expected = DataAccessException.class)
     public final void testSaveInvalidPatient()
     {
-        final SignedResult result = new SignedResult(
+        final SignedResult result = makeResult(
                 99,
-                "Cardiac CABG",
                 Optional.<String>absent(),
-                new DateTime(),
-                new DateTime(),
+                DateTime.now(),
                 ImmutableMap.<String, Float>of());
         
         final RpcVistaSurgeryDao dao = new RpcVistaSurgeryDao(

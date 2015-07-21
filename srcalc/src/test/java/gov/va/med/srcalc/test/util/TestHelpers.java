@@ -1,9 +1,12 @@
 package gov.va.med.srcalc.test.util;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 import java.util.*;
 
+import org.joda.time.ReadableDuration;
+import org.joda.time.ReadableInstant;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
@@ -113,5 +116,18 @@ public class TestHelpers
         assertEquals(
                 ImmutableSet.copyOf(expectedErrors),
                 toSimpleErrors(errorsObject.getFieldErrors()));
+    }
+    
+    /**
+     * Asserts that the actual instant is within a certain delta of an expected instant.
+     */
+    public static void assertWithinDelta(
+            final ReadableInstant expected,
+            final ReadableInstant actual,
+            final ReadableDuration permittedDelta)
+    {
+        assertThat(
+                Math.abs(expected.getMillis() - actual.getMillis()),
+                lessThanOrEqualTo(permittedDelta.getMillis()));
     }
 }

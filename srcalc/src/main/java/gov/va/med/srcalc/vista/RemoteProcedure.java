@@ -11,6 +11,11 @@ public enum RemoteProcedure
     GET_USER("SR ASRC USER"),
     
     /**
+     * Returns Person Classes for the current user.
+     */
+    GET_USER_PERSON_CLASSES("SR ASRC PERSON CLASSES"),
+    
+    /**
      * Returns information about the given patient.
      */
     GET_PATIENT("SR ASRC PATIENT"),

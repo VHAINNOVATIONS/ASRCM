@@ -1,42 +1,47 @@
 package gov.va.med.srcalc.domain;
 
+import java.util.Set;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableSet;
+
 /**
  * A VistA person (from the NEW PERSON file).
  */
 public class VistaPerson
 {
-    private final String fDivision;
+    private final String fStationNumber;
     private final String fDuz;
     private final String fDisplayName;
-    private final String fUserClass;
+    private final ImmutableSet<String> fProviderTypes;
     
     /**
      * Constructs an instance.
-     * @param division See {@link #getDivision()}.
+     * @param stationNumber See {@link #getStationNumber()}.
      * @param duz See {@link #getDuz()}.
-     * @param displayName
-     * @param userClass
+     * @param displayName See {@link #getDisplayName()}.
+     * @param providerTypes See {@link #getProviderTypes()}.
      */
     public VistaPerson(
-            final String division,
+            final String stationNumber,
             final String duz,
             final String displayName,
-            final String userClass)
+            final Set<String> providerTypes)
     {
-        fDivision = division;
+        fStationNumber = stationNumber;
         fDuz = duz;
         fDisplayName = displayName;
-        fUserClass = userClass;
+        fProviderTypes = ImmutableSet.copyOf(providerTypes);
     }
 
     /**
-     * The user's currently logged-in division. Note that a single VistA user
-     * (NEW PERSON) may be associated with multiple divisions, but we only track
-     * the current one.
+     * Identifies the user's currently logged-in division. Note that a single VistA user
+     * (NEW PERSON) may be associated with multiple divisions, but we only track the
+     * current one.
      */
-    public String getDivision()
+    public String getStationNumber()
     {
-        return fDivision;
+        return fStationNumber;
     }
 
     /**
@@ -47,19 +52,35 @@ public class VistaPerson
         return fDuz;
     }
 
+    /**
+     * Returns the user's name as stored in VistA. Typically "LAST,FIRST".
+     */
     public String getDisplayName()
     {
         return fDisplayName;
     }
 
-    public String getUserClass()
+    /**
+     * Returns the user's provider types, from their "Person Classes". Presumably only
+     * clinical staff will have these.
+     */
+    public ImmutableSet<String> getProviderTypes()
     {
-        return fUserClass;
+        return fProviderTypes;
     }
     
+    /**
+     * A String representation of this object. The exact format is unspecified, but it
+     * will at least contain the DUZ, stationNumber, and displayName.
+     */
     @Override
     public String toString()
     {
-        return String.format("%s (%s@%s)", fDisplayName, fDuz, fDivision);
+        return MoreObjects.toStringHelper(this)
+                .add("duz", fDuz)
+                .add("stationNumber", fStationNumber)
+                .add("displayName", fDisplayName)
+                .add("providerTypes", fProviderTypes)
+                .toString();
     }
 }

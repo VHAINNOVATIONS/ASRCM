@@ -7,11 +7,13 @@ import java.util.*;
 import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.test.util.IntegrationTest;
+import gov.va.med.srcalc.test.util.TestAuthnProvider;
 
 import javax.inject.Inject;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -35,6 +37,9 @@ public class CalculationServiceIT extends IntegrationTest
     @Inject // field-based autowiring only in tests
     CalculationService fCalculationService;
     
+    @Rule
+    public final TestAuthnProvider fAuthnProvider = new TestAuthnProvider();
+    
     @Test
     public void testGetValidSpecialties()
     {
@@ -48,17 +53,17 @@ public class CalculationServiceIT extends IntegrationTest
     {
         // Test setup and configuration
         final int PATIENT_DFN = 1;
-        final DateTime testStartDateTime = new DateTime();
+        final DateTime testStartDateTime = DateTime.now();
         
         // Behavior verification
         final Calculation calc = fCalculationService.startNewCalculation(
                 PATIENT_DFN);
         assertEquals(PATIENT_DFN, calc.getPatient().getDfn());
-        assertTrue("start date not in the past",
+        assertTrue("start date should be in the past",
                 // DateTime has millisecond precision, so the current time may
                 // still be the same. Use "less than or equal to".
-                calc.getStartDateTime().compareTo(new DateTime()) <= 0);
-        assertTrue("start date not after test start",
+                calc.getStartDateTime().compareTo(DateTime.now()) <= 0);
+        assertTrue("start date should be after test start",
                 calc.getStartDateTime().compareTo(testStartDateTime) >= 0);
     }
     

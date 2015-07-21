@@ -3,6 +3,8 @@ package gov.va.med.srcalc.service;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
+
 import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.util.MissingValuesException;
@@ -48,11 +50,13 @@ public interface CalculationService
             throws MissingValuesException;
 
     /**
-     * Saves the given calculation result to VistA.
+     * Saves the given calculation result to VistA and the database.
      * @param result the result to save
      * @param electronicSignature the electronic signature code of the signing
      * user
      * @return one of the {@link VistaPatientDao.SaveNoteCode} return codes
+     * @throws DataAccessException if the result could not be saved to the database or
+     * VistA for some reason
      */
     public VistaPatientDao.SaveNoteCode signRiskCalculation(
             CalculationResult result, String electronicSignature);
