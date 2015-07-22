@@ -4,6 +4,9 @@ import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 
+/**
+ * A value of a {@link DiscreteNumericalVariable}.
+ */
 public class DiscreteNumericalValue implements DiscreteValue
 {
     private final DiscreteNumericalVariable fVariable;

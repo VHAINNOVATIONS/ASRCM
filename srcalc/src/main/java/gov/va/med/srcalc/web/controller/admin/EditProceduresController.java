@@ -40,7 +40,7 @@ public class EditProceduresController
 
     static final String BASE_URL = "/admin/procedures";
     
-    private static final Logger fLogger =
+    private static final Logger LOGGER =
             LoggerFactory.getLogger(EditProceduresController.class);
     
     private final AdminService fAdminService;
@@ -67,7 +67,7 @@ public class EditProceduresController
             final RedirectAttributes redirectAttributes)
                     throws IOException
     {
-        fLogger.debug(
+        LOGGER.debug(
                 "Processing a {}-byte procedure set upload.",
                 newProceduresFile.getSize());
 
@@ -80,7 +80,7 @@ public class EditProceduresController
         // If there were errors, display them to the user.
         if (result.hasErrors())
         {
-            fLogger.debug("There were errors: {}", result.getErrors());
+            LOGGER.debug("There were errors: {}", result.getErrors());
             final ModelAndView mav = displayCurrentProcedures();
             mav.addObject("validationErrors", result.getErrors());
             return mav;

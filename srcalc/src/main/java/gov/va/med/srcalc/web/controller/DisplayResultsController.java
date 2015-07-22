@@ -22,10 +22,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.ImmutableSortedSet;
 
+/**
+ * Web MVC controller to display calculation results and allow the user to sign them.
+ */
 @Controller
 public class DisplayResultsController
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(DisplayResultsController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DisplayResultsController.class);
     private final CalculationService fCalculationService;
     
     @Inject
@@ -75,7 +78,7 @@ public class DisplayResultsController
         }
         catch(final RecoverableDataAccessException e)
         {
-            fLogger.warn("There was a problem connecting to VistA", e);
+            LOGGER.warn("There was a problem connecting to VistA", e);
             resultString = "There was a problem connecting to VistA.";
         }
         // The json could be expanded to return more information/fields

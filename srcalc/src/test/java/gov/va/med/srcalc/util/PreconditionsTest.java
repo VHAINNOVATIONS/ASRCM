@@ -9,32 +9,35 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+/**
+ * Tests the {@link Preconditions} class.
+ */
 public class PreconditionsTest
 {
     @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    public ExpectedException fExpectedException = ExpectedException.none();
 
     @Test
     public final void testRequireWithinTooLong()
     {
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(containsString("2 characters"));
+        fExpectedException.expect(IllegalArgumentException.class);
+        fExpectedException.expectMessage(containsString("2 characters"));
         Preconditions.requireWithin("aaa", 0, 2);
     }
     
     @Test
     public final void testRequireWithinTooShort()
     {
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(containsString("3 characters"));
+        fExpectedException.expect(IllegalArgumentException.class);
+        fExpectedException.expectMessage(containsString("3 characters"));
         Preconditions.requireWithin("bb", 3, 40);
     }
     
     @Test
     public final void testRequireMatchesInvalid()
     {
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(allOf(
+        fExpectedException.expect(IllegalArgumentException.class);
+        fExpectedException.expectMessage(allOf(
                 containsString("aaa"), containsString("bbb"), containsString("strvalue")));
         
         Preconditions.requireMatches("aaa", "strvalue", Pattern.compile("bbb"));

@@ -6,6 +6,9 @@ import gov.va.med.srcalc.domain.model.BooleanVariable;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link BooleanValue} class.
+ */
 public class BooleanValueTest
 {
     @Test

@@ -259,7 +259,8 @@ public abstract class AbstractVariable implements Variable
     }
     
     /**
-     * Calls the txtmark processor to convert the help text from Markdown to Html and returns the result
+     * Calls the txtmark processor to convert the help text from Markdown to HTML and
+     * returns the result.
      */
     @Transient
     public String getHelpTextAsHtml()

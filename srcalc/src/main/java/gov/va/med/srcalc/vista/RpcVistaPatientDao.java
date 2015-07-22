@@ -32,7 +32,7 @@ import gov.va.med.srcalc.domain.calculation.RetrievedValue;
  */
 public class RpcVistaPatientDao implements VistaPatientDao
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(RpcVistaPatientDao.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
     private static final String VITALS_SPLIT_REGEX = "[\\s]+";
     private static final String WEIGHT_UNITS = "lbs.";
@@ -118,7 +118,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
             final Patient patient = new Patient(dfn, patientName, patientGender, patientAge);
             // Patient vitals information (including but not limited to BMI, height, weight, weight 6 months ago)
             // If there are no results, a single line with an error message is returned.
-            fLogger.debug("Patient Vital Results: {}", vitalResults);
+            LOGGER.debug("Patient Vital Results: {}", vitalResults);
             if (vitalResults.size() > 1)
             {
                 // Parse the returned data and put it into the patient data
@@ -131,12 +131,12 @@ public class RpcVistaPatientDao implements VistaPatientDao
             if (patient.getWeight() != null)
             {
                 final List<String> weightResults = retrieveWeight6MonthsAgo(patient);
-                fLogger.debug("Weight Results: {}", weightResults);
+                LOGGER.debug("Weight Results: {}", weightResults);
                 // A line begging with "0^NO" means that no results were retrieved
                 // The actual line varies depending on the vital requested.
                 if (weightResults.size() > 0 && !weightResults.get(0).equals(NO_WEIGHT))
                 {
-                    fLogger.debug("Patient Vital Results: {}", weightResults);
+                    LOGGER.debug("Patient Vital Results: {}", weightResults);
                     // Parse the returned data and put it into the patient data
                     // This includes weight and BMI currently.
                     parseWeightResults(patient, weightResults);
@@ -150,7 +150,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // by the list given to us by the NSO.
             retrieveHealthFactors(dfn, patient);
             
-            fLogger.debug("Loaded {} from VistA.", patient);
+            LOGGER.debug("Loaded {} from VistA.", patient);
             return patient;
         }
         catch (final Exception e)
@@ -184,7 +184,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         final String startDateString = String.format("%03d%02d%02d", (cal.get(Calendar.YEAR) - 1700),
                 cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
         final String rpcParameter = String.valueOf(patient.getDfn()) + "^" + endDateString + "^WT^" + startDateString;
-        fLogger.debug("Weight 6 Months Ago Parameter: {}", rpcParameter);
+        LOGGER.debug("Weight 6 Months Ago Parameter: {}", rpcParameter);
         return fProcedureCaller.doRpc(fDuz, RemoteProcedure.GET_VITAL, rpcParameter);
     }
     
@@ -206,11 +206,11 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 .splitToList(weightResults.get(weightResults.size()-2));
         // Get the date of the measurement
         final SimpleDateFormat dateFormat = new SimpleDateFormat(VISTA_DATE_OUTPUT_FORMAT);
-        fLogger.debug("weight line tokens: {}", weightResults);
+        LOGGER.debug("weight line tokens: {}", weightResults);
         final Date measurementDate = dateFormat.parse(weightLineTokens.get(1));
         patient.setWeight6MonthsAgo(new RetrievedValue(
                 Double.parseDouble(weightLineTokens.get(3)), measurementDate, WEIGHT_UNITS));
-        fLogger.debug("Weight 6 months ago: {}", patient.getWeight6MonthsAgo());
+        LOGGER.debug("Weight 6 months ago: {}", patient.getWeight6MonthsAgo());
     }
     
     private void parseRecentVitalResults(final Patient patient, final List<String> vitalResults) throws ParseException
@@ -263,7 +263,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
             {
                 // If an exception occurs for any reason, move to the next lab so that as much patient
                 // data as possible can still be retrieved.
-                fLogger.warn("Unable to retrieve lab {}. {}", labRetrievalEnum.name(), e.toString());
+                LOGGER.warn("Unable to retrieve lab {}. {}", labRetrievalEnum.name(), e.toString());
             }
         }
     }

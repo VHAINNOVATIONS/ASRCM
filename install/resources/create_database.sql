@@ -23,7 +23,6 @@ create table specialty (id integer not null auto_increment, name varchar(100) no
 create table specialty_risk_model (specialty_id integer not null, risk_model_id integer not null, primary key (specialty_id, risk_model_id));
 create table variable (id integer not null auto_increment, display_name varchar(80) not null, help_text varchar(4000), variable_key varchar(40) not null, retrieval_key integer, variable_group integer not null, primary key (id));
 create table variable_group (id integer not null auto_increment, display_order integer not null, name varchar(255), primary key (id));
-alter table specialty_risk_model add constraint UK_g44r1aagpmd130bpvefwj08ve unique (risk_model_id);
 alter table variable add constraint UK_3on3hwgilp01pjk6iqxarybnm unique (variable_key);
 alter table boolean_variable add index FK_8s7i3kftdcnt17a8us2sh6qou (id), add constraint FK_8s7i3kftdcnt17a8us2sh6qou foreign key (id) references variable (id);
 alter table discrete_numerical_var add index FK_1hmr3q0o9tn8xd48slnkwk0ld (id), add constraint FK_1hmr3q0o9tn8xd48slnkwk0ld foreign key (id) references variable (id);

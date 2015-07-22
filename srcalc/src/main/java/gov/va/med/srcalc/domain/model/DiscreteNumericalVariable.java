@@ -28,7 +28,7 @@ import com.google.common.collect.ImmutableSortedSet;
 public final class DiscreteNumericalVariable extends AbstractNumericalVariable
     implements DiscreteVariable
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(DiscreteNumericalVariable.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DiscreteNumericalVariable.class);
     
     private SortedSet<Category> fCategories = new TreeSet<>();
     
@@ -100,7 +100,7 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
     {
         // Construct a new list every time for now. If we see this method being
         // called often, it may be worth caching the list.
-        fLogger.debug("Constructing MultiSelectOption list from categories");
+        LOGGER.debug("Constructing MultiSelectOption list from categories");
         final ArrayList<MultiSelectOption> options = new ArrayList<>(fCategories.size());
         for (final Category c : fCategories)
         {

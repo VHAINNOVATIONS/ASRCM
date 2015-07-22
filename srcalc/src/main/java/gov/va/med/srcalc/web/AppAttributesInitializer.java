@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <p>Adds the following global attributes to the {@link ServletContext}:</p>
+ * <p>Adds informational global attributes to the {@link ServletContext}. Adds:</p>
  * <ul>
  * <li>{@link #ATTRIBUTE_APP_INFO}: an SrcalcInfo object
  * </ul>
@@ -21,7 +21,7 @@ public class AppAttributesInitializer implements ServletContextListener
      */
     public static final String ATTRIBUTE_APP_INFO = "srcalc.appInfo";
     
-    private static final Logger fLogger =
+    private static final Logger LOGGER =
             LoggerFactory.getLogger(AppAttributesInitializer.class);
     
     /**
@@ -33,7 +33,7 @@ public class AppAttributesInitializer implements ServletContextListener
         final ServletContext servletContext = event.getServletContext();
         final SrcalcInfo srcalcInfo = WebUtils.readSrcalcInfo(servletContext);
         servletContext.setAttribute(ATTRIBUTE_APP_INFO, srcalcInfo);
-        fLogger.info("Put {} into the ServletContext: {}", ATTRIBUTE_APP_INFO, srcalcInfo);
+        LOGGER.info("Put {} into the ServletContext: {}", ATTRIBUTE_APP_INFO, srcalcInfo);
     }
     
     /**

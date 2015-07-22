@@ -1,5 +1,5 @@
 /**
- * Domain objects representing risk models, including:
+ * Domain objects representing risk models. Includes:
  * 
  * <ul>
  * <li>Variables (e.g., age, gender)</li>

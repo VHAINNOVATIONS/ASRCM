@@ -7,6 +7,9 @@ import gov.va.med.srcalc.vista.VistaPersonDao;
 
 import org.springframework.security.core.userdetails.*;
 
+/**
+ * A Spring UserDetailsService implementation that loads users from VistA.
+ */
 public class VistaUserDetailsService implements UserDetailsService
 {
     /**
@@ -14,7 +17,7 @@ public class VistaUserDetailsService implements UserDetailsService
      * whole authentication implementation will change once we support context
      * sharing.
      */
-    private final String VISTA_DIVISON = "500";
+    private static final String VISTA_DIVISON = "500";
     
     private final VistaDaoFactory fVistaDaoFactory;
     

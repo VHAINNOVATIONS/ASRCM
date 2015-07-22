@@ -7,6 +7,9 @@ import gov.va.med.srcalc.domain.model.SampleModels;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link MultiSelectValue} class.
+ */
 public class MultiSelectValueTest
 {
     @Test

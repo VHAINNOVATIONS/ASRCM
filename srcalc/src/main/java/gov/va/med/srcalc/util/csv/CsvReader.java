@@ -22,7 +22,7 @@ import com.google.common.base.Optional;
  */
 public class CsvReader<T>
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(CsvReader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CsvReader.class);
     
     private final RowTranslator<T> fRowTranslator;
     
@@ -44,11 +44,11 @@ public class CsvReader<T>
         // Detect if the first row is a header and strip if so.
         if (fRowTranslator.isHeaderRow(records.get(0)))
         {
-            fLogger.debug("Ignoring a header row in the CSV.");
+            LOGGER.debug("Ignoring a header row in the CSV.");
             firstRow = 1;
         }
 
-        fLogger.trace(
+        LOGGER.trace(
                 "About to translate {} records from CSV into Procedure objects.",
                 records.size() - firstRow);
 
@@ -86,7 +86,7 @@ public class CsvReader<T>
         try
         {
             final List<CSVRecord> records = CSVFormat.EXCEL.parse(csvReader).getRecords();
-            fLogger.debug("The CSV file has {} rows.", records.size());
+            LOGGER.debug("The CSV file has {} rows.", records.size());
 
             if (records.isEmpty())
             {
@@ -113,7 +113,7 @@ public class CsvReader<T>
             }
             catch (final IOException ex)
             {
-                fLogger.warn("Failed to close the CSV reader.", ex);
+                LOGGER.warn("Failed to close the CSV reader.", ex);
             }
         }
 

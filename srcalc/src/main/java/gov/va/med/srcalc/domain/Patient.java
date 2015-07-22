@@ -139,7 +139,7 @@ public class Patient implements Serializable
     }
     
     /**
-     * The patient's height in inches
+     * Returns the patient's height in inches.
      */
     public RetrievedValue getHeight()
     {

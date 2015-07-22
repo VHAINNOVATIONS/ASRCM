@@ -8,96 +8,99 @@ import javax.servlet.jsp.tagext.JspFragment;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests the {@link VariableSpecificTag} class.
+ */
 public class VariableSpecificTagTest
 {
     // A set of mock JspFragments to verify behavior.
-    private JspFragment numericalFragment;
-    private JspFragment booleanFragment;
-    private JspFragment multiSelectFragment;
-    private JspFragment procedureFragment;
-    private JspFragment discreteNumericalFragment;
-    private VariableSpecificTag tag;
+    private JspFragment fNumericalFragment;
+    private JspFragment fBooleanFragment;
+    private JspFragment fMultiSelectFragment;
+    private JspFragment fProcedureFragment;
+    private JspFragment fDiscreteNumericalFragment;
+    private VariableSpecificTag fTag;
     
     @Before
     public void setup()
     {
         // Create the tag with a bunch of mock fragments.
-        tag = new VariableSpecificTag();
-        numericalFragment = mock(JspFragment.class);
-        tag.setNumericalFragment(numericalFragment);
-        booleanFragment = mock(JspFragment.class);
-        tag.setBooleanFragment(booleanFragment);
-        multiSelectFragment = mock(JspFragment.class);
-        tag.setMultiSelectFragment(multiSelectFragment);
-        discreteNumericalFragment = mock(JspFragment.class);
-        tag.setDiscreteNumericalFragment(discreteNumericalFragment);
-        procedureFragment = mock(JspFragment.class);
-        tag.setProcedureFragment(procedureFragment);
+        fTag = new VariableSpecificTag();
+        fNumericalFragment = mock(JspFragment.class);
+        fTag.setNumericalFragment(fNumericalFragment);
+        fBooleanFragment = mock(JspFragment.class);
+        fTag.setBooleanFragment(fBooleanFragment);
+        fMultiSelectFragment = mock(JspFragment.class);
+        fTag.setMultiSelectFragment(fMultiSelectFragment);
+        fDiscreteNumericalFragment = mock(JspFragment.class);
+        fTag.setDiscreteNumericalFragment(fDiscreteNumericalFragment);
+        fProcedureFragment = mock(JspFragment.class);
+        fTag.setProcedureFragment(fProcedureFragment);
     }
 
     @Test
     public final void testDoTagNumerical() throws Exception
     {
         // Behavior verification.
-        tag.setVariable(SampleModels.ageVariable());
-        tag.doTag();
-        verify(numericalFragment).invoke(null);
-        verify(booleanFragment, never()).invoke(null);
-        verify(multiSelectFragment, never()).invoke(null);
-        verify(discreteNumericalFragment, never()).invoke(null);
-        verify(procedureFragment, never()).invoke(null);
+        fTag.setVariable(SampleModels.ageVariable());
+        fTag.doTag();
+        verify(fNumericalFragment).invoke(null);
+        verify(fBooleanFragment, never()).invoke(null);
+        verify(fMultiSelectFragment, never()).invoke(null);
+        verify(fDiscreteNumericalFragment, never()).invoke(null);
+        verify(fProcedureFragment, never()).invoke(null);
     }
 
     @Test
     public final void testDoTagBoolean() throws Exception
     {
         // Behavior verification.
-        tag.setVariable(SampleModels.dnrVariable());
-        tag.doTag();
-        verify(numericalFragment, never()).invoke(null);
-        verify(booleanFragment).invoke(null);
-        verify(multiSelectFragment, never()).invoke(null);
-        verify(discreteNumericalFragment, never()).invoke(null);
-        verify(procedureFragment, never()).invoke(null);
+        fTag.setVariable(SampleModels.dnrVariable());
+        fTag.doTag();
+        verify(fNumericalFragment, never()).invoke(null);
+        verify(fBooleanFragment).invoke(null);
+        verify(fMultiSelectFragment, never()).invoke(null);
+        verify(fDiscreteNumericalFragment, never()).invoke(null);
+        verify(fProcedureFragment, never()).invoke(null);
     }
 
     @Test
     public final void testDoTagMultiSelect() throws Exception
     {
         // Behavior verification.
-        tag.setVariable(SampleModels.functionalStatusVariable());
-        tag.doTag();
-        verify(numericalFragment, never()).invoke(null);
-        verify(booleanFragment, never()).invoke(null);
-        verify(multiSelectFragment).invoke(null);
-        verify(discreteNumericalFragment, never()).invoke(null);
-        verify(procedureFragment, never()).invoke(null);
+        fTag.setVariable(SampleModels.functionalStatusVariable());
+        fTag.doTag();
+        verify(fNumericalFragment, never()).invoke(null);
+        verify(fBooleanFragment, never()).invoke(null);
+        verify(fMultiSelectFragment).invoke(null);
+        verify(fDiscreteNumericalFragment, never()).invoke(null);
+        verify(fProcedureFragment, never()).invoke(null);
     }
 
     @Test
     public final void testDoTagProcedure() throws Exception
     {
         // Behavior verification.
-        tag.setVariable(SampleModels.procedureVariable());
-        tag.doTag();
-        verify(numericalFragment, never()).invoke(null);
-        verify(booleanFragment, never()).invoke(null);
-        verify(multiSelectFragment, never()).invoke(null);
-        verify(discreteNumericalFragment, never()).invoke(null);
-        verify(procedureFragment).invoke(null);
+        fTag.setVariable(SampleModels.procedureVariable());
+        fTag.doTag();
+        verify(fNumericalFragment, never()).invoke(null);
+        verify(fBooleanFragment, never()).invoke(null);
+        verify(fMultiSelectFragment, never()).invoke(null);
+        verify(fDiscreteNumericalFragment, never()).invoke(null);
+        verify(fProcedureFragment).invoke(null);
     }
 
     @Test
     public final void testDoTagDiscreteNumerical() throws Exception
     {
         // Behavior verification.
-        tag.setVariable(SampleModels.wbcVariable());
-        tag.doTag();
-        verify(numericalFragment, never()).invoke(null);
-        verify(booleanFragment, never()).invoke(null);
-        verify(multiSelectFragment, never()).invoke(null);
-        verify(discreteNumericalFragment).invoke(null);
-        verify(procedureFragment, never()).invoke(null);
+        fTag.setVariable(SampleModels.wbcVariable());
+        fTag.doTag();
+        verify(fNumericalFragment, never()).invoke(null);
+        verify(fBooleanFragment, never()).invoke(null);
+        verify(fMultiSelectFragment, never()).invoke(null);
+        verify(fDiscreteNumericalFragment).invoke(null);
+        verify(fProcedureFragment, never()).invoke(null);
     }
     
 }

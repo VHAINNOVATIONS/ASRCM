@@ -17,9 +17,12 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 
+/**
+ * The canonical implementation of {@link AdminService}.
+ */
 public class DefaultAdminService implements AdminService
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(DefaultAdminService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultAdminService.class);
     
     private final VariableDao fVariableDao;
     private final RiskModelDao fRiskModelDao;
@@ -46,7 +49,7 @@ public class DefaultAdminService implements AdminService
     @Transactional
     public ImmutableList<AbstractVariable> getAllVariables()
     {
-        fLogger.debug("Getting all Variables.");
+        LOGGER.debug("Getting all Variables.");
 
         return ImmutableList.copyOf(fVariableDao.getAllVariables());
     }
@@ -55,7 +58,7 @@ public class DefaultAdminService implements AdminService
     @Transactional(readOnly = true)
     public ImmutableCollection<VariableGroup> getAllVariableGroups()
     {
-        fLogger.debug("Getting all VariableGroups.");
+        LOGGER.debug("Getting all VariableGroups.");
         
         return fVariableDao.getAllVariableGroups();
     }
@@ -65,7 +68,7 @@ public class DefaultAdminService implements AdminService
     public AbstractVariable getVariable(final String keyName)
         throws InvalidIdentifierException
     {
-        fLogger.debug("Getting Variable {}.", keyName);
+        LOGGER.debug("Getting Variable {}.", keyName);
         
         final AbstractVariable var = fVariableDao.getByKey(keyName);
         if (var == null)
@@ -84,7 +87,7 @@ public class DefaultAdminService implements AdminService
     private boolean keyAlreadyExists(final AbstractVariable variable)
     {
         final AbstractVariable existingVar = fVariableDao.getByKey(variable.getKey());
-        fLogger.debug("Existing variable with key {}: {}", variable.getKey(), existingVar);
+        LOGGER.debug("Existing variable with key {}: {}", variable.getKey(), existingVar);
         // If there is an existing var with the same key and it is not actually
         // the same variable, then we have a conflict.
         return (existingVar != null && variable.getId() != existingVar.getId());
@@ -94,7 +97,7 @@ public class DefaultAdminService implements AdminService
     @Transactional
     public void saveVariable(final AbstractVariable variable)
     {
-        fLogger.debug("Saving {}.", variable);
+        LOGGER.debug("Saving {}.", variable);
 
         // Per method Javadoc, throw a DuplicateVariableKeyException if a
         // different variable with the same variable key already exists.
@@ -110,14 +113,14 @@ public class DefaultAdminService implements AdminService
         fVariableDao.mergeVariable(variable);
         // This is a significant (and infrequent) transaction: log it at INFO
         // level.
-        fLogger.info("Saved variable {}.", variable.getKey());
+        LOGGER.info("Saved variable {}.", variable.getKey());
     }
     
     @Override
     @Transactional(readOnly = true)
     public List<Specialty> getAllSpecialties()
     {
-        fLogger.debug("Getting all Specialties.");
+        LOGGER.debug("Getting all Specialties.");
         return fSpecialtyDao.getAllSpecialties();
     }
     
@@ -125,7 +128,7 @@ public class DefaultAdminService implements AdminService
     @Transactional(readOnly = true)
     public ImmutableCollection<RiskModel> getAllRiskModels()
     {
-        fLogger.debug("Getting all RiskModels.");
+        LOGGER.debug("Getting all RiskModels.");
         return fRiskModelDao.getAllRiskModels();
     }
     
@@ -133,7 +136,7 @@ public class DefaultAdminService implements AdminService
     @Transactional
     public ImmutableCollection<Rule> getAllRules()
     {
-        fLogger.debug("Getting all Rules.");
+        LOGGER.debug("Getting all Rules.");
         return fRuleDao.getAllRules();
     }
     
@@ -141,7 +144,7 @@ public class DefaultAdminService implements AdminService
     @Transactional
     public Rule getRule(final String displayName) throws InvalidIdentifierException
     {
-        fLogger.debug("Getting Rule by name {}.", displayName);
+        LOGGER.debug("Getting Rule by name {}.", displayName);
         final Rule rule = fRuleDao.getByDisplayName(displayName);
         if (rule == null)
         {
@@ -154,7 +157,7 @@ public class DefaultAdminService implements AdminService
     @Transactional
     public Rule getRuleById(final int ruleId) throws InvalidIdentifierException
     {
-        fLogger.debug("Getting Rule by ID {}", ruleId);
+        LOGGER.debug("Getting Rule by ID {}", ruleId);
         final Rule rule = fRuleDao.getById(ruleId);
         if(rule == null)
         {
@@ -170,7 +173,7 @@ public class DefaultAdminService implements AdminService
     private boolean ruleNameAlreadyExists(final Rule rule)
     {
         final Rule existingRule = fRuleDao.getByDisplayName(rule.getDisplayName());
-        fLogger.debug("Existing rule with name {}: {}", rule.getDisplayName(), existingRule);
+        LOGGER.debug("Existing rule with name {}: {}", rule.getDisplayName(), existingRule);
         // If there is an existing rule with the same name and it is not actually
         // the same rule, then we have a conflict.
         return (existingRule != null && rule.getId() != existingRule.getId());
@@ -180,7 +183,7 @@ public class DefaultAdminService implements AdminService
     @Transactional
     public void saveRule(final Rule rule)
     {
-        fLogger.debug("Saving Rule {}.", rule);
+        LOGGER.debug("Saving Rule {}.", rule);
 
         // Per method Javadoc, throw a DuplicateRuleNameException if a
         // different rule with the same display name already exists.
@@ -196,7 +199,7 @@ public class DefaultAdminService implements AdminService
         fRuleDao.mergeRule(rule);
         // This is a significant (and infrequent) transaction: log it at INFO
         // level.
-        fLogger.info("Saved rule {}.", rule.getDisplayName());
+        LOGGER.info("Saved rule {}.", rule.getDisplayName());
     }
     
     @Override
@@ -207,7 +210,7 @@ public class DefaultAdminService implements AdminService
         final int deleteCount = fProcedureDao.replaceAllProcedures(newProcedures);
         stopwatch.stop();
         
-        fLogger.info(
+        LOGGER.info(
                 "Replaced all {} Procedures in the DB with a new set of {} in {}ms.",
                 deleteCount,
                 newProcedures.size(),
@@ -224,25 +227,22 @@ public class DefaultAdminService implements AdminService
     @Transactional(readOnly = true)
     public RiskModel getRiskModelForId(final int modelId)
     {        
-        fLogger.debug("Getting RiskModel for {}.", modelId);
+        LOGGER.debug("Getting RiskModel for {}.", modelId);
         return fRiskModelDao.getRiskModelForId( modelId );
     }
 
-    /**
-     * Saves the {@link RiskModel} 
-     */
     @Override
     @Transactional
     public void saveRiskModel( final RiskModel model ) 
     {        
         if( getRiskModelForId( model.getId() ) == null ) 
         {  // TODO : remove this when possible to create new RiskModels
-            fLogger.warn( "Warning: Saving RiskModel {}. ID {} doesn't exist in the DB ", 
+            LOGGER.warn( "Warning: Saving RiskModel {}. ID {} doesn't exist in the DB ", 
                     model.getDisplayName(), model.getId() );
         }
         
         final RiskModel persistentModel = fRiskModelDao.saveRiskModel( model );
-        fLogger.info("Saved Risk Model {}.", model.getDisplayName() );
-        fLogger.debug("Persistent state is now: {}", persistentModel);
+        LOGGER.info("Saved Risk Model {}.", model.getDisplayName() );
+        LOGGER.debug("Persistent state is now: {}", persistentModel);
     }
 }

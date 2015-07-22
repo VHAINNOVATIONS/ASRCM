@@ -30,7 +30,7 @@ public class AdminHomeController
      * Specifies the base URL for this controller.
      */
     public static final String BASE_URL = "/admin";
-    private static final Logger fLogger = LoggerFactory.getLogger(AdminHomeController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminHomeController.class);
 
     private final AdminService fAdminService;
     
@@ -45,7 +45,7 @@ public class AdminHomeController
     {
         List<RiskModel> riskModels = new ArrayList<RiskModel>( fAdminService.getAllRiskModels() );
         Collections.sort( riskModels );
-        fLogger.debug( "There are {} Risk Models in the DB.", riskModels.size());
+        LOGGER.debug( "There are {} Risk Models in the DB.", riskModels.size());
 
         // Transform the List of all Variables into a List of VariableSummaries.
         final List<AbstractVariable> variables = fAdminService.getAllVariables();

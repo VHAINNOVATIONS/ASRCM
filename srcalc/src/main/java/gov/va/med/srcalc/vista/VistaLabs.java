@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
+/**
+ * Enumerates all lab tests which this application can retrieve from VistA.
+ */
 enum VistaLabs
 {
     ALBUMIN

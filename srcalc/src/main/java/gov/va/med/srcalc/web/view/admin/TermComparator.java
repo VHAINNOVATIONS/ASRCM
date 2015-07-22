@@ -17,9 +17,9 @@ import com.google.common.collect.ComparisonChain;
  */
 public class TermComparator implements Comparator<ModelTerm>
 {
-    private static int CONSTANT_PRIORITY = 1;
-    private static int RULE_PRIORITY = 2;
-    private static int VARIABLE_PRIORITY = 3;
+    private static final int CONSTANT_PRIORITY = 1;
+    private static final int RULE_PRIORITY = 2;
+    private static final int VARIABLE_PRIORITY = 3;
     
     private static class OrderingVisitor implements ModelTermVisitor
     {

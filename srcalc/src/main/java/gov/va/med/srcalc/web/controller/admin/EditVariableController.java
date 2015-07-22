@@ -23,7 +23,7 @@ public class EditVariableController
 {
     private static final String ATTRIBUTE_VARIABLE = "variable";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(EditVariableController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditVariableController.class);
     
     private final AdminService fAdminService;
     
@@ -80,7 +80,7 @@ public class EditVariableController
 
         if (bindingResult.hasErrors())
         {
-            fLogger.debug("EditExistingVar has errors: {}", bindingResult);
+            LOGGER.debug("EditExistingVar has errors: {}", bindingResult);
             // Re-show the edit screen.
             return displayForm(editVar);
         }

@@ -23,7 +23,7 @@ import com.google.common.collect.Ordering;
  */
 public final class EditRiskModel implements Comparable<EditRiskModel>
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(EditRiskModel.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditRiskModel.class);
     
     private String fModelName;
     
@@ -64,7 +64,7 @@ public final class EditRiskModel implements Comparable<EditRiskModel>
             final ModelInspectionService modelService )
     {
         List<Specialty> applSpecialties = new ArrayList<Specialty>();
-        fLogger.debug("creating RiskModel {}", riskModel.toString() );
+        LOGGER.debug("creating RiskModel {}", riskModel.toString() );
         
         for( Specialty spec : modelService.getAllSpecialties() ) 
         {
@@ -78,7 +78,7 @@ public final class EditRiskModel implements Comparable<EditRiskModel>
     }
     
     /**
-     * Return the modelName
+     * Return the modelName to set on the risk model.
      */
     public String getModelName()
     {
@@ -86,7 +86,7 @@ public final class EditRiskModel implements Comparable<EditRiskModel>
     }
     
     /**
-     * Set the modelName
+     * Set the modelName to set on the risk model.
      */
     public void setModelName(String mn)
     {
@@ -113,7 +113,7 @@ public final class EditRiskModel implements Comparable<EditRiskModel>
     }
     
     /**
-     * the maximum length for a displayName
+     * Returns the maximum length for a displayName.
      * 
      * @return DisplayNameConditions.DISPLAY_NAME_MAX
      */

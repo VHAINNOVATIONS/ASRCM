@@ -6,6 +6,9 @@ import gov.va.med.srcalc.service.MockModelService;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link EditExistingBooleanVar} class.
+ */
 public class EditExistingBooleanVarTest
 {
     private final MockModelService fModelService = new MockModelService();

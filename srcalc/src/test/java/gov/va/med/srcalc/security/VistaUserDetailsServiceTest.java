@@ -8,11 +8,14 @@ import gov.va.med.srcalc.vista.*;
 import org.junit.Test;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+/**
+ * Tests the {@link VistaUserDetailsService} class.
+ */
 public class VistaUserDetailsServiceTest
 {
-    private final String DIVISION = "500";
-    private final String RADIOLOGIST_DUZ = "11716";
-    private final String UNKNOWN_DUZ = "11111";
+    private static final String DIVISION = "500";
+    private static final String RADIOLOGIST_DUZ = "11716";
+    private static final String UNKNOWN_DUZ = "11111";
     
     protected VistaPerson sampleRadiologist()
     {

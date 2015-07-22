@@ -7,6 +7,9 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link VariableGroup} class.
+ */
 public class VariableGroupTest
 {
     @Test

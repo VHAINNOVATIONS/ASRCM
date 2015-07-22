@@ -11,6 +11,9 @@ import javax.servlet.ServletContext;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link WebUtils} class.
+ */
 public class WebUtilsTest
 {
 
