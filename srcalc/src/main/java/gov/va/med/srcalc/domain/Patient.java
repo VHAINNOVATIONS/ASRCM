@@ -1,9 +1,11 @@
 package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
+import gov.va.med.srcalc.vista.AdlNotes.AdlNote;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,7 +29,7 @@ public class Patient implements Serializable
     private RetrievedValue fWeight6MonthsAgo;
     private RetrievedValue fHeight;
     private Map<String, RetrievedValue> fLabs;
-    private String fAdlNotes;
+    private List<AdlNote> fAdlNotes;
     
     public Patient()
     {
@@ -167,12 +169,12 @@ public class Patient implements Serializable
     /**
      * Returns the nursing notes regarding the patient in String form.
      */
-    public String getAdlNotes()
+    public List<AdlNote> getAdlNotes()
     {
         return fAdlNotes;
     }
     
-    public void setAdlNotes(final String adlNotes)
+    public void setAdlNotes(final List<AdlNote> adlNotes)
     {
         fAdlNotes = adlNotes;
     }

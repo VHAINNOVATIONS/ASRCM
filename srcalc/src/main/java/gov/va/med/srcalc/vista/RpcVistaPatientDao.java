@@ -11,18 +11,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
 import org.springframework.dao.RecoverableDataAccessException;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.google.common.base.Splitter;
@@ -30,6 +26,7 @@ import com.google.common.base.Splitter;
 import gov.va.med.crypto.VistaKernelHash;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
+import gov.va.med.srcalc.vista.AdlNotes.AdlNote;
 
 /**
  * Implementation of {@link VistaPatientDao} using remote procedures. Each
@@ -262,25 +259,13 @@ public class RpcVistaPatientDao implements VistaPatientDao
             if(!rpcResultString.isEmpty())
             {
                 // Parse the String as XML and format it into separate notes
-                final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                final DocumentBuilder builder = factory.newDocumentBuilder();
                 final InputSource input = new InputSource();
                 input.setCharacterStream(new StringReader(rpcResultString));
-                final Document document = builder.parse(input);
-                final NodeList noteList = document.getElementsByTagName("note");
+                final JAXBContext context = JAXBContext.newInstance(AdlNote.class);
+                final Unmarshaller unmarshaller = context.createUnmarshaller();
                 
-                // For each "note" tag that we encounter, process it's contents.
-                for(int i = 0; i < noteList.getLength(); i++)
-                {
-                    final Node currentNote = noteList.item(i);
-                    final NamedNodeMap attributeMap = currentNote.getAttributes();
-                    // Process the note's attributes
-                    final String localNoteTitle = attributeMap.getNamedItem("localTitle").getNodeValue();
-                    final String noteSignDate = attributeMap.getNamedItem("signDate").getNodeValue();
-                    // Process the note's body
-                    final String noteBody = currentNote.getLastChild().getNodeValue();
-                    
-                }
+                final AdlNotes allNotes = (AdlNotes) unmarshaller.unmarshal(input);
+                patient.setAdlNotes(allNotes.getAllNotes());
             }
         }
         catch(final Exception e)
