@@ -292,11 +292,11 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 }
             }
             patient.setHealthFactors(rpcResults);
-            fLogger.debug("Retrieved Health factors: {} ", patient.getHealthFactors());
+            LOGGER.debug("Retrieved Health factors: {} ", patient.getHealthFactors());
         }
         catch(final Exception e)
         {
-            fLogger.warn("Unable to retrieve health factors. {}", e.toString());
+            LOGGER.warn("Unable to retrieve health factors. {}", e.toString());
         }
     }
     

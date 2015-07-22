@@ -165,7 +165,7 @@ public class Patient implements Serializable
     }
     
     /**
-     * Returns the patient's health factors in String form 
+     * Returns the patient's health factors in String form.
      */
     public List<String> getHealthFactors()
     {
