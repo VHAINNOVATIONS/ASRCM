@@ -4,6 +4,7 @@ import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -41,6 +42,7 @@ public class Patient implements Serializable
         this.fGender = gender;
         this.fAge = age;
         this.fLabs = new HashMap<String, RetrievedValue>();
+        this.fHealthFactors = new LinkedList<String>();
     }
     
     /**

@@ -25,6 +25,9 @@ public class RpcVistaPatientDaoTest
     private final static String ALBUMIN_SUCCESS = "ALBUMIN^3.0^02/02/2015@14:35:12^g/dl";
     private final static String INVALID_LAB = "This is invalid. ~@!#$";
     private final static String VALID_LAB_NO_UNITS = "ALBUMIN^3.0^02/02/2015@14:35:12^";
+    private final static String VALID_HEALTH_FACTORS = "08/25/2014^REFUSED INFLUENZA IMMUNIZATION\n" +
+            "08/22/2014^DEPRESSION ASSESS POSITIVE (MDD)\n08/22/2014^REFUSED INFLUENZA IMMUNIZATION\n" +
+            "08/20/2014^ALCOHOL - TREATMENT REFERRAL\n08/08/2014^CURRENT SMOKER\n07/30/2014^GEC HOMELESS";
     
     private final static int PATIENT_DFN = 500;
 
@@ -153,5 +156,37 @@ public class RpcVistaPatientDaoTest
         final Patient patient = dao.getPatient(PATIENT_DFN);
         // Insure the lab was not added and no exceptions occurred.
         assertEquals(1, patient.getLabs().size());
+    }
+    
+    @Test
+    public final void testHealthFactorsValid()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ,
+                RemoteProcedure.GET_HEALTH_FACTORS,
+                String.valueOf(PATIENT_DFN)))
+                .thenReturn(Arrays.asList(VALID_HEALTH_FACTORS.split("\n")));
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        assertEquals(3, patient.getHealthFactors().size());
+        // Checking all of the items so that we can verify proper filtering.
+        assertEquals("08/22/2014 DEPRESSION ASSESS POSITIVE (MDD)", patient.getHealthFactors().get(0));
+        assertEquals("08/20/2014 ALCOHOL - TREATMENT REFERRAL", patient.getHealthFactors().get(1));
+        assertEquals("07/30/2014 GEC HOMELESS", patient.getHealthFactors().get(2));
+    }
+    
+    @Test
+    public final void testNoHealthFactors()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ,
+                RemoteProcedure.GET_HEALTH_FACTORS,
+                String.valueOf(PATIENT_DFN)))
+                .thenReturn(new ArrayList<String>());
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        assertEquals(0, patient.getHealthFactors().size());
     }
 }
