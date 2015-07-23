@@ -7,6 +7,8 @@ import java.util.*;
 import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.util.MissingValuesException;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
@@ -121,11 +123,8 @@ public class RiskModelTest
     @Test
     public final void testEquals()
     {
-// The following EqualsVerifier code was tried to test equals() But for some reason it was generating test cases
-// with a string object ("red") as one of the terms. Rathere than write the code to check for such unlikely
-// (close to impossible) cases I am creating the equals cases here instead.
-//        EqualsVerifier.forClass(RiskModel.class).
-//             suppress(Warning.NULL_FIELDS,Warning.NONFINAL_FIELDS).verify();
+        EqualsVerifier.forClass(RiskModel.class).
+             suppress(Warning.NULL_FIELDS,Warning.NONFINAL_FIELDS).verify();
         
         BooleanVariable dnrVar = SampleModels.dnrVariable();
         ProcedureVariable procVar = SampleModels.procedureVariable();
@@ -158,7 +157,6 @@ public class RiskModelTest
         rm2 = SampleModels.makeSampleRiskModel(
                 "sameModel", new HashSet<DerivedTerm>(), dnrVar, ageVar, procVar );
         assertNotEquals( rm1, rm2 );
-
     }
 
     @Test

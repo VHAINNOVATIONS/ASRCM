@@ -129,12 +129,10 @@ public class RuleTest
         rule.setBypassEnabled(false);
         rule.apply(new Rule.EvaluationContext(3.0f, values));
     }
-
     
     @Test
     public final void testEquals() throws Exception
     {
-
         EqualsVerifier.forClass(Rule.class)
             // Provide expression instances since Expression is an interface
             .withPrefabValues(Expression.class, expression1(), expression2())

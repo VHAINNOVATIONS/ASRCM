@@ -1,27 +1,20 @@
 package gov.va.med.srcalc.web.view.admin;
 
-import gov.va.med.srcalc.domain.model.ModelTerm;
-import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.model.Specialty;
-import gov.va.med.srcalc.service.InvalidIdentifierException;
-import gov.va.med.srcalc.service.ModelInspectionService;
-import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.ValidationCodes;
 import gov.va.med.srcalc.util.ValidationUtils2;
-
-import java.util.HashSet;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+/**
+ * A (@link Validator) object for validating (@link EditSpecialty) objects.
+ */
 public class EditSpecialtyValidator implements Validator
-{
-    private final ModelInspectionService fModelService;
-    
-    public EditSpecialtyValidator(final ModelInspectionService modelService)
+{    
+    public EditSpecialtyValidator()
     {
-        fModelService = modelService;
     }
     
     /**
@@ -44,7 +37,9 @@ public class EditSpecialtyValidator implements Validator
         // Note: the editSpecialty object is accessible from the e Error object.
         //
         ValidationUtils.rejectIfEmpty(e, "name", ValidationCodes.NO_VALUE);
-        ValidationUtils2.rejectIfTooLong(e, "name", DisplayNameConditions.DISPLAY_NAME_MAX );
+        
+        // Note: Specialties have a different max name length than models, variables...
+        ValidationUtils2.rejectIfTooLong(e, "name", Specialty.SPECIALTY_NAME_MAX );
         
         ValidationUtils2.rejectIfDoesntMatch(
                 e, "name", Specialty.VALID_SPECIALTY_NAME_PATTERN,

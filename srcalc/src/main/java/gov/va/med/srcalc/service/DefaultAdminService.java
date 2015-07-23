@@ -254,9 +254,6 @@ public class DefaultAdminService implements AdminService
         fLogger.debug("Persistent state is now: {}", persistentModel);
     }
 
-    /**
-     * Saves the {@link Specialty} 
-     */
     @Override
     @Transactional
     public void saveSpecialty(Specialty spec)

@@ -4,7 +4,6 @@ import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.service.ModelInspectionService;
-import gov.va.med.srcalc.util.DisplayNameConditions;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,12 +16,14 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 
+/**
+ * A form backing object for editing a target (@link Specialty).
+ * 
+ */
 public class EditSpecialty implements Comparable<EditSpecialty>
 {
     private static final Logger fLogger = LoggerFactory.getLogger(EditSpecialty.class);
-    
-//    private final Specialty fTargetSpecialty;
-    
+        
     private String fName;
     
     private List<SelectableModel> fSelectableModels;
@@ -107,7 +108,7 @@ public class EditSpecialty implements Comparable<EditSpecialty>
     public static EditSpecialty fromSpecialty( final Specialty spec,
             final ModelInspectionService modelService )
     {
-        fLogger.debug("creating Specialty {}", spec.toString() );
+        fLogger.debug("Creating EditSpecialty for {}", spec.toString() );
 
         List<SelectableModel> selectableModels = new ArrayList<SelectableModel>();
         Set<RiskModel> includedModels = spec.getRiskModels();
@@ -119,10 +120,6 @@ public class EditSpecialty implements Comparable<EditSpecialty>
         {            
             selectableModels.add( 
                     new SelectableModel( includedModels.contains( rm ), rm ) );
-            if (includedModels.contains( rm ) )
-            {           
-                fLogger.debug( "Including Risk Model {} in Specialty.", rm.toString() );
-            }
         }
         
         return new EditSpecialty( spec, selectableModels );
@@ -159,16 +156,6 @@ public class EditSpecialty implements Comparable<EditSpecialty>
     {
         fSelectableModels = selModelsList;
     }
-
-    /**
-     * the maximum length for a displayName
-     * 
-     * @return DisplayNameConditions.DISPLAY_NAME_MAX
-     */
-    public int getMaxDisplayNameLength()
-    {
-        return DisplayNameConditions.DISPLAY_NAME_MAX;
-    }
     
     /**
      * Update the target Specialty with the current edits.
@@ -177,10 +164,6 @@ public class EditSpecialty implements Comparable<EditSpecialty>
             final ModelInspectionService modelService)
             throws InvalidIdentifierException
     {        
-        fLogger.debug("ApplyChanges to name {} : Target {}",
-                (fName == null ? "NULL" : fName ), 
-                (existingSpec == null ? "NULL" : existingSpec.toString() ));
-        
         existingSpec.setName( fName );
         Set<RiskModel> includedRiskModels = new HashSet<RiskModel>();
       
@@ -188,8 +171,6 @@ public class EditSpecialty implements Comparable<EditSpecialty>
 
         for( SelectableModel selMod : fSelectableModels )
         {
-            fLogger.debug("Model {} is {} included", selMod.getModelName(), (selMod.getIncluded() ? " " : "NOT" ) );
-
             if( selMod.getIncluded() ) 
             {
                 RiskModel rm = modelService.getRiskModelForId( selMod.getModelId() );
@@ -199,7 +180,7 @@ public class EditSpecialty implements Comparable<EditSpecialty>
                     throw new InvalidIdentifierException( "Unable to find risk model id = "+selMod.getModelId()+" from the DB");
                 }
                 
-                fLogger.debug("Risk Model {} found and included", rm.toString() );
+                fLogger.debug("Risk Model {} found and associated to specialty", rm.toString() );
 
                 includedRiskModels.add( rm );
             }
@@ -209,11 +190,12 @@ public class EditSpecialty implements Comparable<EditSpecialty>
         return existingSpec;
     }
 
+    /**
+     * Compare 2 (@link Specialty)s alphabetically by name.
+     */
     @Override
     public int compareTo(final EditSpecialty other)
     {
-        // Order alphabetically by Name.
-        //
         return this.fName.compareTo(other.fName);
     }
     

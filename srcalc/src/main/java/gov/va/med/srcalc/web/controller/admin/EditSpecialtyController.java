@@ -1,40 +1,27 @@
 package gov.va.med.srcalc.web.controller.admin;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
-import gov.va.med.srcalc.util.DisplayNameConditions;
-import gov.va.med.srcalc.util.csv.CsvReader;
-import gov.va.med.srcalc.util.csv.TabularParseResult;
 import gov.va.med.srcalc.web.view.Views;
-import gov.va.med.srcalc.web.view.admin.EditModelTerm;
 import gov.va.med.srcalc.web.view.admin.EditSpecialty;
-//import gov.va.med.srcalc.web.view.admin.EditSpecialtyValidator;
-
-
 import gov.va.med.srcalc.web.view.admin.EditSpecialtyValidator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Controller for editing existing {@link Specialty}s, including handling a bulk term
- * upload.
+ * Controller for editing existing {@link Specialty}s. Users may change the name and choose which
+ * (@link RiskModel)s are associated with the Specialty.
  */
 @Controller
 @RequestMapping(EditSpecialtyController.BASE_URL)
@@ -81,7 +68,7 @@ public class EditSpecialtyController
 
     /**
      * Displays a page for editing the given existing Specialty.
-     * @param specialtyId the ID (surrogate key) of the Specialty to edit
+     * @param specialtyId the ID of the Specialty to edit
      * @throws InvalidIdentifierException if no Specialty exists with the ID
      */
     @RequestMapping(method = RequestMethod.GET)
@@ -116,14 +103,14 @@ public class EditSpecialtyController
     {
         fLogger.debug("Handling request to save Specialty: {}", saveSpecialty.toString() );
         
-        // Spring has already bound the user input to saveModel; now validate
+        // Spring has already bound the user input to the saveSpecialty; now validate
         //
-        EditSpecialtyValidator validator = new EditSpecialtyValidator(fAdminService);
+        EditSpecialtyValidator validator = new EditSpecialtyValidator();
         validator.validate(saveSpecialty, bindingResult);
 
         if( bindingResult.hasErrors() )
         {
-            fLogger.debug( "EditSpecialty has errors: {}", bindingResult);
+            fLogger.error( "EditSpecialty has errors: {}", bindingResult.toString());
             return displayForm( saveSpecialty );
         }
 

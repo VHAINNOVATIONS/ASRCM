@@ -66,8 +66,8 @@ public class SpecialtyDao
         q.setInteger("id", sid);
         final Specialty s = (Specialty)q.uniqueResult();
         return s;
-        // throws a lazy initialization exception
-        //return (Specialty)getCurrentSession().get(Specialty.class, sid);
+//      Tried this but  throws a lazy initialization exception. Don't know why.
+//        return (Specialty)getCurrentSession().get(Specialty.class, sid);
     }
 
     @SuppressWarnings("unchecked") // trust Hibernate

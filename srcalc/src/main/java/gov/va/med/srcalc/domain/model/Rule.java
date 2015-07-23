@@ -348,6 +348,17 @@ public final class Rule
         //
         int hcode = Objects.hash( getDisplayName(), getSummandExpression());
         
+        System.out.println( "in hashcode for RULE "+getDisplayName() );            
+        if( fMatchers == null ) 
+        {
+            fLogger.debug( "getMatchers() is null??? ");            
+        }
+        if( this.getMatchers() == null ) 
+        {
+            fLogger.debug( "getMatchers() is null??? ");
+            return hcode;
+        }
+                
         Iterator<?> vmIter = this.getMatchers().iterator(); 
         
         while( vmIter.hasNext() )
