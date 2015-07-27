@@ -48,7 +48,7 @@ public class DynamicValueVisitor extends ExceptionlessValueVisitor
         final String valueString;
         if(Float.isNaN(value.getNumericalValue()))
         {
-            valueString = value.getValue().getOption().getValue();
+            valueString = value.getValue();
         }
         else
         {

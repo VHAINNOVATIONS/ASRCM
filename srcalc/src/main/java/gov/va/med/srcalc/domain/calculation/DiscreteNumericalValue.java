@@ -59,16 +59,28 @@ public class DiscreteNumericalValue implements DiscreteValue
         return fVariable;
     }
     
+    /**
+     * Returns the Category value, either explicitly selected or the Category that matched
+     * the numerical value.
+     */
+    public Category getCategory()
+    {
+        return fSelectedCategory;
+    }
+    
     @Override
     public MultiSelectOption getSelectedOption()
     {
         return fSelectedCategory.getOption();
     }
 
+    /**
+     * Returns the Category's String value.
+     */
     @Override
-    public Category getValue()
+    public String getValue()
     {
-        return fSelectedCategory;
+        return getSelectedOption().getValue();
     }
     
     /**
