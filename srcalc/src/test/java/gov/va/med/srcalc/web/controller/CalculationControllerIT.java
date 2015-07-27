@@ -5,11 +5,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Collection;
+import java.util.List;
 
-import gov.va.med.srcalc.domain.calculation.Calculation;
 import gov.va.med.srcalc.domain.calculation.ProcedureValue;
 import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.test.util.IntegrationTest;
+import gov.va.med.srcalc.test.util.TestAuthnProvider;
 import gov.va.med.srcalc.service.CalculationServiceIT;
 import gov.va.med.srcalc.vista.VistaPatientDao;
 import gov.va.med.srcalc.web.controller.CalculationController;
@@ -17,7 +18,9 @@ import gov.va.med.srcalc.web.controller.DisplayResultsController;
 import gov.va.med.srcalc.web.view.VariableEntry;
 import static gov.va.med.srcalc.web.view.VariableEntry.makeDynamicValuePath;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -52,6 +55,9 @@ public class CalculationControllerIT extends IntegrationTest
             + "Age = 45.0\nDNR = No\nFunctional Status = Independent\n"
             + "Procedure = 26546 - Repair left hand - you know, the thing with fingers (10.06)\n\n"
             + "Results\nThoracic 30-day mortality estimate = 100.0%\n";
+    
+    @Rule
+    public final TestAuthnProvider fAuthnProvider = new TestAuthnProvider();
    
     @Autowired
     WebApplicationContext fWac;
@@ -85,10 +91,18 @@ public class CalculationControllerIT extends IntegrationTest
             .andExpect(status().is4xxClientError());
     }
     
+    /**
+     * Tests what happens if there is already a current calculation and we try to start a
+     * new one.
+     */
     @Test
     public void testCalculationInSession() throws Exception
     {
-        SrcalcSession.setCalculationSession(fSession, new CalculationSession(new Calculation()));
+        // Start a new calculation first.
+        testStartNewCalculationWithDfn();
+        
+        simulateNewSession();
+
         fMockMvc.perform(get("/newCalc").session(fSession)
             .param("patientDfn", Integer.toString(MOCK_DFN)).session(fSession))
             .andExpect(model().attributeExists("calculation", "newPatientDfn"));
@@ -102,6 +116,8 @@ public class CalculationControllerIT extends IntegrationTest
     protected void selectSpecialty(final String specialtyName) throws Exception
     {
         testStartNewCalculationWithDfn();
+        
+        simulateNewSession();
 
         fMockMvc.perform(post("/selectSpecialty").session(fSession)
                 .param("specialty", specialtyName)).
@@ -126,6 +142,8 @@ public class CalculationControllerIT extends IntegrationTest
     public void enterValidThoracicVariables() throws Exception
     {
         selectThoracicSpecialty();
+        
+        simulateNewSession();
         
         final DynamicVarParams varParams = new DynamicVarParams();
         varParams.add("procedure", "26546");
@@ -165,6 +183,8 @@ public class CalculationControllerIT extends IntegrationTest
     {
         selectThoracicSpecialty();
         
+        simulateNewSession();
+        
         fMockMvc.perform(post("/enterVars").session(fSession)
                 .param(makeDynamicValuePath("age"), "-2"))
             .andExpect(model().attributeHasErrors("variableEntry"))
@@ -175,6 +195,8 @@ public class CalculationControllerIT extends IntegrationTest
     public void enterValidCardiacVariables() throws Exception
     {
         selectSpecialty("Cardiac");
+        
+        simulateNewSession();
         
         final DynamicVarParams varParams = new DynamicVarParams();
         varParams.add("gender", "Male");
@@ -190,6 +212,8 @@ public class CalculationControllerIT extends IntegrationTest
     public void enterIncompleteCardiacVariables() throws Exception
     {
         selectSpecialty("Cardiac");
+        
+        simulateNewSession();
         
         fMockMvc.perform(post("/enterVars").session(fSession))
             // Note no variable parameters specified.
@@ -212,6 +236,8 @@ public class CalculationControllerIT extends IntegrationTest
     public void populateDynamicValues() throws Exception
     {
         selectThoracicSpecialty();
+        
+        simulateNewSession();
         
         final DynamicVarParams varParams = new DynamicVarParams();
         varParams.add("procedure", "26546");
@@ -246,6 +272,8 @@ public class CalculationControllerIT extends IntegrationTest
     {
         // Specialty does not matter here
         testStartNewCalculationWithDfn();
+        
+        simulateNewSession();
 
         fMockMvc.perform(post("/selectSpecialty").session(fSession)
             .param("specialty", "Cardiac"))
@@ -262,6 +290,8 @@ public class CalculationControllerIT extends IntegrationTest
     {
         enterValidCardiacVariables();
         
+        simulateNewSession();
+        
         fMockMvc.perform(post("/signCalculation").session(fSession)
             .param("eSig", ELECTRONIC_SIGNATURE))
             .andExpect(status().isOk())
@@ -269,5 +299,11 @@ public class CalculationControllerIT extends IntegrationTest
                     MediaType.APPLICATION_JSON.getSubtype())))
             .andExpect(jsonPath("$.*", hasSize(1)))
             .andExpect(jsonPath("$.status", is(VistaPatientDao.SaveNoteCode.SUCCESS.getDescription())));
+        
+        final List<?> resultsInDb =
+                getHibernateSession().createQuery("from SignedResult").list();
+        assertEquals(
+                "should be 1 SignedResult in the database now",
+                1, resultsInDb.size());
     }
 }

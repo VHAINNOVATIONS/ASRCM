@@ -26,7 +26,7 @@ public class VistaUserDetails implements UserDetails
      */
     public VistaUserDetails(final VistaPerson vistaPerson)
     {
-        fVistaPerson = vistaPerson;
+        fVistaPerson = Objects.requireNonNull(vistaPerson);
     }
 
     /**
@@ -41,12 +41,20 @@ public class VistaUserDetails implements UserDetails
     
     public String getDivision()
     {
-        return fVistaPerson.getDivision();
+        return fVistaPerson.getStationNumber();
     }
     
     public String getDuz()
     {
         return fVistaPerson.getDuz();
+    }
+    
+    /**
+     * Returns the VistaPerson whom this object represents.
+     */
+    public VistaPerson getVistaPerson()
+    {
+        return fVistaPerson;
     }
     
     /**

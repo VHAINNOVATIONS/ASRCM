@@ -1,19 +1,31 @@
 package gov.va.med.srcalc.domain.calculation;
 
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.domain.model.*;
+import gov.va.med.srcalc.util.MissingValuesException;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Constructs sample instances of {@link Calculation}s and related objects.
  */
 public class SampleCalculations
 {
+    /**
+     * Returns a sample radiologist VistA user.
+     */
+    public static VistaPerson radiologistPerson()
+    {
+        return new VistaPerson("500", "11716",
+                "RADIOLOGIST,ONE",
+                Optional.of("Physicians (M.D. and D.O.)"));
+    }
 
     public static Patient dummyPatient(final int dfn)
     {
@@ -31,23 +43,52 @@ public class SampleCalculations
         patient.setLabs(labs);
         return patient;
     }
+
+    /**
+     * Returns a collection of variable values for a thoracic calculation.
+     * @return a Map from each Variable to its Value
+     */
+    public static ImmutableMap<AbstractVariable, Value> thoracicValues()
+    {
+        final BooleanVariable dnrVar = SampleModels.dnrVariable();
+        final NumericalVariable ageVar = SampleModels.ageVariable();
+        final MultiSelectVariable fsVar = SampleModels.functionalStatusVariable();
+        final ProcedureVariable procVar = SampleModels.procedureVariable();
+        try
+        {
+            return ImmutableMap.of(
+                    dnrVar,
+                    new BooleanValue(dnrVar, false),
+                    ageVar,
+                    new NumericalValue(ageVar, 45.0f),
+                    fsVar,
+                    new MultiSelectValue(fsVar, new MultiSelectOption("Independent")),
+                    procVar,
+                    new ProcedureValue(procVar, SampleModels.repairLeftProcedure()));
+        }
+        catch (final InvalidValueException ex)
+        {
+            throw new RuntimeException("test data had an invalid value", ex);
+        }
+    }
     
     /**
      * Create a new calculation for a dummy patient, set the specialty,
      * and then perform the calculation using the a custom set of values.
-     * @return a {@link Calculation} object after the calculation is performed
-     * @throws Exception
+     * @return a realistic CalculationResult
      */
-    public static CalculationResult thoracicResult() throws Exception
+    public static CalculationResult thoracicResult()
     {
+
         final Calculation calc = Calculation.forPatient(dummyPatient(1));
         calc.setSpecialty(SampleModels.thoracicSpecialty());
-        final List<Value> values = new ArrayList<Value>();
-        values.add(new BooleanValue(SampleModels.dnrVariable(), false));
-        values.add(new NumericalValue(SampleModels.ageVariable(), 45.0f));
-        values.add(new MultiSelectValue(SampleModels.functionalStatusVariable(), new MultiSelectOption("Independent")));
-        values.add(new ProcedureValue(SampleModels.procedureVariable(), SampleModels.repairLeftProcedure()));
-        return calc.calculate(values);
+        try
+        {
+            return calc.calculate(thoracicValues().values(), radiologistPerson());
+        }
+        catch (final MissingValuesException ex)
+        {
+            throw new RuntimeException("test data did not provide all values", ex);
+        }
     }
-    
 }

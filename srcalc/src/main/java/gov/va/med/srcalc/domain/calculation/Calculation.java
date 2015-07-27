@@ -2,6 +2,7 @@ package gov.va.med.srcalc.domain.calculation;
 
 import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.util.MissingValuesException;
 
@@ -9,15 +10,18 @@ import java.io.Serializable;
 import java.util.*;
 
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.primitives.Ints;
 
 /**
  * <p>A risk calculation. You can think of this as a step-by-step builder of
  * {@link CalculationResult} objects: set the patient, specialty, etc., and then
- * call {@link #calculate(Collection)} to produce the results.</p>
+ * call {@link #calculate(Collection, VistaPerson)} to produce the results.</p>
  * 
  * <p>A stateful builder such as this (as opposed to a one-shot <code>calculate()</code>
  * which could take all of the necessary data) allows features such as tracking
@@ -33,18 +37,19 @@ public class Calculation implements Serializable
      */
     private static final long serialVersionUID = 1L;
 
-    private DateTime fStartDateTime;
+    private final DateTime fStartDateTime;
     private Patient fPatient;
     private Specialty fSpecialty;
+    private Optional<HistoricalCalculation> fHistoricalCalculation;
     
     /**
-     * This class presents a pure JavaBean interface, with a default constructor
-     * and mutators for all fields. It also offers convenience factory methods
-     * below.
+     * This class presents a pure JavaBean interface, with a default constructor and
+     * mutators for fields. It also offers convenience factory methods below.
      */
     public Calculation()
     {
-        fStartDateTime = new DateTime();
+        fStartDateTime = DateTime.now();
+        fHistoricalCalculation = Optional.absent();
     }
     
     public static Calculation forPatient(final Patient patient)
@@ -196,11 +201,15 @@ public class Calculation implements Serializable
 
     /**
      * Runs the calculation for each outcome with the given Values.
+     * @param values the variable values as inputs to the calculation
+     * @param user the user running the calculation
+     * @return the results as a CalculationResult object
      * @throws IllegalArgumentException if incomplete values are provided
-     * @return the outcomes for convenience
      * @throws MissingValuesException if there are any required variables without an assigned value
      */
-    public CalculationResult calculate(final Collection<Value> values) throws MissingValuesException
+    public CalculationResult calculate(
+            final Collection<Value> values, final VistaPerson user)
+            throws MissingValuesException
     {
         // Run the calculation first to make sure we don't get any exceptions.
         final TreeMap<String, Float> outcomes = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -224,12 +233,64 @@ public class Calculation implements Serializable
             throw new MissingValuesException("The calculation is missing values.", missingValues);
         }
         
-        return new CalculationResult(
-                fStartDateTime,
+        final DateTime resultTime = DateTime.now();
+        
+        // If this was the first run, record the HistoricalCalculation for
+        // getHistoricalCalculation().
+        if (!fHistoricalCalculation.isPresent())
+        {
+            final HistoricalCalculation hc = makeHistoricalCalculation(resultTime, user);
+            fHistoricalCalculation = Optional.of(hc);
+            LOGGER.debug("Captured historical information: {}", hc);
+        }
+        
+        final CalculationResult result = new CalculationResult(
+                // This is guaranteed to be set now.
+                fHistoricalCalculation.get(),
                 fPatient.getDfn(),
-                fSpecialty.getName(),
+                resultTime,
                 // The constructor requires a Set, not just a Collection.
                 ImmutableSet.copyOf(values),
                 outcomes);
+        
+        return result;
+    }
+    
+    /**
+     * Constructs a HistoricalCalculation object from this Calculation, given the
+     * timestamp of the first result.
+     * @param firstResultTime the timestamp of the first result, to derive
+     * secondsToFirstResult
+     * @param user the user running the calculation
+     * @return a new HistoricalCalculation
+     * @throws NullPointerException if any argument is null
+     */
+    private HistoricalCalculation makeHistoricalCalculation(
+            final DateTime firstResultTime, final VistaPerson user)
+    {
+        Objects.requireNonNull(firstResultTime);
+        Objects.requireNonNull(user);
+
+        final Duration durationToResult = new Duration(fStartDateTime, firstResultTime);
+        // It is extremely unlikely that this number of seconds will exceed
+        // Integer.MAX_VALUE, but this checked cast will throw an IllegalArgumentException
+        // if so.
+        final int secondsToResult = Ints.checkedCast(durationToResult.getStandardSeconds());
+        return new HistoricalCalculation(
+                fSpecialty.getName(),
+                user.getStationNumber(),
+                fStartDateTime,
+                secondsToResult,
+                user.getProviderType());
+    }
+    
+    /**
+     * If {@link #calculate(Collection, VistaPerson)} has been called, returns the {@link
+     * HistoricalCalculation} object encapsulating historical data about this calculation.
+     * @return the HistoricalCalculation (same instance every time), if it exists
+     */
+    public Optional<HistoricalCalculation> getHistoricalCalculation()
+    {
+        return fHistoricalCalculation;
     }
 }

@@ -26,14 +26,14 @@ public final class CalculationResult implements Serializable
     /**
      * Change this when changing the class!
      */
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 3L;
     
     private static final Comparator<Value> VALUE_COMPARATOR =
             new ValueVariableComparator(new DisplayNameComparator());
 
-    private final DateTime fStartDateTime;
+    private final HistoricalCalculation fHistoricalCalculation;
+    private final DateTime fResultTime;
     private final int fPatientDfn;
-    private final String fSpecialtyName;
     private final Optional<ProcedureValue> fProcedureValue;
     /**
      * The non-ProcedureValue values. Store it sorted by display name since we
@@ -49,9 +49,9 @@ public final class CalculationResult implements Serializable
      * this constructor will accept outcomes for models not in the given
      * specialty.</p>
      * 
-     * @param startDateTime when the calculation was started, for metrics
+     * @param historicalCalculation encapsulates calculation metadata
      * @param patientDfn the associated patient DFN
-     * @param specialtyName the associated specialty name, must not be null
+     * @param resultTime the time this result was calculated
      * @param values the calculation input values, must not be null. The passed
      * collection may be mutable as this object will take an immutable snapshot.
      * @param outcomes the calculation outcomes, must not be null. The passed
@@ -62,16 +62,15 @@ public final class CalculationResult implements Serializable
      * ProcedureValues
      */
     public CalculationResult(
-            final DateTime startDateTime,
+            final HistoricalCalculation historicalCalculation,
             final int patientDfn,
-            final String specialtyName,
+            final DateTime resultTime,
             final Set<Value> values,
             final Map<String, Float> outcomes)
     {
-        fStartDateTime = startDateTime;
+        fHistoricalCalculation = Objects.requireNonNull(historicalCalculation);
         fPatientDfn = patientDfn;
-        fSpecialtyName = Objects.requireNonNull(
-                specialtyName, "specialty name must be non-null");
+        fResultTime = Objects.requireNonNull(resultTime);
 
         // Split the values into Procedure and non-Procedure for storage. We do
         // this early to check the precondition.
@@ -103,13 +102,13 @@ public final class CalculationResult implements Serializable
         fOutcomes = ImmutableSortedMap.copyOf(
                 outcomes, String.CASE_INSENSITIVE_ORDER);
     }
-
+    
     /**
-     * The DateTime at which the user started the calculation.
+     * The DateTime at which this result was created.
      */
-    public DateTime getStartDateTime()
+    public DateTime getResultTime()
     {
-        return fStartDateTime;
+        return fResultTime;
     }
 
     /**
@@ -131,7 +130,7 @@ public final class CalculationResult implements Serializable
      */
     public String getSpecialtyName()
     {
-        return fSpecialtyName;
+        return fHistoricalCalculation.getSpecialtyName();
     }
     
     /**
@@ -162,6 +161,17 @@ public final class CalculationResult implements Serializable
     {
         return fProcedureValue;
     }
+
+    /**
+     * Extracts and returns the CPT code from the procedure value if present.
+     * @return the CPT code, if there is a procedure value. Never null.
+     */
+    public Optional<String> getCptCode()
+    {
+        return fProcedureValue.isPresent() ?
+                Optional.of(fProcedureValue.get().getValue().getCptCode()) :
+                Optional.<String>absent();
+    }
     
     /**
      * Returns a set of any non-{@link ProcedureValue} objects from the input values
@@ -185,7 +195,7 @@ public final class CalculationResult implements Serializable
         // Build the note body where each section is separated by a blank line
 
         // Specialty
-        returnString.append(String.format("Specialty = %s%n%n", fSpecialtyName));
+        returnString.append(String.format("Specialty = %s%n%n", getSpecialtyName()));
         /* Procedure (if present)
          * We store the procedure value separately because the CPT code is needed
          * for storing discrete data in VistA. However, other procedure group values
@@ -233,21 +243,25 @@ public final class CalculationResult implements Serializable
     }
     
     /**
-     * Returns a {@link SignedResult} with all the data from this object and a
-     * signature time of now.
+     * Returns a {@link SignedResult} with all the data from this object and a signature
+     * time of now. Does not modify this object.
+     * @return a new instance
      */
     public SignedResult signed()
     {
-        final Optional<String> cptCode = fProcedureValue.isPresent() ?
-                Optional.of(fProcedureValue.get().getValue().getCptCode()) :
-                Optional.<String>absent();
-                
+        // Convert the Value objects into the Map<String,String> representation.
+        final HashMap<String, String> primitiveValues = new HashMap<>(getValues().size());
+        for (final Value val : getValues())
+        {
+            primitiveValues.put(val.getVariable().getKey(), val.getValue().toString());
+        }
+
         return new SignedResult(
+                fHistoricalCalculation,
                 fPatientDfn,
-                fSpecialtyName,
-                cptCode,
-                fStartDateTime,
-                new DateTime(),   // signed right now
+                getCptCode(),
+                DateTime.now(), // see method doc
+                primitiveValues,
                 fOutcomes);
     }
 }

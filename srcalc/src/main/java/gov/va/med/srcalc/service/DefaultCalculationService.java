@@ -9,12 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import gov.va.med.srcalc.db.ResultsDao;
 import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.vista.*;
 import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
+import gov.va.med.srcalc.security.SecurityUtil;
 import gov.va.med.srcalc.util.MissingValuesException;
 
 /**
@@ -27,22 +30,26 @@ public class DefaultCalculationService implements CalculationService
     private final SpecialtyDao fSpecialtyDao;
     private final VistaPatientDao fPatientDao;
     private final VistaSurgeryDao fSurgeryDao;
+    private final ResultsDao fResultsDao;
     
     /**
      * Constructs an instance.
      * @param specialtyDao DAO to access specialties
      * @param patientDao DAO to access patient information
      * @param surgeryDao DAO to save VistA Surgery information
+     * @param resultsDao DAO to save calculation results
      */
     @Inject
     public DefaultCalculationService(
             final SpecialtyDao specialtyDao,
             final VistaPatientDao patientDao,
-            final VistaSurgeryDao surgeryDao)
+            final VistaSurgeryDao surgeryDao,
+            final ResultsDao resultsDao)
     {
         fSpecialtyDao = specialtyDao;
         fPatientDao = patientDao;
         fSurgeryDao = surgeryDao;
+        fResultsDao = resultsDao;
     }
     
     @Override
@@ -87,7 +94,18 @@ public class DefaultCalculationService implements CalculationService
     {
         LOGGER.debug("Running calculation with values: {}", variableValues);
         
-        final CalculationResult result = calculation.calculate(variableValues);
+        final boolean firstRun = !calculation.getHistoricalCalculation().isPresent();
+
+        final VistaPerson user = SecurityUtil.getCurrentPrincipal().getVistaPerson();
+        final CalculationResult result = calculation.calculate(variableValues, user);
+        
+        // If it was the first run, save the historical result for metrics.
+        if (firstRun)
+        {
+            // Can't save for now due to double-persist issue when trying to save
+            // SignedResult.
+            LOGGER.debug("Was first run, but saving HistoricalCalc not yet implemented.");
+        }
         
         // Log something at INFO level for running a calculation, but don't log
         // too much to avoid PHI in the log file.
@@ -97,16 +115,27 @@ public class DefaultCalculationService implements CalculationService
     }
 
     @Override
+    @Transactional
     public VistaPatientDao.SaveNoteCode signRiskCalculation(
             CalculationResult result, String electronicSignature)
     {
+        // Note: we must save the note first because this is how we check the given
+        // signature code.
         final VistaPatientDao.SaveNoteCode returnCode = 
             fPatientDao.saveRiskCalculationNote(
                 result.getPatientDfn(), electronicSignature, result.buildNoteBody());
+
         if (returnCode == SaveNoteCode.SUCCESS)
         {
             final SignedResult signedResult = result.signed();
+            // Save to the DB first because the DB can rollback if VistA fails. (VistA
+            // can't rollback if DB fails.)
+            fResultsDao.persistSignedResult(signedResult);
             fSurgeryDao.saveCalculationResult(signedResult);
+            
+            // Log something at INFO level for signing a calculation, but don't log
+            // too much to avoid PHI in the log file.
+            LOGGER.info("Signed a {} calculation.", result.getSpecialtyName());
         }
         return returnCode;
     }
