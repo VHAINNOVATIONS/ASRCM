@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.controller.admin;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import gov.va.med.srcalc.test.util.IntegrationTest;
+import gov.va.med.srcalc.web.SrcalcUrls;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +41,15 @@ public class AdminHomeControllerIT extends IntegrationTest
     @Test
     public final void testDefaultPage() throws Exception
     {
-        fMockMvc.perform(get("/admin"))
+        fMockMvc.perform(get(SrcalcUrls.ADMIN_HOME))
+            .andExpect(status().isOk());
+    }
+    
+    @Test
+    public final void testModelHome() throws Exception
+    {
+        fMockMvc.perform(get(SrcalcUrls.MODEL_ADMIN_HOME))
+            .andExpect(status().isOk())
             .andExpect(model().attributeExists("variables"))
             .andExpect(model().attributeExists("rules"))
             .andExpect(model().attributeExists("riskModels"));

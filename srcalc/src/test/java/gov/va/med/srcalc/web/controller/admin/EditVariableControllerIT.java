@@ -11,6 +11,7 @@ import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.util.DisplayNameConditions;
+import gov.va.med.srcalc.web.SrcalcUrls;
 import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.*;
 
@@ -59,10 +60,10 @@ public class EditVariableControllerIT extends IntegrationTest
             andExpect(status().isOk()).
             andExpect(model().attribute("variable", isA(EditExistingBooleanVar.class)));
         
-        fMockMvc.perform(
-                post("/admin/variables/preopPneumonia").
-                param("displayName", "Preop Something")).
-            andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+        fMockMvc.perform(post("/admin/variables/preopPneumonia")
+                .param("displayName", "Preop Something"))
+            .andExpect(status().isMovedTemporarily())
+            .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
     }
     
     @Test
@@ -75,11 +76,11 @@ public class EditVariableControllerIT extends IntegrationTest
             andExpect(status().isOk()).
             andExpect(model().attribute("variable", isA(EditExistingMultiSelectVar.class)));
         
-        fMockMvc.perform(
-                post("/admin/variables/gender").
-                param("options[0]", option1Text).
-                param("options[1]", option2Text)).
-            andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+        fMockMvc.perform(post("/admin/variables/gender")
+                .param("options[0]", option1Text)
+                .param("options[1]", option2Text))
+            .andExpect(status().isMovedTemporarily())
+            .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         
         // Perform some basic validation that the edit was saved.
         final MultiSelectVariable var =
@@ -137,7 +138,8 @@ public class EditVariableControllerIT extends IntegrationTest
                 .param("categories[1].upperBound", "50")
                 .param("categories[2].value", thirdCatName)
                 .param("categories[2].upperBound", "90"))
-            .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+            .andExpect(status().isMovedTemporarily())
+            .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         
         // Perform some basic validation that the edit was saved.
         final DiscreteNumericalVariable var =

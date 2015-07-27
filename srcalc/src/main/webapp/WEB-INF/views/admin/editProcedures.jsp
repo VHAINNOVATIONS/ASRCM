@@ -31,7 +31,7 @@
     <button id="replaceProceduresButton" type="submit">Replace all Procedures</button>
     </form>
     
-    <c:url var="adminHomeUrl" value="/admin" />
+    <c:url var="adminHomeUrl" value="${srcalcUrls.modelAdminHome}" />
     <p><a href="${adminHomeUrl}" class="btn-link">Return Home</a></p>
     <script>
     $(document).ready(function() {

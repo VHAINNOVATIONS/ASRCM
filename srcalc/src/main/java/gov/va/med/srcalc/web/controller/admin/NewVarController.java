@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.DuplicateVariableKeyException;
 import gov.va.med.srcalc.util.ValidationCodes;
+import gov.va.med.srcalc.web.SrcalcUrls;
 import gov.va.med.srcalc.web.view.admin.EditBaseVar;
 
 /**
@@ -111,6 +112,6 @@ public abstract class NewVarController
         }
         
         // Using the POST-redirect-GET pattern.
-        return new ModelAndView("redirect:/admin");
+        return new ModelAndView("redirect:" + SrcalcUrls.MODEL_ADMIN_HOME);
     }
 }
