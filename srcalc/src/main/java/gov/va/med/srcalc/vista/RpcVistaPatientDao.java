@@ -6,9 +6,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -47,19 +46,6 @@ public class RpcVistaPatientDao implements VistaPatientDao
      * filtering for health factors.
      */
     private static final Map<String, Boolean> VALID_HEALTH_FACTORS;
-    
-    private static final String[] HEALTH_FACTORS_ARRAY = { "ALCOHOL - TREATMENT REFERRAL", "ALCOHOL USE",
-        "ANTI-DEPRESSANT TREATMENT", "BINGE DRINKING", "CURRENT F/U OR RX FOR DEPRESSION",
-        "DECLINES HOMELESS REFERRAL", "DEPRESSION ASSESS NEGATIVE (NOT MDD)",
-        "DEPRESSION ASSESS POSITIVE (MDD)", "DEPRESSION TO BE MANAGED IN PC",
-        "GEC HOMELESS", "GEC HOMELESS SHELTER", "HISTORY OF AN ALCOHOL PROBLEM",
-        "HOMELESSNESS SCREENING", "NON-DRINKER (NO ALCOHOL FOR >1 YR)",
-        "ONS AA MEDICATIONS-ANTIDEPRESSANTS", "ONS AA MH TRIGGER ID-BEING HOMELESS",
-        "ONS RA MEDICATIONS-ANTIDEPRESSANTS", "OUTSIDE EVAL/TREATMENT FOR DEPRESSION",
-        "PALLI CONSULT ALCOHOL MISUSE NO", "PALLI CONSULT ALCOHOL MISUSE YES",
-        "PC DEPRESSION SCREEN NEGATIVE", "PC DEPRESSION SCREEN POSITIVE",
-        "REFER FOR ALCOHOL TREATMENT", "REFERRED TO HOMELESS PROGRAM",
-        "REFUSED DEPRESSION RX/INTERVENTION", "REFUSES MH REFERRAL FOR DEPRESSION"};
 
     /**
      * Static class initializer to fill the translation map with the proper values.
@@ -272,26 +258,22 @@ public class RpcVistaPatientDao implements VistaPatientDao
     {
         try
         {
-            // Force a LinkedList to improve remove speed and allow for modification of the list
-            // since the doRpc uses Arrays.toList() which has a fixed size.
-            final List<String> rpcResults = new LinkedList<String> (fProcedureCaller.doRpc(
-                    fDuz, RemoteProcedure.GET_HEALTH_FACTORS, String.valueOf(dfn)));
+            patient.getHealthFactors().clear();
+            final List<String> rpcResults = fProcedureCaller.doRpc(
+                    fDuz, RemoteProcedure.GET_HEALTH_FACTORS, String.valueOf(dfn));
             // Now that we have all of the health factors, filter out any that are not present
             // in the list provided by the NSO.
-            final ListIterator<String> iter = rpcResults.listIterator();
+            final Iterator<String> iter = rpcResults.iterator();
             while(iter.hasNext())
             {
                 final String healthFactor = iter.next();
-                if(VALID_HEALTH_FACTORS.get(healthFactor.split("\\^")[1]) == null)
+                final String[] factorSplitArray = healthFactor.split("\\^");
+                if(VALID_HEALTH_FACTORS.get(factorSplitArray[1]) != null)
                 {
-                    iter.remove();
-                }
-                else 
-                {
-                    iter.set(healthFactor.replace('^', ' '));
+                    final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
+                    patient.getHealthFactors().add(new HealthFactor(format.parse(factorSplitArray[0]), factorSplitArray[1]));
                 }
             }
-            patient.setHealthFactors(rpcResults);
             LOGGER.debug("Retrieved Health factors: {} ", patient.getHealthFactors());
         }
         catch(final Exception e)

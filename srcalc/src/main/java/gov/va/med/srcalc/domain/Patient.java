@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
+import gov.va.med.srcalc.vista.HealthFactor;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class Patient implements Serializable
     private RetrievedValue fWeight;
     private RetrievedValue fWeight6MonthsAgo;
     private RetrievedValue fHeight;
-    private List<String> fHealthFactors;
+    private List<HealthFactor> fHealthFactors;
     private Map<String, RetrievedValue> fLabs;
     
     public Patient()
@@ -42,7 +43,7 @@ public class Patient implements Serializable
         this.fGender = gender;
         this.fAge = age;
         this.fLabs = new HashMap<String, RetrievedValue>();
-        this.fHealthFactors = new LinkedList<String>();
+        this.fHealthFactors = new LinkedList<HealthFactor>();
     }
     
     /**
@@ -165,16 +166,12 @@ public class Patient implements Serializable
     }
     
     /**
-     * Returns the patient's health factors in String form.
+     * Returns the patient's health factors in the form of:
+     * "MM/dd/yy <health factor name>"
      */
-    public List<String> getHealthFactors()
+    public List<HealthFactor> getHealthFactors()
     {
         return fHealthFactors;
-    }
-    
-    public void setHealthFactors(final List<String> healthFactors)
-    {
-        this.fHealthFactors = healthFactors;
     }
     
     @Override

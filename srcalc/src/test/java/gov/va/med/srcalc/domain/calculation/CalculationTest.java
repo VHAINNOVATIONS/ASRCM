@@ -89,9 +89,9 @@ public class CalculationTest
         c.setSpecialty(specialty);
         
         // Now, build the expected List of PopulatedVariableGroups.
-        final List<PopulatedVariableGroup> list = Arrays.asList(
-                new PopulatedVariableGroup(Arrays.asList(procedureVar)),
-                new PopulatedVariableGroup(Arrays.asList(ageVar, genderVar)));
+        final List<PopulatedDisplayGroup> list = Arrays.asList(
+                new PopulatedDisplayGroup(Arrays.asList(procedureVar)),
+                new PopulatedDisplayGroup(Arrays.asList(ageVar, genderVar)));
         
         // And finally, verify expected behavior. Note that Variables do not
         // override equals() so this only works because the returned list should

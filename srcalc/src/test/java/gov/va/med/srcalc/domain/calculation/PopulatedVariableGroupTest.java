@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.domain.calculation;
 
 import static org.junit.Assert.*;
-import gov.va.med.srcalc.domain.calculation.PopulatedVariableGroup;
+import gov.va.med.srcalc.domain.calculation.PopulatedDisplayGroup;
 import gov.va.med.srcalc.domain.model.*;
 
 import java.util.*;
@@ -12,14 +12,14 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
 /**
- * Tests the {@link PopulatedVariableGroup} class.
+ * Tests the {@link PopulatedDisplayGroup} class.
  */
 public class PopulatedVariableGroupTest
 {
     @Test
     public final void testEquals()
     {
-        EqualsVerifier.forClass(PopulatedVariableGroup.class)
+        EqualsVerifier.forClass(PopulatedDisplayGroup.class)
             .suppress(Warning.NULL_FIELDS)  // variables may not be null
             .verify();
     }
@@ -30,7 +30,7 @@ public class PopulatedVariableGroupTest
         final List<AbstractVariable> variables = Arrays.asList(
                 SampleModels.ageVariable(),
                 SampleModels.genderVariable());
-        final PopulatedVariableGroup group = new PopulatedVariableGroup(variables);
+        final PopulatedDisplayGroup group = new PopulatedDisplayGroup(variables);
         
         assertEquals(
                 "Variable Group 'Demographics' with variables [Age, Gender]",
@@ -44,7 +44,7 @@ public class PopulatedVariableGroupTest
         final AbstractVariable ageVar = SampleModels.ageVariable();
         final List<AbstractVariable> variables = Arrays.asList(
                 ageVar, genderVar);
-        final PopulatedVariableGroup group = new PopulatedVariableGroup(variables);
+        final PopulatedDisplayGroup group = new PopulatedDisplayGroup(variables);
         
         assertEquals("Demographics", group.getName());
         assertEquals(variables, group.getVariables());
@@ -53,7 +53,7 @@ public class PopulatedVariableGroupTest
     @Test(expected = IllegalArgumentException.class)
     public final void testEmptyVariables()
     {
-        new PopulatedVariableGroup(new ArrayList<Variable>());
+        new PopulatedDisplayGroup(new ArrayList<Variable>());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -62,7 +62,7 @@ public class PopulatedVariableGroupTest
         final List<AbstractVariable> variables = Arrays.asList(
                 SampleModels.ageVariable(),
                 SampleModels.procedureVariable());
-        new PopulatedVariableGroup(variables);
+        new PopulatedDisplayGroup(variables);
     }
     
 }

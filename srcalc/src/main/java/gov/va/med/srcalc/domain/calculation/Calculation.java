@@ -139,11 +139,11 @@ public class Calculation implements Serializable
     }
     
     /**
-     * Builds a brand-new, sorted list of {@link PopulatedVariableGroup}s from
+     * Builds a brand-new, sorted list of {@link PopulatedDisplayGroup}s from
      * the given variables. The groups are sorted by their natural ordering and
      * each variable list is sorted by display name.
      */
-    protected List<PopulatedVariableGroup> buildVariableGroupList(
+    protected List<PopulatedDisplayGroup> buildVariableGroupList(
             Collection<? extends Variable> variables)
     {
         // Bucket the Variables according to VariableGroup.
@@ -160,13 +160,13 @@ public class Calculation implements Serializable
         }
         
         // Transform the map into PopulatedVariableGroups.
-        final ArrayList<PopulatedVariableGroup> groupList =
+        final ArrayList<PopulatedDisplayGroup> groupList =
                 new ArrayList<>(map.values().size());
         final DisplayNameComparator comparator = new DisplayNameComparator();
         for (final List<Variable> varList : map.values())
         {
             Collections.sort(varList, comparator);
-            groupList.add(new PopulatedVariableGroup(varList));
+            groupList.add(new PopulatedDisplayGroup(varList, fPatient));
         }
         
         // Finally, sort the List.
@@ -181,7 +181,7 @@ public class Calculation implements Serializable
      * @throws IllegalStateException if no specialty has been set.
      * @return an immutable List, sorted in group order
      */
-    public List<PopulatedVariableGroup> getVariableGroups()
+    public List<PopulatedDisplayGroup> getVariableGroups()
     {
         // Ensure we are in the proper state.
         if (fSpecialty == null)
