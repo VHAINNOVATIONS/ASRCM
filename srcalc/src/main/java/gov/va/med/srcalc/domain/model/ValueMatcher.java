@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain.model;
 
+import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.calculation.Value;
 
 import java.util.Objects;
@@ -123,12 +124,24 @@ public final class ValueMatcher
      * @param context the EvaluationContext used to evaluate this matcher against
      * @param value the value for this matcher's variable
      * @return the boolean value to which the expression evaluates
+     * @throws ConfigurationException if there was a problem during boolean expression
+     * evaluation
      */
     public boolean evaluate(final EvaluationContext context, final Value value)
     {
         if(fExpressionEnabled)
         {
-            return fBooleanExpression.getValue(context, value, Boolean.class);
+            // Pre-emptively get the expression string for error reporting.
+            final String expressionString = fBooleanExpression.getExpressionString();
+            try
+            {
+                return fBooleanExpression.getValue(context, value, Boolean.class);
+            }
+            catch (final EvaluationException ex)
+            {
+                throw new ConfigurationException(
+                        "Failed to evaluate expression: " + expressionString, ex);
+            }
         }
         else
         {
