@@ -165,7 +165,7 @@ public class CalculationTest
         // Assuming that 0 seconds elapse from Calculation.forPatient() to calculate()
         // above.
         assertEquals(0, historical.getSecondsToFirstRun());
-        assertEquals(user.getProviderTypes(), historical.getProviderTypes());
+        assertEquals(user.getProviderType(), historical.getProviderType());
         assertSame(
                 "getHistoricalCalculation() should return the same instance",
                 historical, c.getHistoricalCalculation().get());

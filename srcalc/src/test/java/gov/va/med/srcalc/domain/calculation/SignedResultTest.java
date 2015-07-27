@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 
 /**
  * Tests the {@link SignedResult} class.
@@ -25,7 +24,7 @@ public class SignedResultTest
     private HistoricalCalculation makeHistoricalCalc()
     {
         return new HistoricalCalculation(
-                "Dummy", "442", DateTime.now(), 123, ImmutableSet.of("Provider Type"));
+                "Dummy", "442", DateTime.now(), 123, Optional.of("Provider Type"));
     }
 
     @Test

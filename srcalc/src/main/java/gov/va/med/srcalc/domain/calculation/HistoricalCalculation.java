@@ -7,7 +7,6 @@ import gov.va.med.srcalc.util.Preconditions;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.*;
 
@@ -15,7 +14,7 @@ import org.hibernate.annotations.Immutable;
 import org.joda.time.DateTime;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.base.Optional;
 
 /**
  * <p>Encapsulates data from a past calculation. Stores calculation metadata (division,
@@ -44,16 +43,16 @@ public final class HistoricalCalculation implements Serializable
     public static final int STATION_NUMBER_MAX = 10;
     
     /**
-     * The maximum length of a user class String. VistA's maximum appears to be 30.
+     * The maximum length of a user class String. VistA's maximum appears to be 62.
      */
-    public static final int USER_CLASS_MAX = 80;
+    public static final int PROVIDER_TYPE_MAX = 80;
 
     private int fId;
     private String fSpecialtyName;
     private String fUserStation;
     private Date fStartTimestamp;
     private int fSecondsToFirstRun;
-    private ImmutableSet<String> fProviderTypes;
+    private Optional<String> fProviderType;
     
     /**
      * Intended for reflection-based construction only. Business code should use the other
@@ -68,14 +67,14 @@ public final class HistoricalCalculation implements Serializable
      * @param specialtyName see {@link #getSpecialtyName()}
      * @param providerStation see {@link #getUserStation()}
      * @param secondsToFirstRun see {@link #getSecondsToFirstRun()}
-     * @param providerTypes see {@link #getProviderTypes()}. Defensively-copied.
+     * @param providerType see {@link #getProviderType()}.
      */
     public HistoricalCalculation(
             final String specialtyName,
             final String providerStation,
             final DateTime startTimestamp,
             final int secondsToFirstRun,
-            final Set<String> providerTypes)
+            final Optional<String> providerType)
     {
         // Use setters to verify constraints.
         setSpecialtyName(specialtyName);
@@ -83,7 +82,7 @@ public final class HistoricalCalculation implements Serializable
         // See getStartTimetsamp() for why we enforce 0 millis of second.
         fStartTimestamp = startTimestamp.withMillisOfSecond(0).toDate();
         fSecondsToFirstRun = secondsToFirstRun;
-        fProviderTypes = ImmutableSet.copyOf(providerTypes);
+        setProviderType(providerType);
     }
     
     /**
@@ -186,34 +185,53 @@ public final class HistoricalCalculation implements Serializable
     }
 
     /**
-     * Returns the Provider Types of the user who performed the calculation.
-     * @return an ImmutableSet
-     * @see VistaPerson#getProviderTypes()
+     * Returns the Provider Type of the user who performed the calculation, if there was
+     * one.
+     * @return never nn Optional containing the provider type, if applicable
+     * @see VistaPerson#getProviderType()
      */
-    @ElementCollection(fetch = FetchType.EAGER) // eager due to close association
-    // Override strange default column names.
-    @CollectionTable(
-            // Call the table "person_class" in case we ever add other person class fields
-            name = "historical_calc_person_class",
-            joinColumns = @JoinColumn(name = "calc_id"))
-    @Column(name = "provider_type", nullable = false, length = USER_CLASS_MAX)
-    // Hibernate requires us to return a Set instead of an ImmutableSet.
-    public Set<String> getProviderTypes()
+    @Transient
+    public Optional<String> getProviderType()
     {
-        return fProviderTypes;
+        return fProviderType;
+    }
+    
+    /**
+     * Sets the provider type, checking preconditions.
+     * @throws IllegalArgumentException if the providerType is empty or greater than
+     * {@link #PROVIDER_TYPE_MAX} characters
+     */
+    private void setProviderType(final Optional<String> providerType)
+    {
+        if (providerType.isPresent())
+        {
+            Preconditions.requireWithin(providerType.get(), 1, PROVIDER_TYPE_MAX);
+        }
+        
+        fProviderType = providerType;
+    }
+    
+    /**
+     * As {@link #getProviderType()}, but represents a missing Provider Type as null.
+     * Purely to support Hibernate, which does not support Guava's Optional class.
+     * @return the optional Provider Type as a nullable string
+     */
+    @Basic
+    @Column(name = "provider_type", nullable = true, length = PROVIDER_TYPE_MAX)
+    String getProviderTypeNullable()
+    {
+        return fProviderType.orNull();
     }
     
     /**
      * For reflection-based construction only. Business code must provide this value to
      * the constructor.
+     * @throws IllegalArgumentException if the providerType is empty or greater than
+     * {@link #PROVIDER_TYPE_MAX} characters
      */
-    void setProviderTypes(final Set<String> providerTypes)
+    void setProviderTypeNullable(final String providerType)
     {
-        // Note: normally with Hibernate we would preserve the passed collection since it
-        // will be Hibernate's special implementation of Set. Since this object is
-        // immutable, however, we don't care to keep Hibernate's mutable implementation
-        // and just discard it.
-        fProviderTypes = ImmutableSet.copyOf(providerTypes);
+        setProviderType(Optional.fromNullable(providerType));
     }
     
     @Override
@@ -224,7 +242,7 @@ public final class HistoricalCalculation implements Serializable
                 .add("start", fStartTimestamp)
                 .add("secondsToFirstRun", fSecondsToFirstRun)
                 .add("userStation", fUserStation)
-                .add("providerTypes", fProviderTypes)
+                .add("providerType", fProviderType)
                 .toString();
     }
     
@@ -242,7 +260,7 @@ public final class HistoricalCalculation implements Serializable
                     Objects.equals(this.fUserStation, other.fUserStation) &&
                     Objects.equals(this.fStartTimestamp, other.fStartTimestamp) &&
                     (this.fSecondsToFirstRun == other.fSecondsToFirstRun) &&
-                    Objects.equals(this.fProviderTypes, other.fProviderTypes);
+                    Objects.equals(this.fProviderType, other.fProviderType);
         }
         else
         {
@@ -258,7 +276,7 @@ public final class HistoricalCalculation implements Serializable
                 fUserStation,
                 fStartTimestamp,
                 fSecondsToFirstRun,
-                fProviderTypes);
+                fProviderType);
     }
 
 }

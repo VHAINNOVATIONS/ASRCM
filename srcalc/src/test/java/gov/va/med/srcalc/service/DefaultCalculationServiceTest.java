@@ -17,8 +17,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import sun.security.x509.FreshestCRLExtension;
-
 import com.google.common.collect.ImmutableMap;
 
 /**

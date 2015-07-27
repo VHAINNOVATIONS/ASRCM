@@ -1,9 +1,7 @@
 package gov.va.med.srcalc.domain;
 
-import java.util.Set;
-
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.base.Optional;
 
 /**
  * A VistA person (from the NEW PERSON file).
@@ -13,25 +11,25 @@ public class VistaPerson
     private final String fStationNumber;
     private final String fDuz;
     private final String fDisplayName;
-    private final ImmutableSet<String> fProviderTypes;
+    private final Optional<String> fProviderType;
     
     /**
      * Constructs an instance.
      * @param stationNumber See {@link #getStationNumber()}.
      * @param duz See {@link #getDuz()}.
      * @param displayName See {@link #getDisplayName()}.
-     * @param providerTypes See {@link #getProviderTypes()}.
+     * @param providerType See {@link #getProviderType()}.
      */
     public VistaPerson(
             final String stationNumber,
             final String duz,
             final String displayName,
-            final Set<String> providerTypes)
+            final Optional<String> providerType)
     {
         fStationNumber = stationNumber;
         fDuz = duz;
         fDisplayName = displayName;
-        fProviderTypes = ImmutableSet.copyOf(providerTypes);
+        fProviderType = providerType;
     }
 
     /**
@@ -61,12 +59,12 @@ public class VistaPerson
     }
 
     /**
-     * Returns the user's provider types, from their "Person Classes". Presumably only
+     * Returns the user's provider type, from their "Person Class". Presumably only
      * clinical staff will have these.
      */
-    public ImmutableSet<String> getProviderTypes()
+    public Optional<String> getProviderType()
     {
-        return fProviderTypes;
+        return fProviderType;
     }
     
     /**
@@ -80,7 +78,7 @@ public class VistaPerson
                 .add("duz", fDuz)
                 .add("stationNumber", fStationNumber)
                 .add("displayName", fDisplayName)
-                .add("providerTypes", fProviderTypes)
+                .add("providerType", fProviderType)
                 .toString();
     }
 }

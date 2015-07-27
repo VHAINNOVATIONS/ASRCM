@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 
 /**
  * Constructs sample instances of {@link Calculation}s and related objects.
@@ -24,7 +24,7 @@ public class SampleCalculations
     {
         return new VistaPerson("500", "11716",
                 "RADIOLOGIST,ONE",
-                ImmutableSet.of("Physicians (M.D. and D.O.)"));
+                Optional.of("Physicians (M.D. and D.O.)"));
     }
 
     public static Patient dummyPatient(final int dfn)

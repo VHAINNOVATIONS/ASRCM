@@ -281,7 +281,7 @@ public class Calculation implements Serializable
                 user.getStationNumber(),
                 fStartDateTime,
                 secondsToResult,
-                user.getProviderTypes());
+                user.getProviderType());
     }
     
     /**

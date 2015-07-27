@@ -10,7 +10,8 @@ import gov.va.med.srcalc.domain.VistaPerson;
 
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Tests the {@link RpcVistaPersonDao} class.
@@ -20,10 +21,8 @@ public class RpcVistaPersonDaoTest
     private final static String DIVISION = "512";
     private final static String RADIOLOGIST_DUZ = "11716";
     private final static String RADIOLOGIST_NAME = "RADIOLOGIST,ONE";
-    private final static ImmutableSet<String> RADIOLOGIST_PROVIDER_TYPES =
-            ImmutableSet.of(
-                    "Physicians (M.D. and D.O.)",
-                    "Podiatric Medicine and Surgery Service Providers");
+    private final static String RADIOLOGIST_PROVIDER_TYPE =
+                    "Podiatric Medicine and Surgery Service Providers";
     
     private VistaProcedureCaller mockProcedureCaller()
     {
@@ -31,8 +30,9 @@ public class RpcVistaPersonDaoTest
         when(caller.getDivision()).thenReturn(DIVISION);
         when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_USER))
             .thenReturn(Arrays.asList(RADIOLOGIST_NAME));
+        // Test returning an extra type.
         when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_USER_PERSON_CLASSES))
-            .thenReturn(RADIOLOGIST_PROVIDER_TYPES.asList());
+            .thenReturn(ImmutableList.of(RADIOLOGIST_PROVIDER_TYPE, "Extra Type"));
         return caller;
     }
 
@@ -47,7 +47,7 @@ public class RpcVistaPersonDaoTest
         assertEquals(RADIOLOGIST_DUZ, person.getDuz());
         assertEquals(RADIOLOGIST_NAME, person.getDisplayName());
         assertEquals(DIVISION, person.getStationNumber());
-        assertEquals(RADIOLOGIST_PROVIDER_TYPES, person.getProviderTypes());
+        assertEquals(Optional.of(RADIOLOGIST_PROVIDER_TYPE), person.getProviderType());
     }
     
 }

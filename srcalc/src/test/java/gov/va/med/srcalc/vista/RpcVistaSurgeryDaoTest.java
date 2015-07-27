@@ -41,7 +41,7 @@ public class RpcVistaSurgeryDaoTest
                 "442",
                 startDateTime,
                 3,
-                ImmutableSet.<String>of());
+                Optional.<String>absent());
         return new SignedResult(
                 historicalCalc,
                 patientDfn,

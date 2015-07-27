@@ -2,7 +2,9 @@ package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.*;
@@ -19,6 +21,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -132,15 +136,56 @@ public class CalculationServiceIT extends IntegrationTest
                 ((BooleanVariable)thoracicVars.get("preopPneumonia")).makeValue(false),
                 procedureVar.makeValue(selectedProcedure));
         
-        // Calculate expected sum
-        final TreeMap<String, Float> expectedOutcomes = new TreeMap<>();
         // These values and the configured coefficients are high enough to get 100% risk.
-        expectedOutcomes.put("Thoracic 30-Day Mortality Risk", 1.0f);
+        final ImmutableMap<String, Float> expectedOutcomes = ImmutableMap.of(
+                "Thoracic 30-Day Mortality Risk", 1.0f);
         
         // Behavior verification
         final CalculationResult result =
                 fCalculationService.runCalculation(calc, expectedValues);
         assertEquals(expectedValues, result.getValues());
         assertEquals(expectedOutcomes, result.getOutcomes());
+    }
+    
+    @Test
+    public final void testSignCalculation() throws Exception
+    {
+        /* Setup */
+
+        final int patientDfn = 76345;
+        final String procedureKey = "procedure";
+        final String ageKey = "age";
+
+        // Create a Calculation just for easy access to the variabes.
+        final Calculation calc = fCalculationService.startNewCalculation(patientDfn);
+        fCalculationService.setSpecialty(calc, "Neurosurgery");
+        final Map<String, Variable> neuroVars = buildVariableMap(calc.getVariables());
+
+        final ProcedureVariable procedureVar =
+                (ProcedureVariable)neuroVars.get(procedureKey);
+        final Procedure procedure = procedureVar.getProcedures().get(1);
+        final NumericalVariable ageVar = (NumericalVariable)neuroVars.get(ageKey);
+        final HistoricalCalculation historical = new HistoricalCalculation(
+                "Neurosurgery",
+                "442",
+                DateTime.now().minusMinutes(2),
+                60,
+                Optional.<String>absent());
+        final ImmutableSet<Value> values = ImmutableSet.of(
+                procedureVar.makeValue(procedure),
+                ageVar.makeValue(41.0f));
+        final ImmutableMap<String, Float> outcomes = ImmutableMap.of(
+                "Neurosurgery 30-Day", 34.1f);
+        final CalculationResult result = new CalculationResult(
+                historical, patientDfn, DateTime.now(), values, outcomes);
+        
+        /* Behavior */
+        fCalculationService.signRiskCalculation(result, "doesntmatter");
+        
+        /* Verification */
+        simulateNewSession();
+
+        assertEquals(
+                1, getHibernateSession().createQuery("from SignedResult").list().size());
     }
 }

@@ -40,6 +40,14 @@ public final class SignedResult
     private ImmutableMap<String, Float> fOutcomes;
     
     /**
+     * Intended for reflection-based construction only. Business code should use the other
+     * constructor.
+     */
+    SignedResult()
+    {
+    }
+    
+    /**
      * Constructs an instance with the given properties.
      * @param historicalCalc See {@link #getHistoricalCalculation()}.
      * @param patientDfn See {@link #getPatientDfn()}.
@@ -62,7 +70,7 @@ public final class SignedResult
         // Use setters to verify constraints.
         setHistoricalCalculation(historicalCalc);
         setPatientDfn(patientDfn);
-        setCptCodeNullable(cptCode.orNull());
+        setCptCode(cptCode);
         // See getSignatureTimestamp() for why we enforce 0 millis of second.
         setSignatureTimestamp(signatureTimestamp.withMillisOfSecond(0).toDate());
         setInputs(ImmutableMap.copyOf(inputs));
@@ -137,6 +145,22 @@ public final class SignedResult
     }
     
     /**
+     * Sets the cptCode, checking preconditions.
+     * @throws IllegalArgumentException if the cptCode is not {@link
+     * Procedure#CPT_CODE_LENGTH} characters
+     */
+    private void setCptCode(final Optional<String> optional)
+    {
+        if (optional.isPresent())
+        {
+            Preconditions.requireWithin(
+                    optional.get(), Procedure.CPT_CODE_LENGTH, Procedure.CPT_CODE_LENGTH);
+        }
+
+        fCptCode = optional;
+    }
+    
+    /**
      * As {@link #getCptCode()}, but represents a missing CPT Code as null. Purely to
      * support Hibernate, which does not support Guava's Optional class.
      * @return the optional CPT Code as a nullable string
@@ -155,13 +179,7 @@ public final class SignedResult
      */
     void setCptCodeNullable(final String cptCode)
     {
-        fCptCode = Optional.fromNullable(cptCode);
-        
-        if (fCptCode.isPresent())
-        {
-            Preconditions.requireWithin(
-                    fCptCode.get(), Procedure.CPT_CODE_LENGTH, Procedure.CPT_CODE_LENGTH);
-        }
+        setCptCode(Optional.fromNullable(cptCode));
     }
     
     /**

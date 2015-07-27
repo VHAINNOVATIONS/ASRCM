@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.base.Optional;
 
 /**
  * Tests the {@link VistaPerson} class.
@@ -19,13 +19,13 @@ public class VistaPersonTest
         final String DIVISION = "500";
         final String DUZ = "1";
         final String NAME = "PROGRAMMER,ONE";
-        final ImmutableSet<String> PROVIDER_TYPES = ImmutableSet.of("Person Class");
-        final VistaPerson person = new VistaPerson(DIVISION, DUZ, NAME, PROVIDER_TYPES);
+        final Optional<String> PROVIDER_TYPE = Optional.of("Person Class");
+        final VistaPerson person = new VistaPerson(DIVISION, DUZ, NAME, PROVIDER_TYPE);
         
         assertEquals(DIVISION, person.getStationNumber());
         assertEquals(DUZ, person.getDuz());
         assertEquals(NAME, person.getDisplayName());
-        assertEquals(PROVIDER_TYPES, person.getProviderTypes());
+        assertEquals(PROVIDER_TYPE, person.getProviderType());
         // We don't specify the format of the string, but make sure it includes
         // the division, DUZ, and name.
         assertThat(

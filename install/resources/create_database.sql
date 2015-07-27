@@ -7,8 +7,7 @@ create table boolean_variable (id integer not null, primary key (id));
 create table cpt (id integer not null auto_increment, complexity varchar(40) not null, cpt_code varchar(5) not null, eligible boolean not null, long_description varchar(256) not null, rvu float not null, short_description varchar(256) not null, primary key (id));
 create table discrete_numerical_var (units varchar(40) not null, lower_bound float not null, lower_inclusive boolean not null, upper_bound float not null, upper_inclusive boolean not null, id integer not null, primary key (id));
 create table discrete_numerical_var_category (variable_id integer not null, option_value varchar(80) not null, upper_bound float not null, upper_inclusive boolean not null, primary key (variable_id, option_value, upper_bound, upper_inclusive));
-create table historical_calc (id integer not null auto_increment, seconds_to_first_run integer not null, specialty_name varchar(100) not null, start_timestamp datetime not null, user_station varchar(10) not null, primary key (id));
-create table historical_calc_person_class (calc_id integer not null, provider_type varchar(80) not null, primary key (calc_id, provider_type));
+create table historical_calc (id integer not null auto_increment, provider_type varchar(80), seconds_to_first_run integer not null, specialty_name varchar(100) not null, start_timestamp datetime not null, user_station varchar(10) not null, primary key (id));
 create table multi_select_variable (display_type varchar(255), id integer not null, primary key (id));
 create table multi_select_variable_option (variable_id integer not null, option_value varchar(80) not null, option_index integer not null, primary key (variable_id, option_index));
 create table numerical_variable (units varchar(40) not null, lower_bound float not null, lower_inclusive boolean not null, upper_bound float not null, upper_inclusive boolean not null, id integer not null, primary key (id));
@@ -32,7 +31,6 @@ alter table variable add constraint UK_3on3hwgilp01pjk6iqxarybnm unique (variabl
 alter table boolean_variable add index FK_8s7i3kftdcnt17a8us2sh6qou (id), add constraint FK_8s7i3kftdcnt17a8us2sh6qou foreign key (id) references variable (id);
 alter table discrete_numerical_var add index FK_1hmr3q0o9tn8xd48slnkwk0ld (id), add constraint FK_1hmr3q0o9tn8xd48slnkwk0ld foreign key (id) references variable (id);
 alter table discrete_numerical_var_category add index FK_ai58j7ktbfoadjqgqm0llm11e (variable_id), add constraint FK_ai58j7ktbfoadjqgqm0llm11e foreign key (variable_id) references discrete_numerical_var (id);
-alter table historical_calc_person_class add index FK_3o264tgux2bfssok1welbxabj (calc_id), add constraint FK_3o264tgux2bfssok1welbxabj foreign key (calc_id) references historical_calc (id);
 alter table multi_select_variable add index FK_18hqfsy87bg9ucro7r0h6hl5t (id), add constraint FK_18hqfsy87bg9ucro7r0h6hl5t foreign key (id) references variable (id);
 alter table multi_select_variable_option add index FK_aho8l3stxs2pix74vg19xmman (variable_id), add constraint FK_aho8l3stxs2pix74vg19xmman foreign key (variable_id) references multi_select_variable (id);
 alter table numerical_variable add index FK_ntgiooontcrixh9umumtbf9yh (id), add constraint FK_ntgiooontcrixh9umumtbf9yh foreign key (id) references variable (id);

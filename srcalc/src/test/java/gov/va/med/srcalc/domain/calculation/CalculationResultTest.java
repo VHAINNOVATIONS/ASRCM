@@ -82,7 +82,8 @@ public class CalculationResultTest
                 "668",
                 startTimestamp,
                 10,
-                ImmutableSet.of("Provider Type"));
+                // Test an empty provider type.
+                Optional.<String>absent());
         final CalculationResult result = new CalculationResult(
                 historical,
                 100,
