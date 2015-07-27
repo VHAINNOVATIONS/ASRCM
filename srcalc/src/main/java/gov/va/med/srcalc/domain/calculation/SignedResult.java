@@ -73,8 +73,8 @@ public final class SignedResult
         setCptCode(cptCode);
         // See getSignatureTimestamp() for why we enforce 0 millis of second.
         setSignatureTimestamp(signatureTimestamp.withMillisOfSecond(0).toDate());
-        setInputs(ImmutableMap.copyOf(inputs));
-        setOutcomes(ImmutableMap.copyOf(outcomes));
+        setInputs(inputs);
+        setOutcomes(outcomes);
     }
     
     /**
@@ -161,8 +161,8 @@ public final class SignedResult
     }
     
     /**
-     * As {@link #getCptCode()}, but represents a missing CPT Code as null. Purely to
-     * support Hibernate, which does not support Guava's Optional class.
+     * Similar to {@link #getCptCode()}, but represents a missing CPT Code as null. Purely
+     * to support Hibernate, which does not support Guava's Optional class.
      * @return the optional CPT Code as a nullable string
      */
     @Column(name = "cpt_code", nullable = true, length = Procedure.CPT_CODE_LENGTH)
@@ -223,6 +223,7 @@ public final class SignedResult
     /**
      * For reflection-based construction only. Business code must provide this value to
      * the constructor.
+     * @param inputs defensively copied
      */
     void setInputs(final Map<String, String> inputs)
     {
@@ -256,6 +257,7 @@ public final class SignedResult
     /**
      * For reflection-based construction only. Business code must provide this value to
      * the constructor.
+     * @param outcomes defensively copied
      */
     void setOutcomes(final Map<String, Float> outcomes)
     {

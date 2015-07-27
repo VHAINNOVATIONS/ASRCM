@@ -45,7 +45,7 @@ public class SampleCalculations
     }
 
     /**
-     * Returns a collection of value values for a thoracic calculation.
+     * Returns a collection of variable values for a thoracic calculation.
      * @return a Map from each Variable to its Value
      */
     public static ImmutableMap<AbstractVariable, Value> thoracicValues()

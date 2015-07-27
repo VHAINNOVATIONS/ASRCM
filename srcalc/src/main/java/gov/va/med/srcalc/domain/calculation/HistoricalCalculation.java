@@ -212,8 +212,8 @@ public final class HistoricalCalculation implements Serializable
     }
     
     /**
-     * As {@link #getProviderType()}, but represents a missing Provider Type as null.
-     * Purely to support Hibernate, which does not support Guava's Optional class.
+     * Similar to {@link #getProviderType()}, but represents a missing Provider Type as
+     * null. Purely to support Hibernate, which does not support Guava's Optional class.
      * @return the optional Provider Type as a nullable string
      */
     @Basic

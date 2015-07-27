@@ -156,7 +156,7 @@ public class CalculationServiceIT extends IntegrationTest
         final String procedureKey = "procedure";
         final String ageKey = "age";
 
-        // Create a Calculation just for easy access to the variabes.
+        // Create a Calculation just for easy access to the variables.
         final Calculation calc = fCalculationService.startNewCalculation(patientDfn);
         fCalculationService.setSpecialty(calc, "Neurosurgery");
         final Map<String, Variable> neuroVars = buildVariableMap(calc.getVariables());
