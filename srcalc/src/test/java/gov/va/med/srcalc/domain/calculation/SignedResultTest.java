@@ -11,6 +11,9 @@ import org.junit.Test;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
+/**
+ * Tests the {@link SignedResult} class.
+ */
 public class SignedResultTest
 {
     @Test

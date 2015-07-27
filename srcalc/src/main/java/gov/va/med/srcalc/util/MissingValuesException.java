@@ -5,7 +5,7 @@ import java.util.List;
 import gov.va.med.srcalc.domain.model.MissingValueException;
 
 /**
- * Indicates that there is at least one {@link MissingValueException}
+ * Indicates that there is at least one {@link MissingValueException}.
  */
 public class MissingValuesException extends Exception
 {

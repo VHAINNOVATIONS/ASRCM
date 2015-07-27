@@ -25,7 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class EnterVariablesController
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(EnterVariablesController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EnterVariablesController.class);
 
     /**
      * Attribute name for the VariableEntry object.
@@ -61,7 +61,7 @@ public class EnterVariablesController
         {
             final CalculationResult lastResult = cs.getRequiredLastResult();
             final DynamicValueVisitor visitor = new DynamicValueVisitor(initialValues);
-            fLogger.debug("Pre-existing input values: {}", lastResult.getValues());
+            LOGGER.debug("Pre-existing input values: {}", lastResult.getValues());
             for(final Value value: lastResult.getValues())
             {
                 visitor.visit(value);
@@ -134,7 +134,7 @@ public class EnterVariablesController
                 // If the variable had invalid input, rather than missing input,
                 // it would never be included in the values.
                 final String dynamicKey = VariableEntry.makeDynamicValuePath(missingValue.getVariable().getKey());
-                fLogger.debug("Field Error: {}", dynamicKey);
+                LOGGER.debug("Field Error: {}", dynamicKey);
                 // Account for field errors on special fields like discrete numerical
                 // variables.
                 if(bindingResultAlreadyContainsError(dynamicKey, valuesBindingResult, missingValue))
@@ -148,7 +148,7 @@ public class EnterVariablesController
         // If we have any binding errors, return to the Enter Variables screen.
         if (valuesBindingResult.hasErrors())
         {
-            fLogger.debug(
+            LOGGER.debug(
                     "Invalid variables entered by user. Reshowing variable entry screen. Errors: {}",
                     valuesBindingResult.getAllErrors());
             return presentVariableEntry(session, response, values);

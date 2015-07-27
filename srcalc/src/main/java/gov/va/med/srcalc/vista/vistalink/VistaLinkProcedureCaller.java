@@ -39,7 +39,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
      */
     protected static final String RPC_CONTEXT = "SR ASRC";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(VistaLinkProcedureCaller.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VistaLinkProcedureCaller.class);
     
     /**
      * The division of the remote VistA.
@@ -129,7 +129,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
     private void setStringParam(
             final RpcRequestParams params, final int index, final String value)
     {
-        fLogger.debug("Setting param {} to {}", index, value);
+        LOGGER.debug("Setting param {} to {}", index, value);
         params.setParam(index, VlType.string.name(), value);
     }
     
@@ -140,7 +140,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
     private void setArrayParam(
             final RpcRequestParams params, final int index, final List<?> value)
     {
-        fLogger.debug("Setting param {} to {}", index, value);
+        LOGGER.debug("Setting param {} to {}", index, value);
         params.setParam(index, VlType.array.name(), value);
     }
     
@@ -151,7 +151,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
     private void setArrayParam(
             final RpcRequestParams params, final int index, final Map<String, ?> value)
     {
-        fLogger.debug("Setting param {} to {}", index, value);
+        LOGGER.debug("Setting param {} to {}", index, value);
         params.setParam(index, VlType.array.name(), value);
     }
     
@@ -166,7 +166,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
      */
     protected List<String> doRpc(final String duz, final RpcRequest request)
     {
-        fLogger.debug(
+        LOGGER.debug(
                 "About to call remote procedure \"{}\"",
                 request.getRpcName());
 
@@ -179,7 +179,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
             try
             {
                 final RpcResponse response = conn.executeRPC(request);
-                fLogger.debug(
+                LOGGER.debug(
                         "Got {} response: {}",
                         response.getResultsType(), response.getResults());
                 // The only current possible types are "string" and "array"

@@ -19,7 +19,7 @@ public class NewDiscreteNumericalVarController extends NewVarController
 {
     public static final String BASE_URL = "/admin/newDiscreteVar";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(NewDiscreteNumericalVarController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NewDiscreteNumericalVarController.class);
     
     /**
      * Constructs an instance.
@@ -41,7 +41,7 @@ public class NewDiscreteNumericalVarController extends NewVarController
     @Override
     protected EditBaseVar createEditBaseVar()
     {
-        fLogger.trace("Creating EditDiscreteNumericalVar.");
+        LOGGER.trace("Creating EditDiscreteNumericalVar.");
         return new EditDiscreteNumericalVar(getAdminService());
     }
     

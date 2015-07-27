@@ -11,6 +11,9 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link PopulatedVariableGroup} class.
+ */
 public class PopulatedVariableGroupTest
 {
     @Test

@@ -76,7 +76,7 @@ public interface ModelInspectionService
     public List<Specialty> getAllSpecialties();
     
     /**
-     * Return the (@link Specialty) object in the database with the given id
+     * Return the (@link Specialty) object in the database with the given id.
      * @return Specialty. 
      */
     public Specialty getSpecialtyForId( int id);

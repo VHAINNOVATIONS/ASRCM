@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 
 /**
  * Represents the result, including validation errors, of parsing a tabular upload.
+ * @param <T> the type of objects representing each row
  */
 public final class TabularParseResult<T>
 {

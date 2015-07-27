@@ -10,6 +10,9 @@ import javax.servlet.ServletContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Web application-related constants and utility methods.
+ */
 public class WebUtils
 {
     /**
@@ -27,7 +30,7 @@ public class WebUtils
      */
     protected static final String DEFAULT_APP_VERSION = "unknown (no manifest)";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(WebUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebUtils.class);
 
     /**
      * No construction.
@@ -76,7 +79,7 @@ public class WebUtils
         }
         catch (IOException ex)
         {
-            fLogger.warn(
+            LOGGER.warn(
                     "Could not read application manifest. Will use default values for the SrcalcInfo.",
                     ex);
             return new SrcalcInfo(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);

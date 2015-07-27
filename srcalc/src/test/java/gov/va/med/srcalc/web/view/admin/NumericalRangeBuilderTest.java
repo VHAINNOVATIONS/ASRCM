@@ -7,6 +7,9 @@ import gov.va.med.srcalc.domain.model.NumericalRange;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link NumericalRangeBuilder} class.
+ */
 public class NumericalRangeBuilderTest
 {
     @Test

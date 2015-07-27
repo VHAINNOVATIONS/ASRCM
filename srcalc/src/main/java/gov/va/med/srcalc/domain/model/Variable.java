@@ -23,7 +23,7 @@ public interface Variable
             "letters, digits, and underscores";
     
     /**
-     * The maximum length of a valid variable key: {@value}
+     * The maximum length of a valid variable key: {@value}.
      */
     public static final int KEY_MAX = 40;
     
@@ -38,7 +38,7 @@ public interface Variable
     public static final String VALID_KEY_REGEX = "\\w*";
     
     /**
-     * The maximum length of a valid help text string: {@value}
+     * The maximum length of a valid help text string: {@value}.
      * @see #getHelpText()
      */
     public static final int HELP_TEXT_MAX = 4000;

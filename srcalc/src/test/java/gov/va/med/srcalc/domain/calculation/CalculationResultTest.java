@@ -10,6 +10,9 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+/**
+ * Tests the {@link CalculationResult} class.
+ */
 public class CalculationResultTest
 {
     private final static String NOTE_BODY = String.format("Specialty = Thoracic%n%n"

@@ -19,14 +19,14 @@ public final class TabularUploadError implements MessageSourceResolvable
      * Special row number value indicating a global error on the whole upload instead of
      * a specific row.
      */
-    public static int ROW_NUMBER_GLOBAL = -1;
+    public static final int ROW_NUMBER_GLOBAL = -1;
     
     /**
      * The object name used for errors on the whole upload.
      */
-    public static String OBJECT_NAME = "tabularUpload";
+    public static final String OBJECT_NAME = "tabularUpload";
     
-    private static final DefaultMessageCodesResolver fCodesResolver =
+    private static final DefaultMessageCodesResolver CODES_RESOLVER =
             new DefaultMessageCodesResolver();
     
     private final int fRowNumber;
@@ -79,7 +79,7 @@ public final class TabularUploadError implements MessageSourceResolvable
         return new TabularUploadError(
                 ROW_NUMBER_GLOBAL,
                 "",
-                fCodesResolver.resolveMessageCodes(code, OBJECT_NAME),
+                CODES_RESOLVER.resolveMessageCodes(code, OBJECT_NAME),
                 arguments,
                 defaultMessage);
     }
@@ -108,7 +108,7 @@ public final class TabularUploadError implements MessageSourceResolvable
         return new TabularUploadError(
                 rowNumber,
                 columnName,
-                fCodesResolver.resolveMessageCodes(code, OBJECT_NAME, columnName, fieldType),
+                CODES_RESOLVER.resolveMessageCodes(code, OBJECT_NAME, columnName, fieldType),
                 arguments,
                 defaultMessage);
     }

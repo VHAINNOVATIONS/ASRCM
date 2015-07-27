@@ -4,6 +4,11 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.model.AbstractVariable;
 
+/**
+ * Contains tests verifying the {@link EditExistingVar} method contracts. Tests for
+ * EditExistingVar implementations should use these tests to verify that the
+ * implementations obey the contracts.
+ */
 public class EditExistingVarTest
 {
     /**

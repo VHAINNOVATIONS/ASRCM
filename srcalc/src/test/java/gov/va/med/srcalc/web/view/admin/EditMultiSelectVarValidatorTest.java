@@ -16,9 +16,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
+/**
+ * Tests the {@link EditMultiSelectVarValidator} class.
+ */
 public class EditMultiSelectVarValidatorTest
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(EditMultiSelectVarValidatorTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditMultiSelectVarValidatorTest.class);
 
     private final MockModelService fModelService = new MockModelService();
 
@@ -69,7 +72,7 @@ public class EditMultiSelectVarValidatorTest
         final EditMultiSelectVarValidator validator = ev.getValidator();
         assertTrue(validator.supports(ev.getClass()));
         validator.validate(ev, errors);
-        fLogger.debug("Errors are: {}", errors);
+        LOGGER.debug("Errors are: {}", errors);
         return errors;
     }
     

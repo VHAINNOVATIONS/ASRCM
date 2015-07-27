@@ -18,6 +18,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
+/**
+ * Tests the {@link VistaLinkProcedureCaller} class.
+ */
 public class VistaLinkProcedureCallerTest
 {
     private final static String VLCF_JNDI_NAME = "java:comp/env/vlj/Asrc500";

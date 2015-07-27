@@ -35,7 +35,7 @@ public class EditSpecialtyController
     static final String ATTRIBUTE_SPECIALTY = "specialty";
     static final String ATTRIBUTE_MAX_DISPLAY_NAME = "maxDisplayName";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(EditSpecialtyController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditSpecialtyController.class);
     
     private final AdminService fAdminService;
     
@@ -101,7 +101,7 @@ public class EditSpecialtyController
             final BindingResult bindingResult)
                     throws InvalidIdentifierException
     {
-        fLogger.debug("Handling request to save Specialty: {}", saveSpecialty.toString() );
+        LOGGER.debug("Handling request to save Specialty: {}", saveSpecialty.toString() );
         
         // Spring has already bound the user input to the saveSpecialty; now validate
         //
@@ -110,7 +110,7 @@ public class EditSpecialtyController
 
         if( bindingResult.hasErrors() )
         {
-            fLogger.error( "EditSpecialty has errors: {}", bindingResult.toString());
+            LOGGER.error( "EditSpecialty has errors: {}", bindingResult.toString());
             return displayForm( saveSpecialty );
         }
 
@@ -118,11 +118,11 @@ public class EditSpecialtyController
         
         if( existingSpec == null ) // sanity check ; shouldn't happen
         {
-            fLogger.error( "Unable to fetch specialty id {}", specialtyId );
+            LOGGER.error( "Unable to fetch specialty id {}", specialtyId );
             return displayForm( saveSpecialty );            
         }
         
-        fLogger.debug("Existing Specialty for {} is {}", specialtyId, (existingSpec == null ? "null" : existingSpec.toString()) );
+        LOGGER.debug("Existing Specialty for {} is {}", specialtyId, (existingSpec == null ? "null" : existingSpec.toString()) );
         
         
         // Apply the changes to the target specialty and save it.

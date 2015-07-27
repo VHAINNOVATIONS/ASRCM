@@ -19,7 +19,7 @@ public class NewMultiSelectVarController extends NewVarController
 {
     public static final String BASE_URL = "/admin/newMultiSelectVar";
     
-    private static final Logger fLogger = LoggerFactory.getLogger(NewMultiSelectVarController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NewMultiSelectVarController.class);
 
     /**
      * Constructs an instance.
@@ -40,7 +40,7 @@ public class NewMultiSelectVarController extends NewVarController
     @Override
     protected EditBaseVar createEditBaseVar()
     {
-        fLogger.trace("Creating EditMultiSelectVar.");
+        LOGGER.trace("Creating EditMultiSelectVar.");
         return new EditMultiSelectVar(getAdminService());
     }
     

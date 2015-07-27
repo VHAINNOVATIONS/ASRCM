@@ -8,6 +8,10 @@ import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.vista.VistaPatientDao;
 
+/**
+ * Service Layer facade for performing risk calculations.
+ * @see gov.va.med.srcalc.service
+ */
 public interface CalculationService
 {
     /**

@@ -12,9 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
+/**
+ * Tests the {@link EditDiscreteNumericalVarValidator} class.
+ */
 public class EditDiscreteNumericalVarValidatorTest
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(
+    private static final Logger LOGGER = LoggerFactory.getLogger(
             EditDiscreteNumericalVarValidatorTest.class);
     
     private final MockModelService fModelService = new MockModelService();
@@ -67,7 +70,7 @@ public class EditDiscreteNumericalVarValidatorTest
         final EditDiscreteNumericalVarValidator validator = ev.getValidator();
         assertTrue(validator.supports(ev.getClass()));
         validator.validate(ev, errors);
-        fLogger.debug("Errors are: {}", errors);
+        LOGGER.debug("Errors are: {}", errors);
         return errors;
     }
     

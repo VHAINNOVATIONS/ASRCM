@@ -22,7 +22,7 @@ import com.google.common.collect.ImmutableList;
  */
 public class EditSpecialty implements Comparable<EditSpecialty>
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(EditSpecialty.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditSpecialty.class);
         
     private String fName;
     
@@ -108,7 +108,7 @@ public class EditSpecialty implements Comparable<EditSpecialty>
     public static EditSpecialty fromSpecialty( final Specialty spec,
             final ModelInspectionService modelService )
     {
-        fLogger.debug("Creating EditSpecialty for {}", spec.toString() );
+        LOGGER.debug("Creating EditSpecialty for {}", spec.toString() );
 
         List<SelectableModel> selectableModels = new ArrayList<SelectableModel>();
         Set<RiskModel> includedModels = spec.getRiskModels();
@@ -126,7 +126,7 @@ public class EditSpecialty implements Comparable<EditSpecialty>
     }
     
     /**
-     * Return the specialty name
+     * Return the specialty name.
      */
     public String getName()
     {
@@ -134,7 +134,7 @@ public class EditSpecialty implements Comparable<EditSpecialty>
     }
     
     /**
-     * Set the name
+     * Set the name.
      */
     public void setName(String mn)
     {
@@ -167,7 +167,7 @@ public class EditSpecialty implements Comparable<EditSpecialty>
         existingSpec.setName( fName );
         Set<RiskModel> includedRiskModels = new HashSet<RiskModel>();
       
-        fLogger.debug("ApplyChanges: There are {} selectableModels", fSelectableModels.size() );
+        LOGGER.debug("ApplyChanges: There are {} selectableModels", fSelectableModels.size() );
 
         for( SelectableModel selMod : fSelectableModels )
         {
@@ -180,7 +180,7 @@ public class EditSpecialty implements Comparable<EditSpecialty>
                     throw new InvalidIdentifierException( "Unable to find risk model id = "+selMod.getModelId()+" from the DB");
                 }
                 
-                fLogger.debug("Risk Model {} found and associated to specialty", rm.toString() );
+                LOGGER.debug("Risk Model {} found and associated to specialty", rm.toString() );
 
                 includedRiskModels.add( rm );
             }

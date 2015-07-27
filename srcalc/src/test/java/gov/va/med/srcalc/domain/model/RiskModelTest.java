@@ -14,6 +14,9 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;
 
+/**
+ * Tests the {@link RiskModel} class.
+ */
 public class RiskModelTest
 {
     @Test

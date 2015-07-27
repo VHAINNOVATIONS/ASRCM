@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class DisplayNameConditions
 {
     /**
-     * The maximum length of a valid display name: {@value}
+     * The maximum length of a valid display name: {@value}.
      */
     public static final int DISPLAY_NAME_MAX = 80;
     

@@ -8,6 +8,9 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link NumericalRange} class.
+ */
 public class NumericalRangeTest
 {
     @Test

@@ -6,6 +6,9 @@ import gov.va.med.srcalc.domain.model.MultiSelectOption;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link CategoryBuilder} class.
+ */
 public class CategoryBuilderTest
 {
     @Test

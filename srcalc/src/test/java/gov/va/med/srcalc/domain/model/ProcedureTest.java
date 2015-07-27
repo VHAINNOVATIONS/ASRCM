@@ -7,6 +7,9 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
+/**
+ * Tests the {@link Procedure} class.
+ */
 public class ProcedureTest
 {
     @Test

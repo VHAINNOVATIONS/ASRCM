@@ -9,6 +9,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests the {@link MultiSelectOption} class.
+ */
 public class MultiSelectOptionTest
 {
     @Test

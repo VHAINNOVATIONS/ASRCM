@@ -11,6 +11,9 @@ import org.junit.Test;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+/**
+ * Tests the {@link ValueMatcher} class.
+ */
 public class ValueMatcherTest
 {
     @Test

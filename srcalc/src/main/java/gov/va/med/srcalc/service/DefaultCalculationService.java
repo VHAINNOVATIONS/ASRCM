@@ -17,9 +17,12 @@ import gov.va.med.srcalc.vista.*;
 import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
 import gov.va.med.srcalc.util.MissingValuesException;
 
+/**
+ * The canonical implementation of {@link CalculationService}.
+ */
 public class DefaultCalculationService implements CalculationService
 {
-    private static final Logger fLogger = LoggerFactory.getLogger(DefaultCalculationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultCalculationService.class);
     
     private final SpecialtyDao fSpecialtyDao;
     private final VistaPatientDao fPatientDao;
@@ -55,7 +58,7 @@ public class DefaultCalculationService implements CalculationService
     {
         final Patient patient = fPatientDao.getPatient(patientId);
 
-        fLogger.debug("Starting calculation for patient {}.", patient);
+        LOGGER.debug("Starting calculation for patient {}.", patient);
 
         return Calculation.forPatient(patient);
     }
@@ -65,7 +68,7 @@ public class DefaultCalculationService implements CalculationService
     public void setSpecialty(final Calculation calculation, final String specialtyName)
         throws InvalidIdentifierException
     {
-        fLogger.debug("Setting specialty to {}.", specialtyName);
+        LOGGER.debug("Setting specialty to {}.", specialtyName);
         
         final Specialty specialty = fSpecialtyDao.getByName(specialtyName);
         if (specialty == null)
@@ -82,13 +85,13 @@ public class DefaultCalculationService implements CalculationService
             final Calculation calculation, final Collection<Value> variableValues)
             throws MissingValuesException
     {
-        fLogger.debug("Running calculation with values: {}", variableValues);
+        LOGGER.debug("Running calculation with values: {}", variableValues);
         
         final CalculationResult result = calculation.calculate(variableValues);
         
         // Log something at INFO level for running a calculation, but don't log
         // too much to avoid PHI in the log file.
-        fLogger.info( "Ran a {} calculation.", calculation.getSpecialty());
+        LOGGER.info( "Ran a {} calculation.", calculation.getSpecialty());
         
         return result;
     }

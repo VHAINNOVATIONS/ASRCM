@@ -13,6 +13,9 @@ import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.ValidationCodes;
 
+/**
+ * Tests the {@link EditRuleValidator} class.
+ */
 public class EditRuleValidatorTest
 {
     private static final String INVALID_EXPRESSION = "Invalid asdfjasidfj@#@#%";

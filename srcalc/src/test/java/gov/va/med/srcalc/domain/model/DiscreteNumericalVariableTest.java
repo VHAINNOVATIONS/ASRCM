@@ -11,6 +11,9 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
+/**
+ * Tests the {@link DiscreteNumericalVariable} class.
+ */
 public class DiscreteNumericalVariableTest
 {
     @Test

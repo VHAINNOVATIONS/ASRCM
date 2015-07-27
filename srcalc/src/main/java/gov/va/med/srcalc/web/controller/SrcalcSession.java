@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
  */
 public class SrcalcSession
 {
-    private static String CALCULATION_SESSION_ATTR = "srcalc_calculation_session";
+    private static final String CALCULATION_SESSION_ATTR = "srcalc_calculation_session";
     
     /**
      * Returns the current CalculationSession from the session.
