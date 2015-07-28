@@ -1,9 +1,10 @@
 package gov.va.med.srcalc.vista;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
 import gov.va.med.srcalc.domain.calculation.SignedResult;
@@ -15,8 +16,8 @@ import gov.va.med.srcalc.domain.calculation.SignedResult;
  */
 public class RpcVistaSurgeryDao implements VistaSurgeryDao
 {
-    private static final SimpleDateFormat VISTA_DATE_FORMAT =
-            new SimpleDateFormat("MM/dd/yyyy@HHmm");
+    private static final DateTimeFormatter VISTA_DATE_TIME_FORMAT = 
+            DateTimeFormat.forPattern("MM/dd/YYYY@HHmm");
 
     private final VistaProcedureCaller fProcedureCaller;
     private final String fDuz;
@@ -51,7 +52,7 @@ public class RpcVistaSurgeryDao implements VistaSurgeryDao
                 fDuz,
                 String.valueOf(result.getPatientDfn()),
                 cptString,
-                VISTA_DATE_FORMAT.format(result.getSignatureTimestamp()),
+                VISTA_DATE_TIME_FORMAT.print(result.getSignatureTimestamp()),
                 outcomes);
         
         final VistaOperationResult rpcResult =

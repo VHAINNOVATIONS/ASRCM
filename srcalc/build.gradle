@@ -23,6 +23,7 @@ repositories {
 def springVersion = '4.0.7.RELEASE'
 def springSecurityVersion = '3.2.5.RELEASE'
 def slf4jVersion = '1.7.10'
+def hibernateVersion = '4.2.13.Final'
 
 configurations {
     // Don't ever depend on commons-logging, we use jcl-over-sl4j instead.
@@ -33,6 +34,14 @@ configurations {
     // resolution from automatically choosing the right version. Manually
     // exclude the old 2.x versions.
     all*.exclude group: 'javax.servlet', module: 'servlet-api'
+    
+    all {
+        resolutionStrategy {
+            // jadira usertype.core includes this dependency, which bumps the Hibernate
+            // version.
+            force group: 'org.hibernate', name: 'hibernate-entitymanager', version: hibernateVersion
+        }
+    }
     
     // We use the log4j binding in the tests, so exclude the JUL binding.
     testRuntime.exclude module: 'slf4j-jdk14'
@@ -67,14 +76,14 @@ dependencies {
 
     compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
     compile group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion
-    compile 'org.hibernate:hibernate-core:4.2.13.Final'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: hibernateVersion
 	compile group: 'org.springframework', name: 'spring-core', version: springVersion
 	compile group: 'org.springframework', name: 'spring-context', version: springVersion
 	compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
 	compile group: 'org.springframework', name: 'spring-orm', version: springVersion
 	compile group: 'org.springframework.security', name: 'spring-security-web', version: springSecurityVersion
 	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: springSecurityVersion
-	compile 'joda-time:joda-time:2.3'
+	compile 'joda-time:joda-time:2.7'
 	compile 'org.apache.commons:commons-lang3:3.3.2'
 	compile 'com.google.guava:guava:18.0'
 	compile 'org.apache.commons:commons-csv:1.1'
@@ -84,6 +93,7 @@ dependencies {
     // Spring-Security XML namespace
 	runtime group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
 	runtime 'com.fasterxml.jackson.core:jackson-databind:2.3.5' 
+	runtime group: 'org.jadira.usertype', name: 'usertype.core', version: '4.0.0.GA'
     
     /* Test dependencies */
 

@@ -112,7 +112,7 @@ public class CalculationResultTest
         assertEquals(result.getOutcomes(), signedResult.getOutcomes());
         assertEquals(result.getPatientDfn(), signedResult.getPatientDfn());
         assertEquals(
-                expectedSignatureTimestamp.toDate(),
+                expectedSignatureTimestamp,
                 signedResult.getSignatureTimestamp());
     }
 }

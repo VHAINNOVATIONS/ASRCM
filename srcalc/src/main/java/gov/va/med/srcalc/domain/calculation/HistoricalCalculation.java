@@ -5,12 +5,12 @@ import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.util.Preconditions;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.*;
 
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import com.google.common.base.MoreObjects;
@@ -50,7 +50,7 @@ public final class HistoricalCalculation implements Serializable
     private int fId;
     private String fSpecialtyName;
     private String fUserStation;
-    private Date fStartTimestamp;
+    private DateTime fStartTimestamp;
     private int fSecondsToFirstRun;
     private Optional<String> fProviderType;
     
@@ -80,7 +80,7 @@ public final class HistoricalCalculation implements Serializable
         setSpecialtyName(specialtyName);
         fUserStation = providerStation;
         // See getStartTimetsamp() for why we enforce 0 millis of second.
-        fStartTimestamp = startTimestamp.withMillisOfSecond(0).toDate();
+        fStartTimestamp = startTimestamp.withMillisOfSecond(0);
         fSecondsToFirstRun = secondsToFirstRun;
         setProviderType(providerType);
     }
@@ -151,7 +151,8 @@ public final class HistoricalCalculation implements Serializable
      */
     @Basic
     @Column(nullable = false)
-    public Date getStartTimestamp()
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    public DateTime getStartTimestamp()
     {
         return fStartTimestamp;
     }
@@ -160,7 +161,7 @@ public final class HistoricalCalculation implements Serializable
      * For reflection-based construction only. Business code must provide this value to
      * the constructor.
      */
-    void setStartTimestamp(final Date dateTime)
+    void setStartTimestamp(final DateTime dateTime)
     {
         fStartTimestamp = Objects.requireNonNull(dateTime);
     }
