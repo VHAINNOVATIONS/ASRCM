@@ -20,6 +20,11 @@ public class BooleanVariableView extends VariableView
     {
     }
     
+    /**
+     * Constructs an instance.
+     * @param variable the BooleanVariable to copy properties from
+     * @param referenceInfo the reference information for this BooleanVariable
+     */
     public BooleanVariableView(final BooleanVariable variable, final String referenceInfo)
     {
         super(variable.getDisplayName(), variable.getGroup(),

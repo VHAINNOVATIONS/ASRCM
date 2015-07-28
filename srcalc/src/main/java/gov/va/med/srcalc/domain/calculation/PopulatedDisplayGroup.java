@@ -18,6 +18,7 @@ import gov.va.med.srcalc.web.view.ProcedureVariableView;
 import gov.va.med.srcalc.web.view.ReferenceItem;
 import gov.va.med.srcalc.web.view.VariableView;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.slf4j.Logger;
@@ -40,7 +41,8 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
     private final List<Variable> fVariables;
     
     /**
-     * Constructs an instance from the given List of variables.
+     * Constructs an instance from the given List of variables. Also populates the groups with
+     * any patient notes that are automatically retrieved.
      * @param variables must have at least one member
      * @throws IllegalArgumentException if the given list is empty or if it
      * contains Variables with different groups
@@ -107,12 +109,14 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
         // These group names are all well-known and are hard-coded as such.
         if(group.getName().equalsIgnoreCase("Clinical Conditions or Diseases - Recent"))
         {
-            final StringBuilder factorString = new StringBuilder();
+            final List<String> factorList = new ArrayList<String>();
+            // Output the date without the time of day.
+            final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
             for(final HealthFactor factor: patient.getHealthFactors())
             {
-                factorString.append(String.format("%s %s%n", factor.getDate(), factor.getFactor()));
+                factorList.add(String.format("%s %s%n", format.format(factor.getDate()), factor.getFactor()));
             }
-            final DisplayItem refInfo = new ReferenceItem("Health Factors", variables.get(0).getGroup(), factorString.toString());
+            final DisplayItem refInfo = new ReferenceItem("Health Factors", variables.get(0).getGroup(), factorList);
             fDisplayItems.add(0, refInfo);
         }
     }
@@ -172,7 +176,7 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
     @Override
     public int hashCode()
     {
-        return getVariables().hashCode();
+        return Objects.hash(getVariables());
     }
     
     /**
@@ -193,8 +197,8 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
     public String toString()
     {
         return String.format(
-                "Variable Group '%s' with variables %s",
+                "Display Group '%s' with display items %s",
                 getGroup(),
-                getVariables());
+                getDisplayItems());
     }
 }

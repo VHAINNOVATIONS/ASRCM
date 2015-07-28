@@ -20,7 +20,9 @@
     <tr>
         <c:url var="qMarkImageUrl" value="/css/images/qmark.png"/>
         <td class="attributeName"><c:out value="${displayItem.displayName}"/>:
-            <c:if test="${displayItem.helpTextAsHtml != ''}"><a class="helpTextToggler"><img src="${qMarkImageUrl}" alt="?"/></a></c:if>
+            <c:if test="${displayItem.helpTextAsHtml != ''}">
+                <a class="helpTextToggler"><img src="${qMarkImageUrl}" alt="?"/></a>
+            </c:if>
         </td>
         <%--
         Use our variableSpecific custom tag to write the corresponding form
@@ -28,7 +30,7 @@
         --%>
         <td class="attributeValue">
             <jsp:include page="fragments/${displayItem.fragmentName}"/>
-			<div class="variableDef">${variable.helpTextAsHtml}</div>
+			<div class="variableDef">${displayItem.helpTextAsHtml}</div>
         </td>
     </tr>
     </c:forEach>
@@ -45,15 +47,6 @@
         <c:param name="force" value="true"/>
     </c:url>
     <a href="${newCalcUrl}" class="btn-link">Start New Calculation</a>
-    </div>
-    <div class="healthFactors">
-        <h2 id="healthFactors">Health Factors</h2>
-        <ul>
-            <%-- Put each health factor note as its own item for readability. --%>
-            <c:forEach items="${calculation.patient.healthFactors}" var="healthFactor">
-            <li class="patientNote">${healthFactor}</li>
-            </c:forEach>
-        </ul>
     </div>
     <c:url var="enterVariablesJsUrl" value="/js/enterVariables.js"/>
     <script type="text/javascript" src="${enterVariablesJsUrl}"></script>

@@ -1,6 +1,5 @@
 package gov.va.med.srcalc.web.view;
 
-import gov.va.med.srcalc.domain.calculation.PopulatedDisplayGroup;
 import gov.va.med.srcalc.domain.model.MultiSelectOption;
 import gov.va.med.srcalc.domain.model.MultiSelectVariable;
 import gov.va.med.srcalc.domain.model.MultiSelectVariable.DisplayType;
@@ -14,6 +13,10 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
+/**
+ * This class represents the visible attributes of a {@link MultiSelectVariable} in order to
+ * provide other attributes that are only necessary for display.
+ */
 public class MultiSelectVariableView extends VariableView
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(MultiSelectVariableView.class);
@@ -33,6 +36,11 @@ public class MultiSelectVariableView extends VariableView
         fOptions = new ArrayList<>();
     }
     
+    /**
+     * Constructs an immutable instance. 
+     * @param variable the MultiSelectVariable to copy properties from.
+     * @param referenceInfo the reference information for this MultiSelectVariable
+     */
     public MultiSelectVariableView(final MultiSelectVariable variable, final String referenceInfo)
     {
         super(variable.getDisplayName(), variable.getGroup(), variable.getKey(),
@@ -44,11 +52,17 @@ public class MultiSelectVariableView extends VariableView
                 getDisplayGroup());
     }
     
+    /**
+     * Returns the DisplayType that specifies how this view should be displayed to the user.
+     */
     public DisplayType getDisplayType()
     {
         return fDisplayType;
     }
     
+    /**
+     * Returns the possible options in an ImmutableList.
+     */
     public List<MultiSelectOption> getOptions()
     {
         return fOptions;

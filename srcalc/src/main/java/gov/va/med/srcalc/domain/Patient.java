@@ -167,7 +167,7 @@ public class Patient implements Serializable
     
     /**
      * Returns the patient's health factors in the form of:
-     * "MM/dd/yy <health factor name>"
+     * "MM/dd/yy <health factor name>".
      */
     public List<HealthFactor> getHealthFactors()
     {

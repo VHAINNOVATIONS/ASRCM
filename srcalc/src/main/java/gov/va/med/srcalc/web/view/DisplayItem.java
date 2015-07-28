@@ -5,6 +5,9 @@ import com.google.common.base.Optional;
 
 import gov.va.med.srcalc.domain.model.VariableGroup;
 
+/**
+ * Contains common properties for items to display to the user.
+ */
 public abstract class DisplayItem
 {
     private final String fDisplayName;
@@ -52,5 +55,11 @@ public abstract class DisplayItem
     public String getHelpTextAsHtml()
     {
         return Processor.process(fHelpText.or(""));
+    }
+    
+    @Override
+    public String toString()
+    {
+        return fDisplayName;
     }
 }
