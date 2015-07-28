@@ -11,6 +11,8 @@ import com.google.common.collect.ImmutableSortedSet;
 
 public class DiscreteNumericalVariableView extends VariableView
 {
+    private static final String DISCRETE_NUMERICAL_FRAGMENT = "discreteNumericalFragment.jsp";
+    
     private final String fUnits;
     private final SortedSet<Category> fCategories;
     
@@ -23,9 +25,9 @@ public class DiscreteNumericalVariableView extends VariableView
     public DiscreteNumericalVariableView(final DiscreteNumericalVariable variable, final String referenceInfo)
     {
         super(variable.getDisplayName(), variable.getGroup(), variable.getKey(),
-                variable.getHelpText(), Optional.of(referenceInfo));
+                variable.getHelpText(), Optional.of(referenceInfo), DISCRETE_NUMERICAL_FRAGMENT);
         fUnits = variable.getUnits();
-        fCategories = ImmutableSortedSet.copyOf(variable.getCategories());
+        fCategories = ImmutableSortedSet.copyOf(variable.getCategoriesWnlFirst());
     }
 
     public String getUnits()

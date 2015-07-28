@@ -11,73 +11,24 @@
         method="post" action="enterVars" commandName="variableEntry">
     <%-- See srcalc.css for why HTML tables. --%>
     <table>
-    <c:forEach var="variableGroup" items="${calculation.variableGroups}">
+    <c:forEach var="displayGroup" items="${calculation.displayGroups}">
     <tbody>
-    <tr><th colspan="2" class="groupName"><c:out value="${variableGroup.name}"/></th></tr>
-    <c:forEach var="variable" items="${variableGroup.variables}">
+    <tr><th colspan="2" class="groupName"><c:out value="${displayGroup.name}"/></th></tr>
+    <c:set var="variableEntryParam" scope="request" value="${variableEntry}"/>
+    <c:forEach var="displayItem" items="${displayGroup.displayItems}">
+    <c:set var="displayItemParam" scope="request" value="${displayItem}"/>
     <tr>
-        <c:set var="varPath" value="${srcalc:dynamicValuePath(variable.key)}" />
         <c:url var="qMarkImageUrl" value="/css/images/qmark.png"/>
-        <td class="attributeName"><c:out value="${variable.displayName}"/>:
-            <c:if test="${variable.helpTextAsHtml != ''}"><a class="helpTextToggler"><img src="${qMarkImageUrl}" alt="?"/></a></c:if>
+        <td class="attributeName"><c:out value="${displayItem.displayName}"/>:
+            <c:if test="${displayItem.helpTextAsHtml != ''}"><a class="helpTextToggler"><img src="${qMarkImageUrl}" alt="?"/></a></c:if>
         </td>
         <%--
         Use our variableSpecific custom tag to write the corresponding form
-        control for each variable type.
+        control for each variable view type.
         --%>
         <td class="attributeValue">
-        <srcalc:variableSpecific variable="${variable}">
-        <jsp:attribute name="numericalFragment">
-            <form:input path="${varPath}" size="6"/>
-            <c:out value="${variable.units} ${variableEntry.getMeasureDate(variable.key)}"/>
-        </jsp:attribute>
-        <jsp:attribute name="multiSelectFragment">
-            <c:choose>
-            <c:when test="${variable.displayType == 'Radio'}">
-            <%-- Generate a radio button for each option --%>
-            <c:forEach var="option" items="${variable.options}">
-            <label class="radioLabel"><form:radiobutton path="${varPath}" value="${option.value}"/> <c:out value="${option.value}"/></label>
-            </c:forEach>
-            </c:when>
-            <c:when test="${variable.displayType == 'Dropdown'}">
-            Drop-down variables not supported yet.
-            </c:when>
-            <c:otherwise>Error: unexpected display type "${variable.displayType}".</c:otherwise>
-            </c:choose>
-        </jsp:attribute>
-        <jsp:attribute name="booleanFragment">
-            <label class="checkboxLabel"><form:checkbox path="${varPath}" value="true"/> <c:out value="${variable.displayName}"/></label>
-        </jsp:attribute>
-        <jsp:attribute name="discreteNumericalFragment">
-            <!-- Wrap both the radio button and numerical entry in a span.radioLabel
-                 for proper spacing. -->
-            <span class="radioLabel"><form:radiobutton path="${varPath}" cssClass="numericalRadio" value="numerical"/>
-            <c:set var="numericalVarName" value="${variable.key}$numerical" />
-            <c:set var="numericalVarPath" value="${srcalc:dynamicValuePath(numericalVarName)}" />
-            <form:input cssClass="numerical" path="${numericalVarPath}" size="6"/>
-            <c:out value="${variable.units} ${variableEntry.getNumericalMeasureDate(variable.key)}"/></span>
-            <form:errors path="${numericalVarPath}" cssClass="error" /><br>
-            <c:forEach var="cat" items="${variable.categoriesWnlFirst}">
-            <label class="radioLabel"><form:radiobutton path="${varPath}" value="${cat.option.value}"/>
-                Presumed <c:out value="${cat.option.value}"/></label>
-            </c:forEach>
-        </jsp:attribute>
-        <jsp:attribute name="procedureFragment">
-            <form:hidden path="${varPath}" cssClass="procedureHiddenInput" />
-            <div class="procedureSelectGroup dialog uninitialized" title="Select ${variable.displayName}">
-            <span class="loadingText">Loading...</span>
-            <!-- The table will be filled by Javascript. -->
-            <table id="procedureTable">
-            <thead><tr><th>CPT Code</th><th>Description</th><th>RVU</th><th>Select</th></tr></thead>
-            </table>
-            </div>
-            <%-- This text will be replaced by Javascript. --%>
-            <span class="procedureDisplay"><span class="loadingText">Loading...</span></span>
-        </jsp:attribute>
-        </srcalc:variableSpecific>
-        <%-- Display any errors immediately following the input control. --%>
-        <form:errors path="${varPath}" cssClass="error" />
-		<div class="variableDef">${variable.helpTextAsHtml}</div>
+            <jsp:include page="fragments/${displayItem.fragmentName}"/>
+			<div class="variableDef">${variable.helpTextAsHtml}</div>
         </td>
     </tr>
     </c:forEach>

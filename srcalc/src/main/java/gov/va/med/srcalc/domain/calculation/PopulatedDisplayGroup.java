@@ -37,6 +37,8 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
     
     private final List<DisplayItem> fDisplayItems;
     
+    private final List<Variable> fVariables;
+    
     /**
      * Constructs an instance from the given List of variables.
      * @param variables must have at least one member
@@ -64,6 +66,8 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
         
         // Preconditions satisfied: build views of all of the necessary variables
         // so that they can be represented as DisplayItem instances.
+        // Store variables for reference later.
+        fVariables = new ArrayList<>(variables);
         fDisplayItems = new ArrayList<>();
         for(final Variable var: variables)
         {
@@ -121,6 +125,18 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
      * <p>Order is preserved from construction.</p>
      */
     public List<Variable> getVariables()
+    {
+        return Collections.unmodifiableList(fVariables);
+    }
+    
+    /**
+     * <p>Returns the List of DisplayItems, always containing at least 1 VariableView. All
+     * contained VariableViews will have equal {@link VariableGroup}s. The
+     * collection itself is immutable, as well as the VariableViews</p>
+     * 
+     * <p>Order is preserved from construction.</p>
+     */
+    public List<DisplayItem> getDisplayItems()
     {
         return Collections.unmodifiableList(fDisplayItems);
     }

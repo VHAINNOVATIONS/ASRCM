@@ -10,6 +10,8 @@ import gov.va.med.srcalc.domain.model.BooleanVariable;
  */
 public class BooleanVariableView extends VariableView
 {
+    private static final String BOOLEAN_FRAGMENT = "booleanFragment.jsp";
+    
     /**
      * For reflection-based construction only. Business code should use
      * {@link #BooleanVariableView(String, DisplayGroup, String, String, String)}.
@@ -21,6 +23,7 @@ public class BooleanVariableView extends VariableView
     public BooleanVariableView(final BooleanVariable variable, final String referenceInfo)
     {
         super(variable.getDisplayName(), variable.getGroup(),
-                variable.getKey(), variable.getHelpText(), Optional.of(referenceInfo));
+                variable.getKey(), variable.getHelpText(), Optional.of(referenceInfo),
+                BOOLEAN_FRAGMENT);
     }
 }

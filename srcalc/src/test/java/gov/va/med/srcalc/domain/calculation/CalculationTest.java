@@ -48,7 +48,7 @@ public class CalculationTest
         // Ensure getVariables() returns what we would expect now.
         assertEquals(thoracicSpecialty.getModelVariables(), calc.getVariables());
         // And same for getVariableGroups().
-        assertEquals(3, calc.getVariableGroups().size());
+        assertEquals(3, calc.getDisplayGroups().size());
     }
     
     @Test(expected = IllegalStateException.class)
@@ -90,13 +90,13 @@ public class CalculationTest
         
         // Now, build the expected List of PopulatedVariableGroups.
         final List<PopulatedDisplayGroup> list = Arrays.asList(
-                new PopulatedDisplayGroup(Arrays.asList(procedureVar)),
-                new PopulatedDisplayGroup(Arrays.asList(ageVar, genderVar)));
+                new PopulatedDisplayGroup(Arrays.asList(procedureVar), SampleCalculations.dummyPatient(1)),
+                new PopulatedDisplayGroup(Arrays.asList(ageVar, genderVar), SampleCalculations.dummyPatient(1)));
         
         // And finally, verify expected behavior. Note that Variables do not
         // override equals() so this only works because the returned list should
         // use the same variable references.
-        assertEquals(list, c.getVariableGroups());
+        assertEquals(list, c.getDisplayGroups());
     }
     
     @Test(expected = UnsupportedOperationException.class)
@@ -104,13 +104,13 @@ public class CalculationTest
     {
         final Calculation c = Calculation.forPatient(SampleCalculations.dummyPatient(1));
         c.setSpecialty(SampleModels.thoracicSpecialty());
-        c.getVariableGroups().remove(0);
+        c.getDisplayGroups().remove(0);
     }
     
     @Test(expected = IllegalStateException.class)
     public final void testGetVariableGroupsIllegal()
     {
-        Calculation.forPatient(SampleCalculations.dummyPatient(1)).getVariableGroups();
+        Calculation.forPatient(SampleCalculations.dummyPatient(1)).getDisplayGroups();
     }
     
     /**

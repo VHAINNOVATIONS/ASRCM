@@ -30,7 +30,7 @@ public class PopulatedVariableGroupTest
         final List<AbstractVariable> variables = Arrays.asList(
                 SampleModels.ageVariable(),
                 SampleModels.genderVariable());
-        final PopulatedDisplayGroup group = new PopulatedDisplayGroup(variables);
+        final PopulatedDisplayGroup group = new PopulatedDisplayGroup(variables, SampleCalculations.dummyPatient(1));
         
         assertEquals(
                 "Variable Group 'Demographics' with variables [Age, Gender]",
@@ -44,7 +44,7 @@ public class PopulatedVariableGroupTest
         final AbstractVariable ageVar = SampleModels.ageVariable();
         final List<AbstractVariable> variables = Arrays.asList(
                 ageVar, genderVar);
-        final PopulatedDisplayGroup group = new PopulatedDisplayGroup(variables);
+        final PopulatedDisplayGroup group = new PopulatedDisplayGroup(variables, SampleCalculations.dummyPatient(1));
         
         assertEquals("Demographics", group.getName());
         assertEquals(variables, group.getVariables());
@@ -53,7 +53,7 @@ public class PopulatedVariableGroupTest
     @Test(expected = IllegalArgumentException.class)
     public final void testEmptyVariables()
     {
-        new PopulatedDisplayGroup(new ArrayList<Variable>());
+        new PopulatedDisplayGroup(new ArrayList<Variable>(), SampleCalculations.dummyPatient(1));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -62,7 +62,7 @@ public class PopulatedVariableGroupTest
         final List<AbstractVariable> variables = Arrays.asList(
                 SampleModels.ageVariable(),
                 SampleModels.procedureVariable());
-        new PopulatedDisplayGroup(variables);
+        new PopulatedDisplayGroup(variables, SampleCalculations.dummyPatient(1));
     }
     
 }

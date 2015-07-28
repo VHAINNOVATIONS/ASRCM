@@ -143,7 +143,7 @@ public class Calculation implements Serializable
      * the given variables. The groups are sorted by their natural ordering and
      * each variable list is sorted by display name.
      */
-    protected List<PopulatedDisplayGroup> buildVariableGroupList(
+    protected List<PopulatedDisplayGroup> buildDisplayGroupList(
             Collection<? extends Variable> variables)
     {
         // Bucket the Variables according to VariableGroup.
@@ -181,7 +181,7 @@ public class Calculation implements Serializable
      * @throws IllegalStateException if no specialty has been set.
      * @return an immutable List, sorted in group order
      */
-    public List<PopulatedDisplayGroup> getVariableGroups()
+    public List<PopulatedDisplayGroup> getDisplayGroups()
     {
         // Ensure we are in the proper state.
         if (fSpecialty == null)
@@ -191,7 +191,7 @@ public class Calculation implements Serializable
         }
         
         return Collections.unmodifiableList(
-                buildVariableGroupList(getVariables()));
+                buildDisplayGroupList(getVariables()));
     }
 
     /**

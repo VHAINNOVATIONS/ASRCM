@@ -10,6 +10,8 @@ import gov.va.med.srcalc.domain.model.NumericalVariable;
  */
 public class NumericalVariableView extends VariableView
 {
+    private static final String NUMERICAL_FRAGMENT = "numericalFragment.jsp";
+    
     private final String fUnits;
     
     /**
@@ -25,7 +27,8 @@ public class NumericalVariableView extends VariableView
     public NumericalVariableView(final NumericalVariable variable, final String referenceInfo)
     {
         super(variable.getDisplayName(), variable.getGroup(),
-                variable.getKey(), variable.getHelpText(), Optional.of(referenceInfo));
+                variable.getKey(), variable.getHelpText(), Optional.of(referenceInfo),
+                NUMERICAL_FRAGMENT);
         fUnits = variable.getUnits();
     }
     

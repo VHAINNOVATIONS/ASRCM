@@ -6,6 +6,8 @@ import gov.va.med.srcalc.domain.model.ProcedureVariable;
 
 public class ProcedureVariableView extends VariableView
 {
+    private static final String PROCEDURE_FRAGMENT = "procedureFragment.jsp";
+    
     protected ProcedureVariableView()
     {
         
@@ -14,6 +16,6 @@ public class ProcedureVariableView extends VariableView
     public ProcedureVariableView(final ProcedureVariable variable, final String referenceInfo)
     {
         super(variable.getDisplayName(), variable.getGroup(), variable.getKey(),
-                variable.getHelpText(), Optional.of(referenceInfo));
+                variable.getHelpText(), Optional.of(referenceInfo), PROCEDURE_FRAGMENT);
     }
 }

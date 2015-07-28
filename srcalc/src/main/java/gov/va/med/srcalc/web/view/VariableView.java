@@ -7,7 +7,7 @@ import com.google.common.base.Optional;
 public abstract class VariableView extends DisplayItem
 {
     private final String fKey;
-    private final Optional<String> fHelpText;
+    
     private final Optional<String> fReferenceInfo;
 
     /**
@@ -17,16 +17,15 @@ public abstract class VariableView extends DisplayItem
     protected VariableView()
     {
         fKey = "";
-        fHelpText = Optional.absent();
         fReferenceInfo = Optional.absent();
     }
     
     protected VariableView(final String displayName, final VariableGroup group,
-            final String key, final Optional<String> helpText, final Optional<String> referenceInfo)
+            final String key, final Optional<String> helpText, final Optional<String> referenceInfo,
+            final String displayFragment)
     {
-        super(displayName, group);
+        super(displayName, group, displayFragment, helpText);
         fKey = key;
-        fHelpText = helpText;
         fReferenceInfo = referenceInfo;
     }
 
@@ -34,14 +33,14 @@ public abstract class VariableView extends DisplayItem
     {
         return fKey;
     }
-
-    public Optional<String> getHelpText()
-    {
-        return fHelpText;
-    }
     
     public Optional<String> getReferenceInfo()
     {
         return fReferenceInfo;
+    }
+    
+    public String getVarPath()
+    {
+        return VariableEntry.makeDynamicValuePath(fKey);
     }
 }
