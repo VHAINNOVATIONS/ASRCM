@@ -431,6 +431,22 @@ div#newVariableLinks, div#newRuleLink {
 	margin-top: 0;
 }
 
+/* Reports */
+
+.reportTable {
+	/* Make report fonts a little smaller for increased data density. */
+	font-size: 90%;
+}
+
+.reportTable td, .reportTable th {
+	/* Ensure the cells don't squish together. */
+	padding-right: 0.4em;
+}
+
+.reportTable th {
+	text-align: left;
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */

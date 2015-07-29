@@ -48,4 +48,17 @@ public class SrcalcUrls
     {
         return MODEL_ADMIN_HOME;
     }
+    
+    /**
+     * The URL of the Summary Report.
+     */
+    public static final String SUMMARY_REPORT = "/admin/reports/summary";
+    
+    /**
+     * Returns {@link #SUMMARY_REPORT}.
+     */
+    public String getSummaryReport()
+    {
+        return SUMMARY_REPORT;
+    }
 }

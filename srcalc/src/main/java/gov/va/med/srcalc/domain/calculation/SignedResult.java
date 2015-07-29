@@ -5,6 +5,7 @@ import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.Preconditions;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
@@ -36,8 +37,9 @@ public final class SignedResult
     private int fPatientDfn;
     private Optional<String> fCptCode;
     private DateTime fSignatureTimestamp;
-    private ImmutableMap<String, String> fInputs;
-    private ImmutableMap<String, Float> fOutcomes;
+    // These two are Collections.unmodifiableMap()s.
+    private Map<String, String> fInputs;
+    private Map<String, Float> fOutcomes;
     
     /**
      * Intended for reflection-based construction only. Business code should use the other
@@ -73,8 +75,8 @@ public final class SignedResult
         setCptCode(cptCode);
         // See getSignatureTimestamp() for why we enforce 0 millis of second.
         setSignatureTimestamp(signatureTimestamp.withMillisOfSecond(0));
-        setInputs(inputs);
-        setOutcomes(outcomes);
+        setInputs(ImmutableMap.copyOf(inputs));
+        setOutcomes(ImmutableMap.copyOf(outcomes));
     }
     
     /**
@@ -205,9 +207,9 @@ public final class SignedResult
     
     /**
      * Returns the calculation input values as a Map from variable key to value.
-     * @return an immutable map
+     * @return an unmodifiable map
      */
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY) // No code actually uses these.
     // Override various defaults for a better schema.
     @CollectionTable(
             name = "signed_result_input",
@@ -228,19 +230,18 @@ public final class SignedResult
      */
     void setInputs(final Map<String, String> inputs)
     {
-        // Note: normally with Hibernate we would preserve the passed collection since it
-        // will be Hibernate's special implementation of Map. Since this object is
-        // immutable, however, we don't care to keep Hibernate's mutable implementation
-        // and just discard it.
-        fInputs = ImmutableMap.copyOf(inputs);
+        // We would typically create an ImmutableMap here via copyOf(), but trying to
+        // access the map contents at this point throws a NullPointerException from
+        // Hibernate.
+        fInputs = Collections.unmodifiableMap(inputs);
     }
     
     /**
      * Returns the risk outcomes as a Map from risk model name to calculated
      * risk.
-     * @return an immutable map
+     * @return an unmodifiable map
      */
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER) // There should be few outcomes per result.
     // Override various defaults for a better schema.
     @CollectionTable(
             name = "signed_result_outcome",
@@ -262,8 +263,8 @@ public final class SignedResult
      */
     void setOutcomes(final Map<String, Float> outcomes)
     {
-        // See note on setValues() above.
-        fOutcomes = ImmutableMap.copyOf(outcomes);
+        // See note in setInputs() above.
+        fOutcomes = Collections.unmodifiableMap(outcomes);
     }
     
     /**

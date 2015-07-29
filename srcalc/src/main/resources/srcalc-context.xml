@@ -52,6 +52,7 @@
     <!-- Services -->
 	<bean id="calculationService" class="gov.va.med.srcalc.service.DefaultCalculationService" />
 	<bean id="adminService" class="gov.va.med.srcalc.service.DefaultAdminService" />
+	<bean id="reportService" class="gov.va.med.srcalc.service.DefaultReportService" />
 
     <!-- Message Lookup -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

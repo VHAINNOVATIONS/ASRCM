@@ -84,6 +84,7 @@ dependencies {
 	compile group: 'org.springframework.security', name: 'spring-security-web', version: springSecurityVersion
 	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: springSecurityVersion
 	compile 'joda-time:joda-time:2.7'
+	compile group: 'joda-time', name: 'joda-time-jsptags', version: '1.1.1'
 	compile 'org.apache.commons:commons-lang3:3.3.2'
 	compile 'com.google.guava:guava:18.0'
 	compile 'org.apache.commons:commons-csv:1.1'

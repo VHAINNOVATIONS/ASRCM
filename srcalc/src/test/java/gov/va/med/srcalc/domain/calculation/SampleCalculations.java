@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
@@ -90,5 +92,33 @@ public class SampleCalculations
         {
             throw new RuntimeException("test data did not provide all values", ex);
         }
+    }
+    
+    // TODO: can we combine these with ResultsDaoIT?
+    
+    public static HistoricalCalculation historicalThoracic()
+    {
+        return new HistoricalCalculation(
+                "Thoracic",
+                "500",
+                new DateTime(2015, 3, 4, 10, 5).withSecondOfMinute(51),
+                50,
+                radiologistPerson().getProviderType());
+    }
+
+    private static final String CPT_CODE_1 = "47010";
+    private static final ImmutableMap<String, String> VALUES_PROCEDURE_1 =
+            ImmutableMap.of("procedure", "47010 - Open drainage liver lesion (19.4)");
+    
+    public static SignedResult signedThoracic()
+    {
+        return new SignedResult(
+            historicalThoracic(),
+            1001,
+            Optional.of(CPT_CODE_1),
+            new DateTime(2015, 3, 4, 10, 10).withSecondOfMinute(52),
+            VALUES_PROCEDURE_1,
+            // Intentionally flip to emulate arbitrary DB order.
+            ImmutableMap.of("Thoracic 90-Day", 25.1f, "Thoracic 30-Day", 20.1f));
     }
 }
