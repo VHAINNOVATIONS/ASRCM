@@ -10,7 +10,6 @@ import gov.va.med.srcalc.domain.*;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
@@ -184,11 +185,11 @@ public class RpcVistaPatientDaoTest
                 .thenReturn(VALID_HEALTH_FACTORS);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);
-        final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
+        final DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yy");
         final List<HealthFactor> expectedFactors = ImmutableList.of(
-                new HealthFactor(format.parse("08/22/2014"),"DEPRESSION ASSESS POSITIVE (MDD)"),
-                new HealthFactor(format.parse("08/20/2014"), "ALCOHOL - TREATMENT REFERRAL"),
-                new HealthFactor(format.parse("07/30/2014"), "GEC HOMELESS"));
+                new HealthFactor(format.parseDateTime("08/22/2014"),"DEPRESSION ASSESS POSITIVE (MDD)"),
+                new HealthFactor(format.parseDateTime("08/20/2014"), "ALCOHOL - TREATMENT REFERRAL"),
+                new HealthFactor(format.parseDateTime("07/30/2014"), "GEC HOMELESS"));
         
         assertEquals(expectedFactors, patient.getHealthFactors());
     }

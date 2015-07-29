@@ -33,7 +33,7 @@ public interface VistaPatientDao
     
     /**
      * This is a list of the only health factors that should be displayed for the users.
-     * This list was created by the NSO.
+     * This list was created by the VA.
      */
     public static final String[] HEALTH_FACTORS_ARRAY = { "ALCOHOL - TREATMENT REFERRAL", "ALCOHOL USE",
         "ANTI-DEPRESSANT TREATMENT", "BINGE DRINKING", "CURRENT F/U OR RX FOR DEPRESSION",

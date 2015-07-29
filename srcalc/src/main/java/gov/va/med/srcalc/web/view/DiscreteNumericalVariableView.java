@@ -1,12 +1,11 @@
 package gov.va.med.srcalc.web.view;
 
-import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable;
+import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 
+import java.util.List;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSortedSet;
 
 /**
@@ -15,26 +14,19 @@ import com.google.common.collect.ImmutableSortedSet;
  */
 public class DiscreteNumericalVariableView extends VariableView
 {
-    private static final String DISCRETE_NUMERICAL_FRAGMENT = "discreteNumericalFragment.jsp";
+    private static final String DISCRETE_NUMERICAL_FRAGMENT = "discreteNumericalInputs.jsp";
     
     private final String fUnits;
     private final SortedSet<Category> fCategories;
-    
-    protected DiscreteNumericalVariableView()
-    {
-        fUnits = "";
-        fCategories = new TreeSet<Category>();
-    }
     
     /**
      * Constructs an instance.
      * @param variable the DiscreteNumericalVariable to copy properties from
      * @param referenceInfo the reference information for this DiscreteNumericalVariable
      */
-    public DiscreteNumericalVariableView(final DiscreteNumericalVariable variable, final String referenceInfo)
+    public DiscreteNumericalVariableView(final DiscreteNumericalVariable variable, final List<String> referenceInfo)
     {
-        super(variable.getDisplayName(), variable.getGroup(), variable.getKey(),
-                variable.getHelpText(), Optional.of(referenceInfo), DISCRETE_NUMERICAL_FRAGMENT);
+        super(variable, referenceInfo, DISCRETE_NUMERICAL_FRAGMENT);
         fUnits = variable.getUnits();
         fCategories = ImmutableSortedSet.copyOf(variable.getCategoriesWnlFirst());
     }
@@ -54,5 +46,20 @@ public class DiscreteNumericalVariableView extends VariableView
     public SortedSet<Category> getCategories()
     {
         return fCategories;
+    }
+    
+    /**
+     * Uses {@link VariableEntry#makeDynamicValuePath(String)} for a DiscreteNumericalVariable's key.
+     * Uses {@link VariableEntry#makeNumericalInputName(String)} to produce the necessary name.
+     */
+    public String getNumericalVarPath()
+    {
+        return VariableEntry.makeDynamicValuePath(VariableEntry.makeNumericalInputName(this.getKey()));
+    }
+
+    @Override
+    public String getFragmentName()
+    {
+        return DISCRETE_NUMERICAL_FRAGMENT;
     }
 }

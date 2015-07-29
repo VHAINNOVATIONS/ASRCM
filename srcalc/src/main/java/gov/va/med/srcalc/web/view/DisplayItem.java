@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.web.view;
 
-import com.github.rjeschke.txtmark.Processor;
+import java.util.List;
+
 import com.google.common.base.Optional;
 
 import gov.va.med.srcalc.domain.model.VariableGroup;
@@ -8,58 +9,37 @@ import gov.va.med.srcalc.domain.model.VariableGroup;
 /**
  * Contains common properties for items to display to the user.
  */
-public abstract class DisplayItem
+public interface DisplayItem
 {
-    private final String fDisplayName;
-    private final VariableGroup fDisplayGroup;
-    private final String fFragmentName;
-    private final Optional<String> fHelpText;
+    /**
+     * Returns the display name of this DisplayItem to show to the user.
+     */
+    public String getDisplayName();
     
-    protected DisplayItem()
-    {
-        fFragmentName = "unset fragment";
-        fDisplayName = "unset display name";
-        fDisplayGroup = new VariableGroup("unset group", 0);
-        fHelpText = Optional.absent();
-    }
+    /**
+     * Returns the VariableGroup (for display) to which this DisplayItem belongs.
+     */
+    public VariableGroup getDisplayGroup();
     
-    protected DisplayItem(final String displayName, final VariableGroup displayGroup, final String fragmentName,
-            final Optional<String> helpText)
-    {
-        fDisplayName = displayName;
-        fDisplayGroup = displayGroup;
-        fFragmentName = fragmentName;
-        fHelpText = helpText;
-    }
-    
-    public String getDisplayName()
-    {
-        return fDisplayName;
-    }
-    
-    public VariableGroup getDisplayGroup()
-    {
-        return fDisplayGroup;
-    }
-    
-    public String getFragmentName()
-    {
-        return fFragmentName;
-    }
+    /**
+     * Returns the jsp fragment that this DisplayItem will use to build inputs and 
+     * display to the user.
+     */
+    public String getFragmentName();
 
-    public Optional<String> getHelpText()
-    {
-        return fHelpText;
-    }
+    /**
+     * Returns the help text as a String, not an Optional.
+     */
+    public Optional<String> getHelpText();
     
-    public String getHelpTextAsHtml()
-    {
-        return Processor.process(fHelpText.or(""));
-    }
+    /**
+     * Calls the txtmark processor to convert the help text from Markdown to HTML and
+     * returns the result.
+     */
+    public String getHelpTextAsHtml();
     
-    @Override
-    public String toString()
-    {
-        return fDisplayName;
-    }
+    /**
+     * Returns the reference/description information for this DisplayItem.
+     */
+    public List<String> getReferenceInfo();
 }

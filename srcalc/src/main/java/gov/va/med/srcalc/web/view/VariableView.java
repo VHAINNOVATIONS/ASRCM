@@ -1,58 +1,81 @@
 package gov.va.med.srcalc.web.view;
 
+import java.util.List;
+
+import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.domain.model.VariableGroup;
 
+import com.github.rjeschke.txtmark.Processor;
 import com.google.common.base.Optional;
 
 /**
  * Contains common properties for any Variables to display to the user.
  */
-public abstract class VariableView extends DisplayItem
+public abstract class VariableView implements DisplayItem
 {
-    private final String fKey;
+    private final Variable fVariable;
     
-    private final Optional<String> fReferenceInfo;
-
-    /**
-     * Constructs an instance with dummy values for the basic properties
-     * key, help text, and reference info.
-     */
-    protected VariableView()
-    {
-        fKey = "";
-        fReferenceInfo = Optional.absent();
-    }
+    private final List<String> fReferenceInfo;
     
     /**
-     * A constructor that uses properties common to all variables.
-     * @param displayName the display name to show to the user
-     * @param group the group to which the specified Variable belongs.
-     * @param key the unique key for the specified Variable
-     * @param helpText the help text for the specified Variable
+     * A constructor that stores a Variable and supplementary information for user viewing.
+     * @param variable the variable to return properties from.
      * @param referenceInfo the reference information (notes) for the specified Variable
      * @param displayFragment the name of the jsp page used to display this VariableView
      */
-    protected VariableView(final String displayName, final VariableGroup group,
-            final String key, final Optional<String> helpText, final Optional<String> referenceInfo,
+    protected VariableView(final Variable variable, final List<String> referenceInfo,
             final String displayFragment)
     {
-        super(displayName, group, displayFragment, helpText);
-        fKey = key;
+        fVariable = variable;
         fReferenceInfo = referenceInfo;
     }
-
+    
     public String getKey()
     {
-        return fKey;
+        return fVariable.getKey();
     }
     
-    public Optional<String> getReferenceInfo()
+    @Override
+    public List<String> getReferenceInfo()
     {
         return fReferenceInfo;
     }
     
+    /**
+     * @see VariableEntry.makeDynamicValuePath(String)
+     */
     public String getVarPath()
     {
-        return VariableEntry.makeDynamicValuePath(fKey);
+        return VariableEntry.makeDynamicValuePath(fVariable.getKey());
+    }
+    
+    @Override
+    public String getDisplayName()
+    {
+        return fVariable.getDisplayName();
+    }
+
+    @Override
+    public VariableGroup getDisplayGroup()
+    {
+        return fVariable.getGroup();
+    }
+    
+    @Override
+    public Optional<String> getHelpText()
+    {
+        return fVariable.getHelpText();
+    }
+
+    @Override
+    public String getHelpTextAsHtml()
+    {
+        return Processor.process(fVariable.getHelpText().or(""));
+    }
+    
+    @Override
+    public String toString()
+    {
+        return fVariable.getDisplayName();
     }
 }

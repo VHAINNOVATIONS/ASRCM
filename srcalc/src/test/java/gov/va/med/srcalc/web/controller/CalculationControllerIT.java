@@ -108,7 +108,7 @@ public class CalculationControllerIT extends IntegrationTest
             andExpect(redirectedUrl("/enterVars"));
         
         fMockMvc.perform(get("/enterVars").session(fSession))
-            .andExpect(model().attributeExists("calculation", "variableEntry"));
+            .andExpect(model().attributeExists("calculation", "variableEntry", "displayGroups"));
     }
     
     @Test

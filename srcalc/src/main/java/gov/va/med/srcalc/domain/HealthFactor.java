@@ -1,7 +1,8 @@
-package gov.va.med.srcalc.vista;
+package gov.va.med.srcalc.domain;
 
-import java.util.Date;
 import java.util.Objects;
+
+import org.joda.time.DateTime;
 
 /**
  * A class that will store the name of a health factor along with the 
@@ -9,19 +10,19 @@ import java.util.Objects;
  */
 public class HealthFactor
 {
-    private final Date fDate;
-    private final String fFactor;
+    private final DateTime fDate;
+    private final String fName;
     
-    public HealthFactor(final Date date, final String factor)
+    public HealthFactor(final DateTime date, final String factor)
     {
         fDate = date;
-        fFactor = factor;
+        fName = factor;
     }
     
     /**
      * Returns the date on which this health factor was noted.
      */
-    public Date getDate()
+    public DateTime getDate()
     {
         return fDate;
     }
@@ -29,15 +30,15 @@ public class HealthFactor
     /**
      * Returns the name of the health factor.
      */
-    public String getFactor()
+    public String getName()
     {
-        return fFactor;
+        return fName;
     }
     
     @Override
     public String toString()
     {
-        return String.format("%s %s", fDate, fFactor);
+        return String.format("%s %s", fDate, fName);
     }
     
     @Override
@@ -47,7 +48,7 @@ public class HealthFactor
         {
             final HealthFactor other = (HealthFactor) obj;
             return Objects.equals(this.fDate, other.fDate) &&
-                    Objects.equals(this.fFactor, other.fFactor);
+                    Objects.equals(this.fName, other.fName);
         }
         else
         {
@@ -58,6 +59,6 @@ public class HealthFactor
     @Override
     public int hashCode()
     {
-        return Objects.hash(this.fDate, this.fFactor);
+        return Objects.hash(this.fDate, this.fName);
     }
 }

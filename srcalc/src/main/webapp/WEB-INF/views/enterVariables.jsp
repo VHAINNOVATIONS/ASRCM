@@ -11,10 +11,12 @@
         method="post" action="enterVars" commandName="variableEntry">
     <%-- See srcalc.css for why HTML tables. --%>
     <table>
-    <c:forEach var="displayGroup" items="${calculation.displayGroups}">
+    <%-- Set variableEntry and displayItem to request scope so that the included
+        jsps can also use them. --%>
+    <c:set var="variableEntryParam" scope="request" value="${variableEntry}"/>
+    <c:forEach var="displayGroup" items="${displayGroups}">
     <tbody>
     <tr><th colspan="2" class="groupName"><c:out value="${displayGroup.name}"/></th></tr>
-    <c:set var="variableEntryParam" scope="request" value="${variableEntry}"/>
     <c:forEach var="displayItem" items="${displayGroup.displayItems}">
     <c:set var="displayItemParam" scope="request" value="${displayItem}"/>
     <tr>
@@ -24,10 +26,6 @@
                 <a class="helpTextToggler"><img src="${qMarkImageUrl}" alt="?"/></a>
             </c:if>
         </td>
-        <%--
-        Use our variableSpecific custom tag to write the corresponding form
-        control for each variable view type.
-        --%>
         <td class="attributeValue">
             <jsp:include page="fragments/${displayItem.fragmentName}"/>
 			<div class="variableDef">${displayItem.helpTextAsHtml}</div>

@@ -1,6 +1,6 @@
 package gov.va.med.srcalc.web.view;
 
-import com.google.common.base.Optional;
+import java.util.List;
 
 import gov.va.med.srcalc.domain.model.BooleanVariable;
 
@@ -10,25 +10,21 @@ import gov.va.med.srcalc.domain.model.BooleanVariable;
  */
 public class BooleanVariableView extends VariableView
 {
-    private static final String BOOLEAN_FRAGMENT = "booleanFragment.jsp";
-    
-    /**
-     * For reflection-based construction only. Business code should use
-     * {@link #BooleanVariableView(String, DisplayGroup, String, String, String)}.
-     */
-    BooleanVariableView()
-    {
-    }
+    private static final String BOOLEAN_FRAGMENT = "booleanInputs.jsp";
     
     /**
      * Constructs an instance.
      * @param variable the BooleanVariable to copy properties from
      * @param referenceInfo the reference information for this BooleanVariable
      */
-    public BooleanVariableView(final BooleanVariable variable, final String referenceInfo)
+    public BooleanVariableView(final BooleanVariable variable, final List<String> referenceInfo)
     {
-        super(variable.getDisplayName(), variable.getGroup(),
-                variable.getKey(), variable.getHelpText(), Optional.of(referenceInfo),
-                BOOLEAN_FRAGMENT);
+        super(variable, referenceInfo, BOOLEAN_FRAGMENT);
+    }
+
+    @Override
+    public String getFragmentName()
+    {
+        return BOOLEAN_FRAGMENT;
     }
 }

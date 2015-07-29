@@ -1,16 +1,17 @@
 package gov.va.med.srcalc.domain.calculation;
 
 import static org.junit.Assert.*;
+import gov.va.med.srcalc.domain.HealthFactor;
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.calculation.PopulatedDisplayGroup;
 import gov.va.med.srcalc.domain.model.*;
-import gov.va.med.srcalc.vista.HealthFactor;
+import gov.va.med.srcalc.web.view.PopulatedDisplayGroup;
 
 import java.util.*;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 /**
@@ -34,7 +35,7 @@ public class PopulatedDisplayGroupTest
                 SampleModels.ageVariable(),
                 SampleModels.genderVariable());
         final Patient patient = SampleCalculations.dummyPatient(1);
-        patient.getHealthFactors().add(new HealthFactor(new Date(), "Dummy health factor"));
+        patient.getHealthFactors().add(new HealthFactor(DateTime.now(), "Dummy health factor"));
         final PopulatedDisplayGroup group = new PopulatedDisplayGroup(variables, patient);
         final PopulatedDisplayGroup group2 = new PopulatedDisplayGroup(
                 Arrays.asList(SampleModels.functionalStatusVariable()), patient);
@@ -73,5 +74,4 @@ public class PopulatedDisplayGroupTest
                 SampleModels.procedureVariable());
         new PopulatedDisplayGroup(variables, SampleCalculations.dummyPatient(1));
     }
-    
 }

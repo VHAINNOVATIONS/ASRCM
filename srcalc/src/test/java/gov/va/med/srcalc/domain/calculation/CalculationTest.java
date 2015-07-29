@@ -47,8 +47,6 @@ public class CalculationTest
         assertEquals(thoracicSpecialty, calc.getSpecialty());
         // Ensure getVariables() returns what we would expect now.
         assertEquals(thoracicSpecialty.getModelVariables(), calc.getVariables());
-        // And same for getVariableGroups().
-        assertEquals(3, calc.getDisplayGroups().size());
     }
     
     @Test(expected = IllegalStateException.class)
@@ -71,46 +69,6 @@ public class CalculationTest
         final Calculation c = Calculation.forPatient(SampleCalculations.dummyPatient(1));
         c.setSpecialty(s);
         c.getVariables();
-    }
-    
-    @Test
-    public final void testGetVariableGroups()
-    {
-        // First, build a sample Specialty with known variable references.
-        final AbstractVariable procedureVar = SampleModels.procedureVariable();
-        final AbstractVariable ageVar = SampleModels.ageVariable();
-        final AbstractVariable genderVar = SampleModels.genderVariable();
-        final RiskModel model = SampleModels.makeSampleRiskModel(
-                "model", new HashSet<DerivedTerm>(), procedureVar, ageVar, genderVar);
-        final Specialty specialty = new Specialty(48, "Cardiac");
-        specialty.getRiskModels().add(model);
-
-        final Calculation c = Calculation.forPatient(SampleCalculations.dummyPatient(1));
-        c.setSpecialty(specialty);
-        
-        // Now, build the expected List of PopulatedVariableGroups.
-        final List<PopulatedDisplayGroup> list = Arrays.asList(
-                new PopulatedDisplayGroup(Arrays.asList(procedureVar), SampleCalculations.dummyPatient(1)),
-                new PopulatedDisplayGroup(Arrays.asList(ageVar, genderVar), SampleCalculations.dummyPatient(1)));
-        
-        // And finally, verify expected behavior. Note that Variables do not
-        // override equals() so this only works because the returned list should
-        // use the same variable references.
-        assertEquals(list, c.getDisplayGroups());
-    }
-    
-    @Test(expected = UnsupportedOperationException.class)
-    public final void testGetVariableGroupsImmutable()
-    {
-        final Calculation c = Calculation.forPatient(SampleCalculations.dummyPatient(1));
-        c.setSpecialty(SampleModels.thoracicSpecialty());
-        c.getDisplayGroups().remove(0);
-    }
-    
-    @Test(expected = IllegalStateException.class)
-    public final void testGetVariableGroupsIllegal()
-    {
-        Calculation.forPatient(SampleCalculations.dummyPatient(1)).getDisplayGroups();
     }
     
     /**
