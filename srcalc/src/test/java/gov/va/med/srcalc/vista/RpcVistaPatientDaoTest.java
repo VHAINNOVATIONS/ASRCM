@@ -36,7 +36,7 @@ public class RpcVistaPatientDaoTest
     private final static String ALBUMIN_SUCCESS = "ALBUMIN^3.0^02/02/2015@14:35:12^g/dl";
     private final static String INVALID_LAB = "This is invalid. ~@!#$";
     private final static String VALID_LAB_NO_UNITS = "ALBUMIN^3.0^02/02/2015@14:35:12^";
-    private final static List<String> VALID_HEALTH_FACTORS = Arrays.asList("08/25/2014^REFUSED INFLUENZA IMMUNIZATION",
+    private final static List<String> VALID_HEALTH_FACTORS = ImmutableList.of("08/25/2014^REFUSED INFLUENZA IMMUNIZATION",
             "08/22/2014^DEPRESSION ASSESS POSITIVE (MDD)","08/22/2014^REFUSED INFLUENZA IMMUNIZATION",
             "08/20/2014^ALCOHOL - TREATMENT REFERRAL","08/08/2014^CURRENT SMOKER","07/30/2014^GEC HOMELESS");
     
@@ -200,6 +200,6 @@ public class RpcVistaPatientDaoTest
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);
-        assertEquals(Collections.<String>emptyList(), patient.getHealthFactors());
+        assertEquals(Collections.<HealthFactor>emptyList(), patient.getHealthFactors());
     }
 }
