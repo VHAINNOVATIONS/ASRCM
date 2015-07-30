@@ -142,62 +142,6 @@ public class Calculation implements Serializable
         }
         return false;
     }
-    
-    /**
-     * Builds a brand-new, sorted list of {@link PopulatedVariableGroup}s from
-     * the given variables. The groups are sorted by their natural ordering and
-     * each variable list is sorted by display name.
-     */
-    protected List<PopulatedVariableGroup> buildVariableGroupList(
-            Collection<? extends Variable> variables)
-    {
-        // Bucket the Variables according to VariableGroup.
-        final HashMap<VariableGroup, List<Variable>> map = new HashMap<>();
-        for (final Variable var : variables)
-        {
-            final VariableGroup group = var.getGroup();
-            if (!map.containsKey(group))
-            {
-                final ArrayList<Variable> varList = new ArrayList<>();
-                map.put(group, varList);
-            }
-            map.get(group).add(var);
-        }
-        
-        // Transform the map into PopulatedVariableGroups.
-        final ArrayList<PopulatedVariableGroup> groupList =
-                new ArrayList<>(map.values().size());
-        final DisplayNameComparator comparator = new DisplayNameComparator();
-        for (final List<Variable> varList : map.values())
-        {
-            Collections.sort(varList, comparator);
-            groupList.add(new PopulatedVariableGroup(varList));
-        }
-        
-        // Finally, sort the List.
-        Collections.sort(groupList);
-        
-        return groupList;
-    }
-    
-    /**
-     * Returns all {@link Variable}s associated with this Specialty, bucketed
-     * into their groups.
-     * @throws IllegalStateException if no specialty has been set.
-     * @return an immutable List, sorted in group order
-     */
-    public List<PopulatedVariableGroup> getVariableGroups()
-    {
-        // Ensure we are in the proper state.
-        if (fSpecialty == null)
-        {
-            throw new IllegalStateException(
-                    "Cannot return list of variables because no specialty has been set.");
-        }
-        
-        return Collections.unmodifiableList(
-                buildVariableGroupList(getVariables()));
-    }
 
     /**
      * Runs the calculation for each outcome with the given Values.

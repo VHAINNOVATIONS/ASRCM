@@ -9,11 +9,19 @@ import static org.mockito.Matchers.eq;
 import gov.va.med.srcalc.domain.*;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Tests the {@link RpcVistaPatientDao} class.
@@ -28,6 +36,9 @@ public class RpcVistaPatientDaoTest
     private final static String ALBUMIN_SUCCESS = "ALBUMIN^3.0^02/02/2015@14:35:12^g/dl";
     private final static String INVALID_LAB = "This is invalid. ~@!#$";
     private final static String VALID_LAB_NO_UNITS = "ALBUMIN^3.0^02/02/2015@14:35:12^";
+    private final static List<String> VALID_HEALTH_FACTORS = ImmutableList.of("08/25/2014^REFUSED INFLUENZA IMMUNIZATION",
+            "08/22/2014^DEPRESSION ASSESS POSITIVE (MDD)","08/22/2014^REFUSED INFLUENZA IMMUNIZATION",
+            "08/20/2014^ALCOHOL - TREATMENT REFERRAL","08/08/2014^CURRENT SMOKER","07/30/2014^GEC HOMELESS");
     
     private final static int PATIENT_DFN = 500;
 
@@ -45,6 +56,11 @@ public class RpcVistaPatientDaoTest
             .thenReturn(new ArrayList<String>());
         when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_VITAL, ""))
             .thenReturn(new ArrayList<String>());
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ,
+                RemoteProcedure.GET_HEALTH_FACTORS,
+                String.valueOf(PATIENT_DFN)))
+                .thenReturn(Collections.<String>emptyList());
         return caller;
     }
     
@@ -156,5 +172,34 @@ public class RpcVistaPatientDaoTest
         final Patient patient = dao.getPatient(PATIENT_DFN);
         // Insure the lab was not added and no exceptions occurred.
         assertEquals(1, patient.getLabs().size());
+    }
+    
+    @Test
+    public final void testHealthFactorsValid() throws Exception
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ,
+                RemoteProcedure.GET_HEALTH_FACTORS,
+                String.valueOf(PATIENT_DFN)))
+                .thenReturn(VALID_HEALTH_FACTORS);
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        final DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yy");
+        final List<HealthFactor> expectedFactors = ImmutableList.of(
+                new HealthFactor(format.parseLocalDate("08/22/2014"),"DEPRESSION ASSESS POSITIVE (MDD)"),
+                new HealthFactor(format.parseLocalDate("08/20/2014"), "ALCOHOL - TREATMENT REFERRAL"),
+                new HealthFactor(format.parseLocalDate("07/30/2014"), "GEC HOMELESS"));
+        
+        assertEquals(expectedFactors, patient.getHealthFactors());
+    }
+    
+    @Test
+    public final void testNoHealthFactors()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        assertEquals(Collections.<HealthFactor>emptyList(), patient.getHealthFactors());
     }
 }

@@ -1,26 +1,30 @@
 package gov.va.med.srcalc.vista;
 
+import gov.va.med.crypto.VistaKernelHash;
+import gov.va.med.srcalc.domain.HealthFactor;
+import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.calculation.RetrievedValue;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.text.WordUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
 import org.springframework.dao.RecoverableDataAccessException;
 
 import com.google.common.base.Splitter;
-
-import gov.va.med.crypto.VistaKernelHash;
-import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 
 /**
  * Implementation of {@link VistaPatientDao} using remote procedures. Each
@@ -48,6 +52,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         tempMap.put("F", "Female");
         TRANSLATION_MAP = Collections.unmodifiableMap(tempMap);
     }
+    
     private final VistaProcedureCaller fProcedureCaller;
     
     private final String fDuz;
@@ -116,6 +121,10 @@ public class RpcVistaPatientDao implements VistaPatientDao
             
             // Retrieve all labs from VistA
             retrieveLabs(dfn, patient);
+            
+            // Retrieve all health factors in the last year from VistA and filter
+            // by the list given to us by the NSO.
+            retrieveHealthFactors(dfn, patient);
             
             LOGGER.debug("Loaded {} from VistA.", patient);
             return patient;
@@ -232,6 +241,34 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 // data as possible can still be retrieved.
                 LOGGER.warn("Unable to retrieve lab {}. {}", labRetrievalEnum.name(), e.toString());
             }
+        }
+    }
+    
+    private void retrieveHealthFactors(final int dfn, final Patient patient)
+    {
+        try
+        {
+            patient.getHealthFactors().clear();
+            final List<String> rpcResults = fProcedureCaller.doRpc(
+                    fDuz, RemoteProcedure.GET_HEALTH_FACTORS, String.valueOf(dfn));
+            // Now that we have all of the health factors, filter out any that are not present
+            // in the list provided by the NSO.
+            final Iterator<String> iter = rpcResults.iterator();
+            final DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yy");
+            while(iter.hasNext())
+            {
+                final String healthFactor = iter.next();
+                final String[] factorSplitArray = healthFactor.split("\\^");
+                if(HEALTH_FACTORS_SET.contains(factorSplitArray[1]))
+                {
+                    patient.getHealthFactors().add(new HealthFactor(format.parseLocalDate(factorSplitArray[0]), factorSplitArray[1]));
+                }
+            }
+            LOGGER.debug("Retrieved Health factors: {} ", patient.getHealthFactors());
+        }
+        catch(final Exception e)
+        {
+            LOGGER.warn("Unable to retrieve health factors. {}", e.toString());
         }
     }
     

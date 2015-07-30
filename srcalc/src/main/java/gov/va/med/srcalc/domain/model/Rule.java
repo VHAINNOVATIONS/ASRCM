@@ -16,7 +16,6 @@ import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableSet;
 
@@ -214,15 +213,6 @@ public final class Rule
             sortedKeys.add(var.getKey());
         }
         return ImmutableSet.copyOf(sortedKeys);
-    }
-    
-    /**
-     * Returns a String in the form of "#a, #b, #c" that will 
-     */
-    @Transient
-    public String getExpressionVariablesString()
-    {
-        return String.format("#%s", Joiner.on(", #"));
     }
     
     /**

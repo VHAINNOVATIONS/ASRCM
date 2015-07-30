@@ -1,5 +1,11 @@
 package gov.va.med.srcalc.web.controller;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
 import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.CalculationService;
@@ -96,7 +102,7 @@ public class EnterVariablesController
         // Present the view.
         final ModelAndView mav = new ModelAndView(Views.ENTER_VARIABLES);
         mav.addObject("calculation", calculation);
-        
+        mav.addObject("displayGroups", getDisplayGroups(calculation));
         // Note: "variableEntry" object is automatically added through annotated
         // method parameter.
         return mav;
@@ -164,5 +170,55 @@ public class EnterVariablesController
         final String numericalKey = VariableEntry.makeDynamicValuePath(
                 VariableEntry.makeNumericalInputName(missingValue.getVariable().getKey()));
         return !valuesBindingResult.hasFieldErrors(dynamicKey) && !valuesBindingResult.hasFieldErrors(numericalKey);
+    }
+    
+    private List<PopulatedDisplayGroup> getDisplayGroups(final Calculation calculation)
+    {
+        // Ensure we are in the proper state.
+        if (calculation.getSpecialty() == null)
+        {
+            throw new IllegalStateException(
+                    "Cannot return list of variables because no specialty has been set.");
+        }
+        
+        return Collections.unmodifiableList(
+                buildDisplayGroupList(calculation.getVariables(), calculation));
+    }
+    
+    /**
+     * Builds a brand-new, sorted list of {@link PopulatedDisplayGroup}s from
+     * the given variables. The groups are sorted by their natural ordering and
+     * each variable list is sorted by display name.
+     */
+    private List<PopulatedDisplayGroup> buildDisplayGroupList(
+            Collection<? extends Variable> variables, final Calculation calculation)
+    {
+        // Bucket the Variables according to VariableGroup.
+        final HashMap<VariableGroup, List<Variable>> map = new HashMap<>();
+        for (final Variable var : variables)
+        {
+            final VariableGroup group = var.getGroup();
+            if (!map.containsKey(group))
+            {
+                final ArrayList<Variable> varList = new ArrayList<>();
+                map.put(group, varList);
+            }
+            map.get(group).add(var);
+        }
+        
+        // Transform the map into PopulatedVariableGroups.
+        final ArrayList<PopulatedDisplayGroup> groupList =
+                new ArrayList<>(map.values().size());
+        final DisplayNameComparator comparator = new DisplayNameComparator();
+        for (final List<Variable> varList : map.values())
+        {
+            Collections.sort(varList, comparator);
+            groupList.add(new PopulatedDisplayGroup(varList, calculation.getPatient()));
+        }
+        
+        // Finally, sort the List.
+        Collections.sort(groupList);
+        
+        return groupList;
     }
 }
