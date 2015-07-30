@@ -28,13 +28,13 @@ public interface DisplayItem
     public String getFragmentName();
 
     /**
-     * Returns the help text as a String, not an Optional.
+     * Returns the help text as an Optional.
      */
     public Optional<String> getHelpText();
     
     /**
-     * Calls the txtmark processor to convert the help text from Markdown to HTML and
-     * returns the result.
+     * Transforms the help text from a plain text String to valid HTML, or returns an empty
+     * String if the help text is not present.
      */
     public String getHelpTextAsHtml();
     

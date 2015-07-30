@@ -2,7 +2,7 @@ package gov.va.med.srcalc.domain;
 
 import java.util.Objects;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 /**
  * A class that will store the name of a health factor along with the 
@@ -10,10 +10,10 @@ import org.joda.time.DateTime;
  */
 public class HealthFactor
 {
-    private final DateTime fDate;
+    private final LocalDate fDate;
     private final String fName;
     
-    public HealthFactor(final DateTime date, final String factor)
+    public HealthFactor(final LocalDate date, final String factor)
     {
         fDate = date;
         fName = factor;
@@ -22,7 +22,7 @@ public class HealthFactor
     /**
      * Returns the date on which this health factor was noted.
      */
-    public DateTime getDate()
+    public LocalDate getDate()
     {
         return fDate;
     }

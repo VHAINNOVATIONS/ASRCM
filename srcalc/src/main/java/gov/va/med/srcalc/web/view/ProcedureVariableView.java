@@ -19,7 +19,7 @@ public class ProcedureVariableView extends VariableView
      */
     public ProcedureVariableView(final ProcedureVariable variable, final List<String> referenceInfo)
     {
-        super(variable, referenceInfo, PROCEDURE_FRAGMENT);
+        super(variable, referenceInfo);
     }
 
     @Override

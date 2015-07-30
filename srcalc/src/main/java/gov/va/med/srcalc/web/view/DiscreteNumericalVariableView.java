@@ -26,7 +26,7 @@ public class DiscreteNumericalVariableView extends VariableView
      */
     public DiscreteNumericalVariableView(final DiscreteNumericalVariable variable, final List<String> referenceInfo)
     {
-        super(variable, referenceInfo, DISCRETE_NUMERICAL_FRAGMENT);
+        super(variable, referenceInfo);
         fUnits = variable.getUnits();
         fCategories = ImmutableSortedSet.copyOf(variable.getCategoriesWnlFirst());
     }

@@ -21,10 +21,8 @@ public abstract class VariableView implements DisplayItem
      * A constructor that stores a Variable and supplementary information for user viewing.
      * @param variable the variable to return properties from.
      * @param referenceInfo the reference information (notes) for the specified Variable
-     * @param displayFragment the name of the jsp page used to display this VariableView
      */
-    protected VariableView(final Variable variable, final List<String> referenceInfo,
-            final String displayFragment)
+    protected VariableView(final Variable variable, final List<String> referenceInfo)
     {
         fVariable = variable;
         fReferenceInfo = referenceInfo;

@@ -1,16 +1,19 @@
 package gov.va.med.srcalc.vista;
 
+import gov.va.med.crypto.VistaKernelHash;
+import gov.va.med.srcalc.domain.HealthFactor;
+import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.calculation.RetrievedValue;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -22,12 +25,6 @@ import org.springframework.dao.NonTransientDataAccessResourceException;
 import org.springframework.dao.RecoverableDataAccessException;
 
 import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableSet;
-
-import gov.va.med.crypto.VistaKernelHash;
-import gov.va.med.srcalc.domain.HealthFactor;
-import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 
 /**
  * Implementation of {@link VistaPatientDao} using remote procedures. Each
@@ -45,12 +42,6 @@ public class RpcVistaPatientDao implements VistaPatientDao
     public static final String VISTA_DATE_OUTPUT_FORMAT = "MM/dd/yy@HH:mm";
     
     private static final Map<String, String> TRANSLATION_MAP;
-    
-    /**
-     * Using a map instead of a different type of collection for efficiency when
-     * filtering for health factors.
-     */
-    private static final Set<String> VALID_HEALTH_FACTORS;
 
     /**
      * Static class initializer to fill the translation map with the proper values.
@@ -60,12 +51,6 @@ public class RpcVistaPatientDao implements VistaPatientDao
         tempMap.put("M", "Male");
         tempMap.put("F", "Female");
         TRANSLATION_MAP = Collections.unmodifiableMap(tempMap);
-        final Set<String> tempHealthFactorsMap = new HashSet<String>();
-        for(int i = 0; i < HEALTH_FACTORS_ARRAY.length; i++)
-        {
-            tempHealthFactorsMap.add(HEALTH_FACTORS_ARRAY[i]);
-        }
-        VALID_HEALTH_FACTORS = ImmutableSet.copyOf(tempHealthFactorsMap);
     }
     
     private final VistaProcedureCaller fProcedureCaller;
@@ -269,14 +254,14 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // Now that we have all of the health factors, filter out any that are not present
             // in the list provided by the NSO.
             final Iterator<String> iter = rpcResults.iterator();
+            final DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yy");
             while(iter.hasNext())
             {
                 final String healthFactor = iter.next();
                 final String[] factorSplitArray = healthFactor.split("\\^");
-                if(VALID_HEALTH_FACTORS.contains(factorSplitArray[1]))
+                if(HEALTH_FACTORS_SET.contains(factorSplitArray[1]))
                 {
-                    final DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yy");
-                    patient.getHealthFactors().add(new HealthFactor(format.parseDateTime(factorSplitArray[0]), factorSplitArray[1]));
+                    patient.getHealthFactors().add(new HealthFactor(format.parseLocalDate(factorSplitArray[0]), factorSplitArray[1]));
                 }
             }
             LOGGER.debug("Retrieved Health factors: {} ", patient.getHealthFactors());

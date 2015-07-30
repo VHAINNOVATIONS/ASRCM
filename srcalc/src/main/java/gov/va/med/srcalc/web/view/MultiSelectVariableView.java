@@ -27,7 +27,7 @@ public class MultiSelectVariableView extends VariableView
      */
     public MultiSelectVariableView(final MultiSelectVariable variable, final List<String> referenceInfo)
     {
-        super(variable, referenceInfo, RADIO_FRAGMENT);
+        super(variable, referenceInfo);
         fDisplayType = variable.getDisplayType();
         fOptions = ImmutableList.copyOf(variable.getOptions());
     }

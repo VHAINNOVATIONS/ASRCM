@@ -1,5 +1,9 @@
 package gov.va.med.srcalc.vista;
 
+import java.util.Set;
+
+import com.google.common.collect.ImmutableSet;
+
 import gov.va.med.srcalc.domain.Patient;
 
 /**
@@ -35,7 +39,7 @@ public interface VistaPatientDao
      * This is a list of the only health factors that should be displayed for the users.
      * This list was created by the VA.
      */
-    public static final String[] HEALTH_FACTORS_ARRAY = { "ALCOHOL - TREATMENT REFERRAL", "ALCOHOL USE",
+    public static final Set<String> HEALTH_FACTORS_SET = ImmutableSet.of("ALCOHOL - TREATMENT REFERRAL", "ALCOHOL USE",
         "ANTI-DEPRESSANT TREATMENT", "BINGE DRINKING", "CURRENT F/U OR RX FOR DEPRESSION",
         "DECLINES HOMELESS REFERRAL", "DEPRESSION ASSESS NEGATIVE (NOT MDD)",
         "DEPRESSION ASSESS POSITIVE (MDD)", "DEPRESSION TO BE MANAGED IN PC",
@@ -46,7 +50,7 @@ public interface VistaPatientDao
         "PALLI CONSULT ALCOHOL MISUSE NO", "PALLI CONSULT ALCOHOL MISUSE YES",
         "PC DEPRESSION SCREEN NEGATIVE", "PC DEPRESSION SCREEN POSITIVE",
         "REFER FOR ALCOHOL TREATMENT", "REFERRED TO HOMELESS PROGRAM",
-        "REFUSED DEPRESSION RX/INTERVENTION", "REFUSES MH REFERRAL FOR DEPRESSION"};
+        "REFUSED DEPRESSION RX/INTERVENTION", "REFUSES MH REFERRAL FOR DEPRESSION");
 
     /**
      * The maximum amount of characters allowed on a line before wrapping the line

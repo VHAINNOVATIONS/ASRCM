@@ -21,7 +21,7 @@ public class NumericalVariableView extends VariableView
      */
     public NumericalVariableView(final NumericalVariable variable, final List<String> referenceInfo)
     {
-        super(variable, referenceInfo, NUMERICAL_FRAGMENT);
+        super(variable, referenceInfo);
         fUnits = variable.getUnits();
     }
     

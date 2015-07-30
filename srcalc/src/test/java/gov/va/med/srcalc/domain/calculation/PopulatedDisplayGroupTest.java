@@ -11,7 +11,7 @@ import java.util.*;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 
 /**
@@ -35,7 +35,7 @@ public class PopulatedDisplayGroupTest
                 SampleModels.ageVariable(),
                 SampleModels.genderVariable());
         final Patient patient = SampleCalculations.dummyPatient(1);
-        patient.getHealthFactors().add(new HealthFactor(DateTime.now(), "Dummy health factor"));
+        patient.getHealthFactors().add(new HealthFactor(LocalDate.now(), "Dummy health factor"));
         final PopulatedDisplayGroup group = new PopulatedDisplayGroup(variables, patient);
         final PopulatedDisplayGroup group2 = new PopulatedDisplayGroup(
                 Arrays.asList(SampleModels.functionalStatusVariable()), patient);

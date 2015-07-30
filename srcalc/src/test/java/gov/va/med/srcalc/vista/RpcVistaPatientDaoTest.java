@@ -187,9 +187,9 @@ public class RpcVistaPatientDaoTest
         final Patient patient = dao.getPatient(PATIENT_DFN);
         final DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yy");
         final List<HealthFactor> expectedFactors = ImmutableList.of(
-                new HealthFactor(format.parseDateTime("08/22/2014"),"DEPRESSION ASSESS POSITIVE (MDD)"),
-                new HealthFactor(format.parseDateTime("08/20/2014"), "ALCOHOL - TREATMENT REFERRAL"),
-                new HealthFactor(format.parseDateTime("07/30/2014"), "GEC HOMELESS"));
+                new HealthFactor(format.parseLocalDate("08/22/2014"),"DEPRESSION ASSESS POSITIVE (MDD)"),
+                new HealthFactor(format.parseLocalDate("08/20/2014"), "ALCOHOL - TREATMENT REFERRAL"),
+                new HealthFactor(format.parseLocalDate("07/30/2014"), "GEC HOMELESS"));
         
         assertEquals(expectedFactors, patient.getHealthFactors());
     }

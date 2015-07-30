@@ -19,7 +19,7 @@ public class BooleanVariableView extends VariableView
      */
     public BooleanVariableView(final BooleanVariable variable, final List<String> referenceInfo)
     {
-        super(variable, referenceInfo, BOOLEAN_FRAGMENT);
+        super(variable, referenceInfo);
     }
 
     @Override
