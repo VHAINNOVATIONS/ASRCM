@@ -160,7 +160,7 @@ public class CalculationTest
         assertEquals(s.getName(), historical.getSpecialtyName());
         assertEquals(user.getStationNumber(), historical.getUserStation());
         assertEquals(
-                c.getStartDateTime().withMillisOfSecond(0).toDate(),
+                c.getStartDateTime().withMillisOfSecond(0),
                 historical.getStartTimestamp());
         // Assuming that 0 seconds elapse from Calculation.forPatient() to calculate()
         // above.

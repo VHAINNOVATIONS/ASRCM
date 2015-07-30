@@ -5,13 +5,13 @@ import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.util.DisplayNameConditions;
 import gov.va.med.srcalc.util.Preconditions;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
 import javax.persistence.*;
 
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import com.google.common.base.MoreObjects;
@@ -35,7 +35,7 @@ public final class SignedResult
     private HistoricalCalculation fHistoricalCalculation;
     private int fPatientDfn;
     private Optional<String> fCptCode;
-    private Date fSignatureTimestamp;
+    private DateTime fSignatureTimestamp;
     private ImmutableMap<String, String> fInputs;
     private ImmutableMap<String, Float> fOutcomes;
     
@@ -72,7 +72,7 @@ public final class SignedResult
         setPatientDfn(patientDfn);
         setCptCode(cptCode);
         // See getSignatureTimestamp() for why we enforce 0 millis of second.
-        setSignatureTimestamp(signatureTimestamp.withMillisOfSecond(0).toDate());
+        setSignatureTimestamp(signatureTimestamp.withMillisOfSecond(0));
         setInputs(inputs);
         setOutcomes(outcomes);
     }
@@ -188,7 +188,8 @@ public final class SignedResult
      */
     @Basic
     @Column(nullable = false)
-    public Date getSignatureTimestamp()
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    public DateTime getSignatureTimestamp()
     {
         return fSignatureTimestamp;
     }
@@ -197,7 +198,7 @@ public final class SignedResult
      * For reflection-based construction only. Business code must provide this value to
      * the constructor.
      */
-    void setSignatureTimestamp(final Date signatureTimestamp)
+    void setSignatureTimestamp(final DateTime signatureTimestamp)
     {
         fSignatureTimestamp = Objects.requireNonNull(signatureTimestamp);
     }
