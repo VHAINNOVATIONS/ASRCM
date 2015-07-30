@@ -89,7 +89,7 @@ public class EditRiskModelControllerIT extends IntegrationTest
                 .param("terms[2].termType", "RULE")
                 .param("terms[2].key", ruleName)
                 .param("terms[2].coefficient", "1.5"))
-            .andExpect(status().isMovedTemporarily())
+            .andExpect(status().isFound())
             .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         
         // Simulate a new Session.

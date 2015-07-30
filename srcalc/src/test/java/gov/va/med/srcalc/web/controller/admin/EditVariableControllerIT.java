@@ -62,7 +62,7 @@ public class EditVariableControllerIT extends IntegrationTest
         
         fMockMvc.perform(post("/admin/variables/preopPneumonia")
                 .param("displayName", "Preop Something"))
-            .andExpect(status().isMovedTemporarily())
+            .andExpect(status().isFound())
             .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
     }
     
@@ -79,7 +79,7 @@ public class EditVariableControllerIT extends IntegrationTest
         fMockMvc.perform(post("/admin/variables/gender")
                 .param("options[0]", option1Text)
                 .param("options[1]", option2Text))
-            .andExpect(status().isMovedTemporarily())
+            .andExpect(status().isFound())
             .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         
         // Perform some basic validation that the edit was saved.
@@ -138,7 +138,7 @@ public class EditVariableControllerIT extends IntegrationTest
                 .param("categories[1].upperBound", "50")
                 .param("categories[2].value", thirdCatName)
                 .param("categories[2].upperBound", "90"))
-            .andExpect(status().isMovedTemporarily())
+            .andExpect(status().isFound())
             .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         
         // Perform some basic validation that the edit was saved.

@@ -65,7 +65,7 @@ public class NewVarControllerIT extends IntegrationTest
                 .param("displayName", "myDisplayName")
                 .param("helpText", "myHelpText")
                 .param("groupId", "1"))
-            .andExpect(status().isMovedTemporarily())
+            .andExpect(status().isFound())
             .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         
         // Verify that the variable was actually created. Individual properties
@@ -114,7 +114,7 @@ public class NewVarControllerIT extends IntegrationTest
                 .param("displayName", "myDisplayName")
                 .param("groupId", "1")
                 .param("options[0]", "option1"))
-            .andExpect(status().isMovedTemporarily())
+            .andExpect(status().isFound())
             .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         
         // Verify that the variable was actually created. Individual properties
@@ -161,7 +161,7 @@ public class NewVarControllerIT extends IntegrationTest
                 .param("categories[2].upperBound", "150.0")
                 // No value: this category should be omitted.
                 .param("categories[4].upperBound", "160"))
-            .andExpect(status().isMovedTemporarily())
+            .andExpect(status().isFound())
             .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         
         // Verify that the variable was actually created and verify that some of

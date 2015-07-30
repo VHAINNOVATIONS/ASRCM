@@ -68,7 +68,7 @@ public class EditRuleControllerIT extends IntegrationTest
                 .param("matchers[0].variableKey", "age")
                 .param("matchers[0].booleanExpression", "true")
                 .param("submitButton", ""))
-            .andExpect(status().isMovedTemporarily())
+            .andExpect(status().isFound())
             .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         final Rule rule = fAdminService.getRuleById(1);
         assertEquals(displayName, rule.getDisplayName());

@@ -67,7 +67,7 @@ public class NewRuleControllerIT extends IntegrationTest
                 .param("matchers[0].variableKey", "age")
                 .param("matchers[0].booleanExpression", "true")
                 .param("submitButton", "submit"))
-            .andExpect(status().isMovedTemporarily())
+            .andExpect(status().isFound())
             .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         fAdminService.getRule(DISPLAY_NAME);
     }
