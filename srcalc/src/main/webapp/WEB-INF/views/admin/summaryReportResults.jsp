@@ -55,7 +55,10 @@
     $(document).ready(function() {
         $('#summaryReportTable').dataTable({
             paging: false,
-            searching: false
+            searching: false,
+            // The search comes back in a defined order already: don't re-order unless
+            // the user requests it.
+            order: []
         });
     });
     </script>
