@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.test.util.IntegrationTest;
+import gov.va.med.srcalc.web.SrcalcUrls;
 import gov.va.med.srcalc.web.view.admin.EditRule;
 
 import org.junit.Before;
@@ -66,8 +67,8 @@ public class NewRuleControllerIT extends IntegrationTest
                 .param("matchers[0].variableKey", "age")
                 .param("matchers[0].booleanExpression", "true")
                 .param("submitButton", "submit"))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl(AdminHomeController.BASE_URL)).andReturn();
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         fAdminService.getRule(DISPLAY_NAME);
     }
     

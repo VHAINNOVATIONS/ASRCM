@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.controller.admin;
 import gov.va.med.srcalc.domain.model.AbstractVariable;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
+import gov.va.med.srcalc.web.SrcalcUrls;
 import gov.va.med.srcalc.web.view.admin.*;
 
 import javax.inject.Inject;
@@ -89,7 +90,7 @@ public class EditVariableController
         fAdminService.saveVariable(editVar.applyToVariable());
 
         // Using the POST-redirect-GET pattern.
-        return new ModelAndView("redirect:/admin");
+        return new ModelAndView("redirect:" + SrcalcUrls.MODEL_ADMIN_HOME);
     }
     
 }

@@ -8,6 +8,7 @@ import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.util.csv.CsvReader;
 import gov.va.med.srcalc.util.csv.TabularParseResult;
+import gov.va.med.srcalc.web.SrcalcUrls;
 import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.EditModelTerm;
 import gov.va.med.srcalc.web.view.admin.EditRiskModel;
@@ -166,7 +167,7 @@ public class EditRiskModelController
         fAdminService.saveRiskModel(targetModel);
 
         // Save successful: redirect to the admin home page.
-        return new ModelAndView("redirect:/admin");
+        return new ModelAndView("redirect:" + SrcalcUrls.MODEL_ADMIN_HOME);
     }
 
 }

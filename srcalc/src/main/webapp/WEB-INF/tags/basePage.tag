@@ -9,6 +9,9 @@
 <%-- Make the appInfo object (added by AppAttributesInitializer) easily accessible. --%>
 <c:set var="appInfo" scope="page" value="${applicationScope['srcalc.appInfo']}" />
 
+<%-- Provide a single reference for URLs. --%>
+<jsp:useBean id="srcalcUrls" class="gov.va.med.srcalc.web.SrcalcUrls" scope="request" />
+
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->

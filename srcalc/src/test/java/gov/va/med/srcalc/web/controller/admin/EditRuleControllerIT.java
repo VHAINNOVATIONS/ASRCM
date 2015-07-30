@@ -12,6 +12,7 @@ import gov.va.med.srcalc.domain.model.SampleModels;
 import gov.va.med.srcalc.domain.model.ValueMatcher;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.test.util.IntegrationTest;
+import gov.va.med.srcalc.web.SrcalcUrls;
 import gov.va.med.srcalc.web.view.admin.EditExistingRule;
 
 import org.junit.Before;
@@ -67,8 +68,8 @@ public class EditRuleControllerIT extends IntegrationTest
                 .param("matchers[0].variableKey", "age")
                 .param("matchers[0].booleanExpression", "true")
                 .param("submitButton", ""))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         final Rule rule = fAdminService.getRuleById(1);
         assertEquals(displayName, rule.getDisplayName());
         assertEquals(summand, rule.getSummandExpression());

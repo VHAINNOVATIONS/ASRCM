@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.controller.admin;
 import gov.va.med.srcalc.domain.model.AbstractVariable;
 import gov.va.med.srcalc.domain.model.RiskModel;
 import gov.va.med.srcalc.service.AdminService;
+import gov.va.med.srcalc.web.SrcalcUrls;
 import gov.va.med.srcalc.web.view.VariableSummary;
 import gov.va.med.srcalc.web.view.Views;
 
@@ -23,13 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Web MVC controller for the Administration home page.
  */
 @Controller
-@RequestMapping(AdminHomeController.BASE_URL)
+@RequestMapping(SrcalcUrls.ADMIN_HOME)
 public class AdminHomeController
 {
-    /**
-     * Specifies the base URL for this controller.
-     */
-    public static final String BASE_URL = "/admin";
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminHomeController.class);
 
     private final AdminService fAdminService;
@@ -42,6 +39,12 @@ public class AdminHomeController
 
     @RequestMapping(method = RequestMethod.GET)
     public String defaultPage(final Model model)
+    {
+        return Views.ADMIN_HOME;
+    }
+    
+    @RequestMapping(value = SrcalcUrls.MODEL_ADMIN_HOME_SUFFIX, method = RequestMethod.GET)
+    public String modelHome(final Model model)
     {
         List<RiskModel> riskModels = new ArrayList<RiskModel>( fAdminService.getAllRiskModels() );
         Collections.sort( riskModels );

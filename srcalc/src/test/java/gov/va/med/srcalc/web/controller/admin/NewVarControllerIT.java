@@ -10,6 +10,7 @@ import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable;
 import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.test.util.TestHelpers;
+import gov.va.med.srcalc.web.SrcalcUrls;
 import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.*;
 
@@ -64,7 +65,8 @@ public class NewVarControllerIT extends IntegrationTest
                 .param("displayName", "myDisplayName")
                 .param("helpText", "myHelpText")
                 .param("groupId", "1"))
-            .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         
         // Verify that the variable was actually created. Individual properties
         // are tested in EditBooleanVarTest.
@@ -112,7 +114,8 @@ public class NewVarControllerIT extends IntegrationTest
                 .param("displayName", "myDisplayName")
                 .param("groupId", "1")
                 .param("options[0]", "option1"))
-            .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         
         // Verify that the variable was actually created. Individual properties
         // are tested in EditMultiSelectVarTest.
@@ -158,7 +161,8 @@ public class NewVarControllerIT extends IntegrationTest
                 .param("categories[2].upperBound", "150.0")
                 // No value: this category should be omitted.
                 .param("categories[4].upperBound", "160"))
-            .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         
         // Verify that the variable was actually created and verify that some of
         // the properties are correct. All properties are tested in

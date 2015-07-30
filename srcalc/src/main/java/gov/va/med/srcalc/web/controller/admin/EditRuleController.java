@@ -6,6 +6,7 @@ import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.service.DuplicateRuleNameException;
 import gov.va.med.srcalc.service.InvalidIdentifierException;
 import gov.va.med.srcalc.util.ValidationCodes;
+import gov.va.med.srcalc.web.SrcalcUrls;
 import gov.va.med.srcalc.web.view.admin.EditExistingRule;
 
 import org.slf4j.Logger;
@@ -84,6 +85,6 @@ public class EditRuleController extends BaseRuleController
         }
         
         // Using the POST-redirect-GET pattern.
-        return new ModelAndView("redirect:/admin");
+        return new ModelAndView("redirect:" + SrcalcUrls.MODEL_ADMIN_HOME);
     }
 }
