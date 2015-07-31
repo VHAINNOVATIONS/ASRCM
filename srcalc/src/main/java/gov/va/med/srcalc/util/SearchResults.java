@@ -20,6 +20,11 @@ public final class SearchResults<T>
     private final ImmutableList<T> fFoundItems;
     private final boolean fTruncated;
     
+    /**
+     * Constructs an instance with the given properties.
+     * @param foundItems See {@link #getFoundItems()}. Defensively-copied.
+     * @param truncated See {@link #isTruncated()}.
+     */
     public SearchResults(
             final List<T> foundItems, final boolean truncated)
     {
@@ -55,7 +60,7 @@ public final class SearchResults<T>
     }
     
     /**
-     * Returns true of the given object is also an instance SearchResults with the same
+     * Returns true if the given object is also an instance SearchResults with the same
      * items found and trunacated status. Note that two empty SearchResults for different
      * types of items are considered equal due to type erasure.
      */

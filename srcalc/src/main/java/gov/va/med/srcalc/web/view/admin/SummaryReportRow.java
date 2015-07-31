@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedSet;
 
 /**
- * Encapsulates a single row of data for a Summary Report.
+ * Encapsulates a single row of data for a Summary Report. Immutable.
  */
 public final class SummaryReportRow
 {
@@ -29,6 +29,14 @@ public final class SummaryReportRow
      */
     private final String fRiskModelName;
     
+    /**
+     * Constructs an instance representing the given result and a particular outcome
+     * within that result.
+     * @param signedResult the result to represent
+     * @param riskModelName the risk model name of the outcome to represent
+     * @throws NullPointerException if signedResult is null
+     * @throws IllegalArgumentException if there is no outcome for the given name
+     */
     public SummaryReportRow(final SignedResult signedResult, final String riskModelName)
     {
         fSignedResult = signedResult;
@@ -62,17 +70,28 @@ public final class SummaryReportRow
      * Returns the result's associated CPT code. Will be an empty string if the result
      * had no associated CPT code.
      * @return never null
+     * @see SignedResult#getCptCode()
      */
     public String getCptCode()
     {
         return fSignedResult.getCptCode().or("");
     }
     
+    /**
+     * Returns the result's associated Specialty name.
+     * @return never null
+     * @see HistoricalCalculation#getSpecialtyName()
+     */
     public String getSpecialtyName()
     {
         return fSignedResult.getHistoricalCalculation().getSpecialtyName();
     }
     
+    /**
+     * Returns the result's associated station number.
+     * @return never null
+     * @see HistoricalCalculation#getUserStation()
+     */
     public String getUserStation()
     {
         return fSignedResult.getHistoricalCalculation().getUserStation();
@@ -88,16 +107,30 @@ public final class SummaryReportRow
         return fSignedResult.getHistoricalCalculation().getProviderType().or("");
     }
     
+    /**
+     * Returns the Result's signature timestamp.
+     * @return never null
+     * @see SignedResult#getSignatureTimestamp()
+     */
     public DateTime getSignatureTimestamp()
     {
         return fSignedResult.getSignatureTimestamp();
     }
     
+    /**
+     * Returns the Risk Model Name of the outcome this object represents.
+     * @return never null
+     * @see SignedResult#getOutcomes()
+     */
     public String getRiskModelName()
     {
         return fRiskModelName;
     }
     
+    /**
+     * Returns the actualy risk result of the outcome this object represents.
+     * @see SignedResult#getOutcomes()
+     */
     public float getOutcome()
     {
         return fSignedResult.getOutcomes().get(fRiskModelName);
@@ -112,6 +145,10 @@ public final class SummaryReportRow
                 .toString();
     }
     
+    /**
+     * Returns true if the given object is also a SummaryReportRow for the same
+     * SignedResult and outcome, false otherwise.
+     */
     @Override
     public boolean equals(final Object obj)
     {

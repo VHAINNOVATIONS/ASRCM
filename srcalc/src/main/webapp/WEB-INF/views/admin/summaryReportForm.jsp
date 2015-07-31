@@ -26,10 +26,13 @@
         <tr>
         <td class="attributeName">Specialties</td>
         <td>
-            <span class="springGeneratedCheckboxes">
+            <ul class="checkboxList">
+            <%-- Wrap each checkbox and its label in an <li> --%>
+            <li>
             <form:checkboxes path="specialtyNames" cssClass="springFormGenerated"
-                items="${specialtyList}" itemValue="name" itemLabel="name"/>
-            </span>
+                items="${specialtyList}" itemValue="name" itemLabel="name" delimiter="</li> <li>"/>
+            </li>
+            </ul>
             <form:errors path="specialtyNames" cssClass="error" />
         </td>
         </tr>

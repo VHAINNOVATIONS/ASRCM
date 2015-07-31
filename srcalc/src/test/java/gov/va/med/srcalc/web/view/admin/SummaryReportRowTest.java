@@ -54,6 +54,19 @@ public class SummaryReportRowTest
         assertThat(row1.toString(), not(isEmptyOrNullString()));
     }
     
+    @Test(expected = IllegalArgumentException.class)
+    public final void testInvalidModelName()
+    {
+        final SignedResult signedResult = SampleCalculations.signedThoracic();
+        new SummaryReportRow(signedResult, "foo bar");
+    }
+    
+    @Test(expected = NullPointerException.class)
+    public final void testNullSignedResult()
+    {
+        new SummaryReportRow(null, "foo bar");
+    }
+    
     @Test
     public final void testEquals()
     {

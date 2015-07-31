@@ -30,11 +30,25 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(SrcalcUrls.SUMMARY_REPORT)
 public class SummaryReportController
 {
-    static final String ATTRIBUTE_REPORT_PARAMETERS = "reportParameters";
-    static final String ATTRIBUTE_SPECIALTY_LIST = "specialtyList";
-    static final String ATTRIBUTE_PROCEDURE_LIST = "procedureList";
+    /**
+     * The attribute name of the {@link ResultSearchParameters} object.
+     */
+    public static final String ATTRIBUTE_REPORT_PARAMETERS = "reportParameters";
     
-    static final String ATTRIBUTE_REPORT = "report";
+    /**
+     * The attribute name of the List of Specialties for user selection.
+     */
+    public static final String ATTRIBUTE_SPECIALTY_LIST = "specialtyList";
+    
+    /**
+     * The attribute na e of the List of eligible procedures for user selection.
+     */
+    public static final String ATTRIBUTE_PROCEDURE_LIST = "procedureList";
+    
+    /**
+     * The attribute name of the {@link SummaryReport} object when showing the report.
+     */
+    public static final String ATTRIBUTE_REPORT = "report";
     
     private static final Logger LOGGER = LoggerFactory.getLogger(SummaryReportController.class);
     

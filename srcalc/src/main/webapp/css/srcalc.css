@@ -181,8 +181,7 @@ form.srcalcForm fieldset > ol > li {
 /* Put some horizontal padding between radio buttons */
 form.srcalcForm label.radioLabel,
 /* Spring wraps the generated radios in a <span>. (This is documented.) */
-form.srcalcForm .springGeneratedRadios > span,
-form.srcalcForm .springGeneratedCheckboxes > span {
+form.srcalcForm .springGeneratedRadios > span {
 	padding-right: 1em;
 }
 
@@ -191,6 +190,11 @@ form.srcalcForm .springGeneratedCheckboxes > span {
 input[type="radio"].springFormGenerated,
 input[type="checkbox"].springFormGenerated {
 	margin-right: 2px;
+}
+
+form.srcalcForm ul.checkboxList {
+	list-style-type: none;
+	padding-left: 0em;
 }
 
 .error {

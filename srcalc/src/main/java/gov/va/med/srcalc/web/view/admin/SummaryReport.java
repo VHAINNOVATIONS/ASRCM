@@ -39,16 +39,26 @@ public final class SummaryReport
         fResults = Objects.requireNonNull(results);
     }
     
+    /**
+     * Returns the date this report was generated.
+     */
     public LocalDate getGenerationDate()
     {
         return fGenerationDate;
     }
     
+    /**
+     * Returns the search parameters used to generate this report. The returned object
+     * is mutable, but please don't modify it.
+     */
     public ResultSearchParameters getParameters()
     {
         return fParameters;
     }
     
+    /**
+     * Returns the actual search results.
+     */
     public SearchResults<SummaryReportRow> getResults()
     {
         return fResults;
