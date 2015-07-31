@@ -137,13 +137,9 @@ public final class Specialty implements Serializable
     }
     
     /**
-     * Returns all {@link RiskModel}s associated with the Specialty. 
-     * Note that these are fetched eagerly. If not then there is an
-     * issue when this method is called outside of a valid transaction.
-     *    This is the easiest solution since this table is small. If 
-     * it were large then this could be a performance issue. 
+     * Returns all {@link RiskModel}s associated with the Specialty. Caution: lazy-loaded.
      */
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     // Override strange defaults. See
     // <https://forum.hibernate.org/viewtopic.php?f=1&t=1037190>.
     @JoinTable(

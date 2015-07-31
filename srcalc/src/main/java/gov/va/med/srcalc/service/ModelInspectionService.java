@@ -76,7 +76,8 @@ public interface ModelInspectionService
     public RiskModel getRiskModelForId(int modelId);
     
     /**
-     * Get a list of all (@link Specialty) objects in the database.
+     * Get a list of all (@link Specialty) objects in the database. All associated
+     * {@link RiskModel}s, which are normally lazy-loaded, will be loaded as well.
      * @return a list ordered by name. 
      */
     public List<Specialty> getAllSpecialties();
