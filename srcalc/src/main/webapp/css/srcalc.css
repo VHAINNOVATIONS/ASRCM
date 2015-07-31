@@ -185,10 +185,16 @@ form.srcalcForm .springGeneratedRadios > span {
 	padding-right: 1em;
 }
 
-/* Spring-generated radio buttons don't put any space between the radio and the
-   label, so insert some ourselves. */
-input[type="radio"].springFormGenerated {
+/* Spring-generated radio buttons and checkboxes don't put any space between the control
+ * and the label, so insert some ourselves. */
+input[type="radio"].springFormGenerated,
+input[type="checkbox"].springFormGenerated {
 	margin-right: 2px;
+}
+
+form.srcalcForm ul.checkboxList {
+	list-style-type: none;
+	padding-left: 0em;
 }
 
 .error {
@@ -429,6 +435,28 @@ div#newVariableLinks, div#newRuleLink {
 /* Eliminate the top margin on the explanatory paragraph. */
 #editModelForm #termsUploadControls p:first-child {
 	margin-top: 0;
+}
+
+/* Reports */
+
+.reportTable {
+	/* Make report fonts a little smaller for increased data density. */
+	font-size: 90%;
+}
+
+.reportTable td, .reportTable th {
+	/* Ensure the cells don't squish together. */
+	padding-right: 0.4em;
+}
+
+.reportTable th {
+	text-align: left;
+}
+
+#summaryReportParametersForm #cptCode {
+	/* Make sure the control stays within the parent width even though the CPT codes are
+	   long. */
+	max-width: 50em;
 }
 
 /* ==========================================================================

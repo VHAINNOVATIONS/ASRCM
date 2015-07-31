@@ -7,7 +7,7 @@ import org.springframework.dao.DataAccessException;
 import gov.va.med.srcalc.domain.model.*;
 
 /**
- * Service Layer facade for administrative functionality.
+ * Service Layer facade for administering risk model definitions (including specialties).
  * @see gov.va.med.srcalc.service
  */
 public interface AdminService extends ModelInspectionService

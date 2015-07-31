@@ -36,4 +36,6 @@ public class Views
     public static final String EDIT_DISCRETE_NUMERICAL_VARIABLE = "admin/editDiscreteNumericalVariable.jsp";
     public static final String EDIT_RULE = "admin/editRule.jsp";
     public static final String EDIT_PROCEDURES = "admin/editProcedures.jsp";
+    public static final String SUMMARY_REPORT_FORM = "admin/summaryReportForm.jsp";
+    public static final String SUMMARY_REPORT_RESULTS = "admin/summaryReportResults.jsp";
 }

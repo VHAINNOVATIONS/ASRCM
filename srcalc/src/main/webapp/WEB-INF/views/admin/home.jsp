@@ -12,8 +12,9 @@
     
     <h3>Reports</h3>
     
+    <c:url var="summaryReportUrl" value="${srcalcUrls.summaryReport}" />
     <ul>
-    <li>Coming Soon...</li>
+    <li><a href="${summaryReportUrl}">Summary Report</a></li>
     </ul>
     
 </section>

@@ -23,6 +23,9 @@ public class SrcalcUrls
      */
     public static final String ADMIN_HOME = ADMIN_BASE;
     
+    // Note: even though it's against Java conventions, we intersperse constants and
+    // methods in this class to keep the constants next to their associated methods.
+    
     /**
      * Returns {@link #ADMIN_HOME}.
      */
@@ -47,5 +50,18 @@ public class SrcalcUrls
     public String getModelAdminHome()
     {
         return MODEL_ADMIN_HOME;
+    }
+    
+    /**
+     * The URL of the Summary Report.
+     */
+    public static final String SUMMARY_REPORT = "/admin/reports/summary";
+    
+    /**
+     * Returns {@link #SUMMARY_REPORT}.
+     */
+    public String getSummaryReport()
+    {
+        return SUMMARY_REPORT;
     }
 }

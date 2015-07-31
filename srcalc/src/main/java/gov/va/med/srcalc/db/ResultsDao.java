@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import gov.va.med.srcalc.domain.calculation.HistoricalCalculation;
 import gov.va.med.srcalc.domain.calculation.SignedResult;
+import gov.va.med.srcalc.util.SearchResults;
 
 /**
  * Data Access Object (DAO) for {@link HistoricalCalculation}s and {@link SignedResult}s.
@@ -58,4 +59,15 @@ public class ResultsDao
         getCurrentSession().persist(result);
     }
     
+    /**
+     * Returns {@link SignedResult}s from the database that match the given parameters.
+     * @param parameters
+     * @return the found items, in descending signed date order
+     */
+    public SearchResults<SignedResult> getSignedResults(
+            final ResultSearchParameters parameters)
+    {
+        // ResultSearchParameters does all the work for us.
+        return parameters.doSearch(getCurrentSession());
+    }
 }
