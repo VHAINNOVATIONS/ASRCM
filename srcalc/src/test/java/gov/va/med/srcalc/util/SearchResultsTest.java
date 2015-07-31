@@ -12,7 +12,7 @@ public class SearchResultsTest
     @Test
     public final void testEquals()
     {
-        EqualsVerifier.forClass(SearchResults.class);
+        EqualsVerifier.forClass(SearchResults.class).verify();
     }
     
 }

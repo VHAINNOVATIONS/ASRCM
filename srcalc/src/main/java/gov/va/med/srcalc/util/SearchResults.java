@@ -7,12 +7,15 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
 /**
- * Encapsulates the results of a search, including the actual items found and whether the
- * list of items was truncated due to a maximum. Immutable.
+ * <p>Encapsulates the results of a search, including the actual items found and whether
+ * the list of items was truncated due to a maximum. Immutable.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
  * 
  * @param <T> the type of objects found
  */
-public class SearchResults<T>
+public final class SearchResults<T>
 {
     private final ImmutableList<T> fFoundItems;
     private final boolean fTruncated;
