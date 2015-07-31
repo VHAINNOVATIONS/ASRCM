@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.text.WordUtils;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -261,7 +262,12 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 final String[] factorSplitArray = healthFactor.split("\\^");
                 if(HEALTH_FACTORS_SET.contains(factorSplitArray[1]))
                 {
-                    patient.getHealthFactors().add(new HealthFactor(format.parseLocalDate(factorSplitArray[0]), factorSplitArray[1]));
+                    final LocalDate factorDate = format.parseLocalDate(factorSplitArray[0]);
+                    // Only include health factors that are within the last year.
+                    if(factorDate.isAfter(LocalDate.now().minusYears(1)))
+                    {
+                        patient.getHealthFactors().add(new HealthFactor(factorDate, factorSplitArray[1]));
+                    }
                 }
             }
             LOGGER.debug("Retrieved Health factors: {} ", patient.getHealthFactors());
