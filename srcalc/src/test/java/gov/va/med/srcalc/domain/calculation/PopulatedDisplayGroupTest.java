@@ -36,15 +36,21 @@ public class PopulatedDisplayGroupTest
                 SampleModels.genderVariable());
         final Patient patient = SampleCalculations.dummyPatient(1);
         patient.getHealthFactors().add(new HealthFactor(LocalDate.now(), "Dummy health factor"));
+        // Test a PopulatedDisplayGroup with only variables
         final PopulatedDisplayGroup group = new PopulatedDisplayGroup(variables, patient);
+        // Test a PopulatedDisplayGroup with variables and reference information
         final PopulatedDisplayGroup group2 = new PopulatedDisplayGroup(
                 Arrays.asList(SampleModels.functionalStatusVariable()), patient);
+        // Test a PopulatedDisplayGroup with only reference information
+        final PopulatedDisplayGroup group3 = new PopulatedDisplayGroup(
+                SampleModels.medicationsVariableGroup(), patient);
         assertEquals(
                 "Display Group 'Demographics' with display items [Age, Gender]",
                 group.toString());
         // Make sure the toString works with reference information too.
         assertEquals("Display Group 'Clinical Conditions or Diseases - Recent' with display items [Health Factors, Functional Status]",
                 group2.toString());
+        assertEquals("Display Group 'Medications' with display items [Active Medications]", group3.toString());
     }
     
     @Test

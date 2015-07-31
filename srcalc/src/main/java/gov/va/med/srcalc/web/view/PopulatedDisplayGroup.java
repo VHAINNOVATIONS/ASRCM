@@ -27,8 +27,9 @@ import com.google.common.collect.ImmutableList;
  * designed for inheritance.</p>
  */
 public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayGroup>
-{   
+{
     private static final String CLINICAL_GROUP = "Clinical Conditions or Diseases - Recent";
+    private static final String MEDICATIONS_GROUP = "Medications";
     
     private final List<DisplayItem> fDisplayItems;
     
@@ -73,19 +74,21 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
             fDisplayItems.add(visitor.getView(var, ""));
         }
         
-        // These group names are all well-known and are hard-coded as such.
-        if(group.getName().equalsIgnoreCase(CLINICAL_GROUP))
-        {
-            final List<String> factorList = new ArrayList<String>();
-            // Output the date without the time of day.
-            final DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yy");
-            for(final HealthFactor factor: patient.getHealthFactors())
-            {
-                factorList.add(String.format("%s %s%n", format.print(factor.getDate()), factor.getName()));
-            }
-            final DisplayItem refInfo = new ReferenceItem("Health Factors", variables.get(0).getGroup(), factorList);
-            fDisplayItems.add(0, refInfo);
-        }
+        addReferenceInfo(group, patient);
+    }
+    
+    /**
+     * Constructs an instance and populates the groups with any patient notes that are
+     * automatically retrieved. This constructor should only be used to place reference information
+     * into the group after all PopulatedDisplayGroups have been built for variables.
+     * @param group the VariableGroup to which the reference information belongs
+     * @param patient the current patient in the calculation
+     */
+    public PopulatedDisplayGroup(final VariableGroup group, final Patient patient)
+    {
+        fVariables = ImmutableList.of();
+        fDisplayItems = new ArrayList<>();
+        addReferenceInfo(group, patient);
     }
 
     /**
@@ -124,6 +127,27 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
     public String getName()
     {
         return getGroup().getName();
+    }
+    
+    private void addReferenceInfo(final VariableGroup group, final Patient patient)
+    {
+     // These group names are all well-known and are hard-coded as such.
+        if(group.getName().equalsIgnoreCase(CLINICAL_GROUP))
+        {
+            final List<String> factorList = new ArrayList<String>();
+            // Output the date without the time of day.
+            final DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yy");
+            for(final HealthFactor factor: patient.getHealthFactors())
+            {
+                factorList.add(String.format("%s %s%n", format.print(factor.getDate()), factor.getName()));
+            }
+            final DisplayItem refInfo = new ReferenceItem("Health Factors", group, factorList);
+            fDisplayItems.add(0, refInfo);
+        }
+        else if(group.getName().equalsIgnoreCase(MEDICATIONS_GROUP))
+        {
+            fDisplayItems.add(0, new ReferenceItem("Active Medications", group, patient.getActiveMedications()));
+        }
     }
     
     /**

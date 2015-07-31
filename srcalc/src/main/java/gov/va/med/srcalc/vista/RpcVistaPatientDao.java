@@ -125,6 +125,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // Retrieve all health factors in the last year from VistA and filter
             // by the list given to us by the NSO.
             retrieveHealthFactors(dfn, patient);
+            retrieveActiveMedications(dfn, patient);
             
             LOGGER.debug("Loaded {} from VistA.", patient);
             return patient;
@@ -269,6 +270,27 @@ public class RpcVistaPatientDao implements VistaPatientDao
         catch(final Exception e)
         {
             LOGGER.warn("Unable to retrieve health factors. {}", e.toString());
+        }
+    }
+    
+    private void retrieveActiveMedications(final int dfn, final Patient patient)
+    {
+        try
+        {
+            patient.getActiveMedications().clear();
+            // Leave the start and end dates blank so that we get only the current medications.
+            final List<String> rpcResults = fProcedureCaller.doRpc(
+                    fDuz, RemoteProcedure.GET_ACTIVE_MEDICATIONS, String.valueOf(dfn), "", "");
+            for(final String medResult: rpcResults)
+            {
+                final List<String> medInfo = Splitter.on('^').splitToList(medResult);
+                patient.getActiveMedications().add(medInfo.get(1));
+            }
+            LOGGER.debug("Retrieved Active Medications: {} ", patient.getActiveMedications());
+        }
+        catch(final Exception e)
+        {
+            LOGGER.warn("Unable to retrieve active medications. {}", e.toString());
         }
     }
     
