@@ -1,15 +1,18 @@
 package gov.va.med.srcalc.db;
 
 import static org.junit.Assert.*;
-
 import gov.va.med.srcalc.domain.calculation.HistoricalCalculation;
 import gov.va.med.srcalc.domain.calculation.SignedResult;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.util.SearchResults;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Tests {@link ResultsDao}. Integration Testing (with an actual database) is really the
@@ -28,6 +32,8 @@ import com.google.common.collect.ImmutableMap;
 @Transactional // run each test in its own (rolled-back) transaction
 public class ResultsDaoIT extends IntegrationTest
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultsDaoIT.class);
+
     /*
      * Sample Results & Component Parts
      * 
@@ -38,6 +44,9 @@ public class ResultsDaoIT extends IntegrationTest
     private static final String SPECIALTY_CARDIAC = "Cardiac";
     private static final String PROVIDER_TYPE_1 = "Physicians (M.D. and D.O.)";
     private static final String CPT_CODE_1 = "47010";
+    private static final String STATION_NUMBER_1 = "500";
+    private static final String STATION_NUMBER_2 = "442";
+    private static final String STATION_NUMBER_3 = "512";
     private static final ImmutableMap<String, String> VALUES_PROCEDURE_1 =
             ImmutableMap.of("procedure", "47010 - Open drainage liver lesion (19.4)");
     private static final String CPT_CODE_2 = "44141";
@@ -53,7 +62,7 @@ public class ResultsDaoIT extends IntegrationTest
 
     private final HistoricalCalculation fHistoricalCalc1 = new HistoricalCalculation(
             SPECIALTY_THORACIC,
-            "500",
+            STATION_NUMBER_1,
             new DateTime(2015, 3, 4, 10, 5).withSecondOfMinute(51),
             50,
             Optional.of(PROVIDER_TYPE_1));
@@ -68,7 +77,7 @@ public class ResultsDaoIT extends IntegrationTest
     
     private final HistoricalCalculation fHistoricalCalc2 = new HistoricalCalculation(
             SPECIALTY_THORACIC,
-            "442",
+            STATION_NUMBER_2,
             new DateTime(2014, 1, 1, 12, 55),
             60,
             Optional.of(PROVIDER_TYPE_1));
@@ -83,7 +92,7 @@ public class ResultsDaoIT extends IntegrationTest
     
     private final HistoricalCalculation fHistoricalCalc3 = new HistoricalCalculation(
             SPECIALTY_NEURO,
-            "442",
+            STATION_NUMBER_3,
             new DateTime(2015, 6, 7, 10, 5),
             70,
             Optional.<String>absent());
@@ -98,7 +107,7 @@ public class ResultsDaoIT extends IntegrationTest
     
     private final HistoricalCalculation fHistoricalCalc4 = new HistoricalCalculation(
             SPECIALTY_CARDIAC,
-            "512",
+            STATION_NUMBER_2,
             new DateTime(2015, 6, 8, 13, 34, 23),
             80,
             Optional.<String>absent());
@@ -114,11 +123,20 @@ public class ResultsDaoIT extends IntegrationTest
     @Autowired
     ResultsDao fResultsDao;
     
+    @Before
+    public final void setup()
+    {
+        // Note: @Before methods _are_ executed within the test transaction, so this is
+        // safe.
+        populateSampleResults();
+    }
+    
     /**
      * Populates the test database with the above sample results.
      */
     private void populateSampleResults()
     {
+        LOGGER.info("Populating sample results in DB.");
         fResultsDao.persistSignedResult(fSampleResult1);
         fResultsDao.persistSignedResult(fSampleResult2);
         fResultsDao.persistSignedResult(fSampleResult3);
@@ -130,8 +148,6 @@ public class ResultsDaoIT extends IntegrationTest
     public final void testGetSignedResultsBySpecialty()
     {
         /* Setup */
-        populateSampleResults();
-        
         final SearchResults<SignedResult> expectedResults = new SearchResults<>(
                 ImmutableList.of(fSampleResult3, fSampleResult1, fSampleResult2),
                 false);
@@ -139,8 +155,7 @@ public class ResultsDaoIT extends IntegrationTest
         /* Behavior */
 
         final ResultSearchParameters params = new ResultSearchParameters();
-        params.getSpecialtyNames().add("Neurosurgery");
-        params.getSpecialtyNames().add("Thoracic");
+        params.setSpecialtyNames(ImmutableSet.of("Neurosurgery", "Thoracic"));
         final SearchResults<SignedResult> actualResults =
                 params.doSearch(getHibernateSession());
         
@@ -152,8 +167,6 @@ public class ResultsDaoIT extends IntegrationTest
     public final void testGetSignedResultsByCpt()
     {
         /* Setup */
-        populateSampleResults();
-        
         final SearchResults<SignedResult> expectedResults = new SearchResults<>(
                 ImmutableList.of(fSampleResult3, fSampleResult1),
                 false);
@@ -161,7 +174,7 @@ public class ResultsDaoIT extends IntegrationTest
         /* Behavior */
 
         final ResultSearchParameters params = new ResultSearchParameters();
-        params.setCptCode(Optional.of(CPT_CODE_1));
+        params.setCptCode(CPT_CODE_1);
         final SearchResults<SignedResult> actualResults =
                 params.doSearch(getHibernateSession());
         
@@ -169,4 +182,39 @@ public class ResultsDaoIT extends IntegrationTest
         assertEquals(expectedResults, actualResults);
     }
     
+    @Test
+    public final void testGetSignedResultsByDate()
+    {
+        /* Setup */
+        final SearchResults<SignedResult> expectedResults = new SearchResults<>(
+                ImmutableList.of(fSampleResult1), false);
+        
+        /* Behavior */
+        final ResultSearchParameters params = new ResultSearchParameters();
+        params.setMinDate(new LocalDate(2015, 3, 4));
+        params.setMaxDate(new LocalDate(2015, 3, 4));
+        final SearchResults<SignedResult> actualResults =
+                params.doSearch(getHibernateSession());
+        
+        /* Verification */
+        assertEquals(expectedResults, actualResults);
+    }
+    
+    @Test
+    public final void testGetSignedResultsByStation()
+    {
+        /* Setup */
+        final SearchResults<SignedResult> expectedResults = new SearchResults<>(
+                ImmutableList.of(fSampleResult4, fSampleResult2), false);
+        
+        /* Behavior */
+        final ResultSearchParameters params = new ResultSearchParameters();
+        params.setStationNumber(STATION_NUMBER_2);
+        final SearchResults<SignedResult> actualResults =
+                params.doSearch(getHibernateSession());
+        
+        /* Verification */
+        assertEquals(expectedResults, actualResults);
+        
+    }
 }

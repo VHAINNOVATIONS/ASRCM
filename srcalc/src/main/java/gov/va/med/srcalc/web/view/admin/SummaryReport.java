@@ -14,8 +14,11 @@ import gov.va.med.srcalc.util.SearchResults;
  * 
  * <p>The references in this class cannot be changed, but it is not truly immutable
  * because {@link ResultSearchParameters} is mutable.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
  */
-public class SummaryReport
+public final class SummaryReport
 {
     private final LocalDate fGenerationDate;
     private final ResultSearchParameters fParameters;
@@ -59,6 +62,36 @@ public class SummaryReport
                 .add("parameters", fParameters)
                 .add("results", fResults)
                 .toString();
+    }
+    
+    /**
+     * <p>Returns true if the given object is also a SummaryReport with the same
+     * properties.</p>
+     * 
+     * <p>Note that this operation relies on {@link ResultSearchParameters}, which is
+     * mutable: take care using these objects in a Set or Map.</p>
+     */
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof SummaryReport)
+        {
+            final SummaryReport other = (SummaryReport)obj;
+
+            return Objects.equals(this.fGenerationDate, other.fGenerationDate) &&
+                    Objects.equals(this.fParameters, other.fParameters) &&
+                    Objects.equals(this.fResults, other.fResults);
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(fGenerationDate, fParameters, fResults);
     }
     
 }

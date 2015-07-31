@@ -64,6 +64,12 @@ public interface ModelInspectionService
     public ImmutableList<Procedure> getAllProcedures();
     
     /**
+     * Returns all risk calculation-eligible Procedures, ordered by CPT code for convenience.
+     * @return an immutable list, ordered by CPT code
+     */
+    public ImmutableList<Procedure> getEligibleProcedures();
+    
+    /**
      * Returns the {@link RiskModel} with the given ID.
      * @return RiskModelS
      */

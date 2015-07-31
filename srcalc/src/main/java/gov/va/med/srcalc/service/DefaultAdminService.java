@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -222,6 +223,28 @@ public class DefaultAdminService implements AdminService
     public ImmutableList<Procedure> getAllProcedures()
     {
         return fProcedureDao.getAllProcedures();
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public ImmutableList<Procedure> getEligibleProcedures()
+    {
+        // Just load all the Procedures from the DB and keep the ones we want. This is a
+        // candidate for optimization if we find it has a performance impact.
+        final ImmutableList<Procedure> allProcedures = getAllProcedures();
+        
+        final ArrayList<Procedure> eligibleProcedures = new ArrayList<>(
+                // Avoid any reallocation and copying during this operation.
+                allProcedures.size());
+
+        for (final Procedure p : allProcedures)
+        {
+            if (p.isEligible())
+            {
+                eligibleProcedures.add(p);
+            }
+        }
+        return ImmutableList.copyOf(eligibleProcedures);
     }
 
     @Transactional(readOnly = true)

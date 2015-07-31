@@ -94,12 +94,14 @@ public class SampleCalculations
         }
     }
     
-    // TODO: can we combine these with ResultsDaoIT?
-    
+    /**
+     * Returns a sample {@link HistoricalCalculation} object for the Thoracic specialty.
+     * Other property values are unspecified.
+     */
     public static HistoricalCalculation historicalThoracic()
     {
         return new HistoricalCalculation(
-                "Thoracic",
+                SampleModels.thoracicSpecialty().getName(),
                 "500",
                 new DateTime(2015, 3, 4, 10, 5).withSecondOfMinute(51),
                 50,
@@ -110,6 +112,14 @@ public class SampleCalculations
     private static final ImmutableMap<String, String> VALUES_PROCEDURE_1 =
             ImmutableMap.of("procedure", "47010 - Open drainage liver lesion (19.4)");
     
+    public static final String THORACIC_MODEL_30_DAY = "Thoracic 30-Day";
+    public static final String THORACIC_MODEL_90_DAY = "Thoracic 90-Day";
+    
+    /**
+     * Returns a sample {@link SignedResult} object for the Thoracic specialty. There are
+     * two outcomes: {@link #THORACIC_MODEL_90_DAY} and {@link #THORACIC_MODEL_30_DAY}.
+     * The other property values are unspecified.
+     */
     public static SignedResult signedThoracic()
     {
         return new SignedResult(
@@ -119,6 +129,7 @@ public class SampleCalculations
             new DateTime(2015, 3, 4, 10, 10).withSecondOfMinute(52),
             VALUES_PROCEDURE_1,
             // Intentionally flip to emulate arbitrary DB order.
-            ImmutableMap.of("Thoracic 90-Day", 25.1f, "Thoracic 30-Day", 20.1f));
+            ImmutableMap.of(THORACIC_MODEL_90_DAY, 25.1f, THORACIC_MODEL_30_DAY, 20.1f));
+        
     }
 }

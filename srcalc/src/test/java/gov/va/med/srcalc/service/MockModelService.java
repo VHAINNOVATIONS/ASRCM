@@ -72,6 +72,12 @@ public class MockModelService implements ModelInspectionService
     {
         return SampleModels.procedureList();
     }
+    
+    @Override
+    public ImmutableList<Procedure> getEligibleProcedures()
+    {
+        return getAllProcedures();
+    }
 
     @Override
     public ImmutableCollection<Rule> getAllRules()

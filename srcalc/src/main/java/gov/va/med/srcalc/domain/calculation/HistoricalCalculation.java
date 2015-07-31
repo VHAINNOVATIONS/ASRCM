@@ -66,6 +66,7 @@ public final class HistoricalCalculation implements Serializable
      * Constructs an instance with the given properties.
      * @param specialtyName see {@link #getSpecialtyName()}
      * @param providerStation see {@link #getUserStation()}
+     * @param startTimestamp see {@link #getStartTimestamp()}
      * @param secondsToFirstRun see {@link #getSecondsToFirstRun()}
      * @param providerType see {@link #getProviderType()}.
      */

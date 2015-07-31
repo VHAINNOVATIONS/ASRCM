@@ -181,13 +181,15 @@ form.srcalcForm fieldset > ol > li {
 /* Put some horizontal padding between radio buttons */
 form.srcalcForm label.radioLabel,
 /* Spring wraps the generated radios in a <span>. (This is documented.) */
-form.srcalcForm .springGeneratedRadios > span {
+form.srcalcForm .springGeneratedRadios > span,
+form.srcalcForm .springGeneratedCheckboxes > span {
 	padding-right: 1em;
 }
 
-/* Spring-generated radio buttons don't put any space between the radio and the
-   label, so insert some ourselves. */
-input[type="radio"].springFormGenerated {
+/* Spring-generated radio buttons and checkboxes don't put any space between the control
+ * and the label, so insert some ourselves. */
+input[type="radio"].springFormGenerated,
+input[type="checkbox"].springFormGenerated {
 	margin-right: 2px;
 }
 
@@ -445,6 +447,12 @@ div#newVariableLinks, div#newRuleLink {
 
 .reportTable th {
 	text-align: left;
+}
+
+#summaryReportParametersForm #cptCode {
+	/* Make sure the control stays within the parent width even though the CPT codes are
+	   long. */
+	max-width: 50em;
 }
 
 /* ==========================================================================
