@@ -106,6 +106,10 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
         return fDisplayItems;
     }
     
+    /**
+     * Returns the {@link VariableGroup} that this PopulatedDisplayGroup bases its groupings off of
+     * for {@link DisplayItem}s
+     */
     public VariableGroup getGroup()
     {
         return fGroup;

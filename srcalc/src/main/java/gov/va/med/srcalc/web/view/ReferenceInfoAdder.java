@@ -12,8 +12,24 @@ import java.util.Map;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class ReferenceInfoAdder
+/**
+ * <p>A class used to add reference information to existing PopulatedDisplayGroups and create
+ * PopulatedDisplayGroups that do not exist, in order to store reference information to display
+ * for the user.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
+ */
+public final class ReferenceInfoAdder
 {
+    /**
+     * Adds reference information for all of the given {@link PopulatedDisplayGroup}s and adds any groups
+     * that are missing in order to include their reference information as well.
+     * @param map a map where they key is a VariableGroup and the value is a List of Variables
+     *          that all belong to the same VariableGroup
+     * @param groupList a list of all previously existing PopulatedDisplayGroup
+     * @param patient the patient to add reference information from
+     */
     public static void addRefInfo(final Map<VariableGroup, List<Variable>> map, final List<PopulatedDisplayGroup> groupList,
             final Patient patient)
     {
@@ -22,7 +38,7 @@ public class ReferenceInfoAdder
         {
             addReferenceInfo(populatedGroup.getGroup(), populatedGroup, patient);
         }
-        final VariableGroup medicationsGroup = new VariableGroup("Medications", 3);
+        final VariableGroup medicationsGroup = new VariableGroup(VariableGroup.MEDICATIONS_GROUP, 3);
         // Check to see if the any groups are missing because of that group not having variables.
         // Add the group with reference information if it is missing.
         if(!map.containsKey(medicationsGroup))
@@ -31,7 +47,7 @@ public class ReferenceInfoAdder
             addReferenceInfo(medicationsGroup, populatedMedGroup, patient);
             groupList.add(populatedMedGroup);
         }
-        final VariableGroup clinicalConditionsGroup = new VariableGroup("Clinical Conditions or Diseases - Recent", 5);
+        final VariableGroup clinicalConditionsGroup = new VariableGroup(VariableGroup.CLINICAL_GROUP, 5);
         if(!map.containsKey(clinicalConditionsGroup))
         {
             final PopulatedDisplayGroup populatedClinicalGroup = new PopulatedDisplayGroup(clinicalConditionsGroup, patient);
