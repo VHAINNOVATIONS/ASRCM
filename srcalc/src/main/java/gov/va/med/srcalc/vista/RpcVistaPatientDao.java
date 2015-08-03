@@ -1,12 +1,21 @@
 package gov.va.med.srcalc.vista;
 
+
 import java.io.StringReader;
+
+import gov.va.med.crypto.VistaKernelHash;
+import gov.va.med.srcalc.domain.HealthFactor;
+import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.calculation.RetrievedValue;
+import gov.va.med.srcalc.vista.AdlNotes.AdlNote;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -15,6 +24,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.text.WordUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
@@ -22,11 +33,6 @@ import org.springframework.dao.RecoverableDataAccessException;
 import org.xml.sax.InputSource;
 
 import com.google.common.base.Splitter;
-
-import gov.va.med.crypto.VistaKernelHash;
-import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.calculation.RetrievedValue;
-import gov.va.med.srcalc.vista.AdlNotes.AdlNote;
 
 /**
  * Implementation of {@link VistaPatientDao} using remote procedures. Each
@@ -55,6 +61,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         tempMap.put("F", "Female");
         TRANSLATION_MAP = Collections.unmodifiableMap(tempMap);
     }
+    
     private final VistaProcedureCaller fProcedureCaller;
     
     private final String fDuz;
@@ -123,7 +130,10 @@ public class RpcVistaPatientDao implements VistaPatientDao
             
             // Retrieve all labs from VistA
             retrieveLabs(dfn, patient);
-            
+            // Retrieve all health factors in the last year from VistA and filter
+            // by the list given to us by the NSO.
+            retrieveHealthFactors(dfn, patient);
+            retrieveActiveMedications(dfn, patient);
             // Retrieve the patient's nursing notes from VistA
             retrieveAdlNotes(dfn, patient);
             
@@ -244,6 +254,57 @@ public class RpcVistaPatientDao implements VistaPatientDao
             }
         }
     }
+
+    private void retrieveHealthFactors(final int dfn, final Patient patient)
+    {
+        try
+        {
+            patient.getHealthFactors().clear();
+            final List<String> rpcResults = fProcedureCaller.doRpc(
+                    fDuz, RemoteProcedure.GET_HEALTH_FACTORS, String.valueOf(dfn));
+            // Now that we have all of the health factors, filter out any that are not present
+            // in the list provided by the NSO.
+            final Iterator<String> iter = rpcResults.iterator();
+            final DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yy");
+            while(iter.hasNext())
+            {
+                final String healthFactor = iter.next();
+                final String[] factorSplitArray = healthFactor.split("\\^");
+                if(HEALTH_FACTORS_SET.contains(factorSplitArray[1]))
+                {
+                    patient.getHealthFactors().add(new HealthFactor(format.parseLocalDate(factorSplitArray[0]), factorSplitArray[1]));
+                }
+            }
+            LOGGER.debug("Retrieved Health factors: {} ", patient.getHealthFactors());
+        }
+        catch(final Exception e)
+        {
+            LOGGER.warn("Unable to retrieve health factors. {}", e);
+        }
+    }
+    
+    private void retrieveActiveMedications(final int dfn, final Patient patient)
+    {
+        try
+        {
+            patient.getActiveMedications().clear();
+            // Leave the start and end dates blank so that we get only the current medications.
+            final List<String> rpcResults = fProcedureCaller.doRpc(
+                    fDuz, RemoteProcedure.GET_ACTIVE_MEDICATIONS, String.valueOf(dfn), "", "");
+            for(final String medResult: rpcResults)
+            {
+                // The expected format is "<identifier>^<medication name>^<date>^^^<dose per day>"
+                // for example, "403962R;O^METOPROLOL TARTRATE 50MG TAB^3110228^^^3"
+                final List<String> medInfo = Splitter.on('^').splitToList(medResult);
+                patient.getActiveMedications().add(medInfo.get(1));
+            }
+            LOGGER.debug("Retrieved Active Medications: {} ", patient.getActiveMedications());
+        }
+        catch(final Exception e)
+        {
+            LOGGER.warn("Unable to retrieve active medications. {}", e);
+        }
+    }
     
     private void retrieveAdlNotes(final int dfn, final Patient patient)
     {
@@ -265,7 +326,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 final Unmarshaller unmarshaller = context.createUnmarshaller();
                 
                 final AdlNotes allNotes = (AdlNotes) unmarshaller.unmarshal(input);
-                patient.setAdlNotes(allNotes.getAllNotes());
+                patient.getAdlNotes().clear();
+                patient.getAdlNotes().addAll(allNotes.getAllNotes());
             }
         }
         catch(final Exception e)

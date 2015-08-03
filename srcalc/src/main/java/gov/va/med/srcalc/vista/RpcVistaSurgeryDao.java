@@ -52,7 +52,7 @@ public class RpcVistaSurgeryDao implements VistaSurgeryDao
                 fDuz,
                 String.valueOf(result.getPatientDfn()),
                 cptString,
-                VISTA_DATE_TIME_FORMAT.print(result.getSignatureDateTime()),
+                VISTA_DATE_TIME_FORMAT.print(result.getSignatureTimestamp()),
                 outcomes);
         
         final VistaOperationResult rpcResult =

@@ -78,5 +78,8 @@
     <h3>Procedures</h3>
     <c:url var="editProcedures" value="/admin/procedures" />
     <p><a href="${editProcedures}" class="btn-link">Manage Procedures</a></p>
+    
+    <c:url var="adminHomeUrl" value="${srcalcUrls.adminHome}" />
+    <p><a href="${adminHomeUrl}">Return to Administration Home</a></p>
 </section>
 </srcalc:adminPage>

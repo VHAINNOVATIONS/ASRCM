@@ -9,6 +9,9 @@
 <%-- Make the appInfo object (added by AppAttributesInitializer) easily accessible. --%>
 <c:set var="appInfo" scope="page" value="${applicationScope['srcalc.appInfo']}" />
 
+<%-- Provide a single reference for URLs. --%>
+<jsp:useBean id="srcalcUrls" class="gov.va.med.srcalc.web.SrcalcUrls" scope="request" />
+
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -26,7 +29,7 @@
     <link rel="stylesheet" type="text/css" href="${jqueryUiCss}">
     <c:url var="srcalcCss" value="/css/srcalc.css"/>
     <link rel="stylesheet" type="text/css" href="${srcalcCss}">
-    <c:url var="dataTablesCss" value="/js/vendor/DataTables-1.10.5/jquery.dataTables.min.css"/>
+    <c:url var="dataTablesCss" value="/js/vendor/DataTables-1.10.5/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" type="text/css" href="${dataTablesCss}">
     <c:url var="modernizrJs" value="/js/vendor/modernizr-2.6.2.min.js"/>
     <script type="text/javascript" src="${modernizrJs}"></script>

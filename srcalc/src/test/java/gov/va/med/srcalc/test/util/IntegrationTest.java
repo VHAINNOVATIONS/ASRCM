@@ -35,6 +35,24 @@ public abstract class IntegrationTest
         return fSessionFactory.getCurrentSession();
     }
     
+    /**
+     * <p>Simluates a new Hibernate Session by flushing and clearing the current Session.
+     * </p>
+     * 
+     * <p>Many integration tests span multiple user requests, which would normally be
+     * executed under separate transactions and therefore separate Hibernate Sessions.
+     * These tests, however, run in a single transaction and therefore a single Session,
+     * so this method is useful to simulate a new Session to make the tests a bit more
+     * realistic.</p>
+     */
+    protected void simulateNewSession()
+    {
+        fLogger.info(
+                "Flushing and clearing the Hibernate Session to simulate a new one.");
+        getHibernateSession().flush();
+        getHibernateSession().clear();
+    }
+    
     @After
     public void after()
     {

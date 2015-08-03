@@ -12,6 +12,7 @@ import gov.va.med.srcalc.service.AdminService;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.test.util.TestHelpers;
 import gov.va.med.srcalc.util.DisplayNameConditions;
+import gov.va.med.srcalc.web.SrcalcUrls;
 import gov.va.med.srcalc.web.view.Views;
 import gov.va.med.srcalc.web.view.admin.EditRiskModel;
 
@@ -88,8 +89,8 @@ public class EditRiskModelControllerIT extends IntegrationTest
                 .param("terms[2].termType", "RULE")
                 .param("terms[2].key", ruleName)
                 .param("terms[2].coefficient", "1.5"))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl(AdminHomeController.BASE_URL));
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl(SrcalcUrls.MODEL_ADMIN_HOME));
         
         // Simulate a new Session.
         getHibernateSession().flush();

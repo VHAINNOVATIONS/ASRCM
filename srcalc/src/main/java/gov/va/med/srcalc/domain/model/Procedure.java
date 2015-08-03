@@ -223,8 +223,20 @@ public final class Procedure
         fEligible = eligible;
     }
 
+    /**
+     * Returns the same as {@link #getShortString()}.
+     */
     @Override
     public String toString()
+    {
+        return getShortString();
+    }
+    
+    /**
+     * Returns a String in the format "cptCode - shortDesc - RVU".
+     */
+    @Transient
+    public String getShortString()
     {
         return String.format("%s - %s (%s)",
                 // Use Float.toString() to get only as many fractional part
@@ -233,8 +245,7 @@ public final class Procedure
     }
     
     /**
-     * Like {@link #toString()} but uses the long instead of short description.
-     * Sometimes the long description is too long to be appropriate for toString().
+     * Returns a String in the format "cptCode - longDesc - RVU".
      * @return a possibly-long String (we do not limit the length of the long
      * description)
      */

@@ -217,6 +217,11 @@ public class SampleModels
         return makeVariableGroup("Demographics", 1);
     }
     
+    public static VariableGroup medicationsVariableGroup()
+    {
+        return makeVariableGroup("Medications", 3);
+    }
+    
     public static VariableGroup labVariableGroup()
     {
         return makeVariableGroup("Laboratory Values", 4);

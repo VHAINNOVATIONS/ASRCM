@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.RecoverableDataAccessException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,10 +76,12 @@ public class DisplayResultsController
             resultString = fCalculationService.signRiskCalculation(
                     lastResult, electronicSignature).getDescription();
         }
-        catch(final RecoverableDataAccessException e)
+        catch (final DataAccessException e)
         {
-            LOGGER.warn("There was a problem connecting to VistA", e);
-            resultString = "There was a problem connecting to VistA.";
+            final String msg =
+                    "There was a problem communicating to the database or VistA.";
+            LOGGER.warn(msg, e);
+            resultString = msg;
         }
         // The json could be expanded to return more information/fields
         final HashMap<String, String> jsonStatus = new HashMap<>();

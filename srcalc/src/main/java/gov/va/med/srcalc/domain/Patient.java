@@ -4,6 +4,7 @@ import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 import gov.va.med.srcalc.vista.AdlNotes.AdlNote;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,9 @@ public class Patient implements Serializable
     private RetrievedValue fWeight;
     private RetrievedValue fWeight6MonthsAgo;
     private RetrievedValue fHeight;
+    private List<HealthFactor> fHealthFactors;
     private Map<String, RetrievedValue> fLabs;
+    private List<String> fActiveMedications;
     private List<AdlNote> fAdlNotes;
     
     public Patient()
@@ -42,6 +45,8 @@ public class Patient implements Serializable
         this.fGender = gender;
         this.fAge = age;
         this.fLabs = new HashMap<String, RetrievedValue>();
+        this.fHealthFactors = new ArrayList<HealthFactor>();
+        this.fActiveMedications = new ArrayList<String>();
     }
     
     /**
@@ -167,6 +172,7 @@ public class Patient implements Serializable
     }
     
     /**
+<<<<<<< HEAD
      * Returns the nursing notes regarding the patient in String form.
      */
     public List<AdlNote> getAdlNotes()
@@ -174,9 +180,22 @@ public class Patient implements Serializable
         return fAdlNotes;
     }
     
-    public void setAdlNotes(final List<AdlNote> adlNotes)
+    /**
+     * Returns the patient's health factors as a list of {@link HealthFactor}s.
+     */
+    public List<HealthFactor> getHealthFactors()
     {
-        fAdlNotes = adlNotes;
+        return fHealthFactors;
+    }
+    
+    /**
+     * Returns the patient's medications as a list of Strings. Currently the only information
+     * needed is the name of each active medication. Although the date is not present, the
+     * medications are listed in order of most recent to least recent.
+     */
+    public List<String> getActiveMedications()
+    {
+        return fActiveMedications;
     }
     
     @Override

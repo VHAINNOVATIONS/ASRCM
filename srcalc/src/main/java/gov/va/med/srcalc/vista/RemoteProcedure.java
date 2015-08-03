@@ -11,6 +11,11 @@ public enum RemoteProcedure
     GET_USER("SR ASRC USER"),
     
     /**
+     * Returns Person Classes for the current user.
+     */
+    GET_USER_PERSON_CLASSES("SR ASRC PERSON CLASSES"),
+    
+    /**
      * Returns information about the given patient.
      */
     GET_PATIENT("SR ASRC PATIENT"),
@@ -40,6 +45,16 @@ public enum RemoteProcedure
      */
     GET_LABS("SR ASRC LAB RESULTS"),
     
+    /**
+     * Returns any of the patient's health factors in the last year.
+     */
+    GET_HEALTH_FACTORS("SR ASRC HEALTH FACTORS"),
+    
+    /**
+     * Returns all VA and non-VA active medications for the patient.
+     */
+    GET_ACTIVE_MEDICATIONS("ORQQPS LIST"),
+
     /**
      * Returns all nursing notes with the "NURSING ADMISSION EVALUATION NOTE" title.
      */

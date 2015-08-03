@@ -3,7 +3,9 @@ package gov.va.med.srcalc.domain.model;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression1;
 import static gov.va.med.srcalc.domain.model.SampleModels.expression2;
 import static org.junit.Assert.*;
+import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.calculation.BooleanValue;
+import gov.va.med.srcalc.domain.calculation.DiscreteNumericalValue;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -49,6 +51,37 @@ public class ValueMatcherTest
         final StandardEvaluationContext ec = new StandardEvaluationContext();
         final BooleanValue value = new BooleanValue(SampleModels.dnrVariable(), false);
         assertTrue(vm.evaluate(ec, value));
+    }
+    
+    /**
+     * Tests that {@link DiscreteNumericalValue}s work properly in ValueMatchers.
+     */
+    @Test
+    public final void testDiscreteValue() throws Exception
+    {
+        final DiscreteNumericalVariable wbc = SampleModels.wbcVariable();
+        final ValueMatcher wbcMatcher = new ValueMatcher(wbc, "#wbc == '>11.0'", true);
+        
+        final StandardEvaluationContext ec = new StandardEvaluationContext();
+        final DiscreteNumericalValue valWnl = wbc.makeValue(10.0f);
+        ec.setVariable("wbc", valWnl.getValue());
+        assertFalse(wbcMatcher.evaluate(ec, valWnl));
+        
+        final DiscreteNumericalValue valHigh = wbc.makeValue(11.5f);
+        ec.setVariable("wbc", valHigh.getValue());
+        assertTrue(wbcMatcher.evaluate(ec, valHigh));
+    }
+    
+    @Test(expected = ConfigurationException.class)
+    public final void testBadExpression()
+    {
+        final ValueMatcher vm = new ValueMatcher(
+                // Note single equals
+                SampleModels.dnrVariable(), "#dnr = 1", true);
+        final StandardEvaluationContext ec = new StandardEvaluationContext();
+        final BooleanValue value = new BooleanValue(SampleModels.dnrVariable(), true);
+        ec.setVariable("dnr", value.getValue());
+        vm.evaluate(ec, value);
     }
     
     @Test

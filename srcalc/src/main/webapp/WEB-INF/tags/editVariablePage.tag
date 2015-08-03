@@ -103,7 +103,7 @@
     </table>
     <div class="actionButtons">
     <ol>
-    <li><c:url var="cancelUrl" value="/admin" />
+    <li><c:url var="cancelUrl" value="${srcalcUrls.modelAdminHome}" />
         <a class="btn-default" href="${cancelUrl}">Cancel</a></li>
     <li><button class="button-em" type="submit">Save Changes</button></li>
     </ol>

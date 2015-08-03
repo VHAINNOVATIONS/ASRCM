@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.vista;
 
+import org.springframework.dao.DataAccessException;
+
 import gov.va.med.srcalc.domain.calculation.SignedResult;
 
 /**
@@ -11,5 +13,9 @@ import gov.va.med.srcalc.domain.calculation.SignedResult;
  */
 public interface VistaSurgeryDao
 {
+    /**
+     * Saves the given SignedResult to VistA surgery.
+     * @throws DataAccessException if communication with VistA fails
+     */
     public void saveCalculationResult(final SignedResult result);
 }

@@ -189,6 +189,9 @@ public class AdminServiceIT extends IntegrationTest
     public final void testGetAllSpecialties() 
     {
         List<Specialty> specList = fAdminService.getAllSpecialties();
+        
+        // Simulate a new Session to ensure the risk models are actually loaded.
+        simulateNewSession();
 
         assertEquals( 7, specList.size() );
         assertEquals( "Cardiac", specList.get(0).getName() );
@@ -198,5 +201,7 @@ public class AdminServiceIT extends IntegrationTest
         assertEquals( "Thoracic", specList.get(4).getName() );
         assertEquals( "Urology", specList.get(5).getName() );
         assertEquals( "Vascular", specList.get(6).getName() );
+        // Ensure RiskModels are loaded.
+        assertEquals(1, specList.get(0).getRiskModels().size());
     }
 }

@@ -2,15 +2,22 @@ package gov.va.med.srcalc.service;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
+import java.util.HashMap;
+
+import gov.va.med.srcalc.db.ResultsDao;
 import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.calculation.*;
-import gov.va.med.srcalc.domain.model.SampleModels;
-import gov.va.med.srcalc.domain.model.Specialty;
+import gov.va.med.srcalc.domain.model.*;
+import gov.va.med.srcalc.test.util.TestAuthnProvider;
 import gov.va.med.srcalc.vista.*;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Tests the {@link DefaultCalculationService} class. Note that these are unit tests, not
@@ -23,8 +30,12 @@ public class DefaultCalculationServiceTest
     private static final String VALID_ESIG_CODE = "eSigCode";
     
     private SpecialtyDao fMockSpecialtyDao;
-    private VistaPatientDao fPatientDao;
-    private VistaSurgeryDao fSurgeryDao;
+    private VistaPatientDao fMockPatientDao;
+    private VistaSurgeryDao fMockSurgeryDao;
+    private ResultsDao fMockResultsDao;
+    
+    @Rule
+    public final TestAuthnProvider fAuthnProvider = new TestAuthnProvider();
     
     @Before
     public void setup()
@@ -36,25 +47,34 @@ public class DefaultCalculationServiceTest
         when(fMockSpecialtyDao.getByName(specialty.getName())).thenReturn(specialty);
         
         // And make VistaPatientDao.getPatient actually return a patient.
-        fPatientDao = mock(VistaPatientDao.class);
-        when(fPatientDao.getPatient(SAMPLE_PATIENT_DFN))
+        fMockPatientDao = mock(VistaPatientDao.class);
+        when(fMockPatientDao.getPatient(SAMPLE_PATIENT_DFN))
             .thenReturn(SampleCalculations.dummyPatient(SAMPLE_PATIENT_DFN));
         // Default to bad signature.
-        when(fPatientDao.saveRiskCalculationNote(anyInt(), anyString(), anyString()))
+        when(fMockPatientDao.saveRiskCalculationNote(anyInt(), anyString(), anyString()))
             .thenReturn(VistaPatientDao.SaveNoteCode.INVALID_SIGNATURE);
-        when(fPatientDao.saveRiskCalculationNote(eq(SAMPLE_PATIENT_DFN), eq(VALID_ESIG_CODE), anyString()))
+        when(fMockPatientDao.saveRiskCalculationNote(eq(SAMPLE_PATIENT_DFN), eq(VALID_ESIG_CODE), anyString()))
             .thenReturn(VistaPatientDao.SaveNoteCode.SUCCESS);
 
         // These don't need any special setup: we just verify certain calls.
-        fSurgeryDao = MockVistaDaos.mockSurgeryDao();
+        fMockSurgeryDao = MockVistaDaos.mockSurgeryDao();
+        fMockResultsDao = mock(ResultsDao.class);
+    }
+    
+    /**
+     * Constructs a new DefaultCalculationService using the above mock DAOs.
+     */
+    private DefaultCalculationService createWithMocks()
+    {
+        return new DefaultCalculationService(
+                fMockSpecialtyDao, fMockPatientDao, fMockSurgeryDao, fMockResultsDao);
     }
     
     @Test
     public final void testGetValidSpecialties()
     {
         // Create the class under test.
-        final DefaultCalculationService s = new DefaultCalculationService(
-                fMockSpecialtyDao, fPatientDao, fSurgeryDao);
+        final DefaultCalculationService s = createWithMocks();
 
         // Behavior verification.
         assertEquals(SampleModels.specialtyList(), s.getValidSpecialties());
@@ -63,20 +83,19 @@ public class DefaultCalculationServiceTest
     @Test
     public final void testStartNewCalculation()
     {
-        final DateTime testStartDateTime = new DateTime();
+        final DateTime testStartDateTime = DateTime.now();
 
         // Create the class under test.
-        final DefaultCalculationService s = new DefaultCalculationService(
-                fMockSpecialtyDao, fPatientDao, fSurgeryDao);
+        final DefaultCalculationService s = createWithMocks();
         
         // Behavior verification.
         final Calculation calc = s.startNewCalculation(SAMPLE_PATIENT_DFN);
         assertEquals(SAMPLE_PATIENT_DFN, calc.getPatient().getDfn());
-        assertTrue("start date not in the past",
+        assertTrue("start date should be in the past",
                 // DateTime has millisecond precision, so the current time may
                 // still be the same. Use "less than or equal to".
-                calc.getStartDateTime().compareTo(new DateTime()) <= 0);
-        assertTrue("start date not after test start",
+                calc.getStartDateTime().compareTo(DateTime.now()) <= 0);
+        assertTrue("start date should be after test start",
                 calc.getStartDateTime().compareTo(testStartDateTime) >= 0);
     }
     
@@ -86,8 +105,7 @@ public class DefaultCalculationServiceTest
         final Specialty thoracicSpecialty = SampleModels.thoracicSpecialty();
         
         // Create the class under test.
-        final DefaultCalculationService s = new DefaultCalculationService(
-                fMockSpecialtyDao, fPatientDao, fSurgeryDao);
+        final DefaultCalculationService s = createWithMocks();
         final Calculation calc = s.startNewCalculation(SAMPLE_PATIENT_DFN);
         
         // Behavior verification.
@@ -101,8 +119,7 @@ public class DefaultCalculationServiceTest
         final int PATIENT_DFN = 1;
         
         // Create the class under test.
-        final DefaultCalculationService s = new DefaultCalculationService(
-                fMockSpecialtyDao, fPatientDao, fSurgeryDao);
+        final DefaultCalculationService s = createWithMocks();
         final Calculation calc = s.startNewCalculation(PATIENT_DFN);
         
         // Behavior verification.
@@ -110,10 +127,39 @@ public class DefaultCalculationServiceTest
     }
     
     @Test
+    public final void testRunCalculation() throws Exception
+    {
+        // Setup
+        final Specialty thoracicSpecialty = SampleModels.thoracicSpecialty();
+        final DefaultCalculationService s = createWithMocks();
+        final Calculation calc = s.startNewCalculation(SAMPLE_PATIENT_DFN);
+        s.setSpecialty(calc, thoracicSpecialty.getName());
+        final ImmutableMap<AbstractVariable, Value> thoracicValues =
+                SampleCalculations.thoracicValues();
+        
+        /* Behavior & Verification */
+        
+        s.runCalculation(calc, thoracicValues.values());
+        // First run: for ASRC-59, we will have to persist the HistoricalCalculation here,
+        // but for now we don't.
+        verify(fMockResultsDao, never())
+            .persistHistoricalCalc(calc.getHistoricalCalculation().get());
+        
+        // Try now with tweaked values and verify that the service didn't try to
+        // re-persist the HistoricalCalculation.
+        final HashMap<AbstractVariable, Value> tweakedValues =
+                new HashMap<>(thoracicValues);
+        final ProcedureVariable procVar = SampleModels.procedureVariable();
+        tweakedValues.put(procVar, procVar.makeValue(SampleModels.repairRightProcedure()));
+        s.runCalculation(calc, tweakedValues.values());
+        verify(fMockResultsDao, never())
+            .persistHistoricalCalc(calc.getHistoricalCalculation().get());
+    }
+    
+    @Test
     public final void testSignCalculation() throws Exception
     {
-        final DefaultCalculationService s = new DefaultCalculationService(
-                fMockSpecialtyDao, fPatientDao, fSurgeryDao);
+        final DefaultCalculationService s = createWithMocks();
         final CalculationResult result = SampleCalculations.thoracicResult();
         final SignedResult expectedSignedResult = result.signed();
 
@@ -121,28 +167,29 @@ public class DefaultCalculationServiceTest
         s.signRiskCalculation(result, VALID_ESIG_CODE);
         
         // Verification
-        verify(fPatientDao).saveRiskCalculationNote(
+        verify(fMockPatientDao).saveRiskCalculationNote(
                 result.getPatientDfn(), VALID_ESIG_CODE, result.buildNoteBody());
-        // SignedResult.equals() compares the times at second precision, so
-        // this test will fail if the second happens to roll over during this
-        // test. The chance of this happening should be <1%.
-        verify(fSurgeryDao).saveCalculationResult(expectedSignedResult);
+        // SignedResult.equals() compares the times at second precision, so this test will
+        // fail if the second happens to roll over during this test. The chance of this
+        // happening should be <1%.
+        verify(fMockSurgeryDao).saveCalculationResult(expectedSignedResult);
+        verify(fMockResultsDao).persistSignedResult(expectedSignedResult);
     }
     
     @Test
     public final void testSignCalculationInvalidSig() throws Exception
     {
         final String invalidSigCode = "invalidCode";
-        final DefaultCalculationService s = new DefaultCalculationService(
-                fMockSpecialtyDao, fPatientDao, fSurgeryDao);
+        final DefaultCalculationService s = createWithMocks();
         final CalculationResult result = SampleCalculations.thoracicResult();
 
         // Behavior
         s.signRiskCalculation(result, invalidSigCode);
         
         // Verification
-        verify(fPatientDao).saveRiskCalculationNote(
+        verify(fMockPatientDao).saveRiskCalculationNote(
                 result.getPatientDfn(), invalidSigCode, result.buildNoteBody());
-        verify(fSurgeryDao, never()).saveCalculationResult(any(SignedResult.class));
+        verify(fMockSurgeryDao, never()).saveCalculationResult((SignedResult)anyObject());
+        verify(fMockResultsDao, never()).persistSignedResult((SignedResult)anyObject());
     }
 }
