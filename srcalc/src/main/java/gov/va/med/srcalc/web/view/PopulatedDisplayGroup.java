@@ -1,6 +1,5 @@
 package gov.va.med.srcalc.web.view;
 
-import gov.va.med.srcalc.domain.HealthFactor;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.BooleanVariable;
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable;
@@ -13,13 +12,10 @@ import gov.va.med.srcalc.domain.model.VariableGroup;
 
 import java.util.*;
 
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import com.google.common.collect.ImmutableList;
 
 /**
- * <p>Contains a list of {@link Variable}s in the same {@link VariableGroup}.
+ * <p>Contains a list of {@link DisplayItem}s in the same {@link VariableGroup}.
  * This is a separate class from VariableGroup because the latter is a
  * persistent entity.</p>
  * 
@@ -28,10 +24,8 @@ import com.google.common.collect.ImmutableList;
  */
 public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayGroup>
 {   
-    private static final String CLINICAL_GROUP = "Clinical Conditions or Diseases - Recent";
-    
+    private final VariableGroup fGroup;
     private final List<DisplayItem> fDisplayItems;
-    
     private final ImmutableList<Variable> fVariables;
     
     /**
@@ -43,6 +37,7 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
      */
     public PopulatedDisplayGroup(final List<? extends Variable> variables, final Patient patient)
     {
+        fGroup = variables.get(0).getGroup();
         // Check precondition: variable list is not empty
         if (variables.isEmpty())
         {
@@ -50,10 +45,9 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
         }
         
         // Check precondition: variables all have the same group
-        final VariableGroup group = variables.get(0).getGroup();
         for (final Variable var : variables)
         {
-            if (!var.getGroup().equals(group))
+            if (!var.getGroup().equals(fGroup))
             {
                 throw new IllegalArgumentException(
                         "variables do not all have the same group");
@@ -72,20 +66,20 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
             final Visitor visitor = new Visitor();
             fDisplayItems.add(visitor.getView(var, ""));
         }
-        
-        // These group names are all well-known and are hard-coded as such.
-        if(group.getName().equalsIgnoreCase(CLINICAL_GROUP))
-        {
-            final List<String> factorList = new ArrayList<String>();
-            // Output the date without the time of day.
-            final DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yy");
-            for(final HealthFactor factor: patient.getHealthFactors())
-            {
-                factorList.add(String.format("%s %s%n", format.print(factor.getDate()), factor.getName()));
-            }
-            final DisplayItem refInfo = new ReferenceItem("Health Factors", variables.get(0).getGroup(), factorList);
-            fDisplayItems.add(0, refInfo);
-        }
+    }
+    
+    /**
+     * Constructs an instance and populates the groups with any patient notes that are
+     * automatically retrieved. This constructor should only be used to place reference information
+     * into the group after all PopulatedDisplayGroups have been built for variables.
+     * @param group the VariableGroup to which the reference information belongs
+     * @param patient the current patient in the calculation
+     */
+    public PopulatedDisplayGroup(final VariableGroup group, final Patient patient)
+    {
+        fGroup = group;
+        fVariables = ImmutableList.of();
+        fDisplayItems = new ArrayList<>();
     }
 
     /**
@@ -109,13 +103,16 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
      */
     public List<DisplayItem> getDisplayItems()
     {
-        return Collections.unmodifiableList(fDisplayItems);
+        return fDisplayItems;
     }
     
+    /**
+     * Returns the {@link VariableGroup} that this PopulatedDisplayGroup bases its groupings off of
+     * for {@link DisplayItem}s
+     */
     public VariableGroup getGroup()
     {
-        // Since all Variables have the same group, just use the first's group.
-        return fDisplayItems.get(0).getDisplayGroup();
+        return fGroup;
     }
     
     /**
@@ -124,31 +121,6 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
     public String getName()
     {
         return getGroup().getName();
-    }
-    
-    /**
-     * This equals() method depends solely on the variables due to the fact that
-     * it is possible for {@link DisplayItem}s to have equal attributes such as
-     * display names and display groups, but be different variables.
-     */
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (obj instanceof PopulatedDisplayGroup)
-        {
-            final PopulatedDisplayGroup other = (PopulatedDisplayGroup)obj;
-            return this.getVariables().equals(other.getVariables());
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(getVariables());
     }
     
     /**

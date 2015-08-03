@@ -1,8 +1,9 @@
-package gov.va.med.srcalc.domain.calculation;
+package gov.va.med.srcalc.web.view;
 
 import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.HealthFactor;
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.calculation.SampleCalculations;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.web.view.PopulatedDisplayGroup;
 
@@ -31,20 +32,18 @@ public class PopulatedDisplayGroupTest
     @Test
     public final void testToString()
     {
-        final List<AbstractVariable> variables = Arrays.asList(
-                SampleModels.ageVariable(),
-                SampleModels.genderVariable());
         final Patient patient = SampleCalculations.dummyPatient(1);
         patient.getHealthFactors().add(new HealthFactor(LocalDate.now(), "Dummy health factor"));
-        final PopulatedDisplayGroup group = new PopulatedDisplayGroup(variables, patient);
-        final PopulatedDisplayGroup group2 = new PopulatedDisplayGroup(
+        // Test a PopulatedDisplayGroup with variables and reference information
+        final PopulatedDisplayGroup group = new PopulatedDisplayGroup(
                 Arrays.asList(SampleModels.functionalStatusVariable()), patient);
-        assertEquals(
-                "Display Group 'Demographics' with display items [Age, Gender]",
-                group.toString());
-        // Make sure the toString works with reference information too.
+        final List<PopulatedDisplayGroup> groupList = new ArrayList<PopulatedDisplayGroup>();
+        groupList.add(group);
+        final List<Variable> varList = new ArrayList<Variable>();
+        varList.add(SampleModels.functionalStatusVariable());
+        ReferenceInfoAdder.addRefInfo(groupList, patient);
         assertEquals("Display Group 'Clinical Conditions or Diseases - Recent' with display items [Health Factors, Functional Status]",
-                group2.toString());
+                group.toString());
     }
     
     @Test
@@ -60,7 +59,7 @@ public class PopulatedDisplayGroupTest
         assertEquals(variables, group.getVariables());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public final void testEmptyVariables()
     {
         new PopulatedDisplayGroup(new ArrayList<Variable>(), SampleCalculations.dummyPatient(1));
@@ -73,5 +72,20 @@ public class PopulatedDisplayGroupTest
                 SampleModels.ageVariable(),
                 SampleModels.procedureVariable());
         new PopulatedDisplayGroup(variables, SampleCalculations.dummyPatient(1));
+    }
+    
+    @Test
+    public final void testOnlyReferenceInfo()
+    {
+        final Patient patient = SampleCalculations.dummyPatient(1);
+        // Test a PopulatedDisplayGroup with only reference information
+        final PopulatedDisplayGroup group = new PopulatedDisplayGroup(
+                SampleModels.medicationsVariableGroup(), patient);
+        assertEquals(Collections.<Variable>emptyList(), group.getVariables());
+        assertEquals(0, group.getDisplayItems().size());
+        final List<PopulatedDisplayGroup> groupList = new ArrayList<PopulatedDisplayGroup>();
+        groupList.add(group);
+        ReferenceInfoAdder.addRefInfo(groupList, patient);
+        assertEquals(1, group.getDisplayItems().size());
     }
 }

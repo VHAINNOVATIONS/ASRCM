@@ -48,7 +48,12 @@ public enum RemoteProcedure
     /**
      * Returns any of the patient's health factors in the last year.
      */
-    GET_HEALTH_FACTORS("SR ASRC HEALTH FACTORS");
+    GET_HEALTH_FACTORS("SR ASRC HEALTH FACTORS"),
+    
+    /**
+     * Returns all VA and non-VA active medications for the patient.
+     */
+    GET_ACTIVE_MEDICATIONS("ORQQPS LIST");
 
     /**
      * VistA returns this string if {@link #SAVE_PROGRESS_NOTE} succeeds.

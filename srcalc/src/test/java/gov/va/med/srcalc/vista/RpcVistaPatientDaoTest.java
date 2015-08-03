@@ -39,6 +39,9 @@ public class RpcVistaPatientDaoTest
     private final static List<String> VALID_HEALTH_FACTORS = ImmutableList.of("08/25/2014^REFUSED INFLUENZA IMMUNIZATION",
             "08/22/2014^DEPRESSION ASSESS POSITIVE (MDD)","08/22/2014^REFUSED INFLUENZA IMMUNIZATION",
             "08/20/2014^ALCOHOL - TREATMENT REFERRAL","08/08/2014^CURRENT SMOKER","07/30/2014^GEC HOMELESS");
+    private final static List<String> VALID_ACTIVE_MEDICATIONS = ImmutableList.of(
+            "403962R;O^METOPROLOL TARTRATE 50MG TAB^3110228^^^3",
+            "404062R;O^SIMVASTATIN 40MG TAB^3110228^^^3");
     
     private final static int PATIENT_DFN = 500;
 
@@ -201,5 +204,58 @@ public class RpcVistaPatientDaoTest
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);
         assertEquals(Collections.<HealthFactor>emptyList(), patient.getHealthFactors());
+    }
+    
+    @Test
+    public final void testInvalidHealthFactor()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ,
+                RemoteProcedure.GET_HEALTH_FACTORS,
+                String.valueOf(PATIENT_DFN)))
+                .thenReturn(ImmutableList.of("Invalid health factors String."));
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        assertEquals(Collections.<HealthFactor>emptyList(), patient.getHealthFactors());
+    }
+    
+    @Test
+    public final void testMedicationsValid()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ,
+                RemoteProcedure.GET_ACTIVE_MEDICATIONS,
+                String.valueOf(PATIENT_DFN), "", ""))
+                .thenReturn(VALID_ACTIVE_MEDICATIONS);
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        final List<String> expectedMedications = ImmutableList.of(
+                "METOPROLOL TARTRATE 50MG TAB", "SIMVASTATIN 40MG TAB");
+        assertEquals(expectedMedications, patient.getActiveMedications());
+    }
+    
+    @Test
+    public final void testNoMedications()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        assertEquals(Collections.<String>emptyList(), patient.getActiveMedications());
+    }
+    
+    @Test
+    public final void testInvalidMedications()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ,
+                RemoteProcedure.GET_ACTIVE_MEDICATIONS,
+                String.valueOf(PATIENT_DFN)))
+                .thenReturn(ImmutableList.of("Invalid medications String."));
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        assertEquals(Collections.<String>emptyList(), patient.getActiveMedications());
     }
 }

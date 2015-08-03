@@ -30,6 +30,7 @@ public class Patient implements Serializable
     private RetrievedValue fHeight;
     private List<HealthFactor> fHealthFactors;
     private Map<String, RetrievedValue> fLabs;
+    private List<String> fActiveMedications;
     
     public Patient()
     {
@@ -43,6 +44,7 @@ public class Patient implements Serializable
         this.fAge = age;
         this.fLabs = new HashMap<String, RetrievedValue>();
         this.fHealthFactors = new ArrayList<HealthFactor>();
+        this.fActiveMedications = new ArrayList<String>();
     }
     
     /**
@@ -165,12 +167,21 @@ public class Patient implements Serializable
     }
     
     /**
-     * Returns the patient's health factors in the form of:
-     * "MM/dd/yy <health factor name>".
+     * Returns the patient's health factors as a list of {@link HealthFactor}s.
      */
     public List<HealthFactor> getHealthFactors()
     {
         return fHealthFactors;
+    }
+    
+    /**
+     * Returns the patient's medications as a list of Strings. Currently the only information
+     * needed is the name of each active medication. Although the date is not present, the
+     * medications are listed in order of most recent to least recent.
+     */
+    public List<String> getActiveMedications()
+    {
+        return fActiveMedications;
     }
     
     @Override
