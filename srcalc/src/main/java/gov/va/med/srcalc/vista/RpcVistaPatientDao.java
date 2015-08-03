@@ -269,7 +269,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         }
         catch(final Exception e)
         {
-            LOGGER.warn("Unable to retrieve health factors. {}", e.toString());
+            LOGGER.warn("Unable to retrieve health factors. {}", e);
         }
     }
     
@@ -283,6 +283,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
                     fDuz, RemoteProcedure.GET_ACTIVE_MEDICATIONS, String.valueOf(dfn), "", "");
             for(final String medResult: rpcResults)
             {
+                // The expected format is "<identifier>^<medication name>^<date>^^^<dose per day>"
+                // for example, "403962R;O^METOPROLOL TARTRATE 50MG TAB^3110228^^^3"
                 final List<String> medInfo = Splitter.on('^').splitToList(medResult);
                 patient.getActiveMedications().add(medInfo.get(1));
             }
@@ -290,7 +292,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         }
         catch(final Exception e)
         {
-            LOGGER.warn("Unable to retrieve active medications. {}", e.toString());
+            LOGGER.warn("Unable to retrieve active medications. {}", e);
         }
     }
     

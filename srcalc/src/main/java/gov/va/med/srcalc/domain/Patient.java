@@ -176,7 +176,8 @@ public class Patient implements Serializable
     
     /**
      * Returns the patient's medications as a list of Strings. Currently the only information
-     * needed is the name of each active medication.
+     * needed is the name of each active medication. Although the date is not present, the
+     * medications are listed in order of most recent to least recent.
      */
     public List<String> getActiveMedications()
     {

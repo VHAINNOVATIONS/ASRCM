@@ -216,18 +216,7 @@ public class EnterVariablesController
             groupList.add(new PopulatedDisplayGroup(varList, calculation.getPatient()));
         }
         
-        final VariableGroup medicationsGroup = new VariableGroup("Medications", 3);
-        // Check to see if the any groups are missing because of that group not having variables.
-        // Add the group with reference information if it is missing.
-        if(!map.containsKey(medicationsGroup))
-        {
-            groupList.add(new PopulatedDisplayGroup(medicationsGroup, calculation.getPatient()));
-        }
-        final VariableGroup clinicalConditionsGroup = new VariableGroup("Clinical Conditions or Diseases - Recent", 5);
-        if(!map.containsKey(clinicalConditionsGroup))
-        {
-            groupList.add(new PopulatedDisplayGroup(clinicalConditionsGroup, calculation.getPatient()));
-        }
+        ReferenceInfoAdder.addRefInfo(map, groupList, calculation.getPatient());
         // Finally, sort the List.
         Collections.sort(groupList);
         

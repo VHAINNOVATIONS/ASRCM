@@ -18,6 +18,8 @@ public final class VariableGroup implements Comparable<VariableGroup>
      * be changed in the administrator UI.
      */
     public static final String PROCEDURE_GROUP = "Planned Procedure";
+    public static final String CLINICAL_GROUP = "Clinical Conditions or Diseases - Recent";
+    public static final String MEDICATIONS_GROUP = "Medications";
     
     private int fId;
     private String fName;
