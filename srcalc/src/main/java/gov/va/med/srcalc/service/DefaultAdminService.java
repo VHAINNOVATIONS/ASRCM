@@ -10,7 +10,6 @@ import gov.va.med.srcalc.domain.model.*;
 
 import javax.inject.Inject;
 
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -123,14 +122,7 @@ public class DefaultAdminService implements AdminService
     public List<Specialty> getAllSpecialties()
     {
         LOGGER.debug("Getting all Specialties.");
-        final List<Specialty> specialties = fSpecialtyDao.getAllSpecialties();
-        for (final Specialty s : specialties)
-        {
-            // Yes, this is coupling to Hibernate outside the db package, but this keeps
-            // it straightforward and simple.
-            Hibernate.initialize(s.getRiskModels());
-        }
-        return specialties;
+        return fSpecialtyDao.getAllSpecialtiesWithRiskModels();
     }
     
     @Override
