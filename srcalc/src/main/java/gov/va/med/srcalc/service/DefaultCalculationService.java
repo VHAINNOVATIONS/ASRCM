@@ -102,9 +102,8 @@ public class DefaultCalculationService implements CalculationService
         // If it was the first run, save the historical result for metrics.
         if (firstRun)
         {
-            // Can't save for now due to double-persist issue when trying to save
-            // SignedResult.
-            LOGGER.debug("Was first run, but saving HistoricalCalc not yet implemented.");
+            LOGGER.debug("Was first run: saving HistoricalCalculation.");
+            fResultsDao.persistHistoricalCalc(calculation.getHistoricalCalculation().get());
         }
         
         // Log something at INFO level for running a calculation, but don't log

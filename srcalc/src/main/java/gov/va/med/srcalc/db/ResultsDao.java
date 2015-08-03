@@ -56,7 +56,11 @@ public class ResultsDao
     public void persistSignedResult(final SignedResult result)
     {
         LOGGER.debug("Persisting new SignedResult: {}", result);
-        getCurrentSession().persist(result);
+        // persist() is actually more precisely what we want here, but for some reason
+        // Hibernate adds cascade=persist to properties with @MapsId (as SignedResult.
+        // historicalCalculation does). If we call persist() here, it tries to persist the
+        // already-persisted HistoricalCalculation and throws an Exception.
+        getCurrentSession().save(result);
     }
     
     /**
