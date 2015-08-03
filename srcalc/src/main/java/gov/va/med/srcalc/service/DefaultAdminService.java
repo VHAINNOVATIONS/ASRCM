@@ -122,7 +122,7 @@ public class DefaultAdminService implements AdminService
     public List<Specialty> getAllSpecialties()
     {
         LOGGER.debug("Getting all Specialties.");
-        return fSpecialtyDao.getAllSpecialties();
+        return fSpecialtyDao.getAllSpecialtiesWithRiskModels();
     }
     
     @Override
