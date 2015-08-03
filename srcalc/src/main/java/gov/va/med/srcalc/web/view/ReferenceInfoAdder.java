@@ -2,12 +2,10 @@ package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.HealthFactor;
 import gov.va.med.srcalc.domain.Patient;
-import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.domain.model.VariableGroup;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -30,8 +28,7 @@ public final class ReferenceInfoAdder
      * @param groupList a list of all previously existing PopulatedDisplayGroup
      * @param patient the patient to add reference information from
      */
-    public static void addRefInfo(final Map<VariableGroup, List<Variable>> map, final List<PopulatedDisplayGroup> groupList,
-            final Patient patient)
+    public static void addRefInfo(final List<PopulatedDisplayGroup> groupList, final Patient patient)
     {
         // Add reference information for existing groups.
         for(final PopulatedDisplayGroup populatedGroup: groupList)
@@ -41,19 +38,31 @@ public final class ReferenceInfoAdder
         final VariableGroup medicationsGroup = new VariableGroup(VariableGroup.MEDICATIONS_GROUP, 3);
         // Check to see if the any groups are missing because of that group not having variables.
         // Add the group with reference information if it is missing.
-        if(!map.containsKey(medicationsGroup))
+        if(!doesGroupExist(groupList, medicationsGroup))
         {
             final PopulatedDisplayGroup populatedMedGroup = new PopulatedDisplayGroup(medicationsGroup, patient);
             addReferenceInfo(medicationsGroup, populatedMedGroup, patient);
             groupList.add(populatedMedGroup);
         }
         final VariableGroup clinicalConditionsGroup = new VariableGroup(VariableGroup.CLINICAL_GROUP, 5);
-        if(!map.containsKey(clinicalConditionsGroup))
+        if(!doesGroupExist(groupList,clinicalConditionsGroup))
         {
             final PopulatedDisplayGroup populatedClinicalGroup = new PopulatedDisplayGroup(clinicalConditionsGroup, patient);
             addReferenceInfo(clinicalConditionsGroup, populatedClinicalGroup, patient);
             groupList.add(populatedClinicalGroup);
         }
+    }
+    
+    private static boolean doesGroupExist(final List<PopulatedDisplayGroup> groupList, final VariableGroup varGroup)
+    {
+        for(final PopulatedDisplayGroup currentGroup: groupList)
+        {
+            if(currentGroup.getName().equals(varGroup.getName()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     private static void addReferenceInfo(final VariableGroup group,

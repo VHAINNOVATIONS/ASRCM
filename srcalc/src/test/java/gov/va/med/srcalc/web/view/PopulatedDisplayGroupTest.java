@@ -39,11 +39,9 @@ public class PopulatedDisplayGroupTest
                 Arrays.asList(SampleModels.functionalStatusVariable()), patient);
         final List<PopulatedDisplayGroup> groupList = new ArrayList<PopulatedDisplayGroup>();
         groupList.add(group);
-        final Map<VariableGroup, List<Variable>> groupMap = new HashMap<VariableGroup, List<Variable>>();
         final List<Variable> varList = new ArrayList<Variable>();
         varList.add(SampleModels.functionalStatusVariable());
-        groupMap.put(group.getGroup(), varList);
-        ReferenceInfoAdder.addRefInfo(groupMap, groupList, patient);
+        ReferenceInfoAdder.addRefInfo(groupList, patient);
         assertEquals("Display Group 'Clinical Conditions or Diseases - Recent' with display items [Health Factors, Functional Status]",
                 group.toString());
     }
@@ -87,7 +85,7 @@ public class PopulatedDisplayGroupTest
         assertEquals(0, group.getDisplayItems().size());
         final List<PopulatedDisplayGroup> groupList = new ArrayList<PopulatedDisplayGroup>();
         groupList.add(group);
-        ReferenceInfoAdder.addRefInfo(Collections.<VariableGroup, List<Variable>> emptyMap(), groupList, patient);
+        ReferenceInfoAdder.addRefInfo(groupList, patient);
         assertEquals(1, group.getDisplayItems().size());
     }
 }

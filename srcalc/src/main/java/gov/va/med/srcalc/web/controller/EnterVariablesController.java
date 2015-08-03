@@ -216,7 +216,7 @@ public class EnterVariablesController
             groupList.add(new PopulatedDisplayGroup(varList, calculation.getPatient()));
         }
         
-        ReferenceInfoAdder.addRefInfo(map, groupList, calculation.getPatient());
+        ReferenceInfoAdder.addRefInfo(groupList, calculation.getPatient());
         // Finally, sort the List.
         Collections.sort(groupList);
         
