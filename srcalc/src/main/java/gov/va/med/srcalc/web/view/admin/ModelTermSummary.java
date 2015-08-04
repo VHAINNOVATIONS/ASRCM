@@ -3,9 +3,12 @@ package gov.va.med.srcalc.web.view.admin;
 import java.util.Objects;
 
 /**
- * Summarizes a model term for display to the user.
+ * <p>Summarizes a model term for display to the user.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
  */
-public class ModelTermSummary
+public final class ModelTermSummary
 {
     private final String fIdentificationString;
     
