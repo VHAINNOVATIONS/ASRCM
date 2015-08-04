@@ -64,4 +64,17 @@ public class SrcalcUrls
     {
         return SUMMARY_REPORT;
     }
+    
+    /**
+     * The URL of the Utilization Report.
+     */
+    public static final String UTILIZATION_REPORT = "/admin/reports/utilization";
+    
+    /**
+     * Returns {@link #UTILIZATION_REPORT}.
+     */
+    public String getUtilizationReport()
+    {
+        return UTILIZATION_REPORT;
+    }
 }

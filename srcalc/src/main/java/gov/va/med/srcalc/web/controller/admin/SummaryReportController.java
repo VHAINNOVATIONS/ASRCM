@@ -41,7 +41,7 @@ public class SummaryReportController
     public static final String ATTRIBUTE_SPECIALTY_LIST = "specialtyList";
     
     /**
-     * The attribute na e of the List of eligible procedures for user selection.
+     * The attribute name of the List of eligible procedures for user selection.
      */
     public static final String ATTRIBUTE_PROCEDURE_LIST = "procedureList";
     

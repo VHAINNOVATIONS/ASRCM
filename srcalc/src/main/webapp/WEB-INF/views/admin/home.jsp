@@ -13,8 +13,10 @@
     <h3>Reports</h3>
     
     <c:url var="summaryReportUrl" value="${srcalcUrls.summaryReport}" />
+    <c:url var="utilizationReportUrl" value="${srcalcUrls.utilizationReport}" />
     <ul>
     <li><a href="${summaryReportUrl}">Summary Report</a></li>
+    <li><a href="${utilizationReportUrl}">Utilization Report</a></li>
     </ul>
     
 </section>

@@ -449,8 +449,9 @@ div#newVariableLinks, div#newRuleLink {
 	padding-right: 0.4em;
 }
 
-.reportTable th {
-	text-align: left;
+.reportTable td.numerical {
+	/* Numbers are better right-aligned. */
+	text-align: right;
 }
 
 #summaryReportParametersForm #cptCode {

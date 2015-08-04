@@ -140,9 +140,8 @@ public class DefaultCalculationServiceTest
         /* Behavior & Verification */
         
         s.runCalculation(calc, thoracicValues.values());
-        // First run: for ASRC-59, we will have to persist the HistoricalCalculation here,
-        // but for now we don't.
-        verify(fMockResultsDao, never())
+        // First run: must persist the HistoricalCalculation.
+        verify(fMockResultsDao, times(1))
             .persistHistoricalCalc(calc.getHistoricalCalculation().get());
         
         // Try now with tweaked values and verify that the service didn't try to
@@ -152,8 +151,9 @@ public class DefaultCalculationServiceTest
         final ProcedureVariable procVar = SampleModels.procedureVariable();
         tweakedValues.put(procVar, procVar.makeValue(SampleModels.repairRightProcedure()));
         s.runCalculation(calc, tweakedValues.values());
-        verify(fMockResultsDao, never())
-            .persistHistoricalCalc(calc.getHistoricalCalculation().get());
+        // Verify that persistHistoricalCalc() wasn't called any more times.
+        verify(fMockResultsDao, times(1))
+            .persistHistoricalCalc(any(HistoricalCalculation.class));
     }
     
     @Test
