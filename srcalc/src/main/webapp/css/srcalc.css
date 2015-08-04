@@ -336,8 +336,8 @@ form.attributeEditForm td .preInstructions {
 
 /* The variable input form #riskVarForm */
 
-/* Hide the definition rows if Javascript is enabled */
-.js #riskVarForm .variableDef {
+/* Hide the definition rows and reference notes if Javascript is enabled */
+.js #riskVarForm .variableDef, .js #riskVarForm .referenceNotes{
 	display: none;
 }
 

@@ -47,6 +47,7 @@ public class Patient implements Serializable
         this.fLabs = new HashMap<String, RetrievedValue>();
         this.fHealthFactors = new ArrayList<HealthFactor>();
         this.fActiveMedications = new ArrayList<String>();
+        this.fAdlNotes = new ArrayList<AdlNote>();
     }
     
     /**
@@ -172,7 +173,6 @@ public class Patient implements Serializable
     }
     
     /**
-<<<<<<< HEAD
      * Returns the nursing notes regarding the patient in String form.
      */
     public List<AdlNote> getAdlNotes()

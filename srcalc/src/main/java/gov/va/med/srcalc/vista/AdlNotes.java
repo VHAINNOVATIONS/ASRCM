@@ -2,13 +2,14 @@ package gov.va.med.srcalc.vista;
 
 import gov.va.med.srcalc.util.XmlDateAdapter;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.joda.time.DateTime;
 
 /**
  * This class exists to be the top level element of an XML source containing a patient's
@@ -45,7 +46,7 @@ public final class AdlNotes
     public static final class AdlNote
     {
         private String fLocalTitle;
-        private Date fSignDate;
+        private DateTime fSignDate;
         private String fNoteBody;
 
         /**
@@ -65,14 +66,14 @@ public final class AdlNotes
         /**
          * Returns the date on which this note was signed.
          */
-        public Date getSignDate()
+        public DateTime getSignDate()
         {
             return this.fSignDate;
         }
         
         @XmlJavaTypeAdapter(XmlDateAdapter.class)
         @XmlAttribute(name = "signDate")
-        public void setSignDate(final Date signDate)
+        public void setSignDate(final DateTime signDate)
         {
             this.fSignDate = signDate;
         }

@@ -4,12 +4,11 @@
 <%-- This jsp expects for displayItemParam to be defined. --%>
 <ul class="patientNote">
     <c:choose>
-    <c:when test="${empty displayItemParam.referenceInfo}">
+    <c:when test="${empty displayItemParam.content}">
         <li>None</li>
     </c:when>
     <c:otherwise>
-        <c:forEach var="item"
-            items="${displayItemParam.referenceInfo}">
+        <c:forEach var="item" items="${displayItemParam.content}">
             <li>${item}</li>
         </c:forEach>
     </c:otherwise>

@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.web.view;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.github.rjeschke.txtmark.Processor;
@@ -74,6 +75,11 @@ public class ReferenceItem implements DisplayItem
      * each List item could be a paragraph element or an unordered item on a page.
      */
     public List<String> getReferenceInfo()
+    {
+        return Collections.emptyList();
+    }
+    
+    public List<String> getContent()
     {
         return fReferenceInfo;
     }

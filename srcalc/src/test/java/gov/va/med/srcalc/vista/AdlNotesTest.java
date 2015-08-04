@@ -1,12 +1,13 @@
 package gov.va.med.srcalc.vista;
 
 import static org.junit.Assert.assertEquals;
+import gov.va.med.srcalc.util.XmlDateAdapter;
 import gov.va.med.srcalc.vista.AdlNotes.AdlNote;
 
 import java.io.StringReader;
-import java.text.SimpleDateFormat;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.junit.Before;
@@ -19,17 +20,22 @@ import org.xml.sax.InputSource;
  */
 public class AdlNotesTest
 {
-    private static final String VALID_NOTES = "<notes><note localTitle=\"Note Title\" signDate=\"07/14/15\">" +
+    private static final String VALID_NOTES = "<notes><note localTitle='Note Title' signDate='07/14/15 12:12'>" +
         "<body>Body line 1\nBody line 2\n</body>" +
         "</note></notes>";
-    private static final String INVALID_DATE = "<notes><note localTitle=\"Note Title\" signDate=\"badDate\">" +
+    private static final String INVALID_DATE = "<notes><note localTitle='Note Title' signDate='badDate'>" +
             "<body>Body line 1\nBody line 2\n</body>" +
             "</note></notes>";
-    private static final String MISSING_ATTR = "<notes><note signDate=\"badDate\">" +
+    private static final String MISSING_ATTR = "<notes><note signDate='badDate'>" +
             "<body>Body line 1\nBody line 2\n</body>" +
             "</note></notes>";
-    
-    private static Unmarshaller fUnmarshaller;
+    private static final String CDATA_BLOCK = "<notes>\n<note localTitle='AUDIOLOGY - HEARING LOSS CONSULT' "
+            + "signDate='04/01/2004 22:24'>\n<body>\n"
+            + "<![CDATA[HX:  Patient was seen for hearing aid fitting and orientation.]]>\n"
+            + "<![CDATA[The batteries supplied for this hearing aid were: za312.]]>\n"
+            + "</body>\n</note>\n</notes>";
+
+    private Unmarshaller fUnmarshaller;
     
     @Before
     public void setup() throws Exception
@@ -41,16 +47,13 @@ public class AdlNotesTest
     @Test
     public void testXmlParsingValidString() throws Exception
     {
-        
         final InputSource input = new InputSource();
         input.setCharacterStream(new StringReader(VALID_NOTES));
-        
         final AdlNotes allNotes = (AdlNotes) fUnmarshaller.unmarshal(input);
         final AdlNote parsedNote = allNotes.getAllNotes().get(0);
         assertEquals("Note Title", parsedNote.getLocalTitle());
         assertEquals("Body line 1\nBody line 2\n", parsedNote.getNoteBody());
-        final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
-        assertEquals(format.parse("07/14/15"), parsedNote.getSignDate());
+        assertEquals(XmlDateAdapter.ADL_DATE_FORMAT.parseDateTime("07/14/15 12:12"), parsedNote.getSignDate());
     }
     
     @Test
@@ -62,7 +65,6 @@ public class AdlNotesTest
         final AdlNote parsedNote = allNotes.getAllNotes().get(0);
         assertEquals("Note Title", parsedNote.getLocalTitle());
         assertEquals("Body line 1\nBody line 2\n", parsedNote.getNoteBody());
-        // SimpleDateFormat returns a null value if the string could not be parsed.
         assertEquals(null, parsedNote.getSignDate());
     }
     
@@ -76,7 +78,24 @@ public class AdlNotesTest
         // Missing attributes remain null because they were never initialized
         assertEquals(null, parsedNote.getLocalTitle());
         assertEquals("Body line 1\nBody line 2\n", parsedNote.getNoteBody());
-        // SimpleDateFormat returns a null value if the string could not be parsed.
         assertEquals(null, parsedNote.getSignDate());
+    }
+    
+    @Test
+    public void testCdataParsing() throws Exception
+    {
+        final AdlNotes allNotes = parseAdlNotes(CDATA_BLOCK);
+        final AdlNote parsedNote = allNotes.getAllNotes().get(0);
+        assertEquals("AUDIOLOGY - HEARING LOSS CONSULT", parsedNote.getLocalTitle());
+        assertEquals("\nHX:  Patient was seen for hearing aid fitting and orientation.\n"
+                + "The batteries supplied for this hearing aid were: za312.\n", parsedNote.getNoteBody());
+        assertEquals(XmlDateAdapter.ADL_DATE_FORMAT.parseDateTime("04/01/2004 22:24"), parsedNote.getSignDate());
+    }
+    
+    private AdlNotes parseAdlNotes(final String adlString) throws JAXBException
+    {
+        final InputSource input = new InputSource();
+        input.setCharacterStream(new StringReader(adlString));
+        return (AdlNotes) fUnmarshaller.unmarshal(input);
     }
 }

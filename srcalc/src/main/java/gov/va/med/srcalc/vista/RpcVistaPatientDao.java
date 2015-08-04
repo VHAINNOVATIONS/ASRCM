@@ -7,7 +7,6 @@ import gov.va.med.crypto.VistaKernelHash;
 import gov.va.med.srcalc.domain.HealthFactor;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
-import gov.va.med.srcalc.vista.AdlNotes.AdlNote;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,6 +31,7 @@ import org.springframework.dao.NonTransientDataAccessResourceException;
 import org.springframework.dao.RecoverableDataAccessException;
 import org.xml.sax.InputSource;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 /**
@@ -310,19 +310,19 @@ public class RpcVistaPatientDao implements VistaPatientDao
     {
         try
         {
-            final String rpcResultString = fProcedureCaller.doRpc(
+            final List<String> rpcResults = fProcedureCaller.doRpc(
                     fDuz,
                     RemoteProcedure.GET_ADL_STATUS,
                     String.valueOf(dfn),
-                    ADL_ENTERPRISE_TITLE).get(0);
+                    ADL_ENTERPRISE_TITLE);
             // If the resultString is a success, add it to the patient's lab data.
             // Else, we don't need to do anything.
-            if(!rpcResultString.isEmpty())
+            if(!rpcResults.isEmpty())
             {
                 // Parse the String as XML and format it into separate notes
                 final InputSource input = new InputSource();
-                input.setCharacterStream(new StringReader(rpcResultString));
-                final JAXBContext context = JAXBContext.newInstance(AdlNote.class);
+                input.setCharacterStream(new StringReader(Joiner.on("").join(rpcResults)));
+                final JAXBContext context = JAXBContext.newInstance(AdlNotes.class);
                 final Unmarshaller unmarshaller = context.createUnmarshaller();
                 
                 final AdlNotes allNotes = (AdlNotes) unmarshaller.unmarshal(input);
@@ -334,7 +334,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         {
             // If an exception occurs for any reason, log a warning but allow the application
             // to continue without failure.
-            LOGGER.warn("Unable to retrieve patient's ADL status. {}", e.toString());
+            LOGGER.warn("Unable to retrieve patient's ADL status. {}", e);
         }
     }
     

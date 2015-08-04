@@ -9,6 +9,8 @@ import gov.va.med.srcalc.domain.model.NumericalVariable;
 import gov.va.med.srcalc.domain.model.ProcedureVariable;
 import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.domain.model.VariableGroup;
+import gov.va.med.srcalc.util.XmlDateAdapter;
+import gov.va.med.srcalc.vista.AdlNotes.AdlNote;
 
 import java.util.*;
 
@@ -23,7 +25,7 @@ import com.google.common.collect.ImmutableList;
  * designed for inheritance.</p>
  */
 public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayGroup>
-{   
+{
     private final VariableGroup fGroup;
     private final List<DisplayItem> fDisplayItems;
     private final ImmutableList<Variable> fVariables;
@@ -61,10 +63,18 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
         fDisplayItems = new ArrayList<>();
         for(final Variable var: variables)
         {
-            // TODO: If the variable has specified keys that have reference information,
-            // create a String that holds that reference information and use it in the view constructors.
+            final List<String> variableRefInfo = new ArrayList<String>();
+            if(var.getKey().equals("functionalStatus"))
+            {
+                for(final AdlNote note: patient.getAdlNotes())
+                {
+                    // Add a line break here so that the note body is separated.
+                    variableRefInfo.add(String.format("Local Title: %s Sign Date: %s%n%s%n%n",
+                            note.getLocalTitle(), XmlDateAdapter.ADL_DATE_FORMAT.print(note.getSignDate()), note.getNoteBody()));
+                }
+            }
             final Visitor visitor = new Visitor();
-            fDisplayItems.add(visitor.getView(var, ""));
+            fDisplayItems.add(visitor.getView(var, variableRefInfo));
         }
     }
     
@@ -149,7 +159,7 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
     private static class Visitor extends ExceptionlessVariableVisitor
     {
         private VariableView fView;
-        private String fReferenceInfo;
+        private List<String> fReferenceInfo;
         
         public Visitor()
         {
@@ -158,37 +168,37 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
         @Override
         public void visitNumerical(final NumericalVariable variable)
         {
-            fView = new NumericalVariableView(variable, ImmutableList.of(fReferenceInfo));
+            fView = new NumericalVariableView(variable, ImmutableList.copyOf(fReferenceInfo));
         }
         
         @Override
         public void visitBoolean(final BooleanVariable variable)
         {
-            fView = new BooleanVariableView(variable, ImmutableList.of(fReferenceInfo));
+            fView = new BooleanVariableView(variable, ImmutableList.copyOf(fReferenceInfo));
         }
         
         @Override
         public void visitMultiSelect(final MultiSelectVariable variable)
         {
-            fView = new MultiSelectVariableView(variable, ImmutableList.of(fReferenceInfo));
+            fView = new MultiSelectVariableView(variable, ImmutableList.copyOf(fReferenceInfo));
         }
         
         @Override
         public void visitProcedure(final ProcedureVariable variable)
         {
-            fView = new ProcedureVariableView(variable, ImmutableList.of(fReferenceInfo));
+            fView = new ProcedureVariableView(variable, ImmutableList.copyOf(fReferenceInfo));
         }
         
         @Override
         public void visitDiscreteNumerical(final DiscreteNumericalVariable variable)
         {
-            fView = new DiscreteNumericalVariableView(variable, ImmutableList.of(fReferenceInfo));
+            fView = new DiscreteNumericalVariableView(variable, ImmutableList.copyOf(fReferenceInfo));
         }
         
         /**
          * Visits the given variable and returns the constructed view.
          */
-        public VariableView getView(final Variable variable, final String referenceInfo)
+        public VariableView getView(final Variable variable, final List<String> referenceInfo)
         {
             fReferenceInfo = referenceInfo;
             visit(variable);

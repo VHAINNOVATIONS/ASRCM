@@ -58,7 +58,7 @@ public enum RemoteProcedure
     /**
      * Returns all nursing notes with the "NURSING ADMISSION EVALUATION NOTE" title.
      */
-    GET_ADL_STATUS("NURSING ADMISSION EVALUATION NOTE");
+    GET_ADL_STATUS("SR ASRC ADL NOTES");
 
     /**
      * VistA returns this string if {@link #SAVE_PROGRESS_NOTE} succeeds.
