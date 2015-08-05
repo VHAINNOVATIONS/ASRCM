@@ -9,8 +9,6 @@ import gov.va.med.srcalc.domain.model.NumericalVariable;
 import gov.va.med.srcalc.domain.model.ProcedureVariable;
 import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.domain.model.VariableGroup;
-import gov.va.med.srcalc.util.XmlDateAdapter;
-import gov.va.med.srcalc.vista.AdlNotes.AdlNote;
 
 import java.util.*;
 
@@ -63,18 +61,15 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
         fDisplayItems = new ArrayList<>();
         for(final Variable var: variables)
         {
-            final List<String> variableRefInfo = new ArrayList<String>();
-            if(var.getKey().equals("functionalStatus"))
-            {
-                for(final AdlNote note: patient.getAdlNotes())
-                {
-                    // Add a line break here so that the note body is separated.
-                    variableRefInfo.add(String.format("Local Title: %s Sign Date: %s%n%s%n%n",
-                            note.getLocalTitle(), XmlDateAdapter.ADL_DATE_FORMAT.print(note.getSignDate()), note.getNoteBody()));
-                }
-            }
             final Visitor visitor = new Visitor();
-            fDisplayItems.add(visitor.getView(var, variableRefInfo));
+            if(var.getRetriever() != null)
+            {
+                fDisplayItems.add(visitor.getView(var, var.getRetriever().retrieveReferenceInfo(patient, var)));
+            }
+            else
+            {
+                fDisplayItems.add(visitor.getView(var, ""));
+            }
         }
     }
     
@@ -118,7 +113,7 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
     
     /**
      * Returns the {@link VariableGroup} that this PopulatedDisplayGroup bases its groupings off of
-     * for {@link DisplayItem}s
+     * for {@link DisplayItem}s.
      */
     public VariableGroup getGroup()
     {
@@ -159,7 +154,7 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
     private static class Visitor extends ExceptionlessVariableVisitor
     {
         private VariableView fView;
-        private List<String> fReferenceInfo;
+        private String fReferenceInfo;
         
         public Visitor()
         {
@@ -168,37 +163,37 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
         @Override
         public void visitNumerical(final NumericalVariable variable)
         {
-            fView = new NumericalVariableView(variable, ImmutableList.copyOf(fReferenceInfo));
+            fView = new NumericalVariableView(variable, fReferenceInfo);
         }
         
         @Override
         public void visitBoolean(final BooleanVariable variable)
         {
-            fView = new BooleanVariableView(variable, ImmutableList.copyOf(fReferenceInfo));
+            fView = new BooleanVariableView(variable, fReferenceInfo);
         }
         
         @Override
         public void visitMultiSelect(final MultiSelectVariable variable)
         {
-            fView = new MultiSelectVariableView(variable, ImmutableList.copyOf(fReferenceInfo));
+            fView = new MultiSelectVariableView(variable, fReferenceInfo);
         }
         
         @Override
         public void visitProcedure(final ProcedureVariable variable)
         {
-            fView = new ProcedureVariableView(variable, ImmutableList.copyOf(fReferenceInfo));
+            fView = new ProcedureVariableView(variable, fReferenceInfo);
         }
         
         @Override
         public void visitDiscreteNumerical(final DiscreteNumericalVariable variable)
         {
-            fView = new DiscreteNumericalVariableView(variable, ImmutableList.copyOf(fReferenceInfo));
+            fView = new DiscreteNumericalVariableView(variable, fReferenceInfo);
         }
         
         /**
          * Visits the given variable and returns the constructed view.
          */
-        public VariableView getView(final Variable variable, final List<String> referenceInfo)
+        public VariableView getView(final Variable variable, final String referenceInfo)
         {
             fReferenceInfo = referenceInfo;
             visit(variable);

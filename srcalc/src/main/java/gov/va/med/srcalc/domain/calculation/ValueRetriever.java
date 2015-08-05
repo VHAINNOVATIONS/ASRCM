@@ -2,6 +2,8 @@ package gov.va.med.srcalc.domain.calculation;
 
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.Variable;
+import gov.va.med.srcalc.util.XmlDateAdapter;
+import gov.va.med.srcalc.vista.ReferenceNote;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
 /**
@@ -22,6 +24,12 @@ public enum ValueRetriever
         {
             variableEntry.getDynamicValues().put(key, patient.getGender());
         }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
+        }
     },
     AGE
     {
@@ -30,6 +38,12 @@ public enum ValueRetriever
                 final String key)
         {
             variableEntry.getDynamicValues().put(key, String.valueOf(patient.getAge()));
+        }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
         }
     },
     BMI
@@ -48,6 +62,12 @@ public enum ValueRetriever
                 variableEntry.setMeasureDate(key, retrievalString);
             }
         }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
+        }
     },
     WEIGHT
     {
@@ -64,6 +84,12 @@ public enum ValueRetriever
                         patient.getWeight().getUnits());
                 variableEntry.setMeasureDate(key, retrievalString);
             }
+        }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
         }
     },
     WEIGHT_6_MONTHS_AGO
@@ -82,6 +108,12 @@ public enum ValueRetriever
                 variableEntry.setMeasureDate(key, retrievalString);
             }
         }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
+        }
     },
     HEIGHT
     {
@@ -99,6 +131,12 @@ public enum ValueRetriever
                 variableEntry.setMeasureDate(key, retrievalString);
             }
         }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
+        }
     },
     ALBUMIN
     {
@@ -107,6 +145,12 @@ public enum ValueRetriever
                 final String key)
         {
             addLabValue("ALBUMIN", patient, variableEntry, key);
+        }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
         }
     },
     CREATININE
@@ -117,6 +161,12 @@ public enum ValueRetriever
         {
             addLabValue("CREATININE", patient, variableEntry, key);
         }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
+        }
     },
     ALKALINE_PHOSPHATASE
     {
@@ -125,6 +175,12 @@ public enum ValueRetriever
                 final String key)
         {
             addLabValue("ALKALINE_PHOSPHATASE", patient, variableEntry, key);
+        }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
         }
     },
     BUN
@@ -135,6 +191,12 @@ public enum ValueRetriever
         {
             addLabValue("BUN", patient, variableEntry, key);
         }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
+        }
     },
     SGOT
     {
@@ -143,6 +205,12 @@ public enum ValueRetriever
                 final String key)
         {
             addLabValue("SGOT", patient, variableEntry, key);
+        }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
         }
     },
     WBC
@@ -153,6 +221,12 @@ public enum ValueRetriever
         {
             addLabValue("WBC", patient, variableEntry, key);
         }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
+        }
     },
     PLATELETS
     {
@@ -161,6 +235,12 @@ public enum ValueRetriever
                 final String key)
         {
             addLabValue("PLATELETS", patient, variableEntry, key);
+        }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
         }
     },
     HEMATOCRIT
@@ -171,6 +251,12 @@ public enum ValueRetriever
         {
             addLabValue("HEMATOCRIT", patient, variableEntry, key);
         }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
+        }
     },
     SODIUM
     {
@@ -179,6 +265,12 @@ public enum ValueRetriever
                 final String key)
         {
             addLabValue("SODIUM", patient, variableEntry, key);
+        }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
         }
     },
     INR
@@ -189,6 +281,12 @@ public enum ValueRetriever
         {
             addLabValue("INR", patient, variableEntry, key);
         }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
+        }
     },
     BILIRUBIN
     {
@@ -198,6 +296,12 @@ public enum ValueRetriever
         {
             addLabValue("BILIRUBIN", patient, variableEntry, key);
         }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
+        }
     },
     PTT
     {
@@ -206,6 +310,37 @@ public enum ValueRetriever
                 final String key)
         {
             addLabValue("PTT", patient, variableEntry, key);
+        }
+
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            return "";
+        }
+    },
+    FUNCTIONAL_STATUS
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+                final String key)
+        {
+            // No value to place into the variableEntry at this point.
+        }
+        
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            final StringBuilder variableRefInfo = new StringBuilder();
+            if(var.getKey().equals("functionalStatus"))
+            {
+                for(final ReferenceNote note: patient.getAdlNotes())
+                {
+                    // Add a line break here so that the note body is separated.
+                    variableRefInfo.append(String.format("Local Title: %s Sign Date: %s%n%s%n%n",
+                            note.getLocalTitle(), XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.print(note.getSignDate()), note.getNoteBody()));
+                }
+            }
+            return variableRefInfo.toString();
         }
     };
     
@@ -219,6 +354,8 @@ public enum ValueRetriever
      */
     public abstract void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
             final String key);
+    
+    public abstract String retrieveReferenceInfo(final Patient patient, final Variable var);
     
     /**
      * If there was a retrieved value for the specified lab, it will be added to the variable entry.

@@ -28,7 +28,7 @@
                 <a class="helpTextToggler"><img src="${qMarkImageUrl}" alt="?"/></a>
             </c:if>
             <c:if test="${not empty displayItem.referenceInfo}">
-                <a class="referenceInfoToggler"><img src="${noteImageUrl}" alt="?"/></a>
+                <a class="referenceInfoToggler"><img src="${noteImageUrl}" alt="N"/></a>
             </c:if>
         </td>
         <td class="attributeValue">
@@ -37,7 +37,7 @@
             <div class="referenceNotes">
                 <!-- Unfortunately this line needs to be long because textarea tags interpret
                 white space literally. -->
-                <textarea disabled style="width: 700px; height:200px; text-indent:0px;"><c:forEach var="note" items="${displayItem.referenceInfo}">${note}</c:forEach></textarea>
+                <textarea readonly><c:forEach var="note" items="${displayItem.referenceInfo}">${note}</c:forEach></textarea>
             </div>
         </td>
     </tr>

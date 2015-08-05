@@ -77,14 +77,4 @@ public interface VistaProcedureCaller
      * VistA.
      */
     public String getDivision();
-    
-    /**
-     * A special-purpose method to retrieve any nursing notes 
-     * @param duz the calling user's DUZ
-     * @param patientDfn the associated patient's DFN
-     * @return the VistA response as a String
-     */
-    public String doRetrieveAdlNotes(
-            final String duz,
-            final String patientDfn);
 }

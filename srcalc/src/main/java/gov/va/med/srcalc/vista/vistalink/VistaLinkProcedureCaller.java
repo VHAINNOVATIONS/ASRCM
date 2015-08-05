@@ -293,17 +293,4 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
         // We assume only one line in this response.
         return doRpc(duz, req).get(0);
     }
-    
-    @Override
-    public String doRetrieveAdlNotes(
-            final String duz,
-            final String patientDfn)
-    {
-        final RpcRequest req = makeRequestObject(RemoteProcedure.GET_ADL_STATUS);
-        
-        setStringParam(req.getParams(), 1, patientDfn);
-        setStringParam(req.getParams(), 2, "");
-        
-        return doRpc(duz, req).get(0);
-    }
 }

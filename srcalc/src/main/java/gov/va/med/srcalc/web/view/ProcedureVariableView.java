@@ -1,7 +1,5 @@
 package gov.va.med.srcalc.web.view;
 
-import java.util.List;
-
 import gov.va.med.srcalc.domain.model.ProcedureVariable;
 
 /**
@@ -17,7 +15,7 @@ public class ProcedureVariableView extends VariableView
      * @param variable the ProcedureVariable to copy information from
      * @param referenceInfo the reference information for this ProcedureVariable
      */
-    public ProcedureVariableView(final ProcedureVariable variable, final List<String> referenceInfo)
+    public ProcedureVariableView(final ProcedureVariable variable, final String referenceInfo)
     {
         super(variable, referenceInfo);
     }

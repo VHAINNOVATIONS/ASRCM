@@ -1,6 +1,5 @@
 package gov.va.med.srcalc.web.view;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.github.rjeschke.txtmark.Processor;
@@ -71,12 +70,14 @@ public class ReferenceItem implements DisplayItem
     }
     
     /**
-     * Returns the reference information in a List so that formatting later is easier. For instance,
-     * each List item could be a paragraph element or an unordered item on a page.
+     * Returns an empty String because reference information is not currently used for
+     * ReferenceItems, but it needs to implement this method in order to build the web page
+     * for entering variables.
      */
-    public List<String> getReferenceInfo()
+    @Override
+    public String getReferenceInfo()
     {
-        return Collections.emptyList();
+        return "";
     }
     
     public List<String> getContent()

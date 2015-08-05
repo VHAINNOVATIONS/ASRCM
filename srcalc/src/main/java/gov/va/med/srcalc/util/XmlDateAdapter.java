@@ -6,15 +6,18 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+/**
+ * This is a class that is used for data binding to a joda DateTime object. It is necessary
+ * because XML data binding does not know how to inherently parse a DateTime.
+ */
 public class XmlDateAdapter extends XmlAdapter<String, DateTime>
 {
-    public static final DateTimeFormatter ADL_DATE_FORMAT = DateTimeFormat.forPattern("MM/dd/yy HH:mm");
+    public static final DateTimeFormatter REFERENCE_NOTE_DATE_FORMAT = DateTimeFormat.forPattern("MM/dd/yy HH:mm");
 
     @Override
     public DateTime unmarshal(final String dateString) throws Exception
     {
-        
-        return ADL_DATE_FORMAT.parseDateTime(dateString);
+        return REFERENCE_NOTE_DATE_FORMAT.parseDateTime(dateString);
     }
 
     @Override

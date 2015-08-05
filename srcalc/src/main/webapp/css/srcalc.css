@@ -94,6 +94,11 @@ footer {
 	display: none;
 }
 
+textarea {
+    width: 700px;
+    height: 200px;
+}
+
 /* Provide a monospace font for VistA-retrieved notes so that the users are more familiar
     with the format */
 .patientNote {

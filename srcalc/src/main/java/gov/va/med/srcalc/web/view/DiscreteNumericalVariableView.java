@@ -3,7 +3,6 @@ package gov.va.med.srcalc.web.view;
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable;
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 
-import java.util.List;
 import java.util.SortedSet;
 
 import com.google.common.collect.ImmutableSortedSet;
@@ -24,7 +23,7 @@ public class DiscreteNumericalVariableView extends VariableView
      * @param variable the DiscreteNumericalVariable to copy properties from
      * @param referenceInfo the reference information for this DiscreteNumericalVariable
      */
-    public DiscreteNumericalVariableView(final DiscreteNumericalVariable variable, final List<String> referenceInfo)
+    public DiscreteNumericalVariableView(final DiscreteNumericalVariable variable, final String referenceInfo)
     {
         super(variable, referenceInfo);
         fUnits = variable.getUnits();

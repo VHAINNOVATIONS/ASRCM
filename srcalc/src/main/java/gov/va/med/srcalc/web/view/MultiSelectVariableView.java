@@ -25,7 +25,7 @@ public class MultiSelectVariableView extends VariableView
      * @param variable the MultiSelectVariable to copy properties from.
      * @param referenceInfo the reference information for this MultiSelectVariable
      */
-    public MultiSelectVariableView(final MultiSelectVariable variable, final List<String> referenceInfo)
+    public MultiSelectVariableView(final MultiSelectVariable variable, final String referenceInfo)
     {
         super(variable, referenceInfo);
         fDisplayType = variable.getDisplayType();

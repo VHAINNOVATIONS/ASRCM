@@ -1,7 +1,7 @@
 package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
-import gov.va.med.srcalc.vista.AdlNotes.AdlNote;
+import gov.va.med.srcalc.vista.ReferenceNote;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class Patient implements Serializable
     private List<HealthFactor> fHealthFactors;
     private Map<String, RetrievedValue> fLabs;
     private List<String> fActiveMedications;
-    private List<AdlNote> fAdlNotes;
+    private List<ReferenceNote> fAdlNotes;
     
     public Patient()
     {
@@ -47,7 +47,7 @@ public class Patient implements Serializable
         this.fLabs = new HashMap<String, RetrievedValue>();
         this.fHealthFactors = new ArrayList<HealthFactor>();
         this.fActiveMedications = new ArrayList<String>();
-        this.fAdlNotes = new ArrayList<AdlNote>();
+        this.fAdlNotes = new ArrayList<ReferenceNote>();
     }
     
     /**
@@ -175,7 +175,7 @@ public class Patient implements Serializable
     /**
      * Returns the nursing notes regarding the patient in String form.
      */
-    public List<AdlNote> getAdlNotes()
+    public List<ReferenceNote> getAdlNotes()
     {
         return fAdlNotes;
     }

@@ -2,7 +2,7 @@ package gov.va.med.srcalc.vista;
 
 import static org.junit.Assert.assertEquals;
 import gov.va.med.srcalc.util.XmlDateAdapter;
-import gov.va.med.srcalc.vista.AdlNotes.AdlNote;
+import gov.va.med.srcalc.vista.ReferenceNote;
 
 import java.io.StringReader;
 
@@ -15,10 +15,10 @@ import org.junit.Test;
 import org.xml.sax.InputSource;
 
 /**
- * Tests the {@link AdlNotes} class by testing if an XML String can be parsed 
- * into an instance of {@link AdlNotes}.
+ * Tests the {@link ReferenceNotes} class by testing if an XML String can be parsed 
+ * into an instance of {@link ReferenceNotes}.
  */
-public class AdlNotesTest
+public class ReferenceNotesTest
 {
     private static final String VALID_NOTES = "<notes><note localTitle='Note Title' signDate='07/14/15 12:12'>" +
         "<body>Body line 1\nBody line 2\n</body>" +
@@ -40,7 +40,7 @@ public class AdlNotesTest
     @Before
     public void setup() throws Exception
     {
-        final JAXBContext context = JAXBContext.newInstance(AdlNotes.class);
+        final JAXBContext context = JAXBContext.newInstance(ReferenceNotes.class);
         fUnmarshaller = context.createUnmarshaller();
     }
     
@@ -49,11 +49,11 @@ public class AdlNotesTest
     {
         final InputSource input = new InputSource();
         input.setCharacterStream(new StringReader(VALID_NOTES));
-        final AdlNotes allNotes = (AdlNotes) fUnmarshaller.unmarshal(input);
-        final AdlNote parsedNote = allNotes.getAllNotes().get(0);
+        final ReferenceNotes allNotes = (ReferenceNotes) fUnmarshaller.unmarshal(input);
+        final ReferenceNote parsedNote = allNotes.getAllNotes().get(0);
         assertEquals("Note Title", parsedNote.getLocalTitle());
         assertEquals("Body line 1\nBody line 2\n", parsedNote.getNoteBody());
-        assertEquals(XmlDateAdapter.ADL_DATE_FORMAT.parseDateTime("07/14/15 12:12"), parsedNote.getSignDate());
+        assertEquals(XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.parseDateTime("07/14/15 12:12"), parsedNote.getSignDate());
     }
     
     @Test
@@ -61,8 +61,8 @@ public class AdlNotesTest
     {
         final InputSource input = new InputSource();
         input.setCharacterStream(new StringReader(INVALID_DATE));
-        final AdlNotes allNotes = (AdlNotes) fUnmarshaller.unmarshal(input);
-        final AdlNote parsedNote = allNotes.getAllNotes().get(0);
+        final ReferenceNotes allNotes = (ReferenceNotes) fUnmarshaller.unmarshal(input);
+        final ReferenceNote parsedNote = allNotes.getAllNotes().get(0);
         assertEquals("Note Title", parsedNote.getLocalTitle());
         assertEquals("Body line 1\nBody line 2\n", parsedNote.getNoteBody());
         assertEquals(null, parsedNote.getSignDate());
@@ -73,8 +73,8 @@ public class AdlNotesTest
     {
         final InputSource input = new InputSource();
         input.setCharacterStream(new StringReader(MISSING_ATTR));
-        final AdlNotes allNotes = (AdlNotes) fUnmarshaller.unmarshal(input);
-        final AdlNote parsedNote = allNotes.getAllNotes().get(0);
+        final ReferenceNotes allNotes = (ReferenceNotes) fUnmarshaller.unmarshal(input);
+        final ReferenceNote parsedNote = allNotes.getAllNotes().get(0);
         // Missing attributes remain null because they were never initialized
         assertEquals(null, parsedNote.getLocalTitle());
         assertEquals("Body line 1\nBody line 2\n", parsedNote.getNoteBody());
@@ -84,18 +84,18 @@ public class AdlNotesTest
     @Test
     public void testCdataParsing() throws Exception
     {
-        final AdlNotes allNotes = parseAdlNotes(CDATA_BLOCK);
-        final AdlNote parsedNote = allNotes.getAllNotes().get(0);
+        final ReferenceNotes allNotes = parseAdlNotes(CDATA_BLOCK);
+        final ReferenceNote parsedNote = allNotes.getAllNotes().get(0);
         assertEquals("AUDIOLOGY - HEARING LOSS CONSULT", parsedNote.getLocalTitle());
         assertEquals("\nHX:  Patient was seen for hearing aid fitting and orientation.\n"
                 + "The batteries supplied for this hearing aid were: za312.\n", parsedNote.getNoteBody());
-        assertEquals(XmlDateAdapter.ADL_DATE_FORMAT.parseDateTime("04/01/2004 22:24"), parsedNote.getSignDate());
+        assertEquals(XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.parseDateTime("04/01/2004 22:24"), parsedNote.getSignDate());
     }
     
-    private AdlNotes parseAdlNotes(final String adlString) throws JAXBException
+    private ReferenceNotes parseAdlNotes(final String adlString) throws JAXBException
     {
         final InputSource input = new InputSource();
         input.setCharacterStream(new StringReader(adlString));
-        return (AdlNotes) fUnmarshaller.unmarshal(input);
+        return (ReferenceNotes) fUnmarshaller.unmarshal(input);
     }
 }
