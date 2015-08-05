@@ -75,17 +75,12 @@ public class PopulatedDisplayGroupTest
     }
     
     @Test
-    public final void testOnlyReferenceInfo()
+    public final void testNoVariables()
     {
         final Patient patient = SampleCalculations.dummyPatient(1);
-        // Test a PopulatedDisplayGroup with only reference information
         final PopulatedDisplayGroup group = new PopulatedDisplayGroup(
                 SampleModels.medicationsVariableGroup(), patient);
-        assertEquals(Collections.<Variable>emptyList(), group.getVariables());
-        assertEquals(0, group.getDisplayItems().size());
-        final List<PopulatedDisplayGroup> groupList = new ArrayList<PopulatedDisplayGroup>();
-        groupList.add(group);
-        ReferenceInfoAdder.addRefInfo(groupList, patient);
-        assertEquals(1, group.getDisplayItems().size());
+        assertEquals(Collections.emptyList(), group.getVariables());
+        assertEquals(Collections.emptyList(), group.getDisplayItems());
     }
 }
