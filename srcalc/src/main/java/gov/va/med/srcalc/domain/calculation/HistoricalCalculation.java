@@ -254,6 +254,12 @@ public final class HistoricalCalculation implements Serializable
     @Override
     public boolean equals(final Object o)
     {
+        // Performance optimization.
+        if (o == this)
+        {
+            return true;
+        }
+
         if (o instanceof HistoricalCalculation) // returns false for null
         {
             final HistoricalCalculation other = (HistoricalCalculation)o;

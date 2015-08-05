@@ -31,6 +31,24 @@ public final class SearchResults<T>
         fFoundItems = ImmutableList.copyOf(foundItems);
         fTruncated = truncated;
     }
+    
+    /**
+     * Constructs an instance by truncating the given list to the given maximum. We
+     * provide this method because it is common for search code to detect exceeding a
+     * maximum by searching for max + 1 results and then truncating the list.
+     * @return a SearchResults containing the first {@code max} items in {@code foundItems}
+     */
+    public static <T> SearchResults<T> fromList(final List<T> foundItems, final int max)
+    {
+        if (foundItems.size() > max)
+        {
+            return new SearchResults<>(foundItems.subList(0, max), true);
+        }
+        else
+        {
+            return new SearchResults<>(foundItems, false);
+        }
+    }
 
     /**
      * Returns the items found by the search. The method creating this object should

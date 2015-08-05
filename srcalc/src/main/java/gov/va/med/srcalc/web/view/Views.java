@@ -38,4 +38,6 @@ public class Views
     public static final String EDIT_PROCEDURES = "admin/editProcedures.jsp";
     public static final String SUMMARY_REPORT_FORM = "admin/summaryReportForm.jsp";
     public static final String SUMMARY_REPORT_RESULTS = "admin/summaryReportResults.jsp";
+    public static final String UTILIZATION_REPORT_FORM = "admin/utilizationReportForm.jsp";
+    public static final String UTILIZATION_REPORT_RESULTS = "admin/utilizationReportResults.jsp";
 }

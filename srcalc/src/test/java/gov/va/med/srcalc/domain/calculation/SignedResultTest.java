@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain.calculation;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
+import gov.va.med.srcalc.domain.model.Procedure;
 import gov.va.med.srcalc.domain.model.SampleModels;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
@@ -24,7 +25,11 @@ public class SignedResultTest
     private HistoricalCalculation makeHistoricalCalc()
     {
         return new HistoricalCalculation(
-                "Dummy", "442", DateTime.now(), 123, Optional.of("Provider Type"));
+                "Dummy",
+                "442",
+                DateTime.now(),
+                123,
+                Optional.of("Provider Type"));
     }
 
     @Test
@@ -45,28 +50,56 @@ public class SignedResultTest
                 ImmutableMap.<String, Float>of());
     }
     
+    @Test(expected = IllegalArgumentException.class)
+    public final void testBadSignatureTimestamp()
+    {
+        final HistoricalCalculation historical = makeHistoricalCalc();
+        new SignedResult(
+                historical,
+                500,
+                Optional.of(SampleModels.repairRightProcedure().getCptCode()),
+                historical.getStartTimestamp().minusSeconds(1),
+                ImmutableMap.<String, String>of(),
+                ImmutableMap.<String, Float>of());
+    }
+    
     /**
-     * Tests that {@link SignedResult#toString()} contains some basic information
-     * to make it useful.
+     * Tests basic accessors and that {@link SignedResult#toString()} contains some basic
+     * information to make it useful.
      */
     @Test
-    public final void testToString()
+    public final void testBasic()
     {
         final HistoricalCalculation historical = makeHistoricalCalc();
         final int patientDfn = 100;
-        final String cptCode = SampleModels.repairLeftProcedure().getCptCode();
+        final Procedure procedure = SampleModels.repairLeftProcedure();
+        final ImmutableMap<String, String> inputs =
+                ImmutableMap.of("procedure", procedure.getShortString());
+        final ImmutableMap<String, Float> outcomes =
+                ImmutableMap.of("Thoracic 30-Day Mortality", 87.5f);
+        final int secondsToSignature = 67;
+        final DateTime signatureTimestamp =
+                historical.getStartTimestamp().plusSeconds(secondsToSignature);
 
         final SignedResult result = new SignedResult(
                 historical,
                 patientDfn,
-                Optional.of(cptCode),
-                DateTime.now(),
-                ImmutableMap.<String, String>of(),
-                ImmutableMap.<String, Float>of());
+                Optional.of(procedure.getCptCode()),
+                signatureTimestamp,
+                inputs,
+                outcomes);
         
+        assertSame(historical, result.getHistoricalCalculation());
+        assertEquals(patientDfn, result.getPatientDfn());
+        assertEquals(Optional.of(procedure.getCptCode()), result.getCptCode());
+        assertEquals(procedure.getCptCode(), result.getCptCodeNullable());
+        assertEquals(signatureTimestamp, result.getSignatureTimestamp());
+        assertEquals(secondsToSignature, result.getSecondsToSign());
+        assertEquals(inputs, result.getInputs());
+        assertEquals(outcomes, result.getOutcomes());
         assertThat(result.toString(), allOf(
                 containsString(historical.toString()),
-                containsString(cptCode),
+                containsString(procedure.getCptCode()),
                 containsString(String.valueOf(patientDfn))));
     }
     
