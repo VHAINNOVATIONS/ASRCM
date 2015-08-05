@@ -37,7 +37,7 @@
             <div class="referenceNotes">
                 <!-- Unfortunately this line needs to be long because textarea tags interpret
                 white space literally. -->
-                <textarea readonly class="varReferenceInfo">${note}</textarea>
+                <textarea readonly class="varReferenceInfo">${displayItem.referenceInfo}</textarea>
             </div>
         </td>
     </tr>
