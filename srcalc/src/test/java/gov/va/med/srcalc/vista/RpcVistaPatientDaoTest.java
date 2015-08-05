@@ -52,6 +52,8 @@ public class RpcVistaPatientDaoTest
             "</body>",
             "</note>",
             "</notes>");
+    private final static String VALID_NOTE_BODY = "\nHX:  Patient was seen for hearing aid fitting and orientation.\n" +
+            "The batteries supplied for this hearing aid were: za312.\n";
     
     private final static int PATIENT_DFN = 500;
 
@@ -282,6 +284,8 @@ public class RpcVistaPatientDaoTest
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);
         assertEquals(1, patient.getAdlNotes().size());
+        final String noteBody = patient.getAdlNotes().get(0).getNoteBody();
+        assertEquals(VALID_NOTE_BODY, noteBody);
     }
     
     @Test

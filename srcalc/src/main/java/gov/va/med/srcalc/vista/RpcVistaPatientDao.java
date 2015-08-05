@@ -322,7 +322,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
             {
                 // Parse the String as XML and format it into separate notes
                 final InputSource input = new InputSource();
-                input.setCharacterStream(new StringReader(Joiner.on("").join(rpcResults)));
+                input.setCharacterStream(new StringReader(Joiner.on("\n").join(rpcResults)));
                 final JAXBContext context = JAXBContext.newInstance(ReferenceNotes.class);
                 final Unmarshaller unmarshaller = context.createUnmarshaller();
                 
