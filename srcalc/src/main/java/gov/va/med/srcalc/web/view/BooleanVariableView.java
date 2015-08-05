@@ -1,7 +1,5 @@
 package gov.va.med.srcalc.web.view;
 
-import java.util.List;
-
 import gov.va.med.srcalc.domain.model.BooleanVariable;
 
 /**
@@ -17,7 +15,7 @@ public class BooleanVariableView extends VariableView
      * @param variable the BooleanVariable to copy properties from
      * @param referenceInfo the reference information for this BooleanVariable
      */
-    public BooleanVariableView(final BooleanVariable variable, final List<String> referenceInfo)
+    public BooleanVariableView(final BooleanVariable variable, final String referenceInfo)
     {
         super(variable, referenceInfo);
     }

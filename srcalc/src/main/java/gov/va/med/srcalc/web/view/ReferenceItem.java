@@ -18,7 +18,7 @@ public class ReferenceItem implements DisplayItem
     private final String fDisplayName;
     private final VariableGroup fGroup;
     private final Optional<String> fHelpText;
-    private final List<String> fReferenceInfo;
+    private final List<String> fContent;
     
     /**
      * Constructs an instance using the designated information.
@@ -27,16 +27,16 @@ public class ReferenceItem implements DisplayItem
      *            the display name of the reference information
      * @param group
      *            the VariableGroup that this reference information belongs to
-     * @param referenceInfo
+     * @param content
      *            the reference information to show to the user
      */
     public ReferenceItem(final String displayName, final VariableGroup group,
-            final List<String> referenceInfo)
+            final List<String> content)
     {
         fDisplayName = displayName;
         fGroup = group;
         fHelpText = Optional.of("");
-        fReferenceInfo = referenceInfo;
+        fContent = content;
     }
     
     @Override
@@ -70,12 +70,19 @@ public class ReferenceItem implements DisplayItem
     }
     
     /**
-     * Returns the reference information in a List so that formatting later is easier. For instance,
-     * each List item could be a paragraph element or an unordered item on a page.
+     * Returns an empty String because reference information is not currently used for
+     * ReferenceItems, but it needs to implement this method in order to build the web page
+     * for entering variables.
      */
-    public List<String> getReferenceInfo()
+    @Override
+    public String getReferenceInfo()
     {
-        return fReferenceInfo;
+        return "";
+    }
+    
+    public List<String> getContent()
+    {
+        return fContent;
     }
     
     @Override

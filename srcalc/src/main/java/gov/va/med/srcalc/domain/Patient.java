@@ -31,6 +31,7 @@ public class Patient implements Serializable
     private List<HealthFactor> fHealthFactors;
     private Map<String, RetrievedValue> fLabs;
     private List<String> fActiveMedications;
+    private List<ReferenceNote> fAdlNotes;
     
     public Patient()
     {
@@ -45,6 +46,7 @@ public class Patient implements Serializable
         this.fLabs = new HashMap<String, RetrievedValue>();
         this.fHealthFactors = new ArrayList<HealthFactor>();
         this.fActiveMedications = new ArrayList<String>();
+        this.fAdlNotes = new ArrayList<ReferenceNote>();
     }
     
     /**
@@ -156,6 +158,9 @@ public class Patient implements Serializable
         this.fHeight = height;
     }
     
+    /**
+     * Returns all of the labs that were able to be retrieved.
+     */
     public Map<String,RetrievedValue> getLabs()
     {
         return fLabs;
@@ -164,6 +169,14 @@ public class Patient implements Serializable
     public void setLabs(final Map<String, RetrievedValue> labs)
     {
         fLabs = labs;
+    }
+    
+    /**
+     * Returns the nursing notes regarding the patient in String form.
+     */
+    public List<ReferenceNote> getAdlNotes()
+    {
+        return fAdlNotes;
     }
     
     /**

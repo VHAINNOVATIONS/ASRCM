@@ -23,7 +23,7 @@ import com.google.common.collect.ImmutableList;
  * designed for inheritance.</p>
  */
 public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayGroup>
-{   
+{
     private final VariableGroup fGroup;
     private final List<DisplayItem> fDisplayItems;
     private final ImmutableList<Variable> fVariables;
@@ -61,10 +61,17 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
         fDisplayItems = new ArrayList<>();
         for(final Variable var: variables)
         {
-            // TODO: If the variable has specified keys that have reference information,
-            // create a String that holds that reference information and use it in the view constructors.
             final Visitor visitor = new Visitor();
-            fDisplayItems.add(visitor.getView(var, ""));
+            final String refInfo;
+            if(var.getRetriever() != null)
+            {
+                refInfo = var.getRetriever().retrieveReferenceInfo(patient, var);
+            }
+            else
+            {
+                refInfo = "";
+            }
+            fDisplayItems.add(visitor.getView(var, refInfo));
         }
     }
     
@@ -108,7 +115,7 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
     
     /**
      * Returns the {@link VariableGroup} that this PopulatedDisplayGroup bases its groupings off of
-     * for {@link DisplayItem}s
+     * for {@link DisplayItem}s.
      */
     public VariableGroup getGroup()
     {
@@ -158,31 +165,31 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
         @Override
         public void visitNumerical(final NumericalVariable variable)
         {
-            fView = new NumericalVariableView(variable, ImmutableList.of(fReferenceInfo));
+            fView = new NumericalVariableView(variable, fReferenceInfo);
         }
         
         @Override
         public void visitBoolean(final BooleanVariable variable)
         {
-            fView = new BooleanVariableView(variable, ImmutableList.of(fReferenceInfo));
+            fView = new BooleanVariableView(variable, fReferenceInfo);
         }
         
         @Override
         public void visitMultiSelect(final MultiSelectVariable variable)
         {
-            fView = new MultiSelectVariableView(variable, ImmutableList.of(fReferenceInfo));
+            fView = new MultiSelectVariableView(variable, fReferenceInfo);
         }
         
         @Override
         public void visitProcedure(final ProcedureVariable variable)
         {
-            fView = new ProcedureVariableView(variable, ImmutableList.of(fReferenceInfo));
+            fView = new ProcedureVariableView(variable, fReferenceInfo);
         }
         
         @Override
         public void visitDiscreteNumerical(final DiscreteNumericalVariable variable)
         {
-            fView = new DiscreteNumericalVariableView(variable, ImmutableList.of(fReferenceInfo));
+            fView = new DiscreteNumericalVariableView(variable, fReferenceInfo);
         }
         
         /**

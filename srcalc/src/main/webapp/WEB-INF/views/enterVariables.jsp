@@ -21,14 +21,24 @@
     <c:set var="displayItemParam" scope="request" value="${displayItem}"/>
     <tr>
         <c:url var="qMarkImageUrl" value="/css/images/qmark.png"/>
-        <td class="attributeName"><c:out value="${displayItem.displayName}"/>:
+        <c:url var="noteImageUrl" value="/css/images/note.png"/>
+        <td class="attributeName">
+            <c:out value="${displayItem.displayName}"/>:
             <c:if test="${displayItem.helpTextAsHtml != ''}">
                 <a class="helpTextToggler"><img src="${qMarkImageUrl}" alt="?"/></a>
+            </c:if>
+            <c:if test="${not empty displayItem.referenceInfo}">
+                <a class="referenceInfoToggler"><img src="${noteImageUrl}" alt="N"/></a>
             </c:if>
         </td>
         <td class="attributeValue">
             <jsp:include page="fragments/${displayItem.fragmentName}"/>
 			<div class="variableDef">${displayItem.helpTextAsHtml}</div>
+            <div class="referenceNotes">
+                <!-- Unfortunately this line needs to be long because textarea tags interpret
+                white space literally. -->
+                <textarea readonly class="varReferenceInfo">${displayItem.referenceInfo}</textarea>
+            </div>
         </td>
     </tr>
     </c:forEach>

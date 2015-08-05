@@ -94,6 +94,11 @@ footer {
 	display: none;
 }
 
+textarea.varReferenceInfo {
+    width: 700px;
+    height: 200px;
+}
+
 /* Provide a monospace font for VistA-retrieved notes so that the users are more familiar
     with the format */
 .patientNote {
@@ -336,8 +341,8 @@ form.attributeEditForm td .preInstructions {
 
 /* The variable input form #riskVarForm */
 
-/* Hide the definition rows if Javascript is enabled */
-.js #riskVarForm .variableDef {
+/* Hide the definition rows and reference notes if Javascript is enabled */
+.js #riskVarForm .variableDef, .js #riskVarForm .referenceNotes{
 	display: none;
 }
 

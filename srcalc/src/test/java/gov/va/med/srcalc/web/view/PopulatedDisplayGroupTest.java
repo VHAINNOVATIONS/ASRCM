@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import gov.va.med.srcalc.domain.HealthFactor;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.calculation.SampleCalculations;
+import gov.va.med.srcalc.domain.calculation.ValueRetriever;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.web.view.PopulatedDisplayGroup;
 
@@ -34,13 +35,14 @@ public class PopulatedDisplayGroupTest
     {
         final Patient patient = SampleCalculations.dummyPatient(1);
         patient.getHealthFactors().add(new HealthFactor(LocalDate.now(), "Dummy health factor"));
+        final AbstractVariable fsVar = SampleModels.functionalStatusVariable();
+        fsVar.setRetriever(ValueRetriever.ADL_NOTES);
         // Test a PopulatedDisplayGroup with variables and reference information
         final PopulatedDisplayGroup group = new PopulatedDisplayGroup(
-                Arrays.asList(SampleModels.functionalStatusVariable()), patient);
+                Arrays.asList(fsVar), patient);
         final List<PopulatedDisplayGroup> groupList = new ArrayList<PopulatedDisplayGroup>();
         groupList.add(group);
-        final List<Variable> varList = new ArrayList<Variable>();
-        varList.add(SampleModels.functionalStatusVariable());
+        
         ReferenceInfoAdder.addRefInfo(groupList, patient);
         assertEquals("Display Group 'Clinical Conditions or Diseases - Recent' with display items [Health Factors, Functional Status]",
                 group.toString());

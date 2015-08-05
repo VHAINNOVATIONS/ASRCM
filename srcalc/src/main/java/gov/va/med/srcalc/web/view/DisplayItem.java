@@ -1,6 +1,5 @@
 package gov.va.med.srcalc.web.view;
 
-import java.util.List;
 
 import com.google.common.base.Optional;
 
@@ -41,5 +40,5 @@ public interface DisplayItem
     /**
      * Returns the reference/description information for this DisplayItem.
      */
-    public List<String> getReferenceInfo();
+    public String getReferenceInfo();
 }

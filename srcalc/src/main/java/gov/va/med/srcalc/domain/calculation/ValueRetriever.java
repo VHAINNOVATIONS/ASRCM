@@ -1,7 +1,9 @@
 package gov.va.med.srcalc.domain.calculation;
 
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.ReferenceNote;
 import gov.va.med.srcalc.domain.model.Variable;
+import gov.va.med.srcalc.util.XmlDateAdapter;
 import gov.va.med.srcalc.web.view.VariableEntry;
 
 /**
@@ -207,6 +209,21 @@ public enum ValueRetriever
         {
             addLabValue("PTT", patient, variableEntry, key);
         }
+    },
+    ADL_NOTES
+    {
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            final StringBuilder variableRefInfo = new StringBuilder();
+            for(final ReferenceNote note: patient.getAdlNotes())
+            {
+                // Add a line break here so that the note body is separated.
+                variableRefInfo.append(String.format("Local Title: %s Sign Date: %s%n%s%n%n",
+                        note.getLocalTitle(), XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.print(note.getSignDate()), note.getNoteBody()));
+            }
+            return variableRefInfo.toString();
+        }
     };
     
     /**
@@ -217,8 +234,15 @@ public enum ValueRetriever
      * @param variable the variable to get the retrieved value for
      * @param key the variable's fully qualified key (i.e. "bmi$numerical" for bmi)
      */
-    public abstract void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
-            final String key);
+    public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+            final String key)
+    {
+    }
+    
+    public String retrieveReferenceInfo(final Patient patient, final Variable var)
+    {
+        return "";
+    }
     
     /**
      * If there was a retrieved value for the specified lab, it will be added to the variable entry.

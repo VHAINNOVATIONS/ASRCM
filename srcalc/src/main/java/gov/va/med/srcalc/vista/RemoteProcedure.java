@@ -53,7 +53,12 @@ public enum RemoteProcedure
     /**
      * Returns all VA and non-VA active medications for the patient.
      */
-    GET_ACTIVE_MEDICATIONS("ORQQPS LIST");
+    GET_ACTIVE_MEDICATIONS("ORQQPS LIST"),
+
+    /**
+     * Returns all nursing notes with the "NURSING ADMISSION EVALUATION NOTE" title.
+     */
+    GET_ADL_STATUS("SR ASRC ADL NOTES");
 
     /**
      * VistA returns this string if {@link #SAVE_PROGRESS_NOTE} succeeds.

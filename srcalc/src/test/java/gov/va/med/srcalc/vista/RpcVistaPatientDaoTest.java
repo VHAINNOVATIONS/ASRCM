@@ -42,6 +42,18 @@ public class RpcVistaPatientDaoTest
     private final static List<String> VALID_ACTIVE_MEDICATIONS = ImmutableList.of(
             "403962R;O^METOPROLOL TARTRATE 50MG TAB^3110228^^^3",
             "404062R;O^SIMVASTATIN 40MG TAB^3110228^^^3");
+    private static final String ADL_ENTERPRISE_TITLE = "NURSING ADMISSION EVALUATION NOTE";
+    private final static List<String> VALID_ADL_NOTES = ImmutableList.of(
+            "<notes>",
+            "<note localTitle='AUDIOLOGY - HEARING LOSS CONSULT' signDate='04/01/2004 22:24'>",
+            "<body>",
+            "<![CDATA[HX:  Patient was seen for hearing aid fitting and orientation.]]>",
+            "<![CDATA[The batteries supplied for this hearing aid were: za312.]]>",
+            "</body>",
+            "</note>",
+            "</notes>");
+    private final static String VALID_NOTE_BODY = "\nHX:  Patient was seen for hearing aid fitting and orientation.\n" +
+            "The batteries supplied for this hearing aid were: za312.\n";
     
     private final static int PATIENT_DFN = 500;
 
@@ -257,5 +269,38 @@ public class RpcVistaPatientDaoTest
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);
         assertEquals(Collections.<String>emptyList(), patient.getActiveMedications());
+    }
+    
+    @Test
+    public final void testValidAdlNotes()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ,
+                RemoteProcedure.GET_ADL_STATUS,
+                String.valueOf(PATIENT_DFN),
+                ADL_ENTERPRISE_TITLE))
+                .thenReturn(VALID_ADL_NOTES);
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        assertEquals(1, patient.getAdlNotes().size());
+        final String noteBody = patient.getAdlNotes().get(0).getNoteBody();
+        assertEquals(VALID_NOTE_BODY, noteBody);
+    }
+    
+    @Test
+    public final void testInvalidAdlNotes()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ,
+                RemoteProcedure.GET_ADL_STATUS,
+                String.valueOf(PATIENT_DFN),
+                ADL_ENTERPRISE_TITLE))
+                .thenReturn(ImmutableList.of("Invalid XML"));
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        // This would fail to retrieve notes and the notes would be empty.
+        assertEquals(0, patient.getAdlNotes().size());
     }
 }

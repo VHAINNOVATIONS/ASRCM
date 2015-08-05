@@ -2,8 +2,6 @@ package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.model.NumericalVariable;
 
-import java.util.List;
-
 /**
  * This class represents the visible attributes of a {@link NumericalVariable} in order to
  * provide other attributes that are only necessary for display.
@@ -19,7 +17,7 @@ public class NumericalVariableView extends VariableView
      * @param variable the NumericalVariable to copy properties from
      * @param referenceInfo the reference information for this NumericalVariable
      */
-    public NumericalVariableView(final NumericalVariable variable, final List<String> referenceInfo)
+    public NumericalVariableView(final NumericalVariable variable, final String referenceInfo)
     {
         super(variable, referenceInfo);
         fUnits = variable.getUnits();

@@ -272,7 +272,12 @@ var ENTERVARIABLES = function() {
 	        	// slide toggle the definition associated with this variable
 	        	$(this).closest('tr').find('.variableDef').slideToggle(200);
 	        });
-    	        
+    	    
+	        // Click handler for reference notes
+	        $('.attributeName').find('.referenceInfoToggler').on('click', function(){
+	        	// slide toggle the reference notes associated with this variable
+	        	$(this).closest('tr').find('.referenceNotes').slideToggle(200);
+	        });
         }
     }
 }();

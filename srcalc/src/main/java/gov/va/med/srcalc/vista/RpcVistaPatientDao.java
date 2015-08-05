@@ -1,8 +1,12 @@
 package gov.va.med.srcalc.vista;
 
+
+import java.io.StringReader;
+
 import gov.va.med.crypto.VistaKernelHash;
 import gov.va.med.srcalc.domain.HealthFactor;
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.ReferenceNotes;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 
 import java.text.ParseException;
@@ -16,6 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+
 import org.apache.commons.lang3.text.WordUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -23,7 +30,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
 import org.springframework.dao.RecoverableDataAccessException;
+import org.xml.sax.InputSource;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 /**
@@ -38,6 +47,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private static final String VITALS_SPLIT_REGEX = "[\\s]+";
     private static final String WEIGHT_UNITS = "lbs.";
     private static final String HEIGHT_UNITS = "inches";
+    private static final String ADL_ENTERPRISE_TITLE = "NURSING ADMISSION EVALUATION NOTE";
     
     public static final String VISTA_DATE_OUTPUT_FORMAT = "MM/dd/yy@HH:mm";
     
@@ -121,11 +131,12 @@ public class RpcVistaPatientDao implements VistaPatientDao
             
             // Retrieve all labs from VistA
             retrieveLabs(dfn, patient);
-            
             // Retrieve all health factors in the last year from VistA and filter
             // by the list given to us by the NSO.
             retrieveHealthFactors(dfn, patient);
             retrieveActiveMedications(dfn, patient);
+            // Retrieve the patient's nursing notes from VistA
+            retrieveAdlNotes(dfn, patient);
             
             LOGGER.debug("Loaded {} from VistA.", patient);
             return patient;
@@ -244,7 +255,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
             }
         }
     }
-    
+
     private void retrieveHealthFactors(final int dfn, final Patient patient)
     {
         try
@@ -293,6 +304,38 @@ public class RpcVistaPatientDao implements VistaPatientDao
         catch(final Exception e)
         {
             LOGGER.warn("Unable to retrieve active medications. {}", e);
+        }
+    }
+    
+    private void retrieveAdlNotes(final int dfn, final Patient patient)
+    {
+        try
+        {
+            final List<String> rpcResults = fProcedureCaller.doRpc(
+                    fDuz,
+                    RemoteProcedure.GET_ADL_STATUS,
+                    String.valueOf(dfn),
+                    ADL_ENTERPRISE_TITLE);
+            // If the resultString is a success, add it to the patient's lab data.
+            // Else, we don't need to do anything.
+            if(!rpcResults.isEmpty())
+            {
+                // Parse the String as XML and format it into separate notes
+                final InputSource input = new InputSource();
+                input.setCharacterStream(new StringReader(Joiner.on("\n").join(rpcResults)));
+                final JAXBContext context = JAXBContext.newInstance(ReferenceNotes.class);
+                final Unmarshaller unmarshaller = context.createUnmarshaller();
+                
+                final ReferenceNotes allNotes = (ReferenceNotes) unmarshaller.unmarshal(input);
+                patient.getAdlNotes().clear();
+                patient.getAdlNotes().addAll(allNotes.getAllNotes());
+            }
+        }
+        catch(final Exception e)
+        {
+            // If an exception occurs for any reason, log a warning but allow the application
+            // to continue without failure.
+            LOGGER.warn("Unable to retrieve patient's ADL status. {}", e);
         }
     }
     
