@@ -86,7 +86,7 @@ public final class ReferenceInfoAdder
         else if(group.getName().equalsIgnoreCase(VariableGroup.MEDICATIONS_GROUP))
         {
             final String remoteHtml = String.format(
-                    "<a href=\"%s\">Please click here to view remote medications.</a>",
+                    "<a href=\"%s\" target=\"_blank\">Please click here to view remote medications.</a>",
                     REMOTE_MEDICATIONS_URL);
             populatedGroup.getDisplayItems().add(0, 
                     new ReferenceItem("Active Medications", group, patient.getActiveMedications()));
