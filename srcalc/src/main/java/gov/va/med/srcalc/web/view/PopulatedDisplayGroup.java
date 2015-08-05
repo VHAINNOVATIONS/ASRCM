@@ -62,14 +62,16 @@ public final class PopulatedDisplayGroup implements Comparable<PopulatedDisplayG
         for(final Variable var: variables)
         {
             final Visitor visitor = new Visitor();
+            final String refInfo;
             if(var.getRetriever() != null)
             {
-                fDisplayItems.add(visitor.getView(var, var.getRetriever().retrieveReferenceInfo(patient, var)));
+                refInfo = var.getRetriever().retrieveReferenceInfo(patient, var);
             }
             else
             {
-                fDisplayItems.add(visitor.getView(var, ""));
+                refInfo = "";
             }
+            fDisplayItems.add(visitor.getView(var, refInfo));
         }
     }
     

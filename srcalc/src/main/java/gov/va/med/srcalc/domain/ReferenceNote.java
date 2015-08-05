@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.vista;
+package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.util.XmlDateAdapter;
 

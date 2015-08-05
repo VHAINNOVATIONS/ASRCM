@@ -1,7 +1,6 @@
 package gov.va.med.srcalc.domain;
 
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
-import gov.va.med.srcalc.vista.ReferenceNote;
 
 import java.io.Serializable;
 import java.util.ArrayList;

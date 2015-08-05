@@ -1,8 +1,9 @@
 package gov.va.med.srcalc.vista;
 
 import static org.junit.Assert.assertEquals;
+import gov.va.med.srcalc.domain.ReferenceNote;
+import gov.va.med.srcalc.domain.ReferenceNotes;
 import gov.va.med.srcalc.util.XmlDateAdapter;
-import gov.va.med.srcalc.vista.ReferenceNote;
 
 import java.io.StringReader;
 
