@@ -210,15 +210,8 @@ public enum ValueRetriever
             addLabValue("PTT", patient, variableEntry, key);
         }
     },
-    FUNCTIONAL_STATUS
+    ADL_NOTES
     {
-        @Override
-        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
-                final String key)
-        {
-            // No value to place into the variableEntry at this point.
-        }
-        
         @Override
         public String retrieveReferenceInfo(final Patient patient, final Variable var)
         {
@@ -241,8 +234,10 @@ public enum ValueRetriever
      * @param variable the variable to get the retrieved value for
      * @param key the variable's fully qualified key (i.e. "bmi$numerical" for bmi)
      */
-    public abstract void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
-            final String key);
+    public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+            final String key)
+    {
+    }
     
     public String retrieveReferenceInfo(final Patient patient, final Variable var)
     {

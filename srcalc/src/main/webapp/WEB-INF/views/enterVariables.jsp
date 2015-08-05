@@ -37,7 +37,7 @@
             <div class="referenceNotes">
                 <!-- Unfortunately this line needs to be long because textarea tags interpret
                 white space literally. -->
-                <textarea readonly><c:forEach var="note" items="${displayItem.referenceInfo}">${note}</c:forEach></textarea>
+                <textarea readonly class="varReferenceInfo">${note}</textarea>
             </div>
         </td>
     </tr>

@@ -94,7 +94,7 @@ footer {
 	display: none;
 }
 
-textarea {
+textarea.varReferenceInfo {
     width: 700px;
     height: 200px;
 }

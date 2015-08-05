@@ -36,7 +36,7 @@ public class PopulatedDisplayGroupTest
         final Patient patient = SampleCalculations.dummyPatient(1);
         patient.getHealthFactors().add(new HealthFactor(LocalDate.now(), "Dummy health factor"));
         final AbstractVariable fsVar = SampleModels.functionalStatusVariable();
-        fsVar.setRetriever(ValueRetriever.FUNCTIONAL_STATUS);
+        fsVar.setRetriever(ValueRetriever.ADL_NOTES);
         // Test a PopulatedDisplayGroup with variables and reference information
         final PopulatedDisplayGroup group = new PopulatedDisplayGroup(
                 Arrays.asList(fsVar), patient);

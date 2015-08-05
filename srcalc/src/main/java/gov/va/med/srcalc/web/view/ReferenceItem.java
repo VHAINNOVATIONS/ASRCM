@@ -18,7 +18,7 @@ public class ReferenceItem implements DisplayItem
     private final String fDisplayName;
     private final VariableGroup fGroup;
     private final Optional<String> fHelpText;
-    private final List<String> fReferenceInfo;
+    private final List<String> fContent;
     
     /**
      * Constructs an instance using the designated information.
@@ -27,16 +27,16 @@ public class ReferenceItem implements DisplayItem
      *            the display name of the reference information
      * @param group
      *            the VariableGroup that this reference information belongs to
-     * @param referenceInfo
+     * @param content
      *            the reference information to show to the user
      */
     public ReferenceItem(final String displayName, final VariableGroup group,
-            final List<String> referenceInfo)
+            final List<String> content)
     {
         fDisplayName = displayName;
         fGroup = group;
         fHelpText = Optional.of("");
-        fReferenceInfo = referenceInfo;
+        fContent = content;
     }
     
     @Override
@@ -82,7 +82,7 @@ public class ReferenceItem implements DisplayItem
     
     public List<String> getContent()
     {
-        return fReferenceInfo;
+        return fContent;
     }
     
     @Override
