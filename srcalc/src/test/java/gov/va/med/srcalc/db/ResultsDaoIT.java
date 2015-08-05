@@ -1,7 +1,9 @@
 package gov.va.med.srcalc.db;
 
 import static org.junit.Assert.*;
+
 import gov.va.med.srcalc.domain.calculation.HistoricalCalculation;
+import gov.va.med.srcalc.domain.calculation.HistoricalRunInfo;
 import gov.va.med.srcalc.domain.calculation.SignedResult;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 import gov.va.med.srcalc.util.SearchResults;
@@ -119,6 +121,13 @@ public class ResultsDaoIT extends IntegrationTest
             new DateTime(2015, 6, 8, 13, 34, 59),
             VALUES_NON_PROCEDURE,
             ImmutableMap.of("Cardiac 30-Day", 73.5f));
+    
+    private final HistoricalCalculation fHistoricalCalc5 = new HistoricalCalculation(
+            SPECIALTY_CARDIAC,
+            STATION_NUMBER_3,
+            new DateTime(2015, 6, 6, 11, 52, 43),
+            75,
+            Optional.of(PROVIDER_TYPE_1));
 
     @Autowired
     ResultsDao fResultsDao;
@@ -141,6 +150,7 @@ public class ResultsDaoIT extends IntegrationTest
         fResultsDao.persistSignedResult(fSampleResult2);
         fResultsDao.persistSignedResult(fSampleResult3);
         fResultsDao.persistSignedResult(fSampleResult4);
+        fResultsDao.persistHistoricalCalc(fHistoricalCalc5);
         simulateNewSession();
     }
 
@@ -157,7 +167,7 @@ public class ResultsDaoIT extends IntegrationTest
         final ResultSearchParameters params = new ResultSearchParameters();
         params.setSpecialtyNames(ImmutableSet.of("Neurosurgery", "Thoracic"));
         final SearchResults<SignedResult> actualResults =
-                params.doSearch(getHibernateSession());
+                fResultsDao.getSignedResults(params);
         
         /* Verification */
         assertEquals(expectedResults, actualResults);
@@ -176,7 +186,7 @@ public class ResultsDaoIT extends IntegrationTest
         final ResultSearchParameters params = new ResultSearchParameters();
         params.setCptCode(CPT_CODE_1);
         final SearchResults<SignedResult> actualResults =
-                params.doSearch(getHibernateSession());
+                fResultsDao.getSignedResults(params);
         
         /* Verification */
         assertEquals(expectedResults, actualResults);
@@ -194,7 +204,7 @@ public class ResultsDaoIT extends IntegrationTest
         params.setMinDate(new LocalDate(2015, 3, 4));
         params.setMaxDate(new LocalDate(2015, 3, 4));
         final SearchResults<SignedResult> actualResults =
-                params.doSearch(getHibernateSession());
+                fResultsDao.getSignedResults(params);
         
         /* Verification */
         assertEquals(expectedResults, actualResults);
@@ -211,10 +221,28 @@ public class ResultsDaoIT extends IntegrationTest
         final ResultSearchParameters params = new ResultSearchParameters();
         params.setStationNumber(STATION_NUMBER_2);
         final SearchResults<SignedResult> actualResults =
-                params.doSearch(getHibernateSession());
+                fResultsDao.getSignedResults(params);
         
         /* Verification */
         assertEquals(expectedResults, actualResults);
         
+    }
+    
+    @Test
+    public final void testGetHistoricalRunsByDate()
+    {
+        /* Setup */
+        final SearchResults<HistoricalRunInfo> expectedRunInfos = new SearchResults<>(
+                ImmutableList.of(
+                        HistoricalRunInfo.signed(fSampleResult3),
+                        HistoricalRunInfo.unsigned(fHistoricalCalc5),
+                        HistoricalRunInfo.signed(fSampleResult1)),
+                false);
+
+        /* Behavior & Verification */
+        final HistoricalSearchParameters params = new HistoricalSearchParameters();
+        params.setMinDate(new LocalDate(2015, 1, 1));
+        params.setMaxDate(new LocalDate(2015, 6, 7));
+        assertEquals(expectedRunInfos, fResultsDao.getHistoricalRunInfos(params));
     }
 }

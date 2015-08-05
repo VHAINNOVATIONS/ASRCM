@@ -10,6 +10,8 @@ import java.util.List;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.google.common.collect.ImmutableList;
+
 /**
  * <p>A class used to add reference information to existing PopulatedDisplayGroups and create
  * PopulatedDisplayGroups that do not exist, in order to store reference information to display
@@ -20,11 +22,11 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public final class ReferenceInfoAdder
 {
+    private static final String REMOTE_MEDICATIONS_URL = "http://www.google.com/";
+    
     /**
      * Adds reference information for all of the given {@link PopulatedDisplayGroup}s and adds any groups
      * that are missing in order to include their reference information as well.
-     * @param map a map where they key is a VariableGroup and the value is a List of Variables
-     *          that all belong to the same VariableGroup
      * @param groupList a list of all previously existing PopulatedDisplayGroup
      * @param patient the patient to add reference information from
      */
@@ -83,8 +85,14 @@ public final class ReferenceInfoAdder
         }
         else if(group.getName().equalsIgnoreCase(VariableGroup.MEDICATIONS_GROUP))
         {
+            final String remoteHtml = String.format(
+                    "<a href=\"%s\" target=\"_blank\">Please click here to view remote medications.</a>",
+                    REMOTE_MEDICATIONS_URL);
             populatedGroup.getDisplayItems().add(0, 
                     new ReferenceItem("Active Medications", group, patient.getActiveMedications()));
+            populatedGroup.getDisplayItems().add(
+                    1,
+                    new ReferenceItem("Remote Medications", group, ImmutableList.of(remoteHtml)));
         }
     }
 }

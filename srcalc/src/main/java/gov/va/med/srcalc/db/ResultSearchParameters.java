@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -15,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import gov.va.med.srcalc.domain.calculation.SignedResult;
@@ -27,6 +27,9 @@ import gov.va.med.srcalc.util.SearchResults;
  * <p>Note: in most classes, we define the interface very tightly (using Optional objects
  * instead of nulls, etc.), but here we are pretty flexible in what we accept to allow
  * Spring to bind forms to these objects.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
  */
 public final class ResultSearchParameters
 {
@@ -154,6 +157,7 @@ public final class ResultSearchParameters
 
         final Criteria criteria = session.createCriteria(SignedResult.class);
         criteria.setReadOnly(true);  // We are loading immutable objects.
+        criteria.setFetchMode("outcomes", FetchMode.JOIN);
         criteria.addOrder(Order.desc("signatureTimestamp"));
         // See <http://tinyurl.com/oucuyt3>. I have no idea why this isn't Hibernate's
         // default.
@@ -200,16 +204,7 @@ public final class ResultSearchParameters
         @SuppressWarnings("unchecked")  // trust Hibernate
         final List<SignedResult> foundItems = criteria.list();
         
-        if (foundItems.size() > MAX_RESULTS)
-        {
-            return new SearchResults<>(
-                    ImmutableList.copyOf(foundItems.subList(0, MAX_RESULTS)),
-                    true);
-        }
-        else
-        {
-            return new SearchResults<>(ImmutableList.copyOf(foundItems), false);
-        }
+        return SearchResults.fromList(foundItems, MAX_RESULTS);
     }
     
     @Override

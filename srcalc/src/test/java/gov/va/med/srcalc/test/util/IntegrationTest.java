@@ -48,9 +48,10 @@ public abstract class IntegrationTest
     protected void simulateNewSession()
     {
         fLogger.info(
-                "Flushing and clearing the Hibernate Session to simulate a new one.");
+                "Flushing and clearing the Hibernate Session to simulate a new one...");
         getHibernateSession().flush();
         getHibernateSession().clear();
+        fLogger.info("Session cleared.");
     }
     
     @After

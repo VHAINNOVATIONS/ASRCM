@@ -14,6 +14,8 @@ import javax.persistence.*;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.joda.time.PeriodType;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
@@ -59,7 +61,8 @@ public final class SignedResult
      * @param outcomes See {@link #getOutcomes()}.
      * @throws NullPointerException if any argument is null
      * @throws IllegalArgumentException if the CPT code is present and not {@link
-     * Procedure#CPT_CODE_LENGTH} characters
+     * Procedure#CPT_CODE_LENGTH} characters or if the signature timestamp is before the
+     * HistoricalCalculation's start timestamp
      */
     public SignedResult(
             final HistoricalCalculation historicalCalc,
@@ -116,6 +119,7 @@ public final class SignedResult
     void setHistoricalCalculation(final HistoricalCalculation historicalCalc)
     {
         fHistoricalCalculation = Objects.requireNonNull(historicalCalc);
+        checkSignatureTimestamp();
     }
 
     /**
@@ -197,12 +201,42 @@ public final class SignedResult
     }
     
     /**
+     * Ensures fSignatureTimestamp is not before the fHistoricalCalculation's start
+     * timestamp. Does nothing if either argument is null, so this may be called in the
+     * middle of reflection-based construction.
+     * @throws IllegalArgumentException if fSignatureTimestamp is before it.
+     */
+    private void checkSignatureTimestamp()
+    {
+        if (fSignatureTimestamp != null && fHistoricalCalculation != null &&
+            fSignatureTimestamp.isBefore(fHistoricalCalculation.getStartTimestamp()))
+        {
+            throw new IllegalArgumentException(
+                    "Signature timestamp must be after start timestamp.");
+        }
+    }
+    
+    /**
      * For reflection-based construction only. Business code must provide this value to
      * the constructor.
+     * @throws IllegalArgumentException if the given timestamp is before the start
+     * timestamp
      */
     void setSignatureTimestamp(final DateTime signatureTimestamp)
     {
         fSignatureTimestamp = Objects.requireNonNull(signatureTimestamp);
+        checkSignatureTimestamp();
+    }
+    
+    /**
+     * Returns the number of seconds elapsed from {@link
+     * HistoricalCalculation#getStartTimestamp()} to {@link #getSignatureTimestamp()}.
+     */
+    @Transient
+    public int getSecondsToSign()
+    {
+        return new Interval(fHistoricalCalculation.getStartTimestamp(), fSignatureTimestamp)
+            .toPeriod(PeriodType.seconds()).getSeconds();
     }
     
     /**
@@ -241,7 +275,9 @@ public final class SignedResult
      * risk.
      * @return an unmodifiable map
      */
-    @ElementCollection(fetch = FetchType.EAGER) // There should be few outcomes per result.
+    // Though there are few outcomes per result, do a lazy fetch to ensure correct counts
+    // when searching.
+    @ElementCollection(fetch = FetchType.LAZY)
     // Override various defaults for a better schema.
     @CollectionTable(
             name = "signed_result_outcome",
@@ -270,8 +306,8 @@ public final class SignedResult
     /**
      * <p>Returns a string representation of this object.</p>
      * 
-     * <p>The exact format is unspecified, but the string will contain the patientDfn,
-     * cptCode, and {@link HistoricalCalculation#toString()}.</p>
+     * <p>The exact format is unspecified, but the string will contain at least the
+     * patientDfn, cptCode, and {@link HistoricalCalculation#toString()}.</p>
      */
     @Override
     public String toString()
