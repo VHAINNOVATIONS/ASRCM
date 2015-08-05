@@ -42,6 +42,14 @@ public final class UtilizationSummary
     }
     
     /**
+     * Divides the sum by the count for an arithmetic mean. If the count is 0, returns -1.
+     */
+    private static long divideForMean(long sum, long count)
+    {
+        return (count == 0) ? -1 : sum / count;
+    }
+    
+    /**
      * Constructs an instance, calculating statistics from the given HistoricalRunInfo
      * objects.
      * @return a new instance encapsulating the statistics
@@ -69,8 +77,8 @@ public final class UtilizationSummary
                 signedCount,
                 // We use longs to hold the sum, but the average should fit inside an int
                 // (because all the components are ints).
-                (int)(secondsToFirstRunSum / runInfos.size()),
-                (int)(secondsToSignSum / signedCount));
+                (int)divideForMean(secondsToFirstRunSum, runInfos.size()),
+                (int)divideForMean(secondsToSignSum, signedCount));
     }
     
     /**
@@ -90,7 +98,8 @@ public final class UtilizationSummary
     }
     
     /**
-     * Returns the mean of {@link HistoricalCalculation#getSecondsToFirstRun()}.
+     * Returns the mean of {@link HistoricalCalculation#getSecondsToFirstRun()}. If there
+     * are no calculations, returns -1 like {@link #getSecondsToSignAverage()} below.
      */
     public int getSecondsToFirstRunAverage()
     {
@@ -98,7 +107,9 @@ public final class UtilizationSummary
     }
     
     /**
-     * Returns the mean of {@link SignedResult#getSecondsToSignature()}.
+     * Returns the mean of {@link SignedResult#getSecondsToSignature()}. If there are no
+     * signed calculations, returns -1. (Normally we would use an {@link
+     * com.google.common.base.Optional Optional} for this, but it is not EL-friendly.)
      */
     public int getSecondsToSignAverage()
     {

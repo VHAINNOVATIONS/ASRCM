@@ -62,7 +62,7 @@ public class UtilizationSummaryTest
                 HistoricalRunInfo.signed(result2),
                 HistoricalRunInfo.unsigned(calc3));
         
-        final int expectedTotal = 3;
+        final int expectedTotal = runInfos.size();
         final int expectedSigned = 2;
         final int expectedFirstRunAvg = 70;
         final int expectedSignAvg = 110;
@@ -79,6 +79,38 @@ public class UtilizationSummaryTest
                 containsString(Integer.toString(expectedSigned)),
                 containsString(Integer.toString(expectedFirstRunAvg)),
                 containsString(Integer.toString(expectedSignAvg))));
+    }
+    
+    @Test
+    public final void testNoSigned()
+    {
+        final HistoricalCalculation calc = makeHistoricalCalc(67);
+        final ImmutableList<HistoricalRunInfo> runInfos = ImmutableList.of(
+                HistoricalRunInfo.unsigned(calc));
+        
+        final UtilizationSummary actualSummary = UtilizationSummary.fromRunInfos(runInfos);
+        
+        assertEquals(runInfos.size(), actualSummary.getTotalCount());
+        assertEquals(0, actualSummary.getSignedCount());
+        assertEquals(calc.getSecondsToFirstRun(), actualSummary.getSecondsToFirstRunAverage());
+        assertEquals(-1, actualSummary.getSecondsToSignAverage());
+    }
+    
+    /**
+     * Tests behavior if we pass in an empty collection of HistoricalRunInfos. Definitely
+     * an edge case, but worth testing.
+     */
+    @Test
+    public final void testNoCalculations()
+    {
+        final ImmutableList<HistoricalRunInfo> runInfos = ImmutableList.of();
+
+        final UtilizationSummary actualSummary = UtilizationSummary.fromRunInfos(runInfos);
+        
+        assertEquals(runInfos.size(), actualSummary.getTotalCount());
+        assertEquals(0, actualSummary.getSignedCount());
+        assertEquals(-1, actualSummary.getSecondsToFirstRunAverage());
+        assertEquals(-1, actualSummary.getSecondsToSignAverage());
     }
     
     @Test
