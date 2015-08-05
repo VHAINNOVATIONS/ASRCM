@@ -82,7 +82,7 @@ public class EditMultiSelectVar extends EditBaseVar
     @Override
     public ImmutableSortedSet<ValueRetriever> getAllRetrievers()
     {
-        return ImmutableSortedSet.of(ValueRetriever.GENDER);
+        return ImmutableSortedSet.of(ValueRetriever.GENDER, ValueRetriever.FUNCTIONAL_STATUS);
     }
     
     /**
