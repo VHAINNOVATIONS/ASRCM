@@ -1,4 +1,4 @@
-/*! HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
+/*! Uses content from HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
 
 html,
 button,
@@ -452,6 +452,12 @@ div#newVariableLinks, div#newRuleLink {
 .reportTable td.numerical {
 	/* Numbers are better right-aligned. */
 	text-align: right;
+}
+
+/* These column headers are much longer than their contents. Enforce a size to avoid
+ * stretching the column too much. */
+#utilizationSummaryTable .longHeaderShortContent {
+	max-width: 7em;
 }
 
 #summaryReportParametersForm #cptCode {

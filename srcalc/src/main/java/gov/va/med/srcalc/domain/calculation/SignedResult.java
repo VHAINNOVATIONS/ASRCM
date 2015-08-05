@@ -306,8 +306,8 @@ public final class SignedResult
     /**
      * <p>Returns a string representation of this object.</p>
      * 
-     * <p>The exact format is unspecified, but the string will contain the patientDfn,
-     * cptCode, and {@link HistoricalCalculation#toString()}.</p>
+     * <p>The exact format is unspecified, but the string will contain at least the
+     * patientDfn, cptCode, and {@link HistoricalCalculation#toString()}.</p>
      */
     @Override
     public String toString()

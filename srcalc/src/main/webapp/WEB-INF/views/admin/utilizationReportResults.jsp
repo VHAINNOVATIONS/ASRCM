@@ -22,15 +22,14 @@
     
     <h3>Summary Data</h3>
     
-    <table class="reportTable">
+    <table id="utilizationSummaryTable" class="reportTable">
     <thead>
     <tr>
         <th>Specialty</th>
         <th>Total</th>
         <th>Signed</th>
-        <%-- Set the width to make sure these don't get too large. --%>
-        <th style="width: 7em;">Time to First Run Average (Minutes)</th>
-        <th style="width: 7em;">Time to Sign Average (Minutes)</th>
+        <th class="longHeaderShortContent">Time to First Run Average (Minutes)</th>
+        <th class="longHeaderShortContent">Time to Sign Average (Minutes)</th>
     </tr>
     </thead>
     <tbody>

@@ -24,10 +24,10 @@ public final class UtilizationSummary
     
     /**
      * Constructs an instance with the given properties.
-     * @param totalCount
-     * @param signedCount
-     * @param secondsToFirstRunAverage
-     * @param secondsToSignAverage
+     * @param totalCount See {@link #getTotalCount()}.
+     * @param signedCount See {@link #getSignedCount()}.
+     * @param secondsToFirstRunAverage See {@link #getSecondsToFirstRunAverage()}.
+     * @param secondsToSignAverage See {@link #getSecondsToSignAverage()}.
      */
     public UtilizationSummary(
             final int totalCount,
