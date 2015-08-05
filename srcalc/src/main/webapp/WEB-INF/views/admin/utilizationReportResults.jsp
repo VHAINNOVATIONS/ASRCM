@@ -39,14 +39,19 @@
         <td class="numerical">${summaryEntry.value.totalCount}</td>
         <td class="numerical">${summaryEntry.value.signedCount}</td>
         <td class="numerical">
+        <%-- secondsToFirstRunAverage can be -1 if there were no signed calcs, but in that
+             case there will be no summary row. --%>
         <fmt:formatNumber
             value="${summaryEntry.value.secondsToFirstRunAverage / 60}"
             minFractionDigits="1" maxFractionDigits="1"/>
         </td>
         <td class="numerical">
+        <%-- secondsToSignAverage will be -1 if there were no signed calcs. --%>
+        <c:if test="${summaryEntry.value.secondsToSignAverage >= 0}">
         <fmt:formatNumber
             value="${summaryEntry.value.secondsToSignAverage / 60}"
             minFractionDigits="1" maxFractionDigits="1"/>
+        </c:if>
         </td>
     </tr>
     </c:forEach>
