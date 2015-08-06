@@ -1,5 +1,6 @@
 package gov.va.med.srcalc.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "notes")
 public final class ReferenceNotes
 {
-    private List<ReferenceNote> fAllNotes;
+    private List<ReferenceNote> fAllNotes = new ArrayList<ReferenceNote>();
     
     /**
      * Returns all of the {@link ReferenceNote}s contained in this instance.
