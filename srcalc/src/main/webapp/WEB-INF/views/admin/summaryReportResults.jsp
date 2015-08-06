@@ -21,7 +21,7 @@
     </p>
     </c:if>
     
-    <table id="summaryReportTable" class="reportTable">
+    <table id="summaryReportTable" class="srcalcTable reportTable">
     <thead>
     <tr>
         <th>CPT Code</th>

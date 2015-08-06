@@ -9,6 +9,7 @@ import org.joda.time.LocalDate;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
 import gov.va.med.srcalc.domain.calculation.HistoricalCalculation;
 
@@ -28,6 +29,16 @@ public final class HistoricalSearchParameters
      * The maximum number of results a search will return.
      */
     public static final int MAX_RESULTS = 1000;
+    
+    /**
+     * The description of the minDate parameter: {@value}.
+     */
+    public static final String PARAM_MIN_DATE = "Minimum Date";
+
+    /**
+     * The description of the maxDate parameter: {@value}.
+     */
+    public static final String PARAM_MAX_DATE = "Maximum Date";
     
     private Optional<LocalDate> fMinDate = Optional.absent();
     private Optional<LocalDate> fMaxDate = Optional.absent();
@@ -102,6 +113,32 @@ public final class HistoricalSearchParameters
         }
         
         return criteria;
+    }
+        
+    /**
+     * <p>Returns only the present parameters as a Map from a human-readable parameter
+     * description to the applied parameter.</p>
+     * 
+     * <p>Iteration over the map will be in this order:</p>
+     * 
+     * <ol>
+     * <li>{@link #PARAM_MIN_DATE}</li>
+     * <li>{@link #PARAM_MAX_DATE}</li>
+     * </ol>
+     * @return an ImmutableMap
+     */
+    public ImmutableMap<String, Object> getAppliedParameters()
+    {
+        final ImmutableMap.Builder<String, Object> builder = ImmutableMap.builder();
+        if (fMinDate.isPresent())
+        {
+            builder.put(PARAM_MIN_DATE, fMinDate.get());
+        }
+        if (fMaxDate.isPresent())
+        {
+            builder.put(PARAM_MAX_DATE, fMaxDate.get());
+        }
+        return builder.build();
     }
     
     @Override
