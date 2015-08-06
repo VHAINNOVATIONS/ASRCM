@@ -224,31 +224,36 @@ form.srcalcForm ul.checkboxList {
 
 /* .srcalcTable is the standard basic table display in srcalc */
 
-table.srcalcTable th {
+.srcalcTable th {
 	text-align: left;
 	border-bottom: 2px solid #ccc;
 }
 
 /* Indicates a main column of the table, as opposed to minor columns such as
    an "edit item" link. */
-table.srcalcTable th.main {
+.srcalcTable th.main {
 	/* Don't allow the columns to get too small. */
 	min-width: 8em;
 }
 
-table.srcalcTable td {
+.srcalcTable td {
 	border-bottom: 1px solid #ccc;
 }
 
 /* Prevent columns from mashing up against each other. */
-table.srcalcTable th, table.srcalcTable td {
+.srcalcTable th, .srcalcTable td {
 	padding-left: 0.3em;
 	padding-right: 0.3em;
 }
 
 /* But don't put left padding on the first columns */
-table.srcalcTable th:first-child, table.srcalcTable td:first-child {
+.srcalcTable th:first-child, .srcalcTable td:first-child {
 	padding-left: 0;
+}
+
+.srcalcTable td.numerical {
+	/* Numbers are better right-aligned. */
+	text-align: right;
 }
 
 /* Datatables styling */
@@ -449,14 +454,9 @@ div#newVariableLinks, div#newRuleLink {
 	font-size: 90%;
 }
 
-.reportTable td, .reportTable th {
-	/* Ensure the cells don't squish together. */
-	padding-right: 0.4em;
-}
-
-.reportTable td.numerical {
-	/* Numbers are better right-aligned. */
-	text-align: right;
+/* We usually left-align column headers, but they look better centered in reports. */
+.reportTable th {
+	text-align: center;
 }
 
 /* These column headers are much longer than their contents. Enforce a size to avoid

@@ -10,6 +10,20 @@
 <section>
     <h2>ASRC Utilization Report - ${report.generationDate}</h2>
     
+    <p>Applied parameters:</p>
+    <ul>
+    <c:choose>
+    <c:when test="${empty report.parameters.appliedParameters}">
+    <li>None. (Unrestricted search.)</li>
+    </c:when>
+    <c:otherwise>
+    <c:forEach var="paramEntry" items="${report.parameters.appliedParameters}">
+    <li>${paramEntry.key}: ${paramEntry.value}</li>
+    </c:forEach>
+    </c:otherwise>
+    </c:choose>
+    </ul>
+    
     <p>
     The below tables may be copied and pasted into Excel.
     </p>
@@ -22,7 +36,7 @@
     
     <h3>Summary Data</h3>
     
-    <table id="utilizationSummaryTable" class="reportTable">
+    <table id="utilizationSummaryTable" class="srcalcTable reportTable">
     <thead>
     <tr>
         <th>Specialty</th>
@@ -60,7 +74,7 @@
     
     <h3>Calculation Data</h3>
     
-    <table id="utilizationReportTable" class="reportTable">
+    <table id="utilizationReportTable" class="srcalcTable reportTable">
     <thead>
     <tr>
         <th>Specialty</th>
