@@ -213,6 +213,11 @@ public class RpcVistaPatientDaoTest
     public final void testNoHealthFactors()
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ,
+                RemoteProcedure.GET_HEALTH_FACTORS,
+                String.valueOf(PATIENT_DFN)))
+                .thenReturn(ImmutableList.of(""));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);
         assertEquals(Collections.<HealthFactor>emptyList(), patient.getHealthFactors());
