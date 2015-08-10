@@ -6,6 +6,7 @@ import gov.va.med.srcalc.domain.ReferenceNotes;
 import gov.va.med.srcalc.util.XmlDateAdapter;
 
 import java.io.StringReader;
+import java.util.Collections;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -35,6 +36,7 @@ public class ReferenceNotesTest
             + "<![CDATA[HX:  Patient was seen for hearing aid fitting and orientation.]]>\n"
             + "<![CDATA[The batteries supplied for this hearing aid were: za312.]]>\n"
             + "</body>\n</note>\n</notes>";
+    private static final String NO_NOTES = "<notes></notes>";
 
     private Unmarshaller fUnmarshaller;
     
@@ -91,6 +93,13 @@ public class ReferenceNotesTest
         assertEquals("\nHX:  Patient was seen for hearing aid fitting and orientation.\n"
                 + "The batteries supplied for this hearing aid were: za312.\n", parsedNote.getNoteBody());
         assertEquals(XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.parseDateTime("04/01/2004 22:24"), parsedNote.getSignDate());
+    }
+    
+    @Test
+    public void testNoNotes() throws JAXBException
+    {
+        final ReferenceNotes allNotes = parseAdlNotes(NO_NOTES);
+        assertEquals(Collections.emptyList(), allNotes.getAllNotes());
     }
     
     private ReferenceNotes parseAdlNotes(final String adlString) throws JAXBException
