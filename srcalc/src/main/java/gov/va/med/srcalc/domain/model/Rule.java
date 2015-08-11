@@ -2,7 +2,6 @@ package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.util.DisplayNameConditions;
-import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.Preconditions;
 
 import java.util.*;
@@ -227,10 +226,9 @@ public final class Rule
 
         /* Match all the values */
         final StandardEvaluationContext ec = new StandardEvaluationContext();
-        final MissingValuesException missingValues = new MissingValuesException(
-                "The calculation is missing values.", new ArrayList<MissingValueException>());
         // Pass over the matcher list twice. Once to ensure all values are present.
         // Twice to actually evaluate the value matchers.
+        final HashSet<Variable> missingVariables = new HashSet<>();
         for (final ValueMatcher condition : fMatchers)
         {
             final Variable var = condition.getVariable();
@@ -240,8 +238,7 @@ public final class Rule
             {
                 if (!isBypassEnabled())
                 {
-                    missingValues.getMissingValues().add(new MissingValueException(
-                            "Missing value for " + var.getKey(), var));
+                    missingVariables.add(var);
                     continue;
                 }
                 // If the variable is not required, there is no coefficient added to the
@@ -251,9 +248,9 @@ public final class Rule
                 return 0.0f;
             }
         }
-        if(missingValues.getMissingValues().size() > 0)
+        if (!missingVariables.isEmpty())
         {
-            throw missingValues;
+            throw new MissingValuesException(missingVariables);
         }
         final HashMap<String, Object> matchedValues = new HashMap<>();
         for (final ValueMatcher condition : fMatchers)

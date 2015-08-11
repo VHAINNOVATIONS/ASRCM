@@ -9,7 +9,6 @@ import java.util.List;
 import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.service.CalculationService;
-import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.web.DynamicValueVisitor;
 import gov.va.med.srcalc.web.view.*;
 
@@ -135,18 +134,18 @@ public class EnterVariablesController
         catch(final MissingValuesException e)
         {
             // Add all of the missing values to the binding errors
-            for(final MissingValueException missingValue : e.getMissingValues())
+            for(final Variable missingValue : e.getMissingVariables())
             {
                 // If the variable had invalid input, rather than missing input,
                 // it would never be included in the values.
-                final String dynamicKey = VariableEntry.makeDynamicValuePath(missingValue.getVariable().getKey());
+                final String dynamicKey = VariableEntry.makeDynamicValuePath(missingValue.getKey());
                 LOGGER.debug("Field Error: {}", dynamicKey);
                 // Account for field errors on special fields like discrete numerical
                 // variables.
-                if(bindingResultAlreadyContainsError(dynamicKey, valuesBindingResult, missingValue))
+                if (!bindingResultAlreadyContainsError(missingValue, valuesBindingResult))
                 {
-                            valuesBindingResult.rejectValue(
-                                    dynamicKey, ERROR_NO_VALUE, missingValue.getMessage());
+                    valuesBindingResult.rejectValue(
+                            dynamicKey, ERROR_NO_VALUE, "no value");
                 }
             }
         }
@@ -164,12 +163,18 @@ public class EnterVariablesController
         return new ModelAndView("redirect:/displayResults");
     }
     
-    private boolean bindingResultAlreadyContainsError(final String dynamicKey,
-            final BindingResult valuesBindingResult, final MissingValueException missingValue)
+    /**
+     * Returns true if the given BindingResult already contains an error for the given
+     * variable; false otherwise.
+     */
+    private boolean bindingResultAlreadyContainsError(final Variable variable,
+            final BindingResult valuesBindingResult)
     {
+        final String baseKey = VariableEntry.makeDynamicValuePath(variable.getKey());
         final String numericalKey = VariableEntry.makeDynamicValuePath(
-                VariableEntry.makeNumericalInputName(missingValue.getVariable().getKey()));
-        return !valuesBindingResult.hasFieldErrors(dynamicKey) && !valuesBindingResult.hasFieldErrors(numericalKey);
+                VariableEntry.makeNumericalInputName(variable.getKey()));
+        return valuesBindingResult.hasFieldErrors(baseKey) ||
+                valuesBindingResult.hasFieldErrors(numericalKey);
     }
     
     private List<PopulatedDisplayGroup> getDisplayGroups(final Calculation calculation)

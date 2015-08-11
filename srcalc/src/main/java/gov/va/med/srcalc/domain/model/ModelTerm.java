@@ -6,9 +6,10 @@ import javax.persistence.*;
 
 import com.google.common.collect.ImmutableSet;
 
+
+
 // TODO: can we eliminate this dependency on the 'calculation' package?
 import gov.va.med.srcalc.domain.calculation.Value;
-import gov.va.med.srcalc.util.MissingValuesException;
 
 /**
  * <p>A single summation term in a risk model.</p>

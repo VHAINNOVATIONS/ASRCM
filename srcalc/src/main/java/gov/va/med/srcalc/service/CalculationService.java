@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 
 import gov.va.med.srcalc.domain.calculation.*;
+import gov.va.med.srcalc.domain.model.MissingValuesException;
 import gov.va.med.srcalc.domain.model.Specialty;
-import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.vista.VistaPatientDao;
 
 /**
