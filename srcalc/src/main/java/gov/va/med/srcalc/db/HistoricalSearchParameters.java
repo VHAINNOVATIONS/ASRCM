@@ -3,7 +3,6 @@ package gov.va.med.srcalc.db;
 import java.util.Objects;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.LocalDate;
 
@@ -28,7 +27,7 @@ public final class HistoricalSearchParameters
     /**
      * The maximum number of results a search will return.
      */
-    public static final int MAX_RESULTS = 1000;
+    public static final int MAX_RESULTS = 400000;
     
     /**
      * The description of the minDate parameter: {@value}.
@@ -95,7 +94,6 @@ public final class HistoricalSearchParameters
     {
         final DetachedCriteria criteria =
                 DetachedCriteria.forClass(HistoricalCalculation.class);
-        criteria.addOrder(Order.desc("startTimestamp"));
         
         if (fMinDate.isPresent())
         {

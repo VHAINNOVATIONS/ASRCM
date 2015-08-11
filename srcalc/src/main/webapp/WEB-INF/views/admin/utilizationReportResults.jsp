@@ -25,12 +25,12 @@
     </ul>
     
     <p>
-    The below tables may be copied and pasted into Excel.
+    The below table may be copied and pasted into Excel.
     </p>
     
     <c:if test="${report.results.truncated}">
     <p class="error">
-    Your search returned more results than could be displayed. Please refine your search.
+    Your search returned more results than could be analyzed. Please refine your search.
     </p>
     </c:if>
     
@@ -64,46 +64,6 @@
         <c:if test="${summaryEntry.value.secondsToSignAverage >= 0}">
         <fmt:formatNumber
             value="${summaryEntry.value.secondsToSignAverage / 60}"
-            minFractionDigits="1" maxFractionDigits="1"/>
-        </c:if>
-        </td>
-    </tr>
-    </c:forEach>
-    </tbody>
-    </table>
-    
-    <h3>Calculation Data</h3>
-    
-    <table id="utilizationReportTable" class="srcalcTable reportTable">
-    <thead>
-    <tr>
-        <th>Specialty</th>
-        <th>Date</th>
-        <th>Signed</th>
-        <th>Time to First Run<br>(Minutes)</th>
-        <th>Time to Sign<br>(Minutes)</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="foundItem" items="${report.results.foundItems}">
-    <tr>
-        <td>
-        <c:out value="${foundItem.historicalCalculation.specialtyName}"/>
-        </td>
-        <td>
-        <joda:format value="${foundItem.historicalCalculation.startTimestamp}"
-            pattern="yyyy-MM-dd"/>
-        </td>
-        <td>${foundItem.signed ? "Yes" : "No"}</td>
-        <td class="numerical">
-        <fmt:formatNumber
-            value="${foundItem.historicalCalculation.secondsToFirstRun / 60}"
-            minFractionDigits="1" maxFractionDigits="1"/>
-        </td>
-        <td class="numerical">
-        <c:if test="${foundItem.signed}">
-        <fmt:formatNumber
-            value="${foundItem.signedResultNullable.secondsToSign / 60}"
             minFractionDigits="1" maxFractionDigits="1"/>
         </c:if>
         </td>

@@ -10,7 +10,9 @@ import gov.va.med.srcalc.domain.calculation.HistoricalRunInfo;
 import gov.va.med.srcalc.util.SearchResults;
 
 /**
- * <p>Encapsulates Utilization Report data.</p>
+ * <p>Encapsulates Utilization Report data. Even though we only display the summary
+ * statistics on the UI, we still store the full results since they are available
+ * anyway.</p>
  * 
  * <p>The references in this class cannot be changed, but it is not truly immutable
  * because {@link HistoricalSearchParameters} is mutable.</p>
