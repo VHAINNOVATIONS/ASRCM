@@ -6,4 +6,5 @@
 <form:select path="${displayItemParam.varPath}">
     <form:options items="${displayItemParam.options}"/>
 </form:select>
-<%-- There cannot be any errors since the only options given are valid. --%>
+<!-- Display any errors immediately following the input control. -->
+<form:errors path="${displayItemParam.varPath}" cssClass="error" />
