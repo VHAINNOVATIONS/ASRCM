@@ -224,7 +224,34 @@ public enum ValueRetriever
             }
             return variableRefInfo.toString();
         }
-    };
+    },
+    POTASSIUM
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+            final String key)
+        {
+            addLabValue("POTASSIUM", patient, variableEntry, key);
+        }
+    },
+    HGA1C
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+            final String key)
+        {
+            addLabValue("HGA1C", patient, variableEntry, key);
+        }
+    },
+    GLUCOSE
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+            final String key)
+        {
+            addLabValue("GLUCOSE", patient, variableEntry, key);
+        }
+    };;
     
     /**
      * Attempt to add the retrieved value to the {@link VariableEntry} object. Do nothing if

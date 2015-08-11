@@ -115,6 +115,30 @@ enum VistaLabs
         {
             return ImmutableList.of("PTT");
         }
+    },
+    POTASSIUM
+    {
+        @Override
+        List<String> getPossibleLabNames()
+        {
+            return ImmutableList.of("POTASSIUM", "K");
+        }
+    },
+    HGA1C
+    {
+        @Override
+        List<String> getPossibleLabNames()
+        {
+            return ImmutableList.of("HGA1C", "HEMOGLOBIN A1C", "A1C");
+        }
+    },
+    GLUCOSE
+    {
+        @Override
+        List<String> getPossibleLabNames()
+        {
+            return ImmutableList.of("GLUCOSE", "SERUM GLUCOSE");
+        }
     };
     
     abstract List<String> getPossibleLabNames();
