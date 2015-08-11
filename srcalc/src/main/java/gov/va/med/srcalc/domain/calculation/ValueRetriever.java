@@ -251,7 +251,7 @@ public enum ValueRetriever
         {
             addLabValue("GLUCOSE", patient, variableEntry, key);
         }
-    };;
+    };
     
     /**
      * Attempt to add the retrieved value to the {@link VariableEntry} object. Do nothing if
