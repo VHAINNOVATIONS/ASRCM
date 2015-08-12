@@ -41,8 +41,25 @@ public class SampleCalculations
     {
         final Patient patient = dummyPatient(dfn);
         final Map<VistaLabs, RetrievedValue> labs = new HashMap<VistaLabs, RetrievedValue>();
-        labs.put(VistaLabs.WBC, new RetrievedValue(10.0, new Date(), "x1000/mm^3"));
+        
+        labs.put(VistaLabs.ALBUMIN, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.ALKALINE_PHOSPHATASE, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.BILIRUBIN, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.BUN, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.CREATININE, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.GLUCOSE, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.HEMATOCRIT, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.HGA1C, new RetrievedValue(1.0, new Date(), ""));
         labs.put(VistaLabs.INR, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.PLATELETS, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.POTASSIUM, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.PTT, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.SGOT, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.SODIUM, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.WBC, new RetrievedValue(10.0, new Date(), "x1000/mm^3"));
+        
+        
+        
         patient.setLabs(labs);
         return patient;
     }
