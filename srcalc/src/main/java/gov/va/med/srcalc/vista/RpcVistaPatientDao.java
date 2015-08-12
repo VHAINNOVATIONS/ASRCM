@@ -7,6 +7,7 @@ import gov.va.med.crypto.VistaKernelHash;
 import gov.va.med.srcalc.domain.HealthFactor;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.ReferenceNotes;
+import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 
 import java.text.ParseException;

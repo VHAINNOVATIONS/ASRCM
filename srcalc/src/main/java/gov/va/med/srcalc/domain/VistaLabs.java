@@ -1,4 +1,4 @@
-package gov.va.med.srcalc.vista;
+package gov.va.med.srcalc.domain;
 
 import java.util.List;
 
@@ -7,12 +7,12 @@ import com.google.common.collect.ImmutableList;
 /**
  * Enumerates all lab tests which this application can retrieve from VistA.
  */
-enum VistaLabs
+public enum VistaLabs
 {
     ALBUMIN
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of("ALBUMIN");
         }
@@ -20,7 +20,7 @@ enum VistaLabs
     CREATININE
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of("CREATININE");
         }
@@ -28,7 +28,7 @@ enum VistaLabs
     ALKALINE_PHOSPHATASE
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of("ALKALINE PHOSPHATASE");
         }
@@ -36,7 +36,7 @@ enum VistaLabs
     BUN
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of(
                     "BUN",
@@ -47,7 +47,7 @@ enum VistaLabs
     SGOT
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of(
                     "SGOT", 
@@ -59,7 +59,7 @@ enum VistaLabs
     WBC
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of(
                     "WBC",
@@ -69,7 +69,7 @@ enum VistaLabs
     PLATELETS
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of("PLATELET COUNT");
         }
@@ -77,7 +77,7 @@ enum VistaLabs
     HEMATOCRIT
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of("HCT");
         }
@@ -85,7 +85,7 @@ enum VistaLabs
     SODIUM
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of(
                     "SODIUM",
@@ -95,7 +95,7 @@ enum VistaLabs
     INR
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of("INR");
         }
@@ -103,7 +103,7 @@ enum VistaLabs
     BILIRUBIN
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of("TOT. BILIRUBIN");
         }
@@ -111,7 +111,7 @@ enum VistaLabs
     PTT
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of("PTT");
         }
@@ -141,6 +141,6 @@ enum VistaLabs
         }
     };
     
-    abstract List<String> getPossibleLabNames();
+    public abstract List<String> getPossibleLabNames();
       
 }
