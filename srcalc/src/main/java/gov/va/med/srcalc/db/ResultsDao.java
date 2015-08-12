@@ -12,10 +12,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.profiler.Profiler;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.base.Optional;
@@ -124,14 +126,20 @@ public class ResultsDao
             final HistoricalSearchParameters parameters)
     {
         LOGGER.debug("Doing HistoricalRunInfo query with parameters {}.", parameters);
+        final Profiler profiler = new Profiler("historicalRunInfo query");
+        profiler.setLogger(LOGGER);
 
+        profiler.start("HistoricalCalculation search");
         final DetachedCriteria baseHistoricalCriteria = parameters.makeCriteria();
         final Session session = getCurrentSession();
         
         /* First get the matching HistoricalCalculation objects. */
         final Criteria historicalCriteria = baseHistoricalCriteria
                 .getExecutableCriteria(session)
-                .setMaxResults(HistoricalSearchParameters.MAX_RESULTS);
+                // The easiest way to detect running into the maximum is to actually query
+                // for an extra one and see if we get it.
+                .setMaxResults(HistoricalSearchParameters.MAX_RESULTS + 1);
+        historicalCriteria.addOrder(Order.desc("startTimestamp"));
         LOGGER.trace("Doing HistoricalCalculation search with Criteria {}.",
                 historicalCriteria);
         @SuppressWarnings("unchecked") // trust Hibernate
@@ -141,6 +149,7 @@ public class ResultsDao
          * Now get any associated SignedResult objects. (If there are n
          * HistoricalCalculations, there will be <= n of these.)
          */
+        profiler.start("SignedResult search");
         // Just select the Id from the HistoricalCalculations for the in() subquery.
         // Hibernate requires this though it could probably do it automatically. (See
         // HHH-993.)
@@ -153,7 +162,9 @@ public class ResultsDao
         final List<SignedResult> results = resultCriteria.list();
         
         /* Now merge the two into HistoricalRunInfo objects. */
+        profiler.start("makeRunInfos");
         final ImmutableList<HistoricalRunInfo> runInfos = makeRunInfos(historicals, results);
+        profiler.stop().log();
 
         return SearchResults.fromList(runInfos, HistoricalSearchParameters.MAX_RESULTS);
     }

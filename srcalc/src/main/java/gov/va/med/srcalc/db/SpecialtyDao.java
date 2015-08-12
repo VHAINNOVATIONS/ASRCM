@@ -39,8 +39,8 @@ public class SpecialtyDao
     }
     
     /**
-     * Returns the Specialty from the Database with the given name. The Specialty
-     * will have all of the associated {@link RiskModel}s loaded from the DB.
+     * Returns the Specialty from the Database with the given name. The Specialty will
+     * have all of the associated RiskModels loaded from the DB.
      * @return the Specialty object or null if there was no specialty with the
      * given name
      */

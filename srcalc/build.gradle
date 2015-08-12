@@ -35,6 +35,10 @@ configurations {
     // exclude the old 2.x versions.
     all*.exclude group: 'javax.servlet', module: 'servlet-api'
     
+    // slf4j-ext has a compile-time dependence on cal10n-api, but we don't use that part
+    // of the library. Since cal10n-api causes a compiler warning, exclude it.
+    all*.exclude group: 'ch.qos.cal10n', module: 'cal10n-api'
+    
     all {
         resolutionStrategy {
             // jadira usertype.core includes this dependency, which bumps the Hibernate
@@ -75,6 +79,8 @@ dependencies {
 	/* Other libraries */
 
     compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
+    // Note: see cal10n-api exclusion above.
+    compile group: 'org.slf4j', name: 'slf4j-ext', version: slf4jVersion
     compile group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion
     compile group: 'org.hibernate', name: 'hibernate-core', version: hibernateVersion
 	compile group: 'org.springframework', name: 'spring-core', version: springVersion

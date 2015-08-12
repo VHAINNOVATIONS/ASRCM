@@ -73,7 +73,8 @@ public final class SearchResults<T>
     {
         return MoreObjects.toStringHelper(this)
                 .add("truncated", fTruncated)
-                .add("foundItems", fFoundItems)
+                // Don't include the whole list as it may have thousands of items.
+                .add("#ofItems", fFoundItems.size())
                 .toString();
     }
     
