@@ -119,7 +119,7 @@ public enum VistaLabs
     POTASSIUM
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of("POTASSIUM", "K");
         }
@@ -127,7 +127,7 @@ public enum VistaLabs
     HGA1C
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of("HGA1C", "HEMOGLOBIN A1C", "A1C");
         }
@@ -135,7 +135,7 @@ public enum VistaLabs
     GLUCOSE
     {
         @Override
-        List<String> getPossibleLabNames()
+        public List<String> getPossibleLabNames()
         {
             return ImmutableList.of("GLUCOSE", "SERUM GLUCOSE");
         }

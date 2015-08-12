@@ -147,7 +147,7 @@ public class RpcVistaPatientDaoTest
         // Behavior verification
         final Patient patient = dao.getPatient(PATIENT_DFN);
         assertEquals(1, patient.getLabs().size());
-        final RetrievedValue value = patient.getLabs().get("ALBUMIN");
+        final RetrievedValue value = patient.getLabs().get(VistaLabs.ALBUMIN);
         assertEquals(3.0, value.getValue(), .0001);
         final DateTime expectedTime = new DateTime(2015, 2, 2, 14, 35, 12, 0);
 

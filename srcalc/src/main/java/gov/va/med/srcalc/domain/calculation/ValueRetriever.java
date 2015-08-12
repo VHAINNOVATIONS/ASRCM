@@ -232,7 +232,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
             final String key)
         {
-            addLabValue("POTASSIUM", patient, variableEntry, key);
+            addLabValue(VistaLabs.POTASSIUM, patient, variableEntry, key);
         }
     },
     HGA1C
@@ -241,7 +241,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
             final String key)
         {
-            addLabValue("HGA1C", patient, variableEntry, key);
+            addLabValue(VistaLabs.HGA1C, patient, variableEntry, key);
         }
     },
     GLUCOSE
@@ -250,7 +250,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
             final String key)
         {
-            addLabValue("GLUCOSE", patient, variableEntry, key);
+            addLabValue(VistaLabs.GLUCOSE, patient, variableEntry, key);
         }
     };
     
@@ -283,7 +283,7 @@ public enum ValueRetriever
     protected static void addLabValue(final VistaLabs vistaLab, final Patient patient, final VariableEntry variableEntry,
             final String key)
     {
-        final RetrievedValue labValue = patient.getLabs().get(vistaLab.name());
+        final RetrievedValue labValue = patient.getLabs().get(vistaLab);
         if(labValue != null)
         {
             variableEntry.getDynamicValues().put(key, String.valueOf(labValue.getValue()));

@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.view;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 import gov.va.med.srcalc.domain.calculation.SampleCalculations;
 import gov.va.med.srcalc.domain.model.*;
@@ -84,19 +85,20 @@ public class VariableEntryTest
         expected.put(vars.get(2).getKey(), patient.getGender());
         expected.put(vars.get(5).getKey(), VariableEntry.SPECIAL_NUMERICAL);
         
-        final RetrievedValue labValue = patient.getLabs().get("WBC");
+        final RetrievedValue wbcLabValue = patient.getLabs().get(VistaLabs.WBC);
         
-        final String retrievalString = VariableEntry.makeRetrievalString(
-                labValue.getValue(),
-                labValue.getMeasureDate(),
-                labValue.getUnits());
+        final String wbcRetrievalString = VariableEntry.makeRetrievalString(
+                wbcLabValue.getValue(),
+                wbcLabValue.getMeasureDate(),
+                wbcLabValue.getUnits());
         
         expected.put(VariableEntry.makeNumericalInputName(vars.get(5).getKey()),
-                String.valueOf(labValue.getValue()));
+                String.valueOf(wbcLabValue.getValue()));
         expected.put(
                 VariableEntry.makeRetrievalString(
                         VariableEntry.makeNumericalInputName(vars.get(5).getKey())),
-                retrievalString);
+                wbcRetrievalString);
+        
         assertEquals(expected, entry.getDynamicValues());
     }
 }

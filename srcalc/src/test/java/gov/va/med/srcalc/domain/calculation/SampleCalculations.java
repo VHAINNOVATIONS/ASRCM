@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.domain.calculation;
 
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.util.MissingValuesException;
@@ -39,9 +40,9 @@ public class SampleCalculations
     public static Patient dummyPatientWithLabs(final int dfn)
     {
         final Patient patient = dummyPatient(dfn);
-        final Map<String, RetrievedValue> labs = new HashMap<String, RetrievedValue>();
-        labs.put("WBC", new RetrievedValue(10.0, new Date(), "x1000/mm^3"));
-        labs.put("INR", new RetrievedValue(1.0, new Date(), ""));
+        final Map<VistaLabs, RetrievedValue> labs = new HashMap<VistaLabs, RetrievedValue>();
+        labs.put(VistaLabs.WBC, new RetrievedValue(10.0, new Date(), "x1000/mm^3"));
+        labs.put(VistaLabs.INR, new RetrievedValue(1.0, new Date(), ""));
         patient.setLabs(labs);
         return patient;
     }

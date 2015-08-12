@@ -244,7 +244,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
                     List<String> rpcSplit = Splitter.on('^').splitToList(rpcResultString);
                     final double labValue = Double.parseDouble(rpcSplit.get(1));
                     final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy@HH:mm:ss");
-                    patient.getLabs().put(labRetrievalEnum.name(),
+                    patient.getLabs().put(labRetrievalEnum,
                             new RetrievedValue(labValue, format.parse(rpcSplit.get(2)), rpcSplit.get(3)));
                 }
             }
