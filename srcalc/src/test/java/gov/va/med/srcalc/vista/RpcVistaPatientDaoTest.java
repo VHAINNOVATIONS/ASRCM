@@ -75,7 +75,7 @@ public class RpcVistaPatientDaoTest
                 RADIOLOGIST_DUZ,
                 RemoteProcedure.GET_HEALTH_FACTORS,
                 String.valueOf(PATIENT_DFN)))
-                .thenReturn(Collections.<String>emptyList());
+                .thenReturn(ImmutableList.of(""));
         return caller;
     }
     
