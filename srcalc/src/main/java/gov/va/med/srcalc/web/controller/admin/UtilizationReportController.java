@@ -25,7 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class UtilizationReportController
 {
     /**
-     * The attribute name of the {@link ResultSearchParameters} object.
+     * The attribute name of the {@link HistoricalSearchParameters} object.
      */
     public static final String ATTRIBUTE_REPORT_PARAMETERS = "reportParameters";
     

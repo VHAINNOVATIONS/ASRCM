@@ -29,7 +29,7 @@ public final class UtilizationReport
     
     /**
      * Constructs an instance with the given properties and a generationDate of now.
-     * @param parameters See {@link #getParameters()}.
+     * @param params See {@link #getParameters()}.
      * @param results See {@link #getResults()}.
      * @throws NullPointerException if any argument is null
      */

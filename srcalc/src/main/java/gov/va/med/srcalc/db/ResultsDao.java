@@ -136,6 +136,8 @@ public class ResultsDao
         /* First get the matching HistoricalCalculation objects. */
         final Criteria historicalCriteria = baseHistoricalCriteria
                 .getExecutableCriteria(session)
+                // The easiest way to detect running into the maximum is to actually query
+                // for an extra one and see if we get it.
                 .setMaxResults(HistoricalSearchParameters.MAX_RESULTS + 1);
         historicalCriteria.addOrder(Order.desc("startTimestamp"));
         LOGGER.trace("Doing HistoricalCalculation search with Criteria {}.",
