@@ -32,6 +32,7 @@ public class Patient implements Serializable
     private Map<String, RetrievedValue> fLabs;
     private List<String> fActiveMedications;
     private List<ReferenceNote> fAdlNotes;
+    private List<ReferenceNote> fDnrNotes;
     
     public Patient()
     {
@@ -47,6 +48,7 @@ public class Patient implements Serializable
         this.fHealthFactors = new ArrayList<HealthFactor>();
         this.fActiveMedications = new ArrayList<String>();
         this.fAdlNotes = new ArrayList<ReferenceNote>();
+        this.fDnrNotes = new ArrayList<ReferenceNote>(); 
     }
     
     /**
@@ -172,14 +174,6 @@ public class Patient implements Serializable
     }
     
     /**
-     * Returns the nursing notes regarding the patient in String form.
-     */
-    public List<ReferenceNote> getAdlNotes()
-    {
-        return fAdlNotes;
-    }
-    
-    /**
      * Returns the patient's health factors as a list of {@link HealthFactor}s.
      */
     public List<HealthFactor> getHealthFactors()
@@ -195,6 +189,22 @@ public class Patient implements Serializable
     public List<String> getActiveMedications()
     {
         return fActiveMedications;
+    }
+    
+    /**
+     * Returns the nursing notes regarding the patient in String form.
+     */
+    public List<ReferenceNote> getAdlNotes()
+    {
+        return fAdlNotes;
+    }
+    
+    /**
+     * Returns the notes regarding the patient's DNR status.
+     */
+    public List<ReferenceNote> getDnrNotes()
+    {
+        return fDnrNotes;
     }
     
     @Override

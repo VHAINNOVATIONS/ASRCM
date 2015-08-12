@@ -137,6 +137,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
             retrieveActiveMedications(dfn, patient);
             // Retrieve the patient's nursing notes from VistA
             retrieveAdlNotes(dfn, patient);
+            // Retrieve any notes with DNR in the title.
+            retrieveDnrNotes(dfn, patient);
             
             LOGGER.debug("Loaded {} from VistA.", patient);
             return patient;
@@ -316,7 +318,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
                     RemoteProcedure.GET_ADL_STATUS,
                     String.valueOf(dfn),
                     ADL_ENTERPRISE_TITLE);
-            // If the resultString is a success, add it to the patient's lab data.
+            // If the resultString is a success, add it to the patient's adl notes.
             // Else, we don't need to do anything.
             if(!rpcResults.isEmpty())
             {
@@ -336,6 +338,37 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // If an exception occurs for any reason, log a warning but allow the application
             // to continue without failure.
             LOGGER.warn("Unable to retrieve patient's ADL status. {}", e);
+        }
+    }
+    
+    private void retrieveDnrNotes(final int dfn, final Patient patient)
+    {
+        try
+        {
+            final List<String> rpcResults = fProcedureCaller.doRpc(
+                    fDuz,
+                    RemoteProcedure.,
+                    String.valueOf(dfn));
+            // If the resultString is a success, add it to the patient's dnr notes.
+            // Else, we don't need to do anything.
+            if(!rpcResults.isEmpty())
+            {
+                // Parse the String as XML and format it into separate notes
+                final InputSource input = new InputSource();
+                input.setCharacterStream(new StringReader(Joiner.on("\n").join(rpcResults)));
+                final JAXBContext context = JAXBContext.newInstance(ReferenceNotes.class);
+                final Unmarshaller unmarshaller = context.createUnmarshaller();
+                
+                final ReferenceNotes allNotes = (ReferenceNotes) unmarshaller.unmarshal(input);
+                patient.getDnrNotes().clear();
+                patient.getDnrNotes().addAll(allNotes.getAllNotes());
+            }
+        }
+        catch(final Exception e)
+        {
+            // If an exception occurs for any reason, log a warning but allow the application
+            // to continue without failure.
+            LOGGER.warn("Unable to retrieve patient's DNR notes. {}", e);
         }
     }
     
