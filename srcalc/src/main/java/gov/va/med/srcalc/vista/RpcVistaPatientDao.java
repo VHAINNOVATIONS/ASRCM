@@ -7,6 +7,7 @@ import gov.va.med.crypto.VistaKernelHash;
 import gov.va.med.srcalc.domain.HealthFactor;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.ReferenceNotes;
+import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 
 import java.text.ParseException;
@@ -243,7 +244,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
                     List<String> rpcSplit = Splitter.on('^').splitToList(rpcResultString);
                     final double labValue = Double.parseDouble(rpcSplit.get(1));
                     final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy@HH:mm:ss");
-                    patient.getLabs().put(labRetrievalEnum.name(),
+                    patient.getLabs().put(labRetrievalEnum,
                             new RetrievedValue(labValue, format.parse(rpcSplit.get(2)), rpcSplit.get(3)));
                 }
             }
