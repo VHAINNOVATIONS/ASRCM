@@ -377,6 +377,14 @@ a.openProcedureSelect {
 	font-size: 0.9em;
 }
 
+/* Results Display */
+
+ul#outcomesList {
+	/* The default <ul> padding is too large: it looks unnatural. Only pad enough to line
+	   up the bullets with the rest of the content. */
+	padding-left: 1em;
+}
+
 /* === Admin Page-specific Styles === */
 
 .editObjectLink {
