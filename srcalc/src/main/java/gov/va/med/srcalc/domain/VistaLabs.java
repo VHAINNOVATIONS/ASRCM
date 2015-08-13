@@ -141,6 +141,9 @@ public enum VistaLabs
         }
     };
     
+    /**
+     * Returns an immutable list of strings that are possible titles for this VistA lab.
+     */
     public abstract List<String> getPossibleLabNames();
       
 }

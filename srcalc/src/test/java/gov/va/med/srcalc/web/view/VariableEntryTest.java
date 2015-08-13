@@ -14,6 +14,8 @@ import java.util.*;
 
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableMap;
+
 /**
  * Tests the {@link VariableEntry} class.
  */
@@ -23,25 +25,23 @@ public class VariableEntryTest
      * A map where the key is the variable key and the value is the ValueRetriever belonging
      * to that variable.
      */
-    private static final Map<String, ValueRetriever> LAB_MAP;
-    static {
-        LAB_MAP = new HashMap<String, ValueRetriever>();
-        LAB_MAP.put("albumin", ValueRetriever.ALBUMIN);
-        LAB_MAP.put("alkalinePhostphatase", ValueRetriever.ALKALINE_PHOSPHATASE);
-        LAB_MAP.put("bilirubin", ValueRetriever.BILIRUBIN);
-        LAB_MAP.put("bun", ValueRetriever.BUN);
-        LAB_MAP.put("creatinine", ValueRetriever.CREATININE);
-        LAB_MAP.put("glucose", ValueRetriever.GLUCOSE);
-        LAB_MAP.put("hematocrit", ValueRetriever.HEMATOCRIT);
-        LAB_MAP.put("hga1c", ValueRetriever.HGA1C);
-        LAB_MAP.put("inr", ValueRetriever.INR);
-        LAB_MAP.put("platelets", ValueRetriever.PLATELETS);
-        LAB_MAP.put("potassium", ValueRetriever.POTASSIUM);
-        LAB_MAP.put("ptt", ValueRetriever.PTT);
-        LAB_MAP.put("sgot", ValueRetriever.SGOT);
-        LAB_MAP.put("sodium", ValueRetriever.SODIUM);
-        LAB_MAP.put("wbc", ValueRetriever.WBC);
-    }
+    private static final Map<String, ValueRetriever> LAB_MAP = ImmutableMap.<String, ValueRetriever>builder()
+            .put("albumin", ValueRetriever.ALBUMIN)
+            .put("alkalinePhostphatase", ValueRetriever.ALKALINE_PHOSPHATASE)
+            .put("bilirubin", ValueRetriever.BILIRUBIN)
+            .put("bun", ValueRetriever.BUN)
+            .put("creatinine", ValueRetriever.CREATININE)
+            .put("glucose", ValueRetriever.GLUCOSE)
+            .put("hematocrit", ValueRetriever.HEMATOCRIT)
+            .put("hga1c", ValueRetriever.HGA1C)
+            .put("inr", ValueRetriever.INR)
+            .put("platelets", ValueRetriever.PLATELETS)
+            .put("potassium", ValueRetriever.POTASSIUM)
+            .put("ptt", ValueRetriever.PTT)
+            .put("sgot", ValueRetriever.SGOT)
+            .put("sodium", ValueRetriever.SODIUM)
+            .put("wbc", ValueRetriever.WBC)
+            .build();
     
     @Test
     public final void testToString()
@@ -112,6 +112,13 @@ public class VariableEntryTest
         assertEquals(expected, entry.getDynamicValues());
     }
     
+    /**
+     * This method adds all of the necessary information for the lab variables to the
+     * expected map so the values can be compared later.
+     * @param expected a map that describes what 
+     * @param vars a list of AbstractVariables needed for the calculation
+     * @param patient the patient for the current calculation
+     */
     private void addAllLabs(final Map<String, String> expected, final List<AbstractVariable> vars,
             final Patient patient)
     {
@@ -136,6 +143,13 @@ public class VariableEntryTest
         }
     }
     
+    /**
+     * This method returns a DiscreteNumericalVariable with the specified key and retriever, but
+     * with dummy information for the other fields in the variable.
+     * @param key the key to use for the variable
+     * @param retriever the ValueRetriever for this variable
+     * @return the constructed DiscreteNumericalVariable
+     */
     private DiscreteNumericalVariable makeLabVariable(final String key, final ValueRetriever retriever)
     {
         final Category wbcWnl = new Category(
