@@ -11,5 +11,8 @@ import gov.va.med.srcalc.domain.model.MultiSelectOption;
  */
 public interface DiscreteValue extends Value
 {
+    /**
+     * Returns the selected {@link MultiSelectOption}.
+     */
     public MultiSelectOption getSelectedOption();
 }

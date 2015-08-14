@@ -86,6 +86,9 @@ public final class Procedure
         setEligible(eligible);
     }
 
+    /**
+     * The unique id of this procedure (not the CPT code).
+     */
     @Id // We use method-based property detection throughout the app.
     @GeneratedValue
     public int getId()

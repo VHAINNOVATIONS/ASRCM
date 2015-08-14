@@ -18,6 +18,10 @@ public class RpcVistaPersonDao implements VistaPersonDao
     
     private final VistaProcedureCaller fProcedureCaller;
     
+    /**
+     * Constructs an instance.
+     * @param procedureCaller
+     */
     public RpcVistaPersonDao(final VistaProcedureCaller procedureCaller)
     {
         fProcedureCaller = procedureCaller;

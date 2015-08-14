@@ -36,10 +36,14 @@ public class RiskModel implements Comparable<RiskModel>
     /**
      * English description of the valid display name characters for readable
      * error messages.
-     * @see DisplayNameConditions#VALID_DISPLAY_NAME_REGEX
+     * @see DisplayNameConditions#VALID_DISPLAY_NAME_CHARACTERS
      */
     public static final String VALID_MODEL_NAME_CHARACTERS = DisplayNameConditions.VALID_DISPLAY_NAME_CHARACTERS;
     
+    /**
+     * A regular expression delineating the valid display name characters for this model.
+     * @see DisplayNameConditions#VALID_DISPLAY_NAME_REGEX
+     */
     public static final String VALID_MODEL_NAME_REGEX = DisplayNameConditions.VALID_DISPLAY_NAME_REGEX;
 
     /**
@@ -57,6 +61,10 @@ public class RiskModel implements Comparable<RiskModel>
     {
     }
     
+    /**
+     * Constructs an instance.
+     * @param displayName the display name for this risk model
+     */
     public RiskModel(final String displayName)
     {
         fDisplayName = displayName;
@@ -81,6 +89,9 @@ public class RiskModel implements Comparable<RiskModel>
         this.fId = id;
     }
 
+    /**
+     * Returns the display name for this model.
+     */
     @Basic(optional = false)
     @Column(length = DisplayNameConditions.DISPLAY_NAME_MAX)
     public String getDisplayName()
@@ -267,6 +278,10 @@ public class RiskModel implements Comparable<RiskModel>
                 .build();
     }
     
+    /**
+     * Clears all of the previous terms and replaces them with {@code newTerms}.
+     * @param newTerms
+     */
     public void replaceAllTerms(final Set<ModelTerm> newTerms)
     {
         LOGGER.debug("Replacing all model terms with {}", newTerms);

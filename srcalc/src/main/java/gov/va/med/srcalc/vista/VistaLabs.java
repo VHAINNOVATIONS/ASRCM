@@ -117,6 +117,10 @@ enum VistaLabs
         }
     };
     
+    /**
+     * Returns a list of the possible names for this lab. Each lab has multiple names
+     * because there are not enterprise standard titles for the labs, only local titles.
+     */
     abstract List<String> getPossibleLabNames();
       
 }

@@ -38,12 +38,19 @@ public class ResultsDao
     
     private final SessionFactory fSessionFactory;
     
+    /**
+     * Constructs an instance.
+     * @param sessionFactory the SessionFactory used to get the current session.
+     */
     @Inject
     public ResultsDao(final SessionFactory sessionFactory)
     {
         fSessionFactory = sessionFactory;
     }
     
+    /**
+     * @see org.hibernate.SessionFactory#getCurrentSession()
+     */
     protected Session getCurrentSession()
     {
         return fSessionFactory.getCurrentSession();
@@ -122,6 +129,11 @@ public class ResultsDao
         return ImmutableList.copyOf(runInfos);
     }
     
+    /**
+     * Returns the historical run information results from the database by searching based
+     * on the given parameters.
+     * @param parameters the parameters to base the search on
+     */
     public SearchResults<HistoricalRunInfo> getHistoricalRunInfos(
             final HistoricalSearchParameters parameters)
     {

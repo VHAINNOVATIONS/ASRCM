@@ -27,6 +27,11 @@ public final class ReferenceNotes
         return fAllNotes;
     }
     
+    /**
+     * Set all of the {@link ReferenceNote}s contained in this instance. Necessary for
+     * XML binding.
+     * @param allNotes
+     */
     @XmlElement (name = "note")
     public void setAllNotes(final List<ReferenceNote> allNotes)
     {

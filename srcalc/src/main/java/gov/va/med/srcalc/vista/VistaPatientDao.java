@@ -29,6 +29,9 @@ public interface VistaPatientDao
             fDescription = description;
         }
         
+        /**
+         * Returns the description of this {@link SaveNoteCode}.
+         */
         public String getDescription()
         {
             return fDescription;

@@ -33,6 +33,9 @@ import gov.va.med.srcalc.util.SearchResults;
  */
 public final class ResultSearchParameters
 {
+    /**
+     * The maximum results that can be returned.
+     */
     public static final int MAX_RESULTS = 1000;
     
     private static final Logger LOGGER = LoggerFactory.getLogger(
@@ -151,6 +154,11 @@ public final class ResultSearchParameters
         fCptCode = Optional.fromNullable(Strings.emptyToNull(cptCode));
     }
     
+    /**
+     * Perform the search based off of the parameters contained in the calling instance.
+     * @param session the current Hibernate session
+     * @return the results of the search
+     */
     SearchResults<SignedResult> doSearch(final Session session)
     {
         LOGGER.debug("Doing SignedResult search with parameters {}", this);

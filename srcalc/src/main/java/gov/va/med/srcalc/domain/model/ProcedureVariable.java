@@ -66,6 +66,10 @@ public final class ProcedureVariable extends AbstractVariable
         return Collections.unmodifiableList(fProcedures);
     }
     
+    /**
+     * Set the possible procedures for this procedure variable.
+     * @param procedures
+     */
     public void setProcedures(final List<Procedure> procedures)
     {
         fProcedures = procedures;

@@ -18,7 +18,15 @@ public final class VariableGroup implements Comparable<VariableGroup>
      * be changed in the administrator UI.
      */
     public static final String PROCEDURE_GROUP = "Planned Procedure";
+    /**
+     * The well-known name of the clinical group. This group name cannot
+     * be changed in the administrator UI.
+     */
     public static final String CLINICAL_GROUP = "Clinical Conditions or Diseases - Recent";
+    /**
+     * The well-known name of the medications group. This group name cannot
+     * be changed in the administrator UI.
+     */
     public static final String MEDICATIONS_GROUP = "Medications";
     
     private int fId;
@@ -35,6 +43,11 @@ public final class VariableGroup implements Comparable<VariableGroup>
         fName = "Programming error! No name!";
     }
     
+    /**
+     * Constructs an instance.
+     * @param name
+     * @param displayOrder
+     */
     public VariableGroup(final String name, final int displayOrder)
     {
         fName = name;

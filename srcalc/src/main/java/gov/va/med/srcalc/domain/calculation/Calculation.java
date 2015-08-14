@@ -52,6 +52,10 @@ public class Calculation implements Serializable
         fHistoricalCalculation = Optional.absent();
     }
     
+    /**
+     * Returns a new calculation for the specified patient.
+     * @param patient the patient to use for the new calculation.
+     */
     public static Calculation forPatient(final Patient patient)
     {
         final Calculation c = new Calculation();
@@ -68,21 +72,34 @@ public class Calculation implements Serializable
         return fStartDateTime;
     }
 
+    /**
+     * Returns the patient to which the calculation belongs.
+     */
     public Patient getPatient()
     {
         return fPatient;
     }
 
+    /**
+     * Set the patient for this calculation.
+     * @param patient
+     */
     public void setPatient(final Patient patient)
     {
         this.fPatient = patient;
     }
 
+    /**
+     * Returns the specialty being used for this calculation.
+     */
     public Specialty getSpecialty()
     {
         return fSpecialty;
     }
 
+    /**
+     * Set the specialty for this calculation.
+     */
     public void setSpecialty(final Specialty specialty)
     {
         this.fSpecialty = specialty;

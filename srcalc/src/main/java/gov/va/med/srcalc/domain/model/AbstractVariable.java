@@ -45,7 +45,7 @@ public abstract class AbstractVariable implements Variable
     private VariableGroup fGroup;
     private Optional<String> fHelpText;
     private String fKey;
-    private ValueRetriever fRetrievalKey;
+    private ValueRetriever fRetriever;
 
     /**
      * Constructs an instance with dummy values for the basic properties
@@ -219,12 +219,16 @@ public abstract class AbstractVariable implements Variable
     @Column(name = "retrieval_key", nullable = true)
     public final ValueRetriever getRetriever()
     {
-        return fRetrievalKey;
+        return fRetriever;
     }
     
-    public final void setRetriever(final ValueRetriever retrievalKey)
+    /**
+     * Set the {@link ValueRetriever} for this variable.
+     * @param retriever
+     */
+    public final void setRetriever(final ValueRetriever retriever)
     {
-        this.fRetrievalKey = retrievalKey;
+        this.fRetriever = retriever;
     }
     
     @Override

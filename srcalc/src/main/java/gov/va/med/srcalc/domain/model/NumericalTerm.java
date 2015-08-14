@@ -27,6 +27,11 @@ public final class NumericalTerm extends SingleVariableTerm
     {
     }
     
+    /**
+     * Constructs an instance.
+     * @param variable the variable for this term
+     * @param coefficient the coefficient to be multiplied by this term's value
+     */
     public NumericalTerm(
             final NumericalVariable variable, final float coefficient)
     {

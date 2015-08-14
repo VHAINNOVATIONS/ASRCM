@@ -14,7 +14,7 @@ import gov.va.med.srcalc.service.InvalidIdentifierException;
  * <li>Present the user with the current values and allow her to update the
  * properties as desired.</li>
  * <li>Use the {@link EditRuleValidator} validator to validate the user's edits.</li>
- * <li>Call {@link #applyToRule()} to update the target rule with the
+ * <li>Call {@link #applyToRule} to update the target rule with the
  * new properties.</li>
  * </ol>
  */
@@ -35,7 +35,6 @@ public class EditExistingRule extends EditRule
     /**
      * Constructs an instance to edit the given rule.
      * @param target the rule to edit
-     * @param adminService to provide reference data (e.g.  to the user
      */
     public EditExistingRule(final Rule target)
     {

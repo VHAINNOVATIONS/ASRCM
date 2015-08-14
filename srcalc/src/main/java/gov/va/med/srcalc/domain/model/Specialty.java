@@ -38,6 +38,10 @@ public final class Specialty implements Serializable
     
     private Set<RiskModel> fRiskModels = new HashSet<>();
 
+    /**
+     * For reflection-based construction only. Business code should use
+     * {@link #Specialty(int, String)}.
+     */
     public Specialty()
     {
     }

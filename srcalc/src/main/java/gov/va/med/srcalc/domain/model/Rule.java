@@ -89,28 +89,34 @@ public final class Rule
         this.fId = id;
     }
     
+    /**
+     * Returns the {@link ValueMatcher}s that form the conditional part of the rule.
+     * Order is important: each matcher may use SpEL variable references to
+     * previously-matched values.
+     */
     @ElementCollection(fetch = FetchType.EAGER) // eager-load due to close association
     // Override strange defaults.
     @CollectionTable(
             name = "rule_value_matcher",
             joinColumns = @JoinColumn(name = "rule_id"))
-    /**
-     * The {@link ValueMatcher}s that form the conditional part of the rule.
-     * Order is important: each matcher may use SpEL variable references to
-     * previously-matched values.
-     */
     public List<ValueMatcher> getMatchers()
     {
         return fMatchers;
     }
     
+    /**
+     * Sets the {@link ValueMatcher}s that form the conditional part of the rule.
+     * Order is important: each matcher may use SpEL variable references to
+     * previously-matched values.
+     * @param matchers the in-order {@link ValueMatcher}s
+     */
     void setMatchers(final List<ValueMatcher> matchers)
     {
         this.fMatchers = matchers;
     }
 
     /**
-     * The SpEL expression that calculates the summand. May use variable
+     * Returns the SpEL expression that calculates the summand. May use variable
      * references to the values matched in ValueMatchers.
      */
     @Basic
@@ -120,6 +126,10 @@ public final class Rule
         return fSummandExpression.getExpressionString();
     }
     
+    /**
+     * Sets the summand expression by parsing the 
+     * @param summandExpression
+     */
     public void setSummandExpression(final String summandExpression)
     {
         this.fSummandExpression = parseSummandExpression(summandExpression);
@@ -134,6 +144,10 @@ public final class Rule
         return fBypassEnabled;
     }
     
+    /**
+     * Sets if this rule should be bypassed if values are missing.
+     * @param bypassEnabled
+     */
     public void setBypassEnabled(final boolean bypassEnabled)
     {
         fBypassEnabled = bypassEnabled;
@@ -321,9 +335,14 @@ public final class Rule
      */
     public static final class EvaluationContext
     {
-        final float fCoefficient;
-        final Map<Variable, Value> fValues;
+        private final float fCoefficient;
+        private final Map<Variable, Value> fValues;
         
+        /**
+         * Constructs an instance.
+         * @param coefficient
+         * @param values
+         */
         public EvaluationContext(
                 final float coefficient, final Map<Variable, Value> values)
         {
@@ -331,11 +350,17 @@ public final class Rule
             fValues = values;
         }
 
+        /**
+         * Returns the coefficient for this instance.
+         */
         public float getCoefficient()
         {
             return fCoefficient;
         }
 
+        /**
+         * Returns a map of variables to the values for those variables.
+         */
         public Map<Variable, Value> getValues()
         {
             return fValues;

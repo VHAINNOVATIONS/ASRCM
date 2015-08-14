@@ -39,11 +39,19 @@ public class VistaUserDetails implements UserDetails
         return Arrays.asList(Roles.ROLE_USER.asGrantedAuthority());
     }
     
+    /**
+     * Returns the currently logged-in division.
+     * @see VistaPerson#getStationNumber()
+     */
     public String getDivision()
     {
         return fVistaPerson.getStationNumber();
     }
     
+    /**
+     * Returns the current user's internal entry number (IEN).
+     * @see VistaPerson#getDuz()
+     */
     public String getDuz()
     {
         return fVistaPerson.getDuz();
@@ -71,6 +79,10 @@ public class VistaUserDetails implements UserDetails
         return getDuz();
     }
     
+    /**
+     * Returns the user's name as stored in VistA.
+     * @see VistaPerson#getDisplayName()
+     */
     public String getDisplayName()
     {
         return fVistaPerson.getDisplayName();

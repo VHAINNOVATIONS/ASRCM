@@ -28,12 +28,19 @@ public class RiskModelDao
     
     private static final Logger LOGGER = LoggerFactory.getLogger(RiskModelDao.class);
 
+    /**
+     * Constructs an instance.
+     * @param sessionFactory the SessionFactory used to get the current session.
+     */
     @Inject // Allow arguments to be autowired.
     public RiskModelDao(final SessionFactory sessionFactory)
     {
         fSessionFactory = sessionFactory;
     }
     
+    /**
+     * @see org.hibernate.SessionFactory#getCurrentSession()
+     */
     protected Session getCurrentSession()
     {
         return fSessionFactory.getCurrentSession();
@@ -60,6 +67,11 @@ public class RiskModelDao
         return (RiskModel)getCurrentSession().get(RiskModel.class, mid);
     }
     
+    /**
+     * Persist the given risk model to the database.
+     * @param rm the risk model to save to the database
+     * @return the RiskModel for convenience
+     */
     public RiskModel saveRiskModel( final RiskModel rm )
     {
         LOGGER.debug("Merging RiskModel {} into persistence context.", rm.getDisplayName() );

@@ -32,6 +32,12 @@ public final class DerivedTerm extends ModelTerm
     {
     }
     
+    /**
+     * Constructs an instance.
+     * @see ModelTerm#ModelTerm(float)
+     * @param coefficient
+     * @param rule
+     */
     public DerivedTerm(final float coefficient, final Rule rule)
     {
         super(coefficient);

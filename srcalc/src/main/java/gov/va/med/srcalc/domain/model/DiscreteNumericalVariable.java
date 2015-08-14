@@ -58,9 +58,11 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
         fCategories = new TreeSet<>(categories);
     }
 
+    /**
+     * Returns all categories associated with this instance.
+     */
     @ElementCollection(fetch = FetchType.EAGER)  // eager-load due to close association
-    @Sort(type = SortType.NATURAL)
-    // Override strange defaults.
+    @Sort(type = SortType.NATURAL) // Override strange defaults.
     @CollectionTable(
             name = "discrete_numerical_var_category",
             joinColumns = @JoinColumn(name = "variable_id"))
@@ -69,6 +71,9 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
         return fCategories;
     }
 
+    /**
+     * Sets the categories for this instance.
+     */
     protected void setCategories(final SortedSet<Category> categories)
     {
         fCategories = categories;
@@ -265,6 +270,9 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
             fOption = Objects.requireNonNull(option);
         }
         
+        /**
+         * Returns if the current options is the "WNL" category.
+         */
         @Transient
         public boolean isWnl()
         {

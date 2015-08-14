@@ -49,6 +49,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private static final String HEIGHT_UNITS = "inches";
     private static final String ADL_ENTERPRISE_TITLE = "NURSING ADMISSION EVALUATION NOTE";
     
+    /**
+     * The expected date format for information received from VistA
+     */
     public static final String VISTA_DATE_OUTPUT_FORMAT = "MM/dd/yy@HH:mm";
     
     private static final Map<String, String> TRANSLATION_MAP;
