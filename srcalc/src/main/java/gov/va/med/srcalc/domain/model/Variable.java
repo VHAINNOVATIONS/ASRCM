@@ -84,4 +84,10 @@ public interface Variable
      * @throws Exception if the {@link VariableVisitor} throws an Exception
      */
     public void accept(VariableVisitor visitor) throws Exception;
+    
+    /**
+     * Considers two {@link Variable}s equal if, and only if, their keys are equal.
+     */
+    @Override
+    public boolean equals(Object other);
 }
