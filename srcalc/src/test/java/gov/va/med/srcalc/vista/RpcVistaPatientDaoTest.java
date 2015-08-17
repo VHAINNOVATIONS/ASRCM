@@ -239,7 +239,7 @@ public class RpcVistaPatientDaoTest
         when(caller.doRpc(
                 RADIOLOGIST_DUZ,
                 RemoteProcedure.GET_ACTIVE_MEDICATIONS,
-                String.valueOf(PATIENT_DFN), "", ""))
+                String.valueOf(PATIENT_DFN)))
                 .thenReturn(VALID_ACTIVE_MEDICATIONS);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);
