@@ -6,7 +6,6 @@ import java.util.*;
 
 import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.test.util.TestHelpers;
-import gov.va.med.srcalc.util.MissingValuesException;
 
 import org.junit.Test;
 

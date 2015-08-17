@@ -8,7 +8,6 @@ import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.domain.model.*;
-import gov.va.med.srcalc.util.MissingValuesException;
 
 import java.util.*;
 
