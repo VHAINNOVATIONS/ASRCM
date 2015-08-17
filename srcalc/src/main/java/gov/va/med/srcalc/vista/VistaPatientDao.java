@@ -19,7 +19,14 @@ public interface VistaPatientDao
      */
     enum SaveNoteCode
     {
+        /**
+         * The risk calculation was saved to VistA successfully.
+         */
         SUCCESS("Success"),
+        /**
+         * The risk calculation was unable to be saved to VistA due to the 
+         * electronic signature input by the user being incorrect.
+         */
         INVALID_SIGNATURE("Invalid Electronic Signature Code");
         
         private final String fDescription;

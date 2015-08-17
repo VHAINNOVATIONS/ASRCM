@@ -23,6 +23,11 @@ public class ReferenceDataController
 {
     private final ModelInspectionService fService;
     
+    /**
+     * Constructs an instance.
+     * @param modelService the service to use for various operations when retrieving
+     *          various risk model objects
+     */
     @Inject
     public ReferenceDataController(final ModelInspectionService modelService)
     {

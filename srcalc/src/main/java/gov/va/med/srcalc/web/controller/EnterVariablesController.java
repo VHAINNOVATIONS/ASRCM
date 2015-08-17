@@ -45,12 +45,23 @@ public class EnterVariablesController
     
     private final CalculationService fCalculationService;
     
+    /**
+     * Constructs an instance.
+     * @param calculationService the service to use for various operations when
+     *          performing a calculation
+     */
     @Inject
     public EnterVariablesController(final CalculationService calculationService)
     {
         fCalculationService = calculationService;
     }
     
+    /**
+     * Constructs a {@link VariableEntry} object with the variables needed for this calculation and 
+     * automatically retrieved values for those variables if available.
+     * @param session the current session
+     * @return the {@link VariableEntry} object with needed variables and values
+     */
     @ModelAttribute
     public VariableEntry constructVariableEntry(
             final HttpSession session)
@@ -108,6 +119,14 @@ public class EnterVariablesController
         return mav;
     }
     
+    /**
+     * Validates all input from {@code values} and attempts to run a calculation.
+     * @param session the current session
+     * @param response needed to alter the response header to expire the page
+     *         after a completed calculation
+     * @param values the available values 
+     * @param valuesBindingResult the binding result used to record errors
+     */
     @RequestMapping(value = "/enterVars", method = RequestMethod.POST)
     public ModelAndView enterVariables(
             final HttpSession session, final HttpServletResponse response,
