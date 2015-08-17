@@ -16,7 +16,7 @@ public class SpecialtyTest
     public final void testToString()
     {
         final String name = "Jack-of-all-trades";
-        assertEquals(name, new Specialty(59, name).toString());
+        assertEquals(name, new Specialty(name).toString());
     }
     
     @Test
@@ -29,14 +29,13 @@ public class SpecialtyTest
     public final void testNameTooLongConstruction()
     {
         new Specialty(
-                59,
                 TestHelpers.stringOfLength(Specialty.SPECIALTY_NAME_MAX + 1));
     }
     
     @Test(expected = IllegalArgumentException.class)
     public final void testNameTooLongSetter()
     {
-        final Specialty s = new Specialty(59, "SpecialtyName");
+        final Specialty s = new Specialty("SpecialtyName");
         s.setName(TestHelpers.stringOfLength(Specialty.SPECIALTY_NAME_MAX + 1));
     }
 }
