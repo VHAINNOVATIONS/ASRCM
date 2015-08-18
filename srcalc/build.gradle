@@ -136,6 +136,10 @@ compileTestJava {
     options.deprecation = true
 }
 
+checkstyle {
+    toolVersion = "6.4.1"
+}
+
 war {
     manifest {
         // Bake in some standard properties in the manifest
