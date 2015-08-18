@@ -126,7 +126,7 @@ public final class Rule
     }
     
     /**
-     * Sets the summand expression by parsing the 
+     * Sets the summand expression by parsing the given {@code summandExpression}.
      * @param summandExpression
      */
     public void setSummandExpression(final String summandExpression)
