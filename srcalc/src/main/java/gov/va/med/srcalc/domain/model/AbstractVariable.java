@@ -237,15 +237,12 @@ public abstract class AbstractVariable implements Variable
         return getDisplayName();
     }
     
-    /**
-     * Considers two {@link AbstractVariable} are equal if, and only if their keys are equal.
-     */
     @Override
     public boolean equals(Object other)
     {
-        if(other instanceof AbstractVariable)
+        if(other instanceof Variable)
         {
-            return Objects.equals(this.fKey, ((AbstractVariable) other).getKey());
+            return Objects.equals(this.fKey, ((Variable)other).getKey());
         }
         else
         {

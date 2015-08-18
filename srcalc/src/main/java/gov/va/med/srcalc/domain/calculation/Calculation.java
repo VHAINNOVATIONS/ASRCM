@@ -4,7 +4,6 @@ import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.domain.model.*;
-import gov.va.med.srcalc.util.MissingValuesException;
 
 import java.io.Serializable;
 import java.util.*;
@@ -174,24 +173,24 @@ public class Calculation implements Serializable
     {
         // Run the calculation first to make sure we don't get any exceptions.
         final TreeMap<String, Float> outcomes = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        // TODO: Change into a Set.
-        final List<MissingValueException> missingValues = new ArrayList<MissingValueException>();
+        // Collect all missing variables into this set.
+        final Set<Variable> missingVars = new HashSet<>();
         for (final RiskModel model : getSpecialty().getRiskModels())
         {
             try
             {
                 outcomes.put(model.getDisplayName(), model.calculate(values));
             }
-            catch(MissingValuesException e)
+            catch (final MissingValuesException e)
             {
-                missingValues.addAll(e.getMissingValues());
+                missingVars.addAll(e.getMissingVariables());
             }
         }
 
-        if(missingValues.size() > 0)
+        if (!missingVars.isEmpty())
         {
-            LOGGER.debug("Could not run calculation due to missing values: {}", missingValues);
-            throw new MissingValuesException("The calculation is missing values.", missingValues);
+            LOGGER.debug("Could not run calculation due to missing values: {}", missingVars);
+            throw new MissingValuesException(missingVars);
         }
         
         final DateTime resultTime = DateTime.now();

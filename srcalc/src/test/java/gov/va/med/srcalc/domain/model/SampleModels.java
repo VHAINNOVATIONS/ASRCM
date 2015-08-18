@@ -130,7 +130,7 @@ public class SampleModels
      */
     public static Specialty thoracicSpecialty()
     {
-        final Specialty s = new Specialty(58, "Thoracic");
+        final Specialty s = new Specialty("Thoracic");
         s.getRiskModels().add(thoracicRiskModel());
         return s;
     }
@@ -180,13 +180,13 @@ public class SampleModels
     public static List<Specialty> specialtyList()
     {
         return Arrays.asList(
-                new Specialty(48, "Cardiac"),
-                new Specialty(50, "General Surgery"),
-                new Specialty(52, "Neurosurgery"),
-                new Specialty(54, "Orthopedic"),
+                new Specialty("Cardiac"),
+                new Specialty("General Surgery"),
+                new Specialty("Neurosurgery"),
+                new Specialty("Orthopedic"),
                 SampleModels.thoracicSpecialty(),
-                new Specialty(59, "Urology"),
-                new Specialty(62, "Vascular")
+                new Specialty("Urology"),
+                new Specialty("Vascular")
                 );
     }
     

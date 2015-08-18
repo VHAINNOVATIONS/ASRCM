@@ -1,7 +1,5 @@
 package gov.va.med.srcalc.domain.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.persistence.MappedSuperclass;
@@ -10,7 +8,6 @@ import javax.persistence.Transient;
 import com.google.common.collect.ImmutableSet;
 
 import gov.va.med.srcalc.domain.calculation.Value;
-import gov.va.med.srcalc.util.MissingValuesException;
 
 /**
  * A ModelTerm that uses a single Variable.
@@ -55,10 +52,7 @@ public abstract class SingleVariableTerm extends ModelTerm
         final Value value = inputValues.get(getVariable());
         if (value == null)
         {
-            final List<MissingValueException> missingValues = new ArrayList<MissingValueException>();
-            missingValues.add(new MissingValueException("Missing value for " + getVariable().getKey(),
-                    getVariable()));
-            throw new MissingValuesException("The calculation is missing values.", missingValues);
+            throw new MissingValuesException(ImmutableSet.of(getVariable()));
         }
         return getSummand(value);
     }

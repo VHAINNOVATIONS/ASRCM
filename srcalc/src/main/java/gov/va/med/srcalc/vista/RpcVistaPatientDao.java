@@ -7,6 +7,7 @@ import gov.va.med.crypto.VistaKernelHash;
 import gov.va.med.srcalc.domain.HealthFactor;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.ReferenceNotes;
+import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 
 import java.text.ParseException;
@@ -137,6 +138,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // Retrieve all health factors in the last year from VistA and filter
             // by the list given to us by the NSO.
             retrieveHealthFactors(dfn, patient);
+            // Retrieve only medications with the "Active" status and not "Pending"
             retrieveActiveMedications(dfn, patient);
             // Retrieve the patient's nursing notes from VistA
             retrieveAdlNotes(dfn, patient);
@@ -246,7 +248,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
                     List<String> rpcSplit = Splitter.on('^').splitToList(rpcResultString);
                     final double labValue = Double.parseDouble(rpcSplit.get(1));
                     final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy@HH:mm:ss");
-                    patient.getLabs().put(labRetrievalEnum.name(),
+                    patient.getLabs().put(labRetrievalEnum,
                             new RetrievedValue(labValue, format.parse(rpcSplit.get(2)), rpcSplit.get(3)));
                 }
             }
@@ -292,9 +294,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
         try
         {
             patient.getActiveMedications().clear();
-            // Leave the start and end dates blank so that we get only the current medications.
             final List<String> rpcResults = fProcedureCaller.doRpc(
-                    fDuz, RemoteProcedure.GET_ACTIVE_MEDICATIONS, String.valueOf(dfn), "", "");
+                    fDuz, RemoteProcedure.GET_ACTIVE_MEDICATIONS, String.valueOf(dfn));
             for(final String medResult: rpcResults)
             {
                 // The expected format is "<identifier>^<medication name>^<date>^^^<dose per day>"

@@ -9,7 +9,6 @@ import javax.persistence.Transient;
 import com.google.common.collect.ImmutableSet;
 
 import gov.va.med.srcalc.domain.calculation.Value;
-import gov.va.med.srcalc.util.MissingValuesException;
 
 /**
  * <p>A {@link ModelTerm} derived via a {@link Rule}. A common use-case is a summand added

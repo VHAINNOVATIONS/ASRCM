@@ -2,7 +2,6 @@ package gov.va.med.srcalc.domain.model;
 
 import gov.va.med.srcalc.domain.calculation.Value;
 import gov.va.med.srcalc.util.DisplayNameConditions;
-import gov.va.med.srcalc.util.MissingValuesException;
 import gov.va.med.srcalc.util.Preconditions;
 
 import java.util.*;
@@ -381,8 +380,8 @@ public class RiskModel implements Comparable<RiskModel>
         }
         
         float sum = 0.0f;
-        // TODO: Change to a Set rather than List.
-        final List<MissingValueException> missingList = new ArrayList<MissingValueException>();
+        // Collect all missing variables into this set.
+        final Set<Variable> missingVars = new HashSet<>();
         for (final ModelTerm term : getTerms())
         {
             try
@@ -393,13 +392,13 @@ public class RiskModel implements Comparable<RiskModel>
             }
             catch(final MissingValuesException e)
             {
-                missingList.addAll(e.getMissingValues());
+                missingVars.addAll(e.getMissingVariables());
             }
         }
         
-        if(missingList.size() > 0)
+        if(missingVars.size() > 0)
         {
-            throw new MissingValuesException("The calculation is missing values.", missingList);
+            throw new MissingValuesException(missingVars);
         }
         LOGGER.debug("Sum is {}", sum);
         final float expSum = (float)Math.exp(sum);

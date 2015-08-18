@@ -14,11 +14,11 @@ import gov.va.med.srcalc.db.SpecialtyDao;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.domain.calculation.*;
+import gov.va.med.srcalc.domain.model.MissingValuesException;
 import gov.va.med.srcalc.domain.model.Specialty;
 import gov.va.med.srcalc.vista.*;
 import gov.va.med.srcalc.vista.VistaPatientDao.SaveNoteCode;
 import gov.va.med.srcalc.security.SecurityUtil;
-import gov.va.med.srcalc.util.MissingValuesException;
 
 /**
  * The canonical implementation of {@link CalculationService}.
