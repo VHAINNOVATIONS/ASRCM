@@ -330,7 +330,10 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 
                 final ReferenceNotes allNotes = (ReferenceNotes) unmarshaller.unmarshal(input);
                 patient.getAdlNotes().clear();
-                patient.getAdlNotes().addAll(allNotes.getAllNotes());
+                if(allNotes.getAllNotes() != null)
+                {
+                    patient.getAdlNotes().addAll(allNotes.getAllNotes());
+                }
             }
         }
         catch(final Exception e)
@@ -347,8 +350,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
         {
             final List<String> rpcResults = fProcedureCaller.doRpc(
                     fDuz,
-                    RemoteProcedure.,
-                    String.valueOf(dfn));
+                    RemoteProcedure.GET_NOTES_WITH_SUBSTRING,
+                    String.valueOf(dfn),
+                    "DNR");
             // If the resultString is a success, add it to the patient's dnr notes.
             // Else, we don't need to do anything.
             if(!rpcResults.isEmpty())
@@ -361,7 +365,10 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 
                 final ReferenceNotes allNotes = (ReferenceNotes) unmarshaller.unmarshal(input);
                 patient.getDnrNotes().clear();
-                patient.getDnrNotes().addAll(allNotes.getAllNotes());
+                if(allNotes.getAllNotes() != null)
+                {
+                    patient.getDnrNotes().addAll(allNotes.getAllNotes());
+                }
             }
         }
         catch(final Exception e)
