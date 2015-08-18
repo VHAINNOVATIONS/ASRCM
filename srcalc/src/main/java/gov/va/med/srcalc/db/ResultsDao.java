@@ -48,10 +48,7 @@ public class ResultsDao
         fSessionFactory = sessionFactory;
     }
     
-    /**
-     * @see org.hibernate.SessionFactory#getCurrentSession()
-     */
-    protected Session getCurrentSession()
+    private Session getCurrentSession()
     {
         return fSessionFactory.getCurrentSession();
     }

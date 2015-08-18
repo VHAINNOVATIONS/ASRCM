@@ -125,7 +125,8 @@ public final class ValueMatcher
     }
     
     /**
-     * Sets if this expression is to be evaluated or not.
+     * Sets if this expression is to be evaluated.  True means the expression is evaluated.
+     * False means the expression is not evaluated.
      */
     public void setExpressionEnabled(final boolean expressionEnabled)
     {

@@ -30,12 +30,12 @@ public final class ReferenceNote
 
     /**
      * Set the local title for this reference note. Necessary for XML binding.
-     * @param fLocalTitle the name of the local title
+     * @param localTitle the name of the local title
      */
     @XmlAttribute(name = "localTitle")
-    public void setLocalTitle(final String fLocalTitle)
+    public void setLocalTitle(final String localTitle)
     {
-        this.fLocalTitle = fLocalTitle;
+        this.fLocalTitle = localTitle;
     }
 
     /**

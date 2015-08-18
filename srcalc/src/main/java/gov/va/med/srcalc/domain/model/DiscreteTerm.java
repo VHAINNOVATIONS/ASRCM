@@ -65,8 +65,8 @@ public final class DiscreteTerm extends SingleVariableTerm
     }
 
     /**
-     * Returns the index of this term in relation to other terms in the {@link DiscreteVariable}
-     * to which this term belongs.
+     * Returns the index of the associated option in the this instance's 
+     * {@link DiscreteVariable#getOptions()} list.
      */
     @Basic
     public int getOptionIndex()

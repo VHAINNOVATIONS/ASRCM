@@ -38,10 +38,7 @@ public class RiskModelDao
         fSessionFactory = sessionFactory;
     }
     
-    /**
-     * @see org.hibernate.SessionFactory#getCurrentSession()
-     */
-    protected Session getCurrentSession()
+    private Session getCurrentSession()
     {
         return fSessionFactory.getCurrentSession();
     }
@@ -68,7 +65,13 @@ public class RiskModelDao
     }
     
     /**
-     * Persist the given risk model to the database.
+     * <p>Persists the given risk model to the database using <a
+     * href="http://en.wikibooks.org/wiki/Java_Persistence/Persisting#Merge">JPA
+     * merge semantics</a>.</p>
+     * 
+     * <p>Note that the given object is not added to the persistence context,
+     * but the returned object is. If you want to further modify the state, use the
+     * returned object.</p>.
      * @param rm the risk model to save to the database
      * @return the RiskModel for convenience
      */

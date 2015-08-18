@@ -156,6 +156,7 @@ public final class ResultSearchParameters
     
     /**
      * Perform the search based off of the parameters contained in the calling instance.
+     * The search will only return {@value #MAX_RESULTS} results.
      * @param session the current Hibernate session
      * @return the results of the search
      */

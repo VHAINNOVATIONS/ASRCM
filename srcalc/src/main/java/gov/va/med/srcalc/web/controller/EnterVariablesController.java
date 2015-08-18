@@ -57,7 +57,8 @@ public class EnterVariablesController
     
     /**
      * Constructs a {@link VariableEntry} object with the variables needed for this calculation and 
-     * automatically retrieved values for those variables if available.
+     * automatically retrieved values for those variables if available. Populates values
+     * by using the most recent {@link CalculationResult} if there is one.
      * @param session the current session
      * @return the {@link VariableEntry} object with needed variables and values
      */

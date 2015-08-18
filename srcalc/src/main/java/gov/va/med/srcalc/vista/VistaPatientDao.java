@@ -37,7 +37,7 @@ public interface VistaPatientDao
         }
         
         /**
-         * Returns the description of this {@link SaveNoteCode}.
+         * Returns the human-readable description of this {@link SaveNoteCode}.
          */
         public String getDescription()
         {

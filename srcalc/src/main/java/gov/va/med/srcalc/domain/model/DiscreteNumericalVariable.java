@@ -62,7 +62,8 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
      * Returns all categories associated with this instance.
      */
     @ElementCollection(fetch = FetchType.EAGER)  // eager-load due to close association
-    @Sort(type = SortType.NATURAL) // Override strange defaults.
+    @Sort(type = SortType.NATURAL)
+    // Override strange defaults.
     @CollectionTable(
             name = "discrete_numerical_var_category",
             joinColumns = @JoinColumn(name = "variable_id"))

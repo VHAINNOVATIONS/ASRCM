@@ -65,7 +65,7 @@ public class DynamicValueVisitor extends ExceptionlessValueVisitor
     /**
      * Returns the {@link VariableEntry} object being used to visit values.
      */
-    public VariableEntry getValues()
+    public VariableEntry getVariableEntry()
     {
         return fVariableEntry;
     }

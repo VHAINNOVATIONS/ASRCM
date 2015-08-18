@@ -87,7 +87,7 @@ public final class Procedure
     }
 
     /**
-     * The unique id of this procedure (not the CPT code).
+     * The object's surrogate primary key. Don't show this to the user.
      */
     @Id // We use method-based property detection throughout the app.
     @GeneratedValue

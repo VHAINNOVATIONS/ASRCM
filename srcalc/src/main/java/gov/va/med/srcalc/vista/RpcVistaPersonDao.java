@@ -20,7 +20,7 @@ public class RpcVistaPersonDao implements VistaPersonDao
     
     /**
      * Constructs an instance.
-     * @param procedureCaller
+     * @param procedureCaller used to call remote procedures from VistA
      */
     public RpcVistaPersonDao(final VistaProcedureCaller procedureCaller)
     {

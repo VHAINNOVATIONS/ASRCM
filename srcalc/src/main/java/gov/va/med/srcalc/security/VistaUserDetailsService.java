@@ -23,7 +23,7 @@ public class VistaUserDetailsService implements UserDetailsService
     
     /**
      * Constructs an instance.
-     * @param vistaDaoFactory
+     * @param vistaDaoFactory the factory used to create different VistA DAOs
      */
     @Inject
     public VistaUserDetailsService(final VistaDaoFactory vistaDaoFactory)

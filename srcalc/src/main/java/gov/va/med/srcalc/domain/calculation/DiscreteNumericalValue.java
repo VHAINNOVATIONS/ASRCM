@@ -7,7 +7,7 @@ import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 /**
  * A value of a {@link DiscreteNumericalVariable}.
  */
-public class DiscreteNumericalValue implements DiscreteValue
+public final class DiscreteNumericalValue implements DiscreteValue
 {
     private final DiscreteNumericalVariable fVariable;
     private final Category fSelectedCategory;
@@ -21,7 +21,7 @@ public class DiscreteNumericalValue implements DiscreteValue
      * @param numericalValue the numerical value for this variable (can be {@link Float#NaN}
      *          if no numerical value is present
      */
-    protected DiscreteNumericalValue(
+    DiscreteNumericalValue(
             final DiscreteNumericalVariable variable,
             final Category selectedCategory,
             final float numericalValue)

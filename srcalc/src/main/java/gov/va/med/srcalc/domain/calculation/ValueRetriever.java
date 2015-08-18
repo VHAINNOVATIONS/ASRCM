@@ -270,11 +270,11 @@ public enum ValueRetriever
     }
     
     /**
-     * Attempt to retrieve any reference information for this instance. Do nothing if
-     * there is no reference information for the specified variable.
+     * Attempt to retrieve any reference information for this instance. Return an empty 
+     * String if here is no reference information for the specified variable.
      * @param patient the current patient
      * @param var the variable to get reference information for
-     * @return the reference information
+     * @return the reference information or an empty String
      */
     public String retrieveReferenceInfo(final Patient patient, final Variable var)
     {

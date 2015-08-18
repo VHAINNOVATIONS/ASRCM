@@ -4,7 +4,6 @@ import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -190,8 +189,7 @@ public class VariableEntry
      */
     public static String makeRetrievalString(final double value, final Date measureDate, final String units)
     {
-        final SimpleDateFormat originalFormat = new SimpleDateFormat(RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT);
-        final String dateString = " on " + originalFormat.format(measureDate);
+        final String dateString = " on " + RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT.format(measureDate);
         String unitString = "";
         if(units.length() > 0)
         {

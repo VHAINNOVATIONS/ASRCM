@@ -104,9 +104,7 @@ public final class Rule
     }
     
     /**
-     * Sets the {@link ValueMatcher}s that form the conditional part of the rule.
-     * Order is important: each matcher may use SpEL variable references to
-     * previously-matched values.
+     * @see #getMatchers()
      * @param matchers the in-order {@link ValueMatcher}s
      */
     void setMatchers(final List<ValueMatcher> matchers)
