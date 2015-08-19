@@ -47,7 +47,7 @@ public abstract class EditAbstractNumericalVar extends EditBaseVar
     @Override
     public ImmutableSortedSet<ValueRetriever> getAllRetrievers()
     {
-        return ValueRetriever.NUMERICAL_SET;
+        return ImmutableSortedSet.copyOf(ValueRetriever.NUMERICAL_SET);
     }
     
     /**

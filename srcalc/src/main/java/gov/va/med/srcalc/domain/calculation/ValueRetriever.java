@@ -282,36 +282,36 @@ public enum ValueRetriever
      * An ImmutableSet including any ValueRetrievers that are used for Boolean
      * variables.
      */
-    public static final ImmutableSortedSet<ValueRetriever> BOOLEAN_SET = buildBooleanSet();
+    public static final ImmutableSet<ValueRetriever> BOOLEAN_SET = buildBooleanSet();
     /**
      * An ImmutableSet including any ValueRetrievers that are used for multi-select
      * variables.
      */
-    public static final ImmutableSortedSet<ValueRetriever> MULTI_SELECT_SET = buildMultiSelectSet();
+    public static final ImmutableSet<ValueRetriever> MULTI_SELECT_SET = buildMultiSelectSet();
     /**
      * An ImmutableSet including any ValueRetrievers that are used for numerical
      * variables.
      */
-    public static final ImmutableSortedSet<ValueRetriever> NUMERICAL_SET = buildNumericalSet();
+    public static final ImmutableSet<ValueRetriever> NUMERICAL_SET = buildNumericalSet();
     
-    private static ImmutableSortedSet<ValueRetriever> buildBooleanSet()
+    private static ImmutableSet<ValueRetriever> buildBooleanSet()
     {
-        final ImmutableSortedSet.Builder<ValueRetriever> builder = ImmutableSortedSet.naturalOrder();
+        final ImmutableSet.Builder<ValueRetriever> builder = ImmutableSet.builder();
         builder.addAll(REFERENCE_NOTES_SET);
         return builder.build();
     }
     
-    private static ImmutableSortedSet<ValueRetriever> buildMultiSelectSet()
+    private static ImmutableSet<ValueRetriever> buildMultiSelectSet()
     {
-        final ImmutableSortedSet.Builder<ValueRetriever> builder = ImmutableSortedSet.naturalOrder();
+        final ImmutableSet.Builder<ValueRetriever> builder = ImmutableSet.builder();
         builder.addAll(REFERENCE_NOTES_SET);
         builder.add(GENDER);
         return builder.build();
     }
     
-    private static ImmutableSortedSet<ValueRetriever> buildNumericalSet()
+    private static ImmutableSet<ValueRetriever> buildNumericalSet()
     {
-        final ImmutableSortedSet.Builder<ValueRetriever> builder = ImmutableSortedSet.naturalOrder();
+        final ImmutableSet.Builder<ValueRetriever> builder = ImmutableSet.builder();
         builder.addAll(REFERENCE_NOTES_SET);
         builder.add(AGE);
         builder.add(BMI);

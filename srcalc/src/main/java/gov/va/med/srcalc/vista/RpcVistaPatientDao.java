@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -323,18 +324,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // Else, we don't need to do anything.
             if(!rpcResults.isEmpty())
             {
-                // Parse the String as XML and format it into separate notes
-                final InputSource input = new InputSource();
-                input.setCharacterStream(new StringReader(Joiner.on("\n").join(rpcResults)));
-                final JAXBContext context = JAXBContext.newInstance(ReferenceNotes.class);
-                final Unmarshaller unmarshaller = context.createUnmarshaller();
-                
-                final ReferenceNotes allNotes = (ReferenceNotes) unmarshaller.unmarshal(input);
+                final ReferenceNotes adlNotes = getReferenceNotes(rpcResults);
                 patient.getAdlNotes().clear();
-                if(allNotes.getAllNotes() != null)
-                {
-                    patient.getAdlNotes().addAll(allNotes.getAllNotes());
-                }
+                patient.getAdlNotes().addAll(adlNotes.getAllNotes());
             }
         }
         catch(final Exception e)
@@ -358,19 +350,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // Else, we don't need to do anything.
             if(!rpcResults.isEmpty())
             {
-                // Parse the String as XML and format it into separate notes
-                final InputSource input = new InputSource();
-                input.setCharacterStream(new StringReader(Joiner.on("\n").join(rpcResults)));
-                final JAXBContext context = JAXBContext.newInstance(ReferenceNotes.class);
-                final Unmarshaller unmarshaller = context.createUnmarshaller();
-                
-                final ReferenceNotes allNotes = (ReferenceNotes) unmarshaller.unmarshal(input);
+                final ReferenceNotes dnrNotes = getReferenceNotes(rpcResults);
                 patient.getDnrNotes().clear();
-                LOGGER.debug("all notes {}", allNotes.getAllNotes());
-                if(allNotes.getAllNotes() != null)
-                {
-                    patient.getDnrNotes().addAll(allNotes.getAllNotes());
-                }
+                patient.getDnrNotes().addAll(dnrNotes.getAllNotes());
             }
         }
         catch(final Exception e)
@@ -379,6 +361,16 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // to continue without failure.
             LOGGER.warn("Unable to retrieve patient's DNR notes. {}", e);
         }
+    }
+    
+    private ReferenceNotes getReferenceNotes(final List<String> rpcResults) throws JAXBException
+    {
+        // Parse the String as XML and format it into separate notes
+        final InputSource input = new InputSource();
+        input.setCharacterStream(new StringReader(Joiner.on("\n").join(rpcResults)));
+        final JAXBContext context = JAXBContext.newInstance(ReferenceNotes.class);
+        final Unmarshaller unmarshaller = context.createUnmarshaller();
+        return (ReferenceNotes) unmarshaller.unmarshal(input);
     }
     
     @Override

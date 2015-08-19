@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,6 +31,14 @@ public final class ReferenceNotes
     @XmlElement (name = "note")
     public void setAllNotes(final List<ReferenceNote> allNotes)
     {
-        this.fAllNotes = allNotes;
+        // If there are no notes present, JAXB passes a null here.
+        if(allNotes == null)
+        {
+            fAllNotes = new ArrayList<ReferenceNote>();
+        }
+        else
+        {
+            this.fAllNotes = allNotes;
+        }
     }
 }

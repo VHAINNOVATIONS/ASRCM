@@ -58,7 +58,7 @@ public class EditBooleanVar extends EditBaseVar
     @Override
     public ImmutableSortedSet<ValueRetriever> getAllRetrievers()
     {
-        return ValueRetriever.BOOLEAN_SET;
+        return ImmutableSortedSet.copyOf(ValueRetriever.BOOLEAN_SET);
     }
 
     /**
