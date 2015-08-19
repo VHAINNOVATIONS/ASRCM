@@ -1,8 +1,5 @@
 package gov.va.med.srcalc.web.view.admin;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 import com.google.common.collect.*;
 
 import gov.va.med.srcalc.domain.calculation.ValueRetriever;
@@ -13,18 +10,7 @@ import gov.va.med.srcalc.service.ModelInspectionService;
  * Provides common functionality for editing an {@link AbstractNumericalVariable}.
  */
 public abstract class EditAbstractNumericalVar extends EditBaseVar
-{
-    private static final ImmutableSortedSet<ValueRetriever> RETRIEVERS;
-    static
-    {
-        // Kludge: all the retrievers happen to be numerical except for gender,
-        // so use that fact to build the list of numerical retrievers.
-        final HashSet<ValueRetriever> tempRetrievers =
-                new HashSet<>(Arrays.asList(ValueRetriever.values()));
-        tempRetrievers.remove(ValueRetriever.GENDER);
-        RETRIEVERS = ImmutableSortedSet.copyOf(Ordering.usingToString(), tempRetrievers);
-    }
-
+{   
     private String fUnits;
     private final NumericalRangeBuilder fValidRange;
     
@@ -61,7 +47,7 @@ public abstract class EditAbstractNumericalVar extends EditBaseVar
     @Override
     public ImmutableSortedSet<ValueRetriever> getAllRetrievers()
     {
-        return RETRIEVERS;
+        return ValueRetriever.NUMERICAL_SET;
     }
     
     /**

@@ -1,5 +1,8 @@
 package gov.va.med.srcalc.domain.calculation;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSortedSet;
+
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.ReferenceNote;
 import gov.va.med.srcalc.domain.model.Variable;
@@ -240,6 +243,67 @@ public enum ValueRetriever
             return variableRefInfo.toString();
         }
     };
+    
+    /**
+     * An ImmutableSet including any ValueRetrievers that are used to 
+     * add reference information.
+     */
+    public static final ImmutableSet<ValueRetriever> REFERENCE_NOTES_SET = 
+            ImmutableSet.of(DNR_NOTES, ADL_NOTES);
+    /**
+     * An ImmutableSet including any ValueRetrievers that are used for Boolean
+     * variables.
+     */
+    public static final ImmutableSortedSet<ValueRetriever> BOOLEAN_SET = buildBooleanSet();
+    /**
+     * An ImmutableSet including any ValueRetrievers that are used for multi-select
+     * variables.
+     */
+    public static final ImmutableSortedSet<ValueRetriever> MULTI_SELECT_SET = buildMultiSelectSet();
+    /**
+     * An ImmutableSet including any ValueRetrievers that are used for numerical
+     * variables.
+     */
+    public static final ImmutableSortedSet<ValueRetriever> NUMERICAL_SET = buildNumericalSet();
+    
+    private static ImmutableSortedSet<ValueRetriever> buildBooleanSet()
+    {
+        final ImmutableSortedSet.Builder<ValueRetriever> builder = ImmutableSortedSet.naturalOrder();
+        builder.addAll(REFERENCE_NOTES_SET);
+        return builder.build();
+    }
+    
+    private static ImmutableSortedSet<ValueRetriever> buildMultiSelectSet()
+    {
+        final ImmutableSortedSet.Builder<ValueRetriever> builder = ImmutableSortedSet.naturalOrder();
+        builder.addAll(REFERENCE_NOTES_SET);
+        builder.add(GENDER);
+        return builder.build();
+    }
+    
+    private static ImmutableSortedSet<ValueRetriever> buildNumericalSet()
+    {
+        final ImmutableSortedSet.Builder<ValueRetriever> builder = ImmutableSortedSet.naturalOrder();
+        builder.addAll(REFERENCE_NOTES_SET);
+        builder.add(AGE);
+        builder.add(BMI);
+        builder.add(WEIGHT);
+        builder.add(WEIGHT_6_MONTHS_AGO);
+        builder.add(HEIGHT);
+        builder.add(ALBUMIN);
+        builder.add(CREATININE);
+        builder.add(ALKALINE_PHOSPHATASE);
+        builder.add(BUN);
+        builder.add(SGOT);
+        builder.add(WBC);
+        builder.add(PLATELETS);
+        builder.add(HEMATOCRIT);
+        builder.add(SODIUM);
+        builder.add(INR);
+        builder.add(BILIRUBIN);
+        builder.add(PTT);
+        return builder.build();
+    }
     
     /**
      * Attempt to add the retrieved value to the {@link VariableEntry} object. Do nothing if

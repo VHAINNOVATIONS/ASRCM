@@ -365,6 +365,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 
                 final ReferenceNotes allNotes = (ReferenceNotes) unmarshaller.unmarshal(input);
                 patient.getDnrNotes().clear();
+                LOGGER.debug("all notes {}", allNotes.getAllNotes());
                 if(allNotes.getAllNotes() != null)
                 {
                     patient.getDnrNotes().addAll(allNotes.getAllNotes());
