@@ -30,7 +30,10 @@ public interface AdminService extends ModelInspectionService
      * @throws DataAccessException if any other error occurs when trying to save
      * the variable to the persistent store
      */
-    public void saveVariable(final AbstractVariable variable);
+    public void saveVariable(final AbstractVariable variable)
+            // Declare these exceptions even though they are unchecked because calling
+            // code should handle them (unlike most unchecked exceptions).
+            throws DuplicateVariableKeyException, DataAccessException;
     
     /**
      * Returns the {@link Rule} with the given display name for editing. Note that
@@ -55,7 +58,10 @@ public interface AdminService extends ModelInspectionService
      * @param rule the rule to save
      * @throws DuplicateRuleNameException if the provided rule key is non-unique
      */
-    public void saveRule(final Rule rule);
+    public void saveRule(final Rule rule)
+            // Declare this exception even though it is unchecked because calling code
+            // should handle it (unlike most unchecked exceptions).
+            throws DuplicateRuleNameException;
     
     /**
      * Completely replaces all Procedures in the persistent store with the given set.
