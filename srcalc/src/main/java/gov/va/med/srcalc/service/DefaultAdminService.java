@@ -32,7 +32,7 @@ public class DefaultAdminService implements AdminService
     private final ProcedureDao fProcedureDao;
     
     /**
-     * Constructs an instance.
+     * Constructs an instance that will use the given DAOs to query and update the database.
      * @param variableDao
      * @param riskModelDao
      * @param specialtyDao

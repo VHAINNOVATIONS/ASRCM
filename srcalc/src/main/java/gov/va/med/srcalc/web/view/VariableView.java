@@ -42,7 +42,7 @@ public abstract class VariableView implements DisplayItem
     }
     
     /**
-     * See {@link VariableEntry#makeDynamicValuePath(String)}
+     * See {@link VariableEntry#makeDynamicValuePath(String)}.
      */
     public String getVarPath()
     {

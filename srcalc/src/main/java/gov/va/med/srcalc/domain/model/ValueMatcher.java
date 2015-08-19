@@ -125,8 +125,8 @@ public final class ValueMatcher
     }
     
     /**
-     * Sets if this expression is to be evaluated.  True means the expression is evaluated.
-     * False means the expression is not evaluated.
+     * Sets if this expression is to be evaluated. If the expression is not evaluated,
+     * {@link #evaluate(EvaluationContext, Value)} always returns true.
      */
     public void setExpressionEnabled(final boolean expressionEnabled)
     {

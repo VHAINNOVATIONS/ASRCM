@@ -21,7 +21,7 @@ public final class DiscreteNumericalValue implements DiscreteValue
      * @param numericalValue the numerical value for this variable (can be {@link Float#NaN}
      *          if no numerical value is present
      */
-    DiscreteNumericalValue(
+    private DiscreteNumericalValue(
             final DiscreteNumericalVariable variable,
             final Category selectedCategory,
             final float numericalValue)
