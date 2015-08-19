@@ -29,7 +29,7 @@ public class Patient implements Serializable
     private RetrievedValue fWeight6MonthsAgo;
     private RetrievedValue fHeight;
     private List<HealthFactor> fHealthFactors;
-    private Map<String, RetrievedValue> fLabs;
+    private Map<VistaLabs, RetrievedValue> fLabs;
     private List<String> fActiveMedications;
     private List<ReferenceNote> fAdlNotes;
     private List<ReferenceNote> fDnrNotes;
@@ -44,7 +44,7 @@ public class Patient implements Serializable
         this.fName = name;
         this.fGender = gender;
         this.fAge = age;
-        this.fLabs = new HashMap<String, RetrievedValue>();
+        this.fLabs = new HashMap<VistaLabs, RetrievedValue>();
         this.fHealthFactors = new ArrayList<HealthFactor>();
         this.fActiveMedications = new ArrayList<String>();
         this.fAdlNotes = new ArrayList<ReferenceNote>();
@@ -163,12 +163,12 @@ public class Patient implements Serializable
     /**
      * Returns all of the labs that were able to be retrieved.
      */
-    public Map<String,RetrievedValue> getLabs()
+    public Map<VistaLabs,RetrievedValue> getLabs()
     {
         return fLabs;
     }
     
-    public void setLabs(final Map<String, RetrievedValue> labs)
+    public void setLabs(final Map<VistaLabs, RetrievedValue> labs)
     {
         fLabs = labs;
     }

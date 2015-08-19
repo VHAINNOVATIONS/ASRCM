@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableSortedSet;
 
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.ReferenceNote;
+import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.domain.model.Variable;
 import gov.va.med.srcalc.util.XmlDateAdapter;
 import gov.va.med.srcalc.web.view.VariableEntry;
@@ -111,7 +112,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            addLabValue("ALBUMIN", patient, variableEntry, key);
+            addLabValue(VistaLabs.ALBUMIN, patient, variableEntry, key);
         }
     },
     CREATININE
@@ -120,7 +121,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            addLabValue("CREATININE", patient, variableEntry, key);
+            addLabValue(VistaLabs.CREATININE, patient, variableEntry, key);
         }
     },
     ALKALINE_PHOSPHATASE
@@ -129,7 +130,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            addLabValue("ALKALINE_PHOSPHATASE", patient, variableEntry, key);
+            addLabValue(VistaLabs.ALKALINE_PHOSPHATASE, patient, variableEntry, key);
         }
     },
     BUN
@@ -138,7 +139,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            addLabValue("BUN", patient, variableEntry, key);
+            addLabValue(VistaLabs.BUN, patient, variableEntry, key);
         }
     },
     SGOT
@@ -147,7 +148,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            addLabValue("SGOT", patient, variableEntry, key);
+            addLabValue(VistaLabs.SGOT, patient, variableEntry, key);
         }
     },
     WBC
@@ -156,7 +157,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            addLabValue("WBC", patient, variableEntry, key);
+            addLabValue(VistaLabs.WBC, patient, variableEntry, key);
         }
     },
     PLATELETS
@@ -165,7 +166,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            addLabValue("PLATELETS", patient, variableEntry, key);
+            addLabValue(VistaLabs.PLATELETS, patient, variableEntry, key);
         }
     },
     HEMATOCRIT
@@ -174,7 +175,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            addLabValue("HEMATOCRIT", patient, variableEntry, key);
+            addLabValue(VistaLabs.HEMATOCRIT, patient, variableEntry, key);
         }
     },
     SODIUM
@@ -183,7 +184,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            addLabValue("SODIUM", patient, variableEntry, key);
+            addLabValue(VistaLabs.SODIUM, patient, variableEntry, key);
         }
     },
     INR
@@ -192,7 +193,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            addLabValue("INR", patient, variableEntry, key);
+            addLabValue(VistaLabs.INR, patient, variableEntry, key);
         }
     },
     BILIRUBIN
@@ -201,7 +202,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            addLabValue("BILIRUBIN", patient, variableEntry, key);
+            addLabValue(VistaLabs.BILIRUBIN, patient, variableEntry, key);
         }
     },
     PTT
@@ -210,7 +211,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            addLabValue("PTT", patient, variableEntry, key);
+            addLabValue(VistaLabs.PTT, patient, variableEntry, key);
         }
     },
     ADL_NOTES
@@ -226,6 +227,33 @@ public enum ValueRetriever
                         note.getLocalTitle(), XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.print(note.getSignDate()), note.getNoteBody()));
             }
             return variableRefInfo.toString();
+        }
+    },
+    POTASSIUM
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+            final String key)
+        {
+            addLabValue(VistaLabs.POTASSIUM, patient, variableEntry, key);
+        }
+    },
+    HGA1C
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+            final String key)
+        {
+            addLabValue(VistaLabs.HGA1C, patient, variableEntry, key);
+        }
+    },
+    GLUCOSE
+    {
+        @Override
+        public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
+            final String key)
+        {
+            addLabValue(VistaLabs.GLUCOSE, patient, variableEntry, key);
         }
     },
     DNR_NOTES
@@ -326,15 +354,15 @@ public enum ValueRetriever
     /**
      * If there was a retrieved value for the specified lab, it will be added to the variable entry.
      * If there was no value then nothing needs to be done.
-     * @param labName the well-known name of the lab
+     * @param vistaLab the VistaLabs enum
      * @param patient the current patient
      * @param variableEntry the {@link VariableEntry} object to put the retrieved value into
      * @param key the variable's fully qualified key (i.e. "bmi$numerical" for bmi)
      */
-    protected static void addLabValue(final String labName, final Patient patient, final VariableEntry variableEntry,
+    protected static void addLabValue(final VistaLabs vistaLab, final Patient patient, final VariableEntry variableEntry,
             final String key)
     {
-        final RetrievedValue labValue = patient.getLabs().get(labName);
+        final RetrievedValue labValue = patient.getLabs().get(vistaLab);
         if(labValue != null)
         {
             variableEntry.getDynamicValues().put(key, String.valueOf(labValue.getValue()));

@@ -27,13 +27,14 @@ Note: this view is a fusion of two different objects:
     </tr>
     </c:forEach>
     </table>
-    <div class="actionButtons">
     <h3>Results</h3>
-    <ol>
+    <!-- The outcomes are actually sorted by model name, but use a <ul> anyway. -->
+    <ul id="outcomesList">
     <c:forEach var="outcome" items="${result.outcomes}">
-    <li>${outcome.key}: <fmt:formatNumber value="${outcome.value * 100}" minFractionDigits="1" maxFractionDigits="1" />%</li>
+    <li>${outcome.key}: <fmt:formatNumber value="${outcome.value}" type="percent" minFractionDigits="1" maxFractionDigits="1" /></li>
     </c:forEach>
-    </ol>
+    </ul>
+    <div class="actionButtons">
     <span class="warning">*Warning: Signing the calculation will save it to the patient's Electronic Health Record.</span>
     <ol>
     <li>

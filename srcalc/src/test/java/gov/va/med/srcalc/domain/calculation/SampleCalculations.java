@@ -1,9 +1,9 @@
 package gov.va.med.srcalc.domain.calculation;
 
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.domain.model.*;
-import gov.va.med.srcalc.util.MissingValuesException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -39,9 +39,26 @@ public class SampleCalculations
     public static Patient dummyPatientWithLabs(final int dfn)
     {
         final Patient patient = dummyPatient(dfn);
-        final Map<String, RetrievedValue> labs = new HashMap<String, RetrievedValue>();
-        labs.put("WBC", new RetrievedValue(10.0, new Date(), "x1000/mm^3"));
-        labs.put("INR", new RetrievedValue(1.0, new Date(), ""));
+        final Map<VistaLabs, RetrievedValue> labs = new HashMap<VistaLabs, RetrievedValue>();
+        
+        labs.put(VistaLabs.ALBUMIN, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.ALKALINE_PHOSPHATASE, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.BILIRUBIN, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.BUN, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.CREATININE, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.GLUCOSE, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.HEMATOCRIT, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.HGA1C, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.INR, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.PLATELETS, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.POTASSIUM, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.PTT, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.SGOT, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.SODIUM, new RetrievedValue(1.0, new Date(), ""));
+        labs.put(VistaLabs.WBC, new RetrievedValue(10.0, new Date(), "x1000/mm^3"));
+        
+        
+        
         patient.setLabs(labs);
         return patient;
     }

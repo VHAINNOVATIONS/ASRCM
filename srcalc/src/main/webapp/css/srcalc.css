@@ -94,17 +94,6 @@ footer {
 	display: none;
 }
 
-textarea.varReferenceInfo {
-    width: 700px;
-    height: 200px;
-}
-
-/* Provide a monospace font for VistA-retrieved notes so that the users are more familiar
-    with the format */
-.patientNote {
-	font-family: "Courier New", Courier, monospace;
-}
-
 /* General button styles */
 
 /* Keep a standard height for all buttons on the application.
@@ -161,28 +150,6 @@ button.button-em:active {
 
 /* srcalcForm is the standard form appearance in srcalc */
 
-/* Support fieldsets to group related attributes. */
-form.srcalcForm fieldset {
-	margin: 1em 0;
-}
-
-form.srcalcForm fieldset > legend {
-	font-weight: bold;
-	margin-bottom: 8px;
-}
-
-/* We use <ol>'s for the list of fields. */
-form.srcalcForm fieldset > ol {
-	list-style-type: none;
-	margin: 0;
-	padding-left: 0;
-}
-
-/* Put some vertical spacing between the variables. */
-form.srcalcForm fieldset > ol > li {
-	margin: 5px 0;
-}
-
 /* Put some horizontal padding between radio buttons */
 form.srcalcForm label.radioLabel,
 /* Spring wraps the generated radios in a <span>. (This is documented.) */
@@ -202,12 +169,20 @@ form.srcalcForm ul.checkboxList {
 	padding-left: 0em;
 }
 
+/* A notification of some error (i.e., a failed operation). */
 .error {
 	color: red;
 }
 
+/* A notification of some warning (i.e., a significant notification to the user, but the
+   user does not need to take action). */
 .warning {
 	color: red;
+}
+
+/* Placeholder text while something is loading. */
+.loadingText {
+	color: #aaa;
 }
 
 /* .actionButtons indicates a gropup of buttons to perform actions on a page */
@@ -256,17 +231,6 @@ form.srcalcForm ul.checkboxList {
 	text-align: right;
 }
 
-/* Datatables styling */
-div.searchToolbar {
-	text-align: right;
-}
-
-#procedureAnyWords, #procedureAllWords {
-	/* padding is added so the box is of equal size to the CPT Search box */
-	padding: 1px;
-	margin-left: 8px;
-}
-
 /* A .attributeEditForm is a form for editing attributes of some object. We
    display it in a 2-column format with the attribute name in the left column
    and the value controls in the right column.
@@ -313,6 +277,30 @@ form.attributeEditForm td ul, form.attributeEditForm td ol {
 /* Put some margin between instructions and the following controls. */
 form.attributeEditForm td .preInstructions {
 	margin-bottom: 0.5em;
+}
+
+/* === Calculation Page-specific Styles === */
+
+textarea.varReferenceInfo {
+    width: 700px;
+    height: 200px;
+}
+
+/* Provide a monospace font for VistA-retrieved notes so that the users are more familiar
+    with the format */
+.patientNote {
+	font-family: "Courier New", Courier, monospace;
+}
+
+/* Datatables styling */
+div.searchToolbar {
+	text-align: right;
+}
+
+#procedureAnyWords, #procedureAllWords {
+	/* padding is added so the box is of equal size to the CPT Search box */
+	padding: 1px;
+	margin-left: 8px;
 }
 
 /* Alternate colors on variables within a variable group. 
@@ -389,8 +377,12 @@ a.openProcedureSelect {
 	font-size: 0.9em;
 }
 
-.loadingText {
-	color: #aaa;
+/* Results Display */
+
+ul#outcomesList {
+	/* The default <ul> padding is too large: it looks unnatural. Only pad enough to line
+	   up the bullets with the rest of the content. */
+	padding-left: 1em;
 }
 
 /* === Admin Page-specific Styles === */

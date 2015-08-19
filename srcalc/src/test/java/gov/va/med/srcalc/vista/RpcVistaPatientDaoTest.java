@@ -84,7 +84,7 @@ public class RpcVistaPatientDaoTest
                 RADIOLOGIST_DUZ,
                 RemoteProcedure.GET_HEALTH_FACTORS,
                 String.valueOf(PATIENT_DFN)))
-                .thenReturn(Collections.<String>emptyList());
+                .thenReturn(ImmutableList.of(""));
         return caller;
     }
     
@@ -156,7 +156,7 @@ public class RpcVistaPatientDaoTest
         // Behavior verification
         final Patient patient = dao.getPatient(PATIENT_DFN);
         assertEquals(1, patient.getLabs().size());
-        final RetrievedValue value = patient.getLabs().get("ALBUMIN");
+        final RetrievedValue value = patient.getLabs().get(VistaLabs.ALBUMIN);
         assertEquals(3.0, value.getValue(), .0001);
         final DateTime expectedTime = new DateTime(2015, 2, 2, 14, 35, 12, 0);
 
@@ -248,7 +248,7 @@ public class RpcVistaPatientDaoTest
         when(caller.doRpc(
                 RADIOLOGIST_DUZ,
                 RemoteProcedure.GET_ACTIVE_MEDICATIONS,
-                String.valueOf(PATIENT_DFN), "", ""))
+                String.valueOf(PATIENT_DFN)))
                 .thenReturn(VALID_ACTIVE_MEDICATIONS);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);

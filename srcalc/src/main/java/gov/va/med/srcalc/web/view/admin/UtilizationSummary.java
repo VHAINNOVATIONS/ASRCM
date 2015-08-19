@@ -107,7 +107,7 @@ public final class UtilizationSummary
     }
     
     /**
-     * Returns the mean of {@link SignedResult#getSecondsToSignature()}. If there are no
+     * Returns the mean of {@link SignedResult#getSecondsToSign()}. If there are no
      * signed calculations, returns -1. (Normally we would use an {@link
      * com.google.common.base.Optional Optional} for this, but it is not EL-friendly.)
      */

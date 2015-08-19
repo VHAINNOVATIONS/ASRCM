@@ -53,7 +53,7 @@ public enum RemoteProcedure
     /**
      * Returns all VA and non-VA active medications for the patient.
      */
-    GET_ACTIVE_MEDICATIONS("ORQQPS LIST"),
+    GET_ACTIVE_MEDICATIONS("SR ASRC ACTIVE MEDS"),
 
     /**
      * Returns all nursing notes with the "NURSING ADMISSION EVALUATION NOTE" title.
