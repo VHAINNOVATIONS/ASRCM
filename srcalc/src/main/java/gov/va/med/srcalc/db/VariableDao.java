@@ -24,12 +24,19 @@ public class VariableDao
     
     private final SessionFactory fSessionFactory;
     
+    /**
+     * Constructs an instance.
+     * @param sessionFactory the SessionFactory used to get the current session.
+     */
     @Inject // Allow arguments to be autowired.
     public VariableDao(final SessionFactory sessionFactory)
     {
         fSessionFactory = sessionFactory;
     }
     
+    /**
+     * @see org.hibernate.SessionFactory#getCurrentSession()
+     */
     protected Session getCurrentSession()
     {
         return fSessionFactory.getCurrentSession();

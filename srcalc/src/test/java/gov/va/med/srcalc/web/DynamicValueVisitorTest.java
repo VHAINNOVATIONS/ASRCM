@@ -33,7 +33,7 @@ public class DynamicValueVisitorTest
         final NumericalValue val = new NumericalValue(var, 1.2f);
 
         fVisitor.visitNumerical(val);
-        assertEquals(String.valueOf(1.2f), fVisitor.getValues().getDynamicValues().get("age"));
+        assertEquals(String.valueOf(1.2f), fVisitor.getVariableEntry().getDynamicValues().get("age"));
     }
     
     @Test
@@ -46,7 +46,7 @@ public class DynamicValueVisitorTest
         final DiscreteNumericalValue val = DiscreteNumericalValue.fromCategory(var, wnl);
         
         fVisitor.visitDiscreteNumerical(val);
-        assertNotNull("should have a value", fVisitor.getValues().getDynamicValues().get("wbc"));
+        assertNotNull("should have a value", fVisitor.getVariableEntry().getDynamicValues().get("wbc"));
     }
     
     @Test
@@ -55,7 +55,7 @@ public class DynamicValueVisitorTest
         final BooleanVariable var = SampleModels.dnrVariable();
         final BooleanValue val = new BooleanValue(var, true);
         fVisitor.visitBoolean(val);
-        assertEquals("true", fVisitor.getValues().getDynamicValues().get("dnr"));
+        assertEquals("true", fVisitor.getVariableEntry().getDynamicValues().get("dnr"));
     }
     
     @Test
@@ -64,7 +64,7 @@ public class DynamicValueVisitorTest
         final MultiSelectVariable var = SampleModels.genderVariable();
         final MultiSelectValue val = new MultiSelectValue(var, new MultiSelectOption("Male"));
         fVisitor.visitMultiSelect(val);
-        assertEquals("Male", fVisitor.getValues().getDynamicValues().get("gender"));
+        assertEquals("Male", fVisitor.getVariableEntry().getDynamicValues().get("gender"));
     }
     
     @Test
@@ -73,6 +73,6 @@ public class DynamicValueVisitorTest
         final ProcedureVariable var = SampleModels.procedureVariable();
         final ProcedureValue val = new ProcedureValue(var, SampleModels.repairLeftProcedure());
         fVisitor.visitProcedure(val);
-        assertEquals("26546", fVisitor.getValues().getDynamicValues().get("procedure"));
+        assertEquals("26546", fVisitor.getVariableEntry().getDynamicValues().get("procedure"));
     }
 }

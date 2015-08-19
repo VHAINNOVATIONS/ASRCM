@@ -78,6 +78,9 @@ public final class NumericalRange implements Comparable<NumericalRange>
         fUpperInclusive = upperInclusive;
     }
     
+    /**
+     * Returns the lower bound of this range.
+     */
     public float getLowerBound()
     {
         return fLowerBound;
@@ -98,6 +101,9 @@ public final class NumericalRange implements Comparable<NumericalRange>
         fLowerBound = limit(lowerBound);
     }
     
+    /**
+     * Returns if true if the lower bound is inclusive, false otherwise.
+     */
     public boolean isLowerInclusive()
     {
         return fLowerInclusive;
@@ -111,6 +117,9 @@ public final class NumericalRange implements Comparable<NumericalRange>
         fLowerInclusive = lowerInclusive;
     }
     
+    /**
+     * Returns the upper bound of this range.
+     */
     public float getUpperBound()
     {
         return fUpperBound;
@@ -131,6 +140,9 @@ public final class NumericalRange implements Comparable<NumericalRange>
         fUpperBound = limit(upperBound);
     }
     
+    /**
+     * Returns true if the upper bound is inclusive, false otherwise.
+     */
     public boolean isUpperInclusive()
     {
         return fUpperInclusive;
@@ -190,6 +202,10 @@ public final class NumericalRange implements Comparable<NumericalRange>
                 (value < getUpperBound());
     }
     
+    /**
+     * Returns true if {@code value} is within this numerical range, false otherwise.
+     * @param value the value to test
+     */
     public boolean isValueInRange(final float value)
     {
         return isValueWithinLower(value) && isValueWithinUpper(value);

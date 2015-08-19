@@ -12,6 +12,10 @@ public class DynamicValueVisitor extends ExceptionlessValueVisitor
 {
     private VariableEntry fVariableEntry;
     
+    /**
+     * Constructs an instance.
+     * @param variableEntry the entry object to put values into
+     */
     public DynamicValueVisitor(final VariableEntry variableEntry)
     {
         fVariableEntry = variableEntry;
@@ -58,7 +62,10 @@ public class DynamicValueVisitor extends ExceptionlessValueVisitor
         fVariableEntry.getDynamicValues().put(key, valueString);
     }
     
-    public VariableEntry getValues()
+    /**
+     * Returns the {@link VariableEntry} object being used to visit values.
+     */
+    public VariableEntry getVariableEntry()
     {
         return fVariableEntry;
     }

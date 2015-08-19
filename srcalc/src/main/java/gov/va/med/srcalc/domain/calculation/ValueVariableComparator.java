@@ -11,6 +11,11 @@ public class ValueVariableComparator implements Comparator<Value>
 {
     private final Comparator<Variable> fVariableComparator;
     
+    /**
+     * Constructs an instance using the specified Comparator.
+     * @param comparator the Comparator used to compare variables for the specified
+     *          values
+     */
     public ValueVariableComparator(final Comparator<Variable> comparator)
     {
         fVariableComparator = comparator;

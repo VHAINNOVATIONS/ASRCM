@@ -221,7 +221,9 @@ public enum ValueRetriever
             {
                 // Add a line break here so that the note body is separated.
                 variableRefInfo.append(String.format("Local Title: %s Sign Date: %s%n%s%n%n",
-                        note.getLocalTitle(), XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.print(note.getSignDate()), note.getNoteBody()));
+                        note.getLocalTitle(), 
+                        XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.print(note.getSignDate()),
+                        note.getNoteBody()));
             }
             return variableRefInfo.toString();
         }
@@ -267,6 +269,13 @@ public enum ValueRetriever
     {
     }
     
+    /**
+     * Attempt to retrieve any reference information for this instance. Return an empty 
+     * String if here is no reference information for the specified variable.
+     * @param patient the current patient
+     * @param var the variable to get reference information for
+     * @return the reference information or an empty String
+     */
     public String retrieveReferenceInfo(final Patient patient, final Variable var)
     {
         return "";

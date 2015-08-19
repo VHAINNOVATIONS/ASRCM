@@ -23,6 +23,9 @@ public abstract class ExceptionlessValueVisitor implements ValueVisitor
     @Override
     public abstract void visitDiscreteNumerical(DiscreteNumericalValue value);
     
+    /**
+     * Gang-of-four Visitor pattern over the {@link Value} type hierarchy.
+     */
     public void visit(final Value visitor)
     {
         visitor.accept(this);

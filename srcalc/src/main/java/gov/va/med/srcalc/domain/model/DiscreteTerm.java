@@ -22,6 +22,10 @@ public final class DiscreteTerm extends SingleVariableTerm
     private DiscreteVariable fVariable = null;
     private int fOptionIndex = UNSET_INDEX;
     
+    /**
+     * For reflection-based construction only. Business code should use
+     * {@link #DiscreteTerm(DiscreteVariable, int, float).
+     */
     DiscreteTerm()
     {
     }
@@ -60,6 +64,10 @@ public final class DiscreteTerm extends SingleVariableTerm
         fVariable = Objects.requireNonNull(variable);
     }
 
+    /**
+     * Returns the index of the associated option in the this instance's 
+     * {@link DiscreteVariable#getOptions()} list.
+     */
     @Basic
     public int getOptionIndex()
     {

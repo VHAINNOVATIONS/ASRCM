@@ -22,6 +22,11 @@ public class RpcVistaSurgeryDao implements VistaSurgeryDao
     private final VistaProcedureCaller fProcedureCaller;
     private final String fDuz;
     
+    /**
+     * Constructs an instance.
+     * @param procedureCaller used to call remote procedures from VistA
+     * @param duz the user's DUZ
+     */
     public RpcVistaSurgeryDao(
             final VistaProcedureCaller procedureCaller, final String duz)
     {

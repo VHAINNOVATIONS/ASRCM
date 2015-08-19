@@ -28,13 +28,17 @@ public class RiskModelDao
     
     private static final Logger LOGGER = LoggerFactory.getLogger(RiskModelDao.class);
 
+    /**
+     * Constructs an instance.
+     * @param sessionFactory the SessionFactory used to get the current session.
+     */
     @Inject // Allow arguments to be autowired.
     public RiskModelDao(final SessionFactory sessionFactory)
     {
         fSessionFactory = sessionFactory;
     }
     
-    protected Session getCurrentSession()
+    private Session getCurrentSession()
     {
         return fSessionFactory.getCurrentSession();
     }
@@ -60,6 +64,17 @@ public class RiskModelDao
         return (RiskModel)getCurrentSession().get(RiskModel.class, mid);
     }
     
+    /**
+     * <p>Persists the given risk model to the database using <a
+     * href="http://en.wikibooks.org/wiki/Java_Persistence/Persisting#Merge">JPA
+     * merge semantics</a>.</p>
+     * 
+     * <p>Note that the given object is not added to the persistence context,
+     * but the returned object is. If you want to further modify the state, use the
+     * returned object.</p>.
+     * @param rm the risk model to save to the database
+     * @return the RiskModel for convenience
+     */
     public RiskModel saveRiskModel( final RiskModel rm )
     {
         LOGGER.debug("Merging RiskModel {} into persistence context.", rm.getDisplayName() );

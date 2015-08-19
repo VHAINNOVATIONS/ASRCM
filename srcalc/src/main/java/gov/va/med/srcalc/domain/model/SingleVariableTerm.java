@@ -30,6 +30,10 @@ public abstract class SingleVariableTerm extends ModelTerm
     {
     }
     
+    /**
+     * Constructs an instance.
+     * @param coefficient
+     */
     public SingleVariableTerm(final float coefficient)
     {
         super(coefficient);

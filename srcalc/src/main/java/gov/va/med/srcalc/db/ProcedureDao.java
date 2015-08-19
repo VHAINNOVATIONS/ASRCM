@@ -30,12 +30,19 @@ public class ProcedureDao
     
     private final SessionFactory fSessionFactory;
     
+    /**
+     * Constructs an instance.
+     * @param sessionFactory the SessionFactory used to get the current session.
+     */
     @Inject // Allow arguments to be autowired.
     public ProcedureDao(final SessionFactory sessionFactory)
     {
         fSessionFactory = sessionFactory;
     }
     
+    /**
+     * Obtains the current session being used by this instance.
+     */
     protected Session getCurrentSession()
     {
         return fSessionFactory.getCurrentSession();

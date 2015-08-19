@@ -12,6 +12,10 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class XmlDateAdapter extends XmlAdapter<String, DateTime>
 {
+    /**
+     * The date format to use for parsing and outputting DateTime instances associated with
+     * the XML binding.
+     */
     public static final DateTimeFormatter REFERENCE_NOTE_DATE_FORMAT = DateTimeFormat.forPattern("MM/dd/yy HH:mm");
 
     @Override

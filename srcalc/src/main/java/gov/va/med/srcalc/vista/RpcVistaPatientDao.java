@@ -50,7 +50,10 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private static final String HEIGHT_UNITS = "inches";
     private static final String ADL_ENTERPRISE_TITLE = "NURSING ADMISSION EVALUATION NOTE";
     
-    public static final String VISTA_DATE_OUTPUT_FORMAT = "MM/dd/yy@HH:mm";
+    /**
+     * The expected date format for information received from VistA.
+     */
+    public static final SimpleDateFormat VISTA_DATE_OUTPUT_FORMAT = new SimpleDateFormat("MM/dd/yy@HH:mm");
     
     private static final Map<String, String> TRANSLATION_MAP;
 
@@ -195,9 +198,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
         final List<String> weightLineTokens = Splitter.on(Pattern.compile("[\\s\\^]+"))
                 .splitToList(weightResults.get(weightResults.size()-2));
         // Get the date of the measurement
-        final SimpleDateFormat dateFormat = new SimpleDateFormat(VISTA_DATE_OUTPUT_FORMAT);
         LOGGER.debug("weight line tokens: {}", weightResults);
-        final Date measurementDate = dateFormat.parse(weightLineTokens.get(1));
+        final Date measurementDate = VISTA_DATE_OUTPUT_FORMAT.parse(weightLineTokens.get(1));
         patient.setWeight6MonthsAgo(new RetrievedValue(
                 Double.parseDouble(weightLineTokens.get(3)), measurementDate, WEIGHT_UNITS));
         LOGGER.debug("Weight 6 months ago: {}", patient.getWeight6MonthsAgo());
@@ -205,7 +207,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
     
     private void parseRecentVitalResults(final Patient patient, final List<String> vitalResults) throws ParseException
     {
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("(" + VISTA_DATE_OUTPUT_FORMAT + ")");
+        // The date inside of returned vitals is inside of parentheses.
+        // For example, pulse is returned as: "Pulse:       (03/05/10@09:00)  74  _NURSE,ONE_Vitals"
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("(" + VISTA_DATE_OUTPUT_FORMAT.toPattern() + ")");
         final Pattern compliedPattern = Pattern.compile(VITALS_SPLIT_REGEX);
         // Each entry comes with an accompanying date and time.
         final List<String> heightLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(5));

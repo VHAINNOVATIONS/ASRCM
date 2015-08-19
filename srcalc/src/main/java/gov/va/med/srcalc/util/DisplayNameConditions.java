@@ -30,6 +30,8 @@ public class DisplayNameConditions
      */
     public static final String VALID_DISPLAY_NAME_REGEX = "[\\w ~`!@#$%^&*()-_+=|\\.,<>/?'\":;]*";
     
-    public static final Pattern VALID_DISPLAY_NAME_PATTERN = 
-            Pattern.compile(VALID_DISPLAY_NAME_REGEX);
+    /**
+     * A pre-compiled version of {@link #VALID_DISPLAY_NAME_REGEX} for efficiency.
+     */
+    public static final Pattern VALID_DISPLAY_NAME_PATTERN = Pattern.compile(VALID_DISPLAY_NAME_REGEX);
 }
