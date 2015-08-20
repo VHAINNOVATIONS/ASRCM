@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,6 +27,12 @@ public final class ReferenceNotes
         return fAllNotes;
     }
     
+    /**
+     * Sets the collection of {@link ReferenceNote}s contained in this instance. If a null
+     * value is passed, the collection is set to an empty list rather than null. This is
+     * done to work around null being passed during XML binding.
+     * @param allNotes the notes to contain in this instance (may be null)
+     */
     @XmlElement (name = "note")
     public void setAllNotes(final List<ReferenceNote> allNotes)
     {

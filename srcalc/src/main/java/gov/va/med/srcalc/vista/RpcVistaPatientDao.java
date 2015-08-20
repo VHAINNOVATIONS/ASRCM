@@ -363,6 +363,12 @@ public class RpcVistaPatientDao implements VistaPatientDao
         }
     }
     
+    /**
+     * Translates the results of the RPC call into a {@link ReferenceNotes} object.
+     * @param rpcResults the original results returned from the RPC. In order for this method
+     *          to translate the results properly, they need to be valid XML.
+     * @throws JAXBException if there is a problem unmarshalling the input
+     */
     private ReferenceNotes getReferenceNotes(final List<String> rpcResults) throws JAXBException
     {
         // Parse the String as XML and format it into separate notes

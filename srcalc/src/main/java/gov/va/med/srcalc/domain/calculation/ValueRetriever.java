@@ -1,7 +1,6 @@
 package gov.va.med.srcalc.domain.calculation;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ImmutableSortedSet;
 
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.ReferenceNote;
@@ -282,56 +281,44 @@ public enum ValueRetriever
      * An ImmutableSet including any ValueRetrievers that are used for Boolean
      * variables.
      */
-    public static final ImmutableSet<ValueRetriever> BOOLEAN_SET = buildBooleanSet();
+    public static final ImmutableSet<ValueRetriever> BOOLEAN_SET = 
+            new ImmutableSet.Builder<ValueRetriever>()
+            .addAll(REFERENCE_NOTES_SET)
+            .build();
     /**
      * An ImmutableSet including any ValueRetrievers that are used for multi-select
      * variables.
      */
-    public static final ImmutableSet<ValueRetriever> MULTI_SELECT_SET = buildMultiSelectSet();
+    public static final ImmutableSet<ValueRetriever> MULTI_SELECT_SET = 
+            new ImmutableSet.Builder<ValueRetriever>()
+            .addAll(REFERENCE_NOTES_SET)
+            .add(GENDER)
+            .build();
     /**
      * An ImmutableSet including any ValueRetrievers that are used for numerical
      * variables.
      */
-    public static final ImmutableSet<ValueRetriever> NUMERICAL_SET = buildNumericalSet();
-    
-    private static ImmutableSet<ValueRetriever> buildBooleanSet()
-    {
-        final ImmutableSet.Builder<ValueRetriever> builder = ImmutableSet.builder();
-        builder.addAll(REFERENCE_NOTES_SET);
-        return builder.build();
-    }
-    
-    private static ImmutableSet<ValueRetriever> buildMultiSelectSet()
-    {
-        final ImmutableSet.Builder<ValueRetriever> builder = ImmutableSet.builder();
-        builder.addAll(REFERENCE_NOTES_SET);
-        builder.add(GENDER);
-        return builder.build();
-    }
-    
-    private static ImmutableSet<ValueRetriever> buildNumericalSet()
-    {
-        final ImmutableSet.Builder<ValueRetriever> builder = ImmutableSet.builder();
-        builder.addAll(REFERENCE_NOTES_SET);
-        builder.add(AGE);
-        builder.add(BMI);
-        builder.add(WEIGHT);
-        builder.add(WEIGHT_6_MONTHS_AGO);
-        builder.add(HEIGHT);
-        builder.add(ALBUMIN);
-        builder.add(CREATININE);
-        builder.add(ALKALINE_PHOSPHATASE);
-        builder.add(BUN);
-        builder.add(SGOT);
-        builder.add(WBC);
-        builder.add(PLATELETS);
-        builder.add(HEMATOCRIT);
-        builder.add(SODIUM);
-        builder.add(INR);
-        builder.add(BILIRUBIN);
-        builder.add(PTT);
-        return builder.build();
-    }
+    public static final ImmutableSet<ValueRetriever> NUMERICAL_SET = 
+            new ImmutableSet.Builder<ValueRetriever>()
+            .addAll(REFERENCE_NOTES_SET)
+            .add(AGE)
+            .add(BMI)
+            .add(WEIGHT)
+            .add(WEIGHT_6_MONTHS_AGO)
+            .add(HEIGHT)
+            .add(ALBUMIN)
+            .add(CREATININE)
+            .add(ALKALINE_PHOSPHATASE)
+            .add(BUN)
+            .add(SGOT)
+            .add(WBC)
+            .add(PLATELETS)
+            .add(HEMATOCRIT)
+            .add(SODIUM)
+            .add(INR)
+            .add(BILIRUBIN)
+            .add(PTT)
+            .build();
     
     /**
      * Attempt to add the retrieved value to the {@link VariableEntry} object. Do nothing if
