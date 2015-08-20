@@ -30,10 +30,26 @@ public class SampleCalculations
                 Optional.of("Physicians (M.D. and D.O.)"));
     }
 
+    /**
+     * Returns a sample patient with minimal attributes populated.
+     */
     public static Patient dummyPatient(final int dfn)
     {
-        final Patient patient = new Patient(dfn, "Zach Smith", Gender.Male, 40);
-        patient.setBmi(new RetrievedValue(20.0, new Date(), ""));
+        return new Patient(dfn, "Zach Smith", Gender.Male, 40);
+    }
+    
+    /**
+     * Returns a sample patient with vitals (height, weight, bmi) populated.
+     */
+    public static Patient dummyPatientWithVitals(final int dfn)
+    {
+        final Patient patient = dummyPatient(dfn);
+        final DateTime vitalsMeasureDate = new DateTime(2014, 5, 12, 13, 21);
+        patient.setBmi(new RetrievedValue(20.0, vitalsMeasureDate.toDate(), ""));
+        patient.setHeight(new RetrievedValue(100.0, vitalsMeasureDate.toDate(), "in"));
+        patient.setWeight(new RetrievedValue(190.0, vitalsMeasureDate.toDate(), "lbs."));
+        patient.setWeight6MonthsAgo(new RetrievedValue(
+                180.0, vitalsMeasureDate.minusMonths(4).toDate(), "lbs."));
         return patient;
     }
 
