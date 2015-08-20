@@ -28,13 +28,22 @@ public final class ReferenceNotes
     }
     
     /**
-     * Set all of the {@link ReferenceNote}s contained in this instance. Necessary for
-     * XML binding.
-     * @param allNotes
+     * Sets the collection of {@link ReferenceNote}s contained in this instance. If a null
+     * value is passed, the collection is set to an empty list rather than null. This is
+     * done to work around null being passed during XML binding.
+     * @param allNotes the notes to contain in this instance (may be null)
      */
     @XmlElement (name = "note")
     public void setAllNotes(final List<ReferenceNote> allNotes)
     {
-        this.fAllNotes = allNotes;
+        // If there are no notes present, JAXB passes a null here.
+        if(allNotes == null)
+        {
+            fAllNotes = new ArrayList<ReferenceNote>();
+        }
+        else
+        {
+            this.fAllNotes = allNotes;
+        }
     }
 }

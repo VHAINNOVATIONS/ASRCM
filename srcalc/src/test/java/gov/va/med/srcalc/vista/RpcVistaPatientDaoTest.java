@@ -54,6 +54,15 @@ public class RpcVistaPatientDaoTest
             "</notes>");
     private final static String VALID_NOTE_BODY = "\nHX:  Patient was seen for hearing aid fitting and orientation.\n" +
             "The batteries supplied for this hearing aid were: za312.\n";
+    private final static List<String> VALID_DNR_NOTES = ImmutableList.of(
+            "<notes>",
+            "<note localTitle='GENERIC DNR TITLE' signDate='04/01/2004 22:24'>",
+            "<body>",
+            "<![CDATA[HX:  Patient was seen for hearing aid fitting and orientation.]]>",
+            "<![CDATA[The batteries supplied for this hearing aid were: za312.]]>",
+            "</body>",
+            "</note>",
+            "</notes>");
     
     private final static int PATIENT_DFN = 500;
 
@@ -302,5 +311,38 @@ public class RpcVistaPatientDaoTest
         final Patient patient = dao.getPatient(PATIENT_DFN);
         // This would fail to retrieve notes and the notes would be empty.
         assertEquals(0, patient.getAdlNotes().size());
+    }
+    
+    @Test
+    public final void testValidDnrNotes()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ,
+                RemoteProcedure.GET_NOTES_WITH_SUBSTRING,
+                String.valueOf(PATIENT_DFN),
+                "DNR"))
+                .thenReturn(VALID_DNR_NOTES);
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        assertEquals(1, patient.getDnrNotes().size());
+        final String noteBody = patient.getDnrNotes().get(0).getNoteBody();
+        assertEquals(VALID_NOTE_BODY, noteBody);
+    }
+    
+    @Test
+    public final void testInvalidDnrNotes()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ,
+                RemoteProcedure.GET_NOTES_WITH_SUBSTRING,
+                String.valueOf(PATIENT_DFN),
+                "DNR"))
+                .thenReturn(ImmutableList.of("Invalid XML"));
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        // This would fail to retrieve DNR notes and the notes would be empty.
+        assertEquals(0, patient.getDnrNotes().size());
     }
 }

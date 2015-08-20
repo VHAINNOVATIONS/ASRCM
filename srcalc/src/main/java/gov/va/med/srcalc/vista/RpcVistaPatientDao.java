@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -142,6 +143,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
             retrieveActiveMedications(dfn, patient);
             // Retrieve the patient's nursing notes from VistA
             retrieveAdlNotes(dfn, patient);
+            // Retrieve any notes with DNR in the title.
+            retrieveDnrNotes(dfn, patient);
             
             LOGGER.debug("Loaded {} from VistA.", patient);
             return patient;
@@ -321,19 +324,13 @@ public class RpcVistaPatientDao implements VistaPatientDao
                     RemoteProcedure.GET_ADL_STATUS,
                     String.valueOf(dfn),
                     ADL_ENTERPRISE_TITLE);
-            // If the resultString is a success, add it to the patient's lab data.
+            // If the resultString is a success, add it to the patient's adl notes.
             // Else, we don't need to do anything.
             if(!rpcResults.isEmpty())
             {
-                // Parse the String as XML and format it into separate notes
-                final InputSource input = new InputSource();
-                input.setCharacterStream(new StringReader(Joiner.on("\n").join(rpcResults)));
-                final JAXBContext context = JAXBContext.newInstance(ReferenceNotes.class);
-                final Unmarshaller unmarshaller = context.createUnmarshaller();
-                
-                final ReferenceNotes allNotes = (ReferenceNotes) unmarshaller.unmarshal(input);
+                final ReferenceNotes adlNotes = getReferenceNotes(rpcResults);
                 patient.getAdlNotes().clear();
-                patient.getAdlNotes().addAll(allNotes.getAllNotes());
+                patient.getAdlNotes().addAll(adlNotes.getAllNotes());
             }
         }
         catch(final Exception e)
@@ -342,6 +339,48 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // to continue without failure.
             LOGGER.warn("Unable to retrieve patient's ADL status. {}", e);
         }
+    }
+    
+    private void retrieveDnrNotes(final int dfn, final Patient patient)
+    {
+        try
+        {
+            final List<String> rpcResults = fProcedureCaller.doRpc(
+                    fDuz,
+                    RemoteProcedure.GET_NOTES_WITH_SUBSTRING,
+                    String.valueOf(dfn),
+                    "DNR");
+            // If the resultString is a success, add it to the patient's dnr notes.
+            // Else, we don't need to do anything.
+            if(!rpcResults.isEmpty())
+            {
+                final ReferenceNotes dnrNotes = getReferenceNotes(rpcResults);
+                patient.getDnrNotes().clear();
+                patient.getDnrNotes().addAll(dnrNotes.getAllNotes());
+            }
+        }
+        catch(final Exception e)
+        {
+            // If an exception occurs for any reason, log a warning but allow the application
+            // to continue without failure.
+            LOGGER.warn("Unable to retrieve patient's DNR notes. {}", e);
+        }
+    }
+    
+    /**
+     * Translates the results of the RPC call into a {@link ReferenceNotes} object.
+     * @param rpcResults the original results returned from the RPC. In order for this method
+     *          to translate the results properly, they need to be valid XML.
+     * @throws JAXBException if there is a problem unmarshalling the input
+     */
+    private ReferenceNotes getReferenceNotes(final List<String> rpcResults) throws JAXBException
+    {
+        // Parse the String as XML and format it into separate notes
+        final InputSource input = new InputSource();
+        input.setCharacterStream(new StringReader(Joiner.on("\n").join(rpcResults)));
+        final JAXBContext context = JAXBContext.newInstance(ReferenceNotes.class);
+        final Unmarshaller unmarshaller = context.createUnmarshaller();
+        return (ReferenceNotes) unmarshaller.unmarshal(input);
     }
     
     @Override

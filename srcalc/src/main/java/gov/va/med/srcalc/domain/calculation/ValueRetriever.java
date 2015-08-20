@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.domain.calculation;
 
+import com.google.common.collect.ImmutableSet;
+
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.ReferenceNote;
 import gov.va.med.srcalc.domain.VistaLabs;
@@ -254,7 +256,71 @@ public enum ValueRetriever
         {
             addLabValue(VistaLabs.GLUCOSE, patient, variableEntry, key);
         }
+    },
+    DNR_NOTES
+    {
+        @Override
+        public String retrieveReferenceInfo(final Patient patient, final Variable var)
+        {
+            final StringBuilder variableRefInfo = new StringBuilder();
+            for(final ReferenceNote note: patient.getDnrNotes())
+            {
+                // Add a line break here so that the note body is separated.
+                variableRefInfo.append(String.format("Local Title: %s Sign Date: %s%n%s%n%n",
+                        note.getLocalTitle(), XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.print(note.getSignDate()), note.getNoteBody()));
+            }
+            return variableRefInfo.toString();
+        }
     };
+    
+    /**
+     * An ImmutableSet including any ValueRetrievers that are used to 
+     * add reference information.
+     */
+    public static final ImmutableSet<ValueRetriever> REFERENCE_NOTES_SET = 
+            ImmutableSet.of(DNR_NOTES, ADL_NOTES);
+    /**
+     * An ImmutableSet including any ValueRetrievers that are used for Boolean
+     * variables.
+     */
+    public static final ImmutableSet<ValueRetriever> BOOLEAN_SET = 
+            new ImmutableSet.Builder<ValueRetriever>()
+            .addAll(REFERENCE_NOTES_SET)
+            .build();
+    /**
+     * An ImmutableSet including any ValueRetrievers that are used for multi-select
+     * variables.
+     */
+    public static final ImmutableSet<ValueRetriever> MULTI_SELECT_SET = 
+            new ImmutableSet.Builder<ValueRetriever>()
+            .addAll(REFERENCE_NOTES_SET)
+            .add(GENDER)
+            .build();
+    /**
+     * An ImmutableSet including any ValueRetrievers that are used for numerical
+     * variables.
+     */
+    public static final ImmutableSet<ValueRetriever> NUMERICAL_SET = 
+            new ImmutableSet.Builder<ValueRetriever>()
+            .addAll(REFERENCE_NOTES_SET)
+            .add(AGE)
+            .add(BMI)
+            .add(WEIGHT)
+            .add(WEIGHT_6_MONTHS_AGO)
+            .add(HEIGHT)
+            .add(ALBUMIN)
+            .add(CREATININE)
+            .add(ALKALINE_PHOSPHATASE)
+            .add(BUN)
+            .add(SGOT)
+            .add(WBC)
+            .add(PLATELETS)
+            .add(HEMATOCRIT)
+            .add(SODIUM)
+            .add(INR)
+            .add(BILIRUBIN)
+            .add(PTT)
+            .build();
     
     /**
      * Attempt to add the retrieved value to the {@link VariableEntry} object. Do nothing if

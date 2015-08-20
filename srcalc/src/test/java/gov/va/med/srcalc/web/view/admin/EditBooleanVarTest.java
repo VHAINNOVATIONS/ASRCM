@@ -26,7 +26,7 @@ public class EditBooleanVarTest
         assertThat(ebv.getTypeName(), not(isEmptyOrNullString()));
         
         assertEquals(Views.NEW_BOOLEAN_VARIABLE, ebv.getNewViewName());
-        assertEquals(0, ebv.getAllRetrievers().size());
+        assertEquals(ValueRetriever.BOOLEAN_SET, ebv.getAllRetrievers());
     }
     
     @Test
