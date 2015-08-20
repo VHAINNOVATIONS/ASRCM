@@ -25,7 +25,9 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            variableEntry.getDynamicValues().put(key, patient.getGender());
+            // Note that the MultiSelectOption value must exactly match the enum name for
+            // this to work.
+            variableEntry.getDynamicValues().put(key, patient.getGender().name());
         }
     },
     AGE

@@ -79,7 +79,7 @@ public class VariableEntryTest
         final VariableEntry entry = VariableEntry.withRetrievedValues(vars, patient);
         final HashMap<String, String> expected = new HashMap<>();
         expected.put(vars.get(1).getKey(), String.valueOf(patient.getAge()));
-        expected.put(vars.get(2).getKey(), patient.getGender());
+        expected.put(vars.get(2).getKey(), patient.getGender().name());
         expected.put(vars.get(5).getKey(), VariableEntry.SPECIAL_NUMERICAL);
         assertEquals(expected, entry.getDynamicValues());
     }
@@ -94,7 +94,7 @@ public class VariableEntryTest
         expected.put(VariableEntry.makeNumericalInputName(vars.get(0).getKey()),
                 String.valueOf(patient.getAge()));
         expected.put(vars.get(0).getKey(), VariableEntry.SPECIAL_NUMERICAL);
-        expected.put(vars.get(1).getKey(), patient.getGender());
+        expected.put(vars.get(1).getKey(), patient.getGender().name());
         
         assertEquals(expected, entry.getDynamicValues());
     }

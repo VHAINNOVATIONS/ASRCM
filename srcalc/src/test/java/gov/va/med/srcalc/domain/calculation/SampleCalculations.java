@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain.calculation;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.domain.VistaPerson;
+import gov.va.med.srcalc.domain.Patient.Gender;
 import gov.va.med.srcalc.domain.model.*;
 
 import java.util.Date;
@@ -31,7 +32,7 @@ public class SampleCalculations
 
     public static Patient dummyPatient(final int dfn)
     {
-        final Patient patient = new Patient(dfn, "Zach Smith", "M", 40);
+        final Patient patient = new Patient(dfn, "Zach Smith", Gender.Male, 40);
         patient.setBmi(new RetrievedValue(20.0, new Date(), ""));
         return patient;
     }
@@ -57,9 +58,10 @@ public class SampleCalculations
         labs.put(VistaLabs.SODIUM, new RetrievedValue(1.0, new Date(), ""));
         labs.put(VistaLabs.WBC, new RetrievedValue(10.0, new Date(), "x1000/mm^3"));
         
-        
-        
-        patient.setLabs(labs);
+        // Replace any existing labs with the new set.
+        patient.getLabs().clear();
+        patient.getLabs().putAll(labs);
+
         return patient;
     }
 

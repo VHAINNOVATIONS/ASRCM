@@ -15,15 +15,25 @@ import java.util.Objects;
 public class Patient implements Serializable
 {
     /**
+     * The possible patient genders.
+     */
+    public enum Gender
+    {
+        Male,
+        Female,
+        Unknown
+    }
+
+    /**
      * Change this when changing the class!
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
     
-    private int fDfn;
+    private final int fDfn;
     
-    private String fName;
-    private String fGender;
-    private int fAge;
+    private final String fName;
+    private final Gender fGender;
+    private final int fAge;
     private RetrievedValue fBmi;
     private RetrievedValue fWeight;
     private RetrievedValue fWeight6MonthsAgo;
@@ -34,11 +44,11 @@ public class Patient implements Serializable
     private List<ReferenceNote> fAdlNotes;
     private List<ReferenceNote> fDnrNotes;
     
-    public Patient()
-    {
-    }
-    
-    public Patient(final int dfn, final String name, final String gender, final int age)
+    /**
+     * Constructs an instance with the given properties and empty collections for all
+     * other properties.
+     */
+    public Patient(final int dfn, final String name, final Gender gender, final int age)
     {
         this.fDfn = dfn;
         this.fName = name;
@@ -52,93 +62,89 @@ public class Patient implements Serializable
     }
     
     /**
-     * The patient's VistA Data File Number.
+     * Returns the patient's VistA Data File Number. Immutable because the DFN for a
+     * patient should not change.
      */
     public int getDfn()
     {
         return fDfn;
     }
     
-    public void setDfn(final int dfn)
-    {
-        this.fDfn = dfn;
-    }
-    
     /**
-     * Return the patient's full name.
+     * Returns the patient's full name. Immutable because we never need to update a
+     * patient's name for this application.
      */
     public String getName()
     {
         return fName;
     }
     
-    public void setName(final String name)
-    {
-        fName = name;
-    }
-    
     /**
-     * The patient's gender.
+     * Returns the patient's gender. Immutable because we never need to update it for this
+     * application.
      */
-    public String getGender()
+    public Gender getGender()
     {
         return fGender;
     }
     
-    public void setGender(final String gender)
-    {
-        fGender = gender;
-    }
-    
     /**
-     * The patient's age.
+     * Returns the patient's age. Immutable because we never need to update it for this
+     * application.
      */
     public int getAge()
     {
         return fAge;
     }
     
-    public void setAge(final int age)
-    {
-        fAge = age;
-    }
-    
     /**
-     * The patient's automatically retrieved BMI.
+     * Returns the patient's retrieved BMI.
      */
     public RetrievedValue getBmi()
     {
         return fBmi;
     }
     
+    /**
+     * Sets the patient's retrieved BMI.
+     * @see #getBmi()
+     */
     public void setBmi(final RetrievedValue bmi)
     {
         fBmi = bmi;
     }
     
     /**
-     * The patient's automatically retrieved weight.
+     * Returns the patient's retrieved weight.
      */
     public RetrievedValue getWeight()
     {
         return fWeight;
     }
     
+    /**
+     * Sets the patient's retrieved weight.
+     * @see #getWeight()
+     */
     public void setWeight(final RetrievedValue weight)
     {
         fWeight = weight;
     }
     
     /**
-     * The patient's automatically retrieved weight 6 months ago. The weight 6 months ago is in the range of 3-12 months
-     * prior to the patient's most recent weight. The most recent weight in that range is considered as weight 6 months
-     * ago.
+     * Returns the patient's retrieved weight 6 months ago. The weight 6 months ago is in
+     * the range of 3-12 months prior to the patient's most recent weight. The most recent
+     * weight in that range is considered as weight 6 months ago.
      */
     public RetrievedValue getWeight6MonthsAgo()
     {
         return fWeight6MonthsAgo;
     }
     
+    /**
+     * Sets the patient's retrieved weight 6 months ago.
+     * @see #getWeight6MonthsAgo()
+     */
     public void setWeight6MonthsAgo(final RetrievedValue weight6MonthsAgo)
     {
         this.fWeight6MonthsAgo = weight6MonthsAgo;
@@ -162,19 +168,16 @@ public class Patient implements Serializable
     
     /**
      * Returns all of the labs that were able to be retrieved.
+     * @return a mutable map
      */
     public Map<VistaLabs,RetrievedValue> getLabs()
     {
         return fLabs;
     }
     
-    public void setLabs(final Map<VistaLabs, RetrievedValue> labs)
-    {
-        fLabs = labs;
-    }
-    
     /**
      * Returns the patient's health factors as a list of {@link HealthFactor}s.
+     * @return a mutable list
      */
     public List<HealthFactor> getHealthFactors()
     {
@@ -185,6 +188,7 @@ public class Patient implements Serializable
      * Returns the patient's medications as a list of Strings. Currently the only information
      * needed is the name of each active medication. Although the date is not present, the
      * medications are listed in order of most recent to least recent.
+     * @return a mutable list
      */
     public List<String> getActiveMedications()
     {
@@ -193,6 +197,7 @@ public class Patient implements Serializable
     
     /**
      * Returns the nursing notes regarding the patient in String form.
+     * @return a mutable list
      */
     public List<ReferenceNote> getAdlNotes()
     {
@@ -201,6 +206,7 @@ public class Patient implements Serializable
     
     /**
      * Returns the notes regarding the patient's DNR status.
+     * @return a mutable list
      */
     public List<ReferenceNote> getDnrNotes()
     {
