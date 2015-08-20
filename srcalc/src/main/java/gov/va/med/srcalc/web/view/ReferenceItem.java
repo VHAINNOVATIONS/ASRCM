@@ -80,6 +80,9 @@ public class ReferenceItem implements DisplayItem
         return "";
     }
     
+    /**
+     * Returns the reference information to show to the user.
+     */
     public List<String> getContent()
     {
         return fContent;

@@ -16,6 +16,12 @@ public final class ModelTermSummary
     
     private final float fCoefficient;
     
+    /**
+     * Constructs an initial instance with the given values.
+     * @param identificationString See {@link #getIdentificationString()}
+     * @param termType See {@link #getTermType()}
+     * @param coefficient See {@link #getCoefficient()}
+     */
     public ModelTermSummary(
             final String identificationString,
             final String termType,

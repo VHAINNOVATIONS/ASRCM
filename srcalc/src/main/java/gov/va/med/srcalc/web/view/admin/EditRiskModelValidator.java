@@ -21,6 +21,10 @@ public class EditRiskModelValidator implements Validator
 {
     private final ModelInspectionService fModelService;
     
+    /**
+     * Constructs the Validator with a given service.
+     * @param modelService The service to use
+     */
     public EditRiskModelValidator(final ModelInspectionService modelService)
     {
         fModelService = modelService;

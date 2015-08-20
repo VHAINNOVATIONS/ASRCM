@@ -15,6 +15,10 @@ public class VariableSummary
     private final String fTypeName;
     private final String fOptionString;
     
+    /**
+     * Constructs a summary of the variable passed in.
+     * @param variable The variable to summarize.
+     */
     protected VariableSummary(final Variable variable)
     {
         fVariable = variable;
@@ -32,21 +36,36 @@ public class VariableSummary
         return new VariableSummary(variable);
     }
     
+    /**
+     * Returns the {@link Variable} that is being summarized.
+     */
     protected Variable getVariable()
     {
         return fVariable;
     }
     
+    /**
+     * Returns Variable's key. See {@link Variable#getKey()}.
+     */
     public String getKey()
     {
         return fVariable.getKey();
     }
 
+    /**
+     * Returns Variable's String representation. See
+     * {@link Variable#getDisplayName()}.
+     */
     public String getDisplayName()
     {
         return fVariable.getDisplayName();
     }
 
+
+    /**
+     * Returns a String representation of the variable's type. Some examples are
+     * Numeric, Discrete Numeric, and Multi-Select.
+     */
     public String getTypeName()
     {
         return fTypeName;

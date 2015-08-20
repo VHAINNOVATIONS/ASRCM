@@ -57,6 +57,10 @@ public final class ValueMatcherBuilder
         return fVariableKey;
     }
 
+    /**
+     * Sets the variable key that this ValueMatcherBuilder references.
+     * @param variableKey
+     */
     public ValueMatcherBuilder setVariableKey(final String variableKey)
     {
         fVariableKey = variableKey;
@@ -64,13 +68,17 @@ public final class ValueMatcherBuilder
     }
 
     /**
-     * Returns the expression used to evaluate the constructed {@link ValueMatcher}.
+     * Returns the boolean expression to use for constructed {@link ValueMatcher}.
      */
     public String getBooleanExpression()
     {
         return fBooleanExpression;
     }
 
+    /**
+     * Sets the boolean expression to use for constructed {@link ValueMatcher}.
+     * @param booleanExpression
+     */
     public ValueMatcherBuilder setBooleanExpression(final String booleanExpression)
     {
         fBooleanExpression = booleanExpression;
@@ -85,6 +93,10 @@ public final class ValueMatcherBuilder
         return fEnabled;
     }
     
+    /**
+     * Sets whether or not the constructed {@link ValueMatcher} should be evaluated.
+     * @param enabled
+     */
     public ValueMatcherBuilder setEnabled(final boolean enabled)
     {
         fEnabled = enabled;

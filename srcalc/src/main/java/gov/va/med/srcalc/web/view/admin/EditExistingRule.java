@@ -71,6 +71,9 @@ public class EditExistingRule extends EditRule
         return fTarget;
     }
     
+    /**
+     * Sets the target rule to edit.
+     */
     public void setTarget(final Rule rule)
     {
         fTarget = rule;

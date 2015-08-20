@@ -26,6 +26,11 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
     private final Errors fErrors;
     private final ArrayList<Value> fValues;
     
+    /**
+     * Constructs an instance with the variables whose value you'd like to know.
+     * @param variableEntry An object holding the variables you're interested in
+     * @param errors
+     */
     public InputParserVisitor(final VariableEntry variableEntry, final Errors errors)
     {
         LOGGER.debug(
@@ -275,6 +280,9 @@ public class InputParserVisitor extends ExceptionlessVariableVisitor
         }
     }
     
+    /**
+     * Returns the values of all the given variables.
+     */
     public List<Value> getValues()
     {
         return fValues;

@@ -19,6 +19,9 @@ import gov.va.med.srcalc.service.ModelInspectionService;
  */
 public class EditRule
 {
+    /**
+     * Used in {@link EditRuleValidator}.
+     */
     public static final int MAX_MATCHERS = 10;
     
     private final List<ValueMatcherBuilder> fMatchers;
@@ -76,6 +79,10 @@ public class EditRule
         return fSummandExpression;
     }
 
+    /**
+     * Sets the summand expression for this EditRule.
+     * @param summandExpression
+     */
     public void setSummandExpression(final String summandExpression)
     {
         this.fSummandExpression = summandExpression;
@@ -89,6 +96,10 @@ public class EditRule
         return fBypassEnabled;
     }
 
+    /**
+     * Sets if this rule is required or not.
+     * @param bypassEnabled True for required, false for not required.
+     */
     public void setBypassEnabled(final boolean bypassEnabled)
     {
         this.fBypassEnabled = bypassEnabled;
@@ -102,6 +113,10 @@ public class EditRule
         return fDisplayName;
     }
 
+    /**
+     * Sets this EditRule's display name.
+     * @param displayName
+     */
     public void setDisplayName(final String displayName)
     {
         this.fDisplayName = displayName;
@@ -116,6 +131,11 @@ public class EditRule
         return fNewVariableKey;
     }
     
+    /**
+     * Sets the variable key used to identify a new variable being added to this
+     * EditRule.
+     * @param newVariableKey
+     */
     public void setNewVariableKey(final String newVariableKey)
     {
         fNewVariableKey = newVariableKey;

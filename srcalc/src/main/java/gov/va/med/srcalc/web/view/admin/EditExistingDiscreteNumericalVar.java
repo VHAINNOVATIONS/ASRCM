@@ -15,6 +15,12 @@ public final class EditExistingDiscreteNumericalVar
 {
     private final DiscreteNumericalVariable fTarget;
     
+    /**
+     * Constructs an instance to edit the given variable.
+     * @param target the variable to edit
+     * @param modelService to provide reference data (e.g., available
+     * VariableGroups) to the user
+     */
     public EditExistingDiscreteNumericalVar(
             final DiscreteNumericalVariable target,
             final ModelInspectionService modelService)

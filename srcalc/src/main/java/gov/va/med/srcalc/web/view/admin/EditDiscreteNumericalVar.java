@@ -19,9 +19,15 @@ import gov.va.med.srcalc.web.view.Views;
  */
 public class EditDiscreteNumericalVar extends EditAbstractNumericalVar
 {
-    protected static final int MIN_CATEGORIES = 2;
+    /**
+     * The minimum supported number of categories, {@value}.
+     */
+    public static final int MIN_CATEGORIES = 2;
     
-    protected static final int MAX_CATEGORIES = 10;
+    /**
+     * The maximum supported number of categories, {@value}.
+     */
+    public static final int MAX_CATEGORIES = 10;
     
     private final ArrayList<CategoryBuilder> fCategories;
     
@@ -131,7 +137,7 @@ public class EditDiscreteNumericalVar extends EditAbstractNumericalVar
     }
     
     /**
-     * Returns the minimum supported number of categories, {@value #MIN_CATEGORIES}.
+     * Returns {@link #MIN_CATEGORIES} to support bean access.
      */
     public final int getMinCategories()
     {
@@ -139,7 +145,7 @@ public class EditDiscreteNumericalVar extends EditAbstractNumericalVar
     }
     
     /**
-     * Returns the maximum supported number of categories, {@value #MAX_CATEGORIES}.
+     * Returns {@link #MAX_CATEGORIES} to support bean access.
      */
     public final int getMaxCategories()
     {
