@@ -99,7 +99,7 @@ public class VariableEntry
     
     /**
      * Convenience method to put the given value into the dynamic values map.
-     * @return {@code this} for convenience
+     * @return this VariableEntry for convenience
      * @see #getDynamicValues()
      */
     public VariableEntry putDynamicValue(
@@ -188,7 +188,7 @@ public class VariableEntry
      * also populating the human-readable retrieval info.
      * @param key the input key to populate
      * @param retrievedValue the retrieved value
-     * @return {@code this} for convenience
+     * @return this VariableEntry for convenience
      */
     public VariableEntry putRetrievedValue(
             final String key, final RetrievedValue retrievedValue)
