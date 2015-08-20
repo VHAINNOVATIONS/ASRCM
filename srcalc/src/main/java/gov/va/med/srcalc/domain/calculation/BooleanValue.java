@@ -10,6 +10,11 @@ public class BooleanValue implements Value
     private final BooleanVariable fVariable;
     private final boolean fValue;
 
+    /**
+     * Constructs an instance.
+     * @param variable the BooleanVariable to which this value belongs
+     * @param value the value of this instance
+     */
     public BooleanValue(final BooleanVariable variable, final boolean value)
     {
         fVariable = variable;

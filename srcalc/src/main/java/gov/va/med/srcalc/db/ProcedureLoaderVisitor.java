@@ -10,6 +10,10 @@ public class ProcedureLoaderVisitor implements VariableVisitor
 {
     private final ProcedureDao fDao;
     
+    /**
+     * Constructs an instance.
+     * @param session the DAO to use for retrieving procedures
+     */
     public ProcedureLoaderVisitor(final ProcedureDao session)
     {
         fDao = session;

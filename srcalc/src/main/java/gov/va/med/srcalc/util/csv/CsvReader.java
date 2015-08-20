@@ -26,6 +26,10 @@ public class CsvReader<T>
     
     private final RowTranslator<T> fRowTranslator;
     
+    /**
+     * Constructs an instance.
+     * @param rowTranslator
+     */
     public CsvReader(final RowTranslator<T> rowTranslator)
     {
         fRowTranslator = rowTranslator;

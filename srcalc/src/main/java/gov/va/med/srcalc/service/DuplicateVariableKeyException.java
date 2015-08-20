@@ -13,6 +13,10 @@ public class DuplicateVariableKeyException extends DuplicateKeyException
      */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * @see DuplicateKeyException#DuplicateKeyException(String)
+     * @param msg
+     */
     public DuplicateVariableKeyException(final String msg)
     {
         super(msg);

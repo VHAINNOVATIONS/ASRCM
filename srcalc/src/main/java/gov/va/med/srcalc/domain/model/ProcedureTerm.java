@@ -27,6 +27,11 @@ public final class ProcedureTerm extends SingleVariableTerm
     {
     }
     
+    /**
+     * Constructs an instance.
+     * @param variable the variable for this term
+     * @param coefficient the coefficient to be multiplied by the procedure's RVU
+     */
     public ProcedureTerm(
             final ProcedureVariable variable, final float coefficient)
     {

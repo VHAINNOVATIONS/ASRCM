@@ -26,6 +26,10 @@ public abstract class VariableView implements DisplayItem
         fReferenceInfo = referenceInfo;
     }
     
+    /**
+     * Returns the unique key assigned to the variable that this View contains.
+     * @see Variable#getKey()
+     */
     public String getKey()
     {
         return fVariable.getKey();
@@ -38,7 +42,7 @@ public abstract class VariableView implements DisplayItem
     }
     
     /**
-     * @see VariableEntry.makeDynamicValuePath(String)
+     * See {@link VariableEntry#makeDynamicValuePath(String)}.
      */
     public String getVarPath()
     {

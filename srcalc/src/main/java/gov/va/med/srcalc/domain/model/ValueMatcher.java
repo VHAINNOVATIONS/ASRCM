@@ -78,6 +78,10 @@ public final class ValueMatcher
         return fVariable;
     }
 
+    /**
+     * Sets the variable to which this ValueMatcher refers.
+     * @param variable
+     */
     void setVariable(final Variable variable)
     {
         this.fVariable = variable;
@@ -92,11 +96,18 @@ public final class ValueMatcher
         return fBooleanExpression.getExpressionString();
     }
     
+    /**
+     * Parses the given {@code booleanExpression} and sets it for this instance.
+     * @param booleanExpression
+     */
     public void setBooleanExpression(final String booleanExpression)
     {
         fBooleanExpression = parseBooleanExpression(booleanExpression);
     }
     
+    /**
+     * Returns the parsed expression for this instance.
+     */
     @Transient
     public Expression getParsedExpression()
     {
@@ -113,6 +124,10 @@ public final class ValueMatcher
         return fExpressionEnabled;
     }
     
+    /**
+     * Sets if this expression is to be evaluated. If the expression is not evaluated,
+     * {@link #evaluate(EvaluationContext, Value)} always returns true.
+     */
     public void setExpressionEnabled(final boolean expressionEnabled)
     {
         fExpressionEnabled = expressionEnabled;

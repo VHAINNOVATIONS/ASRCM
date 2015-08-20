@@ -31,6 +31,14 @@ public class DefaultAdminService implements AdminService
     private final RuleDao fRuleDao;
     private final ProcedureDao fProcedureDao;
     
+    /**
+     * Constructs an instance that will use the given DAOs to query and update the database.
+     * @param variableDao
+     * @param riskModelDao
+     * @param specialtyDao
+     * @param ruleDao
+     * @param procedureDao
+     */
     @Inject
     public DefaultAdminService(
             final VariableDao variableDao,

@@ -8,6 +8,9 @@ import gov.va.med.srcalc.domain.model.Variable;
  */
 public interface Value
 {
+    /**
+     * Returns the variable to which this value belongs.
+     */
     public Variable getVariable();
     
     /**

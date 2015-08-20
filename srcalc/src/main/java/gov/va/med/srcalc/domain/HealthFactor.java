@@ -13,6 +13,11 @@ public class HealthFactor
     private final LocalDate fDate;
     private final String fName;
     
+    /**
+     * Constructs an instance.
+     * @param date the date on which this health factor was noted
+     * @param factor the name of the health factor
+     */
     public HealthFactor(final LocalDate date, final String factor)
     {
         fDate = date;

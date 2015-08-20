@@ -27,6 +27,11 @@ public final class ConstantTerm extends ModelTerm
     {
     }
 
+    /**
+     * Constructs an instance.
+     * @see ModelTerm#ModelTerm(float)
+     * @param coefficient
+     */
     public ConstantTerm(final float coefficient)
     {
         super(coefficient);

@@ -28,10 +28,14 @@ public final class ReferenceNote
         return fLocalTitle;
     }
 
+    /**
+     * Set the local title for this reference note. Necessary for XML binding.
+     * @param localTitle the name of the local title
+     */
     @XmlAttribute(name = "localTitle")
-    public void setLocalTitle(String fLocalTitle)
+    public void setLocalTitle(final String localTitle)
     {
-        this.fLocalTitle = fLocalTitle;
+        this.fLocalTitle = localTitle;
     }
 
     /**
@@ -42,6 +46,10 @@ public final class ReferenceNote
         return this.fSignDate;
     }
     
+    /**
+     * Set the date and time on which this note was signed. Necessary for XML binding.
+     * @param signDate the DateTime on which this note was signed
+     */
     @XmlJavaTypeAdapter(XmlDateAdapter.class)
     @XmlAttribute(name = "signDate")
     public void setSignDate(final DateTime signDate)
@@ -57,6 +65,10 @@ public final class ReferenceNote
         return this.fNoteBody;
     }
     
+    /**
+     * Set the body of this reference note. Necessary for XML binding.
+     * @param noteBody the body of the note
+     */
     @XmlElement (name = "body")
     public void setNoteBody(final String noteBody)
     {

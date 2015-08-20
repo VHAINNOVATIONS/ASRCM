@@ -27,6 +27,12 @@ public final class BooleanTerm extends SingleVariableTerm
     {
     }
     
+    /**
+     * Constructs an instance using the specified variable and its coefficient.
+     * @see SingleVariableTerm#SingleVariableTerm(float)
+     * @param variable
+     * @param coefficient
+     */
     public BooleanTerm(
             final BooleanVariable variable, final float coefficient)
     {

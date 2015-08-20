@@ -8,12 +8,17 @@ import gov.va.med.srcalc.domain.model.*;
 public class ProcedureValue implements Value
 {
     private final ProcedureVariable fVariable;
-    private final Procedure fSelectedOption;
+    private final Procedure fSelectedProcedure;
     
-    public ProcedureValue(final ProcedureVariable variable, final Procedure selectedOption)
+    /**
+     * Constructs an instance from the selected procedure.
+     * @param variable
+     * @param selectedProcedure
+     */
+    public ProcedureValue(final ProcedureVariable variable, final Procedure selectedProcedure)
     {
         fVariable = variable;
-        fSelectedOption = selectedOption;
+        fSelectedProcedure = selectedProcedure;
     }
     
     @Override
@@ -28,7 +33,7 @@ public class ProcedureValue implements Value
     @Override
     public Procedure getValue()
     {
-        return fSelectedOption;
+        return fSelectedProcedure;
     }
     
     @Override

@@ -35,6 +35,9 @@ public abstract class ModelTerm
         fCoefficient = coefficient;
     }
 
+    /**
+     * Returns the coefficient assigned to this term.
+     */
     @Basic
     public float getCoefficient()
     {

@@ -19,12 +19,23 @@ public class CalculationController
 {
     private final CalculationService fCalculationService;
     
+    /**
+     * Constructs an instance.
+     * @param calculationService the service to use for various operations when
+     *          performing a calculation
+     */
     @Inject
     public CalculationController(final CalculationService calculationService)
     {
         fCalculationService = calculationService;
     }
     
+    /**
+     * Creates a brand new calculation with the specified dfn. Any existing calculation is
+     * lost.
+     * @param patientDfn the desired patient's dfn
+     * @param session the current session
+     */
     @RequestMapping(value = "/newCalc", method = RequestMethod.GET, params="force")
     public ModelAndView forceStartNewCalculation(
             @RequestParam(value = "patientDfn") final int patientDfn,
@@ -44,6 +55,13 @@ public class CalculationController
         return mav;
     }
 
+    /**
+     * Starts a new calculation if there was no previous calculation in the session.
+     * If there was a previous calculation, redirects in order to ask the user if they want
+     * to start a completely new calculation with the new patient DFN.
+     * @param patientDfn the new patient's dfn
+     * @param session the current session
+     */
     @RequestMapping(value = "/newCalc", method = RequestMethod.GET)
     public ModelAndView startNewCalculation(
             @RequestParam(value = "patientDfn") final int patientDfn,
@@ -65,6 +83,12 @@ public class CalculationController
         return forceStartNewCalculation(patientDfn, session);
     }
     
+    /**
+     * Sets the selected specialty for the current calculation.
+     * @param session the current session
+     * @param specialtyName the selected specialty name
+     * @throws InvalidIdentifierException if the specialty name is invalid
+     */
     @RequestMapping(value = "/selectSpecialty", method = RequestMethod.POST)
     public String setSpecialty(
             final HttpSession session,

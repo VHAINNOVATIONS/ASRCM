@@ -10,6 +10,11 @@ public class MultiSelectValue implements DiscreteValue
     private final MultiSelectVariable fVariable;
     private final MultiSelectOption fSelectedOption;
     
+    /**
+     * Constructs an instance from the selected option.
+     * @param variable
+     * @param selectedOption
+     */
     public MultiSelectValue(final MultiSelectVariable variable, final MultiSelectOption selectedOption)
     {
         fVariable = variable;

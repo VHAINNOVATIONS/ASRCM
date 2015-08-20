@@ -7,13 +7,21 @@ import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 /**
  * A value of a {@link DiscreteNumericalVariable}.
  */
-public class DiscreteNumericalValue implements DiscreteValue
+public final class DiscreteNumericalValue implements DiscreteValue
 {
     private final DiscreteNumericalVariable fVariable;
     private final Category fSelectedCategory;
     private final float fNumericalValue;
     
-    protected DiscreteNumericalValue(
+    /**
+     * Business code should call {@link #fromCategory(DiscreteNumericalVariable, Category)}
+     * or {@link #fromNumerical(DiscreteNumericalVariable, float)}.
+     * @param variable the DiscreteNumericalVariable to which this value belongs
+     * @param selectedCategory the category that was selected for this variable
+     * @param numericalValue the numerical value for this variable (can be {@link Float#NaN}
+     *          if no numerical value is present
+     */
+    private DiscreteNumericalValue(
             final DiscreteNumericalVariable variable,
             final Category selectedCategory,
             final float numericalValue)
@@ -23,6 +31,11 @@ public class DiscreteNumericalValue implements DiscreteValue
         fNumericalValue = numericalValue;
     }
     
+    /**
+     * Constructs an instance from the selected category.
+     * @param variable
+     * @param selectedCategory
+     */
     public static DiscreteNumericalValue fromCategory(
             final DiscreteNumericalVariable variable, final Category selectedCategory)
     {

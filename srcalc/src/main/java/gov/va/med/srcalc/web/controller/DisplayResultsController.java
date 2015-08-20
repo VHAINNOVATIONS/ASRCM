@@ -31,12 +31,22 @@ public class DisplayResultsController
     private static final Logger LOGGER = LoggerFactory.getLogger(DisplayResultsController.class);
     private final CalculationService fCalculationService;
     
+    /**
+     * Constructs an instance.
+     * @param calculationService the service to use for various operations when
+     *          performing a calculation
+     */
     @Inject
     public DisplayResultsController(final CalculationService calculationService)
     {
         fCalculationService = calculationService;
     }
     
+    /**
+     * Displays the results of the calculation that was performed.
+     * @param session the current session
+     * @param model the current model being used
+     */
     @RequestMapping(value = "/displayResults", method = RequestMethod.GET)
     public String displayResults(
             final HttpSession session,
@@ -58,6 +68,14 @@ public class DisplayResultsController
         return Views.DISPLAY_RESULTS;
     }
     
+    /**
+     * Attempts to sign the current calculation and returns the status of that attempt in
+     * a json format.
+     * @param session the current session
+     * @param electronicSignature the electronic signature to sign the calculation with
+     * @param model the current model
+     * @return a map that contains the result status message to be converted to json
+     */
     @RequestMapping(
             value="/signCalculation",
             method = RequestMethod.POST,
@@ -90,6 +108,11 @@ public class DisplayResultsController
         return jsonStatus;
     }
     
+    /**
+     * Returns the page displaying to the user that the calculation signature was successful.
+     * @param session the current session
+     * @param model the current model
+     */
     @RequestMapping(value="/successfulSign", method = RequestMethod.GET)
     public String displaySuccess(final HttpSession session, final Model model)
     {
