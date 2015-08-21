@@ -9,6 +9,7 @@ import gov.va.med.srcalc.domain.ReferenceNotes;
 import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 
+import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,6 +28,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.dao.RecoverableDataAccessException;
 import org.xml.sax.InputSource;
 
@@ -63,8 +65,10 @@ public class RpcVistaPatientDao implements VistaPatientDao
     
     /**
      * Constructs an instance.
+     * 
      * @param procedureCaller for making the procedure calls
-     * @param duz the user DUZ under which to perform the procedure calls
+     * @param duz the user DUZ under which to perform the procedure calls. Must identify a
+     * valid VistA user.
      */
     public RpcVistaPatientDao(
             final VistaProcedureCaller procedureCaller, final String duz)
@@ -83,12 +87,12 @@ public class RpcVistaPatientDao implements VistaPatientDao
     @Override
     public Patient getPatient(final int dfn)
     {
-        final List<String> basicResults;
-        basicResults = fProcedureCaller.doRpc(fDuz, RemoteProcedure.GET_PATIENT, String.valueOf(dfn));
-        final List<String> vitalResults;
-        vitalResults = fProcedureCaller.doRpc(fDuz, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(dfn));
         try
         {
+            final List<String> basicResults = fProcedureCaller.doRpc(
+                    fDuz, RemoteProcedure.GET_PATIENT, String.valueOf(dfn));
+            final List<String> vitalResults = fProcedureCaller.doRpc(
+                    fDuz, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(dfn));
             // Fields are separated by '^'
             // Basic patient demographics (age, gender)
             final List<String> basicArray = Splitter.on('^').splitToList(basicResults.get(0));
@@ -96,8 +100,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
             final int patientAge = Integer.parseInt(basicArray.get(1));
             final Patient.Gender patientGender = translateFromVista(basicArray.get(2));
             final Patient patient = new Patient(dfn, patientName, patientGender, patientAge);
-            // Patient vitals information (including but not limited to BMI, height, weight, weight 6 months ago)
-            // If there are no results, a single line with an error message is returned.
+            // Patient vitals information (including but not limited to BMI, height,
+            // weight, weight 6 months ago). If there are no results, a single line with
+            // an error message is returned.
             LOGGER.debug("Patient Vital Results: {}", vitalResults);
             if (vitalResults.size() > 1)
             {
@@ -138,10 +143,16 @@ public class RpcVistaPatientDao implements VistaPatientDao
             LOGGER.debug("Loaded {} from VistA.", patient);
             return patient;
         }
+        catch (final GeneralSecurityException e)
+        {
+            // Translate Exception per method contract. The below block could handle this,
+            // but is clearer.
+            throw new PermissionDeniedDataAccessException("VistA security error", e);
+        }
         catch (final Exception e)
         {
-            // There are many DataAccessExcpeionts, but this seems like
-            // the most appropriate exception to throw here.
+            // There are many DataAccessExceptions, but this seems like the most
+            // appropriate exception to throw here.
             throw new NonTransientDataAccessResourceException(e.getMessage(), e);
         }
     }
@@ -156,6 +167,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
     }
     
     private List<String> retrieveWeight6MonthsAgo(final Patient patient)
+            throws GeneralSecurityException
     {
         // Our range for weight 6 months ago is 3-12 months prior to the
         // most recent weight.

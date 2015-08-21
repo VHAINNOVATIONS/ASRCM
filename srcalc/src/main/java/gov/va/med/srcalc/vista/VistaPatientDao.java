@@ -71,7 +71,7 @@ public interface VistaPatientDao
     /**
      * Loads a Patient from VistA given his/her DFN. This includes the patient's
      * vitals and available lab measurements.
-     * @throws DataAccessException if communication with VistA failed
+     * @throws DataAccessException if any error occurs communicating with VistA
      */
     public Patient getPatient(final int dfn);
     
@@ -82,7 +82,9 @@ public interface VistaPatientDao
      * @param patientDfn the DFN of the patient
      * @param noteBody 
      * @return one of the {@link SaveNoteCode} return codes
+     * @throws DataAccessException if any error occurs communicating with VistA
      */
-    public SaveNoteCode saveRiskCalculationNote(final int patientDfn, final String electronicSignature, String noteBody);
+    public SaveNoteCode saveRiskCalculationNote(
+            final int patientDfn, final String electronicSignature, String noteBody);
     
 }

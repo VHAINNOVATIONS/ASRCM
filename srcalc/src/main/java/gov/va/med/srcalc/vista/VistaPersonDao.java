@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.vista;
 
+import javax.security.auth.login.AccountException;
+
 import org.springframework.dao.DataAccessException;
 
 import gov.va.med.srcalc.domain.VistaPerson;
@@ -15,7 +17,7 @@ public interface VistaPersonDao
     /**
      * Loads a VistaPerson from VistA given his/her DUZ.
      * @throws DataAccessException if communication with VistA failed
-     * @throws IllegalArgumentException if the DUZ was not a valid DUZ
+     * @throws AccountException if no VistA user could be matched to the given DUZ
      */
-    public VistaPerson loadVistaPerson(final String duz);
+    public VistaPerson loadVistaPerson(final String duz) throws AccountException;
 }

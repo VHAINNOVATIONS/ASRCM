@@ -15,7 +15,7 @@ public interface VistaSurgeryDao
 {
     /**
      * Saves the given SignedResult to VistA surgery.
-     * @throws DataAccessException if communication with VistA fails
+     * @throws DataAccessException if any error occurs communicating with VistA
      */
     public void saveCalculationResult(final SignedResult result);
 }

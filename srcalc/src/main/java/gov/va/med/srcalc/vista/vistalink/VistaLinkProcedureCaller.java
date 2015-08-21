@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.naming.*;
 import javax.resource.ResourceException;
+import javax.security.auth.login.AccountException;
 
 import gov.va.med.exception.FoundationsException;
 import gov.va.med.srcalc.ConfigurationException;
@@ -160,11 +161,12 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
      * @param duz the calling user's DUZ
      * @param request the RpcRequest to execute
      * @return an unmodifiable list of String lines from the reponse
-     * @throws IllegalArgumentException if the given DUZ is invalid
+     * @throws AccountException if VistALink could not find a user with the given DUZ
      * @throws RecoverableDataAccessException if a VistALink connection could
      * not be obtained or any other VistALink error occurs
      */
     protected List<String> doRpc(final String duz, final RpcRequest request)
+            throws AccountException
     {
         LOGGER.debug(
                 "About to call remote procedure \"{}\"",
@@ -200,7 +202,20 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
         }
         catch (SecurityIdentityDeterminationFaultException e)
         {
-            throw new IllegalArgumentException("Invalid DUZ", e);
+            /*
+             * Translate the VistALink-specific Exception into a standard Java Exception.
+             * 
+             * There is an AccountNotFoundException, but I'm not sure that
+             * SecurityIdentityDeterminationFaultException is that specific: just use the
+             * generic AccountException.
+             */
+            
+            // AccountNotFoundException doesn't accept a cause, so just log it. (The
+            // underlying SecurityIdentityDeterminationFaultException doesn't provide much
+            // extra information anyway.)
+            LOGGER.info("Translating VistALink exception into an AccountException.", e);
+
+            throw new AccountException("Could not find a VistA user for that DUZ.");
         }
         catch (ResourceException e)
         {
@@ -216,6 +231,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
     @Override
     public List<String> doRpc(
             final String duz, final RemoteProcedure procedure, final String... args)
+            throws AccountException
     {
         final RpcRequest req = makeRequestObject(procedure);
         
@@ -236,6 +252,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
             final String encryptedSignature,
             final String patientDfn,
             final List<String> noteLines)
+            throws AccountException
     {
         final RpcRequest req = makeRequestObject(RemoteProcedure.SAVE_PROGRESS_NOTE);
         
@@ -267,6 +284,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
             final String cptCode,
             final String dateTime,
             final List<String> outcomes)
+            throws AccountException
     {
         final RpcRequest req = makeRequestObject(RemoteProcedure.SAVE_RISK);
         
@@ -284,6 +302,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
             final String duz,
             final String patientDfn,
             final List<String> labNames)
+            throws AccountException
     {
         final RpcRequest req = makeRequestObject(RemoteProcedure.GET_LABS);
         

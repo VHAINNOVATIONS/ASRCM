@@ -2,6 +2,8 @@ package gov.va.med.srcalc.vista;
 
 import java.util.List;
 
+import javax.security.auth.login.AccountException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +32,7 @@ public class RpcVistaPersonDao implements VistaPersonDao
     /**
      * Loads the user's single Provider Type, if present.
      */
-    private Optional<String> loadProviderType(final String duz)
+    private Optional<String> loadProviderType(final String duz) throws AccountException
     {
         final List<String> personClassResults = fProcedureCaller.doRpc(
                 duz, RemoteProcedure.GET_USER_PERSON_CLASSES);
@@ -57,7 +59,8 @@ public class RpcVistaPersonDao implements VistaPersonDao
         }
     }
 
-    public VistaPerson loadVistaPerson(final String duz)
+    @Override
+    public VistaPerson loadVistaPerson(final String duz) throws AccountException
     {
         LOGGER.debug("Loading VistaPerson for duz {}.", duz);
         

@@ -16,6 +16,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.security.auth.login.AccountException;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -36,9 +38,13 @@ public class RpcVistaPatientDaoTest
     private final static String ALBUMIN_SUCCESS = "ALBUMIN^3.0^02/02/2015@14:35:12^g/dl";
     private final static String INVALID_LAB = "This is invalid. ~@!#$";
     private final static String VALID_LAB_NO_UNITS = "ALBUMIN^3.0^02/02/2015@14:35:12^";
-    private final static List<String> VALID_HEALTH_FACTORS = ImmutableList.of("08/25/2014^REFUSED INFLUENZA IMMUNIZATION",
-            "08/22/2014^DEPRESSION ASSESS POSITIVE (MDD)","08/22/2014^REFUSED INFLUENZA IMMUNIZATION",
-            "08/20/2014^ALCOHOL - TREATMENT REFERRAL","08/08/2014^CURRENT SMOKER","07/30/2014^GEC HOMELESS");
+    private final static List<String> VALID_HEALTH_FACTORS = ImmutableList.of(
+            "08/25/2014^REFUSED INFLUENZA IMMUNIZATION",
+            "08/22/2014^DEPRESSION ASSESS POSITIVE (MDD)",
+            "08/22/2014^REFUSED INFLUENZA IMMUNIZATION",
+            "08/20/2014^ALCOHOL - TREATMENT REFERRAL",
+            "08/08/2014^CURRENT SMOKER",
+            "07/30/2014^GEC HOMELESS");
     private final static List<String> VALID_ACTIVE_MEDICATIONS = ImmutableList.of(
             "403962R;O^METOPROLOL TARTRATE 50MG TAB^3110228^^^3",
             "404062R;O^SIMVASTATIN 40MG TAB^3110228^^^3");
@@ -52,7 +58,8 @@ public class RpcVistaPatientDaoTest
             "</body>",
             "</note>",
             "</notes>");
-    private final static String VALID_NOTE_BODY = "\nHX:  Patient was seen for hearing aid fitting and orientation.\n" +
+    private final static String VALID_NOTE_BODY =
+            "\nHX:  Patient was seen for hearing aid fitting and orientation.\n" +
             "The batteries supplied for this hearing aid were: za312.\n";
     private final static List<String> VALID_DNR_NOTES = ImmutableList.of(
             "<notes>",
@@ -66,26 +73,41 @@ public class RpcVistaPatientDaoTest
     
     private final static int PATIENT_DFN = 500;
 
+    /**
+     * Creates a mock VistaProcedureCaller that returns the minimal information. Callers
+     * may perform further mocking to expand the returned data.
+     */
     private static VistaProcedureCaller mockVistaProcedureCaller()
     {
-        final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-        // Anything besides a valid measurement is returned as an empty string
-        when(caller.doRetrieveLabs(eq(RADIOLOGIST_DUZ), eq(String.valueOf(PATIENT_DFN)), anyListOf(String.class)))
-            .thenReturn("");
-        // Setup the necessary actions for getting patient data.
-        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_PATIENT, String.valueOf(PATIENT_DFN)))
-            .thenReturn(Arrays.asList(PATIENT_RPC_RETURN));
-        // Return empty vitals
-        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(PATIENT_DFN)))
-            .thenReturn(new ArrayList<String>());
-        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_VITAL, ""))
-            .thenReturn(new ArrayList<String>());
-        when(caller.doRpc(
-                RADIOLOGIST_DUZ,
-                RemoteProcedure.GET_HEALTH_FACTORS,
-                String.valueOf(PATIENT_DFN)))
-                .thenReturn(ImmutableList.of(""));
-        return caller;
+        try
+        {
+            final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
+            // Anything besides a valid measurement is returned as an empty string
+            when(caller.doRetrieveLabs(
+                    eq(RADIOLOGIST_DUZ), eq(String.valueOf(PATIENT_DFN)), anyListOf(String.class)))
+                .thenReturn("");
+            // Setup the necessary actions for getting patient data.
+            when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_PATIENT, String.valueOf(PATIENT_DFN)))
+                .thenReturn(Arrays.asList(PATIENT_RPC_RETURN));
+            // Return empty vitals
+            when(caller.doRpc(
+                    RADIOLOGIST_DUZ, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(PATIENT_DFN)))
+                .thenReturn(new ArrayList<String>());
+            when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_VITAL, ""))
+                .thenReturn(new ArrayList<String>());
+            when(caller.doRpc(
+                    RADIOLOGIST_DUZ,
+                    RemoteProcedure.GET_HEALTH_FACTORS,
+                    String.valueOf(PATIENT_DFN)))
+                    .thenReturn(ImmutableList.of(""));
+            return caller;
+        }
+        catch (final AccountException ex)
+        {
+            // The compiler sees a possible AccountException, but it is just an artifact
+            // of Mockito's mocking API.
+            throw new RuntimeException("Unexpected Exception.", ex);
+        }
     }
     
     @Test
@@ -164,7 +186,7 @@ public class RpcVistaPatientDaoTest
     }
     
     @Test
-    public final void testInvalidLabResponse()
+    public final void testInvalidLabResponse() throws Exception
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRetrieveLabs(
@@ -183,7 +205,7 @@ public class RpcVistaPatientDaoTest
     }
     
     @Test
-    public final void testLabResponseNoUnits()
+    public final void testLabResponseNoUnits() throws Exception
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRetrieveLabs(
@@ -228,7 +250,7 @@ public class RpcVistaPatientDaoTest
     }
     
     @Test
-    public final void testInvalidHealthFactor()
+    public final void testInvalidHealthFactor() throws Exception
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
@@ -242,7 +264,7 @@ public class RpcVistaPatientDaoTest
     }
     
     @Test
-    public final void testMedicationsValid()
+    public final void testMedicationsValid() throws Exception
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
@@ -267,7 +289,7 @@ public class RpcVistaPatientDaoTest
     }
     
     @Test
-    public final void testInvalidMedications()
+    public final void testInvalidMedications() throws Exception
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
@@ -281,7 +303,7 @@ public class RpcVistaPatientDaoTest
     }
     
     @Test
-    public final void testValidAdlNotes()
+    public final void testValidAdlNotes() throws Exception
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
@@ -298,7 +320,7 @@ public class RpcVistaPatientDaoTest
     }
     
     @Test
-    public final void testInvalidAdlNotes()
+    public final void testInvalidAdlNotes() throws Exception
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
@@ -314,7 +336,7 @@ public class RpcVistaPatientDaoTest
     }
     
     @Test
-    public final void testValidDnrNotes()
+    public final void testValidDnrNotes() throws Exception
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
@@ -331,7 +353,7 @@ public class RpcVistaPatientDaoTest
     }
     
     @Test
-    public final void testInvalidDnrNotes()
+    public final void testInvalidDnrNotes() throws Exception
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
