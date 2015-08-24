@@ -219,9 +219,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
     private void parseRecentVitalResults(final Patient patient, final List<String> vitalResults)
             throws ParseException
     {
-        final SimpleDateFormat dateFormat = new SimpleDateFormat(
         // The date inside of returned vitals is inside of parentheses.
         // For example, pulse is returned as: "Pulse:       (03/05/10@09:00)  74  _NURSE,ONE_Vitals"
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "(" + VISTA_DATE_OUTPUT_FORMAT.toPattern() + ")");
         final Pattern compliedPattern = Pattern.compile(VITALS_SPLIT_REGEX);
         // Each entry comes with an accompanying date and time.
