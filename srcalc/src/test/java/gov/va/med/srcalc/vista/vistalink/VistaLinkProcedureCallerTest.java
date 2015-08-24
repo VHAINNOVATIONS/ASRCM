@@ -47,7 +47,7 @@ public class VistaLinkProcedureCallerTest
     }
     
     @Test
-    public final void testDoRpc()
+    public final void testDoRpc() throws Exception
     {
         final String division = "500";
         
@@ -61,7 +61,7 @@ public class VistaLinkProcedureCallerTest
     }
     
     @Test
-    public final void testDoSaveProgressNoteCall()
+    public final void testDoSaveProgressNoteCall() throws Exception
     {
         final String division = "500";
         
@@ -77,7 +77,7 @@ public class VistaLinkProcedureCallerTest
     }
     
     @Test
-    public final void testDoSaveRiskCalculationCall()
+    public final void testDoSaveRiskCalculationCall() throws Exception
     {
         final String division = "500";
         

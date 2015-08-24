@@ -263,7 +263,8 @@ public class CalculationControllerIT extends IntegrationTest
 
         final MvcResult result = fMockMvc.perform(get("/enterVars").session(fSession))
             .andReturn();
-        final VariableEntry variableEntry = (VariableEntry) result.getModelAndView().getModel().get("variableEntry");
+        final VariableEntry variableEntry =
+                (VariableEntry)result.getModelAndView().getModel().get("variableEntry");
         assertEquals(varParams.getPairs(), variableEntry.getDynamicValues());
     }
     

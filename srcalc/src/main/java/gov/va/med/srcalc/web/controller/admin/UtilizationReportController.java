@@ -48,6 +48,11 @@ public class UtilizationReportController
         fReportService = reportService;
     }
     
+    /**
+     * Presents the report parameters form.
+     * @param params contains the report parameters. (This is a method parameter to
+     * support re-presenting the form with validation errors.)
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView displayForm(
             @ModelAttribute(ATTRIBUTE_REPORT_PARAMETERS) final HistoricalSearchParameters params)
@@ -61,6 +66,12 @@ public class UtilizationReportController
         return new UtilizationReport(params, fReportService.getHistoricalRunInfos(params));
     }
     
+    /**
+     * If the parameters are valid, generates and presents the report. If invalid,
+     * presents the validation errors.
+     * @param params the report parameters
+     * @param bindingResult the BindingResult for the report parameters
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView displayReport(
             @ModelAttribute(ATTRIBUTE_REPORT_PARAMETERS) final HistoricalSearchParameters params,

@@ -45,12 +45,18 @@ public class EditProceduresController
     
     private final AdminService fAdminService;
     
+    /**
+     * Constructs an instance that will use the provided service(s) for operations.
+     */
     @Inject
     public EditProceduresController(final AdminService adminService)
     {
         fAdminService = adminService;
     }
     
+    /**
+     * Presents the currently-defined procedures to the user.
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView displayCurrentProcedures()
     {
@@ -58,9 +64,16 @@ public class EditProceduresController
                 Views.EDIT_PROCEDURES,
                 ATTRIBUTE_PROCEDURES,
                 fAdminService.getAllProcedures());
-                
     }
     
+    /**
+     * Parses the given uploaded CSV into a collection of Procedures and, if it is valid,
+     * immediately replaces all defined Procedures with the new list. If it is not valid,
+     * presents the validation errors.
+     * @param newProceduresFile the uploaded CSV file
+     * @param redirectAttributes for adding flash attributes
+     * @throws IOException if an I/O error occurs reading the provided upload
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView uploadNewProcedures(
             @RequestParam("newProceduresFile") final MultipartFile newProceduresFile,

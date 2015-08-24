@@ -248,8 +248,11 @@ public enum ValueRetriever
             for(final ReferenceNote note: patient.getDnrNotes())
             {
                 // Add a line break here so that the note body is separated.
-                variableRefInfo.append(String.format("Local Title: %s Sign Date: %s%n%s%n%n",
-                        note.getLocalTitle(), XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.print(note.getSignDate()), note.getNoteBody()));
+                variableRefInfo.append(String.format(
+                        "Local Title: %s Sign Date: %s%n%s%n%n",
+                        note.getLocalTitle(),
+                        XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.print(note.getSignDate()),
+                        note.getNoteBody()));
             }
             return variableRefInfo.toString();
         }

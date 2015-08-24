@@ -1,6 +1,7 @@
 package gov.va.med.srcalc.security;
 
 import javax.inject.Inject;
+import javax.security.auth.login.AccountException;
 
 import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.vista.VistaPersonDao;
@@ -33,6 +34,7 @@ public class VistaUserDetailsService implements UserDetailsService
 
     /**
      * Loads the VistaUser for the given DUZ.
+     * @throws UsernameNotFoundException if no VistA user could be found for the DUZ
      */
     @Override
     public VistaUserDetails loadUserByUsername(final String duz) throws UsernameNotFoundException
@@ -43,9 +45,12 @@ public class VistaUserDetailsService implements UserDetailsService
             final VistaPerson person = vistaDao.loadVistaPerson(duz);
             return new VistaUserDetails(person);
         }
-        catch (final IllegalArgumentException ex)
+        catch (final AccountException ex)
         {
-            throw new UsernameNotFoundException("Invalid user DUZ", ex);
+            // Translate the standard Java Exception to the Spring Exception per the
+            // method contract.
+            throw new UsernameNotFoundException(
+                    "Could not match the given DUZ to a VistA user.", ex);
         }
     }
 }

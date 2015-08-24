@@ -106,7 +106,7 @@ public final class ValueMatcherBuilder
     /**
      * Returns a {@link ValueMatcher} that is built from the calling object.
      * @param modelService the admin service used to retrieve the necessary variable
-     * @throws InvalidIdentifierException
+     * @throws InvalidIdentifierException if no variable exists with the specified key
      */
     public ValueMatcher buildNew(final ModelInspectionService modelService) throws InvalidIdentifierException
     {

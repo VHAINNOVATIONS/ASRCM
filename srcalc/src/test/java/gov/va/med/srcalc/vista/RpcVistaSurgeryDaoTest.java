@@ -1,6 +1,9 @@
 package gov.va.med.srcalc.vista;
 
 import static org.mockito.Mockito.*;
+
+import javax.security.auth.login.AccountException;
+
 import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.Procedure;
 import gov.va.med.srcalc.domain.model.SampleModels;
@@ -55,26 +58,35 @@ public class RpcVistaSurgeryDaoTest
     public void setup()
     {
         fProcedureCaller = mock(VistaProcedureCaller.class);
-        // Default: return an error regarding Patient DFN.
-        when(fProcedureCaller.doSaveRiskCalculationCall(
-                    anyString(),
-                    anyString(),
-                    anyString(),
-                    anyString(),
-                    anyListOf(String.class)))
-                .thenReturn("0^Patient DFN is not valid");
-        // If the expected DFN is provided, return success.
-        when(fProcedureCaller.doSaveRiskCalculationCall(
-                    anyString(),
-                    eq(String.valueOf(PATIENT_DFN)),
-                    anyString(),
-                    anyString(),
-                    anyListOf(String.class)))
-                .thenReturn(RemoteProcedure.RISK_SAVED_RETURN);
+        try
+        {
+            // Default: return an error regarding Patient DFN.
+            when(fProcedureCaller.doSaveRiskCalculationCall(
+                        anyString(),
+                        anyString(),
+                        anyString(),
+                        anyString(),
+                        anyListOf(String.class)))
+                    .thenReturn("0^Patient DFN is not valid");
+            // If the expected DFN is provided, return success.
+            when(fProcedureCaller.doSaveRiskCalculationCall(
+                        anyString(),
+                        eq(String.valueOf(PATIENT_DFN)),
+                        anyString(),
+                        anyString(),
+                        anyListOf(String.class)))
+                    .thenReturn(RemoteProcedure.RISK_SAVED_RETURN);
+        }
+        catch (final AccountException ex)
+        {
+            // The compiler sees a possible AccountException, but it is just an artifact
+            // of Mockito's mocking API.
+            throw new RuntimeException("Unexpected Exception.", ex);
+        }
     }
 
     @Test
-    public final void testSaveCalculationResultWithCpt()
+    public final void testSaveCalculationResultWithCpt() throws Exception
     {
         // Create a test calculation.
         final ImmutableMap<String, Float> outcomes = ImmutableMap.of(
@@ -111,7 +123,7 @@ public class RpcVistaSurgeryDaoTest
     }
     
     @Test
-    public final void testSaveCalculationResultWithoutCpt()
+    public final void testSaveCalculationResultWithoutCpt() throws Exception
     {
         // Create a test calculation.
         final ImmutableMap<String, Float> outcomes = ImmutableMap.of(

@@ -40,7 +40,8 @@ public class EditRiskModelValidatorTest
     @Test
     public final void testEmptyName()
     {
-        final EditRiskModel erm = EditRiskModel.fromRiskModel(SampleModels.thoracicRiskModel(), fModelService);
+        final EditRiskModel erm = EditRiskModel.fromRiskModel(
+                SampleModels.thoracicRiskModel(), fModelService);
         erm.setModelName("");
         
         final BindingResult errors = validate(erm);
@@ -73,7 +74,8 @@ public class EditRiskModelValidatorTest
     @Test
     public final void testValid()
     {
-        final EditRiskModel erm = EditRiskModel.fromRiskModel(SampleModels.thoracicRiskModel(), fModelService);
+        final EditRiskModel erm = EditRiskModel.fromRiskModel(
+                SampleModels.thoracicRiskModel(), fModelService);
         final BindingResult errors = validate(erm);
         
         assertEquals("error count", 0, errors.getErrorCount());

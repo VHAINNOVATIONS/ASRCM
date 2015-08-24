@@ -79,10 +79,12 @@ public class RuleTest
         final VariableGroup group = SampleModels.demographicsVariableGroup();
         final NumericalVariable currWeight = new NumericalVariable("Weight", group, "weight");
         currWeight.setValidRange(new NumericalRange(0.0f, false, 1000f, false));
-        final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group, "weight6MonthsAgo");
+        final NumericalVariable weight6MoAgo =
+                new NumericalVariable("Weight6MoAgo", group, "weight6MonthsAgo");
         weight6MoAgo.setValidRange(new NumericalRange(0.0f, false, 1000f, false));
         final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "", false);
-        final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "#weight < #weight6MonthsAgo * 0.9", true);
+        final ValueMatcher weightLossMatcher =
+                new ValueMatcher(currWeight, "#weight < #weight6MonthsAgo * 0.9", true);
         final Rule rule =
                 new Rule(Arrays.asList(weight6MoAgoMatcher, weightLossMatcher),
                         "#coefficient", true, "Weight loss in past 6 months > 10%");
@@ -114,9 +116,11 @@ public class RuleTest
         // Setup
         final VariableGroup group = SampleModels.demographicsVariableGroup();
         final NumericalVariable currWeight = new NumericalVariable("Weight", group, "weight");
-        final NumericalVariable weight6MoAgo = new NumericalVariable("Weight6MoAgo", group, "weight6MonthsAgo");
+        final NumericalVariable weight6MoAgo =
+                new NumericalVariable("Weight6MoAgo", group, "weight6MonthsAgo");
         final ValueMatcher weight6MoAgoMatcher = new ValueMatcher(weight6MoAgo, "", false);
-        final ValueMatcher weightLossMatcher = new ValueMatcher(currWeight, "value < #weight6MonthsAgo.value * 0.9", true);
+        final ValueMatcher weightLossMatcher =
+                new ValueMatcher(currWeight, "value < #weight6MonthsAgo.value * 0.9", true);
         final Rule rule =
                 new Rule(Arrays.asList(weight6MoAgoMatcher, weightLossMatcher),
                         "#coefficient", true, "Weight loss in past 6 months > 10%");

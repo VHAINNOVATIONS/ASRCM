@@ -255,6 +255,7 @@ public class DefaultAdminService implements AdminService
         return ImmutableList.copyOf(eligibleProcedures);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public RiskModel getRiskModelForId(final int modelId)
     {        

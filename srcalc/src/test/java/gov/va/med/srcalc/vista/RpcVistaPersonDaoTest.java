@@ -6,6 +6,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
+import javax.security.auth.login.AccountException;
+
 import gov.va.med.srcalc.domain.VistaPerson;
 
 import org.junit.Test;
@@ -27,17 +29,26 @@ public class RpcVistaPersonDaoTest
     private VistaProcedureCaller mockProcedureCaller()
     {
         final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
-        when(caller.getDivision()).thenReturn(DIVISION);
-        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_USER))
-            .thenReturn(Arrays.asList(RADIOLOGIST_NAME));
-        // Test returning an extra type.
-        when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_USER_PERSON_CLASSES))
-            .thenReturn(ImmutableList.of(RADIOLOGIST_PROVIDER_TYPE, "Extra Type"));
-        return caller;
+        try
+        {
+            when(caller.getDivision()).thenReturn(DIVISION);
+            when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_USER))
+                .thenReturn(Arrays.asList(RADIOLOGIST_NAME));
+            // Test returning an extra type.
+            when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_USER_PERSON_CLASSES))
+                .thenReturn(ImmutableList.of(RADIOLOGIST_PROVIDER_TYPE, "Extra Type"));
+            return caller;
+        }
+        catch (final AccountException ex)
+        {
+            // The compiler sees a possible AccountException, but it is just an artifact
+            // of Mockito's mocking API.
+            throw new RuntimeException("Unexpected Exception.", ex);
+        }
     }
 
     @Test
-    public final void testLoadVistaPersonValid()
+    public final void testLoadVistaPersonValid() throws Exception
     {
         // Setup
         final RpcVistaPersonDao dao = new RpcVistaPersonDao(mockProcedureCaller());

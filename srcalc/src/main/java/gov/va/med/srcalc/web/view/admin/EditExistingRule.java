@@ -46,6 +46,8 @@ public class EditExistingRule extends EditRule
      * Applies the specified changes to the target rule.
      * @return the target rule for convenience
      * @throws IllegalStateException if any changes are invalid
+     * @throws InvalidIdentifierException if no variable exists for a specified variable
+     * key
      */
     public Rule applyToRule(final AdminService adminService, final Rule targetRule)
             throws InvalidIdentifierException

@@ -54,10 +54,13 @@ public class EditVariableController
         return EditVarFactory.getInstance(var, fAdminService);
     }
 
+    /**
+     * Presents a form to edit the specified variable.
+     * @param editVar the form-backing object
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView displayForm(
             @ModelAttribute(ATTRIBUTE_VARIABLE) final EditExistingVar editVar)
-            throws InvalidIdentifierException
     {
         final ModelAndView mav = new ModelAndView(editVar.getEditViewName());
         // Note: "variable" is in the model via createEditVar() above.
@@ -65,11 +68,16 @@ public class EditVariableController
         return mav;
     }
 
+    /**
+     * Applies modification from the EditExistingVar, if valid, to the variable. If the
+     * EditExistingVar is invalid, presents the validation errors.
+     * @param editVar the form backing object representing the modifications to perform
+     * @param bindingResult the BindingResult for the EditExistingVar
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveVariable(
             @ModelAttribute(ATTRIBUTE_VARIABLE) final EditExistingVar editVar,
             final BindingResult bindingResult)
-                    throws InvalidIdentifierException
     {
         // Spring has already bound the user input to editVar; now validate
         // the input using the appropriate validator.

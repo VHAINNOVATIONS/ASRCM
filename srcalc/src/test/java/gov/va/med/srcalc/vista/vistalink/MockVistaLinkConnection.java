@@ -40,7 +40,8 @@ public class MockVistaLinkConnection implements VistaLinkConnection
     {
         throw new NotSupportedException(
                 // sic
-                "VistALink does not implement Iteraction and Record part of CCI interface.  VistaRequest interface is used instead.");
+                "VistALink does not implement Iteraction and Record part of CCI " +
+                "interface.  VistaRequest interface is used instead.");
     }
     
     @Override

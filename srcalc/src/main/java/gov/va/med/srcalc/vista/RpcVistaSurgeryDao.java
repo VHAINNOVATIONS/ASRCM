@@ -1,11 +1,13 @@
 package gov.va.med.srcalc.vista;
 
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Map;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 
 import gov.va.med.srcalc.domain.calculation.SignedResult;
 
@@ -53,21 +55,29 @@ public class RpcVistaSurgeryDao implements VistaSurgeryDao
                     "%s^%04.1f", entry.getKey(), entry.getValue() * 100));
         }
 
-        final String rpcResultString = fProcedureCaller.doSaveRiskCalculationCall(
-                fDuz,
-                String.valueOf(result.getPatientDfn()),
-                cptString,
-                VISTA_DATE_TIME_FORMAT.print(result.getSignatureTimestamp()),
-                outcomes);
-        
-        final VistaOperationResult rpcResult =
-                VistaOperationResult.fromString(rpcResultString);
-        // Just compare the codes.
-        if (!expectedResult.getCode().equals(rpcResult.getCode()))
+        try
         {
-            // Any error return now is not due to a network failure, we provided
-            // bad data. Throw a non-transient exception.
-            throw new InvalidDataAccessResourceUsageException(rpcResult.getMessage());
+            final String rpcResultString = fProcedureCaller.doSaveRiskCalculationCall(
+                    fDuz,
+                    String.valueOf(result.getPatientDfn()),
+                    cptString,
+                    VISTA_DATE_TIME_FORMAT.print(result.getSignatureTimestamp()),
+                    outcomes);
+            
+            final VistaOperationResult rpcResult =
+                    VistaOperationResult.fromString(rpcResultString);
+            // Just compare the codes.
+            if (!expectedResult.getCode().equals(rpcResult.getCode()))
+            {
+                // Any error return now is not due to a network failure, we provided
+                // bad data. Throw a non-transient exception.
+                throw new InvalidDataAccessResourceUsageException(rpcResult.getMessage());
+            }
+        }
+        catch (final GeneralSecurityException ex)
+        {
+            // Translate per method contract.
+            throw new PermissionDeniedDataAccessException("VistA security error", ex);
         }
     }
 }

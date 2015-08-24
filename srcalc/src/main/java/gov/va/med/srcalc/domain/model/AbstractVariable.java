@@ -96,6 +96,7 @@ public abstract class AbstractVariable implements Variable
         this.fId = id;
     }
     
+    @Override
     @Basic
     @Column(
             // override the default name "KEY" which is a reserved word
@@ -124,6 +125,7 @@ public abstract class AbstractVariable implements Variable
         fKey = key;
     }
     
+    @Override
     @Basic
     @Column(
             length = DisplayNameConditions.DISPLAY_NAME_MAX,
@@ -143,13 +145,14 @@ public abstract class AbstractVariable implements Variable
     {
         // require at least 1 character
         Preconditions.requireWithin(displayName, 1, DisplayNameConditions.DISPLAY_NAME_MAX);
-        Preconditions.requireMatches(displayName, "displayName", DisplayNameConditions.VALID_DISPLAY_NAME_PATTERN);
+        Preconditions.requireMatches(
+                displayName,
+                "displayName",
+                DisplayNameConditions.VALID_DISPLAY_NAME_PATTERN);
         fDisplayName = displayName;
     }
 
-    /**
-     * Returns the {@link VariableGroup} for this Variable. Never null.
-     */
+    @Override
     @ManyToOne
     @JoinColumn(name = "VARIABLE_GROUP", nullable = false)  // "group" is a SQL reserved word
     public final VariableGroup getGroup()
@@ -191,6 +194,7 @@ public abstract class AbstractVariable implements Variable
         setHelpText(Optional.fromNullable(helpText));
     }
 
+    @Override
     @Transient // getHelpTextString() is mapped instead
     public final Optional<String> getHelpText()
     {
@@ -214,6 +218,7 @@ public abstract class AbstractVariable implements Variable
         fHelpText = helpText;
     }
     
+    @Override
     @Basic
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "retrieval_key", nullable = true)

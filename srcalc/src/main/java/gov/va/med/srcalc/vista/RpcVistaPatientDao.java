@@ -9,6 +9,7 @@ import gov.va.med.srcalc.domain.ReferenceNotes;
 import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 
+import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,6 +28,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.NonTransientDataAccessResourceException;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.dao.RecoverableDataAccessException;
 import org.xml.sax.InputSource;
 
@@ -63,8 +65,10 @@ public class RpcVistaPatientDao implements VistaPatientDao
     
     /**
      * Constructs an instance.
+     * 
      * @param procedureCaller for making the procedure calls
-     * @param duz the user DUZ under which to perform the procedure calls
+     * @param duz the user DUZ under which to perform the procedure calls. Must identify a
+     * valid VistA user.
      */
     public RpcVistaPatientDao(
             final VistaProcedureCaller procedureCaller, final String duz)
@@ -83,12 +87,12 @@ public class RpcVistaPatientDao implements VistaPatientDao
     @Override
     public Patient getPatient(final int dfn)
     {
-        final List<String> basicResults;
-        basicResults = fProcedureCaller.doRpc(fDuz, RemoteProcedure.GET_PATIENT, String.valueOf(dfn));
-        final List<String> vitalResults;
-        vitalResults = fProcedureCaller.doRpc(fDuz, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(dfn));
         try
         {
+            final List<String> basicResults = fProcedureCaller.doRpc(
+                    fDuz, RemoteProcedure.GET_PATIENT, String.valueOf(dfn));
+            final List<String> vitalResults = fProcedureCaller.doRpc(
+                    fDuz, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(dfn));
             // Fields are separated by '^'
             // Basic patient demographics (age, gender)
             final List<String> basicArray = Splitter.on('^').splitToList(basicResults.get(0));
@@ -96,8 +100,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
             final int patientAge = Integer.parseInt(basicArray.get(1));
             final Patient.Gender patientGender = translateFromVista(basicArray.get(2));
             final Patient patient = new Patient(dfn, patientName, patientGender, patientAge);
-            // Patient vitals information (including but not limited to BMI, height, weight, weight 6 months ago)
-            // If there are no results, a single line with an error message is returned.
+            // Patient vitals information (including but not limited to BMI, height,
+            // weight, weight 6 months ago). If there are no results, a single line with
+            // an error message is returned.
             LOGGER.debug("Patient Vital Results: {}", vitalResults);
             if (vitalResults.size() > 1)
             {
@@ -138,10 +143,16 @@ public class RpcVistaPatientDao implements VistaPatientDao
             LOGGER.debug("Loaded {} from VistA.", patient);
             return patient;
         }
+        catch (final GeneralSecurityException e)
+        {
+            // Translate Exception per method contract. The below block could handle this,
+            // but is clearer.
+            throw new PermissionDeniedDataAccessException("VistA security error", e);
+        }
         catch (final Exception e)
         {
-            // There are many DataAccessExcpeionts, but this seems like
-            // the most appropriate exception to throw here.
+            // There are many DataAccessExceptions, but this seems like the most
+            // appropriate exception to throw here.
             throw new NonTransientDataAccessResourceException(e.getMessage(), e);
         }
     }
@@ -156,6 +167,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
     }
     
     private List<String> retrieveWeight6MonthsAgo(final Patient patient)
+            throws GeneralSecurityException
     {
         // Our range for weight 6 months ago is 3-12 months prior to the
         // most recent weight.
@@ -168,24 +180,31 @@ public class RpcVistaPatientDao implements VistaPatientDao
         cal.add(Calendar.YEAR, -1);
         final String startDateString = String.format("%03d%02d%02d", (cal.get(Calendar.YEAR) - 1700),
                 cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
-        final String rpcParameter = String.valueOf(patient.getDfn()) + "^" + endDateString + "^WT^" + startDateString;
+        final String rpcParameter =
+                String.valueOf(patient.getDfn()) + "^" + endDateString + "^WT^" + startDateString;
         LOGGER.debug("Weight 6 Months Ago Parameter: {}", rpcParameter);
         return fProcedureCaller.doRpc(fDuz, RemoteProcedure.GET_VITAL, rpcParameter);
     }
     
-    private void parseWeightResults(final Patient patient, final List<String> weightResults) throws ParseException
+    private void parseWeightResults(
+            final Patient patient, final List<String> weightResults)
+            throws ParseException
     {
         /*-
-         * The last entries are the most recent so we use those. Get the most recent weight measurement within the
-         * already specified range. The format expected from VistA is:
+         * The last entries are the most recent so we use those. Get the most recent
+         * weight measurement within the already specified range. The format expected from
+         * VistA is:
+         * 
          * 21557^04/17/09@12:00 Wt: 185.00 lb (84.09 kg) _NURSE,ONE
          *        @12:00 Body Mass Index: 25.86
          * 22296^08/24/09@14:00 Wt: 190.00 lb (86.36 kg) _NURSE,ONE
          *        @14:00 Body Mass Index: 26.56
+         *        
          * Where the most recent weight is the last result and each result consists of two
-         * lines. The first line is a measurement identifier, the date and time, the weight in pounds and kilograms and
-         * the person providing the measurement. The second line is the time on the same date as the weight measurement,
-         * along with the BMI for the patient.
+         * lines. The first line is a measurement identifier, the date and time, the
+         * weight in pounds and kilograms and the person providing the measurement. The
+         * second line is the time on the same date as the weight measurement, along with
+         * the BMI for the patient.
          */
         final List<String> weightLineTokens = Splitter.on(Pattern.compile("[\\s\\^]+"))
                 .splitToList(weightResults.get(weightResults.size()-2));
@@ -197,11 +216,13 @@ public class RpcVistaPatientDao implements VistaPatientDao
         LOGGER.debug("Weight 6 months ago: {}", patient.getWeight6MonthsAgo());
     }
     
-    private void parseRecentVitalResults(final Patient patient, final List<String> vitalResults) throws ParseException
+    private void parseRecentVitalResults(final Patient patient, final List<String> vitalResults)
+            throws ParseException
     {
         // The date inside of returned vitals is inside of parentheses.
         // For example, pulse is returned as: "Pulse:       (03/05/10@09:00)  74  _NURSE,ONE_Vitals"
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("(" + VISTA_DATE_OUTPUT_FORMAT.toPattern() + ")");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "(" + VISTA_DATE_OUTPUT_FORMAT.toPattern() + ")");
         final Pattern compliedPattern = Pattern.compile(VITALS_SPLIT_REGEX);
         // Each entry comes with an accompanying date and time.
         final List<String> heightLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(5));
@@ -271,7 +292,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 final String[] factorSplitArray = healthFactor.split("\\^");
                 if(HEALTH_FACTORS_SET.contains(factorSplitArray[1]))
                 {
-                    patient.getHealthFactors().add(new HealthFactor(format.parseLocalDate(factorSplitArray[0]), factorSplitArray[1]));
+                    patient.getHealthFactors().add(new HealthFactor(
+                            format.parseLocalDate(factorSplitArray[0]),
+                            factorSplitArray[1]));
                 }
             }
             LOGGER.debug("Retrieved Health factors: {} ", patient.getHealthFactors());

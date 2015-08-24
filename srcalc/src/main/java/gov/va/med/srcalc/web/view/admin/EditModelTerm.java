@@ -168,6 +168,11 @@ public class EditModelTerm
                 fConstructedEditTerm = forConstant(existingTerm.getCoefficient());
             }
             
+            /**
+             * Convenience method to visit the given term and return the constructed
+             * EditModelTerm.
+             * @return the constructed EditModelTerm
+             */
             public EditModelTerm makeEditTerm(final ModelTerm term)
             {
                 term.accept(this);

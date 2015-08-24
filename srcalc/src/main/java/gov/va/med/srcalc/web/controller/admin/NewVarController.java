@@ -65,6 +65,11 @@ public abstract class NewVarController
     @ModelAttribute(ATTRIBUTE_VARIABLE)
     protected abstract EditBaseVar createEditBaseVar();
     
+    /**
+     * Presents a form for creating a new variable.
+     * @param editVar the variable type-specific form backing object. (Created by
+     * {@link #createEditBaseVar}).
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView displayForm(
             @ModelAttribute(ATTRIBUTE_VARIABLE) final EditBaseVar editVar)
@@ -76,6 +81,12 @@ public abstract class NewVarController
         return mav;
     }
     
+    /**
+     * Creates a Variable with the properties from the given EditBaseVar, if valid. If
+     * invalid, presents the validation errors.
+     * @param editVar the form backing object containing the variable attributes
+     * @param bindingResult the BindingResult for the EditBaseVar
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveVariable(
             @ModelAttribute(ATTRIBUTE_VARIABLE) final EditBaseVar editVar,

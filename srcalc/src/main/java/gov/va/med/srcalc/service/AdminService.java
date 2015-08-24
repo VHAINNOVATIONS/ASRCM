@@ -16,6 +16,7 @@ public interface AdminService extends ModelInspectionService
      * Returns the Variable with the given display name for editing. Note that
      * the returned object must be given back to {@link
      * #saveVariable(AbstractVariable)} to persist any changes.
+     * @throws InvalidIdentifierException if no such Variable exists
      */
     @Override
     public AbstractVariable getVariable(final String key)
@@ -30,12 +31,16 @@ public interface AdminService extends ModelInspectionService
      * @throws DataAccessException if any other error occurs when trying to save
      * the variable to the persistent store
      */
-    public void saveVariable(final AbstractVariable variable);
+    public void saveVariable(final AbstractVariable variable)
+            // Declare these exceptions even though they are unchecked because calling
+            // code should handle them (unlike most unchecked exceptions).
+            throws DuplicateVariableKeyException, DataAccessException;
     
     /**
      * Returns the {@link Rule} with the given display name for editing. Note that
      * the returned object must be given back to {@link #saveRule(Rule)}
      * to persist any changes.
+     * @throws InvalidIdentifierException if no such Rule exists
      */
     @Override
     public Rule getRule(final String displayName) throws InvalidIdentifierException;
@@ -53,9 +58,14 @@ public interface AdminService extends ModelInspectionService
      * Saves the given rule to the persistent store. The given rule may be
      * brand-new or one previously loaded by {@link #getRule(String)}.
      * @param rule the rule to save
-     * @throws DuplicateRuleNameException if the provided rule key is non-unique
+     * @throws DuplicateRuleNameException if the provided rule key is non-unique. (There
+     * is no way of completely avoiding this Exception because another operation could
+     * concurrently create a rule with the same name.)
      */
-    public void saveRule(final Rule rule);
+    public void saveRule(final Rule rule)
+            // Declare this exception even though it is unchecked because calling code
+            // should handle it (unlike most unchecked exceptions).
+            throws DuplicateRuleNameException;
     
     /**
      * Completely replaces all Procedures in the persistent store with the given set.

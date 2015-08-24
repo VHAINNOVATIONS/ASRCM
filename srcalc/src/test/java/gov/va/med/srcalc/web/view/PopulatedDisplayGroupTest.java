@@ -44,7 +44,9 @@ public class PopulatedDisplayGroupTest
         groupList.add(group);
         
         ReferenceInfoAdder.addRefInfo(groupList, patient);
-        assertEquals("Display Group 'Clinical Conditions or Diseases - Recent' with display items [Health Factors, Functional Status]",
+        assertEquals(
+                "Display Group 'Clinical Conditions or Diseases - Recent' with display " +
+                        "items [Health Factors, Functional Status]",
                 group.toString());
     }
     
@@ -55,7 +57,8 @@ public class PopulatedDisplayGroupTest
         final AbstractVariable ageVar = SampleModels.ageVariable();
         final List<AbstractVariable> variables = Arrays.asList(
                 ageVar, genderVar);
-        final PopulatedDisplayGroup group = new PopulatedDisplayGroup(variables, SampleCalculations.dummyPatient(1));
+        final PopulatedDisplayGroup group = new PopulatedDisplayGroup(
+                variables, SampleCalculations.dummyPatient(1));
         
         assertEquals("Demographics", group.getName());
         assertEquals(variables, group.getVariables());
