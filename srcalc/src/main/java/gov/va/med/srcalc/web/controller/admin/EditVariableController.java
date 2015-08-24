@@ -73,7 +73,6 @@ public class EditVariableController
      * EditExistingVar is invalid, presents the validation errors.
      * @param editVar the form backing object representing the modifications to perform
      * @param bindingResult the BindingResult for the EditExistingVar
-     * @throws InvalidIdentifierException
      */
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveVariable(

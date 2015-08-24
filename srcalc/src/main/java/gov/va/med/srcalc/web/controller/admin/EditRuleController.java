@@ -52,7 +52,7 @@ public class EditRuleController extends BaseRuleController
     {
         final EditExistingRule editRule = new EditExistingRule(
                 getAdminService().getRuleById(ruleId));
-        // displayForm() should never throw an InvalidIdentifierException here because the
+        // This call should never throw an InvalidIdentifierException here because the
         // rule should always reference valid variables at this point.
         return displayForm(editRule);
     }
