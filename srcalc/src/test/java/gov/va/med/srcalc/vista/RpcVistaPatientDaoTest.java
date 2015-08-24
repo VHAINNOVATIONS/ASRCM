@@ -100,7 +100,7 @@ public class RpcVistaPatientDaoTest
         final Patient patient = dao.getPatient(PATIENT_DFN);
         assertEquals(PATIENT_DFN, patient.getDfn());
         assertEquals("TESTPATIENT", patient.getName());
-        assertEquals("Male", patient.getGender());
+        assertEquals(Patient.Gender.Male, patient.getGender());
         assertEquals(50, patient.getAge());
     }
     

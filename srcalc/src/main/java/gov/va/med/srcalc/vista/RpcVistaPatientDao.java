@@ -1,6 +1,5 @@
 package gov.va.med.srcalc.vista;
 
-
 import java.io.StringReader;
 
 import gov.va.med.crypto.VistaKernelHash;
@@ -13,12 +12,9 @@ import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.xml.bind.JAXBContext;
@@ -36,6 +32,7 @@ import org.xml.sax.InputSource;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Implementation of {@link VistaPatientDao} using remote procedures. Each
@@ -56,17 +53,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
      */
     public static final SimpleDateFormat VISTA_DATE_OUTPUT_FORMAT = new SimpleDateFormat("MM/dd/yy@HH:mm");
     
-    private static final Map<String, String> TRANSLATION_MAP;
-
-    /**
-     * Static class initializer to fill the translation map with the proper values.
-     */
-    static {
-        final Map<String, String> tempMap = new HashMap<String, String>();
-        tempMap.put("M", "Male");
-        tempMap.put("F", "Female");
-        TRANSLATION_MAP = Collections.unmodifiableMap(tempMap);
-    }
+    private static final ImmutableMap<String, Patient.Gender> TRANSLATION_MAP = ImmutableMap.of(
+                    "M", Patient.Gender.Male,
+                    "F", Patient.Gender.Female);
     
     private final VistaProcedureCaller fProcedureCaller;
     
@@ -105,7 +94,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
             final List<String> basicArray = Splitter.on('^').splitToList(basicResults.get(0));
             final String patientName = basicArray.get(0);
             final int patientAge = Integer.parseInt(basicArray.get(1));
-            final String patientGender = translateFromVista(basicArray.get(2));
+            final Patient.Gender patientGender = translateFromVista(basicArray.get(2));
             final Patient patient = new Patient(dfn, patientName, patientGender, patientAge);
             // Patient vitals information (including but not limited to BMI, height, weight, weight 6 months ago)
             // If there are no results, a single line with an error message is returned.
@@ -157,13 +146,13 @@ public class RpcVistaPatientDao implements VistaPatientDao
         }
     }
 
-    private static String translateFromVista(final String vistaField)
+    private static Patient.Gender translateFromVista(final String vistaField)
     {
         if(TRANSLATION_MAP.containsKey(vistaField))
         {
             return TRANSLATION_MAP.get(vistaField);
         }
-        return "Unknown";
+        return Patient.Gender.Unknown;
     }
     
     private List<String> retrieveWeight6MonthsAgo(final Patient patient)

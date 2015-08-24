@@ -3,6 +3,7 @@ package gov.va.med.srcalc.domain.calculation;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.domain.VistaPerson;
+import gov.va.med.srcalc.domain.Patient.Gender;
 import gov.va.med.srcalc.domain.model.*;
 
 import java.util.Date;
@@ -29,10 +30,26 @@ public class SampleCalculations
                 Optional.of("Physicians (M.D. and D.O.)"));
     }
 
+    /**
+     * Returns a sample patient with minimal attributes populated.
+     */
     public static Patient dummyPatient(final int dfn)
     {
-        final Patient patient = new Patient(dfn, "Zach Smith", "M", 40);
-        patient.setBmi(new RetrievedValue(20.0, new Date(), ""));
+        return new Patient(dfn, "Zach Smith", Gender.Male, 40);
+    }
+    
+    /**
+     * Returns a sample patient with vitals (height, weight, bmi) populated.
+     */
+    public static Patient dummyPatientWithVitals(final int dfn)
+    {
+        final Patient patient = dummyPatient(dfn);
+        final DateTime vitalsMeasureDate = new DateTime(2014, 5, 12, 13, 21);
+        patient.setBmi(new RetrievedValue(20.0, vitalsMeasureDate.toDate(), ""));
+        patient.setHeight(new RetrievedValue(100.0, vitalsMeasureDate.toDate(), "in"));
+        patient.setWeight(new RetrievedValue(190.0, vitalsMeasureDate.toDate(), "lbs."));
+        patient.setWeight6MonthsAgo(new RetrievedValue(
+                180.0, vitalsMeasureDate.minusMonths(4).toDate(), "lbs."));
         return patient;
     }
 
@@ -57,9 +74,10 @@ public class SampleCalculations
         labs.put(VistaLabs.SODIUM, new RetrievedValue(1.0, new Date(), ""));
         labs.put(VistaLabs.WBC, new RetrievedValue(10.0, new Date(), "x1000/mm^3"));
         
-        
-        
-        patient.setLabs(labs);
+        // Replace any existing labs with the new set.
+        patient.getLabs().clear();
+        patient.getLabs().putAll(labs);
+
         return patient;
     }
 

@@ -25,7 +25,9 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            variableEntry.getDynamicValues().put(key, patient.getGender());
+            // Note that the MultiSelectOption value must exactly match the enum name for
+            // this to work.
+            variableEntry.putDynamicValue(key, patient.getGender().name());
         }
     },
     AGE
@@ -34,7 +36,7 @@ public enum ValueRetriever
         public void execute(final Patient patient, final VariableEntry variableEntry, final Variable variable,
                 final String key)
         {
-            variableEntry.getDynamicValues().put(key, String.valueOf(patient.getAge()));
+            variableEntry.putDynamicValue(key, String.valueOf(patient.getAge()));
         }
     },
     BMI
@@ -45,12 +47,7 @@ public enum ValueRetriever
         {
             if (patient.getBmi() != null)
             {
-                variableEntry.getDynamicValues().put(key, String.valueOf(patient.getBmi().getValue()));
-                final String retrievalString = VariableEntry.makeRetrievalString(
-                        patient.getBmi().getValue(),
-                        patient.getBmi().getMeasureDate(),
-                        patient.getBmi().getUnits());
-                variableEntry.setMeasureDate(key, retrievalString);
+                variableEntry.putRetrievedValue(key, patient.getBmi());
             }
         }
     },
@@ -62,12 +59,7 @@ public enum ValueRetriever
         {
             if (patient.getWeight() != null)
             {
-                variableEntry.getDynamicValues().put(key, String.valueOf(patient.getWeight().getValue()));
-                final String retrievalString = VariableEntry.makeRetrievalString(
-                        patient.getWeight().getValue(),
-                        patient.getWeight().getMeasureDate(),
-                        patient.getWeight().getUnits());
-                variableEntry.setMeasureDate(key, retrievalString);
+                variableEntry.putRetrievedValue(key, patient.getWeight());
             }
         }
     },
@@ -79,12 +71,7 @@ public enum ValueRetriever
         {
             if (patient.getWeight6MonthsAgo() != null)
             {
-                variableEntry.getDynamicValues().put(key, String.valueOf(patient.getWeight6MonthsAgo().getValue()));
-                final String retrievalString = VariableEntry.makeRetrievalString(
-                        patient.getWeight6MonthsAgo().getValue(),
-                        patient.getWeight6MonthsAgo().getMeasureDate(),
-                        patient.getWeight6MonthsAgo().getUnits());
-                variableEntry.setMeasureDate(key, retrievalString);
+                variableEntry.putRetrievedValue(key, patient.getWeight6MonthsAgo());
             }
         }
     },
@@ -96,12 +83,7 @@ public enum ValueRetriever
         {
             if (patient.getHeight() != null)
             {
-                variableEntry.getDynamicValues().put(key, String.valueOf(patient.getHeight().getValue()));
-                final String retrievalString = VariableEntry.makeRetrievalString(
-                        patient.getHeight().getValue(),
-                        patient.getHeight().getMeasureDate(),
-                        patient.getHeight().getUnits());
-                variableEntry.setMeasureDate(key, retrievalString);
+                variableEntry.putRetrievedValue(key, patient.getHeight());
             }
         }
     },
@@ -355,18 +337,16 @@ public enum ValueRetriever
      * @param variableEntry the {@link VariableEntry} object to put the retrieved value into
      * @param key the variable's fully qualified key (i.e. "bmi$numerical" for bmi)
      */
-    protected static void addLabValue(final VistaLabs vistaLab, final Patient patient, final VariableEntry variableEntry,
+    protected static void addLabValue(
+            final VistaLabs vistaLab,
+            final Patient patient,
+            final VariableEntry variableEntry,
             final String key)
     {
         final RetrievedValue labValue = patient.getLabs().get(vistaLab);
         if(labValue != null)
         {
-            variableEntry.getDynamicValues().put(key, String.valueOf(labValue.getValue()));
-            final String retrievalString = VariableEntry.makeRetrievalString(
-                    labValue.getValue(),
-                    labValue.getMeasureDate(),
-                    labValue.getUnits());
-            variableEntry.setMeasureDate(key, retrievalString);
+            variableEntry.putRetrievedValue(key, labValue);
         }
     }
 }

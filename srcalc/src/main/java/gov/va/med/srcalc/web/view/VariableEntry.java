@@ -1,11 +1,11 @@
 package gov.va.med.srcalc.web.view;
 
 import gov.va.med.srcalc.domain.Patient;
+import gov.va.med.srcalc.domain.calculation.RetrievedValue;
 import gov.va.med.srcalc.domain.model.*;
 import gov.va.med.srcalc.vista.RpcVistaPatientDao;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
@@ -90,10 +90,23 @@ public class VariableEntry
      * to the entered value.</p>
      * 
      * @see #makeDynamicValuePath(String)
+     * @see #putDynamicValue(String, String)
      */
     public HashMap<String, String> getDynamicValues()
     {
         return fDynamicValues;
+    }
+    
+    /**
+     * Convenience method to put the given value into the dynamic values map.
+     * @return this VariableEntry for convenience
+     * @see #getDynamicValues()
+     */
+    public VariableEntry putDynamicValue(
+            final String inputKey, final String value)
+    {
+        fDynamicValues.put(inputKey, value);
+        return this;
     }
     
     /**
@@ -124,7 +137,7 @@ public class VariableEntry
     /**
      * Returns the name of the key concatenated with the retrieval tag.
      */
-    public static String makeRetrievalString(final String key)
+    private static String makeRetrievalInfoKey(final String key)
     {
         return key + SEPARATOR + RETRIEVAL_STRING;
     }
@@ -151,7 +164,7 @@ public class VariableEntry
      */
     public String getMeasureDate(final String key)
     {
-        final String retrievedString = fDynamicValues.get(key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING);
+        final String retrievedString = fDynamicValues.get(makeRetrievalInfoKey(key));
         if(retrievedString == null)
         {
             return "";
@@ -167,7 +180,22 @@ public class VariableEntry
      */
     public void setMeasureDate(final String key, final String retrievalString)
     {
-        fDynamicValues.put(key + VariableEntry.SEPARATOR + VariableEntry.RETRIEVAL_STRING, retrievalString);
+        fDynamicValues.put(makeRetrievalInfoKey(key), retrievalString);
+    }
+    
+    /**
+     * Puts the given retrieved value into the dynamic values map under the given key,
+     * also populating the human-readable retrieval info.
+     * @param key the input key to populate
+     * @param retrievedValue the retrieved value
+     * @return this VariableEntry for convenience
+     */
+    public VariableEntry putRetrievedValue(
+            final String key, final RetrievedValue retrievedValue)
+    {
+        fDynamicValues.put(key, String.valueOf(retrievedValue.getValue()));
+        setMeasureDate(key, makeRetrievalString(retrievedValue));
+        return this;
     }
     
     /**
@@ -182,20 +210,20 @@ public class VariableEntry
     
     /**
      * Make a string to tell the user information about the automatically retrieved value.
-     * @param value the retrieved value to display
-     * @param measureDate the date on which the value was measured
-     * @param units the units in which the value was measured, can be empty but not null
      * @return the string to display to the user
      */
-    public static String makeRetrievalString(final double value, final Date measureDate, final String units)
+    public static String makeRetrievalString(final RetrievedValue retrievedValue)
     {
-        final String dateString = " on " + RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT.format(measureDate);
+        final String dateString = RpcVistaPatientDao.VISTA_DATE_OUTPUT_FORMAT.format(
+                retrievedValue.getMeasureDate());
         String unitString = "";
-        if(units.length() > 0)
+        if(retrievedValue.getUnits().length() > 0)
         {
-            unitString = " " + units;
+            unitString = " " + retrievedValue.getUnits();
         }
-        return String.format("(Retrieved: %.2f%s%s)", value, unitString, dateString);
+        return String.format(
+                "(Retrieved: %.2f%s on %s)",
+                retrievedValue.getValue(), unitString, dateString);
     }
     
     @Override
