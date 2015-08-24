@@ -34,7 +34,7 @@ public class VistaUserDetailsService implements UserDetailsService
 
     /**
      * Loads the VistaUser for the given DUZ.
-     * @throws UsernameNotFoundException if the given DUZ
+     * @throws UsernameNotFoundException if no VistA user could be found for the DUZ
      */
     @Override
     public VistaUserDetails loadUserByUsername(final String duz) throws UsernameNotFoundException
