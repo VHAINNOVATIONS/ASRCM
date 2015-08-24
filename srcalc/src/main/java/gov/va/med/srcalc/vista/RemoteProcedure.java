@@ -79,7 +79,7 @@ public enum RemoteProcedure
     
     private final String fProcedureName;
     
-    RemoteProcedure(final String procedureName)
+    private RemoteProcedure(final String procedureName)
     {
         fProcedureName = procedureName;
     }

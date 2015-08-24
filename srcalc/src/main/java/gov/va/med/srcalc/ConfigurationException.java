@@ -12,25 +12,29 @@ public class ConfigurationException extends RuntimeException
     private static final long serialVersionUID = 1L;
     
     /**
-     * @see RuntimeException#RuntimeException(String)
+     * See {@link RuntimeException#RuntimeException(String)}.
      */
-    public ConfigurationException(String message)
+    public ConfigurationException(final String message)
     {
         super(message);
     }
     
     /**
-     * @see RuntimeException#RuntimeException(String, Throwable)
+     * See {@link RuntimeException#RuntimeException(String, Throwable)}.
      */
-    public ConfigurationException(String message, Throwable cause)
+    public ConfigurationException(final String message, final Throwable cause)
     {
         super(message, cause);
     }
     
     /**
-     * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
+     * See {@link RuntimeException#RuntimeException(String, Throwable, boolean, boolean)}.
      */
-    public ConfigurationException(String message, Throwable cause, boolean enableSuppression, boolean writeableStackTrace)
+    public ConfigurationException(
+            final String message,
+            final Throwable cause,
+            final boolean enableSuppression,
+            final boolean writeableStackTrace)
     {
         super(message, cause, enableSuppression, writeableStackTrace);
     }

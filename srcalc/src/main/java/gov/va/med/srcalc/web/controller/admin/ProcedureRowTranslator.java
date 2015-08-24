@@ -25,6 +25,7 @@ class ProcedureRowTranslator implements RowTranslator<Procedure>
         return record.get(0).equalsIgnoreCase(FIRST_HEADER_CELL);
     }
     
+    @Override
     public Optional<Procedure> translateRow(
             final CSVRecord record,
             final Collection<TabularUploadError> errors,

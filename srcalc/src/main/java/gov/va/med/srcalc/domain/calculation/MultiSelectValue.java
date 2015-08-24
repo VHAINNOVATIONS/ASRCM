@@ -27,6 +27,9 @@ public class MultiSelectValue implements DiscreteValue
         return fVariable;
     }
     
+    /**
+     * Returns the selected MultiSelectOption.
+     */
     public MultiSelectOption getSelectedOption()
     {
         return fSelectedOption;

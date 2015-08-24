@@ -41,15 +41,31 @@ public class EditRuleController extends BaseRuleController
         super(adminService);
     }
     
+    /**
+     * Presents a form to edit the specified Rule.
+     * @param ruleId the surrogate key of the rule to edit
+     * @throws InvalidIdentifierException if the specified rule does not exist
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView displayForm(@PathVariable("ruleId") final int ruleId)
             throws InvalidIdentifierException
     {
         final EditExistingRule editRule = new EditExistingRule(
                 getAdminService().getRuleById(ruleId));
+        // displayForm() should never throw an InvalidIdentifierException here because the
+        // rule should always reference valid variables at this point.
         return displayForm(editRule);
     }
     
+    /**
+     * Applies modifications from the EditExistingRule, if valid, to the specified rule.
+     * If the EditExistingRule is invalid, presents the validation errors.
+     * @param editRule the form backing object representing the modifications to perform
+     * @param bindingResult the BindingResult for the EditExistingRule
+     * @param ruleId the surrogate key of the rule to edit
+     * @throws InvalidIdentifierException if the specified Rule does not exist or if the
+     * EditExistingRule refers to any variable keys that do not exist
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveRule(
             @ModelAttribute(ATTRIBUTE_RULE) final EditExistingRule editRule,

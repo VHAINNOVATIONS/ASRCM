@@ -171,7 +171,10 @@ public final class Rule
     public void setDisplayName(final String displayName)
     {
         Preconditions.requireWithin(displayName, 1, DisplayNameConditions.DISPLAY_NAME_MAX);
-        Preconditions.requireMatches(displayName, "displayName", DisplayNameConditions.VALID_DISPLAY_NAME_PATTERN);
+        Preconditions.requireMatches(
+                displayName,
+                "displayName",
+                DisplayNameConditions.VALID_DISPLAY_NAME_PATTERN);
         fDisplayName = displayName;
     }
     
@@ -231,6 +234,8 @@ public final class Rule
      * @param context determines the context in which to evaluate the rule,
      * including {@link Value}s and the coefficient
      * @return the summand
+     * @throws MissingValuesException if any referenced variables do not have values and
+     * bypass is disabled
      */
     public float apply(final EvaluationContext context) throws MissingValuesException
     {

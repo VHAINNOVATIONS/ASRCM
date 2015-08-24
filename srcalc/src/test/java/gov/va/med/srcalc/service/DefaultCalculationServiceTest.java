@@ -53,7 +53,8 @@ public class DefaultCalculationServiceTest
         // Default to bad signature.
         when(fMockPatientDao.saveRiskCalculationNote(anyInt(), anyString(), anyString()))
             .thenReturn(VistaPatientDao.SaveNoteCode.INVALID_SIGNATURE);
-        when(fMockPatientDao.saveRiskCalculationNote(eq(SAMPLE_PATIENT_DFN), eq(VALID_ESIG_CODE), anyString()))
+        when(fMockPatientDao.saveRiskCalculationNote(
+                eq(SAMPLE_PATIENT_DFN), eq(VALID_ESIG_CODE), anyString()))
             .thenReturn(VistaPatientDao.SaveNoteCode.SUCCESS);
 
         // These don't need any special setup: we just verify certain calls.

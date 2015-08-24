@@ -40,6 +40,7 @@ public final class BooleanTerm extends SingleVariableTerm
         fVariable = Objects.requireNonNull(variable);
     }
 
+    @Override
     @ManyToOne(optional = false)
     public BooleanVariable getVariable()
     {

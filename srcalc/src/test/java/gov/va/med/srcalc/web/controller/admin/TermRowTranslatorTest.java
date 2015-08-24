@@ -87,10 +87,15 @@ public class TermRowTranslatorTest
         final CharSource invalidTermsCsv =
                 Resources.asCharSource(INVALID_TERMS_RESOURCE, Charsets.US_ASCII);
         final ImmutableSet<TabularUploadError> expectedErrors = ImmutableSet.of(
-                TabularUploadError.forField(2, "termType", EditModelTerm.TermType.class, ValidationCodes.INVALID_OPTION, new Object[] { ImmutableList.copyOf(EditModelTerm.TermType.values()) }, ""),
-                TabularUploadError.forField(2, "coefficient", float.class, ValidationCodes.TYPE_MISMATCH, null, ""),
-                TabularUploadError.forField(3, "coefficient", float.class, ValidationCodes.TYPE_MISMATCH, null, ""),
-                TabularUploadError.forField(4, "coefficient", float.class, ValidationCodes.TYPE_MISMATCH, null, ""));
+                TabularUploadError.forField(
+                        2, "termType", EditModelTerm.TermType.class, ValidationCodes.INVALID_OPTION,
+                        new Object[] { ImmutableList.copyOf(EditModelTerm.TermType.values()) }, ""),
+                TabularUploadError.forField(
+                        2, "coefficient", float.class, ValidationCodes.TYPE_MISMATCH, null, ""),
+                TabularUploadError.forField(
+                        3, "coefficient", float.class, ValidationCodes.TYPE_MISMATCH, null, ""),
+                TabularUploadError.forField(
+                        4, "coefficient", float.class, ValidationCodes.TYPE_MISMATCH, null, ""));
         
         /* Behavior */
         final CsvReader<EditModelTerm> termReader =

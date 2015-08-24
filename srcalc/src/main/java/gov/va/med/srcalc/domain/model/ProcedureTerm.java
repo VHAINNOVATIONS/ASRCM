@@ -39,6 +39,7 @@ public final class ProcedureTerm extends SingleVariableTerm
         fVariable = Objects.requireNonNull(variable);
     }
 
+    @Override
     @ManyToOne(optional = false)
     public ProcedureVariable getVariable()
     {

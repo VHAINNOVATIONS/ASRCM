@@ -42,20 +42,23 @@ public final class ReferenceInfoAdder
         // Add the group with reference information if it is missing.
         if(!doesGroupExist(groupList, medicationsGroup))
         {
-            final PopulatedDisplayGroup populatedMedGroup = new PopulatedDisplayGroup(medicationsGroup, patient);
+            final PopulatedDisplayGroup populatedMedGroup =
+                    new PopulatedDisplayGroup(medicationsGroup, patient);
             addReferenceInfo(medicationsGroup, populatedMedGroup, patient);
             groupList.add(populatedMedGroup);
         }
         final VariableGroup clinicalConditionsGroup = new VariableGroup(VariableGroup.CLINICAL_GROUP, 5);
         if(!doesGroupExist(groupList,clinicalConditionsGroup))
         {
-            final PopulatedDisplayGroup populatedClinicalGroup = new PopulatedDisplayGroup(clinicalConditionsGroup, patient);
+            final PopulatedDisplayGroup populatedClinicalGroup =
+                    new PopulatedDisplayGroup(clinicalConditionsGroup, patient);
             addReferenceInfo(clinicalConditionsGroup, populatedClinicalGroup, patient);
             groupList.add(populatedClinicalGroup);
         }
     }
     
-    private static boolean doesGroupExist(final List<PopulatedDisplayGroup> groupList, final VariableGroup varGroup)
+    private static boolean doesGroupExist(
+            final List<PopulatedDisplayGroup> groupList, final VariableGroup varGroup)
     {
         for(final PopulatedDisplayGroup currentGroup: groupList)
         {

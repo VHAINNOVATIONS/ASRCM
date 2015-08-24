@@ -2,6 +2,7 @@ package gov.va.med.srcalc.domain.model;
 
 // TODO: can we eliminate this dependency on the 'calculation' package?
 import gov.va.med.srcalc.domain.calculation.MultiSelectValue;
+import gov.va.med.srcalc.domain.calculation.Value;
 
 import java.util.*;
 
@@ -115,6 +116,10 @@ public final class MultiSelectVariable extends AbstractVariable implements Discr
         visitor.visitMultiSelect(this);
     }
     
+    /**
+     * Returns a {@link Value} object representing the given selection.
+     * @param selectedOption
+     */
     public MultiSelectValue makeValue(final MultiSelectOption selectedOption)
     {
         return new MultiSelectValue(this, selectedOption);

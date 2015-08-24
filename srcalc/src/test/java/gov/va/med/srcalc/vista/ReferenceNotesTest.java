@@ -22,9 +22,10 @@ import org.xml.sax.InputSource;
  */
 public class ReferenceNotesTest
 {
-    private static final String VALID_NOTES = "<notes><note localTitle='Note Title' signDate='07/14/15 12:12'>" +
-        "<body>Body line 1\nBody line 2\n</body>" +
-        "</note></notes>";
+    private static final String VALID_NOTES =
+            "<notes><note localTitle='Note Title' signDate='07/14/15 12:12'>" +
+            "<body>Body line 1\nBody line 2\n</body>" +
+            "</note></notes>";
     private static final String INVALID_DATE = "<notes><note localTitle='Note Title' signDate='badDate'>" +
             "<body>Body line 1\nBody line 2\n</body>" +
             "</note></notes>";
@@ -56,7 +57,9 @@ public class ReferenceNotesTest
         final ReferenceNote parsedNote = allNotes.getAllNotes().get(0);
         assertEquals("Note Title", parsedNote.getLocalTitle());
         assertEquals("Body line 1\nBody line 2\n", parsedNote.getNoteBody());
-        assertEquals(XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.parseDateTime("07/14/15 12:12"), parsedNote.getSignDate());
+        assertEquals(
+                XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.parseDateTime("07/14/15 12:12"),
+                parsedNote.getSignDate());
     }
     
     @Test
@@ -92,7 +95,9 @@ public class ReferenceNotesTest
         assertEquals("AUDIOLOGY - HEARING LOSS CONSULT", parsedNote.getLocalTitle());
         assertEquals("\nHX:  Patient was seen for hearing aid fitting and orientation.\n"
                 + "The batteries supplied for this hearing aid were: za312.\n", parsedNote.getNoteBody());
-        assertEquals(XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.parseDateTime("04/01/2004 22:24"), parsedNote.getSignDate());
+        assertEquals(
+                XmlDateAdapter.REFERENCE_NOTE_DATE_FORMAT.parseDateTime("04/01/2004 22:24"),
+                parsedNote.getSignDate());
     }
     
     @Test

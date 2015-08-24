@@ -31,7 +31,7 @@ public interface VistaPatientDao
         
         private final String fDescription;
         
-        SaveNoteCode(final String description)
+        private SaveNoteCode(final String description)
         {
             fDescription = description;
         }
@@ -49,18 +49,32 @@ public interface VistaPatientDao
      * This is a list of the only health factors that should be displayed for the users.
      * This list was created by the VA.
      */
-    public static final Set<String> HEALTH_FACTORS_SET = ImmutableSet.of("ALCOHOL - TREATMENT REFERRAL", "ALCOHOL USE",
-        "ANTI-DEPRESSANT TREATMENT", "BINGE DRINKING", "CURRENT F/U OR RX FOR DEPRESSION",
-        "DECLINES HOMELESS REFERRAL", "DEPRESSION ASSESS NEGATIVE (NOT MDD)",
-        "DEPRESSION ASSESS POSITIVE (MDD)", "DEPRESSION TO BE MANAGED IN PC",
-        "GEC HOMELESS", "GEC HOMELESS SHELTER", "HISTORY OF AN ALCOHOL PROBLEM",
-        "HOMELESSNESS SCREENING", "NON-DRINKER (NO ALCOHOL FOR >1 YR)",
-        "ONS AA MEDICATIONS-ANTIDEPRESSANTS", "ONS AA MH TRIGGER ID-BEING HOMELESS",
-        "ONS RA MEDICATIONS-ANTIDEPRESSANTS", "OUTSIDE EVAL/TREATMENT FOR DEPRESSION",
-        "PALLI CONSULT ALCOHOL MISUSE NO", "PALLI CONSULT ALCOHOL MISUSE YES",
-        "PC DEPRESSION SCREEN NEGATIVE", "PC DEPRESSION SCREEN POSITIVE",
-        "REFER FOR ALCOHOL TREATMENT", "REFERRED TO HOMELESS PROGRAM",
-        "REFUSED DEPRESSION RX/INTERVENTION", "REFUSES MH REFERRAL FOR DEPRESSION");
+    public static final Set<String> HEALTH_FACTORS_SET = ImmutableSet.of(
+            "ALCOHOL - TREATMENT REFERRAL",
+            "ALCOHOL USE",
+            "ANTI-DEPRESSANT TREATMENT",
+            "BINGE DRINKING",
+            "CURRENT F/U OR RX FOR DEPRESSION",
+            "DECLINES HOMELESS REFERRAL",
+            "DEPRESSION ASSESS NEGATIVE (NOT MDD)",
+            "DEPRESSION ASSESS POSITIVE (MDD)",
+            "DEPRESSION TO BE MANAGED IN PC",
+            "GEC HOMELESS", "GEC HOMELESS SHELTER",
+            "HISTORY OF AN ALCOHOL PROBLEM",
+            "HOMELESSNESS SCREENING",
+            "NON-DRINKER (NO ALCOHOL FOR >1 YR)",
+            "ONS AA MEDICATIONS-ANTIDEPRESSANTS",
+            "ONS AA MH TRIGGER ID-BEING HOMELESS",
+            "ONS RA MEDICATIONS-ANTIDEPRESSANTS",
+            "OUTSIDE EVAL/TREATMENT FOR DEPRESSION",
+            "PALLI CONSULT ALCOHOL MISUSE NO",
+            "PALLI CONSULT ALCOHOL MISUSE YES",
+            "PC DEPRESSION SCREEN NEGATIVE",
+            "PC DEPRESSION SCREEN POSITIVE",
+            "REFER FOR ALCOHOL TREATMENT",
+            "REFERRED TO HOMELESS PROGRAM",
+            "REFUSED DEPRESSION RX/INTERVENTION",
+            "REFUSES MH REFERRAL FOR DEPRESSION");
 
     /**
      * The maximum amount of characters allowed on a line before wrapping the line

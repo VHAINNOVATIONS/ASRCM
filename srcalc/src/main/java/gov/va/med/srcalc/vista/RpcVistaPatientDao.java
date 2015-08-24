@@ -180,24 +180,31 @@ public class RpcVistaPatientDao implements VistaPatientDao
         cal.add(Calendar.YEAR, -1);
         final String startDateString = String.format("%03d%02d%02d", (cal.get(Calendar.YEAR) - 1700),
                 cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
-        final String rpcParameter = String.valueOf(patient.getDfn()) + "^" + endDateString + "^WT^" + startDateString;
+        final String rpcParameter =
+                String.valueOf(patient.getDfn()) + "^" + endDateString + "^WT^" + startDateString;
         LOGGER.debug("Weight 6 Months Ago Parameter: {}", rpcParameter);
         return fProcedureCaller.doRpc(fDuz, RemoteProcedure.GET_VITAL, rpcParameter);
     }
     
-    private void parseWeightResults(final Patient patient, final List<String> weightResults) throws ParseException
+    private void parseWeightResults(
+            final Patient patient, final List<String> weightResults)
+            throws ParseException
     {
         /*-
-         * The last entries are the most recent so we use those. Get the most recent weight measurement within the
-         * already specified range. The format expected from VistA is:
+         * The last entries are the most recent so we use those. Get the most recent
+         * weight measurement within the already specified range. The format expected from
+         * VistA is:
+         * 
          * 21557^04/17/09@12:00 Wt: 185.00 lb (84.09 kg) _NURSE,ONE
          *        @12:00 Body Mass Index: 25.86
          * 22296^08/24/09@14:00 Wt: 190.00 lb (86.36 kg) _NURSE,ONE
          *        @14:00 Body Mass Index: 26.56
+         *        
          * Where the most recent weight is the last result and each result consists of two
-         * lines. The first line is a measurement identifier, the date and time, the weight in pounds and kilograms and
-         * the person providing the measurement. The second line is the time on the same date as the weight measurement,
-         * along with the BMI for the patient.
+         * lines. The first line is a measurement identifier, the date and time, the
+         * weight in pounds and kilograms and the person providing the measurement. The
+         * second line is the time on the same date as the weight measurement, along with
+         * the BMI for the patient.
          */
         final List<String> weightLineTokens = Splitter.on(Pattern.compile("[\\s\\^]+"))
                 .splitToList(weightResults.get(weightResults.size()-2));
@@ -209,11 +216,13 @@ public class RpcVistaPatientDao implements VistaPatientDao
         LOGGER.debug("Weight 6 months ago: {}", patient.getWeight6MonthsAgo());
     }
     
-    private void parseRecentVitalResults(final Patient patient, final List<String> vitalResults) throws ParseException
+    private void parseRecentVitalResults(final Patient patient, final List<String> vitalResults)
+            throws ParseException
     {
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(
         // The date inside of returned vitals is inside of parentheses.
         // For example, pulse is returned as: "Pulse:       (03/05/10@09:00)  74  _NURSE,ONE_Vitals"
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("(" + VISTA_DATE_OUTPUT_FORMAT.toPattern() + ")");
+                "(" + VISTA_DATE_OUTPUT_FORMAT.toPattern() + ")");
         final Pattern compliedPattern = Pattern.compile(VITALS_SPLIT_REGEX);
         // Each entry comes with an accompanying date and time.
         final List<String> heightLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(5));
@@ -283,7 +292,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
                 final String[] factorSplitArray = healthFactor.split("\\^");
                 if(HEALTH_FACTORS_SET.contains(factorSplitArray[1]))
                 {
-                    patient.getHealthFactors().add(new HealthFactor(format.parseLocalDate(factorSplitArray[0]), factorSplitArray[1]));
+                    patient.getHealthFactors().add(new HealthFactor(
+                            format.parseLocalDate(factorSplitArray[0]),
+                            factorSplitArray[1]));
                 }
             }
             LOGGER.debug("Retrieved Health factors: {} ", patient.getHealthFactors());

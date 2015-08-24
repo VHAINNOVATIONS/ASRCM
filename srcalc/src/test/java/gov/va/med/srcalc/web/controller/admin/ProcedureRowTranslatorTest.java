@@ -45,8 +45,12 @@ public class ProcedureRowTranslatorTest
      * These are the procedures in {@link #VALID_PROCEDURES_RESOURCE}.
      */
     public static final ImmutableList<Procedure> VALID_PROCEDURES = ImmutableList.of(
-            new Procedure("00012", 1.45f, "Short Desc One", "Procedure Twelve Long Description", "NotinSurgCM", false),
-            new Procedure("10002", 7.56f, "Procedure 10002 desc", "Procedure Ten Thousand and Two", "Complex", true));
+            new Procedure(
+                    "00012", 1.45f, "Short Desc One",
+                    "Procedure Twelve Long Description", "NotinSurgCM", false),
+            new Procedure(
+                    "10002", 7.56f, "Procedure 10002 desc",
+                    "Procedure Ten Thousand and Two", "Complex", true));
 
     @Test
     public final void testReadProceduresValid() throws IOException
@@ -91,19 +95,22 @@ public class ProcedureRowTranslatorTest
         // The expected errors for each field. (We use a Set because order doesn't matter.)
         final ImmutableSet<TabularUploadError> expectedErrors = ImmutableSet.of(
                 TabularUploadError.forField(
-                        2, "cptCode", String.class, ValidationCodes.BAD_FIXED_LENGTH, new Object[] { Procedure.CPT_CODE_LENGTH }, ""),
+                        2, "cptCode", String.class, ValidationCodes.BAD_FIXED_LENGTH,
+                        new Object[] { Procedure.CPT_CODE_LENGTH }, ""),
                 TabularUploadError.forField(
                         2, "rvu", float.class, ValidationCodes.TYPE_MISMATCH, null, ""),
                 TabularUploadError.forField(
                         2, "eligible", boolean.class, ValidationCodes.TYPE_MISMATCH, null, ""),
                 TabularUploadError.forField(
-                        2, "complexity", String.class, ValidationCodes.TOO_LONG, new Object[] { Procedure.COMPLEXITY_MAX }, ""),
+                        2, "complexity", String.class, ValidationCodes.TOO_LONG,
+                        new Object[] { Procedure.COMPLEXITY_MAX }, ""),
                 TabularUploadError.forField(
                         2, "longDescription", String.class, ValidationCodes.NO_VALUE, null, ""),
                 TabularUploadError.forField(
                         2, "shortDescription", String.class, ValidationCodes.NO_VALUE, null, ""),
                 TabularUploadError.forField(
-                        3, "cptCode", String.class, ValidationCodes.BAD_FIXED_LENGTH, new Object[] { Procedure.CPT_CODE_LENGTH }, ""),
+                        3, "cptCode", String.class, ValidationCodes.BAD_FIXED_LENGTH,
+                        new Object[] { Procedure.CPT_CODE_LENGTH }, ""),
                 TabularUploadError.forField(
                         3, "rvu", float.class, ValidationCodes.TYPE_MISMATCH, null, ""),
                 TabularUploadError.forField(
@@ -111,9 +118,11 @@ public class ProcedureRowTranslatorTest
                 TabularUploadError.forField(
                         3, "complexity", String.class, ValidationCodes.NO_VALUE, null, ""),
                 TabularUploadError.forField(
-                        3, "longDescription", String.class, ValidationCodes.TOO_LONG, new Object[] { Procedure.DESCRIPTION_MAX }, ""),
+                        3, "longDescription", String.class, ValidationCodes.TOO_LONG,
+                        new Object[] { Procedure.DESCRIPTION_MAX }, ""),
                 TabularUploadError.forField(
-                        3, "shortDescription", String.class, ValidationCodes.TOO_LONG, new Object[] { Procedure.DESCRIPTION_MAX }, ""));
+                        3, "shortDescription", String.class, ValidationCodes.TOO_LONG,
+                        new Object[] { Procedure.DESCRIPTION_MAX }, ""));
                 
         /* Behavior */
         final CsvReader<Procedure> procedureReader =

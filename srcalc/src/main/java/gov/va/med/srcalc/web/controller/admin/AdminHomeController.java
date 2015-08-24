@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Web MVC controller for the Administration home page.
@@ -31,20 +32,29 @@ public class AdminHomeController
 
     private final AdminService fAdminService;
     
+    /**
+     * Constructs an instance that will use the provided service(s) for operations.
+     */
     @Inject
     public AdminHomeController(final AdminService adminService)
     {
         fAdminService = adminService;
     }
 
+    /**
+     * Presents the Administration Home Page.
+     */
     @RequestMapping(method = RequestMethod.GET)
     public String defaultPage(final Model model)
     {
         return Views.ADMIN_HOME;
     }
     
+    /**
+     * Presents the Model Administration Home Page.
+     */
     @RequestMapping(value = SrcalcUrls.MODEL_ADMIN_HOME_SUFFIX, method = RequestMethod.GET)
-    public String modelHome(final Model model)
+    public ModelAndView modelHome()
     {
         List<RiskModel> riskModels = new ArrayList<RiskModel>( fAdminService.getAllRiskModels() );
         Collections.sort( riskModels );
@@ -57,10 +67,11 @@ public class AdminHomeController
         {
             summaries.add(VariableSummary.fromVariable(var));
         }
-        model.addAttribute("variables", summaries);
-        model.addAttribute("rules", fAdminService.getAllRules());
-        model.addAttribute("riskModels", riskModels );
-        return Views.MODEL_ADMIN_HOME;
+
+        return new ModelAndView(Views.MODEL_ADMIN_HOME)
+                .addObject("variables", summaries)
+                .addObject("rules", fAdminService.getAllRules())
+                .addObject("riskModels", riskModels );
     }
 
 }

@@ -39,6 +39,7 @@ public final class NumericalTerm extends SingleVariableTerm
         fVariable = Objects.requireNonNull(variable);
     }
 
+    @Override
     @ManyToOne(optional = false)
     public NumericalVariable getVariable()
     {

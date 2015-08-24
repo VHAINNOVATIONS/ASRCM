@@ -40,17 +40,38 @@ public class NewRuleController extends BaseRuleController
         super(adminService);
     }
     
+    /**
+     * Presents a form for creating a new rule.
+     */
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView displayForm() throws InvalidIdentifierException
+    public ModelAndView displayForm()
     {
         final EditRule editRule = new EditRule();
-        return displayForm(editRule);
+        try
+        {
+            return displayForm(editRule);
+        }
+        catch (final InvalidIdentifierException e)
+        {
+            // displayForm() should never throw an InvalidIdentifierException here because
+            // the rule does not reference any variables yet.
+            throw new RuntimeException("Unexpected Exception.", e);
+        }
     }
     
+    /**
+     * Creates a Rule with the properties from the given EditRule, if valid. If invalid,
+     * presents the validation errors.
+     * @param editRule the form backing object containing the rule attributes
+     * @param bindingResult the BindingResult for the EditRule
+     * @throws InvalidIdentifierException if the EditRule refers to any variable keys that
+     * do not exist
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView saveRule(
             @ModelAttribute(NewRuleController.ATTRIBUTE_RULE) final EditRule editRule,
-            final BindingResult bindingResult) throws InvalidIdentifierException
+            final BindingResult bindingResult)
+            throws InvalidIdentifierException
     {
         // Call the validator for an EditRule here so that we can access the editRule
         // to display 

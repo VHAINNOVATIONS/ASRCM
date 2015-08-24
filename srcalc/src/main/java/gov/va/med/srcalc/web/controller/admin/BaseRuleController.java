@@ -38,6 +38,17 @@ public abstract class BaseRuleController
      */
     protected static final String ATTRIBUTE_RULE = "rule";
     
+    /**
+     * The model attribute key of a map from variable key to {@link VariableSummary}.
+     * Will contain an entry for every variable used by the rule.
+     */
+    protected static final String ATTRIBUTE_VARIABLE_SUMMARIES = "variableSummaries";
+    
+    /**
+     * The model attribute key of a list of all existing variable keys.
+     */
+    protected static final String ATTRIBUTE_ALL_VARIABLE_KEYS = "allVariableKeys";
+    
     private final AdminService fAdminService;
     
     /**
@@ -51,6 +62,12 @@ public abstract class BaseRuleController
         fAdminService = Objects.requireNonNull(adminService);
     }
     
+    /**
+     * Presents the edit rule form, backed by the given EditRule object.
+     * @param editRule the form backing object
+     * @throws InvalidIdentifierException if any variable key referenced by the EditRule
+     * does not exist
+     */
     protected ModelAndView displayForm(final EditRule editRule) throws InvalidIdentifierException
     {
         final ModelAndView mav = new ModelAndView(Views.EDIT_RULE);
@@ -59,6 +76,14 @@ public abstract class BaseRuleController
         return mav;
     }
 
+    /**
+     * Removes the specified ValueMatcher from the form backing object and re-presents the
+     * edit rule page.
+     * @param editRule the form backing object
+     * @param removeIndex the index of the ValueMatcher to remove
+     * @throws InvalidIdentifierException if any variable key referenced by the EditRule
+     * does not exist
+     */
     @RequestMapping(method = RequestMethod.POST, params = "removeButton")
     public ModelAndView requestRemoveMatcher(
             @ModelAttribute(NewRuleController.ATTRIBUTE_RULE) final EditRule editRule,
@@ -69,6 +94,13 @@ public abstract class BaseRuleController
         return displayForm(editRule);
     }
     
+    /**
+     * Adds a new ValueMatcher to the form backing object.
+     * @param editRule the form backing object
+     * @param bindingResult the BindingResult for the EditRule
+     * @throws InvalidIdentifierException if any variable key in the EditRule does not
+     * exist
+     */
     @RequestMapping(method = RequestMethod.POST, params = "newMatcherButton")
     public ModelAndView requestNewMatcher(
             @ModelAttribute(NewRuleController.ATTRIBUTE_RULE) final EditRule editRule,
@@ -87,26 +119,40 @@ public abstract class BaseRuleController
         return displayForm(editRule);
     }
     
-    protected static void addVariablesToModel(final ModelAndView mav,
+    /**
+     * Adds {@link #ATTRIBUTE_VARIABLE_SUMMARIES} and {@link #ATTRIBUTE_ALL_VARIABLE_KEYS}
+     * to the given ModelAndView.
+     * @param mav the ModelAndView to modify
+     * @param editRule to determine which {@link VariableSummary}s to load
+     * @param adminService to retrieve variables
+     * @throws InvalidIdentifierException if any variable key referenced by the EditRule
+     * does not exist
+     */
+    private static void addVariablesToModel(
+            final ModelAndView mav,
             final EditRule editRule,
-            final AdminService adminService) throws InvalidIdentifierException
+            final AdminService adminService)
+            throws InvalidIdentifierException
     {
-        // A map of the variable's key to its respective summary
         final Map<String, VariableSummary> variableSummaries = new HashMap<String, VariableSummary>();
         for(final ValueMatcherBuilder matcher: editRule.getMatchers())
         {
             final Variable var = adminService.getVariable(matcher.getVariableKey());
             variableSummaries.put(matcher.getVariableKey(), VariableSummary.fromVariable(var));
         }
-        mav.addObject("variableSummaries", variableSummaries);
+        mav.addObject(ATTRIBUTE_VARIABLE_SUMMARIES, variableSummaries);
+
         final SortedSet<String> allVariableKeys = new TreeSet<String>();
         for(final Variable var: adminService.getAllVariables())
         {
             allVariableKeys.add(var.getKey());
         }
-        mav.addObject("allVariableKeys", allVariableKeys);
+        mav.addObject(ATTRIBUTE_ALL_VARIABLE_KEYS, allVariableKeys);
     }
     
+    /**
+     * Returns the {@link AdminService} provided to the constructor.
+     */
     protected AdminService getAdminService()
     {
         return fAdminService;

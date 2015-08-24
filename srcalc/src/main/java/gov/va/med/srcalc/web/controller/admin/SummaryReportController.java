@@ -55,6 +55,9 @@ public class SummaryReportController
     private final ReportService fReportService;
     private final ModelInspectionService fModelService;
     
+    /**
+     * Constructs an instance that will use the provided service(s) for operations.
+     */
     @Inject
     public SummaryReportController(
             final ReportService reportService, final ModelInspectionService modelService)
@@ -63,6 +66,11 @@ public class SummaryReportController
         fModelService = modelService;
     }
     
+    /**
+     * Presents the report parameters form.
+     * @param params contains the report parameters. (This is a method parameter to
+     * support re-presenting the form with validation errors.)
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView displayForm(
             @ModelAttribute(ATTRIBUTE_REPORT_PARAMETERS) final ResultSearchParameters params)
@@ -91,6 +99,12 @@ public class SummaryReportController
                 params, new SearchResults<>(rows, results.isTruncated()));
     }
     
+    /**
+     * If the parameters are valid, generates and presents the report. If invalid,
+     * presents the validation errors.
+     * @param params the report parameters
+     * @param bindingResult the BindingResult for the report parameters
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView displayReport(
             @ModelAttribute(ATTRIBUTE_REPORT_PARAMETERS) final ResultSearchParameters params,
