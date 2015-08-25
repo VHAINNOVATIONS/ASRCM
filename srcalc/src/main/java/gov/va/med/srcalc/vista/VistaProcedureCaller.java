@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.security.auth.login.AccountException;
 
+import org.springframework.dao.DataAccessException;
+
 /**
  * An object that can call VistA Remote Procedures.
  */
@@ -19,12 +21,11 @@ public interface VistaProcedureCaller
      * @return an unmodifiable list of String lines from the response
      * @throws AccountException if no VistA user could be matched to the given DUZ
      * @throws ConfigurationException if some misconfiguration prevents communication
-     * @throws DataAccessException if some error occurred communicating with
-     * VistA
+     * @throws DataAccessException if some error occurred communicating with VistA
      */
     public List<String> doRpc(
             final String duz, final RemoteProcedure procedure, final String... args)
-            throws AccountException;
+            throws AccountException, DataAccessException;
     
     /**
      * A special-purpose method to call {@link RemoteProcedure#SAVE_PROGRESS_NOTE}
@@ -36,15 +37,14 @@ public interface VistaProcedureCaller
      * @return the VistA response as a String (See {@link RemoteProcedure#VALID_SIGNATURE_RETURN}.)
      * @throws AccountException if no VistA user could be matched to the given DUZ
      * @throws ConfigurationException if some misconfiguration prevents communication
-     * @throws DataAccessException if some error occurred communicating with
-     * VistA
+     * @throws DataAccessException if some error occurred communicating with VistA
      */
     public String doSaveProgressNoteCall(
             final String duz,
             final String encryptedSignature,
             final String patientDfn,
             final List<String> noteLines)
-            throws AccountException;
+            throws AccountException, DataAccessException;
     
     /**
      * A special-purpose method to call {@link RemoteProcedure#SAVE_RISK}
@@ -56,6 +56,7 @@ public interface VistaProcedureCaller
      * @param outcomes the list of outcomes, each outcoming as a String "Outcome name^XX.X"
      * @return the VistA response as a String. (See {@link RemoteProcedure#RISK_SAVED_RETURN}.)
      * @throws AccountException if no VistA user could be matched to the given DUZ
+     * @throws DataAccessException if some error occurred communicating with VistA
      */
     public String doSaveRiskCalculationCall(
             final String duz,
@@ -63,7 +64,7 @@ public interface VistaProcedureCaller
             final String cptCode,
             final String dateTime,
             final List<String> outcomes)
-            throws AccountException;
+            throws AccountException, DataAccessException;
     
     /**
      * A special-purpose method to call {@link RemoteProcedure#GET_LABS}
@@ -73,12 +74,13 @@ public interface VistaProcedureCaller
      * @param labNames the list of potential lab names to retrieve results for
      * @return the VistA response as a String.
      * @throws AccountException if no VistA user could be matched to the given DUZ
+     * @throws DataAccessException if some error occurred communicating with VistA
      */
     public String doRetrieveLabs(
             final String duz,
             final String patientDfn,
             final List<String> labNames)
-            throws AccountException;
+            throws AccountException, DataAccessException;
     
     /**
      * Returns the division identifier (including any suffix) for the target

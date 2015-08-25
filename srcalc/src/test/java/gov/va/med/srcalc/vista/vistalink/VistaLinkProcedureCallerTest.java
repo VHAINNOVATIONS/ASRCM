@@ -46,8 +46,24 @@ public class VistaLinkProcedureCallerTest
         populateJndiWithMockVlcf();
     }
     
+    /**
+     * Verifies execution of {@link RemoteProcedure#GET_USER_INFO}, which requires a
+     * different RPC context.
+     */
     @Test
-    public final void testDoRpc() throws Exception
+    public final void testDoUserRpc() throws Exception
+    {
+        final String division = "500";
+        final VistaLinkProcedureCaller caller =
+                new VistaLinkProcedureCaller(division);
+        
+        final List<String> results = caller.doRpc("11111", RemoteProcedure.GET_USER_INFO);
+        // Just verify the name.
+        assertEquals(MockVistaLinkConnection.RADIOLOGIST_NAME, results.get(1));
+    }
+    
+    @Test
+    public final void testDoPatientRpc() throws Exception
     {
         final String division = "500";
         

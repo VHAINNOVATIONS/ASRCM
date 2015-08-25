@@ -65,14 +65,14 @@ public class RpcVistaPersonDao implements VistaPersonDao
         LOGGER.debug("Loading VistaPerson for duz {}.", duz);
         
         final List<String> userResults = fProcedureCaller.doRpc(
-                duz, RemoteProcedure.GET_USER);
+                duz, RemoteProcedure.GET_USER_INFO);
         
         // Get the first index in the array. We don't care about the rest.
-        final String userString = userResults.get(0);
+        final String userName = userResults.get(1);
         final VistaPerson person = new VistaPerson(
                 fProcedureCaller.getDivision(),
                 duz,
-                userString,
+                userName,
                 loadProviderType(duz));
         LOGGER.debug("Loaded {} from VistA.", person);
         return person;

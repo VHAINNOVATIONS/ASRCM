@@ -33,13 +33,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
         array,
         string;
     }
-    
-    /**
-     * This is the RPC context for all ASRC RPCs. (This value is determined by
-     * VistA.)
-     */
-    protected static final String RPC_CONTEXT = "SR ASRC";
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(VistaLinkProcedureCaller.class);
     
     /**
@@ -112,7 +106,9 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
     {
         try
         {
-            return RpcRequestFactory.getRpcRequest(RPC_CONTEXT, procedure.getProcedureName());
+            return RpcRequestFactory.getRpcRequest(
+                    procedure.getRpcContext().getContextName(),
+                    procedure.getProcedureName());
         }
         catch (final FoundationsException ex)
         {

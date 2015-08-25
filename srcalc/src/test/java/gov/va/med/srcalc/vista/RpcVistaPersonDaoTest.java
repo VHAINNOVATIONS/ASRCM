@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
-
 import javax.security.auth.login.AccountException;
 
 import gov.va.med.srcalc.domain.VistaPerson;
@@ -29,11 +27,19 @@ public class RpcVistaPersonDaoTest
     private VistaProcedureCaller mockProcedureCaller()
     {
         final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
+        final ImmutableList<String> userInfoMockReturn = ImmutableList.of(
+                RADIOLOGIST_DUZ,
+                RADIOLOGIST_NAME,
+                // We don't use these values right now, but provide realistic ones anyway.
+                "One Radiologist MD",
+                "100^CAMP MASTER^512",
+                "PHYSICIAN",
+                "MEDICAL");
         try
         {
             when(caller.getDivision()).thenReturn(DIVISION);
-            when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_USER))
-                .thenReturn(Arrays.asList(RADIOLOGIST_NAME));
+            when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_USER_INFO))
+                .thenReturn(userInfoMockReturn);
             // Test returning an extra type.
             when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_USER_PERSON_CLASSES))
                 .thenReturn(ImmutableList.of(RADIOLOGIST_PROVIDER_TYPE, "Extra Type"));
