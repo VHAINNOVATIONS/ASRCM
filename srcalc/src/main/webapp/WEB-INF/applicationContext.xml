@@ -23,17 +23,28 @@
     <!-- Import the controller beans. -->
     <import resource="classpath:/srcalc-controller.xml"/>
 
-    <!-- Configure Spring Security. -->
+    <!-- *** Configure Spring Security. *** -->
+    
+    <security:http pattern="/admin/**">
+        <security:form-login default-target-url="/admin" />
+        <!-- See gov.va.med.srcalc.security.Roles for the available Roles. -->
+        <security:intercept-url pattern="/**" access="ROLE_ADMIN" />
+    </security:http>
+
+    <!-- Use a WebAuthenticationDetailsSource to retrieve the client IP address when
+         logging in. -->
+    <bean id="webAuthDetailsSource"
+        class="org.springframework.security.web.authentication.WebAuthenticationDetailsSource"
+        />
     <security:http>
-        <!-- Use the generated form login. -->
-        <security:form-login default-target-url="/" />
+        <security:form-login default-target-url="/"
+            authentication-details-source-ref="webAuthDetailsSource" />
         <security:session-management invalid-session-url="/sessionTimeout" />
         <security:logout logout-url="/logout" />
 
         <!-- All pages require one to be an authenticated user. -->
         <security:intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <!-- See gov.va.med.srcalc.security.Roles for the available Roles. -->
-        <security:intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
         <!-- Allow anonymous users to see the invalid session page otherwise
              they need to re-login, only to see that their session timed out. -->
         <security:intercept-url pattern="/sessionTimeout" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
@@ -41,9 +52,8 @@
         <security:intercept-url pattern="/**" access="ROLE_USER" />
     </security:http>
     
-    <!-- User VistaUserDetailsService to load users. -->
-    <bean id="vistaDaoFactory" class="gov.va.med.srcalc.security.VistaLinkVistaDaoFactory" />
-    <bean id="vistaUserDetailsService" class="gov.va.med.srcalc.security.VistaUserDetailsService" />
+    <bean id="accessVerifyAuthProvider"
+        class="gov.va.med.srcalc.security.AccessVerifyAuthenticationProvider" />
     <security:authentication-manager>
         <!--
         First, check an in-memory admin user store. Of course an in-memory user
@@ -56,10 +66,11 @@
                 <security:user name="admintwo" password="Admin2" authorities="ROLE_ADMIN" />
             </security:user-service>
         </security:authentication-provider>
-        <!-- If the credentials aren't for an admin, try VistA. -->
-        <security:authentication-provider user-service-ref="vistaUserDetailsService" />
+        <!-- If the user wasn't an admin, try access/verify code login. -->
+        <security:authentication-provider ref="accessVerifyAuthProvider" />
     </security:authentication-manager>
     
+    <bean id="vistaDaoFactory" class="gov.va.med.srcalc.security.VistaLinkVistaDaoFactory" />
     <!-- Provide a request-scoped VistaPatientDao that already knows the current
          user. -->
     <bean id="vistaPatientDao" scope="request"

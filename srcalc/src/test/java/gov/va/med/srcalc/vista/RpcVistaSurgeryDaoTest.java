@@ -2,7 +2,7 @@ package gov.va.med.srcalc.vista;
 
 import static org.mockito.Mockito.*;
 
-import javax.security.auth.login.AccountException;
+import javax.security.auth.login.LoginException;
 
 import gov.va.med.srcalc.domain.calculation.*;
 import gov.va.med.srcalc.domain.model.Procedure;
@@ -77,9 +77,9 @@ public class RpcVistaSurgeryDaoTest
                         anyListOf(String.class)))
                     .thenReturn(RemoteProcedure.RISK_SAVED_RETURN);
         }
-        catch (final AccountException ex)
+        catch (final LoginException ex)
         {
-            // The compiler sees a possible AccountException, but it is just an artifact
+            // The compiler sees a possible LoginException, but it is just an artifact
             // of Mockito's mocking API.
             throw new RuntimeException("Unexpected Exception.", ex);
         }

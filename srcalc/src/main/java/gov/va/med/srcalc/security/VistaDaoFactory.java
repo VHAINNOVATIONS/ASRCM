@@ -12,20 +12,10 @@ import gov.va.med.srcalc.vista.*;
 public interface VistaDaoFactory
 {
     /**
-     * Returns a {@link VistaPersonDao} for the specific VistA division.
-     * @param division e.g., "500"
-     * @throws ConfigurationException if the VistA communication is somehow
-     * misconfigured
-     * @throws IllegalArgumentException if the given division is not known
-     */
-    public VistaPersonDao getVistaPersonDao(final String division);
-
-    /**
-     * <p>Returns a {@link VistaPersonDao} that will execute under the context of
+     * <p>Returns a {@link VistaPatientDao} that will execute under the context of
      * the current user.</p>
      * 
-     * <p>Note that, unlike {@link #getVistaPersonDao(String)}, the division
-     * is implied in the current user context.</p>
+     * <p>Note that the division is implied in the current user context.</p>
      * 
      * @throws ConfigurationException if the VistA communication is somehow
      * misconfigured
@@ -36,8 +26,7 @@ public interface VistaDaoFactory
      * <p>Returns a {@link VistaSurgeryDao} that will execute under the context of
      * the current user.</p>
      * 
-     * <p>Note that, unlike {@link #getVistaPersonDao(String)}, the division
-     * is implied in the current user context.</p>
+     * <p>Note that the division is implied in the current user context.</p>
      * 
      * @throws ConfigurationException if the VistA communication is somehow
      * misconfigured
