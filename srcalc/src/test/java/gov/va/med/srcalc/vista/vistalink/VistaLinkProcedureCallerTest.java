@@ -9,6 +9,7 @@ import java.util.List;
 import javax.naming.NamingException;
 import javax.resource.ResourceException;
 
+import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.vista.RemoteProcedure;
 import gov.va.med.srcalc.vista.vistalink.VistaLinkProcedureCaller;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnectionFactory;
@@ -23,6 +24,11 @@ import org.springframework.mock.jndi.SimpleNamingContextBuilder;
  */
 public class VistaLinkProcedureCallerTest
 {
+    /**
+     * The division which {@link #populateJndiWithMockVlcf()} populates.
+     */
+    private static final String SUPPORTED_DIVISON = "500";
+
     private final static String VLCF_JNDI_NAME = "java:comp/env/vlj/Asrc500";
     
     /**
@@ -53,9 +59,8 @@ public class VistaLinkProcedureCallerTest
     @Test
     public final void testDoUserRpc() throws Exception
     {
-        final String division = "500";
         final VistaLinkProcedureCaller caller =
-                new VistaLinkProcedureCaller(division);
+                new VistaLinkProcedureCaller(SUPPORTED_DIVISON);
         
         final List<String> results = caller.doRpc("11111", RemoteProcedure.GET_USER_INFO);
         // Just verify the name.
@@ -65,10 +70,8 @@ public class VistaLinkProcedureCallerTest
     @Test
     public final void testDoPatientRpc() throws Exception
     {
-        final String division = "500";
-        
         final VistaLinkProcedureCaller caller =
-                new VistaLinkProcedureCaller(division);
+                new VistaLinkProcedureCaller(SUPPORTED_DIVISON);
         final List<String> results = caller.doRpc(
                 "11111", RemoteProcedure.GET_PATIENT, MockVistaLinkConnection.PATIENT_DFN);
         assertEquals(
@@ -79,10 +82,8 @@ public class VistaLinkProcedureCallerTest
     @Test
     public final void testDoSaveProgressNoteCall() throws Exception
     {
-        final String division = "500";
-        
         final VistaLinkProcedureCaller caller =
-                new VistaLinkProcedureCaller(division);
+                new VistaLinkProcedureCaller(SUPPORTED_DIVISON);
         final String result = caller.doSaveProgressNoteCall(
                 "11111",
                 "fakeEncryptedSig",
@@ -95,10 +96,8 @@ public class VistaLinkProcedureCallerTest
     @Test
     public final void testDoSaveRiskCalculationCall() throws Exception
     {
-        final String division = "500";
-        
         final VistaLinkProcedureCaller caller =
-                new VistaLinkProcedureCaller(division);
+                new VistaLinkProcedureCaller(SUPPORTED_DIVISON);
         final String result = caller.doSaveRiskCalculationCall(
                 "11111",
                 MockVistaLinkConnection.PATIENT_DFN,
@@ -107,6 +106,32 @@ public class VistaLinkProcedureCallerTest
                 Arrays.asList("Model^02.1"));
         
         assertEquals(RemoteProcedure.RISK_SAVED_RETURN, result);
+    }
+    
+    @Test
+    public final void testDoRetrieveLabsCallSgot() throws Exception
+    {
+        final VistaLinkProcedureCaller caller =
+                new VistaLinkProcedureCaller(SUPPORTED_DIVISON);
+        final String result = caller.doRetrieveLabsCall(
+                "11111",
+                MockVistaLinkConnection.PATIENT_DFN,
+                VistaLabs.SGOT.getPossibleLabNames());
+        
+        assertEquals(MockVistaLinkConnection.SGOT_LAB_DATA, result);
+    }
+    
+    @Test
+    public final void testDoRetrieveLabsCallAlbumin() throws Exception
+    {
+        final VistaLinkProcedureCaller caller =
+                new VistaLinkProcedureCaller(SUPPORTED_DIVISON);
+        final String result = caller.doRetrieveLabsCall(
+                "11111",
+                MockVistaLinkConnection.PATIENT_DFN,
+                VistaLabs.ALBUMIN.getPossibleLabNames());
+        
+        assertEquals(MockVistaLinkConnection.ALBUMIN_LAB_DATA, result);
     }
 
     @Test(expected = IllegalArgumentException.class)

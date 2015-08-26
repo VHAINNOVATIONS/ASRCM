@@ -83,7 +83,7 @@ public class RpcVistaPatientDaoTest
         {
             final VistaProcedureCaller caller = mock(VistaProcedureCaller.class);
             // Anything besides a valid measurement is returned as an empty string
-            when(caller.doRetrieveLabs(
+            when(caller.doRetrieveLabsCall(
                     eq(RADIOLOGIST_DUZ), eq(String.valueOf(PATIENT_DFN)), anyListOf(String.class)))
                 .thenReturn("");
             // Setup the necessary actions for getting patient data.
@@ -169,7 +169,7 @@ public class RpcVistaPatientDaoTest
     public final void testLabRetrievalSuccess() throws Exception
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
-        when(caller.doRetrieveLabs(
+        when(caller.doRetrieveLabsCall(
                 RADIOLOGIST_DUZ, 
                 String.valueOf(PATIENT_DFN),
                 VistaLabs.ALBUMIN.getPossibleLabNames()))
@@ -189,7 +189,7 @@ public class RpcVistaPatientDaoTest
     public final void testInvalidLabResponse() throws Exception
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
-        when(caller.doRetrieveLabs(
+        when(caller.doRetrieveLabsCall(
                 RADIOLOGIST_DUZ, 
                 String.valueOf(PATIENT_DFN),
                 VistaLabs.ALBUMIN.getPossibleLabNames()))
@@ -208,7 +208,7 @@ public class RpcVistaPatientDaoTest
     public final void testLabResponseNoUnits() throws Exception
     {
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
-        when(caller.doRetrieveLabs(
+        when(caller.doRetrieveLabsCall(
                 RADIOLOGIST_DUZ, 
                 String.valueOf(PATIENT_DFN),
                 VistaLabs.ALBUMIN.getPossibleLabNames()))

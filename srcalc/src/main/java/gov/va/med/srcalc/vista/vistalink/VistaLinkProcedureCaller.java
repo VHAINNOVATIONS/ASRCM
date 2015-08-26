@@ -294,7 +294,7 @@ public class VistaLinkProcedureCaller implements VistaProcedureCaller
     }
     
     @Override
-    public String doRetrieveLabs(
+    public String doRetrieveLabsCall(
             final String duz,
             final String patientDfn,
             final List<String> labNames)

@@ -5,6 +5,7 @@ import javax.resource.ResourceException;
 import javax.resource.cci.*;
 
 import gov.va.med.exception.FoundationsException;
+import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.vista.RemoteProcedure;
 import gov.va.med.srcalc.vista.RpcContext;
 import gov.va.med.srcalc.vista.vistalink.VistaLinkProcedureCaller;
@@ -33,6 +34,16 @@ public class MockVistaLinkConnection implements VistaLinkConnection
      * The fake patient data returned from {@link RemoteProcedure#GET_PATIENT}.
      */
     public final static String PATIENT_DATA = "PATIENT,MOCKVL^62^M";
+    
+    /**
+     * Sample SGOT lab data returned from {@link RemoteProcedure#GET_LABS}.
+     */
+    public final static String SGOT_LAB_DATA = "SGOT^21.3^02/02/2015@1435^U/L";
+    
+    /**
+     * Sample Albumin lab data returned from {@link RemoteProcedure#GET_LABS}.
+     */
+    public final static String ALBUMIN_LAB_DATA = "";
 
     private int fTimeout = 0;
     
@@ -54,8 +65,8 @@ public class MockVistaLinkConnection implements VistaLinkConnection
     @Override
     public ConnectionMetaData getMetaData() throws ResourceException
     {
-        // TODO Auto-generated method stub
-        return null;
+        throw new ResourceException(
+                "Unsure what VistALink returns for this - it is undocumented.");
     }
     
     @Override
@@ -129,6 +140,18 @@ public class MockVistaLinkConnection implements VistaLinkConnection
         {
             return makeStringResponse(RemoteProcedure.RISK_SAVED_RETURN);
         }
+        else if (request.getRpcName().equals(RemoteProcedure.GET_LABS.getProcedureName()) &&
+                request.getParams().getParam(1).equals(PATIENT_DFN))
+        {
+            if (request.getParams().getParam(2).equals(VistaLabs.SGOT.getPossibleLabNames()))
+            {
+                return makeStringResponse(SGOT_LAB_DATA);
+            }
+            else
+            {
+                return makeStringResponse("");
+            }
+        }
         else
         {
             throw new VistaLinkFaultException("RPC not supported");
@@ -138,8 +161,9 @@ public class MockVistaLinkConnection implements VistaLinkConnection
     @Override
     public VistaLinkServerInfo getConnectionInfo()
     {
-        // TODO Auto-generated method stub
-        return null;
+        // This method is hard to implement because VistaLinkServerInfo doesn't have a
+        // public constructor.
+        throw new UnsupportedOperationException("Unimplemented method.");
     }
     
     @Override

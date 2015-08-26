@@ -76,7 +76,7 @@ public interface VistaProcedureCaller
      * @throws AccountException if no VistA user could be matched to the given DUZ
      * @throws DataAccessException if some error occurred communicating with VistA
      */
-    public String doRetrieveLabs(
+    public String doRetrieveLabsCall(
             final String duz,
             final String patientDfn,
             final List<String> labNames)
