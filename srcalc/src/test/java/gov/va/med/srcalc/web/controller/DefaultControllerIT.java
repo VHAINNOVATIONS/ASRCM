@@ -3,6 +3,7 @@ package gov.va.med.srcalc.web.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import gov.va.med.srcalc.test.util.IntegrationTest;
+import gov.va.med.srcalc.web.SrcalcUrls;
 import gov.va.med.srcalc.web.view.Views;
 
 import org.junit.Before;
@@ -41,14 +42,21 @@ public class DefaultControllerIT extends IntegrationTest
     @Test
     public final void testDefaultPage() throws Exception
     {
-        fMockMvc.perform(get("/"))
+        fMockMvc.perform(get(SrcalcUrls.DEFAULT_PAGE))
             .andExpect(view().name(Views.LAUNCH_FROM_CPRS));
+    }
+
+    @Test
+    public final void testVistaUserLoginPage() throws Exception
+    {
+        fMockMvc.perform(get(SrcalcUrls.VISTA_LOGIN_FORM))
+            .andExpect(view().name(Views.VISTA_LOGIN_FORM));
     }
     
     @Test
     public final void testSessionTimeout() throws Exception
     {
-        fMockMvc.perform(get("/sessionTimeout"))
+        fMockMvc.perform(get(SrcalcUrls.SESSION_TIMEOUT_PAGE))
             .andExpect(view().name(Views.SESSION_TIMEOUT));
     }
     

@@ -80,6 +80,16 @@ footer {
 	border-top: 1px solid #ccc;
 }
 
+/* We use <h1>'s and <h2>'s as the page titles. Don't waste too much space. */
+h1, h2 {
+	margin: 0.3em 0;
+}
+
+h2 {
+	/* Put a bit more spacing preceding the main page content. */
+	margin-bottom: 0.5em;
+}
+
 .appInfo {
 	font-size: 80%;
 }
@@ -332,6 +342,12 @@ div.searchToolbar {
     padding-left: 0;
 }
 
+/* The VistA login form */
+
+#vistaLoginForm {
+	width: 20em;
+}
+
 /* The variable input form #riskVarForm */
 
 /* Hide the definition rows and reference notes if Javascript is enabled */
@@ -389,6 +405,11 @@ ul#outcomesList {
 
 .editObjectLink {
 	text-decoration: none;
+}
+
+/* The Administrator login form */
+#adminLoginForm {
+	width: 20em;
 }
 
 div#newVariableLinks, div#newRuleLink {

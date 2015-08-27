@@ -23,10 +23,34 @@
     <!-- Import the controller beans. -->
     <import resource="classpath:/srcalc-controller.xml"/>
 
-    <!-- *** Configure Spring Security. *** -->
+    <!--
+    ***** Configure Spring Security. *****
+    
+    This configuration is a little complex: there is a <security:http> configuration just
+    for the admin URLs and another one for all other URLs. The reason is that we need
+    different login pages for administrators (using username/password) and normal users
+    (using VistA authentication).
+    -->
+    
+    <!-- Create an SrcalcUrls instance to reference URLs below -->
+    <bean id="srcalcUrls" class="gov.va.med.srcalc.web.SrcalcUrls" />
     
     <security:http pattern="/admin/**">
-        <security:form-login default-target-url="/admin" />
+        <!-- Note: login-processing-url must be different from login-page. -->
+        <security:form-login
+            login-page="#{srcalcUrls.adminLoginForm}"
+            login-processing-url="#{srcalcUrls.adminLoginTarget}"
+            authentication-failure-url="#{srcalcUrls.adminLoginForm}?login_failure=login_failure"
+            username-parameter="username"
+            password-parameter="password"
+            default-target-url="#{srcalcUrls.adminHome}" />
+        <!--
+        Allow anonymous access to the login form. Note that the login form uses CSS
+        and Javascript, which are covered by the following <security:http> configuration.
+        In other words, this <security:http> configuration is dependent on the one below.
+        -->
+        <security:intercept-url pattern="#{srcalcUrls.adminLoginForm}"
+            access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <!-- See gov.va.med.srcalc.security.Roles for the available Roles. -->
         <security:intercept-url pattern="/**" access="ROLE_ADMIN" />
     </security:http>
@@ -37,19 +61,42 @@
         class="org.springframework.security.web.authentication.WebAuthenticationDetailsSource"
         />
     <security:http>
-        <security:form-login default-target-url="/"
+        <!-- Note: login-processing-url must be different from login-page. -->
+        <security:form-login
+            login-page="#{srcalcUrls.vistaLoginForm}"
+            login-processing-url="#{srcalcUrls.loginTarget}"
+            authentication-failure-url="#{srcalcUrls.vistaLoginForm}?login_failure=login_failure"
+            username-parameter="accessCode"
+            password-parameter="verifyCode"
+            default-target-url="#{srcalcUrls.defaultPage}" 
             authentication-details-source-ref="webAuthDetailsSource" />
-        <security:session-management invalid-session-url="/sessionTimeout" />
-        <security:logout logout-url="/logout" />
 
-        <!-- All pages require one to be an authenticated user. -->
-        <security:intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <!-- See gov.va.med.srcalc.security.Roles for the available Roles. -->
+        <!-- Allow anonymous access to the login form. -->
+        <security:intercept-url pattern="#{srcalcUrls.vistaLoginForm}"
+            access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <!-- Allow CSS and JS libraries because they are used from the login pages. -->
+        <security:intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:intercept-url pattern="/js/vendor/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <!-- Allow anonymous users to see the invalid session page otherwise
              they need to re-login, only to see that their session timed out. -->
-        <security:intercept-url pattern="/sessionTimeout" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="#{srcalcUrls.sessionTimeoutPage}"
+            access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <!--
+        Also allow public access to the default page so they don't have to login just to
+        see the notice.
+        -->
+        <security:intercept-url pattern="#{srcalcUrls.defaultPage}"
+            access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <!-- All other pages require one to be an authenticated user. -->
         <security:intercept-url pattern="/js/**" access="ROLE_USER,ROLE_ADMIN"/>
         <security:intercept-url pattern="/**" access="ROLE_USER" />
+
+        <!--
+        Always redirect to an informational page since users cannot restart sessions.
+        -->
+        <security:session-management
+            invalid-session-url="#{srcalcUrls.sessionTimeoutPage}" />
     </security:http>
     
     <bean id="accessVerifyAuthProvider"
