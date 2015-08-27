@@ -58,8 +58,7 @@
     <!-- Use a WebAuthenticationDetailsSource to retrieve the client IP address when
          logging in. -->
     <bean id="webAuthDetailsSource"
-        class="org.springframework.security.web.authentication.WebAuthenticationDetailsSource"
-        />
+        class="gov.va.med.srcalc.security.SrcalcWebAuthnDetailsSource" />
     <security:http>
         <!-- Note: login-processing-url must be different from login-page. -->
         <security:form-login

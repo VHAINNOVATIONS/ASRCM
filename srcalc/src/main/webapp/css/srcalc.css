@@ -345,7 +345,7 @@ div.searchToolbar {
 /* The VistA login form */
 
 #vistaLoginForm {
-	width: 20em;
+	max-width: 25em;
 }
 
 /* The variable input form #riskVarForm */

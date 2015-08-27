@@ -63,7 +63,8 @@ public final class VistaLinkProcedureCaller implements VistaProcedureCaller
     /**
      * Constructs an instance for the given VistA division (e.g., 500).
      * @throws ConfigurationException if VistALink is not configured properly
-     * @throws IllegalArgumentException if the given division is not known
+     * @throws IllegalArgumentException if the given division is not known. (Call
+     * {@link VistaLinkUtil#isDivisionKnown(String)} first if unsure.)
      */
     public VistaLinkProcedureCaller(final String division)
     {

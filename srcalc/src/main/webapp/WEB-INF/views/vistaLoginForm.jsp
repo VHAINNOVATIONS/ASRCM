@@ -24,10 +24,7 @@
         </tr>
         <tr>
             <td>Division:</td>
-            <%--
-            Only Division 500 is supported for now. (See AccessVerifyAuthenticationProvider.)
-            --%>
-            <td>500</td>
+            <td><input type="text" id="division" name="division" /> (e.g., 500)</td>
         </tr>
         </table>
         <div class="actionButtons">

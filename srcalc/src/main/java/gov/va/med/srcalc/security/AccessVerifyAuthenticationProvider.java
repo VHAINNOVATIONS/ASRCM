@@ -3,9 +3,9 @@ package gov.va.med.srcalc.security;
 import javax.security.auth.login.FailedLoginException;
 import javax.security.auth.login.LoginException;
 
-import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.vista.vistalink.VistaLinkAuthenticator;
+import gov.va.med.srcalc.vista.vistalink.VistaLinkUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 /**
  * <p>An AuthenticationProvider implementation that authenticates a user based on a VistA
@@ -24,37 +23,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
  */
 public final class AccessVerifyAuthenticationProvider implements AuthenticationProvider
 {
-    /**
-     * The hardcoded VistA division (500). This is hardcoded for now because this
-     * whole authentication implementation will change once we support context
-     * sharing.
-     */
-    private static final String VISTA_DIVISON = "500";
-    
     private static final Logger LOGGER = LoggerFactory.getLogger(
             AccessVerifyAuthenticationProvider.class);
     
-    /**
-     * Returns the Authentication details as a WebAuthenticationDetails. The main purpose
-     * of this method is to encapsulate exception handling.
-     * @throws ConfigurationException if the authentication details is not an instance
-     * of WebAuthenticationDetails
-     */
-    private WebAuthenticationDetails extractWebAuthDetails(
-            final Authentication providedAuth)
-    {
-        try
-        {
-            return (WebAuthenticationDetails)providedAuth.getDetails();
-        }
-        catch (final ClassCastException ex)
-        {
-            throw new ConfigurationException(
-                    "Authentication details must be an instance of WebAuthenticationDetails.",
-                    ex);
-        }
-    }
-
     /**
      * <p>Authenticates the user with VistA.</p>
      * 
@@ -75,13 +46,36 @@ public final class AccessVerifyAuthenticationProvider implements AuthenticationP
     {
         // Even though this is the only supported division for now, instantiate here to
         // pave the way for true division support.
-        final VistaLinkAuthenticator vistaAuthenticator =
-                new VistaLinkAuthenticator(VISTA_DIVISON);
         final String accessCode = providedAuth.getPrincipal().toString();
         final String verifyCode = providedAuth.getCredentials().toString();
+        if (!(providedAuth.getDetails() instanceof SrcalcWebAuthnDetails))
+        {
+            LOGGER.info(
+                    "Provided authentication details were not SrcalcWebAuthnDetails: " +
+                    "not performing authentication.");
+            return null;
+        }
         try
         {
-            final WebAuthenticationDetails authDetails = extractWebAuthDetails(providedAuth);
+            // Get division.
+            final SrcalcWebAuthnDetails authDetails =
+                    (SrcalcWebAuthnDetails)providedAuth.getDetails();
+            final String division = authDetails.getDivision();
+            if (division.isEmpty())
+            {
+                LOGGER.info("No division specified: not performing authentication.");
+                return null;
+            }
+            LOGGER.debug("Will attempt authentication with VistA division {}", division);
+            if (!VistaLinkUtil.isDivisionKnown(division))
+            {
+                LOGGER.info("Unknown division: not performing authentication.");
+                return null;
+            }
+
+            // Perform authentication.
+            final VistaLinkAuthenticator vistaAuthenticator =
+                    new VistaLinkAuthenticator(division);
             final VistaPerson vistaPerson = vistaAuthenticator.authenticateViaAccessVerify(
                     accessCode, verifyCode, authDetails.getRemoteAddress());
             final VistaUserDetails userDetails = new VistaUserDetails(vistaPerson);
