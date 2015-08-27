@@ -22,7 +22,7 @@ public class VistaLinkAuthenticatorTest
     public final void setUp() throws Exception
     {
         // VistaLinkProcedureCaller needs this.
-        VistaLinkProcedureCallerTest.populateJndiWithMockVlcf();
+        VistaLinkProcedureCallerTest.setupJndiForVistaLink();
     }
     
     @Test

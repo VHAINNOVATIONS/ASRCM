@@ -13,6 +13,8 @@ import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.vista.RemoteProcedure;
 import gov.va.med.srcalc.vista.VistaProcedureCaller;
 import gov.va.med.vistalink.adapter.cci.*;
+import gov.va.med.vistalink.institution.InstitutionMapNotInitializedException;
+import gov.va.med.vistalink.institution.InstitutionMappingDelegate;
 import gov.va.med.vistalink.institution.InstitutionMappingNotFoundException;
 import gov.va.med.vistalink.rpc.*;
 import gov.va.med.vistalink.security.m.SecurityAccessVerifyCodePairInvalidException;
@@ -69,18 +71,8 @@ public final class VistaLinkProcedureCaller implements VistaProcedureCaller
         
         try
         {
-            // TODO: support multiple institutions. I had trouble with the
-            // InstitutionMappingDelegate, so I just hardcoded this for now
-            if (division.equals("500"))
-            {
-                fVlcfJndiName = "java:comp/env/vlj/Asrc500";
-            }
-            else
-            {
-                throw new InstitutionMappingNotFoundException(
-                        "Only station 500 is supported right now.");
-            }
-
+            fVlcfJndiName = InstitutionMappingDelegate.getJndiConnectorNameForInstitution(
+                    division);
             final Context namingContext = new InitialContext();
             fVlcf = (VistaLinkConnectionFactory)namingContext.lookup(
                     fVlcfJndiName);
@@ -93,6 +85,11 @@ public final class VistaLinkProcedureCaller implements VistaProcedureCaller
         {
             throw new ConfigurationException(
                     "Could not load VistaLinkConnectionFactory from JNDI", e);
+        }
+        catch (InstitutionMapNotInitializedException e)
+        {
+            throw new ConfigurationException(
+                    "VistALink institution map not loaded.", e);
         }
     }
     

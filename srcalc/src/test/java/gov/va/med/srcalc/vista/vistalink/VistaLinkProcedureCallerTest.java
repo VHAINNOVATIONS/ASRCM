@@ -14,6 +14,9 @@ import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.vista.RemoteProcedure;
 import gov.va.med.srcalc.vista.vistalink.VistaLinkProcedureCaller;
 import gov.va.med.vistalink.adapter.cci.VistaLinkDuzConnectionSpec;
+import gov.va.med.vistalink.institution.InstitutionMapping;
+import gov.va.med.vistalink.institution.InstitutionMappingBadStationNumberException;
+import gov.va.med.vistalink.institution.InstitutionMappingFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,27 +28,31 @@ import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 public class VistaLinkProcedureCallerTest
 {
     /**
-     * The division which {@link #populateJndiWithMockVlcf()} populates.
+     * The division which {@link #setupJndiForVistaLink()} populates.
      */
     static final String SUPPORTED_DIVISON = "500";
     
     private final static String VLCF_JNDI_NAME = "java:comp/env/vlj/Asrc500";
     
     /**
-     * Populate JNDI with a {@link MockVistaLinkConnectionFactory}.
+     * Populate JNDI with a {@link MockVistaLinkConnectionFactory} and configures
+     * VistALink accordingly.
      */
-    static void populateJndiWithMockVlcf()
-            throws NamingException, ResourceException
+    static void setupJndiForVistaLink()
+            throws NamingException, ResourceException, InstitutionMappingBadStationNumberException
     {
         SimpleNamingContextBuilder builder =
                 SimpleNamingContextBuilder.emptyActivatedContextBuilder();
         builder.bind(VLCF_JNDI_NAME, new MockVistaLinkConnectionFactory());
+        // Simulate VistALink self-configuration.
+        InstitutionMapping mapping = InstitutionMappingFactory.getInstitutionMapping();
+        mapping.loadMappingsForJndiName(VLCF_JNDI_NAME, new String[] {"500"}, 100);
     }
 
     @Before
     public void setUp() throws Exception
     {
-        populateJndiWithMockVlcf();
+        setupJndiForVistaLink();
     }
     
     /**
