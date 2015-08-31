@@ -22,14 +22,14 @@ public class VistaLinkAuthenticatorTest
     public final void setUp() throws Exception
     {
         // VistaLinkProcedureCaller needs this.
-        VistaLinkProcedureCallerTest.setupJndiForVistaLink();
+        VistaLinkUtilTest.setupJndiForVistaLink();
     }
     
     @Test
     public final void testAuthenticateViaAccessVerify() throws Exception
     {
         final VistaLinkAuthenticator authenticator = new VistaLinkAuthenticator(
-                VistaLinkProcedureCallerTest.SUPPORTED_DIVISON);
+                VistaLinkUtilTest.SUPPORTED_DIVISON);
         
         final VistaPerson actualVistaPerson = authenticator.authenticateViaAccessVerify(
                 MockVistaLinkConnection.RADIOLOGIST_ACCESS_CODE,
@@ -48,7 +48,7 @@ public class VistaLinkAuthenticatorTest
     public final void testAuthenticateViaAccessVerifyInvalid() throws Exception
     {
         final VistaLinkAuthenticator authenticator = new VistaLinkAuthenticator(
-                VistaLinkProcedureCallerTest.SUPPORTED_DIVISON);
+                VistaLinkUtilTest.SUPPORTED_DIVISON);
         
         authenticator.authenticateViaAccessVerify("bob", "robert", "192.168.1.4");
     }
