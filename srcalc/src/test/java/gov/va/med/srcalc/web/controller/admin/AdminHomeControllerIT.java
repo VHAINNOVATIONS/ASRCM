@@ -39,6 +39,13 @@ public class AdminHomeControllerIT extends IntegrationTest
     }
     
     @Test
+    public final void testLoginForm() throws Exception
+    {
+        fMockMvc.perform(get(SrcalcUrls.ADMIN_LOGIN_FORM))
+            .andExpect(status().isOk());
+    }
+    
+    @Test
     public final void testDefaultPage() throws Exception
     {
         fMockMvc.perform(get(SrcalcUrls.ADMIN_HOME))

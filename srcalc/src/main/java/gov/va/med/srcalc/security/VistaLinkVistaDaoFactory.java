@@ -9,12 +9,6 @@ import gov.va.med.srcalc.vista.vistalink.VistaLinkProcedureCaller;
 public class VistaLinkVistaDaoFactory implements VistaDaoFactory
 {
     @Override
-    public VistaPersonDao getVistaPersonDao(final String division)
-    {
-        return new RpcVistaPersonDao(new VistaLinkProcedureCaller(division));
-    }
-    
-    @Override
     public VistaPatientDao getVistaPatientDao()
     {
         final VistaUserDetails principal = SecurityUtil.getCurrentPrincipal();

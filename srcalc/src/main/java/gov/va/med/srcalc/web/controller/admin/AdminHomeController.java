@@ -16,7 +16,6 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,12 +39,21 @@ public class AdminHomeController
     {
         fAdminService = adminService;
     }
+    
+    /**
+     * Presents the Administrator Login Form.
+     */
+    @RequestMapping(value = SrcalcUrls.ADMIN_LOGIN_FORM_SUFFIX, method = RequestMethod.GET)
+    public String loginForm()
+    {
+        return Views.ADMIN_LOGIN_FORM;
+    }
 
     /**
      * Presents the Administration Home Page.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public String defaultPage(final Model model)
+    public String defaultPage()
     {
         return Views.ADMIN_HOME;
     }

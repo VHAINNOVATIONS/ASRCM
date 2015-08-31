@@ -16,6 +16,7 @@ public class Views
     }
     
     /* Shared and Calculation Views */
+    public static final String VISTA_LOGIN_FORM = "vistaLoginForm.jsp";
     public static final String LAUNCH_FROM_CPRS = "launchFromCprs.jsp";
     public static final String SESSION_TIMEOUT = "sessionTimeout.jsp";
     public static final String SELECT_SPECIALTY = "selectSpecialty.jsp";
@@ -25,6 +26,7 @@ public class Views
     public static final String CONFIRM_NEW_CALC = "confirmNewCalc.jsp";
     
     /* Administrative Views */
+    public static final String ADMIN_LOGIN_FORM = "admin/adminLoginForm.jsp";
     public static final String ADMIN_HOME = "admin/home.jsp";
     public static final String MODEL_ADMIN_HOME = "admin/modelHome.jsp";
     public static final String EDIT_RISK_MODEL  = "admin/editRiskModel.jsp";

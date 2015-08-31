@@ -6,9 +6,20 @@ package gov.va.med.srcalc.vista;
 public enum RemoteProcedure
 {
     /**
-     * Returns information about the current user.
+     * <p>Returns information about the current user.</p>
+     * 
+     * <p>The returned array contains at least the following elements:</p>
+     * 
+     * <ol>
+     * <li>the user's DUZ</li>
+     * <li>the user's name from the NEW PERSON file</li>
+     * <li>the user's full name from the name standard file</li>
+     * <li>the user's division, as IEN of INSTITUTION file^station name^station number</li>
+     * <li>the user's title</li>
+     * <li>the user's service/section</li>
+     * </ol>
      */
-    GET_USER("SR ASRC USER"),
+    GET_USER_INFO("XUS GET USER INFO", RpcContext.XUS_SIGNON),
     
     /**
      * Returns Person Classes for the current user.
@@ -77,11 +88,26 @@ public enum RemoteProcedure
     public final static String RISK_SAVED_RETURN =
             "1^Record created successfully.";
     
+    private final RpcContext fRpcContext;
+    
     private final String fProcedureName;
     
-    private RemoteProcedure(final String procedureName)
+    /**
+     * Constructs an instance with the given attributes.
+     */
+    private RemoteProcedure(final String procedureName, final RpcContext rpcContext)
     {
         fProcedureName = procedureName;
+        fRpcContext = rpcContext;
+    }
+    
+    /**
+     * Constructs an instance with the given procedure name and {@link RpcContext#SR_ASRC}
+     * as the associated RPC context.
+     */
+    private RemoteProcedure(final String procedureName)
+    {
+        this(procedureName, RpcContext.SR_ASRC);
     }
     
     /**
@@ -90,5 +116,14 @@ public enum RemoteProcedure
     public String getProcedureName()
     {
         return fProcedureName;
+    }
+    
+    /**
+     * Returns the Remote Procedure's associated RPC context. This context should be used
+     * when calling the Remote Procedure.
+     */
+    public RpcContext getRpcContext()
+    {
+        return fRpcContext;
     }
 }

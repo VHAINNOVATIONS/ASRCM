@@ -251,7 +251,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         {
             try
             {
-                final String rpcResultString = fProcedureCaller.doRetrieveLabs(
+                final String rpcResultString = fProcedureCaller.doRetrieveLabsCall(
                         fDuz,
                         String.valueOf(dfn),
                         labRetrievalEnum.getPossibleLabNames());
