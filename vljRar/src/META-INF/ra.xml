@@ -24,7 +24,10 @@
 		    connectorJndiName property. It overrides this one! -->
 		    <config-property-name>connectorJndiName</config-property-name>
 		    <config-property-type>java.lang.String</config-property-type>
-		    <config-property-value>vljPlaceholder</config-property-value>
+		    <!-- Note: not specifying the placeholder connectorJndiName
+		    value. This deviates from the VistALink-supplied ra.xml but
+		    avoids an Exception upon startup in GlassFish and should still
+		    work in all containers. -->
 		</config-property>
 		<connectionfactory-interface>javax.resource.cci.ConnectionFactory</connectionfactory-interface>
 		<connectionfactory-impl-class>gov.va.med.vistalink.adapter.cci.VistaLinkConnectionFactory</connectionfactory-impl-class>
