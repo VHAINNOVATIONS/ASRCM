@@ -42,17 +42,17 @@ public class VistaLinkUtil
         // No construction.
     }
     
-    private static String getStationFromDivision(final String division)
-        throws InstitutionMappingBadStationNumberException
-    {
-        return STATION_RULES.getPrimaryStationLookupString(division);
-    }
-    
+    /**
+     * Tries to load the VistALink ConnectionFactory for the given division by explicitly
+     * reading the configuration file.
+     */
     private static void tryForceLoad(final String division)
     {
+        // The below technique is tighter coupling with VistALink than I would like, but
+        // I couldn't find a better way. - David Tombs, 31-Aug-2015
         try
         {
-            final String station = getStationFromDivision(division);
+            final String station = STATION_RULES.getPrimaryStationLookupString(division);
             final String configuredJndiName =
                     ConfigurationReader.getJndiNameForStationNumber(station);
             LOGGER.trace(
@@ -90,8 +90,8 @@ public class VistaLinkUtil
             /*
              * This isn't pretty: VistALink relies on the connectors being eagerly-loaded
              * like WebLogic does, but it isn't standard across application servers. The
-             * VistALink code contains the below hack to force initialization but for some
-             * reason only enables it on Websphere.
+             * below hack supports other application servers (e.g., GlassFish and probably
+             * Websphere).
              */
             tryForceLoad(division);
 
