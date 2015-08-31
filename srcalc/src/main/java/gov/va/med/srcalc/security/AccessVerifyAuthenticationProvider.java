@@ -43,11 +43,8 @@ public final class AccessVerifyAuthenticationProvider implements AuthenticationP
      * programming error: the method will just return null. (Spring Security specifies
      * this behavior.)</p>
      * 
-     * @param providedAuth should be an instance of {@link
-     * UsernamePasswordAuthenticationToken} with the access code as the principal and the
-     * verify code as the credentials. Its "authentication details" must also be an
-     * instance of SrcalcWebAuthnDetails.
-     * @returns A fully-populated UsernamePasswordAuthenticationToken if authentication
+     * @param providedAuth contains the user's information necessary for authentication
+     * @return A fully-populated UsernamePasswordAuthenticationToken if authentication
      * succeeds, or null if the above criteria are not met.
      * @throws AuthenticationException if authentication fails
      */

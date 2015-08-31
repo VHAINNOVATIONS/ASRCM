@@ -153,7 +153,7 @@ public final class Specialty implements Serializable
     /**
      * Compares Specialties based on their names, which are unique. The associated Risk
      * Models are not compared.
-     * @returns true if the given Specialty object has the same name, false otherwise
+     * @return true if the given Specialty object has the same name, false otherwise
      * @see #getName()
      */
     @Override
