@@ -24,7 +24,8 @@ public class MockVistaLinkConnectionFactory extends VistaLinkConnectionFactory
 
     public MockVistaLinkConnectionFactory()
     {
-        // These values shouldn't be used.
+        // These values shouldn't be used, but supply them to satisfy the
+        // VistaLinkConnectionFactory constructor.
         super(
                 new VistaLinkManagedConnectionFactory(),
                 null);

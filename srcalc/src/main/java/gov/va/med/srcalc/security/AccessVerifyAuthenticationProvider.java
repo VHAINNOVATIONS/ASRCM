@@ -29,23 +29,32 @@ public final class AccessVerifyAuthenticationProvider implements AuthenticationP
     /**
      * <p>Authenticates the user with VistA.</p>
      * 
-     * <p>Note that the returned Authentication is different from the given
-     * Authentication. This is weird, but required by Spring Security.</p>
+     * <p>For this method to perform authentication, the passed Authentication object
+     * must:</p>
+     * 
+     * <ul>
+     * <li>have the user's plaintext access code as the principal,</li>
+     * <li>have the user's plaintext verify code as the credentials, and</li>
+     * <li>have an instance of {@link SrcalcWebAuthnDetails} (with a non-empty division)
+     * as the details object.</li>
+     * </ul>
+     * 
+     * <p>If the Authentication object does not meet the above criteria it is not a
+     * programming error: the method will just return null. (Spring Security specifies
+     * this behavior.)</p>
      * 
      * @param providedAuth should be an instance of {@link
      * UsernamePasswordAuthenticationToken} with the access code as the principal and the
-     * verify code as the credentials.
+     * verify code as the credentials. Its "authentication details" must also be an
+     * instance of SrcalcWebAuthnDetails.
      * @returns A fully-populated UsernamePasswordAuthenticationToken if authentication
-     * succeeds, or null if the given Authentication is not an instance of
-     * UsernamePasswordAuthenticationToken
+     * succeeds, or null if the above criteria are not met.
      * @throws AuthenticationException if authentication fails
      */
     @Override
     public Authentication authenticate(final Authentication providedAuth)
         throws AuthenticationException
     {
-        // Even though this is the only supported division for now, instantiate here to
-        // pave the way for true division support.
         final String accessCode = providedAuth.getPrincipal().toString();
         final String verifyCode = providedAuth.getCredentials().toString();
         if (!(providedAuth.getDetails() instanceof SrcalcWebAuthnDetails))
@@ -87,6 +96,7 @@ public final class AccessVerifyAuthenticationProvider implements AuthenticationP
         }
         catch (final FailedLoginException ex)
         {
+            LOGGER.debug("Failed access/verify code login.", ex);
             // Due to Spring Security's architecture, we do not know whether the user was
             // actually trying to login with access/verify codes. So provide a generic
             // failure message.
@@ -94,12 +104,15 @@ public final class AccessVerifyAuthenticationProvider implements AuthenticationP
         }
         catch (final LoginException ex)
         {
+            LOGGER.debug("VistA rejected the access/verify code login.", ex);
             // This exception is not completely accurate, but it's the closest concrete
             // subclass of AuthenticationException.
             throw new AuthenticationServiceException("VistA rejected the login", ex);
         }
         catch (final DataAccessException ex)
         {
+            LOGGER.debug(
+                    "Communication failure while attempting VistA authentication.", ex);
             throw new AuthenticationServiceException(
                     "Unable to authenticate with VistA due to communication failure.",
                     ex);

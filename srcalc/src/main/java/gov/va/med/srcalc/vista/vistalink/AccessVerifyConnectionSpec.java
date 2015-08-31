@@ -115,8 +115,8 @@ public final class AccessVerifyConnectionSpec extends VistaLinkConnectionSpecImp
     
     @Override
     public void setAuthenticationNodes(
-            Document requestDoc,
-            Node securityNode)
+            final Document requestDoc,
+            final Node securityNode)
     {
         LOGGER.debug("Re-authentication type is '{}'", getSecurityType());
         
@@ -140,7 +140,7 @@ public final class AccessVerifyConnectionSpec extends VistaLinkConnectionSpecImp
     
     @Override
     @Deprecated
-    public boolean isConnSpecEqual(Object obj)
+    public boolean isConnSpecEqual(final Object obj)
     {
         return equals(obj);
     }

@@ -25,7 +25,7 @@ public class VistaLinkAuthenticator
     private final VistaLinkProcedureCaller fProcedureCaller;
     
     /**
-     * Constructs an instance what will authenticate with the specified VistA division.
+     * Constructs an instance that will authenticate with the specified VistA division.
      * @throws IllegalArgumentException if the given division is not known to VistALink
      */
     public VistaLinkAuthenticator(final String division)
