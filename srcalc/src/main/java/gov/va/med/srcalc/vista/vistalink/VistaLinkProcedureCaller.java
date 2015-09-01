@@ -86,7 +86,7 @@ public final class VistaLinkProcedureCaller implements VistaProcedureCaller
             fVlcf = (VistaLinkConnectionFactory)namingContext.lookup(
                     fVlcfJndiName);
         }
-        catch (NamingException e)
+        catch (final NamingException e)
         {
             throw new ConfigurationException(
                     "Could not load VistaLinkConnectionFactory from JNDI", e);
@@ -316,7 +316,7 @@ public final class VistaLinkProcedureCaller implements VistaProcedureCaller
      * either standard Java or Spring exceptions.
      * @param connectionSpec specifies connection parameters (e.g., division, user)
      * @param request specifies the remote procedure call to make
-     * @return an immutable list of String lines from the reponse
+     * @return an immutable list of String lines from the response
      * @throws DataAccessException if there was an error communicating with VistA
      * @throws AccountNotFoundException if the given ConnectionSpec specified a user
      * identifier (e.g., DUZ) that could not be matched to a VistA user
