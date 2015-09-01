@@ -24,7 +24,7 @@ public class SrcalcWebAuthnDetails
     {
         if (remoteAddress.isEmpty())
         {
-            throw new IllegalArgumentException("remoteAddress but be non-empty.");
+            throw new IllegalArgumentException("remoteAddress must be non-empty.");
         }
         fRemoteAddress = remoteAddress;
         fDivision = Preconditions.checkNotNull(division);

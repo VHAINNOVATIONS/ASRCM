@@ -23,6 +23,7 @@
     <!-- Import the controller beans. -->
     <import resource="classpath:/srcalc-controller.xml"/>
     
+    <!-- Many beans below depend on this factory to get VistA DAOs. -->
     <bean id="vistaDaoFactory" class="gov.va.med.srcalc.security.VistaLinkVistaDaoFactory" />
 
     <!--

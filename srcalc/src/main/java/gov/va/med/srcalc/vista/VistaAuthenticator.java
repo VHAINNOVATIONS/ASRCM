@@ -43,6 +43,9 @@ public interface VistaAuthenticator
      * login. (I.e., VistA assigns a new token per login.) Applications can use this
      * method to authenticate with a CCOW token and load the user's information.</p>
      * 
+     * <p>Note that, at time of writing, VistA ties CCOW tokens to an IP address. VistA
+     * will reject the token if the passed IP does not match.</p>
+     * 
      * @param ccowToken the CCOW token
      * @param clientIp the requesting client's IP address
      * @return a VistaPerson object for the user if authentication was successful

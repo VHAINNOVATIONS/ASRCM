@@ -58,7 +58,8 @@ public class MockVistaLinkConnection implements VistaLinkConnection
     public final static String RADIOLOGIST_NAME = "RADIOLOGIST,ONE";
     
     /**
-     * The full name (e.g., from the NAME COMPONENTS file) for the fake radiologist user.
+     * The full name (e.g., from the VistA NAME COMPONENTS file) for the fake radiologist
+     * user.
      */
     public final static String RADIOLOGIST_FULL_NAME = "Radiologist One MD";
     
