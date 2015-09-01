@@ -1,7 +1,6 @@
-package gov.va.med.srcalc.security;
+package gov.va.med.srcalc.vista;
 
 import gov.va.med.srcalc.ConfigurationException;
-import gov.va.med.srcalc.vista.*;
 
 /**
  * <p>Allows clients to construct new VistA DAOs without knowing the implementation.</p>
@@ -11,6 +10,20 @@ import gov.va.med.srcalc.vista.*;
  */
 public interface VistaDaoFactory
 {
+    /**
+     * Returns true if this factory can instantiate objects to communicate with the given
+     * VistA division, false otherwise.
+     */
+    public boolean isDivisionKnown(final String division);
+    
+    /**
+     * <p>Returns a VistaAuthenticator that will authenticate users with the given VistA
+     * division.</p>
+     * 
+     * @throws IllegalArgumentException if the division is unknown
+     */
+    public VistaAuthenticator getAuthenticator(final String division);
+    
     /**
      * <p>Returns a {@link VistaPatientDao} that will execute under the context of
      * the current user.</p>

@@ -40,6 +40,8 @@ public class DefaultCalculationServiceTest
     @Before
     public void setup()
     {
+        final MockVistaDaoFactory mockVistaDaos = new MockVistaDaoFactory();
+        
         // Make the SpecialtyDao actually return specialties.
         fMockSpecialtyDao = mock(SpecialtyDao.class);
         when(fMockSpecialtyDao.getAllSpecialties()).thenReturn(SampleModels.specialtyList());
@@ -47,7 +49,7 @@ public class DefaultCalculationServiceTest
         when(fMockSpecialtyDao.getByName(specialty.getName())).thenReturn(specialty);
         
         // And make VistaPatientDao.getPatient actually return a patient.
-        fMockPatientDao = mock(VistaPatientDao.class);
+        fMockPatientDao = mockVistaDaos.getVistaPatientDao();
         when(fMockPatientDao.getPatient(SAMPLE_PATIENT_DFN))
             .thenReturn(SampleCalculations.dummyPatient(SAMPLE_PATIENT_DFN));
         // Default to bad signature.
@@ -58,7 +60,7 @@ public class DefaultCalculationServiceTest
             .thenReturn(VistaPatientDao.SaveNoteCode.SUCCESS);
 
         // These don't need any special setup: we just verify certain calls.
-        fMockSurgeryDao = MockVistaDaos.mockSurgeryDao();
+        fMockSurgeryDao = mockVistaDaos.getVistaSurgeryDao();
         fMockResultsDao = mock(ResultsDao.class);
     }
     

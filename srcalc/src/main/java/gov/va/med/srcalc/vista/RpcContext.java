@@ -16,6 +16,8 @@ public enum RpcContext
      * For VistA kernel user sign-on.
      */
     XUS_SIGNON("XUS SIGNON"),
+    
+    XUS_KAAJEE_PROXY_LOGON("XUS KAAJEE PROXY LOGON"),
 
     /**
      * Identifies the Automated Surgical Risk Calculator application.
