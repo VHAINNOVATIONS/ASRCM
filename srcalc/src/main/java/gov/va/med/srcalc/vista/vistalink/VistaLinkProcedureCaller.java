@@ -1,6 +1,8 @@
 package gov.va.med.srcalc.vista.vistalink;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.naming.*;
 import javax.resource.ResourceException;
@@ -13,9 +15,6 @@ import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.srcalc.vista.RemoteProcedure;
 import gov.va.med.srcalc.vista.VistaProcedureCaller;
 import gov.va.med.vistalink.adapter.cci.*;
-import gov.va.med.vistalink.institution.InstitutionMapNotInitializedException;
-import gov.va.med.vistalink.institution.InstitutionMappingDelegate;
-import gov.va.med.vistalink.institution.InstitutionMappingNotFoundException;
 import gov.va.med.vistalink.rpc.*;
 import gov.va.med.vistalink.security.m.SecurityAccessVerifyCodePairInvalidException;
 import gov.va.med.vistalink.security.m.SecurityFaultException;
@@ -24,6 +23,9 @@ import gov.va.med.vistalink.security.m.SecurityIdentityDeterminationFaultExcepti
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.*;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 
 /**
  * <p>Provides a simple interface to call VistA Remote Procedures. Uses VistALink.</p>
@@ -72,25 +74,22 @@ public final class VistaLinkProcedureCaller implements VistaProcedureCaller
         
         try
         {
-            fVlcfJndiName = InstitutionMappingDelegate.getJndiConnectorNameForInstitution(
-                    division);
+            final Optional<String> jndiName = VistaLinkUtil.getJndiNameForDivision(division);
+            if (!jndiName.isPresent())
+            {
+                throw new IllegalArgumentException(
+                        "Division " + division + " not supported");
+            }
+                   
+            fVlcfJndiName = jndiName.get();
             final Context namingContext = new InitialContext();
             fVlcf = (VistaLinkConnectionFactory)namingContext.lookup(
                     fVlcfJndiName);
         }
-        catch (InstitutionMappingNotFoundException e)
-        {
-            throw new IllegalArgumentException("Division " + division + " not supported", e);
-        }
-        catch (NamingException e)
+        catch (final NamingException e)
         {
             throw new ConfigurationException(
                     "Could not load VistaLinkConnectionFactory from JNDI", e);
-        }
-        catch (InstitutionMapNotInitializedException e)
-        {
-            throw new ConfigurationException(
-                    "VistALink institution map not loaded.", e);
         }
     }
     
@@ -317,7 +316,7 @@ public final class VistaLinkProcedureCaller implements VistaProcedureCaller
      * either standard Java or Spring exceptions.
      * @param connectionSpec specifies connection parameters (e.g., division, user)
      * @param request specifies the remote procedure call to make
-     * @return an unmodifiable list of String lines from the reponse
+     * @return an immutable list of String lines from the response
      * @throws DataAccessException if there was an error communicating with VistA
      * @throws AccountNotFoundException if the given ConnectionSpec specified a user
      * identifier (e.g., DUZ) that could not be matched to a VistA user
@@ -325,7 +324,7 @@ public final class VistaLinkProcedureCaller implements VistaProcedureCaller
      * code pair but it was not correct
      * @throws LoginException if any other issue occurred reauthenticating in VistA
      */
-    private List<String> doRpc(
+    private ImmutableList<String> doRpc(
             final VistaLinkConnectionSpec connectionSpec, final RpcRequest request)
             throws DataAccessException, FailedLoginException, AccountNotFoundException,
                     LoginException
@@ -346,9 +345,9 @@ public final class VistaLinkProcedureCaller implements VistaProcedureCaller
                     // String.split() is used here instead of Guava's Splitter 
                     // because it eliminates an empty string at the end of the 
                     // response result, which is the desired behavior.
-                    return Arrays.asList(response.getResults().split("\n"));
+                    return ImmutableList.copyOf(response.getResults().split("\n"));
                 }
-                return Arrays.asList(response.getResults());
+                return ImmutableList.of(response.getResults());
             }
             finally
             {
