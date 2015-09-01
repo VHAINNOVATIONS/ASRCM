@@ -11,9 +11,11 @@ import org.junit.Test;
 import com.google.common.base.Optional;
 
 /**
- * Unit tests for {@link VistaLinkAuthenticator}. We use a real {@link
+ * <p>Unit tests for {@link VistaLinkAuthenticator}. We use a real {@link
  * VistaLinkProcedureCaller} since it is final and cannot be mocked, so these tests do not
- * test VistaLinkAuthenticator in pure isolation.
+ * test VistaLinkAuthenticator in pure isolation.</p>
+ * 
+ * <p>Using BDD-style tests here.</p>
  */
 public class VistaLinkAuthenticatorTest
 {
@@ -26,7 +28,15 @@ public class VistaLinkAuthenticatorTest
     }
     
     @Test
-    public final void testAuthenticateViaAccessVerify() throws Exception
+    public final void shouldReturnConfiguredDivision()
+    {
+        final VistaLinkAuthenticator authenticator = new VistaLinkAuthenticator(
+                VistaLinkUtilTest.SUPPORTED_DIVISON);
+        assertEquals(VistaLinkUtilTest.SUPPORTED_DIVISON, authenticator.getDivision());
+    }
+    
+    @Test
+    public final void shouldAuthenticateViaAccessVerify() throws Exception
     {
         final VistaLinkAuthenticator authenticator = new VistaLinkAuthenticator(
                 VistaLinkUtilTest.SUPPORTED_DIVISON);
@@ -45,12 +55,28 @@ public class VistaLinkAuthenticatorTest
     }
     
     @Test(expected = FailedLoginException.class)
-    public final void testAuthenticateViaAccessVerifyInvalid() throws Exception
+    public final void shouldThrowExceptionForInvalidAccessVerify() throws Exception
     {
         final VistaLinkAuthenticator authenticator = new VistaLinkAuthenticator(
                 VistaLinkUtilTest.SUPPORTED_DIVISON);
         
         authenticator.authenticateViaAccessVerify("bob", "robert", "192.168.1.4");
+    }
+    
+    @Test
+    public final void shouldAuthenticateViaCcowToken() throws Exception
+    {
+        final VistaLinkAuthenticator authenticator = new VistaLinkAuthenticator(
+                VistaLinkUtilTest.SUPPORTED_DIVISON);
+        final VistaPerson actualVistaPerson = authenticator.authenticateViaCcowToken(
+                MockVistaLinkConnection.CCOW_TOKEN, "10.0.1.4");
+        
+        // VistaPerson doesn't provide value equality, so test significant attributes.
+        assertEquals(
+                MockVistaLinkConnection.RADIOLOGIST_NAME, actualVistaPerson.getDisplayName());
+        assertEquals(
+                Optional.of(MockVistaLinkConnection.RADIOLOGIST_PROVIDER_TYPE),
+                actualVistaPerson.getProviderType());
     }
     
 }

@@ -1,44 +1,63 @@
 package gov.va.med.srcalc.security;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
-
-import com.google.common.base.Strings;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
 
 /**
- * Subclass of WebAuthenticationDetails providing extra attributes.
+ * Similar to {@link
+ * org.springframework.security.web.authentication.WebAuthenticationDetails} but stores
+ * srcalc-specific attributes.
  */
-public class SrcalcWebAuthnDetails extends WebAuthenticationDetails
+public class SrcalcWebAuthnDetails
 {
-    /**
-     * The HTTP request parameter that should contain the division.
-     */
-    public static final String DIVISION_PARAM = "division";
-    
-    /**
-     * Change this when changing the class.
-     */
-    private static final long serialVersionUID = 1L;
-    
+    private final String fRemoteAddress;
     private final String fDivision;
 
     /**
-     * Constructs an instance, extracting the details from the given HTTP request.
+     * Constructs an instance with the given attributes.
+     * @param remoteAddress See {@link #getRemoteAddress()}. Must be non-empty.
+     * @param division See {@link #getDivision()}. Must not be null.
+     * @throws NullPointerException if any argument is null
+     * @throws IllegalArgumentException if remoteAddress is empty
      */
-    public SrcalcWebAuthnDetails(final HttpServletRequest request)
+    public SrcalcWebAuthnDetails(final String remoteAddress, final String division)
     {
-        super(request);
-        
-        fDivision = Strings.nullToEmpty(request.getParameter(DIVISION_PARAM));
+        if (remoteAddress.isEmpty())
+        {
+            throw new IllegalArgumentException("remoteAddress must be non-empty.");
+        }
+        fRemoteAddress = remoteAddress;
+        fDivision = Preconditions.checkNotNull(division);
     }
     
     /**
-     * Returns the division value extracted from the HTTP request.
+     * Returns the Internet Protocol (IP) address of the client requesting authenticaiton.
+     * @return a non-empty string
+     */
+    public String getRemoteAddress()
+    {
+        return fRemoteAddress;
+    }
+    
+    /**
+     * Returns the division value extracted from the HTTP request. Immutable.
      * @return never null, possibly empty
      */
     public String getDivision()
     {
         return fDivision;
+    }
+    
+    /**
+     * Returns a programmer-friendly String representation of this object. The format is
+     * unspecified but will contain the remote address and division.
+     */
+    @Override
+    public String toString()
+    {
+        return MoreObjects.toStringHelper(this)
+                .add("remoteAddress", fRemoteAddress)
+                .add("division", fDivision)
+                .toString();
     }
 }

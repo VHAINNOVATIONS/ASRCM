@@ -8,17 +8,28 @@ import javax.security.auth.login.LoginException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
 import com.google.common.base.Optional;
 
 import gov.va.med.srcalc.domain.VistaPerson;
 import gov.va.med.srcalc.vista.RemoteProcedure;
+import gov.va.med.srcalc.vista.VistaAuthenticator;
+import gov.va.med.vistalink.adapter.cci.VistaLinkAppProxyConnectionSpec;
 
 /**
- * Authenticates VistA credentials, providing a {@link VistaPerson} if successful.
+ * <p>A VistaAuthenticator that uses VistALink to perform VistA operations.</p>
+ * 
+ * <p>Per Effective Java Item 17, this class is marked final because it was not
+ * designed for inheritance.</p>
  */
-public class VistaLinkAuthenticator
+public final class VistaLinkAuthenticator implements VistaAuthenticator
 {
+    /**
+     * The name of the application proxy user to use for authentication RPCs.
+     */
+    static final String APPLICATON_PROXY_USER = "KAAJEE,PROXY";
+
     private static final Logger LOGGER =
             LoggerFactory.getLogger(VistaLinkAuthenticator.class);
     
@@ -31,6 +42,83 @@ public class VistaLinkAuthenticator
     public VistaLinkAuthenticator(final String division)
     {
         fProcedureCaller = new VistaLinkProcedureCaller(division);
+    }
+    
+    @Override
+    public String getDivision()
+    {
+        return fProcedureCaller.getDivision();
+    }
+    
+    @Override
+    public VistaPerson authenticateViaAccessVerify(
+            final String accessCode, final String verifyCode, final String clientIp)
+            throws FailedLoginException, LoginException, DataAccessException
+    {
+        LOGGER.debug("Authenticating access/verify code from {}", clientIp);
+
+        final AccessVerifyConnectionSpec connectionSpec = new AccessVerifyConnectionSpec(
+                getDivision(), accessCode, verifyCode, clientIp);
+        final List<String> userResults = fProcedureCaller.doRpc(
+                connectionSpec, RemoteProcedure.GET_USER_INFO);
+        
+        // Just get the pieces we care about.
+        final String duz = userResults.get(0);
+        final String userName = userResults.get(1);
+        final VistaPerson person = new VistaPerson(
+                fProcedureCaller.getDivision(),
+                duz,
+                userName,
+                loadProviderType(duz));
+        LOGGER.debug("Successfully authenticated VistA user: {}", person);
+        return person;
+    }
+    
+    @Override
+    public VistaPerson authenticateViaCcowToken(
+            final String ccowToken, final String clientIp)
+            throws FailedLoginException, LoginException, DataAccessException
+    {
+        LOGGER.debug("Authenticating CCOW token from {}", clientIp);
+        
+        final VistaLinkAppProxyConnectionSpec connectionSpec =
+                new VistaLinkAppProxyConnectionSpec(getDivision(), APPLICATON_PROXY_USER);
+
+        final List<String> userResults;
+        try
+        {
+            userResults = fProcedureCaller.doRpc(
+                    connectionSpec,
+                    RemoteProcedure.GET_USER_FROM_CCOW,
+                    clientIp,
+                    // FIXME: reference this from elsewhere
+                    "Automated Surgical Risk Calculator",
+                    VistaLinkUtil.encrypt("~~TOK~~" + ccowToken));
+        }
+        catch (final LoginException e)
+        {
+            // If we get a LoginException here, it means our application proxy user is not
+            // working.
+            throw new InvalidDataAccessResourceUsageException(
+                    "Unable to call Remote Procedure as application proxy.", e);
+        }
+
+        // Just get the pieces we care about.
+        final String duz = userResults.get(0);
+        // The RPC doesn't fail if the CCOW token was invalid, it just returns a DUZ of
+        // 0.
+        if (duz.equals(RemoteProcedure.BAD_TOKEN_DUZ))
+        {
+            throw new FailedLoginException("VistA rejected the CCOW token");
+        }
+        final String userName = userResults.get(1);
+        final VistaPerson person = new VistaPerson(
+                fProcedureCaller.getDivision(),
+                duz,
+                userName,
+                loadProviderType(duz));
+        LOGGER.debug("Successfully authenticated VistA user via CCOW: {}", person);
+        return person;
     }
     
     /**
@@ -62,39 +150,4 @@ public class VistaLinkAuthenticator
             return Optional.absent();
         }
     }
-    
-    /**
-     * Authenticates a user given an access/verify code pair.
-     * @param accessCode the user's plain-text access code
-     * @param verifyCode the user's plain-text verify code
-     * @param clientIp the requesting client's IP address
-     * @return a VistaPerson object for the user if authentication was successful
-     * @throws FailedLoginException if the access/verify pair was incorrect
-     * @throws LoginException if VistA rejected the authentication for any other reason
-     * (e.g., not authorized for the division, user disabled, etc.)
-     * @throws DataAccessException if communication with VistA fails
-     */
-    public VistaPerson authenticateViaAccessVerify(
-            final String accessCode, final String verifyCode, final String clientIp)
-            throws FailedLoginException, LoginException, DataAccessException
-    {
-        LOGGER.debug("Authenticating access/verify code from {}", clientIp);
-
-        final AccessVerifyConnectionSpec connectionSpec = new AccessVerifyConnectionSpec(
-                fProcedureCaller.getDivision(), accessCode, verifyCode, clientIp);
-        final List<String> userResults = fProcedureCaller.doRpc(
-                connectionSpec, RemoteProcedure.GET_USER_INFO);
-        
-        // Just get the pieces we care about.
-        final String duz = userResults.get(0);
-        final String userName = userResults.get(1);
-        final VistaPerson person = new VistaPerson(
-                fProcedureCaller.getDivision(),
-                duz,
-                userName,
-                loadProviderType(duz));
-        LOGGER.debug("Successfully authenticated VistA user: {}", person);
-        return person;
-    }
-    
 }

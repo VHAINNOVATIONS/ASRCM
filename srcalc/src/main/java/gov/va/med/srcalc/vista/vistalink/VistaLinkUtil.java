@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import gov.va.med.crypto.VistaKernelHash;
+import gov.va.med.crypto.VistaKernelHashCountLimitExceededException;
 import gov.va.med.srcalc.ConfigurationException;
 import gov.va.med.vistalink.adapter.spi.ConfigurationReader;
 import gov.va.med.vistalink.institution.*;
@@ -117,4 +119,23 @@ public class VistaLinkUtil
         return getJndiNameForDivision(division).isPresent();
     }
     
+    /**
+     * Obfuscates the given plaintext like {@link VistaKernelHash}, but with a friendlier
+     * API. Does not avoid CDATA boundaries and will not throw {@link
+     * gov.va.med.crypto.VistaKernelHashCountLimitExceededException}.
+     * @param plaintext the text to obfuscate
+     * @return the obfuscated text
+     */
+    public static String encrypt(final String plaintext)
+    {
+        try
+        {
+            return VistaKernelHash.encrypt(plaintext, false);
+        }
+        catch (VistaKernelHashCountLimitExceededException ex)
+        {
+            // This should never be thrown since we are passing false.
+            throw new RuntimeException("Unexpected exception", ex);
+        }
+    }
 }

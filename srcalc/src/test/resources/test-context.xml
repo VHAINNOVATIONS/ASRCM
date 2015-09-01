@@ -16,7 +16,8 @@
     <bean id="vistaPatientDao" class="gov.va.med.srcalc.vista.MockVistaPatientDao" />
     <!-- Same for VistaSurgeryDao. -->
     <bean id="vistaSurgeryDao"
-        class="gov.va.med.srcalc.vista.MockVistaDaos" factory-method="mockSurgeryDao" />
+        class="gov.va.med.srcalc.vista.MockVistaDaoFactory"
+        factory-method="mockSurgeryDao" />
     
     <!-- Create a dummy SrcalcInfo instance for CommonAttributesAdvice, etc. -->
     <bean id="srcalcInfo" class="gov.va.med.srcalc.SrcalcInfo">

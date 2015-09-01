@@ -2,12 +2,12 @@ package gov.va.med.srcalc.vista;
 
 import java.io.StringReader;
 
-import gov.va.med.crypto.VistaKernelHash;
 import gov.va.med.srcalc.domain.HealthFactor;
 import gov.va.med.srcalc.domain.Patient;
 import gov.va.med.srcalc.domain.ReferenceNotes;
 import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.domain.calculation.RetrievedValue;
+import gov.va.med.srcalc.vista.vistalink.VistaLinkUtil;
 
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
@@ -411,7 +411,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         try
         {
             final String rpcResultString = fProcedureCaller.doSaveProgressNoteCall(fDuz,
-                    VistaKernelHash.encrypt(electronicSignature, false), String.valueOf(patientDfn),
+                    VistaLinkUtil.encrypt(electronicSignature), String.valueOf(patientDfn),
                     // Use Guava Splitter to get a List.
                     Splitter.on('\n').splitToList(wrappedNote));
             

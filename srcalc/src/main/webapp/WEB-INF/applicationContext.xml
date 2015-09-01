@@ -22,6 +22,9 @@
        
     <!-- Import the controller beans. -->
     <import resource="classpath:/srcalc-controller.xml"/>
+    
+    <!-- Many beans below depend on this factory to get VistA DAOs. -->
+    <bean id="vistaDaoFactory" class="gov.va.med.srcalc.security.VistaLinkVistaDaoFactory" />
 
     <!--
     ***** Configure Spring Security. *****
@@ -100,6 +103,8 @@
     
     <bean id="accessVerifyAuthProvider"
         class="gov.va.med.srcalc.security.AccessVerifyAuthenticationProvider" />
+    <bean id="ccowTokenAuthProvider"
+        class="gov.va.med.srcalc.security.CcowTokenAuthenticationProvider" />
     <security:authentication-manager>
         <!--
         First, check an in-memory admin user store. Of course an in-memory user
@@ -112,11 +117,11 @@
                 <security:user name="admintwo" password="Admin2" authorities="ROLE_ADMIN" />
             </security:user-service>
         </security:authentication-provider>
-        <!-- If the user wasn't an admin, try access/verify code login. -->
+        <!-- If the user wasn't an admin, try VistA login. -->
+        <security:authentication-provider ref="ccowTokenAuthProvider" />
         <security:authentication-provider ref="accessVerifyAuthProvider" />
     </security:authentication-manager>
     
-    <bean id="vistaDaoFactory" class="gov.va.med.srcalc.security.VistaLinkVistaDaoFactory" />
     <!-- Provide a request-scoped VistaPatientDao that already knows the current
          user. -->
     <bean id="vistaPatientDao" scope="request"

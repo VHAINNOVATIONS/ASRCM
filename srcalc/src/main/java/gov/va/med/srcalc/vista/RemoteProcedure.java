@@ -20,6 +20,32 @@ public enum RemoteProcedure
      * </ol>
      */
     GET_USER_INFO("XUS GET USER INFO", RpcContext.XUS_SIGNON),
+
+    // Note: there is also XUS KAAJEE GET USER INFO, which returns better information,
+    // but I am not sure we could use it in production. XUS GET USER INFO is public-use.
+    
+    /**
+     * <p>Returns information about the user associated with the given CCOW token.</p>
+     * 
+     * <p>Parameters:</p>
+     * 
+     * <ol>
+     * <li>the client IP address (VistA verifies this address.)</li>
+     * <li>the application name for VistA's signon log</li>
+     * <li>the actual CCOW token</li>
+     * </ol>
+     * 
+     * <p>The returned array contains at least the following elements:</p>
+     * 
+     * <ol>
+     * <li>the user's DUZ</li>
+     * <li>the user's name from the NEW PERSON file</li>
+     * <li>the user's full name from the NAME COMPONENTS file</li>
+     * </ol>
+     * 
+     * @see VistaAuthenticator#authenticateViaCcowToken(String, String)
+     */
+    GET_USER_FROM_CCOW("XUS KAAJEE GET USER VIA PROXY", RpcContext.XUS_KAAJEE_PROXY_LOGON),
     
     /**
      * Returns Person Classes for the current user.
@@ -87,6 +113,12 @@ public enum RemoteProcedure
      */
     public final static String RISK_SAVED_RETURN =
             "1^Record created successfully.";
+    
+    /**
+     * {@link #GET_USER_FROM_CCOW} returns this DUZ if the token was invalid (or
+     * associated with a different client IP).
+     */
+    public final static String BAD_TOKEN_DUZ = "0";
     
     private final RpcContext fRpcContext;
     

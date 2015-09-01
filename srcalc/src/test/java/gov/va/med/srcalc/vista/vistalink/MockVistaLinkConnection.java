@@ -7,6 +7,9 @@ import javax.resource.NotSupportedException;
 import javax.resource.ResourceException;
 import javax.resource.cci.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 
@@ -16,6 +19,7 @@ import gov.va.med.srcalc.domain.VistaLabs;
 import gov.va.med.srcalc.vista.RemoteProcedure;
 import gov.va.med.srcalc.vista.RpcContext;
 import gov.va.med.srcalc.vista.vistalink.VistaLinkProcedureCaller;
+import gov.va.med.vistalink.adapter.cci.VistaLinkAppProxyConnectionSpec;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnection;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnectionSpec;
 import gov.va.med.vistalink.adapter.cci.VistaLinkDuzConnectionSpec;
@@ -54,6 +58,12 @@ public class MockVistaLinkConnection implements VistaLinkConnection
     public final static String RADIOLOGIST_NAME = "RADIOLOGIST,ONE";
     
     /**
+     * The full name (e.g., from the VistA NAME COMPONENTS file) for the fake radiologist
+     * user.
+     */
+    public final static String RADIOLOGIST_FULL_NAME = "Radiologist One MD";
+    
+    /**
      * The person class of the fake radiologist user.
      */
     public final static String RADIOLOGIST_PROVIDER_TYPE =
@@ -63,6 +73,18 @@ public class MockVistaLinkConnection implements VistaLinkConnection
      * The DUZ for a fake disabled user.
      */
     public final static String DISABLED_DUZ = "12345";
+    
+    /**
+     * The DUZ for a fake application proxy user.
+     */
+    public final static String PROXY_DUZ = "10000000218";
+    
+    /**
+     * A fake CCOW token for mock CCOW authentication. Supplying this token to
+     * {@link RemoteProcedure#GET_USER_FROM_CCOW} will return the fake radiologist
+     * user.
+     */
+    public final static String CCOW_TOKEN = "~2xwb123-3423";
     
     /**
      * The DFN of the fake patient returned from {@link RemoteProcedure#GET_PATIENT}.
@@ -83,6 +105,9 @@ public class MockVistaLinkConnection implements VistaLinkConnection
      * Sample Albumin lab data returned from {@link RemoteProcedure#GET_LABS}.
      */
     public final static String ALBUMIN_LAB_DATA = "";
+    
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(MockVistaLinkConnection.class);
 
     private final VistaLinkConnectionSpec fConnectionSpec;
 
@@ -176,6 +201,8 @@ public class MockVistaLinkConnection implements VistaLinkConnection
             SecurityAccessVerifyCodePairInvalidException,
             SecurityUserAuthorizationException
     {
+        LOGGER.debug("Performing mock authentication with {}", fConnectionSpec);
+
         if (fConnectionSpec instanceof VistaLinkDuzConnectionSpec)
         {
             final VistaLinkDuzConnectionSpec duzConnectionSpec =
@@ -219,6 +246,23 @@ public class MockVistaLinkConnection implements VistaLinkConnection
                         new VistaLinkFaultException("invalid access/verify code"));
             }
         }
+        else if (fConnectionSpec instanceof VistaLinkAppProxyConnectionSpec)
+        {
+            final VistaLinkAppProxyConnectionSpec appProxyCs =
+                    (VistaLinkAppProxyConnectionSpec)fConnectionSpec;
+            if (Objects.equals(
+                    appProxyCs.getAppProxyName(),
+                    VistaLinkAuthenticator.APPLICATON_PROXY_USER))
+            {
+                LOGGER.info("Detected application proxy user.");
+                return PROXY_DUZ;
+            }
+            else
+            {
+                throw new SecurityIdentityDeterminationFaultException(
+                        new VistaLinkFaultException("Bad application proxy user"));
+            }
+        }
         else
         {
             throw new SecurityIdentityDeterminationFaultException(
@@ -238,10 +282,30 @@ public class MockVistaLinkConnection implements VistaLinkConnection
             return makeArrayResponse(ImmutableList.of(
                     duz,
                     RADIOLOGIST_NAME,
-                    "Radiologist One MD",
+                    RADIOLOGIST_FULL_NAME,
                     "100^CAMP MASTER^512",
                     "PHYSICIAN",
                     "MEDICAL"));
+        }
+        else if (duz.equals(PROXY_DUZ) &&
+                request.getRpcName().equals(RemoteProcedure.GET_USER_FROM_CCOW.getProcedureName()))
+        {
+            final String decryptedToken = VistaKernelHash.decrypt(
+                    (String)request.getParams().getParam(3));
+            if (decryptedToken.equals("~~TOK~~" + CCOW_TOKEN))
+            {
+                return makeArrayResponse(ImmutableList.of(
+                        RADIOLOGIST_DUZ,
+                        RADIOLOGIST_NAME,
+                        RADIOLOGIST_FULL_NAME));
+            }
+            else
+            {
+                return makeArrayResponse(ImmutableList.of(
+                        RemoteProcedure.BAD_TOKEN_DUZ,
+                        "unk",
+                        "unk"));
+            }
         }
         else if (request.getRpcName().equals(RemoteProcedure.GET_USER_PERSON_CLASSES.getProcedureName()) &&
                 duz.equals(RADIOLOGIST_DUZ))
