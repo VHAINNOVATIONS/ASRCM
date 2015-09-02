@@ -348,6 +348,15 @@ div.searchToolbar {
 	max-width: 25em;
 }
 
+/* Don't initially display the form if we have JavaScript: try CCOW first. */
+.js #vistaLoginForm {
+	display: none;
+}
+
+.no-js #attemptingCcowMessage {
+	display: none;
+}
+
 /* The variable input form #riskVarForm */
 
 /* Hide the definition rows and reference notes if Javascript is enabled */
