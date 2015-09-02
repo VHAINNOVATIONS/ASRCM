@@ -240,7 +240,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
                     break;
                 case "Wt.:":
                     patient.setWeight(new RetrievedValue(
-                            Double.parseDouble(lineTokens.get(2)),
+                            // Remove any asterisks in the weight value
+                            Double.parseDouble(lineTokens.get(2).replace("*", "")),
                             dateFormat.parse(lineTokens.get(1)),
                             WEIGHT_UNITS));
                     break;
@@ -263,7 +264,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
     {
         final int feet = Integer.parseInt(lineTokens.get(2));
         // Inches are not necessarily used
-        final Integer inches = Ints.tryParse(lineTokens.get(4));
+        // Remove any asterisks in the height value
+        final Integer inches = Ints.tryParse(lineTokens.get(4).replace("*", ""));
         final double totalInches;
         if(inches == null)
         {
