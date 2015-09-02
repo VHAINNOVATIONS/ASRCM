@@ -10,7 +10,12 @@
     <c:when test="${empty param.login_failure}">
     <%-- Only attempt CCOW auth if this is our first attempt. --%>
     <p id="attemptingCcowMessage">Attempting Single Sign-On. Please wait...</p>
-    <!-- Using some HTML5-obsolete technology here, but it's the only way to CCOW for now. -->
+    <!--
+    Using some HTML5-obsolete technology here, but it's the only way to CCOW for now.
+    
+    The 'data' and 'classid' attributes identify the particular ActiveX control to load
+    (in this case, the Vergence ContextorControl).
+    -->
     <object id="ContextorControl"
         data="data:application/x-oleobject;base64,96x4h6lc0xGHJwBgsLXhNwADAADYEwAA2BMAAA=="
         classid="CLSID:8778ACF7-5CA9-11D3-8727-0060B0B5E137" name="ContextorControl">
@@ -61,12 +66,16 @@ $(document).ready(function() {
     var accessCodeInput = $('#accessCode');
     var divisionInput = $('#division');
     try {
+        // Join the CCOW context.
         ContextorControl.Run(
+                // Use the configuration application long name as the CCOW application
+                // name.
                 '${applicationScope['srcalc.appInfo'].longName}',
                 '',             // no passcode necessary
                 false);         // not surveyable - we don't care about context changes
 
         try {
+            // Get the current context.
             var contextItems = ContextorControl.CurrentContext;
             // Lookup the static keys by name.
             var vistalogon = contextItems.Item('user.id.logon.vistalogon').value;
@@ -77,8 +86,10 @@ $(document).ready(function() {
             accessCodeInput.val(vistatoken);
             vistaLoginForm.submit();
         } finally {
-            // The Vergence server seems to require this at the end of the script
-            // or else the next Run() call will fail.
+            // Note that we are not stateful like typical CCOW applications: we just get
+            // the user information and then don't care to interact with CCOW at all. The
+            // Vergence server seems to require Suspend(), though, or else the next Run()
+            // call will fail.
             ContextorControl.Suspend();
         }
     } catch (ex) {
