@@ -1,25 +1,18 @@
 package gov.va.med.srcalc.vista;
 
 /**
- * Enumerates all VistA Remote Procedures which this application uses.
+ * Enumerates all VistA Remote Procedures which this application uses. Each enumeration
+ * constant is the name of a VistA Remote Procedure with spaces replaced by underscores.
  */
 public enum RemoteProcedure
 {
     /**
      * <p>Returns information about the current user.</p>
      * 
-     * <p>The returned array contains at least the following elements:</p>
-     * 
-     * <ol>
-     * <li>the user's DUZ</li>
-     * <li>the user's name from the NEW PERSON file</li>
-     * <li>the user's full name from the name standard file</li>
-     * <li>the user's division, as IEN of INSTITUTION file^station name^station number</li>
-     * <li>the user's title</li>
-     * <li>the user's service/section</li>
-     * </ol>
+     * <p>See <a href="http://code.osehra.org/Prod/Visual/files/8994-356.html">the OSEHRA
+     * documentation</a> for parameter and return value documentation.</p>
      */
-    GET_USER_INFO("XUS GET USER INFO", RpcContext.XUS_SIGNON),
+    XUS_GET_USER_INFO("XUS GET USER INFO", RpcContext.XUS_SIGNON),
 
     // Note: there is also XUS KAAJEE GET USER INFO, which returns better information,
     // but I am not sure we could use it in production. XUS GET USER INFO is public-use.
@@ -27,96 +20,113 @@ public enum RemoteProcedure
     /**
      * <p>Returns information about the user associated with the given CCOW token.</p>
      * 
-     * <p>Parameters:</p>
-     * 
-     * <ol>
-     * <li>the client IP address (VistA verifies this address.)</li>
-     * <li>the application name for VistA's signon log</li>
-     * <li>the actual CCOW token</li>
-     * </ol>
-     * 
-     * <p>The returned array contains at least the following elements:</p>
-     * 
-     * <ol>
-     * <li>the user's DUZ</li>
-     * <li>the user's name from the NEW PERSON file</li>
-     * <li>the user's full name from the NAME COMPONENTS file</li>
-     * </ol>
+     * <p>See <a href="http://code.osehra.org/Prod/Visual/files/8994-2877.html">the OSEHRA
+     * documentation</a> for parameter and return value documentation. Note that the CCOW
+     * token parameter must actually be {@code encrypt("~~TOK~~" + token)}.</p>
      * 
      * @see VistaAuthenticator#authenticateViaCcowToken(String, String)
      */
-    GET_USER_FROM_CCOW("XUS KAAJEE GET USER VIA PROXY", RpcContext.XUS_KAAJEE_PROXY_LOGON),
+    XUS_KAAJEE_GET_USER_VIA_PROXY(
+            "XUS KAAJEE GET USER VIA PROXY", RpcContext.XUS_KAAJEE_PROXY_LOGON),
     
     /**
-     * Returns Person Classes for the current user.
+     * <p>Returns Person Classes for the current user.</p>
+     * 
+     * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
+     * Technical Manual for parameter and return value documentation.</p>
      */
-    GET_USER_PERSON_CLASSES("SR ASRC PERSON CLASSES"),
+    SR_ASRC_PERSON_CLASSES("SR ASRC PERSON CLASSES"),
     
     /**
      * Returns information about the given patient.
+     * 
+     * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
+     * Technical Manual for parameter and return value documentation.</p>
      */
-    GET_PATIENT("SR ASRC PATIENT"),
+    SR_ASRC_GET_PATIENT("SR ASRC PATIENT"),
     
     /**
      * Returns the most recent vitals on the patient.
      */
-    GET_RECENT_VITALS("GMV LATEST VM"),
+    GMV_LATEST_VM("GMV LATEST VM"),
     
     /**
      * Returns a vital from the given patient with the specified date range.
      */
-    GET_VITAL("GMV EXTRACT REC"),
+    GMV_EXTRACT_REC("GMV EXTRACT REC"),
     
     /**
      * Submits a completed calculation as a note on the patient's records.
+     * 
+     * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
+     * Technical Manual for parameter and return value documentation.</p>
      */
-    SAVE_PROGRESS_NOTE("SR ASRC PROGRESS NOTE"),
+    SR_ASRC_SAVE_PROGRESS_NOTE("SR ASRC PROGRESS NOTE"),
     
     /**
      * Saves a Risk Calculation as discrete data to VistA Surgery.
+     * 
+     * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
+     * Technical Manual for parameter and return value documentation.</p>
      */
-    SAVE_RISK("SR ASRC RISK SAVE"),
+    SR_ASRC_RISK_SAVE("SR ASRC RISK SAVE"),
     
     /**
      * Returns the most recent result for the given lab name possibilities.
+     * 
+     * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
+     * Technical Manual for parameter and return value documentation.</p>
      */
-    GET_LABS("SR ASRC LAB RESULTS"),
+    SR_ASRC_LAB_RESULTS("SR ASRC LAB RESULTS"),
     
     /**
      * Returns any of the patient's health factors in the last year.
+     * 
+     * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
+     * Technical Manual for parameter and return value documentation.</p>
      */
-    GET_HEALTH_FACTORS("SR ASRC HEALTH FACTORS"),
+    SR_ASRC_HEALTH_FACTORS("SR ASRC HEALTH FACTORS"),
     
     /**
-     * Returns all VA and non-VA active medications for the patient.
+     * Returns all active VA and non-VA medications for the patient.
+     * 
+     * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
+     * Technical Manual for parameter and return value documentation.</p>
      */
-    GET_ACTIVE_MEDICATIONS("SR ASRC ACTIVE MEDS"),
+    SR_ASRC_ACTIVE_MEDS("SR ASRC ACTIVE MEDS"),
 
     /**
      * Returns all nursing notes with the "NURSING ADMISSION EVALUATION NOTE" title.
+     * 
+     * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
+     * Technical Manual for parameter and return value documentation.</p>
      */
-    GET_ADL_STATUS("SR ASRC ADL NOTES"),
+    SR_ASRC_ADL_NOTES("SR ASRC ADL NOTES"),
     
     /**
-     * Returns any nursing notes for the specified patient, that contain the specified substring.
+     * Returns any nursing notes for the specified patient, that contain the specified
+     * substring.
+     * 
+     * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
+     * Technical Manual for parameter and return value documentation.</p>
      */
-    GET_NOTES_WITH_SUBSTRING("SR ASRC DNR NOTES");
+    SR_ASRC_DNR_NOTES("SR ASRC DNR NOTES");
 
     /**
-     * VistA returns this string if {@link #SAVE_PROGRESS_NOTE} succeeds.
+     * VistA returns this string if {@link #SR_ASRC_SAVE_PROGRESS_NOTE} succeeds.
      */
     public final static String VALID_SIGNATURE_RETURN =
             "1^Progress note was created and signed successfully.";
     
     /**
-     * VistA returns this string if {@link #SAVE_RISK} succeeds.
+     * VistA returns this string if {@link #SR_ASRC_RISK_SAVE} succeeds.
      */
     public final static String RISK_SAVED_RETURN =
             "1^Record created successfully.";
     
     /**
-     * {@link #GET_USER_FROM_CCOW} returns this DUZ if the token was invalid (or
-     * associated with a different client IP).
+     * {@link #XUS_KAAJEE_GET_USER_VIA_PROXY} returns this DUZ if the token was invalid
+     * (or associated with a different client IP).
      */
     public final static String BAD_TOKEN_DUZ = "0";
     

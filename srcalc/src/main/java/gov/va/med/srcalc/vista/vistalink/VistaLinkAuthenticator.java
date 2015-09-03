@@ -60,7 +60,7 @@ public final class VistaLinkAuthenticator implements VistaAuthenticator
         final AccessVerifyConnectionSpec connectionSpec = new AccessVerifyConnectionSpec(
                 getDivision(), accessCode, verifyCode, clientIp);
         final List<String> userResults = fProcedureCaller.doRpc(
-                connectionSpec, RemoteProcedure.GET_USER_INFO);
+                connectionSpec, RemoteProcedure.XUS_GET_USER_INFO);
         
         // Just get the pieces we care about.
         final String duz = userResults.get(0);
@@ -89,7 +89,7 @@ public final class VistaLinkAuthenticator implements VistaAuthenticator
         {
             userResults = fProcedureCaller.doRpc(
                     connectionSpec,
-                    RemoteProcedure.GET_USER_FROM_CCOW,
+                    RemoteProcedure.XUS_KAAJEE_GET_USER_VIA_PROXY,
                     clientIp,
                     // FIXME: reference this from elsewhere
                     "Automated Surgical Risk Calculator",
@@ -127,7 +127,7 @@ public final class VistaLinkAuthenticator implements VistaAuthenticator
     private Optional<String> loadProviderType(final String duz) throws LoginException
     {
         final List<String> personClassResults = fProcedureCaller.doRpc(
-                duz, RemoteProcedure.GET_USER_PERSON_CLASSES);
+                duz, RemoteProcedure.SR_ASRC_PERSON_CLASSES);
         
         if (!personClassResults.isEmpty())
         {

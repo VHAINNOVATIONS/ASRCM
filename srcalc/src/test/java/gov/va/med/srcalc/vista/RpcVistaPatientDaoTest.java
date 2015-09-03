@@ -87,17 +87,20 @@ public class RpcVistaPatientDaoTest
                     eq(RADIOLOGIST_DUZ), eq(String.valueOf(PATIENT_DFN)), anyListOf(String.class)))
                 .thenReturn("");
             // Setup the necessary actions for getting patient data.
-            when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_PATIENT, String.valueOf(PATIENT_DFN)))
+            when(caller.doRpc(
+                    RADIOLOGIST_DUZ,
+                    RemoteProcedure.SR_ASRC_GET_PATIENT,
+                    String.valueOf(PATIENT_DFN)))
                 .thenReturn(Arrays.asList(PATIENT_RPC_RETURN));
             // Return empty vitals
             when(caller.doRpc(
-                    RADIOLOGIST_DUZ, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(PATIENT_DFN)))
+                    RADIOLOGIST_DUZ, RemoteProcedure.GMV_LATEST_VM, String.valueOf(PATIENT_DFN)))
                 .thenReturn(new ArrayList<String>());
-            when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_VITAL, ""))
+            when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GMV_EXTRACT_REC, ""))
                 .thenReturn(new ArrayList<String>());
             when(caller.doRpc(
                     RADIOLOGIST_DUZ,
-                    RemoteProcedure.GET_HEALTH_FACTORS,
+                    RemoteProcedure.SR_ASRC_HEALTH_FACTORS,
                     String.valueOf(PATIENT_DFN)))
                     .thenReturn(ImmutableList.of(""));
             return caller;
@@ -226,7 +229,7 @@ public class RpcVistaPatientDaoTest
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
                 RADIOLOGIST_DUZ,
-                RemoteProcedure.GET_HEALTH_FACTORS,
+                RemoteProcedure.SR_ASRC_HEALTH_FACTORS,
                 String.valueOf(PATIENT_DFN)))
                 .thenReturn(VALID_HEALTH_FACTORS);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
@@ -255,7 +258,7 @@ public class RpcVistaPatientDaoTest
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
                 RADIOLOGIST_DUZ,
-                RemoteProcedure.GET_HEALTH_FACTORS,
+                RemoteProcedure.SR_ASRC_HEALTH_FACTORS,
                 String.valueOf(PATIENT_DFN)))
                 .thenReturn(ImmutableList.of("Invalid health factors String."));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
@@ -269,7 +272,7 @@ public class RpcVistaPatientDaoTest
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
                 RADIOLOGIST_DUZ,
-                RemoteProcedure.GET_ACTIVE_MEDICATIONS,
+                RemoteProcedure.SR_ASRC_ACTIVE_MEDS,
                 String.valueOf(PATIENT_DFN)))
                 .thenReturn(VALID_ACTIVE_MEDICATIONS);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
@@ -294,7 +297,7 @@ public class RpcVistaPatientDaoTest
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
                 RADIOLOGIST_DUZ,
-                RemoteProcedure.GET_ACTIVE_MEDICATIONS,
+                RemoteProcedure.SR_ASRC_ACTIVE_MEDS,
                 String.valueOf(PATIENT_DFN)))
                 .thenReturn(ImmutableList.of("Invalid medications String."));
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
@@ -308,7 +311,7 @@ public class RpcVistaPatientDaoTest
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
                 RADIOLOGIST_DUZ,
-                RemoteProcedure.GET_ADL_STATUS,
+                RemoteProcedure.SR_ASRC_ADL_NOTES,
                 String.valueOf(PATIENT_DFN),
                 ADL_ENTERPRISE_TITLE))
                 .thenReturn(VALID_ADL_NOTES);
@@ -325,7 +328,7 @@ public class RpcVistaPatientDaoTest
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
                 RADIOLOGIST_DUZ,
-                RemoteProcedure.GET_ADL_STATUS,
+                RemoteProcedure.SR_ASRC_ADL_NOTES,
                 String.valueOf(PATIENT_DFN),
                 ADL_ENTERPRISE_TITLE))
                 .thenReturn(ImmutableList.of("Invalid XML"));
@@ -341,7 +344,7 @@ public class RpcVistaPatientDaoTest
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
                 RADIOLOGIST_DUZ,
-                RemoteProcedure.GET_NOTES_WITH_SUBSTRING,
+                RemoteProcedure.SR_ASRC_DNR_NOTES,
                 String.valueOf(PATIENT_DFN),
                 "DNR"))
                 .thenReturn(VALID_DNR_NOTES);
@@ -358,7 +361,7 @@ public class RpcVistaPatientDaoTest
         final VistaProcedureCaller caller = mockVistaProcedureCaller();
         when(caller.doRpc(
                 RADIOLOGIST_DUZ,
-                RemoteProcedure.GET_NOTES_WITH_SUBSTRING,
+                RemoteProcedure.SR_ASRC_DNR_NOTES,
                 String.valueOf(PATIENT_DFN),
                 "DNR"))
                 .thenReturn(ImmutableList.of("Invalid XML"));
