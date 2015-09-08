@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.xml.bind.JAXBContext;
@@ -46,7 +47,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
-    private static final String VITALS_SPLIT_REGEX = "[\\s]+";
+    private static final String VALUES_SPLIT_REGEX = "[\\s]+";
     private static final String WEIGHT_UNITS = "lbs.";
     private static final String HEIGHT_UNITS = "inches";
     private static final String ADL_ENTERPRISE_TITLE = "NURSING ADMISSION EVALUATION NOTE";
@@ -224,35 +225,46 @@ public class RpcVistaPatientDao implements VistaPatientDao
         // For example, pulse is returned as: "Pulse:       (03/05/10@09:00)  74  _NURSE,ONE_Vitals"
         final SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "(" + VISTA_DATE_OUTPUT_FORMAT.toPattern() + ")");
-        final Pattern compiledPattern = Pattern.compile(VITALS_SPLIT_REGEX);
         for(final String line: vitalResults)
         {
             // For each line, determine if we need to pull the vital information for that line
-            // Each entry comes with an accompanying date and time.
-            final List<String> lineTokens = Splitter.on(compiledPattern).splitToList(line);
-            switch(lineTokens.get(0))
+            // Each entry comes with an optional date and time.
+            final Pattern pattern = Pattern.compile(
+                    "(.+:)\\s+" // Match to the first colon in order to get the name of the vital
+                    + "(\\(.+?\\))?\\s+" // Optional capture group for the date
+                    + "(.+)\\s+" // Match the value of the vital and any information between
+                                 // the optional date and the name
+                    + "([A-Za-z0-9_,]+)"); // Match the name of the person who recorded the vital
+            final Matcher matcher = pattern.matcher(line);
+            matcher.matches();
+            // Matcher groups begin at 1, as 0 denotes the entire pattern that was matched.
+            final String vitalName = matcher.group(1);
+            // This will be null when the date is not present.
+            final String dateString = matcher.group(2);
+            final String[] valuesArray = matcher.group(3).split(VALUES_SPLIT_REGEX);
+            switch(vitalName)
             {
                 case "Ht.:":
                     patient.setHeight(new RetrievedValue(
-                            findHeightInInches(lineTokens),
-                            dateFormat.parse(lineTokens.get(1)),
+                            findHeightInInches(valuesArray),
+                            dateFormat.parse(dateString),
                             HEIGHT_UNITS));
                     break;
                 case "Wt.:":
                     patient.setWeight(new RetrievedValue(
                             // Remove any asterisks in the weight value
-                            Double.parseDouble(lineTokens.get(2).replace("*", "")),
-                            dateFormat.parse(lineTokens.get(1)),
+                            Double.parseDouble(valuesArray[0].replace("*", "")),
+                            dateFormat.parse(dateString),
                             WEIGHT_UNITS));
                     break;
-                case "Body":
+                case "Body Mass Index:":
                     /* The actual name of this vital is "Body Mass Index:" but we are splitting
                      * on whitespace so only test for the first word.
                      * The BMI value is the second to last token on its line.
                      */
                     patient.setBmi(new RetrievedValue(
                         // Remove any asterisks in the BMI value
-                        Double.parseDouble(lineTokens.get(lineTokens.size()-2).replace("*", "")),
+                        Double.parseDouble(valuesArray[0].replace("*", "")),
                         patient.getWeight().getMeasureDate(),
                         ""));
                     break;
@@ -260,12 +272,12 @@ public class RpcVistaPatientDao implements VistaPatientDao
         }
     }
     
-    private double findHeightInInches(final List<String> lineTokens)
+    private double findHeightInInches(final String[] valuesArray)
     {
-        final int feet = Integer.parseInt(lineTokens.get(2));
+        final int feet = Integer.parseInt(valuesArray[0]);
         // Inches are not necessarily used
         // Remove any asterisks in the height value
-        final Integer inches = Ints.tryParse(lineTokens.get(4).replace("*", ""));
+        final Integer inches = Ints.tryParse(valuesArray[2].replace("*", ""));
         final double totalInches;
         if(inches == null)
         {

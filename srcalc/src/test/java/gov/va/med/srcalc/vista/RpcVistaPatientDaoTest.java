@@ -70,6 +70,22 @@ public class RpcVistaPatientDaoTest
             "</body>",
             "</note>",
             "</notes>");
+    private final static List<String> FULL_VITALS = ImmutableList.of(
+            "Temp.:       (03/05/10@09:00)  98.5 F  (36.9 C)  _NURSE,ONE_Vitals",
+            "Pulse:       (03/05/10@09:00)  74  _NURSE,ONE_Vitals",
+            "Resp.:       (08/24/09@14:00)  18  _NURSE,ONE_Vitals",
+            "Pulse Ox:    (12/01/09@08:53)  98%   _NURSE,ONE_Vitals",
+            "B/P:         (03/05/10@09:00)  134/81  _NURSE,ONE_Vitals",
+            "Ht.:         (08/24/09@14:00)  5 ft 11 in (180.34 cm)  _NURSE,ONE_Vitals",
+            "Wt.:         (03/05/10@09:00)  178 lb  (80.74 kg)  _NURSE,ONE",
+            "Body Mass Index:             24.88  _Vitals",
+            "Pain:        (03/05/10@09:00)  1  _NURSE,ONE_Vitals");
+    private final static List<String> PARTIAL_VITALS = ImmutableList.of(
+            "Ht.:         (01/02/02@08:00)  6 ft  (182.88 cm)  _LABTECH,FIFTYNINE_Vitals",
+            "Wt.:         (03/21/10@08:00)  208 lb  (94.35 kg)  _LABTECH,FIFTYNINE",
+            "Body Mass Index:             28.27*  _Vitals");
+    private final static List<String> NO_VITALS = ImmutableList.of(
+            "There are no results to report");
     
     private final static int PATIENT_DFN = 500;
 
@@ -92,7 +108,7 @@ public class RpcVistaPatientDaoTest
             // Return empty vitals
             when(caller.doRpc(
                     RADIOLOGIST_DUZ, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(PATIENT_DFN)))
-                .thenReturn(new ArrayList<String>());
+                .thenReturn(NO_VITALS);
             when(caller.doRpc(RADIOLOGIST_DUZ, RemoteProcedure.GET_VITAL, ""))
                 .thenReturn(new ArrayList<String>());
             when(caller.doRpc(
@@ -366,5 +382,45 @@ public class RpcVistaPatientDaoTest
         final Patient patient = dao.getPatient(PATIENT_DFN);
         // This would fail to retrieve DNR notes and the notes would be empty.
         assertEquals(0, patient.getDnrNotes().size());
+    }
+    
+    @Test
+    public final void testFullVitals() throws Exception
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(PATIENT_DFN)))
+            .thenReturn(FULL_VITALS);
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        final ImmutableList<Double> expectedValues = ImmutableList.of(178.0, 71.0, 24.88);
+        assertEquals(expectedValues, ImmutableList.of(patient.getWeight().getValue(),
+                patient.getHeight().getValue(), patient.getBmi().getValue()));
+    }
+    
+    @Test
+    public final void testPartialVitals() throws Exception
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(PATIENT_DFN)))
+            .thenReturn(PARTIAL_VITALS);
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        final ImmutableList<Double> expectedValues = ImmutableList.of(72.0, 208.0, 28.27);
+        assertEquals(expectedValues, ImmutableList.of(patient.getHeight().getValue(),
+                patient.getWeight().getValue(), patient.getBmi().getValue()));
+    }
+    
+    @Test
+    public final void testEmptyVitals()
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        // Empty vitals means the vitals do not get filled with any values.
+        assertEquals(null, patient.getWeight());
+        assertEquals(null, patient.getHeight());
+        assertEquals(null, patient.getBmi());
     }
 }
