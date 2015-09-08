@@ -38,7 +38,7 @@ public enum RemoteProcedure
     SR_ASRC_PERSON_CLASSES("SR ASRC PERSON CLASSES"),
     
     /**
-     * Returns information about the given patient.
+     * <p>Returns information about the given patient.</p>
      * 
      * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
      * Technical Manual for parameter and return value documentation.</p>
@@ -56,7 +56,7 @@ public enum RemoteProcedure
     GMV_EXTRACT_REC("GMV EXTRACT REC"),
     
     /**
-     * Submits a completed calculation as a note on the patient's records.
+     * <p>Submits a completed calculation as a note on the patient's records.</p>
      * 
      * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
      * Technical Manual for parameter and return value documentation.</p>
@@ -64,7 +64,7 @@ public enum RemoteProcedure
     SR_ASRC_SAVE_PROGRESS_NOTE("SR ASRC PROGRESS NOTE"),
     
     /**
-     * Saves a Risk Calculation as discrete data to VistA Surgery.
+     * <p>Saves a Risk Calculation as discrete data to VistA Surgery.</p>
      * 
      * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
      * Technical Manual for parameter and return value documentation.</p>
@@ -72,7 +72,7 @@ public enum RemoteProcedure
     SR_ASRC_RISK_SAVE("SR ASRC RISK SAVE"),
     
     /**
-     * Returns the most recent result for the given lab name possibilities.
+     * <p>Returns the most recent result for the given lab name possibilities.</p>
      * 
      * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
      * Technical Manual for parameter and return value documentation.</p>
@@ -80,7 +80,7 @@ public enum RemoteProcedure
     SR_ASRC_LAB_RESULTS("SR ASRC LAB RESULTS"),
     
     /**
-     * Returns any of the patient's health factors in the last year.
+     * <p>Returns any of the patient's health factors in the last year.</p>
      * 
      * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
      * Technical Manual for parameter and return value documentation.</p>
@@ -88,7 +88,7 @@ public enum RemoteProcedure
     SR_ASRC_HEALTH_FACTORS("SR ASRC HEALTH FACTORS"),
     
     /**
-     * Returns all active VA and non-VA medications for the patient.
+     * <p>Returns all active VA and non-VA medications for the patient.</p>
      * 
      * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
      * Technical Manual for parameter and return value documentation.</p>
@@ -96,7 +96,7 @@ public enum RemoteProcedure
     SR_ASRC_ACTIVE_MEDS("SR ASRC ACTIVE MEDS"),
 
     /**
-     * Returns all nursing notes with the "NURSING ADMISSION EVALUATION NOTE" title.
+     * <p>Returns all nursing notes with the "NURSING ADMISSION EVALUATION NOTE" title.</p>
      * 
      * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
      * Technical Manual for parameter and return value documentation.</p>
@@ -104,8 +104,8 @@ public enum RemoteProcedure
     SR_ASRC_ADL_NOTES("SR ASRC ADL NOTES"),
     
     /**
-     * Returns any nursing notes for the specified patient, that contain the specified
-     * substring.
+     * <p>Returns any nursing notes for the specified patient, that contain the specified
+     * substring.</p>
      * 
      * <p>As this Remote Procedure is defined in the ASRC VistA patch, consult the ASRC
      * Technical Manual for parameter and return value documentation.</p>
