@@ -20,6 +20,10 @@ import org.springframework.security.core.AuthenticationException;
  * <p>An AuthenticationProvider implementation that authenticates a user based on a VistA
  * CCOW token.</p>
  * 
+ * <p>Authentication is performed using a {@link VistaAuthenticator}, so this class is
+ * essentially an Adapter (Gang-of-Four Design Pattern) from VistaAuthenticator to the
+ * Spring Security AuthenticationProvider interface.</p>
+ * 
  * @see VistaAuthenticator#authenticateViaCcowToken(String, String)
  */
 public class CcowTokenAuthenticationProvider extends VistaAuthenticationProvider
