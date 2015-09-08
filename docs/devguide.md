@@ -152,9 +152,76 @@ VistA Patch Developer Guide
 
 ### Developer Workstation Setup
 
+VistA Developer Software
+
+The following programs need to be installed and configured for the appropriate VistA Development server:
+
+*   Attachmate Reflection
+*   InterSystems Cache Cube
+
+Git will need to be installed on the computer, if it is not already installed, to retrieve the VistA KIDS Host file.
+
+*For VA development projects:*
+
+*   GFEs will already come with Reflection already installed. For Cache Cube, contact your OI&T office for instructions to obtain and install the latest licensed version of Cache for your GFE's operating system. 
+*   Aside from acquiring a VistA development server and VistA and Cache developer accounts for that database, you will also need to have Forum access and be added as a Surgery package developer in Forum by a current Surgery package developer.
+
 ### Obtaining the Source Code and Dependencies
+
+**Git**
+
+Git can be obtained from git-scm.com. 
+
+The source repository for the ASRC project currently resides at https://github.com/VHAINNOVATIONS/ASRCM. The KIDs Host File can be located at https://github.com/VHAINNOVATIONS/ASRCM/VistA/ZZASRC_1_1_SP11.KID.
+
+Once the KIDs build has been copied to your GFE, it can be transferred via FTP to your VistA development server.
+
+**Dependencies**
+
+Although the ASRC patch is mainly new development using the Surgery namespace, there are some existing Surgery routines that needed to be modified as part of the operation requests process that will now interface with ASRC. 
+
+The routines that were modified are: SRCUSS1 & SRSRQST1. Since the establishment of the Innovation VistA server that was used for the ASRC project, the Surgery patch `SR*3*177` has been released that contains ICD-10 related modifications to both SRCUSS1 and SRSRQST1. Therefore these modifications will need to be analyzed and the ASRC modifications will have to be merged into the `SR*3*177` version of these routines. 
+
+Furthermore, routine SRSRQST1 is currently under development for patch `SR*3*184`. 
+
+*For VA development projects:*
+
+It is highly recommended that you use Forum tools such as "Display a Patch" and "Routines that overlap in patches" to determine if these routines were involved in other nationally released patches or patches that are currently underdevelopment. Any national released patches will need to be merged into your development environment. And for any patches that are currently under development using these routines, you will need to contact the patch developer(s) to coordinate release dates and code sharing.
+
+**KIDS Installation**
+
+Please refer to the ASRC Installation Guide for instructions on installing the ASRC KIDs host file.
+
+Although any potential conflicts should be explained in the Dependencies section above, there is always chance that the new ASRC components could conflict with recent development from other Surgery projects. It's highly recommended that you compare the transport global from the ASRC host file with the current VistA development environment. All of the routines, options, and RPCs contain the sub-prefix of SRASRC or SR ASRC, so it's highly doubtful this will occur. However, there is a new ASRC file that will be included in this KIDs build. It's the SURGICAL RISK CALCULATIONS file (#136.1), and although it's doubtful that another project will create a new file by the same new, there's always the potential for a new file be created using the same file number: 136.1. 
 
 ### Testing the VistA Patch
 
+If following the steps in the VistA section of the ASRC Installation guide, you should be able to verify whether or not you've had a successful installation. 
+
+Outside of the installation, the true testing will be through the integration with the ASRC web application. Details on this can be found in the ASRC Installation and ASRC User Guides.
+
 ### Enhancing the VistA Patch
 
+**ASRC VistA Components**
+
+The ASRC Technical Guide contains detailed information on the VistA components that were added and modified for this KIDs build. All new VistA functionality for the ASRC tool was created with the following naming conventions:
+
+*   All ASRC routines have the following prefix: SRASRC
+*   All ASRC RPCs and the sole ASRC menu option have the following prefix: SR ASRC
+*   The new ASRC file was named the SURGICAL RISK CALCULATIONS file (#136.1).
+
+It is recommended that future VistA ASRC development should follow the same or a similar naming conventions. 
+
+**Coding Standards**
+
+The new functionality contained with the ASRC patch and any modifications and enhancements made to it need to be reviewed and must adhere to the Standards and Conventions set forth in the VistA SACC Guide.
+
+**VA Development Project Considerations**
+
+Considering the nature and limitations of the ASRC Innovation project, certain assumptions about VistA development had to be made. To move forward with the enhancement of the ASRC VistA software, some of the following will need to be considered and/or addressed:
+
+*   An actual Surgery patch number for the ASRC VistA development and release will need to be generated in Forum.
+*   The new Surgery ASRC file, SURGICAL RISK CALCULATIONS file (#136.1), will need to be submitted to the VA DBA for approval.
+*   The Surgery package will need to be added as ICR subscribers for the following non-Surgery RPCs that were added to the SR ASRC menu option for use by the ASRC web application: ORQQPS LIST (ICR 1659), GMV EXTRACT REC (ICR 4416), GMV LATEST VM (ICR 4358). If these ICR subscriptions won't be granted for any reason, alternate solutions may need to be designed.
+*   The Surgery package will need to be added as ICR subscribers for the following data/APIs that are used/referenced within the new Surgery ASRC routines: MAKE^TIUSRVP & SIGN^TIUSRVP2 (ICR 3535), RESULTS^LRPXAPI (ICR 4245), $$TESTNM^LRPXAPIU (ICR 4246), LIST^ORQQVS (ICR 1690), ^AUPNVHF (ICR 3084), SELECTED^VSIT (ICR 1905), NOTES^TIUSRVLV (ICR 2812), TGET^TIUSRVR1, OCL^PSOORRL. It was discovered late in development that ICR 1690 for LIST^ORQQVS had been withdrawn, so a request to reconsider its status may need to be made. If these ICR subscriptions won't be granted for any reason, alternate solutions may need to be designed.
+   

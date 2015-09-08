@@ -4,7 +4,6 @@ import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
 
 import gov.va.med.srcalc.domain.VistaPerson;
-import gov.va.med.srcalc.vista.RemoteProcedure;
 import gov.va.med.srcalc.vista.VistaAuthenticator;
 import gov.va.med.srcalc.vista.VistaDaoFactory;
 
@@ -21,7 +20,11 @@ import org.springframework.security.core.AuthenticationException;
  * <p>An AuthenticationProvider implementation that authenticates a user based on a VistA
  * CCOW token.</p>
  * 
- * @see RemoteProcedure#GET_USER_FROM_CCOW
+ * <p>Authentication is performed using a {@link VistaAuthenticator}, so this class is
+ * essentially an Adapter (Gang-of-Four Design Pattern) from VistaAuthenticator to the
+ * Spring Security AuthenticationProvider interface.</p>
+ * 
+ * @see VistaAuthenticator#authenticateViaCcowToken(String, String)
  */
 public class CcowTokenAuthenticationProvider extends VistaAuthenticationProvider
 {

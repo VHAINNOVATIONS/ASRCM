@@ -1,0 +1,1950 @@
+KIDS Distribution saved on Sep 03, 2015@12:08:50
+ASRC VistA Patch, Sprint 11
+**KIDS**:ZZASRC*1.0*1^
+
+**INSTALL NAME**
+ZZASRC*1.0*1
+"BLD",9059,0)
+ZZASRC*1.0*1^^0^3150903^n
+"BLD",9059,1,0)
+^^2^2^3150129^
+"BLD",9059,1,1,0)
+This build is for the Automated Surgical Risk Calculator development, 
+"BLD",9059,1,2,0)
+an Innovation project being designed in the Future Technology Lab.
+"BLD",9059,4,0)
+^9.64PA^136.1^1
+"BLD",9059,4,136.1,0)
+136.1
+"BLD",9059,4,136.1,222)
+y^y^f^^^^n
+"BLD",9059,4,"B",136.1,136.1)
+
+"BLD",9059,6.3)
+10
+"BLD",9059,"KRN",0)
+^9.67PA^779.2^20
+"BLD",9059,"KRN",.4,0)
+.4
+"BLD",9059,"KRN",.401,0)
+.401
+"BLD",9059,"KRN",.402,0)
+.402
+"BLD",9059,"KRN",.403,0)
+.403
+"BLD",9059,"KRN",.5,0)
+.5
+"BLD",9059,"KRN",.84,0)
+.84
+"BLD",9059,"KRN",3.6,0)
+3.6
+"BLD",9059,"KRN",3.8,0)
+3.8
+"BLD",9059,"KRN",9.2,0)
+9.2
+"BLD",9059,"KRN",9.8,0)
+9.8
+"BLD",9059,"KRN",9.8,"NM",0)
+^9.68A^10^10
+"BLD",9059,"KRN",9.8,"NM",1,0)
+SRASRC^^0^B1617964
+"BLD",9059,"KRN",9.8,"NM",2,0)
+SRASRC2^^0^B5055485
+"BLD",9059,"KRN",9.8,"NM",3,0)
+SRASRC3^^0^B7886053
+"BLD",9059,"KRN",9.8,"NM",4,0)
+SRASRC4^^0^B1887996
+"BLD",9059,"KRN",9.8,"NM",5,0)
+SRSRQST1^^0^B13166862
+"BLD",9059,"KRN",9.8,"NM",6,0)
+SRASRCCK^^0^B8814602
+"BLD",9059,"KRN",9.8,"NM",7,0)
+SRCUSS1^^0^B20655905
+"BLD",9059,"KRN",9.8,"NM",8,0)
+SRASRC5^^0^B2148476
+"BLD",9059,"KRN",9.8,"NM",9,0)
+SRASRC6^^0^B23186188
+"BLD",9059,"KRN",9.8,"NM",10,0)
+SRASRC7^^0^B1173930
+"BLD",9059,"KRN",9.8,"NM","B","SRASRC",1)
+
+"BLD",9059,"KRN",9.8,"NM","B","SRASRC2",2)
+
+"BLD",9059,"KRN",9.8,"NM","B","SRASRC3",3)
+
+"BLD",9059,"KRN",9.8,"NM","B","SRASRC4",4)
+
+"BLD",9059,"KRN",9.8,"NM","B","SRASRC5",8)
+
+"BLD",9059,"KRN",9.8,"NM","B","SRASRC6",9)
+
+"BLD",9059,"KRN",9.8,"NM","B","SRASRC7",10)
+
+"BLD",9059,"KRN",9.8,"NM","B","SRASRCCK",6)
+
+"BLD",9059,"KRN",9.8,"NM","B","SRCUSS1",7)
+
+"BLD",9059,"KRN",9.8,"NM","B","SRSRQST1",5)
+
+"BLD",9059,"KRN",19,0)
+19
+"BLD",9059,"KRN",19,"NM",0)
+^9.68A^1^1
+"BLD",9059,"KRN",19,"NM",1,0)
+SR ASRC^^0
+"BLD",9059,"KRN",19,"NM","B","SR ASRC",1)
+
+"BLD",9059,"KRN",19.1,0)
+19.1
+"BLD",9059,"KRN",101,0)
+101
+"BLD",9059,"KRN",409.61,0)
+409.61
+"BLD",9059,"KRN",771,0)
+771
+"BLD",9059,"KRN",779.2,0)
+779.2
+"BLD",9059,"KRN",870,0)
+870
+"BLD",9059,"KRN",8989.51,0)
+8989.51
+"BLD",9059,"KRN",8989.52,0)
+8989.52
+"BLD",9059,"KRN",8994,0)
+8994
+"BLD",9059,"KRN",8994,"NM",0)
+^9.68A^10^9
+"BLD",9059,"KRN",8994,"NM",2,0)
+SR ASRC PATIENT^^0
+"BLD",9059,"KRN",8994,"NM",3,0)
+SR ASRC PROGRESS NOTE^^0
+"BLD",9059,"KRN",8994,"NM",4,0)
+SR ASRC RISK SAVE^^0
+"BLD",9059,"KRN",8994,"NM",5,0)
+SR ASRC LAB RESULTS^^0
+"BLD",9059,"KRN",8994,"NM",6,0)
+SR ASRC HEALTH FACTORS^^0
+"BLD",9059,"KRN",8994,"NM",7,0)
+SR ASRC PERSON CLASSES^^0
+"BLD",9059,"KRN",8994,"NM",8,0)
+SR ASRC ADL NOTES^^0
+"BLD",9059,"KRN",8994,"NM",9,0)
+SR ASRC ACTIVE MEDS^^0
+"BLD",9059,"KRN",8994,"NM",10,0)
+SR ASRC DNR NOTES^^0
+"BLD",9059,"KRN",8994,"NM","B","SR ASRC ACTIVE MEDS",9)
+
+"BLD",9059,"KRN",8994,"NM","B","SR ASRC ADL NOTES",8)
+
+"BLD",9059,"KRN",8994,"NM","B","SR ASRC DNR NOTES",10)
+
+"BLD",9059,"KRN",8994,"NM","B","SR ASRC HEALTH FACTORS",6)
+
+"BLD",9059,"KRN",8994,"NM","B","SR ASRC LAB RESULTS",5)
+
+"BLD",9059,"KRN",8994,"NM","B","SR ASRC PATIENT",2)
+
+"BLD",9059,"KRN",8994,"NM","B","SR ASRC PERSON CLASSES",7)
+
+"BLD",9059,"KRN",8994,"NM","B","SR ASRC PROGRESS NOTE",3)
+
+"BLD",9059,"KRN",8994,"NM","B","SR ASRC RISK SAVE",4)
+
+"BLD",9059,"KRN","B",.4,.4)
+
+"BLD",9059,"KRN","B",.401,.401)
+
+"BLD",9059,"KRN","B",.402,.402)
+
+"BLD",9059,"KRN","B",.403,.403)
+
+"BLD",9059,"KRN","B",.5,.5)
+
+"BLD",9059,"KRN","B",.84,.84)
+
+"BLD",9059,"KRN","B",3.6,3.6)
+
+"BLD",9059,"KRN","B",3.8,3.8)
+
+"BLD",9059,"KRN","B",9.2,9.2)
+
+"BLD",9059,"KRN","B",9.8,9.8)
+
+"BLD",9059,"KRN","B",19,19)
+
+"BLD",9059,"KRN","B",19.1,19.1)
+
+"BLD",9059,"KRN","B",101,101)
+
+"BLD",9059,"KRN","B",409.61,409.61)
+
+"BLD",9059,"KRN","B",771,771)
+
+"BLD",9059,"KRN","B",779.2,779.2)
+
+"BLD",9059,"KRN","B",870,870)
+
+"BLD",9059,"KRN","B",8989.51,8989.51)
+
+"BLD",9059,"KRN","B",8989.52,8989.52)
+
+"BLD",9059,"KRN","B",8994,8994)
+
+"BLD",9059,"QDEF")
+^^^^NO^^^^NO^^NO
+"BLD",9059,"QUES",0)
+^9.62^^
+"BLD",9059,"REQB",0)
+^9.611^^
+"FIA",136.1)
+SURGICAL RISK CALCULATIONS
+"FIA",136.1,0)
+^SRO(136.1,
+"FIA",136.1,0,0)
+136.1PI
+"FIA",136.1,0,1)
+y^y^f^^^^n
+"FIA",136.1,0,10)
+
+"FIA",136.1,0,11)
+
+"FIA",136.1,0,"RLRO")
+
+"FIA",136.1,136.1)
+0
+"FIA",136.1,136.14)
+0
+"IX",136.1,136.1,"C",0)
+136.1^C^INDEX BY PAT, CPT & DT/TM^R^^R^IR^I^136.1^^^^^LS
+"IX",136.1,136.1,"C",1)
+S ^SRO(136.1,"C",X(1),X(2),X(3),DA)=""
+"IX",136.1,136.1,"C",2)
+K ^SRO(136.1,"C",X(1),X(2),X(3),DA)
+"IX",136.1,136.1,"C",2.5)
+K ^SRO(136.1,"C")
+"IX",136.1,136.1,"C",11.1,0)
+^.114IA^3^3
+"IX",136.1,136.1,"C",11.1,1,0)
+1^F^136.1^.01^^1^F
+"IX",136.1,136.1,"C",11.1,1,3)
+
+"IX",136.1,136.1,"C",11.1,2,0)
+2^F^136.1^2^^2^F
+"IX",136.1,136.1,"C",11.1,2,3)
+
+"IX",136.1,136.1,"C",11.1,3,0)
+3^F^136.1^1^^3^F
+"IX",136.1,136.1,"C",11.1,3,3)
+
+"KRN",19,14317,-1)
+0^1
+"KRN",19,14317,0)
+SR ASRC^ASRC RPC MENU^^B^^^^^^^^SURGERY
+"KRN",19,14317,99.1)
+63600,47700
+"KRN",19,14317,"RPC",0)
+^19.05P^13^12
+"KRN",19,14317,"RPC",2,0)
+SR ASRC PATIENT
+"KRN",19,14317,"RPC",3,0)
+GMV LATEST VM
+"KRN",19,14317,"RPC",4,0)
+GMV EXTRACT REC
+"KRN",19,14317,"RPC",5,0)
+SR ASRC PROGRESS NOTE
+"KRN",19,14317,"RPC",6,0)
+SR ASRC RISK SAVE
+"KRN",19,14317,"RPC",7,0)
+SR ASRC LAB RESULTS
+"KRN",19,14317,"RPC",8,0)
+SR ASRC HEALTH FACTORS
+"KRN",19,14317,"RPC",9,0)
+SR ASRC PERSON CLASSES
+"KRN",19,14317,"RPC",10,0)
+SR ASRC ADL NOTES
+"KRN",19,14317,"RPC",11,0)
+ORQQPS LIST
+"KRN",19,14317,"RPC",12,0)
+SR ASRC ACTIVE MEDS
+"KRN",19,14317,"RPC",13,0)
+SR ASRC DNR NOTES
+"KRN",19,14317,"U")
+ASRC RPC MENU
+"KRN",8994,3431,-1)
+0^2
+"KRN",8994,3431,0)
+SR ASRC PATIENT^PAT^SRASRC^2^R^0^^^^^1
+"KRN",8994,3431,1,0)
+^8994.01^3^3^3150820^
+"KRN",8994,3431,1,1,0)
+This Surgery RPC was created for the Automated Surgical Risk Calculator 
+"KRN",8994,3431,1,2,0)
+(ASRC) Tool and will return specific patient demographic information as 
+"KRN",8994,3431,1,3,0)
+needed for the Tool.
+"KRN",8994,3431,2,0)
+^8994.02A^1^1
+"KRN",8994,3431,2,1,0)
+DFN^1^^1
+"KRN",8994,3431,2,1,1,0)
+^^1^1^3150820^
+"KRN",8994,3431,2,1,1,1,0)
+PATIENT file (#2) ien
+"KRN",8994,3431,2,"B","DFN",1)
+
+"KRN",8994,3431,3,0)
+^^3^3^3150820^
+"KRN",8994,3431,3,1,0)
+Returns the following string of patient data:
+"KRN",8994,3431,3,2,0)
+ 
+"KRN",8994,3431,3,3,0)
+Patient Name ^ Age ^ Sex
+"KRN",8994,3432,-1)
+0^3
+"KRN",8994,3432,0)
+SR ASRC PROGRESS NOTE^ENTER^SRASRC2^1^R^0^^^^^1
+"KRN",8994,3432,1,0)
+^^5^5^3150820^
+"KRN",8994,3432,1,1,0)
+This Surgery RPC was created for the Automated Surgical Risk Calculator 
+"KRN",8994,3432,1,2,0)
+(ASRC) Tool and is designed to store a new signed Surgical Progress Note
+"KRN",8994,3432,1,3,0)
+at the moment a new surgical risk calculation is created and signed for
+"KRN",8994,3432,1,4,0)
+a given CPT code in the ASRC tool. The storing of the note is dependent 
+"KRN",8994,3432,1,5,0)
+on the successful entry of the current user's electronic signature code.
+"KRN",8994,3432,2,0)
+^8994.02A^4^4
+"KRN",8994,3432,2,1,0)
+DUZ^1^^1^1
+"KRN",8994,3432,2,1,1,0)
+^^1^1^3150820^
+"KRN",8994,3432,2,1,1,1,0)
+NEW PERSON file (#200) ien
+"KRN",8994,3432,2,2,0)
+SRESIG^1^^1^2
+"KRN",8994,3432,2,2,1,0)
+^^1^1^3150820^
+"KRN",8994,3432,2,2,1,1,0)
+An encrypted electronic signature code as entered by the user in ASRC
+"KRN",8994,3432,2,3,0)
+DFN^1^^1^3
+"KRN",8994,3432,2,3,1,0)
+^^1^1^3150820^
+"KRN",8994,3432,2,3,1,1,0)
+PATIENT file (#2) ien
+"KRN",8994,3432,2,4,0)
+SRTIUX^2^^1^4
+"KRN",8994,3432,2,4,1,0)
+^^2^2^3150820^
+"KRN",8994,3432,2,4,1,1,0)
+An array containing the progress note field data and body of the document
+"KRN",8994,3432,2,4,1,2,0)
+to be stored.
+"KRN",8994,3432,2,"B","DFN",3)
+
+"KRN",8994,3432,2,"B","DUZ",1)
+
+"KRN",8994,3432,2,"B","SRESIG",2)
+
+"KRN",8994,3432,2,"B","SRTIUX",4)
+
+"KRN",8994,3432,2,"PARAMSEQ",1,1)
+
+"KRN",8994,3432,2,"PARAMSEQ",2,2)
+
+"KRN",8994,3432,2,"PARAMSEQ",3,3)
+
+"KRN",8994,3432,2,"PARAMSEQ",4,4)
+
+"KRN",8994,3432,3,0)
+^^11^11^3150820^
+"KRN",8994,3432,3,1,0)
+The string returned by the RPC will contain two fields delimited by "^". 
+"KRN",8994,3432,3,2,0)
+If the first field is 1, the note storage was successful:
+"KRN",8994,3432,3,3,0)
+ 
+"KRN",8994,3432,3,4,0)
+1^Progress note was created and signed successfully.
+"KRN",8994,3432,3,5,0)
+ 
+"KRN",8994,3432,3,6,0)
+If the first field is 0, the note was not stored successfully and a 
+"KRN",8994,3432,3,7,0)
+specific error message will be contained in the second field:
+"KRN",8994,3432,3,8,0)
+ 
+"KRN",8994,3432,3,9,0)
+0^Incorrect Electronic Signature Code Entered.
+"KRN",8994,3432,3,10,0)
+0^Invalid Progress Note Title.
+"KRN",8994,3432,3,11,0)
+0^Progress note could not be signed at this time.
+"KRN",8994,3433,-1)
+0^4
+"KRN",8994,3433,0)
+SR ASRC RISK SAVE^ENTER^SRASRC3^1^R^0^^^^^1
+"KRN",8994,3433,1,0)
+^^3^3^3150820^
+"KRN",8994,3433,1,1,0)
+This Surgery RPC was created for the Automated Surgical Risk Calculator 
+"KRN",8994,3433,1,2,0)
+(ASRC) Tool and is designed to store a new Surgical Risk record in the
+"KRN",8994,3433,1,3,0)
+VistA SURGICAL RISK CALCULATIONS file (#136.1).
+"KRN",8994,3433,2,0)
+^8994.02A^4^4
+"KRN",8994,3433,2,1,0)
+DFN^1^^1^1
+"KRN",8994,3433,2,1,1,0)
+^^1^1^3150820^
+"KRN",8994,3433,2,1,1,1,0)
+PATIENT file (#2) ien
+"KRN",8994,3433,2,2,0)
+SRCPT^1^^0^2
+"KRN",8994,3433,2,2,1,0)
+^^1^1^3150820^
+"KRN",8994,3433,2,2,1,1,0)
+External version of CPT Code from CPT file (#81)
+"KRN",8994,3433,2,3,0)
+SRDTTM^1^^1^3
+"KRN",8994,3433,2,3,1,0)
+^^1^1^3150820^
+"KRN",8994,3433,2,3,1,1,0)
+Date/Timestamp in Mumps format
+"KRN",8994,3433,2,4,0)
+SRTIUX^2^^1^4
+"KRN",8994,3433,2,4,1,0)
+^^6^6^3150820^
+"KRN",8994,3433,2,4,1,1,0)
+Array containing the data to store into file #136.1, since multiple models
+"KRN",8994,3433,2,4,1,2,0)
+and risk percentages can be associated with a single CPT code.
+"KRN",8994,3433,2,4,1,3,0)
+ 
+"KRN",8994,3433,2,4,1,4,0)
+Format of data: Model Name ^ Risk Prob.:
+"KRN",8994,3433,2,4,1,5,0)
+   SRTIUX(1) = "FY2013 Cardiac 30-Day^56.0"
+"KRN",8994,3433,2,4,1,6,0)
+   SRTIUX(2) = "FY2013 Cardiac 90-Day^10.0"
+"KRN",8994,3433,2,"B","DFN",1)
+
+"KRN",8994,3433,2,"B","SRCPT",2)
+
+"KRN",8994,3433,2,"B","SRDTTM",3)
+
+"KRN",8994,3433,2,"B","SRTIUX",4)
+
+"KRN",8994,3433,2,"PARAMSEQ",1,1)
+
+"KRN",8994,3433,2,"PARAMSEQ",2,2)
+
+"KRN",8994,3433,2,"PARAMSEQ",3,3)
+
+"KRN",8994,3433,2,"PARAMSEQ",4,4)
+
+"KRN",8994,3433,3,0)
+^^2^2^3150820^
+"KRN",8994,3433,3,1,0)
+1^Success mesage, if record was successfully created
+"KRN",8994,3433,3,2,0)
+0^Explanatory message, if not a successful
+"KRN",8994,3434,-1)
+0^5
+"KRN",8994,3434,0)
+SR ASRC LAB RESULTS^ENTER^SRASRC4^1^R^0^^^^^1
+"KRN",8994,3434,1,0)
+^^3^3^3150820^
+"KRN",8994,3434,1,1,0)
+This Surgery RPC was created for the Automated Surgical Risk Calculator 
+"KRN",8994,3434,1,2,0)
+(ASRC) Tool and will return the most recent lab record for a patient 
+"KRN",8994,3434,1,3,0)
+that matches any of the strings that are passed in as an input parameter.
+"KRN",8994,3434,2,0)
+^8994.02A^2^2
+"KRN",8994,3434,2,1,0)
+DFN^1^^1^1
+"KRN",8994,3434,2,1,1,0)
+^^1^1^3150820^
+"KRN",8994,3434,2,1,1,1,0)
+PATIENT file (#2) ien
+"KRN",8994,3434,2,2,0)
+SRLABNS^2^^1^2
+"KRN",8994,3434,2,2,1,0)
+^8994.021^1^1^3150820^^
+"KRN",8994,3434,2,2,1,1,0)
+An array containing the possible Lab name strings to check for.
+"KRN",8994,3434,2,"B","DFN",1)
+
+"KRN",8994,3434,2,"B","SRLABNS",2)
+
+"KRN",8994,3434,2,"PARAMSEQ",1,1)
+
+"KRN",8994,3434,2,"PARAMSEQ",2,2)
+
+"KRN",8994,3434,3,0)
+^8994.03^2^2^3150820^^
+"KRN",8994,3434,3,1,0)
+SRRET   = A match is found - Lab Name ^ Lab Result ^ Lab Date ^ Lab Units
+"KRN",8994,3434,3,2,0)
+of Measure
+"KRN",8994,3435,-1)
+0^6
+"KRN",8994,3435,0)
+SR ASRC HEALTH FACTORS^ENTER^SRASRC5^2^R^0^^^^^1
+"KRN",8994,3435,1,0)
+^8994.01^3^3^3150820^^^^
+"KRN",8994,3435,1,1,0)
+This Surgery RPC was created for the Automated Surgical Risk Calculator 
+"KRN",8994,3435,1,2,0)
+(ASRC) Tool and will return all health factors for a patient for the past 
+"KRN",8994,3435,1,3,0)
+365 days.
+"KRN",8994,3435,2,0)
+^8994.02A^1^1
+"KRN",8994,3435,2,1,0)
+DFN^1^^1
+"KRN",8994,3435,2,1,1,0)
+^8994.021^1^1^3150818^^^
+"KRN",8994,3435,2,1,1,1,0)
+PATIENT file (#2) ien
+"KRN",8994,3435,2,"B","DFN",1)
+
+"KRN",8994,3435,3,0)
+^^4^4^3150818^
+"KRN",8994,3435,3,1,0)
+SRRET   = If records are found, the following is returned in array format:
+"KRN",8994,3435,3,2,0)
+          Date of Visit ^ Health Factor Name
+"KRN",8994,3435,3,3,0)
+        = No records found - "" (null) value is returned in a single 
+"KRN",8994,3435,3,4,0)
+          array record.
+"KRN",8994,3436,-1)
+0^7
+"KRN",8994,3436,0)
+SR ASRC PERSON CLASSES^CLASS^SRASRC^2^R^0^^^^^1
+"KRN",8994,3436,1,0)
+^8994.01^2^2^3150820^^
+"KRN",8994,3436,1,1,0)
+This Surgery RPC was created for the Automated Surgical Risk Calculator 
+"KRN",8994,3436,1,2,0)
+(ASRC) Tool and will return the active Person Class for the current user.
+"KRN",8994,3436,3,0)
+^^1^1^3150820^
+"KRN",8994,3436,3,1,0)
+Returns valid Person Class titles in an array format.
+"KRN",8994,3437,-1)
+0^8
+"KRN",8994,3437,0)
+SR ASRC ADL NOTES^ENTER1^SRASRC6^2^R^0^^^^^1
+"KRN",8994,3437,1,0)
+^^4^4^3150818^
+"KRN",8994,3437,1,1,0)
+This Surgery RPC was created for the Automated Surgical Risk Calculator 
+"KRN",8994,3437,1,2,0)
+(ASRC) Tool and will return a patient's progress notes in an XML format
+"KRN",8994,3437,1,3,0)
+based on any notes that match the VHA Enterprise Title passed in as an
+"KRN",8994,3437,1,4,0)
+input parameter.
+"KRN",8994,3437,2,0)
+^8994.02A^2^2
+"KRN",8994,3437,2,1,0)
+DFN^1^^1^1
+"KRN",8994,3437,2,1,1,0)
+^^1^1^3150818^
+"KRN",8994,3437,2,1,1,1,0)
+PATIENT file (#2) ien
+"KRN",8994,3437,2,2,0)
+SRSTR^1^^1^2
+"KRN",8994,3437,2,2,1,0)
+^8994.021^1^1^3150818^^
+"KRN",8994,3437,2,2,1,1,0)
+VHA Enterprise Title for Progress Note
+"KRN",8994,3437,2,"B","DFN",1)
+
+"KRN",8994,3437,2,"B","SRSTR",2)
+
+"KRN",8994,3437,2,"PARAMSEQ",1,1)
+
+"KRN",8994,3437,2,"PARAMSEQ",2,2)
+
+"KRN",8994,3437,3,0)
+^8994.03^5^5^3150818^^
+"KRN",8994,3437,3,1,0)
+SRRET   = If records are found - Full body of each matching progress
+"KRN",8994,3437,3,2,0)
+note will be returned in XML format along with local progress note title 
+"KRN",8994,3437,3,3,0)
+and electronic signature date.
+"KRN",8994,3437,3,4,0)
+        = No records found - Only the beginning and ending XML tags will 
+"KRN",8994,3437,3,5,0)
+be returned.
+"KRN",8994,3438,-1)
+0^9
+"KRN",8994,3438,0)
+SR ASRC ACTIVE MEDS^ENTER^SRASRC7^2^R^0^^^^^1
+"KRN",8994,3438,1,0)
+^^2^2^3150818^
+"KRN",8994,3438,1,1,0)
+This Surgery RPC was created for the Automated Surgical Risk Calculator 
+"KRN",8994,3438,1,2,0)
+(ASRC) Tool and will return a patient's active medication list.
+"KRN",8994,3438,2,0)
+^8994.02A^1^1
+"KRN",8994,3438,2,1,0)
+DFN^1^^1^1
+"KRN",8994,3438,2,1,1,0)
+^^1^1^3150818^
+"KRN",8994,3438,2,1,1,1,0)
+PATIENT file (#2) ien
+"KRN",8994,3438,2,"B","DFN",1)
+
+"KRN",8994,3438,2,"PARAMSEQ",1,1)
+
+"KRN",8994,3438,3,0)
+^^2^2^3150818^
+"KRN",8994,3438,3,1,0)
+SRRET   = If records are found - Med ID ^ Med Name
+"KRN",8994,3438,3,2,0)
+        = No records found - "" (null) is returned in single array record
+"KRN",8994,3439,-1)
+0^10
+"KRN",8994,3439,0)
+SR ASRC DNR NOTES^ENTER2^SRASRC6^2^R^0^^^^^1
+"KRN",8994,3439,1,0)
+^^5^5^3150818^
+"KRN",8994,3439,1,1,0)
+This Surgery RPC was created for the Automated Surgical Risk Calculator 
+"KRN",8994,3439,1,2,0)
+(ASRC) Tool and will return a patient's progress notes in an XML 
+"KRN",8994,3439,1,3,0)
+format based on any notes that contain either a VHA Enterprise Title or
+"KRN",8994,3439,1,4,0)
+local progress note title that contains the search string that is passed
+"KRN",8994,3439,1,5,0)
+in as an input parameter.
+"KRN",8994,3439,2,0)
+^8994.02A^2^2
+"KRN",8994,3439,2,1,0)
+DFN^1^^1^1
+"KRN",8994,3439,2,1,1,0)
+^^1^1^3150818^
+"KRN",8994,3439,2,1,1,1,0)
+PATIENT file (#2) ien
+"KRN",8994,3439,2,2,0)
+SRSTR^1^^1^2
+"KRN",8994,3439,2,2,1,0)
+^^1^1^3150818^
+"KRN",8994,3439,2,2,1,1,0)
+Search string for VHA Enterprise Title and/or local progress note title.
+"KRN",8994,3439,2,"B","DFN",1)
+
+"KRN",8994,3439,2,"B","SRSTR",2)
+
+"KRN",8994,3439,2,"PARAMSEQ",1,1)
+
+"KRN",8994,3439,2,"PARAMSEQ",2,2)
+
+"KRN",8994,3439,3,0)
+^^6^6^3150818^
+"KRN",8994,3439,3,1,0)
+SRRET   = If records are found - If records are found - Full body of
+"KRN",8994,3439,3,2,0)
+          each matching progress note will be returned in XML format
+"KRN",8994,3439,3,3,0)
+          along with local progress note title and electronic signature
+"KRN",8994,3439,3,4,0)
+          date.
+"KRN",8994,3439,3,5,0)
+        = No records found - Only the beginning and ending XML tags will
+"KRN",8994,3439,3,6,0)
+          be returned.
+"MBREQ")
+0
+"ORD",16,8994)
+8994;16;1;;;;;;;RPCDEL^XPDIA1
+"ORD",16,8994,0)
+REMOTE PROCEDURE
+"ORD",18,19)
+19;18;;;OPT^XPDTA;OPTF1^XPDIA;OPTE1^XPDIA;OPTF2^XPDIA;;OPTDEL^XPDIA
+"ORD",18,19,0)
+OPTION
+"QUES","XPF1",0)
+Y
+"QUES","XPF1","??")
+^D REP^XPDH
+"QUES","XPF1","A")
+Shall I write over your |FLAG| File
+"QUES","XPF1","B")
+YES
+"QUES","XPF1","M")
+D XPF1^XPDIQ
+"QUES","XPF2",0)
+Y
+"QUES","XPF2","??")
+^D DTA^XPDH
+"QUES","XPF2","A")
+Want my data |FLAG| yours
+"QUES","XPF2","B")
+YES
+"QUES","XPF2","M")
+D XPF2^XPDIQ
+"QUES","XPI1",0)
+YO
+"QUES","XPI1","??")
+^D INHIBIT^XPDH
+"QUES","XPI1","A")
+Want KIDS to INHIBIT LOGONs during the install
+"QUES","XPI1","B")
+NO
+"QUES","XPI1","M")
+D XPI1^XPDIQ
+"QUES","XPM1",0)
+PO^VA(200,:EM
+"QUES","XPM1","??")
+^D MG^XPDH
+"QUES","XPM1","A")
+Enter the Coordinator for Mail Group '|FLAG|'
+"QUES","XPM1","B")
+
+"QUES","XPM1","M")
+D XPM1^XPDIQ
+"QUES","XPO1",0)
+Y
+"QUES","XPO1","??")
+^D MENU^XPDH
+"QUES","XPO1","A")
+Want KIDS to Rebuild Menu Trees Upon Completion of Install
+"QUES","XPO1","B")
+NO
+"QUES","XPO1","M")
+D XPO1^XPDIQ
+"QUES","XPZ1",0)
+Y
+"QUES","XPZ1","??")
+^D OPT^XPDH
+"QUES","XPZ1","A")
+Want to DISABLE Scheduled Options, Menu Options, and Protocols
+"QUES","XPZ1","B")
+NO
+"QUES","XPZ1","M")
+D XPZ1^XPDIQ
+"QUES","XPZ2",0)
+Y
+"QUES","XPZ2","??")
+^D RTN^XPDH
+"QUES","XPZ2","A")
+Want to MOVE routines to other CPUs
+"QUES","XPZ2","B")
+NO
+"QUES","XPZ2","M")
+D XPZ2^XPDIQ
+"RTN")
+10
+"RTN","SRASRC")
+0^1^B1617964
+"RTN","SRASRC",1,0)
+SRASRC ;SBX/JAS - RETURN VISTA PATIENT/USER DATA ; 11/17/14
+"RTN","SRASRC",2,0)
+ ;;3.0;Surgery;****;24 Jun 93;Build 10
+"RTN","SRASRC",3,0)
+PAT(RETURN,DFN) ;
+"RTN","SRASRC",4,0)
+ K RETURN
+"RTN","SRASRC",5,0)
+ D DEM^VADPT
+"RTN","SRASRC",6,0)
+ S RETURN($J)=VADM(1)_"^"_VADM(4)_"^"_$P(VADM(5),"^")
+"RTN","SRASRC",7,0)
+ K VADM
+"RTN","SRASRC",8,0)
+ Q
+"RTN","SRASRC",9,0)
+CLASS(RETURN) ;
+"RTN","SRASRC",10,0)
+ K RETURN,SRUC,SRCNT,^UTILITY("DIQ1",$J)
+"RTN","SRASRC",11,0)
+ Q:$G(DUZ)=""!('$D(^VA(200,DUZ)))!('$D(^VA(200,DUZ,"USC1")))
+"RTN","SRASRC",12,0)
+ S SRUC=""
+"RTN","SRASRC",13,0)
+ F  S SRUC=$O(^VA(200,DUZ,"USC1",SRUC)) Q:SRUC=""  I $D(^VA(200,DUZ,"USC1",SRUC,0)) D
+"RTN","SRASRC",14,0)
+ . S DIC=200,DR="8932.1",DA=DUZ
+"RTN","SRASRC",15,0)
+ . S DR(200.05)=".01;3",DA(200.05)=SRUC
+"RTN","SRASRC",16,0)
+ . D EN^DIQ1
+"RTN","SRASRC",17,0)
+ Q:'$D(^UTILITY("DIQ1",$J,200.05))
+"RTN","SRASRC",18,0)
+ S SRUC="",SRCNT=0
+"RTN","SRASRC",19,0)
+ F  S SRUC=$O(^UTILITY("DIQ1",$J,200.05,SRUC)) Q:SRUC=""  I $D(^UTILITY("DIQ1",$J,200.05,SRUC,.01)) D
+"RTN","SRASRC",20,0)
+ . Q:^UTILITY("DIQ1",$J,200.05,SRUC,3)'=""
+"RTN","SRASRC",21,0)
+ . S SRCNT=SRCNT+1
+"RTN","SRASRC",22,0)
+ . S RETURN(SRCNT)=^UTILITY("DIQ1",$J,200.05,SRUC,.01)
+"RTN","SRASRC",23,0)
+ Q
+"RTN","SRASRC2")
+0^2^B5055485
+"RTN","SRASRC2",1,0)
+SRASRC2 ;SBX/JAS - RPC TO STORE ASRC PROGRESS NOTE ; 03/27/15
+"RTN","SRASRC2",2,0)
+ ;;3.0;Surgery;****;24 Jun 93;Build 10
+"RTN","SRASRC2",3,0)
+ ;
+"RTN","SRASRC2",4,0)
+ ; Reference to API DUZ^XUP supported by IA# 4409
+"RTN","SRASRC2",5,0)
+ ; Reference to API MAKE^TIUSRVP supported by IA# 3535
+"RTN","SRASRC2",6,0)
+ ; Reference to API $$ENCRYP^XUSRB1 supported by IA# 2240
+"RTN","SRASRC2",7,0)
+ ; Reference to API SIGN^TIUSRVP2 supported by IA# 3535
+"RTN","SRASRC2",8,0)
+ ;
+"RTN","SRASRC2",9,0)
+ENTER(SRSTAT,DUZ,SRESIG,DFN,SRTIUX) ;
+"RTN","SRASRC2",10,0)
+ ; 
+"RTN","SRASRC2",11,0)
+ ; SRSTAT  = If successful: 1^(Success message)
+"RTN","SRASRC2",12,0)
+ ;         = If unsuccessful: 0^(Error message)
+"RTN","SRASRC2",13,0)
+ ; DUZ     = New Person (#200)
+"RTN","SRASRC2",14,0)
+ ; SRESIG  = Electronic Signature Code
+"RTN","SRASRC2",15,0)
+ ; DFN     = Patient (#2)
+"RTN","SRASRC2",16,0)
+ ; SRTIUX  = (by ref) array containing field data and document body
+"RTN","SRASRC2",17,0)
+ ;
+"RTN","SRASRC2",18,0)
+ N SRVALID,SRTITLE,SRTITDA
+"RTN","SRASRC2",19,0)
+ D VALIDATE
+"RTN","SRASRC2",20,0)
+ ;
+"RTN","SRASRC2",21,0)
+ I '+SRVALID S SRSTAT="0^Incorrect Electronic Signature Code Entered." Q
+"RTN","SRASRC2",22,0)
+ I '$D(DUZ(0))!('$D(DUZ(2))) D DUZ^XUP(DUZ)
+"RTN","SRASRC2",23,0)
+ ; Visit information not relevant to risk calculation
+"RTN","SRASRC2",24,0)
+ S (SRVDT,SRVLOC,SRVSIT,SRVSTR,SRSUPP,SRNOA)=""
+"RTN","SRASRC2",25,0)
+ ; Progress note title associated with surgical risk calculation
+"RTN","SRASRC2",26,0)
+ S SRTITLE="SURGERY NOTES"
+"RTN","SRASRC2",27,0)
+ S SRTITDA=$O(^TIU(8925.1,"B",SRTITLE,""))
+"RTN","SRASRC2",28,0)
+ I SRTITDA="" S SRSTAT="0^Invalid Progress Note Title." D QUIT Q
+"RTN","SRASRC2",29,0)
+ S SRTIUX(1202)=DUZ
+"RTN","SRASRC2",30,0)
+ ;
+"RTN","SRASRC2",31,0)
+ D MAKE^TIUSRVP(.SRDOC,DFN,SRTITDA,SRVDT,SRVLOC,SRVSIT,.SRTIUX,SRVSTR,SRSUPP,SRNOA)
+"RTN","SRASRC2",32,0)
+ ;
+"RTN","SRASRC2",33,0)
+ ; DFN     = Patient (#2)
+"RTN","SRASRC2",34,0)
+ ; SRTITDA = TIU Document Definition (#8925.1)
+"RTN","SRASRC2",35,0)
+ ; SRVDT   = Date(/Time) of Visit
+"RTN","SRASRC2",36,0)
+ ; SRVLOC  = Visit Location (HOSPITAL LOCATION)
+"RTN","SRASRC2",37,0)
+ ; SRVSIT  = Visit file ien (#9000010)
+"RTN","SRASRC2",38,0)
+ ; SRTIUX  = (by ref) array containing field data and document body 
+"RTN","SRASRC2",39,0)
+ ; SRVSTR  = Visit string (i.e., VLOC;VDT;VTYPE)
+"RTN","SRASRC2",40,0)
+ ; SRSUPP  = Indicates whether or not to suppress execution of COMMIT ACTION
+"RTN","SRASRC2",41,0)
+ ; SRNOA   = if 1=Do Not Set ASAVE cross-reference
+"RTN","SRASRC2",42,0)
+ ;
+"RTN","SRASRC2",43,0)
+ K SRTIUX
+"RTN","SRASRC2",44,0)
+ I '+SRDOC S SRSTAT=SRDOC D QUIT Q
+"RTN","SRASRC2",45,0)
+ S SRTIUDA=SRDOC
+"RTN","SRASRC2",46,0)
+ S SRTIUX=SRESIG
+"RTN","SRASRC2",47,0)
+ ;
+"RTN","SRASRC2",48,0)
+ D SIGN^TIUSRVP2(.SRSTAT,SRTIUDA,SRTIUX)
+"RTN","SRASRC2",49,0)
+ ;
+"RTN","SRASRC2",50,0)
+ ; SRSTAT  = Result of Signature attempt on Note
+"RTN","SRASRC2",51,0)
+ ;           1 for successful signature, 0 for failed attempt 
+"RTN","SRASRC2",52,0)
+ ; SRTIUDA = TIU DOCUMENT # (PTR to 8925) 
+"RTN","SRASRC2",53,0)
+ ; SRTIUX  = Encrypted e-signature
+"RTN","SRASRC2",54,0)
+ ;
+"RTN","SRASRC2",55,0)
+ I SRSTAT'=0 S SRSTAT="0^Progress note could not be signed at this time." D QUIT Q
+"RTN","SRASRC2",56,0)
+ S SRSTAT="1^Progress note was created and signed successfully."
+"RTN","SRASRC2",57,0)
+ D QUIT
+"RTN","SRASRC2",58,0)
+ Q
+"RTN","SRASRC2",59,0)
+ ;
+"RTN","SRASRC2",60,0)
+VALIDATE ; Validate Electronic Sign code
+"RTN","SRASRC2",61,0)
+ ;
+"RTN","SRASRC2",62,0)
+ ; SRESIG  = Contains the signature to be validated
+"RTN","SRASRC2",63,0)
+ ; DUZ     = New Person (#200) record to validate e-sig against
+"RTN","SRASRC2",64,0)
+ ; SRVALID = Contains a 1 if a valid e-sig (0 if not valid), 
+"RTN","SRASRC2",65,0)
+ ;           user's sig block print name, and signature block title
+"RTN","SRASRC2",66,0)
+ ;
+"RTN","SRASRC2",67,0)
+ S SRVALID=0 N SRDESIG
+"RTN","SRASRC2",68,0)
+ I SRESIG="" Q
+"RTN","SRASRC2",69,0)
+ ; Decrypt esig and pass to Hashing routine for file 200 validation
+"RTN","SRASRC2",70,0)
+ S SRDESIG=$$DECRYP^XUSRB1(SRESIG)
+"RTN","SRASRC2",71,0)
+ S X=$G(SRDESIG)
+"RTN","SRASRC2",72,0)
+ D HASH^XUSHSHP
+"RTN","SRASRC2",73,0)
+ I X'="",(X=$$GET1^DIQ(200,DUZ,20.4,"I")) D
+"RTN","SRASRC2",74,0)
+ .S SRVALID=1
+"RTN","SRASRC2",75,0)
+ .S SRVALID=SRVALID_U_$$GET1^DIQ(200,DUZ,20.2)_U_$$GET1^DIQ(200,DUZ,20.3)_U_"EOL999"
+"RTN","SRASRC2",76,0)
+ .Q
+"RTN","SRASRC2",77,0)
+ K X,SRDESIG
+"RTN","SRASRC2",78,0)
+ Q
+"RTN","SRASRC2",79,0)
+QUIT
+"RTN","SRASRC2",80,0)
+ K SRDOC,SRVALID,SRESIG,SRTIUDA,SRTITLE,SRTITDA
+"RTN","SRASRC2",81,0)
+ K SRVDT,SRVLOC,SRVSIT,SRVSTR,SRSUPP,SRNOA
+"RTN","SRASRC2",82,0)
+ Q
+"RTN","SRASRC3")
+0^3^B7886053
+"RTN","SRASRC3",1,0)
+SRASRC3 ;SBX/JAS - RPC TO STORE ASRC RESULTS IN VISTA ; 04/30/15
+"RTN","SRASRC3",2,0)
+ ;;3.0;Surgery;****;24 Jun 93;Build 10
+"RTN","SRASRC3",3,0)
+ ;
+"RTN","SRASRC3",4,0)
+ENTER(SRSTAT,DFN,SRCPT,SRDTTM,SRTIUX) ;
+"RTN","SRASRC3",5,0)
+ ;
+"RTN","SRASRC3",6,0)
+ ; ** RPC input/output parameter definitions **
+"RTN","SRASRC3",7,0)
+ ;
+"RTN","SRASRC3",8,0)
+ ; Input Parameters:
+"RTN","SRASRC3",9,0)
+ ;    DFN     = Patient ien (file #2 pointer)
+"RTN","SRASRC3",10,0)
+ ;    SRCPT   = CPT code (file #81)
+"RTN","SRASRC3",11,0)
+ ;    SRDTTM  = Date/Timestamp in Mumps format
+"RTN","SRASRC3",12,0)
+ ;    SRTIUX  = Array containing - Model Name ^ Risk Prob.
+"RTN","SRASRC3",13,0)
+ ;                SRTIUX(1) = "FY2013 Cardiac 30-Day^56.0"
+"RTN","SRASRC3",14,0)
+ ;                SRTIUX(2) = "FY2013 Cardiac 90-Day^10.0"
+"RTN","SRASRC3",15,0)
+ ;    DUZ     = User ien (file #200 pointer) - passed via context sharing
+"RTN","SRASRC3",16,0)
+ ;
+"RTN","SRASRC3",17,0)
+ ; Output Parameter:
+"RTN","SRASRC3",18,0)
+ ;    SRSTAT  = 1^Success mesage, if record was successfully created
+"RTN","SRASRC3",19,0)
+ ;            = 0^Explanatory message, if not a successful
+"RTN","SRASRC3",20,0)
+ ;
+"RTN","SRASRC3",21,0)
+ ;
+"RTN","SRASRC3",22,0)
+ ; ** Data validation section for input parameters **
+"RTN","SRASRC3",23,0)
+ ;
+"RTN","SRASRC3",24,0)
+ K SRSTAT,SRDA,SRMOD,SRPROB
+"RTN","SRASRC3",25,0)
+ S SRSTAT=1
+"RTN","SRASRC3",26,0)
+ ; User check 
+"RTN","SRASRC3",27,0)
+ I $G(DUZ)="" S SRSTAT="0^User DUZ is not defined." Q
+"RTN","SRASRC3",28,0)
+ I '$D(^VA(200,DUZ,0)) S SRSTAT="0^User DUZ is not valid." Q
+"RTN","SRASRC3",29,0)
+ ; Patient check
+"RTN","SRASRC3",30,0)
+ I $G(DFN)="" S SRSTAT="0^Patient DFN is not defined." Q
+"RTN","SRASRC3",31,0)
+ I '$D(^DPT(DFN,0)) S SRSTAT="0^Patient DFN is not valid." Q
+"RTN","SRASRC3",32,0)
+ ; CPT check
+"RTN","SRASRC3",33,0)
+ ;I $G(SRCPT)="" S SRSTAT="0^CPT Code is not defined." Q
+"RTN","SRASRC3",34,0)
+ ;I '$D(^ICPT("B",SRCPT)) S SRSTAT="0^CPT Code is not valid." Q
+"RTN","SRASRC3",35,0)
+ I $G(SRCPT)="" S SRCPT=""
+"RTN","SRASRC3",36,0)
+ I SRCPT'="",'$D(^ICPT("B",SRCPT)) S SRSTAT="0^CPT Code is not valid." Q
+"RTN","SRASRC3",37,0)
+ I SRCPT'="",$D(^ICPT("B",SRCPT)) S SRCPT=$O(^ICPT("B",SRCPT,""))
+"RTN","SRASRC3",38,0)
+ ; Date/Time check
+"RTN","SRASRC3",39,0)
+ I $G(SRDTTM)="" S SRSTAT="0^Date/Time is not defined." Q
+"RTN","SRASRC3",40,0)
+ S X=SRDTTM,%DT="NR" D ^%DT
+"RTN","SRASRC3",41,0)
+ I Y="-1" S SRSTAT="0^Date/Time format is not valid." Q
+"RTN","SRASRC3",42,0)
+ S SRDTTM=Y
+"RTN","SRASRC3",43,0)
+ ; Risk data check
+"RTN","SRASRC3",44,0)
+ I '$D(SRTIUX) S SRSTAT="0^Model and Risk data is not defined." Q
+"RTN","SRASRC3",45,0)
+ S SRDA="" F  S SRDA=$O(SRTIUX(SRDA)) Q:SRDA=""!('SRSTAT)  I $D(SRTIUX(SRDA)) D
+"RTN","SRASRC3",46,0)
+ . S SRMOD=$P(SRTIUX(SRDA),"^",1),SRPROB=$P(SRTIUX(SRDA),"^",2)
+"RTN","SRASRC3",47,0)
+ . I $L(SRMOD)>99 S SRSTAT="0^Model name is greater than 99 characters." Q
+"RTN","SRASRC3",48,0)
+ . I SRPROB'?0N.2N1"."1N S SRSTAT="0^Risk probability is not a valid percentage." Q
+"RTN","SRASRC3",49,0)
+ Q:'SRSTAT
+"RTN","SRASRC3",50,0)
+ ;
+"RTN","SRASRC3",51,0)
+ ; ** Create new risk calculation record entry **
+"RTN","SRASRC3",52,0)
+ ;
+"RTN","SRASRC3",53,0)
+ K DO
+"RTN","SRASRC3",54,0)
+ S DIC="^SRO(136.1,"
+"RTN","SRASRC3",55,0)
+ S DIC(0)="",DA=136.1
+"RTN","SRASRC3",56,0)
+ S X=DFN
+"RTN","SRASRC3",57,0)
+ S DIC("DR")="1////^S X=SRDTTM;2////^S X=SRCPT;3////^S X=DUZ"
+"RTN","SRASRC3",58,0)
+ D FILE^DICN
+"RTN","SRASRC3",59,0)
+ I Y=-1 S SRSTAT="0^Record creation was unsuccessful." Q
+"RTN","SRASRC3",60,0)
+ ;
+"RTN","SRASRC3",61,0)
+ D MULT
+"RTN","SRASRC3",62,0)
+ S SRSTAT="1^Record created successfully."
+"RTN","SRASRC3",63,0)
+ Q
+"RTN","SRASRC3",64,0)
+ ;
+"RTN","SRASRC3",65,0)
+ ; ** Store risk model data in multiple field **
+"RTN","SRASRC3",66,0)
+ ;
+"RTN","SRASRC3",67,0)
+MULT ;
+"RTN","SRASRC3",68,0)
+ K DO,SRDA,SRMOD,SRPROB
+"RTN","SRASRC3",69,0)
+ S DA(1)=+Y
+"RTN","SRASRC3",70,0)
+ S DIC=DIC_DA(1)_",1,"
+"RTN","SRASRC3",71,0)
+ S DIC(0)="L"
+"RTN","SRASRC3",72,0)
+ S SRDA="" F  S SRDA=$O(SRTIUX(SRDA)) Q:SRDA=""  I $D(SRTIUX(SRDA)) D
+"RTN","SRASRC3",73,0)
+ . K DIC("DR")
+"RTN","SRASRC3",74,0)
+ . S SRMOD=$P(SRTIUX(SRDA),"^",1),SRPROB=$P(SRTIUX(SRDA),"^",2)
+"RTN","SRASRC3",75,0)
+ . S DIC("DR")=".01////^S X=SRMOD;1////^S X=SRPROB"
+"RTN","SRASRC3",76,0)
+ . D FILE^DICN
+"RTN","SRASRC3",77,0)
+ Q
+"RTN","SRASRC4")
+0^4^B1887996
+"RTN","SRASRC4",1,0)
+SRASRC4 ;SBX/JAS - RETURN MOST RECENT VISTA LAB RECORD ; 05/21/15
+"RTN","SRASRC4",2,0)
+ ;;3.0;Surgery;****;24 Jun 93;Build 10
+"RTN","SRASRC4",3,0)
+ ;
+"RTN","SRASRC4",4,0)
+ ; Reference to API RESULTS^LRPXAPI supported by IA# 4245
+"RTN","SRASRC4",5,0)
+ ; Reference to API $$TESTNM^LRPXAPIU supported by IA# 4246
+"RTN","SRASRC4",6,0)
+ ;
+"RTN","SRASRC4",7,0)
+ENTER(SRRET,DFN,SRLABNS) ;
+"RTN","SRASRC4",8,0)
+ ; 
+"RTN","SRASRC4",9,0)
+ ; SRRET   = If a match is found:
+"RTN","SRASRC4",10,0)
+ ;           Lab Name ^ Lab Result ^ Lab Date ^ Lab Units of Measure
+"RTN","SRASRC4",11,0)
+ ;         = No matches found: "" is returned
+"RTN","SRASRC4",12,0)
+ ; DFN     = Patient file (#2) ien
+"RTN","SRASRC4",13,0)
+ ; SRLABNS = An array containing the possible Lab strings to check for
+"RTN","SRASRC4",14,0)
+ ;
+"RTN","SRASRC4",15,0)
+ K SRRET S SRRET=""
+"RTN","SRASRC4",16,0)
+ I DFN=""!('$D(SRLABNS)) Q
+"RTN","SRASRC4",17,0)
+ D RESULTS^LRPXAPI(.SRLABR,DFN,"",250)
+"RTN","SRASRC4",18,0)
+ I '$D(SRLABR) Q
+"RTN","SRASRC4",19,0)
+ S SRLDA="",SRFND=0
+"RTN","SRASRC4",20,0)
+ F  S SRLDA=$ZP(SRLABR(SRLDA)) Q:SRLDA=""!(SRFND)  I $D(SRLABR(SRLDA)) D
+"RTN","SRASRC4",21,0)
+ . S SRLREC=SRLABR(SRLDA)
+"RTN","SRASRC4",22,0)
+ . S SRTEST=$$TESTNM^LRPXAPIU($P(SRLREC,"^",2))
+"RTN","SRASRC4",23,0)
+ . S SRNSDA=""
+"RTN","SRASRC4",24,0)
+ . F  S SRNSDA=$O(SRLABNS(SRNSDA)) Q:SRNSDA=""  I $D(SRLABNS(SRNSDA)) D
+"RTN","SRASRC4",25,0)
+ . . I SRLABNS(SRNSDA)=SRTEST S SRFND=1 D  Q
+"RTN","SRASRC4",26,0)
+ . . . S X=$P(SRLREC,"^") D H^%DTC
+"RTN","SRASRC4",27,0)
+ . . . S SRDATE=$ZDATE(%H)_"@"_$ZTIME(%T)
+"RTN","SRASRC4",28,0)
+ . . . S SRRET=SRTEST_"^"_$P(SRLREC,"^",4)_"^"_SRDATE_"^"_$P($P(SRLREC,"^",8),"!",7)
+"RTN","SRASRC4",29,0)
+ K SRLABR,SRLDA,SRFND,SRLREC,SRTEST,SRNSDA,SRDATE
+"RTN","SRASRC4",30,0)
+ Q
+"RTN","SRASRC5")
+0^8^B2148476
+"RTN","SRASRC5",1,0)
+SRASRC5 ;SBX/JAS - RETURN HEALTH FACTORS FOR PATIENT ; 07/15/15
+"RTN","SRASRC5",2,0)
+ ;;3.0;Surgery;****;24 Jun 93;Build 10
+"RTN","SRASRC5",3,0)
+ ;
+"RTN","SRASRC5",4,0)
+ ; Reference to API LIST^ORQQVS supported by IA# 1690
+"RTN","SRASRC5",5,0)
+ ; Reference to ^AUPNVHF supported by IA# 3084
+"RTN","SRASRC5",6,0)
+ ;
+"RTN","SRASRC5",7,0)
+ENTER(SRRET,DFN) ;
+"RTN","SRASRC5",8,0)
+ ; 
+"RTN","SRASRC5",9,0)
+ ; SRRET   = If records are found, the following is returned in array
+"RTN","SRASRC5",10,0)
+ ;           format:  Date of Visit ^ Health Factor Name
+"RTN","SRASRC5",11,0)
+ ;         = No records found - "" (null) value is returned in a single 
+"RTN","SRASRC5",12,0)
+ ;           array record.
+"RTN","SRASRC5",13,0)
+ ; DFN     = Patient file (#2) ien
+"RTN","SRASRC5",14,0)
+ ;
+"RTN","SRASRC5",15,0)
+ K SRRET,STDT,SRORY,SRVISDT,SRVISIT,SRACNT,SRHFDA,SRHF
+"RTN","SRASRC5",16,0)
+ S SRRET="",SRACNT=0
+"RTN","SRASRC5",17,0)
+ I DFN="" Q
+"RTN","SRASRC5",18,0)
+ S %H=$H-365 D YMD^%DTC S STDT=X
+"RTN","SRASRC5",19,0)
+ D LIST^ORQQVS(.SRORY,DFN,STDT,DT,"")
+"RTN","SRASRC5",20,0)
+ I '$D(SRORY) S SRACNT=SRACNT+1,SRRET(SRACNT)="" Q
+"RTN","SRASRC5",21,0)
+ ;
+"RTN","SRASRC5",22,0)
+ S SRCNT=0
+"RTN","SRASRC5",23,0)
+ F  S SRCNT=$O(SRORY(SRCNT)) Q:SRCNT=""  I $D(SRORY(SRCNT)) D
+"RTN","SRASRC5",24,0)
+ . S X=$P(SRORY(SRCNT),"^",2) D H^%DTC
+"RTN","SRASRC5",25,0)
+ . S SRVISDT=$ZDATE(%H)
+"RTN","SRASRC5",26,0)
+ . S SRVISIT=$P(SRORY(SRCNT),"^")
+"RTN","SRASRC5",27,0)
+ . I $D(^AUPNVHF("AD",SRVISIT)) D
+"RTN","SRASRC5",28,0)
+ . . S SRHFDA="" F  S SRHFDA=$O(^AUPNVHF("AD",SRVISIT,SRHFDA)) Q:SRHFDA=""  I $D(^AUPNVHF(SRHFDA,0)) D
+"RTN","SRASRC5",29,0)
+ . . . S SRHF=$$GET1^DIQ(9000010.23,SRHFDA,.01,"E")
+"RTN","SRASRC5",30,0)
+ . . . S SRACNT=SRACNT+1
+"RTN","SRASRC5",31,0)
+ . . . S SRRET(SRACNT)=SRVISDT_"^"_SRHF
+"RTN","SRASRC5",32,0)
+ I '$D(SRRET) S SRACNT=SRACNT+1,SRRET(SRACNT)=""
+"RTN","SRASRC5",33,0)
+ Q
+"RTN","SRASRC6")
+0^9^B23186188
+"RTN","SRASRC6",1,0)
+SRASRC6 ;SBX/JAS - RETURN PROGRESS NOTES FOR PATIENT ; 07/24/15
+"RTN","SRASRC6",2,0)
+ ;;3.0;Surgery;****;24 Jun 93;Build 10
+"RTN","SRASRC6",3,0)
+ ;
+"RTN","SRASRC6",4,0)
+ ; Reference to API SELECTED^VSIT supported by IA# 1905
+"RTN","SRASRC6",5,0)
+ ; Reference to API NOTES^TIUSRVLV supported by IA# 2812
+"RTN","SRASRC6",6,0)
+ ; Reference to API TGET^TIUSRVR1 supported by IA# 2944
+"RTN","SRASRC6",7,0)
+ ;
+"RTN","SRASRC6",8,0)
+ENTER1(SRRET,DFN,SRSTR) ;
+"RTN","SRASRC6",9,0)
+ ; 
+"RTN","SRASRC6",10,0)
+ ; SRRET   = If records are found - If records are found - Full body of each matching progress note 
+"RTN","SRASRC6",11,0)
+ ;           will be returned in XML format along with local progress note title and electronic signature date.
+"RTN","SRASRC6",12,0)
+ ;         = No records found - Only the beginning and ending XML tags will be returned.
+"RTN","SRASRC6",13,0)
+ ; DFN     = Patient file (#2) ien
+"RTN","SRASRC6",14,0)
+ ; SRSTR   = VHA Enterprise Title for progress note
+"RTN","SRASRC6",15,0)
+ ;
+"RTN","SRASRC6",16,0)
+ K SRRET
+"RTN","SRASRC6",17,0)
+ Q:DFN=""!(SRSTR="")
+"RTN","SRASRC6",18,0)
+ S SRTYPE=1
+"RTN","SRASRC6",19,0)
+ D ENTER(.SRRET,DFN,SRSTR,SRTYPE)
+"RTN","SRASRC6",20,0)
+ Q
+"RTN","SRASRC6",21,0)
+ ;
+"RTN","SRASRC6",22,0)
+ENTER2(SRRET,DFN,SRSTR) ; 
+"RTN","SRASRC6",23,0)
+ ; 
+"RTN","SRASRC6",24,0)
+ ; SRRET   = If records are found - If records are found - Full body of each matching progress note 
+"RTN","SRASRC6",25,0)
+ ;           will be returned in XML format along with local progress note title and electronic signature date.
+"RTN","SRASRC6",26,0)
+ ;         = No records found - Only the beginning and ending XML tags will be returned.
+"RTN","SRASRC6",27,0)
+ ; DFN     = Patient file (#2) ien
+"RTN","SRASRC6",28,0)
+ ; SRSTR   = Search string for VHA Enterprise Title and/or local progress note title
+"RTN","SRASRC6",29,0)
+ ;
+"RTN","SRASRC6",30,0)
+ K SRRET
+"RTN","SRASRC6",31,0)
+ Q:DFN=""!(SRSTR="")
+"RTN","SRASRC6",32,0)
+ S SRTYPE=2
+"RTN","SRASRC6",33,0)
+ D ENTER(.SRRET,DFN,SRSTR,SRTYPE)
+"RTN","SRASRC6",34,0)
+ Q
+"RTN","SRASRC6",35,0)
+ ;
+"RTN","SRASRC6",36,0)
+ENTER(SRRET,DFN,SRSTR,SRTYPE) ;
+"RTN","SRASRC6",37,0)
+ K SRVST,SRNOTE,^TMP("VSIT",$J),SRCNT,SR2CNT,SRASRC,SRESB,SRTCNT S (SRCNT,SR2CNT)=0
+"RTN","SRASRC6",38,0)
+ ; TEST EXAMPLE: D SELECTED^VSIT(237,"","") RESULTS IN: ^TMP("VSIT",$J)
+"RTN","SRASRC6",39,0)
+ S SR2CNT=SR2CNT+1,SRRET(SR2CNT)="<notes>"
+"RTN","SRASRC6",40,0)
+ D SELECTED^VSIT(DFN,"","")
+"RTN","SRASRC6",41,0)
+ I '$D(^TMP("VSIT",$J)) D XQUIT Q
+"RTN","SRASRC6",42,0)
+ S SRVST=""
+"RTN","SRASRC6",43,0)
+ F  S SRVST=$O(^TMP("VSIT",$J,SRVST)) Q:SRVST=""  D
+"RTN","SRASRC6",44,0)
+ . K ^TMP("TIULIST",$J),SRNOTE,SRREVDT,SRREVDT2
+"RTN","SRASRC6",45,0)
+ . ; TEST EXAMPLE: D NOTES^TIUSRVLV(.SRNOTE,11312) RESULTS IN: ^TMP("TIULIST",$J)
+"RTN","SRASRC6",46,0)
+ . D NOTES^TIUSRVLV(.SRNOTE,SRVST)
+"RTN","SRASRC6",47,0)
+ . I $D(^TMP("TIULIST",$J)) D
+"RTN","SRASRC6",48,0)
+ . . S SRREVDT=""
+"RTN","SRASRC6",49,0)
+ . . F  S SRREVDT=$O(^TMP("TIULIST",$J,SRREVDT)) Q:SRREVDT=""  D
+"RTN","SRASRC6",50,0)
+ . . . S SRREVDT2="" F  S SRREVDT2=$O(^TMP("TIULIST",$J,SRREVDT,SRREVDT2)) Q:SRREVDT2=""  I $D(^TMP("TIULIST",$J,SRREVDT,SRREVDT2)) D
+"RTN","SRASRC6",51,0)
+ . . . . S SRCNT=SRCNT+1
+"RTN","SRASRC6",52,0)
+ . . . . S SRASRC(SRREVDT,SRCNT)=$P(^TMP("TIULIST",$J,SRREVDT,SRREVDT2),"^")
+"RTN","SRASRC6",53,0)
+ K ^TMP("VSIT",$J),^TMP("TIULIST",$J)
+"RTN","SRASRC6",54,0)
+ I $D(SRASRC) D
+"RTN","SRASRC6",55,0)
+ . K ^TMP("TIUVIEW",$J),SRNOTED
+"RTN","SRASRC6",56,0)
+ . S SRREVDT=""
+"RTN","SRASRC6",57,0)
+ . F  S SRREVDT=$O(SRASRC(SRREVDT)) Q:SRREVDT=""  D
+"RTN","SRASRC6",58,0)
+ . . S SRCNT="" F  S SRCNT=$O(SRASRC(SRREVDT,SRCNT)) Q:SRCNT=""  D
+"RTN","SRASRC6",59,0)
+ . . . S SRTIU=SRASRC(SRREVDT,SRCNT)
+"RTN","SRASRC6",60,0)
+ . . . Q:SRTIU=""
+"RTN","SRASRC6",61,0)
+ . . . ; TEST EXAMPLE: D TGET^TIUSRVR1(.SRNOTED,11210) RESULTS IN: ^TMP("TIUVIEW",$J)
+"RTN","SRASRC6",62,0)
+ . . . D TGET^TIUSRVR1(.SRNOTED,SRTIU)
+"RTN","SRASRC6",63,0)
+ . . . I $D(^TMP("TIUVIEW",$J)) D
+"RTN","SRASRC6",64,0)
+ . . . . I SRTYPE=1 D
+"RTN","SRASRC6",65,0)
+ . . . . . K SRTBOD,SRLOC,SRSIGNDT,SRTIULN,SRETIT,SRBCNT,SRFND S (SRFND,SRESB,SRQUIT,SRBCNT)=0
+"RTN","SRASRC6",66,0)
+ . . . . . S SRTCNT="" F  S SRTCNT=$O(^TMP("TIUVIEW",$J,SRTCNT)) Q:SRTCNT=""!(SRQUIT)  D
+"RTN","SRASRC6",67,0)
+ . . . . . . S SRTIULN=^TMP("TIUVIEW",$J,SRTCNT)
+"RTN","SRASRC6",68,0)
+ . . . . . . I SRTIULN["STANDARD TITLE:" D
+"RTN","SRASRC6",69,0)
+ . . . . . . . S SRETIT=$P($P(SRTIULN,": ",2),"   ",1)
+"RTN","SRASRC6",70,0)
+ . . . . . . . I SRETIT'=SRSTR S SRQUIT=1 Q
+"RTN","SRASRC6",71,0)
+ . . . . . . . S SRFND=1
+"RTN","SRASRC6",72,0)
+ . . . . . . Q:SRQUIT
+"RTN","SRASRC6",73,0)
+ . . . . . . I SRTIULN["/es/" S SRESB=1
+"RTN","SRASRC6",74,0)
+ . . . . . . I SRTIULN["Signed:" S SRSIGNDT=$P(SRTIULN,": ",2)
+"RTN","SRASRC6",75,0)
+ . . . . . . I SRTIULN["LOCAL TITLE:" S SRLOC=$P($P(SRTIULN,": ",2),"   ",1)
+"RTN","SRASRC6",76,0)
+ . . . . . . I 'SRESB&(SRTIULN'["TITLE:")&(SRTIULN'["DATE OF NOTE:")&(SRTIULN'["AUTHOR:")&(SRTIULN'["URGENCY") D
+"RTN","SRASRC6",77,0)
+ . . . . . . . I SRTIULN'=""&(SRTIULN'=" ") S SRBCNT=SRBCNT+1,SRTBOD(SRBCNT)=SRTIULN
+"RTN","SRASRC6",78,0)
+ . . . . . I $D(SRTBOD)&($G(SRLOC)'="")&($G(SRSIGNDT)'="")&(SRFND) D GENXML
+"RTN","SRASRC6",79,0)
+ . . . . I SRTYPE=2 D
+"RTN","SRASRC6",80,0)
+ . . . . . K SRTBOD,SRLOC,SRSIGNDT,SRTIULN,SRETIT,SRBCNT,SRFND S (SRFND,SRESB,SRQUIT,SRBCNT)=0
+"RTN","SRASRC6",81,0)
+ . . . . . S SRTCNT="" F  S SRTCNT=$O(^TMP("TIUVIEW",$J,SRTCNT)) Q:SRTCNT=""!(SRQUIT)  D
+"RTN","SRASRC6",82,0)
+ . . . . . . S SRTIULN=^TMP("TIUVIEW",$J,SRTCNT)
+"RTN","SRASRC6",83,0)
+ . . . . . . I SRTIULN["TITLE:" D
+"RTN","SRASRC6",84,0)
+ . . . . . . . S SRETIT=$P($P(SRTIULN,": ",2),"   ",1)
+"RTN","SRASRC6",85,0)
+ . . . . . . . I SRETIT[SRSTR S SRFND=1
+"RTN","SRASRC6",86,0)
+ . . . . . . I SRTIULN["AUTHOR"&('SRFND) S SRQUIT=1 Q
+"RTN","SRASRC6",87,0)
+ . . . . . . I SRTIULN["/es/" S SRESB=1
+"RTN","SRASRC6",88,0)
+ . . . . . . I SRTIULN["Signed:" S SRSIGNDT=$P(SRTIULN,": ",2)
+"RTN","SRASRC6",89,0)
+ . . . . . . I SRTIULN["LOCAL TITLE:" S SRLOC=$P($P(SRTIULN,": ",2),"   ",1)
+"RTN","SRASRC6",90,0)
+ . . . . . . I 'SRESB&(SRTIULN'["TITLE:")&(SRTIULN'["DATE OF NOTE:")&(SRTIULN'["AUTHOR:")&(SRTIULN'["URGENCY") D
+"RTN","SRASRC6",91,0)
+ . . . . . . . I SRTIULN'=""&(SRTIULN'=" ") S SRBCNT=SRBCNT+1,SRTBOD(SRBCNT)=SRTIULN
+"RTN","SRASRC6",92,0)
+ . . . . . I $D(SRTBOD)&($G(SRLOC)'="")&($G(SRSIGNDT)'="")&(SRFND) D GENXML
+"RTN","SRASRC6",93,0)
+ . . . . . Q
+"RTN","SRASRC6",94,0)
+ D XQUIT
+"RTN","SRASRC6",95,0)
+ K SRASRC,SR2CNT,SRTBOD,^TMP("TIUVIEW",$J)
+"RTN","SRASRC6",96,0)
+ Q
+"RTN","SRASRC6",97,0)
+GENXML ;
+"RTN","SRASRC6",98,0)
+ S SR2CNT=SR2CNT+1
+"RTN","SRASRC6",99,0)
+ S SRRET(SR2CNT)="<note localTitle='"_SRLOC_"' signDate='"_SRSIGNDT_"'>"
+"RTN","SRASRC6",100,0)
+ S SR2CNT=SR2CNT+1,SRRET(SR2CNT)="<body>"
+"RTN","SRASRC6",101,0)
+ S SRBCNT="" F  S SRBCNT=$O(SRTBOD(SRBCNT)) Q:SRBCNT=""  D
+"RTN","SRASRC6",102,0)
+ . S SR2CNT=SR2CNT+1
+"RTN","SRASRC6",103,0)
+ . S SRRET(SR2CNT)="<![CDATA["_SRTBOD(SRBCNT)_"]]>"
+"RTN","SRASRC6",104,0)
+ S SR2CNT=SR2CNT+1,SRRET(SR2CNT)="</body>"
+"RTN","SRASRC6",105,0)
+ S SR2CNT=SR2CNT+1,SRRET(SR2CNT)="</note>"
+"RTN","SRASRC6",106,0)
+ Q
+"RTN","SRASRC6",107,0)
+XQUIT ;
+"RTN","SRASRC6",108,0)
+ S SR2CNT=SR2CNT+1,SRRET(SR2CNT)="</notes>"
+"RTN","SRASRC6",109,0)
+ Q
+"RTN","SRASRC7")
+0^10^B1173930
+"RTN","SRASRC7",1,0)
+SRASRC7 ;SBX/JAS - RETURNS A PATIENT'S ACTIVE MEDICATION LIST ; 08/13/15
+"RTN","SRASRC7",2,0)
+ ;;3.0;Surgery;****;24 Jun 93;Build 10
+"RTN","SRASRC7",3,0)
+ ;
+"RTN","SRASRC7",4,0)
+ ; Reference to API OCL^PSOORRL supported by IA# 2400
+"RTN","SRASRC7",5,0)
+ ;
+"RTN","SRASRC7",6,0)
+ENTER(SRRET,DFN) ;
+"RTN","SRASRC7",7,0)
+ ; 
+"RTN","SRASRC7",8,0)
+ ; SRRET   = If records are found - Med ID ^ Med Name
+"RTN","SRASRC7",9,0)
+ ;         = No records found - "" (null) value is returned in single array record
+"RTN","SRASRC7",10,0)
+ ; DFN     = Patient file (#2) ien
+"RTN","SRASRC7",11,0)
+ ;
+"RTN","SRASRC7",12,0)
+ K ^TMP("PS",$J),SRRET,SRACNT,SRCNT,SRPS0 S SRRET="",SRACNT=0
+"RTN","SRASRC7",13,0)
+ I DFN="" Q
+"RTN","SRASRC7",14,0)
+ D OCL^PSOORRL(DFN,"","")
+"RTN","SRASRC7",15,0)
+ I '$D(^TMP("PS",$J)) S SRACNT=SRACNT+1,SRRET(SRACNT)="" Q
+"RTN","SRASRC7",16,0)
+ ;
+"RTN","SRASRC7",17,0)
+ S SRCNT=0
+"RTN","SRASRC7",18,0)
+ F  S SRCNT=$O(^TMP("PS",$J,SRCNT)) Q:SRCNT=""  I $D(^TMP("PS",$J,SRCNT,0)) D
+"RTN","SRASRC7",19,0)
+ . S SRPS0=^TMP("PS",$J,SRCNT,0)
+"RTN","SRASRC7",20,0)
+ . Q:$P(SRPS0,"^",9)'="ACTIVE"
+"RTN","SRASRC7",21,0)
+ . S SRACNT=SRACNT+1
+"RTN","SRASRC7",22,0)
+ . S SRRET(SRACNT)=$P(SRPS0,"^",1)_"^"_$P(SRPS0,"^",2)
+"RTN","SRASRC7",23,0)
+ I '$D(SRRET) S SRACNT=SRACNT+1,SRRET(SRACNT)=""
+"RTN","SRASRC7",24,0)
+ Q
+"RTN","SRASRCCK")
+0^6^B8814602
+"RTN","SRASRCCK",1,0)
+SRASRCCK ;SBX/JAS - ASRC CHECK ; 07/02/15
+"RTN","SRASRCCK",2,0)
+ ;;3.0;Surgery;****;24 Jun 93;Build 10
+"RTN","SRASRCCK",3,0)
+ ; 
+"RTN","SRASRCCK",4,0)
+ Q:$D(^SRO(137,SRASRCC))
+"RTN","SRASRCCK",5,0)
+ K SRASRCD,SRASRCX,SRASRCDT,SRASRCR,SRASRCF,SRASRCRM,SRLINE
+"RTN","SRASRCCK",6,0)
+ S SRLINE="" F I=1:1:80 S SRLINE=SRLINE_"="
+"RTN","SRASRCCK",7,0)
+ S SRASRCX=0,SRASRCD=$$GET1^DIQ(81,SRASRCC,.01)
+"RTN","SRASRCCK",8,0)
+ I '$D(^SRO(136.1,"C",DFN,SRASRCC)) S SRASRCX=1
+"RTN","SRASRCCK",9,0)
+ S SRASRCDT="",SRASRCF=0
+"RTN","SRASRCCK",10,0)
+ F  S SRASRCDT=$ZP(^SRO(136.1,"C",DFN,SRASRCC,SRASRCDT)) Q:SRASRCDT=""!(SRASRCX)!(SRASRCF)  I $D(^SRO(136.1,"C",DFN,SRASRCC,SRASRCDT)) D
+"RTN","SRASRCCK",11,0)
+ . S X1=DT,X2=SRASRCDT D ^%DTC I X>60 S SRASRCX=1 Q
+"RTN","SRASRCCK",12,0)
+ . S SRASRCR=""
+"RTN","SRASRCCK",13,0)
+ . F  S SRASRCR=$ZP(^SRO(136.1,"C",DFN,SRASRCC,SRASRCDT,SRASRCR)) Q:SRASRCR=""!(SRASRCF)  I $D(^SRO(136.1,SRASRCR,1,0)) D
+"RTN","SRASRCCK",14,0)
+ . . S SRASRCF=1
+"RTN","SRASRCCK",15,0)
+ . . W !!!,SRLINE,!!,?12,"PATIENT'S MORTALITY RISK ASSOCIATED WITH CPT "_SRASRCD
+"RTN","SRASRCCK",16,0)
+ . . W !,?12,"--------------------------------------------------"
+"RTN","SRASRCCK",17,0)
+ . . S SRASRCRM=""
+"RTN","SRASRCCK",18,0)
+ . . F  S SRASRCRM=$O(^SRO(136.1,SRASRCR,1,SRASRCRM)) Q:SRASRCRM=""  I $D(^SRO(136.1,SRASRCR,1,SRASRCRM,0)) D
+"RTN","SRASRCCK",19,0)
+ . . . W !,?5,$E($P(^SRO(136.1,SRASRCR,1,SRASRCRM,0),"^"),1,50)
+"RTN","SRASRCCK",20,0)
+ . . . W ?65,$P(^SRO(136.1,SRASRCR,1,SRASRCRM,0),"^",2)_" %"
+"RTN","SRASRCCK",21,0)
+ . . W !!,SRLINE,!!
+"RTN","SRASRCCK",22,0)
+ I SRASRCX D
+"RTN","SRASRCCK",23,0)
+ . W !!!,SRLINE,!!,?3,"This request cannot be entered because the procedure "_SRASRCD_" you have"
+"RTN","SRASRCCK",24,0)
+ . W !,?3,"selected requires an Automated Surgical Risk Calculator (ASRC) record"
+"RTN","SRASRCCK",25,0)
+ . W !,?3,"result in the past 60 days. The requesting provider must complete and"
+"RTN","SRASRCCK",26,0)
+ . W !,?3,"sign an ASRC mortality risk record for this patient and CPT code using"
+"RTN","SRASRCCK",27,0)
+ . W !,?3,"the CPRS Tools menu - Automated Surgical Risk Calculator.",!!,SRLINE
+"RTN","SRASRCCK",28,0)
+ . W !!,"Press RETURN once the calculation has been completed " R X:DTIME
+"RTN","SRASRCCK",29,0)
+ . W !!!
+"RTN","SRASRCCK",30,0)
+ . I $D(^SRO(136.1,"C",DFN,SRASRCC)) D
+"RTN","SRASRCCK",31,0)
+ . . S SRASRCDT=$O(^SRO(136.1,"C",DFN,SRASRCC,"")) I SRASRCDT[DT D
+"RTN","SRASRCCK",32,0)
+ . . . S SRASRCR=$O(^SRO(136.1,"C",DFN,SRASRCC,SRASRCDT,"")) I $D(^SRO(136.1,SRASRCR)) D
+"RTN","SRASRCCK",33,0)
+ . . . . W !!!,SRLINE,!!,?12,"PATIENT'S MORTALITY RISK ASSOCIATED WITH CPT "_SRASRCD
+"RTN","SRASRCCK",34,0)
+ . . . . W !,?12,"--------------------------------------------------"
+"RTN","SRASRCCK",35,0)
+ . . . . S SRASRCRM=""
+"RTN","SRASRCCK",36,0)
+ . . . . F  S SRASRCRM=$O(^SRO(136.1,SRASRCR,1,SRASRCRM)) Q:SRASRCRM=""  I $D(^SRO(136.1,SRASRCR,1,SRASRCRM,0)) D
+"RTN","SRASRCCK",37,0)
+ . . . . . W !,?5,$E($P(^SRO(136.1,SRASRCR,1,SRASRCRM,0),"^"),1,50)
+"RTN","SRASRCCK",38,0)
+ . . . . . W ?65,$P(^SRO(136.1,SRASRCR,1,SRASRCRM,0),"^",2)_" %"
+"RTN","SRASRCCK",39,0)
+ . . . . W !!,SRLINE,!!
+"RTN","SRASRCCK",40,0)
+ Q
+"RTN","SRCUSS1")
+0^7^B20655905
+"RTN","SRCUSS1",1,0)
+SRCUSS1 ;TAMPA/CFB - SCREEN SERVER ; [ 03/11/02  13:40 PM ]
+"RTN","SRCUSS1",2,0)
+ ;;3.0; Surgery ;**14,31,48,66,108**;24 Jun 93;Build 10
+"RTN","SRCUSS1",3,0)
+B G BQ:Q(13)=2 Q:$D(Q("X"))  S DR="" W:'Q("ED") !! I Q(1)="Q" S Q(1)="" Q
+"RTN","SRCUSS1",4,0)
+ I '$D(Q(12,12)),Q(1,Q)=3,Q(7)["(MULTIPLE)" S Q7=1 G BP2
+"RTN","SRCUSS1",5,0)
+ I Q=1,$D(Q3("DIVE")) S Q7=$P(Q3("DIVE"),"P",2) K Q3("DIVE") G BP10
+"RTN","SRCUSS1",6,0)
+BP1 S DX=1,DY=22 X:Q("ED") Q("XY") I $D(Q3("VIEW")) S Q3("VIEW")=""
+"RTN","SRCUSS1",7,0)
+ K QPQPQ W "Enter Screen Server Function:  " R Q7:DTIME S:'$T Q7="^^" I Q7?.N S:$L(Q7)>2 Q7="?" S:Q7>15 Q7="?"
+"RTN","SRCUSS1",8,0)
+ S:Q7="a" Q7="A" S:$E(Q7)="p" Q7="P"_$E(Q7,2,99)
+"RTN","SRCUSS1",9,0)
+ S:$L(Q7)&("^-+123456789AP"'[$E(Q7)) Q7="?" S:$P(Q7,":",2)>15 Q7="?" S:Q7?.E1C.E Q7="?"
+"RTN","SRCUSS1",10,0)
+ I Q7[";" F Q8=2:1 S QQ=$P(Q7,";",Q8) S:"123456789"'[$E(QQ) Q7="?" Q:'QQ
+"RTN","SRCUSS1",11,0)
+ I Q7["?" D QUES G BP2
+"RTN","SRCUSS1",12,0)
+ K SRCUSS("OUT")
+"RTN","SRCUSS1",13,0)
+ I Q7'?.N1";".E,(Q7'?.N),(Q7'?.N1":".E),(Q7'="A"),("^^"'[Q7),(Q7'?1"+".N),(Q7'?1"-".N),(Q7'?1"P"1N.N) D QUES G BP2
+"RTN","SRCUSS1",14,0)
+ W Q("LO")
+"RTN","SRCUSS1",15,0)
+BP10 I Q7="A" S Q7="1:"_(Q(1,Q)-1)
+"RTN","SRCUSS1",16,0)
+ S:$S(Q7="^^":1,$E(Q7)'="L":0,+$E(Q7,2,99)<Q:1,1:0) Q(12,4)=$E(Q7,2,99) S Q(13)=1 G BQ:((Q7=""&('$D(Q0(Q,Q0(0,Q)+1))))!(Q7[U))
+"RTN","SRCUSS1",17,0)
+ I $E(Q7)="P",$L(Q7)>1,('+$E(Q7,2,99)!('$D(Q0(Q,+$E(Q7,2,99))))) D QUES G BP2
+"RTN","SRCUSS1",18,0)
+ I $E(Q7)="P",$L(Q7)>1,+$E(Q7,2,99) S Q0(0,Q)=$E(Q7,2,99),Q(1,Q)=1 X Q(0) G A^SRCUSS
+"RTN","SRCUSS1",19,0)
+ S:Q7="" Q7="+1" I $E(Q7,1)="+" S Q0(0,Q)=Q0(0,Q)+Q7,Q(1,Q)=1 G BQ:'$D(Q0(Q,Q0(0,Q))) X Q(0) G A^SRCUSS
+"RTN","SRCUSS1",20,0)
+ K Q(12,12) I $E(Q7,1)="-" S:Q7="-" Q7="-1" S Q0(0,Q)=$S(Q0(0,Q)+Q7<2:1,1:Q0(0,Q)+Q7),Q(1,Q)=1 X Q(0) G A^SRCUSS
+"RTN","SRCUSS1",21,0)
+BP2 S (Q2(Q),DR)="" F Q8=1:1 S Q6=$P(Q7,";",Q8) D:Q6[":" BCOM Q:Q6=""!(Q6'=+Q6)  I $P(Q0(Q,Q0(0,Q)),";",Q6+1)'="" D BM
+"RTN","SRCUSS1",22,0)
+ S:$D(Q("S",Q,Q0(0,Q),Q(1,Q))) DIC("S")=Q("S",Q,Q0(0,Q),Q(1,Q)) D CNG K DIC("S") S @("Q(7)=$D("_Q(8,Q)_Q(9,Q)_",0))") I 'Q(7) G BQ
+"RTN","SRCUSS1",23,0)
+ I Q2(Q)="",Q("ED") X ^TMP("SRCUSS",$J,^TMP("SRCUSS",$J,0),1),^(2) W !,Q("EPE") G B
+"RTN","SRCUSS1",24,0)
+ S QPQPQ=1,Q(1,Q)=1 F EMILY=1:1 S Q2(Q,1)=+$P(Q2(Q),U,1),Q2(Q)=$P(Q2(Q),U,2,99) Q:Q2(Q,1)<1  S Q(3)=Q(2,Q,Q2(Q,1)) D M^SRCUSS0 S Q(1,Q)=1
+"RTN","SRCUSS1",25,0)
+ X:$S('$D(Q(12,4)):1,+Q(12,4)=Q:1,1:0) Q(0) G A^SRCUSS
+"RTN","SRCUSS1",26,0)
+BCOM S Q(12,2)=+$P(Q6,":",2),Q6=+Q6,Q(12,1)=0 Q:Q(12,2)'>Q6  F Q(12,0)=Q6:1:Q(12,2) S Q7=$S(Q(12,1)+Q8>1:$P(Q7,";",1,Q8+Q(12,1)-1)_";",1:"")_Q(12,0)_";"_$P(Q7,";",Q(12,1)+Q8+$S(Q(12,1)=0:1,1:0),99) S Q(12,1)=Q(12,1)+1
+"RTN","SRCUSS1",27,0)
+ Q
+"RTN","SRCUSS1",28,0)
+BM I $D(Q(2,Q,Q6)),$P(@("^DD("_+$P(Q(2,Q,Q6),U,2)_",.01,0)"),U,2)'["W" S Q2(Q)=Q2(Q)_Q6_U Q
+"RTN","SRCUSS1",29,0)
+ I $D(Q(2,Q,Q6)),$P(@("^DD("_+$P(Q(2,Q,Q6),U,2)_",.01,0)"),U,2)["W",$D(Q3("VIEW")) S Q3("VIEW")=Q3("VIEW")_$P($P(Q(2,Q,Q6),U,4),";",1)_";"
+"RTN","SRCUSS1",30,0)
+ S DR=DR_$P(Q0(Q,Q0(0,Q)),";",Q6+1)_";Q;" Q
+"RTN","SRCUSS1",31,0)
+BQ W:Q=1 @IOF W:$D(Q("NOR")) Q("NOR") K:$D(Q0(0,Q)) Q("S",Q,Q0(0,Q)) K:Q=1 Q,Q0,Q1,DE,DP,DQ,Q2,Q3,Q4,Q5,Q6,Q7,Q8,QQ,QQQ,DX,DY,SRCUSS K ^TMP("SRCUSS",$J) Q  ;WITH NEW K:Q=1  Q
+"RTN","SRCUSS1",32,0)
+CNG W Q("HI") S (DIE,DIC)=Q(8,Q),DA=Q(9,Q) I $D(Q3("VIEW")) Q:Q3("VIEW")=""  S DR=Q3("VIEW") D EN^DIQ R !!,"Press <RET> to continue  ",Q8:DTIME Q
+"RTN","SRCUSS1",33,0)
+ I $D(Q("S",Q,"IX")) D IX Q
+"RTN","SRCUSS1",34,0)
+ ; JAS - 07/01/15 - ASRC PROJECT
+"RTN","SRCUSS1",35,0)
+ ;I 'Q("ED") D SET,^DIE S SRCUSS("OUT")=1 D RET Q
+"RTN","SRCUSS1",36,0)
+ I 'Q("ED") D SET,^DIE S SRCUSS("OUT")=1 D CCHK,RET Q
+"RTN","SRCUSS1",37,0)
+ G ^SRCUSS2
+"RTN","SRCUSS1",38,0)
+ID Q:'$D(^DD(+Q(4)))  Q:('(+Q(4)\1=80!(+Q(4)=45.3)))&'($P(^DD(+Q(4),.01,0),U,2)["N"&($D(^DD(+Q(4),0,"ID"))))  S Q(11)=$O(@("^DD("_$S(+Q(4)'="":+Q(4),1:+Q(0,Q))_",0,""ID"","_Q(11)_")")) Q:Q(11)=""  I ^(Q(11))["^(""0"")" S Q(11)=^(Q(11)) Q
+"RTN","SRCUSS1",39,0)
+ G ID
+"RTN","SRCUSS1",40,0)
+IX X Q("S",Q,"IX") Q:Q6<1  S DR=".01///"_$P(Q6,U,2) D ^DIE,SET Q
+"RTN","SRCUSS1",41,0)
+SET S QQ=$S(Q>1:Q-1,1:1) F Q8=1:1:QQ S QQQ=$S(Q>1:Q-Q8,1:1),DA(Q8)=Q(9,QQQ)
+"RTN","SRCUSS1",42,0)
+ Q
+"RTN","SRCUSS1",43,0)
+QUES ;
+"RTN","SRCUSS1",44,0)
+ W:'$D(Q3("VIEW")) !,"To change entries, enter your choices (numbers) separated by a ';', or use",!,"a ':' for ranges.  i.e. 2;3 or 1:3.  Enter 'A' to enter/edit all.",!
+"RTN","SRCUSS1",45,0)
+ W !,"If there is more than one page to this screen, entering '+' or '-' followed",!,"by the number of pages or entering 'P' followed by the page number will",!,"take you to the desired page."
+"RTN","SRCUSS1",46,0)
+ W !!,"Enter '^' to quit, or '^^' to return to the menu options."
+"RTN","SRCUSS1",47,0)
+ R !!,"Press <RET> to continue  ",Q("QUESTION"):DTIME I Q("QUESTION")["?" W !!,"Forget it." H 2
+"RTN","SRCUSS1",48,0)
+ S Q7="?" Q
+"RTN","SRCUSS1",49,0)
+RET ; pause for display
+"RTN","SRCUSS1",50,0)
+ I ($D(DR(1,130))&($E(DR,$L(DR)-6,$L(DR)-4)="27T"))!($D(DR(1,130.16))&($E(DR,$L(DR)-5,$L(DR)-4)="3T")) W Q("NOR"),!!,"Press <RET> to continue  " R Q8:DTIME
+"RTN","SRCUSS1",51,0)
+ Q
+"RTN","SRCUSS1",52,0)
+CCHK ;
+"RTN","SRCUSS1",53,0)
+ ; JAS - 07/01/15 - ASRC PROJECT
+"RTN","SRCUSS1",54,0)
+ I $P(DR,";")="27T~" S SRASRCC=X D ^SRASRCCK
+"RTN","SRCUSS1",55,0)
+ Q
+"RTN","SRSRQST1")
+0^5^B13166862
+"RTN","SRSRQST1",1,0)
+SRSRQST1 ;B'HAM ISC/MAM,ADM - MAKE REQUEST (optional fields); [ 04/26/97  3:23 PM ]
+"RTN","SRSRQST1",2,0)
+ ;;3.0; Surgery ;**12,34,37,47,58,67,107**;24 Jun 93;Build 10
+"RTN","SRSRQST1",3,0)
+ ;
+"RTN","SRSRQST1",4,0)
+ ; Reference to ^TMP("CSLSUR1" supported by DBIA #3498
+"RTN","SRSRQST1",5,0)
+ ;
+"RTN","SRSRQST1",6,0)
+ D:SRWL REF W @IOF W:$D(SRCC) !,?29,$S(SRSCON=1:"FIRST",1:"SECOND")_" CONCURRENT CASE" W !,?20,"OPERATION REQUEST: PROCEDURE INFORMATION",!!,SRNM_" ("_SRSSN_")",?65,SREQDT,!,SRLINE
+"RTN","SRSRQST1",7,0)
+ S SROPER=$P(^SRF(SRTN,"OP"),"^") K SROPS,MM,MMM S:$L(SROPER)<55 SROPS(1)=SROPER I $L(SROPER)>54 S SROPER=SROPER_"  " F M=1:1 D LOOP Q:MMM=""
+"RTN","SRSRQST1",8,0)
+ W !,"Principal Procedure: ",?26,SROPS(1) I $D(SROPS(2)) W !,?26,SROPS(2) I $D(SROPS(3)) W !,?26,SROPS(3)
+"RTN","SRSRQST1",9,0)
+ I $D(SREQ(27)) W !,"Principal Procedure Code (CPT): "_$P(SREQ(27),"^",2)
+"RTN","SRSRQST1",10,0)
+ S SRSPEC=$P(^SRF(SRTN,0),"^",4),SRAVG=""
+"RTN","SRSRQST1",11,0)
+ ; JAS - 06/04/15 - ASRC PROJECT
+"RTN","SRSRQST1",12,0)
+ ;K DR S DR="" I '$D(SREQ(27)) S DR="27T;"
+"RTN","SRSRQST1",13,0)
+ K DR S DR=""
+"RTN","SRSRQST1",14,0)
+ I '$D(SREQ(27)) D  I SRASRCQ G SS
+"RTN","SRSRQST1",15,0)
+ . K SRASRCQ,SRASRCC
+"RTN","SRSRQST1",16,0)
+ . S SRASRCQ=0
+"RTN","SRSRQST1",17,0)
+ . K DIC S DIC=81,DIC(0)="QEAMZ",DIC("A")="Principal Procedure Code (CPT): "
+"RTN","SRSRQST1",18,0)
+ . S DIC("S")="I $$ACTIV^SROCPT(SRTN,+Y)"
+"RTN","SRSRQST1",19,0)
+ . D ^DIC K DIC I Y<0,X="^" S SRASRCQ=1 Q
+"RTN","SRSRQST1",20,0)
+ . I Y<0 S Y=""
+"RTN","SRSRQST1",21,0)
+ . S SRASRCC=$P(Y,"^")
+"RTN","SRSRQST1",22,0)
+ . ; DO ASRC CHECK
+"RTN","SRSRQST1",23,0)
+ . I SRASRCC'="" D ^SRASRCCK
+"RTN","SRSRQST1",24,0)
+ . S DR="27T///^S X=SRASRCC;"
+"RTN","SRSRQST1",25,0)
+ . Q
+"RTN","SRSRQST1",26,0)
+ ; End ASRC
+"RTN","SRSRQST1",27,0)
+ S DR=DR_".42T;S SRSCPT=$P(^SRF(SRTN,""OP""),""^"",2) D ^SRSAVG;37T//^S X=SRAVG;60T",DR(2,130.16)=".01T;3T;1.5T",DA=SRTN,DIE=130 D ^DIE K DR,DA G:$D(DTOUT) REQ G:$D(Y) SS
+"RTN","SRSRQST1",28,0)
+BLOOD W @IOF W:$D(SRCC) !,?29,$S(SRSCON=1:"FIRST",1:"SECOND")_" CONCURRENT CASE" W !,?20,"OPERATION REQUEST: BLOOD INFORMATION",!!,SRNM_" ("_SRSSN_")",?65,SREQDT,!,SRLINE,!
+"RTN","SRSRQST1",29,0)
+ D ^SROBLOD G:$D(SRT) REQ G:$D(SRDUOUT) SS
+"RTN","SRSRQST1",30,0)
+OTH W @IOF W:$D(SRCC) !,?29,$S(SRSCON=1:"FIRST",1:"SECOND")_" CONCURRENT CASE" W !,?20,"OPERATION REQUEST: OTHER INFORMATION",!!,SRNM_" ("_SRSSN_")",?65,SREQDT,!,SRLINE,!
+"RTN","SRSRQST1",31,0)
+ K DR S DR="[SREQUEST]",DIE=130,DA=SRTN D ^DIE K DR S:$D(DTOUT) SRDUOUT=1 I $D(SRODR) D ^SROCON1
+"RTN","SRSRQST1",32,0)
+ I $D(SRDUOUT) G REQ
+"RTN","SRSRQST1",33,0)
+SS D RT K DA,DR,DIC,DIE S DR="[SRSRES-ENTRY]",DIE=130,DA=SRTN D EN2^SROVAR K Q3("VIEW")
+"RTN","SRSRQST1",34,0)
+ S SPD=$$CHKS^SRSCOR(SRTN) D ^SRCUSS
+"RTN","SRSRQST1",35,0)
+ I SPD'=$$CHKS^SRSCOR(SRTN) S ^TMP("CSLSUR1",$J)=""
+"RTN","SRSRQST1",36,0)
+ K DR D:$D(SRODR) ^SROCON1 D RISK^SROAUTL3,REQ^SROPCE1 D:'$D(SRCC) REQ
+"RTN","SRSRQST1",37,0)
+ S SROERR=SRTN K SRTX D ^SROERR0
+"RTN","SRSRQST1",38,0)
+ Q
+"RTN","SRSRQST1",39,0)
+LOOP ; break procedure if greater than 54 charcaters
+"RTN","SRSRQST1",40,0)
+ S SROPS(M)="" F LOOP=1:1 S MM=$P(SROPER," "),MMM=$P(SROPER," ",2,200) Q:MMM=""  Q:$L(SROPS(M))+$L(MM)'<55  S SROPS(M)=SROPS(M)_MM_" ",SROPER=MMM
+"RTN","SRSRQST1",41,0)
+ Q
+"RTN","SRSRQST1",42,0)
+RT ; start RT logging
+"RTN","SRSRQST1",43,0)
+ I $D(XRTL) S XRTN="SRSRQST1" D T0^%ZOSV
+"RTN","SRSRQST1",44,0)
+ Q
+"RTN","SRSRQST1",45,0)
+REF S REFER="",SREFER=$O(^SRO(133.8,"B",SRSER,0)) I $O(^SRO(133.8,SREFER,1,$P(SRW(SRW),"^",2),1,0)) S REFER=^SRO(133.8,SREFER,1,$P(SRW(SRW),"^",2),1,1,0)
+"RTN","SRSRQST1",46,0)
+ I REFER'="" S ^SRF(SRTN,18,0)="^130.03A^1^1",^SRF(SRTN,18,1,0)=REFER,^SRF(SRTN,18,"B",$P(REFER,"^"),1)=""
+"RTN","SRSRQST1",47,0)
+DIK K DA,DIK S DA(1)=SREFER,DA=$P(SRW(SRW),"^",2),DIK="^SRO(133.8,"_DA(1)_",1," D ^DIK
+"RTN","SRSRQST1",48,0)
+ Q
+"RTN","SRSRQST1",49,0)
+REQ ; print request message
+"RTN","SRSRQST1",50,0)
+ W !!,"A request has been made for "_SRNM_" on "_$E(SRSDATE,4,5)_"/"_$E(SRSDATE,6,7)_"/"_$E(SRSDATE,2,3)_".",!
+"RTN","SRSRQST1",51,0)
+ Q
+"SEC","^DIC",136.1,136.1,0,"AUDIT")
+@
+"SEC","^DIC",136.1,136.1,0,"DD")
+@
+"SEC","^DIC",136.1,136.1,0,"DEL")
+@
+"SEC","^DIC",136.1,136.1,0,"LAYGO")
+@
+"SEC","^DIC",136.1,136.1,0,"RD")
+@
+"SEC","^DIC",136.1,136.1,0,"WR")
+@
+"VER")
+8.0^22.0
+"^DD",136.1,136.1,0)
+FIELD^^4^5
+"^DD",136.1,136.1,0,"DT")
+3150421
+"^DD",136.1,136.1,0,"ID",1)
+W "   ",$$FMTE^DILIBF($P(^(0),U,2),6)
+"^DD",136.1,136.1,0,"IX","B",136.1,.01)
+
+"^DD",136.1,136.1,0,"NM","SURGICAL RISK CALCULATIONS")
+
+"^DD",136.1,136.1,.01,0)
+PATIENT^RP2'^DPT(^0;1^Q
+"^DD",136.1,136.1,.01,1,0)
+^.1
+"^DD",136.1,136.1,.01,1,1,0)
+136.1^B
+"^DD",136.1,136.1,.01,1,1,1)
+S ^SRO(136.1,"B",$E(X,1,30),DA)=""
+"^DD",136.1,136.1,.01,1,1,2)
+K ^SRO(136.1,"B",$E(X,1,30),DA)
+"^DD",136.1,136.1,.01,3)
+NAME MUST BE 3-30 CHARACTERS, NOT NUMERIC OR STARTING WITH PUNCTUATION
+"^DD",136.1,136.1,.01,21,0)
+^^1^1^3150512^
+"^DD",136.1,136.1,.01,21,1,0)
+Patient ID from the Patient File (#2)
+"^DD",136.1,136.1,.01,"DT")
+3150608
+"^DD",136.1,136.1,1,0)
+DATE/TIMESTAMP^D^^0;2^S %DT="E" D ^%DT S X=Y K:X<1 X
+"^DD",136.1,136.1,1,3)
+(No range limit on date)
+"^DD",136.1,136.1,1,21,0)
+^^1^1^3150512^
+"^DD",136.1,136.1,1,21,1,0)
+Date and Time that the surgical risk calculation was run.
+"^DD",136.1,136.1,1,"DT")
+3150608
+"^DD",136.1,136.1,2,0)
+CPT CODE^P81'^ICPT(^0;3^Q
+"^DD",136.1,136.1,2,3)
+Enter a valid CPT Code
+"^DD",136.1,136.1,2,21,0)
+^^1^1^3150512^
+"^DD",136.1,136.1,2,21,1,0)
+CPT Code from the CPT File (#81)
+"^DD",136.1,136.1,2,"DT")
+3150608
+"^DD",136.1,136.1,3,0)
+AUTHOR^P200'^VA(200,^0;4^Q
+"^DD",136.1,136.1,3,3)
+Enter name of the user running risk calcuation
+"^DD",136.1,136.1,3,21,0)
+^^2^2^3150512^
+"^DD",136.1,136.1,3,21,1,0)
+User from the New Person file (#200) who is running the surgical risk 
+"^DD",136.1,136.1,3,21,2,0)
+calculation.
+"^DD",136.1,136.1,3,"DT")
+3150512
+"^DD",136.1,136.1,4,0)
+RISK CALCULATION MODEL^136.14A^^1;0
+"^DD",136.1,136.1,4,21,0)
+^^2^2^3150512^
+"^DD",136.1,136.1,4,21,1,0)
+This multiple field contains all surgical risk model names and 
+"^DD",136.1,136.1,4,21,2,0)
+calculated probabilities for a given surgical specialty. 
+"^DD",136.1,136.1,4,"DT")
+3150423
+"^DD",136.1,136.14,0)
+RISK CALCULATION MODEL SUB-FIELD^^1^2
+"^DD",136.1,136.14,0,"DT")
+3150421
+"^DD",136.1,136.14,0,"IX","B",136.14,.01)
+
+"^DD",136.1,136.14,0,"NM","RISK CALCULATION MODEL")
+
+"^DD",136.1,136.14,0,"UP")
+136.1
+"^DD",136.1,136.14,.01,0)
+RISK MODEL^F^^0;1^K:$L(X)>99!($L(X)<1) X
+"^DD",136.1,136.14,.01,1,0)
+^.1
+"^DD",136.1,136.14,.01,1,1,0)
+136.14^B
+"^DD",136.1,136.14,.01,1,1,1)
+S ^SRO(136.1,DA(1),1,"B",$E(X,1,30),DA)=""
+"^DD",136.1,136.14,.01,1,1,2)
+K ^SRO(136.1,DA(1),1,"B",$E(X,1,30),DA)
+"^DD",136.1,136.14,.01,3)
+Answer must be 1-99 characters in length.
+"^DD",136.1,136.14,.01,21,0)
+^^1^1^3150512^
+"^DD",136.1,136.14,.01,21,1,0)
+A free text field containing the surgical risk model name
+"^DD",136.1,136.14,.01,"DT")
+3150512
+"^DD",136.1,136.14,1,0)
+RISK PROBABILITY^NJ10,6^^0;2^K:+X'=X!(X>100)!(X<0)!(X?.E1"."7.N) X
+"^DD",136.1,136.14,1,3)
+Type a number between 0 and 100, 1 decimal digit.
+"^DD",136.1,136.14,1,21,0)
+^^1^1^3150512^
+"^DD",136.1,136.14,1,21,1,0)
+The risk probability (percentage) for a given surgical risk model
+"^DD",136.1,136.14,1,"DT")
+3150512
+"^DIC",136.1,136.1,0)
+SURGICAL RISK CALCULATIONS^136.1
+"^DIC",136.1,136.1,0,"GL")
+^SRO(136.1,
+"^DIC",136.1,"B","SURGICAL RISK CALCULATIONS",136.1)
+
+**END**
+**END**

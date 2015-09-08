@@ -92,9 +92,9 @@ public class RpcVistaPatientDao implements VistaPatientDao
         try
         {
             final List<String> basicResults = fProcedureCaller.doRpc(
-                    fDuz, RemoteProcedure.GET_PATIENT, String.valueOf(dfn));
+                    fDuz, RemoteProcedure.SR_ASRC_GET_PATIENT, String.valueOf(dfn));
             final List<String> vitalResults = fProcedureCaller.doRpc(
-                    fDuz, RemoteProcedure.GET_RECENT_VITALS, String.valueOf(dfn));
+                    fDuz, RemoteProcedure.GMV_LATEST_VM, String.valueOf(dfn));
             // Fields are separated by '^'
             // Basic patient demographics (age, gender)
             final List<String> basicArray = Splitter.on('^').splitToList(basicResults.get(0));
@@ -185,7 +185,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         final String rpcParameter =
                 String.valueOf(patient.getDfn()) + "^" + endDateString + "^WT^" + startDateString;
         LOGGER.debug("Weight 6 Months Ago Parameter: {}", rpcParameter);
-        return fProcedureCaller.doRpc(fDuz, RemoteProcedure.GET_VITAL, rpcParameter);
+        return fProcedureCaller.doRpc(fDuz, RemoteProcedure.GMV_EXTRACT_REC, rpcParameter);
     }
     
     private void parseWeightResults(
@@ -327,7 +327,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         {
             patient.getHealthFactors().clear();
             final List<String> rpcResults = fProcedureCaller.doRpc(
-                    fDuz, RemoteProcedure.GET_HEALTH_FACTORS, String.valueOf(dfn));
+                    fDuz, RemoteProcedure.SR_ASRC_HEALTH_FACTORS, String.valueOf(dfn));
             // Now that we have all of the health factors, filter out any that are not present
             // in the list provided by the NSO.
             final Iterator<String> iter = rpcResults.iterator();
@@ -357,7 +357,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         {
             patient.getActiveMedications().clear();
             final List<String> rpcResults = fProcedureCaller.doRpc(
-                    fDuz, RemoteProcedure.GET_ACTIVE_MEDICATIONS, String.valueOf(dfn));
+                    fDuz, RemoteProcedure.SR_ASRC_ACTIVE_MEDS, String.valueOf(dfn));
             for(final String medResult: rpcResults)
             {
                 // The expected format is "<identifier>^<medication name>^<date>^^^<dose per day>"
@@ -379,7 +379,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         {
             final List<String> rpcResults = fProcedureCaller.doRpc(
                     fDuz,
-                    RemoteProcedure.GET_ADL_STATUS,
+                    RemoteProcedure.SR_ASRC_ADL_NOTES,
                     String.valueOf(dfn),
                     ADL_ENTERPRISE_TITLE);
             // If the resultString is a success, add it to the patient's adl notes.
@@ -405,7 +405,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         {
             final List<String> rpcResults = fProcedureCaller.doRpc(
                     fDuz,
-                    RemoteProcedure.GET_NOTES_WITH_SUBSTRING,
+                    RemoteProcedure.SR_ASRC_DNR_NOTES,
                     String.valueOf(dfn),
                     "DNR");
             // If the resultString is a success, add it to the patient's dnr notes.

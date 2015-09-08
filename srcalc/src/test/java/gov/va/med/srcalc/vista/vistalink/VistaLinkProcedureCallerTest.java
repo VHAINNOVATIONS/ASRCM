@@ -28,7 +28,7 @@ public class VistaLinkProcedureCallerTest
     }
     
     /**
-     * Verifies execution of {@link RemoteProcedure#GET_USER_INFO}, which requires a
+     * Verifies execution of {@link RemoteProcedure#XUS_GET_USER_INFO}, which requires a
      * different RPC context.
      */
     @Test
@@ -38,7 +38,7 @@ public class VistaLinkProcedureCallerTest
                 new VistaLinkProcedureCaller(VistaLinkUtilTest.SUPPORTED_DIVISON);
         
         final List<String> results = caller.doRpc(
-                MockVistaLinkConnection.RADIOLOGIST_DUZ, RemoteProcedure.GET_USER_INFO);
+                MockVistaLinkConnection.RADIOLOGIST_DUZ, RemoteProcedure.XUS_GET_USER_INFO);
         // Just verify the name.
         assertEquals(MockVistaLinkConnection.RADIOLOGIST_NAME, results.get(1));
     }
@@ -50,7 +50,7 @@ public class VistaLinkProcedureCallerTest
                 new VistaLinkProcedureCaller(VistaLinkUtilTest.SUPPORTED_DIVISON);
         final List<String> results = caller.doRpc(
                 MockVistaLinkConnection.RADIOLOGIST_DUZ,
-                RemoteProcedure.GET_PATIENT,
+                RemoteProcedure.SR_ASRC_GET_PATIENT,
                 MockVistaLinkConnection.PATIENT_DFN);
         assertEquals(
                 Arrays.asList(MockVistaLinkConnection.PATIENT_DATA),
@@ -134,7 +134,7 @@ public class VistaLinkProcedureCallerTest
         
         final VistaLinkDuzConnectionSpec cs = new VistaLinkDuzConnectionSpec(
                 VistaLinkUtilTest.SUPPORTED_DIVISON, "11111");
-        caller.doRpc(cs, RemoteProcedure.GET_USER_INFO);
+        caller.doRpc(cs, RemoteProcedure.XUS_GET_USER_INFO);
     }
     
     /**
@@ -146,7 +146,7 @@ public class VistaLinkProcedureCallerTest
     {
         final VistaLinkProcedureCaller caller =
                 new VistaLinkProcedureCaller(VistaLinkUtilTest.SUPPORTED_DIVISON);
-        caller.doRpc("12222", RemoteProcedure.GET_USER_PERSON_CLASSES);
+        caller.doRpc("12222", RemoteProcedure.SR_ASRC_PERSON_CLASSES);
     }
     
     @Test(expected = LoginException.class)
@@ -155,7 +155,7 @@ public class VistaLinkProcedureCallerTest
         final VistaLinkProcedureCaller caller =
                 new VistaLinkProcedureCaller(VistaLinkUtilTest.SUPPORTED_DIVISON);
         
-        caller.doRpc(MockVistaLinkConnection.DISABLED_DUZ, RemoteProcedure.GET_USER_INFO);
+        caller.doRpc(MockVistaLinkConnection.DISABLED_DUZ, RemoteProcedure.XUS_GET_USER_INFO);
     }
     
 }

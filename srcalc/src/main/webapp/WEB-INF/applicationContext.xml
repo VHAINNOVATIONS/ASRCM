@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Defines the Root Spring Web Application Context. -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
@@ -16,27 +19,44 @@
        
     <!-- Define our DataSource (from JNDI). -->
     <jee:jndi-lookup id="srcalcDataSource" jndi-name="java:comp/env/jdbc/srcalcDB"/>
+    
+    <!--
+    This bean essentially defines our VistA integration mechanism. It is defined here
+    (using the VistALink implementation) so that only the actual Web Application Context
+    is tied to a real VistA: other contexts created for integration testing can stub out
+    VistA.
+    -->
+    <bean id="vistaDaoFactory" class="gov.va.med.srcalc.security.VistaLinkVistaDaoFactory" />
+
+    <!--
+    Use the above vistaDaoFactory to provide request-scoped VistaPatientDaos and
+    VistaSurgeryDaos that already know the current user context.
+    -->
+    <bean id="vistaPatientDao" scope="request"
+        factory-bean="vistaDaoFactory" factory-method="getVistaPatientDao">
+        <!-- Create a proxy for injection into singleton beans (e.g.,
+             CalculationService). See <http://tinyurl.com/psgmdwe> -->
+        <aop:scoped-proxy/>
+    </bean>
+    <bean id="vistaSurgeryDao" scope="request"
+        factory-bean="vistaDaoFactory" factory-method="getVistaSurgeryDao">
+        <aop:scoped-proxy/>
+    </bean>
        
     <!-- Import the root (non-web-specific) srcalc beans. -->
     <import resource="classpath:/srcalc-context.xml"/>
        
     <!-- Import the controller beans. -->
     <import resource="classpath:/srcalc-controller.xml"/>
-    
-    <!-- Many beans below depend on this factory to get VistA DAOs. -->
-    <bean id="vistaDaoFactory" class="gov.va.med.srcalc.security.VistaLinkVistaDaoFactory" />
 
-    <!--
-    ***** Configure Spring Security. *****
+    <!-- ***** BEGIN Spring Security configuration ***** -->
     
+    <!--
     This configuration is a little complex: there is a <security:http> configuration just
     for the admin URLs and another one for all other URLs. The reason is that we need
     different login pages for administrators (using username/password) and normal users
     (using VistA authentication).
     -->
-    
-    <!-- Create an SrcalcUrls instance to reference URLs below -->
-    <bean id="srcalcUrls" class="gov.va.med.srcalc.web.SrcalcUrls" />
     
     <security:http pattern="/admin/**">
         <!-- Note: login-processing-url must be different from login-page. -->
@@ -58,10 +78,6 @@
         <security:intercept-url pattern="/**" access="ROLE_ADMIN" />
     </security:http>
 
-    <!-- Use a WebAuthenticationDetailsSource to retrieve the client IP address when
-         logging in. -->
-    <bean id="webAuthDetailsSource"
-        class="gov.va.med.srcalc.security.SrcalcWebAuthnDetailsSource" />
     <security:http>
         <!-- Note: login-processing-url must be different from login-page. -->
         <security:form-login
@@ -101,15 +117,28 @@
             invalid-session-url="#{srcalcUrls.sessionTimeoutPage}" />
     </security:http>
     
-    <bean id="accessVerifyAuthProvider"
-        class="gov.va.med.srcalc.security.AccessVerifyAuthenticationProvider" />
-    <bean id="ccowTokenAuthProvider"
-        class="gov.va.med.srcalc.security.CcowTokenAuthenticationProvider" />
+    <!--
+    Authentication Management
+    
+    The application uses two User Stores:
+    
+    - for Administrative Users, a static in-memory user store; and
+    - for Clinical Users, VistA.
+    
+    Administrative Users always authenticate using a username and password. Clinical Users
+    authenticate either via an existing CCOW context (Single Sign-On) or VistA access/
+    verify codes.
+    
+    For more information, including regarding the choice of users stores, please see the
+    application design documentation.
+    -->
     <security:authentication-manager>
+        <!-- Spring Security will query the following authentication-providers in order. -->
+
         <!--
-        First, check an in-memory admin user store. Of course an in-memory user
-        store is not appropriate for production, but in production this will be
-        replaced with an authentication mechanism approved by VA OI&T.
+        The static in-memory user store. Store passwords in cleartext to facilitate test
+        user authentication. Cleartext is appropriate since this user store should be
+        replaced for use of the application in a production environment.
         -->
         <security:authentication-provider>
             <security:user-service>
@@ -117,23 +146,37 @@
                 <security:user name="admintwo" password="Admin2" authorities="ROLE_ADMIN" />
             </security:user-service>
         </security:authentication-provider>
-        <!-- If the user wasn't an admin, try VistA login. -->
+
+        <!--
+        For VistA user authentication (either by CCOW tokens or access/verify codes), the
+        basic UserDetailsService contract is not sufficient. UserDetailsService simply
+        loads users based on a username and then Spring Security compares the loaded user
+        object's password to the user-provided password. In both the CCOW token case and
+        access/verify case, however, there is no principal with which to load the users.
+        For CCOW tokens, we must pass the token and the client IP to VistA in order to
+        authenticate the token; and for access/verify codes, we must pass the pair to
+        VistA. No single piece of user-specified data can be used as a principal by which
+        to load a user.
+        
+        We therefore supply implementations of Spring Security's more flexible
+        AuthenticationProvider interface to authenticate and load users based on a full
+        Authentication object. For details on the authentication methods, see the
+        documentation of these AuthenticationProvider classes.
+        -->
         <security:authentication-provider ref="ccowTokenAuthProvider" />
         <security:authentication-provider ref="accessVerifyAuthProvider" />
     </security:authentication-manager>
+
+    <!-- Beans supporting the above security configuration. -->
+    <bean id="webAuthDetailsSource"
+        class="gov.va.med.srcalc.security.SrcalcWebAuthnDetailsSource" />
+    <bean id="accessVerifyAuthProvider"
+        class="gov.va.med.srcalc.security.AccessVerifyAuthenticationProvider" />
+    <bean id="ccowTokenAuthProvider"
+        class="gov.va.med.srcalc.security.CcowTokenAuthenticationProvider" />
+    <!-- To reference various application URLs. -->
+    <bean id="srcalcUrls" class="gov.va.med.srcalc.web.SrcalcUrls" />
     
-    <!-- Provide a request-scoped VistaPatientDao that already knows the current
-         user. -->
-    <bean id="vistaPatientDao" scope="request"
-        factory-bean="vistaDaoFactory" factory-method="getVistaPatientDao">
-        <!-- Create a proxy for injection into singleton beans (e.g.,
-             CalculationService). See <http://tinyurl.com/psgmdwe> -->
-        <aop:scoped-proxy/>
-    </bean>
-    <!-- Same for VistaSurgeryDao. -->
-    <bean id="vistaSurgeryDao" scope="request"
-        factory-bean="vistaDaoFactory" factory-method="getVistaSurgeryDao">
-        <aop:scoped-proxy/>
-    </bean>
+    <!-- ***** END Spring Security configuration ***** -->
 
 </beans>
