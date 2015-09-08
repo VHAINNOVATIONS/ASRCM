@@ -53,7 +53,7 @@ public class MockVistaLinkConnection implements VistaLinkConnection
     public final static String RADIOLOGIST_VERIFY_CODE = "logist";
     
     /**
-     * The name of the fake radiologist user returned from {@link RemoteProcedure#GET_USER_INFO}.
+     * The name of the fake radiologist user returned from {@link RemoteProcedure#XUS_GET_USER_INFO}.
      */
     public final static String RADIOLOGIST_NAME = "RADIOLOGIST,ONE";
     
@@ -81,28 +81,28 @@ public class MockVistaLinkConnection implements VistaLinkConnection
     
     /**
      * A fake CCOW token for mock CCOW authentication. Supplying this token to
-     * {@link RemoteProcedure#GET_USER_FROM_CCOW} will return the fake radiologist
+     * {@link RemoteProcedure#XUS_KAAJEE_GET_USER_VIA_PROXY} will return the fake radiologist
      * user.
      */
     public final static String CCOW_TOKEN = "~2xwb123-3423";
     
     /**
-     * The DFN of the fake patient returned from {@link RemoteProcedure#GET_PATIENT}.
+     * The DFN of the fake patient returned from {@link RemoteProcedure#SR_ASRC_GET_PATIENT}.
      */
     public final static String PATIENT_DFN = "18976";
     
     /**
-     * The fake patient data returned from {@link RemoteProcedure#GET_PATIENT}.
+     * The fake patient data returned from {@link RemoteProcedure#SR_ASRC_GET_PATIENT}.
      */
     public final static String PATIENT_DATA = "PATIENT,MOCKVL^62^M";
     
     /**
-     * Sample SGOT lab data returned from {@link RemoteProcedure#GET_LABS}.
+     * Sample SGOT lab data returned from {@link RemoteProcedure#SR_ASRC_LAB_RESULTS}.
      */
     public final static String SGOT_LAB_DATA = "SGOT^21.3^02/02/2015@1435^U/L";
     
     /**
-     * Sample Albumin lab data returned from {@link RemoteProcedure#GET_LABS}.
+     * Sample Albumin lab data returned from {@link RemoteProcedure#SR_ASRC_LAB_RESULTS}.
      */
     public final static String ALBUMIN_LAB_DATA = "";
     
@@ -276,7 +276,7 @@ public class MockVistaLinkConnection implements VistaLinkConnection
     {
         final String duz = authenticate();
         
-        if (request.getRpcName().equals(RemoteProcedure.GET_USER_INFO.getProcedureName()) &&
+        if (request.getRpcName().equals(RemoteProcedure.XUS_GET_USER_INFO.getProcedureName()) &&
                 request.getRpcContext().equals(RpcContext.XUS_SIGNON.getContextName()))
         {
             return makeArrayResponse(ImmutableList.of(
@@ -288,7 +288,7 @@ public class MockVistaLinkConnection implements VistaLinkConnection
                     "MEDICAL"));
         }
         else if (duz.equals(PROXY_DUZ) &&
-                request.getRpcName().equals(RemoteProcedure.GET_USER_FROM_CCOW.getProcedureName()))
+                request.getRpcName().equals(RemoteProcedure.XUS_KAAJEE_GET_USER_VIA_PROXY.getProcedureName()))
         {
             final String decryptedToken = VistaKernelHash.decrypt(
                     (String)request.getParams().getParam(3));
@@ -307,26 +307,26 @@ public class MockVistaLinkConnection implements VistaLinkConnection
                         "unk"));
             }
         }
-        else if (request.getRpcName().equals(RemoteProcedure.GET_USER_PERSON_CLASSES.getProcedureName()) &&
+        else if (request.getRpcName().equals(RemoteProcedure.SR_ASRC_PERSON_CLASSES.getProcedureName()) &&
                 duz.equals(RADIOLOGIST_DUZ))
         {
             return makeArrayResponse(ImmutableList.of(RADIOLOGIST_PROVIDER_TYPE));
         }
-        else if (request.getRpcName().equals(RemoteProcedure.GET_PATIENT.getProcedureName()) &&
+        else if (request.getRpcName().equals(RemoteProcedure.SR_ASRC_GET_PATIENT.getProcedureName()) &&
                 request.getRpcContext().equals(RpcContext.SR_ASRC.getContextName()) &&
                 request.getParams().getParam(1).equals(PATIENT_DFN))
         {
             return makeArrayResponse(ImmutableList.of(PATIENT_DATA));
         }
-        else if (request.getRpcName().equals(RemoteProcedure.SAVE_PROGRESS_NOTE.getProcedureName()))
+        else if (request.getRpcName().equals(RemoteProcedure.SR_ASRC_SAVE_PROGRESS_NOTE.getProcedureName()))
         {
             return makeStringResponse(RemoteProcedure.VALID_SIGNATURE_RETURN);
         }
-        else if (request.getRpcName().equals(RemoteProcedure.SAVE_RISK.getProcedureName()))
+        else if (request.getRpcName().equals(RemoteProcedure.SR_ASRC_RISK_SAVE.getProcedureName()))
         {
             return makeStringResponse(RemoteProcedure.RISK_SAVED_RETURN);
         }
-        else if (request.getRpcName().equals(RemoteProcedure.GET_LABS.getProcedureName()) &&
+        else if (request.getRpcName().equals(RemoteProcedure.SR_ASRC_LAB_RESULTS.getProcedureName()) &&
                 request.getParams().getParam(1).equals(PATIENT_DFN))
         {
             if (request.getParams().getParam(2).equals(VistaLabs.SGOT.getPossibleLabNames()))

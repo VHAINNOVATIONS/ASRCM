@@ -20,6 +20,12 @@ import org.springframework.security.core.AuthenticationException;
 /**
  * <p>An AuthenticationProvider implementation that authenticates a user based on a VistA
  * access/verify code pair.</p>
+ * 
+ * <p>Authentication is performed using a {@link VistaAuthenticator}, so this class is
+ * essentially an Adapter (Gang-of-Four Design Pattern) from VistaAuthenticator to the
+ * Spring Security AuthenticationProvider interface.</p>
+ * 
+ * @see VistaAuthenticator#authenticateViaAccessVerify(String, String, String)
  */
 public final class AccessVerifyAuthenticationProvider extends VistaAuthenticationProvider
 {
@@ -28,6 +34,7 @@ public final class AccessVerifyAuthenticationProvider extends VistaAuthenticatio
     
     /**
      * Constructs an instance with the given dependencies.
+     * @param vistaDaoFactory primarily for obtaining {@link VistaAuthenticator}s
      */
     @Inject
     public AccessVerifyAuthenticationProvider(final VistaDaoFactory vistaDaoFactory)

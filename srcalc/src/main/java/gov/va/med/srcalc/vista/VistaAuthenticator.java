@@ -52,7 +52,7 @@ public interface VistaAuthenticator
      * @throws FailedLoginException if VistA rejects the CCOW token
      * @throws LoginException if VistA rejects the login for any other reason
      * @throws DataAccessException if communication with VistA failed
-     * @see RemoteProcedure#GET_USER_FROM_CCOW
+     * @see RemoteProcedure#XUS_KAAJEE_GET_USER_VIA_PROXY
      */
     public VistaPerson authenticateViaCcowToken(
             final String ccowToken, final String clientIp)

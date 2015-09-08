@@ -143,7 +143,7 @@ public final class VistaLinkProcedureCaller implements VistaProcedureCaller
             final List<String> noteLines)
             throws LoginException
     {
-        final RpcRequest req = makeRequestObject(RemoteProcedure.SAVE_PROGRESS_NOTE);
+        final RpcRequest req = makeRequestObject(RemoteProcedure.SR_ASRC_SAVE_PROGRESS_NOTE);
         
         // The DUZ is passed as an explicit parameter here.
         setStringParam(req.getParams(), 1, duz);
@@ -175,7 +175,7 @@ public final class VistaLinkProcedureCaller implements VistaProcedureCaller
             final List<String> outcomes)
             throws LoginException
     {
-        final RpcRequest req = makeRequestObject(RemoteProcedure.SAVE_RISK);
+        final RpcRequest req = makeRequestObject(RemoteProcedure.SR_ASRC_RISK_SAVE);
         
         setStringParam(req.getParams(), 1, patientDfn);
         setStringParam(req.getParams(), 2, cptCode);
@@ -193,7 +193,7 @@ public final class VistaLinkProcedureCaller implements VistaProcedureCaller
             final List<String> labNames)
             throws LoginException
     {
-        final RpcRequest req = makeRequestObject(RemoteProcedure.GET_LABS);
+        final RpcRequest req = makeRequestObject(RemoteProcedure.SR_ASRC_LAB_RESULTS);
         
         setStringParam(req.getParams(), 1, patientDfn);
         setArrayParam(req.getParams(), 2, labNames);

@@ -28,7 +28,7 @@ public interface VistaProcedureCaller
             throws LoginException, DataAccessException;
     
     /**
-     * A special-purpose method to call {@link RemoteProcedure#SAVE_PROGRESS_NOTE}
+     * A special-purpose method to call {@link RemoteProcedure#SR_ASRC_SAVE_PROGRESS_NOTE}
      * because its parameters are complex.
      * @param duz the calling user's DUZ (also the signer)
      * @param encryptedSignature the user's electronic signature code
@@ -47,7 +47,7 @@ public interface VistaProcedureCaller
             throws LoginException, DataAccessException;
     
     /**
-     * A special-purpose method to call {@link RemoteProcedure#SAVE_RISK}
+     * A special-purpose method to call {@link RemoteProcedure#SR_ASRC_RISK_SAVE}
      * because it requires a List parameter.
      * @param duz the calling user's DUZ
      * @param patientDfn the associated patient's DFN
@@ -67,7 +67,7 @@ public interface VistaProcedureCaller
             throws LoginException, DataAccessException;
     
     /**
-     * A special-purpose method to call {@link RemoteProcedure#GET_LABS}
+     * A special-purpose method to call {@link RemoteProcedure#SR_ASRC_LAB_RESULTS}
      * because it requires a List parameter.
      * @param duz the calling user's DUZ
      * @param patientDfn the associated patient's DFN
