@@ -159,11 +159,12 @@ The following programs need to be installed and configured for the appropriate V
 *   Attachmate Reflection
 *   InterSystems Cache Cube
 
-For VA development projects: GFEs will already come with Reflection already installed. For Cache Cube, contact your OI&T office for instructions to obtain and install the latest licensed version of Cache for your GFE's operating system. 
-
 Git will need to be installed on the computer, if it is not already installed, to retrieve the VistA KIDS Host file.
 
-For VA development projects: Aside from acquiring a VistA development server and VistA and Cache developer accounts for that database, you will also need to have Forum access and be added as a Surgery package developer in Forum by a current Surgery package developer.
+*For VA development projects:*
+
+*   GFEs will already come with Reflection already installed. For Cache Cube, contact your OI&T office for instructions to obtain and install the latest licensed version of Cache for your GFE's operating system. 
+*   Aside from acquiring a VistA development server and VistA and Cache developer accounts for that database, you will also need to have Forum access and be added as a Surgery package developer in Forum by a current Surgery package developer.
 
 ### Obtaining the Source Code and Dependencies
 
@@ -183,7 +184,9 @@ The routines that were modified are: SRCUSS1 & SRSRQST1. Since the establishment
 
 Furthermore, routine SRSRQST1 is currently under development for patch `SR*3*184`. 
 
-For VA development projects: It is highly recommended that you use Forum tools such as "Display a Patch" and "Routines that overlap in patches" to determine if these routines were involved in other nationally released patches or patches that are currently underdevelopment. Any national released patches will need to be merged into your development environment. And for any patches that are currently under development using these routines, you will need to contact the patch developer(s) to coordinate release dates and code sharing.
+*For VA development projects:*
+
+It is highly recommended that you use Forum tools such as "Display a Patch" and "Routines that overlap in patches" to determine if these routines were involved in other nationally released patches or patches that are currently underdevelopment. Any national released patches will need to be merged into your development environment. And for any patches that are currently under development using these routines, you will need to contact the patch developer(s) to coordinate release dates and code sharing.
 
 **KIDS Installation**
 
