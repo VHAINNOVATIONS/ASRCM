@@ -86,6 +86,15 @@ public class RpcVistaPatientDaoTest
             "Body Mass Index:             28.27*  _Vitals");
     private final static List<String> NO_VITALS = ImmutableList.of(
             "There are no results to report");
+    private final static List<String> INVALID_VITALS = ImmutableList.of(
+            "Wt.: blah blah blah", "Invalid",  "This should not work!");
+    private final static List<String> VALID_WEIGHT_6_MONTHS_AGO = ImmutableList.of(
+            "21557^04/17/09@12:00   Wt:   185.00 lb (84.09 kg)  _NURSE,ONE",
+            "@12:00   Body Mass Index:   25.86",
+            "22296^08/24/09@14:00   Wt:   190.00 lb (86.36 kg)  _NURSE,ONE",
+            "@14:00   Body Mass Index:   26.56");
+    private final static List<String> NO_RESULT_6_MONTHS_AGO = ImmutableList.of(
+            "0^NO WEIGHT ENTERED WITHIN THIS PERIOD");
     
     private final static int PATIENT_DFN = 500;
 
@@ -425,5 +434,49 @@ public class RpcVistaPatientDaoTest
         assertEquals(null, patient.getWeight());
         assertEquals(null, patient.getHeight());
         assertEquals(null, patient.getBmi());
+    }
+    
+    @Test
+    public final void testInvalidVitals() throws Exception
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ, RemoteProcedure.GMV_LATEST_VM, String.valueOf(PATIENT_DFN)))
+            .thenReturn(INVALID_VITALS);
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        assertEquals(null, patient.getWeight());
+    }
+    
+    @Test
+    public final void testValidWeight6MonthsAgo() throws Exception
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ, RemoteProcedure.GMV_LATEST_VM, String.valueOf(PATIENT_DFN)))
+            .thenReturn(FULL_VITALS);
+        when(caller.doRpc(
+                eq(RADIOLOGIST_DUZ), eq(RemoteProcedure.GMV_EXTRACT_REC), anyString()))
+            .thenReturn(VALID_WEIGHT_6_MONTHS_AGO);
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        assertEquals(178.0, patient.getWeight().getValue(), .001);
+        assertEquals(190.0, patient.getWeight6MonthsAgo().getValue(), .001);
+    }
+    
+    @Test
+    public final void testNoResultsWeight6MonthsAgo() throws Exception
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ, RemoteProcedure.GMV_LATEST_VM, String.valueOf(PATIENT_DFN)))
+            .thenReturn(FULL_VITALS);
+        when(caller.doRpc(
+                eq(RADIOLOGIST_DUZ), eq(RemoteProcedure.GMV_EXTRACT_REC), anyString()))
+            .thenReturn(NO_RESULT_6_MONTHS_AGO);
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        assertEquals(178.0, patient.getWeight().getValue(), .001);
+        assertEquals(null, patient.getWeight6MonthsAgo());
     }
 }
