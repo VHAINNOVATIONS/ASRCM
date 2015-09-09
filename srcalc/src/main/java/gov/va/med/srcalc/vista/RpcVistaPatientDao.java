@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.xml.bind.JAXBContext;
@@ -35,6 +36,7 @@ import org.xml.sax.InputSource;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.primitives.Ints;
 
 /**
  * Implementation of {@link VistaPatientDao} using remote procedures. Each
@@ -45,7 +47,6 @@ public class RpcVistaPatientDao implements VistaPatientDao
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcVistaPatientDao.class);
     private static final String NO_WEIGHT = "0^NO WEIGHT ENTERED WITHIN THIS PERIOD";
-    private static final String VITALS_SPLIT_REGEX = "[\\s]+";
     private static final String WEIGHT_UNITS = "lbs.";
     private static final String HEIGHT_UNITS = "inches";
     private static final String ADL_ENTERPRISE_TITLE = "NURSING ADMISSION EVALUATION NOTE";
@@ -223,25 +224,71 @@ public class RpcVistaPatientDao implements VistaPatientDao
         // For example, pulse is returned as: "Pulse:       (03/05/10@09:00)  74  _NURSE,ONE_Vitals"
         final SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "(" + VISTA_DATE_OUTPUT_FORMAT.toPattern() + ")");
-        final Pattern compliedPattern = Pattern.compile(VITALS_SPLIT_REGEX);
-        // Each entry comes with an accompanying date and time.
-        final List<String> heightLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(5));
-        final int feet = Integer.parseInt(heightLineTokens.get(2));
-        patient.setHeight(new RetrievedValue(
-                (feet * 12.0) + Double.parseDouble(heightLineTokens.get(4)),
-                dateFormat.parse(heightLineTokens.get(1)),
-                HEIGHT_UNITS));
-        final List<String> weightLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(6));
-        patient.setWeight(new RetrievedValue(
-                Double.parseDouble(weightLineTokens.get(2)),
-                dateFormat.parse(weightLineTokens.get(1)),
-                WEIGHT_UNITS));
-        final List<String> bmiLineTokens = Splitter.on(compliedPattern).splitToList(vitalResults.get(7));
-        // The BMI value is the second to last token on its line
-        patient.setBmi(new RetrievedValue(
-            Double.parseDouble(bmiLineTokens.get(bmiLineTokens.size()-2)),
-            patient.getWeight().getMeasureDate(),
-            ""));
+        final Pattern pattern = Pattern.compile(
+                "(.+):\\s+" // Match to the first colon in order to get the name of the vital
+                + "(\\(.+?\\))?\\s+" // Optional capture group for the date
+                + "(.+)\\s+" // Match the value of the vital and any other information
+                             //between the optional date and the name
+                + "(\\S+)"); // Match the name of the person who recorded the vital
+        for(final String line: vitalResults)
+        {
+            // For each line, determine if we need to pull the vital information for that line
+            // Each entry comes with an optional date and time.
+            
+            final Matcher matcher = pattern.matcher(line);
+            if(!matcher.matches())
+            {
+                // Invalid results were received that do not match the expected pattern.
+                break;
+            }
+            // Matcher groups begin at 1, as 0 denotes the entire pattern that was matched.
+            final String vitalName = matcher.group(1);
+            // This will be null when the date is not present.
+            final String dateString = matcher.group(2);
+            
+            final List<String> valuesWords = Splitter.on(Pattern.compile("\\s+")).splitToList(matcher.group(3));
+            switch(vitalName)
+            {
+                case "Ht.":
+                    patient.setHeight(new RetrievedValue(
+                            findHeightInInches(valuesWords),
+                            dateFormat.parse(dateString),
+                            HEIGHT_UNITS));
+                    break;
+                case "Wt.":
+                    patient.setWeight(new RetrievedValue(
+                            // Remove any asterisks in the weight value
+                            Double.parseDouble(valuesWords.get(0).replace("*", "")),
+                            dateFormat.parse(dateString),
+                            WEIGHT_UNITS));
+                    break;
+                case "Body Mass Index":
+                    patient.setBmi(new RetrievedValue(
+                        // Remove any asterisks in the BMI value
+                        Double.parseDouble(valuesWords.get(0).replace("*", "")),
+                        patient.getWeight().getMeasureDate(),
+                        ""));
+                    break;
+            }
+        }
+    }
+    
+    private double findHeightInInches(final List<String> valuesWords)
+    {
+        final int feet = Integer.parseInt(valuesWords.get(0));
+        // Inches are not necessarily used
+        // Remove any asterisks in the height value
+        final Integer inches = Ints.tryParse(valuesWords.get(2).replace("*", ""));
+        final double totalInches;
+        if(inches == null)
+        {
+            totalInches = feet * 12.0;
+        }
+        else
+        {
+            totalInches = (feet * 12.0) + inches;
+        }
+        return totalInches;
     }
     
     private void retrieveLabs(final int dfn, final Patient patient) throws ParseException
