@@ -97,6 +97,7 @@ public class RpcVistaPatientDaoTest
             "0^NO WEIGHT ENTERED WITHIN THIS PERIOD");
     
     private final static int PATIENT_DFN = 500;
+    private final static double DOUBLE_PRECISION = .001;
 
     /**
      * Creates a mock VistaProcedureCaller that returns the minimal information. Callers
@@ -405,9 +406,9 @@ public class RpcVistaPatientDaoTest
             .thenReturn(FULL_VITALS);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);
-        final ImmutableList<Double> expectedValues = ImmutableList.of(178.0, 71.0, 24.88);
-        assertEquals(expectedValues, ImmutableList.of(patient.getWeight().getValue(),
-                patient.getHeight().getValue(), patient.getBmi().getValue()));
+        assertEquals(178.0, patient.getWeight().getValue(), DOUBLE_PRECISION);
+        assertEquals(71.0, patient.getHeight().getValue(), DOUBLE_PRECISION);
+        assertEquals(24.88, patient.getBmi().getValue(), DOUBLE_PRECISION);
     }
     
     @Test
@@ -419,9 +420,9 @@ public class RpcVistaPatientDaoTest
             .thenReturn(PARTIAL_VITALS);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);
-        final ImmutableList<Double> expectedValues = ImmutableList.of(72.0, 208.0, 28.27);
-        assertEquals(expectedValues, ImmutableList.of(patient.getHeight().getValue(),
-                patient.getWeight().getValue(), patient.getBmi().getValue()));
+        assertEquals(72.0, patient.getWeight().getValue(), DOUBLE_PRECISION);
+        assertEquals(208.0, patient.getHeight().getValue(), DOUBLE_PRECISION);
+        assertEquals(28.27, patient.getBmi().getValue(), DOUBLE_PRECISION);
     }
     
     @Test
@@ -460,8 +461,8 @@ public class RpcVistaPatientDaoTest
             .thenReturn(VALID_WEIGHT_6_MONTHS_AGO);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);
-        assertEquals(178.0, patient.getWeight().getValue(), .001);
-        assertEquals(190.0, patient.getWeight6MonthsAgo().getValue(), .001);
+        assertEquals(178.0, patient.getWeight().getValue(), DOUBLE_PRECISION);
+        assertEquals(190.0, patient.getWeight6MonthsAgo().getValue(), DOUBLE_PRECISION);
     }
     
     @Test
@@ -476,7 +477,7 @@ public class RpcVistaPatientDaoTest
             .thenReturn(NO_RESULT_6_MONTHS_AGO);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);
-        assertEquals(178.0, patient.getWeight().getValue(), .001);
+        assertEquals(178.0, patient.getWeight().getValue(), DOUBLE_PRECISION);
         assertEquals(null, patient.getWeight6MonthsAgo());
     }
 }

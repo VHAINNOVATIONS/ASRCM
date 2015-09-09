@@ -246,7 +246,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // This will be null when the date is not present.
             final String dateString = matcher.group(2);
             
-            final List<String> valuesWords = Splitter.on(Pattern.compile("[\\s]+")).splitToList(matcher.group(3));
+            final List<String> valuesWords = Splitter.on(Pattern.compile("\\s+")).splitToList(matcher.group(3));
             switch(vitalName)
             {
                 case "Ht.":
