@@ -92,8 +92,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         {
             final List<String> basicResults = fProcedureCaller.doRpc(
                     fDuz, RemoteProcedure.SR_ASRC_GET_PATIENT, String.valueOf(dfn));
-            final List<String> vitalResults = fProcedureCaller.doRpc(
-                    fDuz, RemoteProcedure.GMV_LATEST_VM, String.valueOf(dfn));
+            
             // Fields are separated by '^'
             // Basic patient demographics (age, gender)
             final List<String> basicArray = Splitter.on('^').splitToList(basicResults.get(0));
@@ -101,34 +100,10 @@ public class RpcVistaPatientDao implements VistaPatientDao
             final int patientAge = Integer.parseInt(basicArray.get(1));
             final Patient.Gender patientGender = translateFromVista(basicArray.get(2));
             final Patient patient = new Patient(dfn, patientName, patientGender, patientAge);
-            // Patient vitals information (including but not limited to BMI, height,
-            // weight, weight 6 months ago). If there are no results, a single line with
-            // an error message is returned.
-            LOGGER.debug("Patient Vital Results: {}", vitalResults);
-            if (vitalResults.size() > 1)
-            {
-                // Parse the returned data and put it into the patient data
-                // This will include the most recent height, current weight, and BMI
-                parseRecentVitalResults(patient, vitalResults);
-            }
             
-            // We have to get the current weight before we do this
-            // If there was no current weight, no need to retrieve other weight
-            if (patient.getWeight() != null)
-            {
-                final List<String> weightResults = retrieveWeight6MonthsAgo(patient);
-                LOGGER.debug("Weight Results: {}", weightResults);
-                // A line begging with "0^NO" means that no results were retrieved
-                // The actual line varies depending on the vital requested.
-                if (weightResults.size() > 0 && !weightResults.get(0).equals(NO_WEIGHT))
-                {
-                    LOGGER.debug("Patient Vital Results: {}", weightResults);
-                    // Parse the returned data and put it into the patient data
-                    // This includes weight and BMI currently.
-                    parseWeightResults(patient, weightResults);
-                }
-            }
-            
+            // Retrieve all of the patient's vitals.
+            // Will only collect the most recent values for each vital.
+            retrieveVitals(patient);
             // Retrieve all labs from VistA
             retrieveLabs(dfn, patient);
             // Retrieve all health factors in the last year from VistA and filter
@@ -165,6 +140,48 @@ public class RpcVistaPatientDao implements VistaPatientDao
             return TRANSLATION_MAP.get(vistaField);
         }
         return Patient.Gender.Unknown;
+    }
+    
+    private void retrieveVitals(final Patient patient)
+    {
+        try
+        {
+            final List<String> vitalResults = fProcedureCaller.doRpc(
+                    fDuz, RemoteProcedure.GMV_LATEST_VM, String.valueOf(patient.getDfn()));
+            // Patient vitals information (including but not limited to BMI, height,
+            // weight, weight 6 months ago). If there are no results, a single line with
+            // an error message is returned.
+            LOGGER.debug("Patient Vital Results: {}", vitalResults);
+            if (vitalResults.size() > 1)
+            {
+                // Parse the returned data and put it into the patient data
+                // This will include the most recent height, current weight, and BMI
+                parseRecentVitalResults(patient, vitalResults);
+            }
+            
+            // We have to get the current weight before we do this
+            // If there was no current weight, no need to retrieve other weight
+            if (patient.getWeight() != null)
+            {
+                final List<String> weightResults = retrieveWeight6MonthsAgo(patient);
+                LOGGER.debug("Weight Results: {}", weightResults);
+                // A line begging with "0^NO" means that no results were retrieved
+                // The actual line varies depending on the vital requested.
+                if (weightResults.size() > 0 && !weightResults.get(0).equals(NO_WEIGHT))
+                {
+                    LOGGER.debug("Patient Vital Results: {}", weightResults);
+                    // Parse the returned data and put it into the patient data
+                    // This includes weight and BMI currently.
+                    parseWeightResults(patient, weightResults);
+                }
+            }
+        }
+        catch(final Exception e)
+        {
+            // If an exception occurs for any reason, notify the user that the patient's vitals
+            // could not be retrieved.
+            LOGGER.warn("Unable to retrieve patient's vitals. {}", e);
+        }
     }
     
     private List<String> retrieveWeight6MonthsAgo(final Patient patient)
@@ -238,6 +255,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
             final Matcher matcher = pattern.matcher(line);
             if(!matcher.matches())
             {
+                
                 // Invalid results were received that do not match the expected pattern.
                 break;
             }

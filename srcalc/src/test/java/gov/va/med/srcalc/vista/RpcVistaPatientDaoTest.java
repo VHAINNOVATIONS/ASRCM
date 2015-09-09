@@ -420,8 +420,8 @@ public class RpcVistaPatientDaoTest
             .thenReturn(PARTIAL_VITALS);
         final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
         final Patient patient = dao.getPatient(PATIENT_DFN);
-        assertEquals(72.0, patient.getWeight().getValue(), DOUBLE_PRECISION);
-        assertEquals(208.0, patient.getHeight().getValue(), DOUBLE_PRECISION);
+        assertEquals(208.0, patient.getWeight().getValue(), DOUBLE_PRECISION);
+        assertEquals(72.0, patient.getHeight().getValue(), DOUBLE_PRECISION);
         assertEquals(28.27, patient.getBmi().getValue(), DOUBLE_PRECISION);
     }
     
