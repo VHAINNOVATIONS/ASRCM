@@ -180,7 +180,7 @@ public class RpcVistaPatientDao implements VistaPatientDao
         {
             // If an exception occurs for any reason, notify the user that the patient's vitals
             // could not be retrieved.
-            LOGGER.warn("Unable to retrieve patient's vitals. {}", e);
+            LOGGER.warn("Unable to retrieve patient's vitals.", e);
         }
     }
     
@@ -255,7 +255,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
             final Matcher matcher = pattern.matcher(line);
             if(!matcher.matches())
             {
-                
+                LOGGER.debug("The vitals line does not match the expected regular expression."
+                        + " Line: {}", line);
                 // Invalid results were received that do not match the expected pattern.
                 break;
             }
@@ -264,7 +265,8 @@ public class RpcVistaPatientDao implements VistaPatientDao
             // This will be null when the date is not present.
             final String dateString = matcher.group(2);
             
-            final List<String> valuesWords = Splitter.on(Pattern.compile("\\s+")).splitToList(matcher.group(3));
+            final List<String> valuesWords = Splitter.onPattern("\\s+")
+                    .splitToList(matcher.group(3));
             switch(vitalName)
             {
                 case "Ht.":

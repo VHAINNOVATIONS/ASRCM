@@ -88,6 +88,8 @@ public class RpcVistaPatientDaoTest
             "There are no results to report");
     private final static List<String> INVALID_VITALS = ImmutableList.of(
             "Wt.: blah blah blah", "Invalid",  "This should not work!");
+    private final static List<String> EXCEPTION_VITALS = ImmutableList.of(
+            "Wt.: (Invalid Date) 1 value Name,Nurse", "Second line shouldn't matter.");
     private final static List<String> VALID_WEIGHT_6_MONTHS_AGO = ImmutableList.of(
             "21557^04/17/09@12:00   Wt:   185.00 lb (84.09 kg)  _NURSE,ONE",
             "@12:00   Body Mass Index:   25.86",
@@ -479,5 +481,20 @@ public class RpcVistaPatientDaoTest
         final Patient patient = dao.getPatient(PATIENT_DFN);
         assertEquals(178.0, patient.getWeight().getValue(), DOUBLE_PRECISION);
         assertEquals(null, patient.getWeight6MonthsAgo());
+    }
+    
+    @Test
+    public final void testVitalsException() throws Exception
+    {
+        final VistaProcedureCaller caller = mockVistaProcedureCaller();
+        when(caller.doRpc(
+                RADIOLOGIST_DUZ, RemoteProcedure.GMV_LATEST_VM, String.valueOf(PATIENT_DFN)))
+            .thenReturn(EXCEPTION_VITALS);
+        final RpcVistaPatientDao dao = new RpcVistaPatientDao(caller, RADIOLOGIST_DUZ);
+        final Patient patient = dao.getPatient(PATIENT_DFN);
+        // The exception should be caught and logged, leaving the vitals empty.
+        assertEquals(null, patient.getWeight());
+        assertEquals(null, patient.getHeight());
+        assertEquals(null, patient.getBmi());
     }
 }
