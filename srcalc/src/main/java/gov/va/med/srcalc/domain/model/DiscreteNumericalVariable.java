@@ -224,16 +224,19 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
         }
         
         /**
-         * Returns the upper bound as a String.
+         * Returns the upper bound as a String. This method is package-private because it
+         * should only be called for Hibernate purposes and not used by business code.
          */
         @Basic
+        @Column(nullable = false)
         final String getUpperBoundString()
         {
             return Float.toString(fUpperBound);
         }
         
         /**
-         * Sets the upper bound for this category.
+         * Sets the upper bound for this category. For reflection-based construction only:
+         * this class presents an immutable public interface.
          * @param upperBoundString the String to parse into the upper bound
          * @throws NumberFormatException if {@code upperBoundString} cannot be parsed into a float
          */
@@ -243,13 +246,14 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
             {
                 fUpperBound = Float.parseFloat(upperBoundString);
             }
-            catch(final NumberFormatException e)
+            catch (final NumberFormatException e)
             {
                 // Log the exception but still throw an exception because the method contract
                 // should not allow invalid values.
-                LOGGER.debug("Unable to parse the String into a float for an "
-                        + "upper bound for a category", e);
-                throw new NumberFormatException();
+                LOGGER.debug("Unable to parse the String \"{}\" into a float for an "
+                        + "upper bound for a category", upperBoundString, e);
+                throw new NumberFormatException(String.format("Unable to parse the String \"%s\""
+                        + " into a float for an upper bound for a category", upperBoundString));
             }
         }
 

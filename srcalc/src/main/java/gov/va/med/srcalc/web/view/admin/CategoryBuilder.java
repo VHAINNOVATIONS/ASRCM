@@ -118,11 +118,9 @@ public final class CategoryBuilder
         if(other instanceof CategoryBuilder)
         {
             final CategoryBuilder otherBuilder = (CategoryBuilder) other;
-            if(Objects.equal(this.fValue, otherBuilder.fValue))
-            {
-                return true;
-            }
-            return false;
+            return (this.fUpperInclusive == otherBuilder.fUpperInclusive) &&
+                    (this.fUpperBound == otherBuilder.fUpperBound) &&
+                    Objects.equal(this.fValue, otherBuilder.fValue);
         }
         else
         {
