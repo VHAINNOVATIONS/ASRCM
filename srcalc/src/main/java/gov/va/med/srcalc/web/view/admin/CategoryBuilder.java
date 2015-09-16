@@ -119,7 +119,7 @@ public final class CategoryBuilder
         {
             final CategoryBuilder otherBuilder = (CategoryBuilder) other;
             return (this.fUpperInclusive == otherBuilder.fUpperInclusive) &&
-                    (this.fUpperBound == otherBuilder.fUpperBound) &&
+                    (new Float(this.fUpperBound).equals(otherBuilder.fUpperBound)) &&
                     Objects.equal(this.fValue, otherBuilder.fValue);
         }
         else

@@ -250,10 +250,10 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
             {
                 // Log the exception but still throw an exception because the method contract
                 // should not allow invalid values.
-                LOGGER.debug("Unable to parse the String \"{}\" into a float for an "
-                        + "upper bound for a category", upperBoundString, e);
-                throw new NumberFormatException(String.format("Unable to parse the String \"%s\""
-                        + " into a float for an upper bound for a category", upperBoundString));
+                final String exceptionMessage = String.format("Unable to parse the String \"%s\""
+                        + " into a float for an upper bound for a category", upperBoundString);
+                LOGGER.debug(exceptionMessage, e);
+                throw new NumberFormatException(exceptionMessage);
             }
         }
 
