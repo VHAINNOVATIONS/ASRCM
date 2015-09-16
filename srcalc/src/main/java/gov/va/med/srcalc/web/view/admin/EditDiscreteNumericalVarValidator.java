@@ -79,6 +79,13 @@ public class EditDiscreteNumericalVarValidator implements Validator
             ValidationUtils2.rejectIfDoesntMatch(
                     errors, valueFieldName, MultiSelectOption.VALID_VALUE_PATTERN,
                     new Object[] {MultiSelectOption.VALID_VALUE_CHARACTERS});
+            // Validate if the category matches a previous category's name.
+            // Category names should be unique and non-empty.
+            if(categories.get(i).getValue() != "" && 
+                    categories.indexOf(categories.get(i)) != i)
+            {
+                errors.rejectValue(valueFieldName, ValidationCodes.DUPLICATE_VALUE);
+            }
         }
     }
     

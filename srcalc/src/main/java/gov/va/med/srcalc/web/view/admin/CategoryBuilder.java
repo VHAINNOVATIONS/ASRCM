@@ -1,5 +1,7 @@
 package gov.va.med.srcalc.web.view.admin;
 
+import com.google.common.base.Objects;
+
 import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 import gov.va.med.srcalc.domain.model.MultiSelectOption;
 
@@ -108,6 +110,23 @@ public final class CategoryBuilder
     {
         return new Category(
                 new MultiSelectOption(fValue), fUpperBound, fUpperInclusive);
-        
+    }
+    
+    @Override
+    public boolean equals(final Object other)
+    {
+        if(other instanceof CategoryBuilder)
+        {
+            final CategoryBuilder otherBuilder = (CategoryBuilder) other;
+            if(Objects.equal(this.fValue, otherBuilder.fValue))
+            {
+                return true;
+            }
+            return false;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

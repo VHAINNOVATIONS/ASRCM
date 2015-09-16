@@ -208,7 +208,7 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
          * 
          * <p>Note that we do not store a lower bound. See the class Javadoc.</p>
          */
-        @Basic
+        @Transient
         public final float getUpperBound()
         {
             return fUpperBound;
@@ -221,6 +221,28 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
         final void setUpperBound(final float upperBound)
         {
             fUpperBound = upperBound;
+        }
+        
+        @Basic
+        final String getUpperBoundString()
+        {
+            return Float.toString(fUpperBound);
+        }
+        
+        final void setUpperBoundString(final String upperBoundString)
+        {
+            try
+            {
+                fUpperBound = Float.parseFloat(upperBoundString);
+            }
+            catch(final NumberFormatException e)
+            {
+                // Log the exception but still throw an exception because the method contract
+                // should not allow invalid values.
+                LOGGER.debug("Unable to parse the String into a float for an "
+                        + "upper bound for a category", e);
+                throw new NumberFormatException();
+            }
         }
 
         /**

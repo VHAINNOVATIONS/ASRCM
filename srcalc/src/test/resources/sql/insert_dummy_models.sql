@@ -115,8 +115,8 @@ INSERT INTO RISK_MODEL_BOOLEAN_TERM (risk_model_id, variable, coefficient) VALUE
 -- Alkaline Phosphatase Lab
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (9, 'Alkaline Phosphatase', 'alkalinePhosphatase', 5);
 INSERT INTO DISCRETE_NUMERICAL_VAR (id, lower_bound, lower_inclusive, upper_bound, upper_inclusive, units) VALUES (9, 10, TRUE, 750, TRUE, 'mU/ml');
-INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, upper_bound, upper_inclusive) VALUES (9, 'WNL', 125.0, TRUE);
-INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, upper_bound, upper_inclusive) VALUES (9, '>125mU/ml', 1e12, TRUE);
+INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, upper_bound_string, upper_inclusive) VALUES (9, 'WNL', '125.0', TRUE);
+INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, upper_bound_string, upper_inclusive) VALUES (9, '>125mU/ml', '1e12', TRUE);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 9, 1, .91);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (4, 9, 1, .94);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (5, 9, 1, .95);
@@ -125,8 +125,8 @@ INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coe
 -- BUN Lab
 INSERT INTO VARIABLE (id, display_name, variable_key, variable_group) VALUES (10, 'BUN', 'bun', 5);
 INSERT INTO DISCRETE_NUMERICAL_VAR (id, lower_bound, lower_inclusive, upper_bound, upper_inclusive, units) VALUES (10, 2, TRUE, 90, TRUE, 'mg/dl');
-INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, upper_bound, upper_inclusive) VALUES (10, 'WNL', 25, TRUE);
-INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, upper_bound, upper_inclusive) VALUES (10, '>25mg/dl', 1e12, TRUE);
+INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, upper_bound_string, upper_inclusive) VALUES (10, 'WNL', '25', TRUE);
+INSERT INTO DISCRETE_NUMERICAL_VAR_CATEGORY (variable_id, option_value, upper_bound_string, upper_inclusive) VALUES (10, '>25mg/dl', '1e12', TRUE);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (1, 10, 1, 1.01);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (2, 10, 1, 1.02);
 INSERT INTO RISK_MODEL_DISCRETE_TERM (risk_model_id, variable, option_index, coefficient) VALUES (4, 10, 1, 1.04);
