@@ -223,12 +223,20 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
             fUpperBound = upperBound;
         }
         
+        /**
+         * Returns the upper bound as a String.
+         */
         @Basic
         final String getUpperBoundString()
         {
             return Float.toString(fUpperBound);
         }
         
+        /**
+         * Sets the upper bound for this category.
+         * @param upperBoundString the String to parse into the upper bound
+         * @throws NumberFormatException if {@code upperBoundString} cannot be parsed into a float
+         */
         final void setUpperBoundString(final String upperBoundString)
         {
             try
