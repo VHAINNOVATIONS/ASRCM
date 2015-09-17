@@ -79,4 +79,23 @@ public class DiscreteNumericalVariableTest
                 ImmutableList.of(cat1.getOption(), cat2.getOption(), cat3.getOption()),
                 var.getOptions());
     }
+    
+    @Test
+    public final void testCategoryBoundFormatException()
+    {
+        final String invalidNumber = "Invalid float String";
+        final Category cat1 = new Category(new MultiSelectOption("one"), 4.0f, false);
+        try
+        {
+            cat1.setUpperBoundString(invalidNumber);
+        }
+        catch(final NumberFormatException e)
+        {
+            if(e.getMessage().contains(invalidNumber))
+            {
+                return;
+            }
+        }
+        fail("Correct Exception not thrown");
+    }
 }

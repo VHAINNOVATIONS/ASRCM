@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.va.med.srcalc.domain.model.*;
+import gov.va.med.srcalc.domain.model.DiscreteNumericalVariable.Category;
 import gov.va.med.srcalc.test.util.IntegrationTest;
 
 import javax.inject.Inject;
@@ -203,5 +204,35 @@ public class AdminServiceIT extends IntegrationTest
         assertEquals( "Vascular", specList.get(6).getName() );
         // Ensure RiskModels are loaded.
         assertEquals(1, specList.get(0).getRiskModels().size());
+    }
+    
+    /**
+     * Test for updating categories to verify that ASRC-315 is fixed. Note that we couldn't
+     * reproduce ASRC-315 on HSQL, only on MySQL so this test would always pass on HSQL
+     * even before the fix.
+     */
+    @Test
+    public final void testUpdateCategories() throws Exception
+    {
+        final Category cat1 = new Category(new MultiSelectOption("cat1"), 1.0f, true);
+        final Category cat2 = new Category(new MultiSelectOption("cat2"), 1.3f, true);
+        final Category cat3 = new Category(new MultiSelectOption("cat3"), 1.4f, true);
+        
+        final String key = "test";
+        final DiscreteNumericalVariable discVar = new DiscreteNumericalVariable(
+                "Test",
+                SampleModels.labVariableGroup(),
+                ImmutableSet.of(cat1, cat2, cat3),
+                key);
+        fAdminService.saveVariable(discVar);
+        simulateNewSession();
+        final DiscreteNumericalVariable savedVar =
+                (DiscreteNumericalVariable) fAdminService.getVariable(key);
+        savedVar.getCategories().remove(cat3);
+        fAdminService.saveVariable(savedVar);
+        simulateNewSession();
+        final DiscreteNumericalVariable retrievedVar =
+                (DiscreteNumericalVariable)fAdminService.getVariable(key);
+        assertEquals(savedVar.getCategories(), retrievedVar.getCategories());
     }
 }

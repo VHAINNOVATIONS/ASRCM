@@ -208,7 +208,7 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
          * 
          * <p>Note that we do not store a lower bound. See the class Javadoc.</p>
          */
-        @Basic
+        @Transient
         public final float getUpperBound()
         {
             return fUpperBound;
@@ -221,6 +221,40 @@ public final class DiscreteNumericalVariable extends AbstractNumericalVariable
         final void setUpperBound(final float upperBound)
         {
             fUpperBound = upperBound;
+        }
+        
+        /**
+         * Returns the upper bound as a String. This method is package-private because it
+         * should only be called for Hibernate purposes and not used by business code.
+         */
+        @Basic
+        @Column(nullable = false)
+        final String getUpperBoundString()
+        {
+            return Float.toString(fUpperBound);
+        }
+        
+        /**
+         * Sets the upper bound for this category. For reflection-based construction only:
+         * this class presents an immutable public interface.
+         * @param upperBoundString the String to parse into the upper bound
+         * @throws NumberFormatException if {@code upperBoundString} cannot be parsed into a float
+         */
+        final void setUpperBoundString(final String upperBoundString)
+        {
+            try
+            {
+                fUpperBound = Float.parseFloat(upperBoundString);
+            }
+            catch (final NumberFormatException e)
+            {
+                // Log the exception but still throw an exception because the method contract
+                // should not allow invalid values.
+                final String exceptionMessage = String.format("Unable to parse the String \"%s\""
+                        + " into a float for an upper bound for a category", upperBoundString);
+                LOGGER.debug(exceptionMessage, e);
+                throw new NumberFormatException(exceptionMessage);
+            }
         }
 
         /**
