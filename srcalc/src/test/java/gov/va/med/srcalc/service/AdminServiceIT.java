@@ -206,6 +206,11 @@ public class AdminServiceIT extends IntegrationTest
         assertEquals(1, specList.get(0).getRiskModels().size());
     }
     
+    /**
+     * Test for updating categories to verify that ASRC-315 is fixed. Note that we couldn't
+     * reproduce ASRC-315 on HSQL, only on MySQL so this test would always pass on HSQL
+     * even before the fix.
+     */
     @Test
     public final void testUpdateCategories() throws Exception
     {
@@ -220,10 +225,14 @@ public class AdminServiceIT extends IntegrationTest
                 ImmutableSet.of(cat1, cat2, cat3),
                 key);
         fAdminService.saveVariable(discVar);
+        simulateNewSession();
         final DiscreteNumericalVariable savedVar =
                 (DiscreteNumericalVariable) fAdminService.getVariable(key);
         savedVar.getCategories().remove(cat3);
         fAdminService.saveVariable(savedVar);
-        assertEquals(savedVar, fAdminService.getVariable(key));
+        simulateNewSession();
+        final DiscreteNumericalVariable retrievedVar =
+                (DiscreteNumericalVariable)fAdminService.getVariable(key);
+        assertEquals(savedVar.getCategories(), retrievedVar.getCategories());
     }
 }
