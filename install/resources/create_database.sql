@@ -14,7 +14,7 @@ create table numerical_variable (units varchar(40) not null, lower_bound float n
 create table procedure_variable (id integer not null, primary key (id));
 create table risk_model (id integer not null auto_increment, constant float, display_name varchar(80) not null, primary key (id));
 create table risk_model_boolean_term (risk_model_id integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, variable, coefficient));
-create table risk_model_derived_term (risk_model_id integer not null, rule integer, coefficient float not null, primary key (risk_model_id, coefficient));
+create table risk_model_derived_term (risk_model_id integer not null, rule integer, coefficient float not null, primary key (risk_model_id, rule, coefficient));
 create table risk_model_discrete_term (risk_model_id integer not null, option_index integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, option_index, variable, coefficient));
 create table risk_model_numerical_term (risk_model_id integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, variable, coefficient));
 create table risk_model_procedure_term (risk_model_id integer not null, variable integer not null, coefficient float not null, primary key (risk_model_id, variable, coefficient));
