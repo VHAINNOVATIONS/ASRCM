@@ -12,7 +12,7 @@ apply plugin: 'checkstyle'
 
 // Basic build properties
 sourceCompatibility = '1.7'
-version = '0.12.0'
+version = '0.13.0-alpha'
 
 repositories {
     // Use 'maven central' for resolving dependencies.
